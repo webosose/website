@@ -1,0 +1,421 @@
+---
+title: com.webos.service.rosbridge
+date: 2019-04-23
+toc: true
+---
+
+<div>
+  <H2>API Summary</h2>
+  <p>Allows an app on a webOS device to communicate with a service running on a ROS 2 device.</p>  
+  <p>{{< figure src="/images/docs/reference/com-webos-service-rosbridge-ros2-bridge.png" alt="ROS2 bridge" >}}</p>
+  <p><strong>Supported Functionality: &nbsp;</strong></p>
+  <ul>
+    <li>webOS web app can subscribe/publish&nbsp;<strong>topic</strong>&nbsp;to ROS 2.</li>
+    <li>webOS web app can call&nbsp;<strong>service</strong>&nbsp;in ROS 2.&nbsp;</li>
+    <li>Currently, only client-specific APIs are supported.</li>
+  </ul>
+  <p><strong>Note:&nbsp;</strong></p>
+  <ul>
+    <li>ROS (Robot Operating System) is a popular robot platform that provides services to build robot applications.</li>
+    <li>Currently,&nbsp;this service is compatible with only ROS 2 supported devices.&nbsp;</li>
+  </ul>
+</div>
+<h2>Overview of the API</h2>
+<div>
+  <p>NA&nbsp;</p>
+</div>
+<h2>Methods</h2>
+<div>
+  <h3>publish</h3>
+  <div>
+    <h4>Description</h4>
+    <p>Publishes&nbsp;<strong>topic</strong>&nbsp;message from LS2 (webOS Luna Bus) to ROS 2.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>name</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Name of ROS 2 message.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>type</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>ROS 2 type name.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>message</td>
+            <td>Required</td>
+            <td>Object</td>
+            <td>
+              <p>ROS 2 message.</p>
+              <p>The JSON schema depends on the&nbsp;ROS 2 message structure.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed.&nbsp;Check the &quot;errorText&quot; field&nbsp;for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>API&nbsp;Error Codes Reference&quot;</strong>&nbsp;section for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div class="code-bg-grey">
+      <p>// Console<br />
+        # luna-send -i -f luna://com.webos.service.rosbridge/subscribe &#39;{ &quot;name&quot;:&quot;topic_test&quot;, &quot;type&quot;:&quot;std_msgs/msg/String&quot;, &quot;subscribe&quot;:true }&#39;<br />
+        {<br />
+        &nbsp; &nbsp; &quot;subscribed&quot;: true<br />
+        }<br />
+        {<br />
+        &nbsp; &nbsp; &quot;data&quot;: &quot;hello&quot;<br />
+        }
+      </p>
+      <p>// Another console<br />
+        # luna-send -n 1 -f luna://com.webos.service.rosbridge/publish &#39;{ &quot;name&quot;:&quot;topic_test&quot;, &quot;type&quot;:&quot;std_msgs/msg/String&quot;, &quot;message&quot;:&quot;hello&quot; }&#39;<br />
+        {<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+  </div>
+</div>
+<h3>subscribe</h3>
+<div>
+  <h4>Description</h4>
+  <p>Subscribe&nbsp;<strong>topic</strong>&nbsp;message from ROS 2 world.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>name</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Name of ROS 2&nbsp;message.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>type</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>ROS 2 type name.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Subscribe for notifications.&nbsp;This should always to be to <strong>true.&nbsp;</strong></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.&nbsp;Check the&nbsp;&quot;errorText&quot; field&nbsp;for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if&nbsp;subscribed to get notified.&nbsp;This will always be <strong>true.</strong></p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>API&nbsp;Error Codes Reference&quot;</strong>&nbsp;section for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>// Console<br />
+      # luna-send -i -f luna://com.webos.service.rosbridge/subscribe &#39;{ &quot;name&quot;:&quot;topic_test&quot;, &quot;type&quot;:&quot;std_msgs/msg/String&quot;, &quot;subscribe&quot;:true }&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;subscribed&quot;: true<br />
+      }<br />
+      {<br />
+      &nbsp; &nbsp; &quot;data&quot;: &quot;hello&quot;<br />
+      }
+    </p>
+    <p>// Another console<br />
+      # luna-send -n 1 -f luna://com.webos.service.rosbridge/publish &#39;{ &quot;name&quot;:&quot;topic_test&quot;, &quot;type&quot;:&quot;std_msgs/msg/String&quot;, &quot;message&quot;:&quot;hello&quot; }&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>call</h3>
+<div>
+  <h4>Description</h4>
+  <p>Calls service in ROS 2 world.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>name</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Name of ROS 2 message.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>type</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>ROS 2 type name.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>message</td>
+          <td>Required</td>
+          <td>Object</td>
+          <td>
+            <p>ROS 2 message.</p>
+            <p>The JSON schema depends on ROS 2 message structure.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.&nbsp;Check the &quot;errorText&quot; field&nbsp;for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>API&nbsp;Error Codes Reference&quot;</strong>&nbsp;section for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>// Run test service<br />
+      # ros2 run demo_nodes_cpp add_two_ints_server
+    </p>
+    <p>// Call service by rosbridge<br />
+      # luna-send -n 1 -f luna://com.webos.service.rosbridge/call &#39;{ &quot;name&quot;:&quot;add_two_ints&quot;, &quot;type&quot;:&quot;example_interfaces/srv/AddTwoInts&quot;, &quot;message&quot;: { &quot;a&quot;: 100, &quot;b&quot;: 200} }&#39;<br />
+      {<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&quot;sum&quot;: 300<br />
+      }
+    </p>
+  </div>
+</div>
+<h2>API Error Codes Reference</h2>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <tbody>
+      <tr>
+        <th width="15%">
+          <p>Error Code</p>
+        </th>
+        <th width="30%">
+          <p>Error Text</p>
+        </th>
+        <th width="55%">
+          <p>Error Description</p>
+        </th>
+      </tr>
+      <tr>
+        <td>None</td>
+        <td>Invalid JSON format</td>
+        <td>
+          <p>Invalid JSON format</p>
+        </td>
+      </tr>
+      <tr>
+        <td>None</td>
+        <td>&#39;subscribe&#39; should be &#39;true&#39;</td>
+        <td>
+          <p><strong>Subscribe</strong> API only supports <strong>subscription</strong> call.</p>
+          <p>If there is no subscribe parameter, this errorText will be returned.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>None</td>
+        <td>&#39;type&#39; is required parameter</td>
+        <td>
+          <p>If there is no &#39;type&#39; parameter in request payload.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>None</td>
+        <td>&#39;name&#39; is required parameter</td>
+        <td>
+          <p>If there is no &#39;name&#39; parameter in request payload.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>None</td>
+        <td>&#39;message&#39; is required parameter</td>
+        <td>
+          <p>If there is no &#39;message&#39; parameter in request payload.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>None</td>
+        <td>Cannot create ros client</td>
+        <td>
+          <p>ROS world error.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

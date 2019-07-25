@@ -1,0 +1,608 @@
+---
+title: com.webos.rdxd
+date: 2019-04-29
+toc: true
+---
+<div>
+  <H2>API Summary</h2>
+  <p>Remote diagnostics daemon to accept/generate crash, analytic and overview reports.</p>
+</div>
+<h2>Overview of the API</h2>
+<div>
+  <p>rdxd is a daemon that gathers and passes analytics and crash information to processing services. Processing services can be configured via JSON configuration files (in /etc/rdxd.d directory) to be called when appropriate report type arrived. Remote diagnostics daemon either accepts reports from external sources (crashd, PmLogDaemon) or generates reports internally (overview report on daemon start).</p>
+  <p><strong>Note: </strong>This API should be used solely by developers and testing components for development/testing purposes.</p>
+</div>
+<h2>Methods</h2>
+<div>
+  <a id="getLogSettings"></a>
+  <h3>getLogSettings</h3>
+  <div>
+    <h4>Description</h4>
+    <p>Gets the current settings for crash and analytic reports upload.</p>
+    <p><strong>Note: </strong>No pre-post requirements for calling this method.</p>
+    <h4>Parameters</h4>
+    <p>None</p>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation. Always returns <strong>true</strong>.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>analyticsLog</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates whether the analytics report is uploaded to processing services. Possible values are:</p>
+              <ul>
+                <li><strong>true </strong>- upload analytics report.</li>
+                <li><strong>false </strong>- do not upload the analytics report.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>crashLog</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates whether the crash report is uploaded to processing services. Possible values are:</p>
+              <ul>
+                <li><strong>true </strong>- upload crash report.</li>
+                <li><strong>false </strong>- do not upload the crash report.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.rdxd/getLogSettings &#39;{}&#39;<br />
+        <br />
+        Sample response:
+      </p>
+      <p>{</p>
+      <p>&nbsp; &nbsp; &quot;returnValue&quot;: &quot;true&quot;,</p>
+      <p>&nbsp; &nbsp;&nbsp;&quot;analyticsLog&quot;: &quot;true&quot;,</p>
+      <p>&nbsp; &nbsp;&nbsp;&quot;crashLog&quot;: &quot;false&quot;</p>
+      <p>}</p>
+    </div>
+  </div>
+</div>
+<a id="setLogSettings"></a>
+<h3>setLogSettings</h3>
+<div>
+  <h4>Description</h4>
+  <p>Specifies whether the analytics and crash reports are to be uploaded to processing services.</p>
+  <p><strong>Note: </strong>No pre-post requirements for calling this method.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>analyticsLog</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates whether the analytics report is to be uploaded to processing services. Possible values are:</p>
+            <ul>
+              <li><strong>true </strong>- upload analytics report.</li>
+              <li><strong>false </strong>- do not upload the analytics report.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>crashLog</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates whether the crash report is to be uploaded to processing services. Possible values are:</p>
+            <ul>
+              <li><strong>true </strong>- upload crash report.</li>
+              <li><strong>false </strong>- do not upload the crash report.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>analyticsLog</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates whether the analytics report is to be uploaded to processing services. Possible values are:</p>
+            <ul>
+              <li><strong>true </strong>- upload analytic report.</li>
+              <li><strong>false </strong>- do not upload the analytics report.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>crashLog</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates whether the crash report is to be uploaded to processing services. Possible values are:</p>
+            <ul>
+              <li><strong>true </strong>- upload crash report.</li>
+              <li><strong>false </strong>- do not upload the crash report.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>-1</td>
+          <td>parameter not found</td>
+          <td>
+            <p>Schema validation failed - call does not contain all required parameters or some parameters of invalid type.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Sample code to upload the analytics log...</p>
+    <p># luna-send -n 1 -f luna://com.webos.rdxd/setLogSettings &#39;{<br />
+      &nbsp; &nbsp; &nbsp; &quot;analyticsLog&quot;: true,<br />
+      &nbsp; &nbsp; &nbsp; &quot;crashLog&quot;: false<br />
+      }&#39;
+    </p>
+  </div>
+</div>
+<a id="makeReport"></a>
+<h3>makeReport</h3>
+<div>
+  <h4>Description</h4>
+  <p><span style="color:rgb(0, 0, 0)">Generate a crash report for the given report parameters and pass it for further processing to all services registered to crash report processing.</span></p>
+  <p><span style="color:rgb(0, 0, 0)">Use this method to generate crash report using custom parameters and optional crash dump file (for testing/development purposes)</span></p>
+  <p><span style="color:rgb(0, 0, 0)">Pre-post requirements - specified crash dump file should exist and allow read access to it contents.</span></p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>detail</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Details of the crash to be added in the summary of the report.</p>
+            <p>(Example: crash location, backtrace information)</p>
+          </td>
+        </tr>
+        <tr>
+          <td>cause</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Event that triggers the crash report. This usually provides information on which component crashed and at what location this crash happened. The default value is &quot;manual report&quot;.<br />
+              (Example:&nbsp;QtWebPluginProcess crashes at location /usr/lib/libumedia_api.so.1)
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td>component</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Component originating the crash.&nbsp;The default value is empty string.</p>
+            <p>(Example: QtWebPluginProcess.)</p>
+          </td>
+        </tr>
+        <tr>
+          <td>reportPath</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Full path to file to be used as crash dump for generated crash report.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>reportName</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Original file name for passed crash dump file, usually in format <em>ProcessName.PID.</em></p>
+            <p>(Example: QtWebProcessEngine.1234)</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>no detail in payload</td>
+          <td>
+            <p>No crash detail specified in method call.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Upload switch is disabled for crash reports</td>
+          <td>
+            <p>Upload option is disabled for crash reports.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>EULA is not accepted</td>
+          <td>
+            <p>EULA is not accepted or disallowed sending of additional data.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Crash report does not exist</td>
+          <td>
+            <p>Passed custom crash dump file does not exist.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Could not copy crash report into temporary location</td>
+          <td>
+            <p>Failed to copy passed crash dump file into temporary directory.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Could not make unique temporary file</td>
+          <td>
+            <p>Failed to&nbsp;make unique temporary file for crash report.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Could not make sysinfo dump</td>
+          <td>
+            <p>Failed to generate dump of dynamic system state.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>unknown error</td>
+          <td>
+            <p>Unknown error occured while executing method.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Sample code to make a report...</p>
+    <p># luna-send -n 1 -f luna://com.webos.rdxd/makeReport &#39;{<br />
+      &nbsp; &nbsp; &nbsp; &quot;detail&quot;: &quot;report&quot;<br />
+      }&#39;
+    </p>
+  </div>
+</div>
+<a id="makeLogReport"></a>
+<h3>makeLogReport</h3>
+<div>
+  <h4>Description</h4>
+  <p><span style="color:#000000">Generate an analytic report for the given report file and pass it for further processing to all services registered to analytic report processing.</span></p>
+  <p><span style="color:#000000">Use this method to generate analytic report using custom report file (for testing/development purposes)</span></p>
+  <p><span style="color:#000000">Pre-post requirements - report file should exist and allow read access to it contents.</span></p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>filepath</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Filename (with the entire path) of the custom analytic log file. This file is used to generate analytics report.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>Could not extract filepath</td>
+          <td>
+            <p>File path not specified in method call.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>EULA has not accepted yet, analytics reports will not be created</td>
+          <td>
+            <p>EULA is not accepted or disallowed sending of additional data.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>Devmode is enabled, analytics reports will not be generated</td>
+          <td>
+            <p>Developers mode is enabled.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>Upload switch is disabled for analytic reports</td>
+          <td>
+            <p>Upload option is disabled for analytic reports.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>Specified file does not exist</td>
+          <td>
+            <p>Passed file path does not exist.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>Could not copy report into temporary location</td>
+          <td>
+            <p>Service&nbsp;could not copy passed file into temporary location.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>unknown error</td>
+          <td>
+            <p>Unknown error occured while executing method.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Precondition:&nbsp;In the config service, set the value for &quot;system.collectDevLogs&quot; to false.</p>
+    <p># luna-send -n 1 luna://com.webos.service.config/setConfigs &#39;{&quot;configs&quot;:{&quot;system.collectDevLogs&quot;: false}}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Sample code to make log report with defined file-path</p>
+    <p># luna-send -n 1 -f luna://com.webos.rdxd/makeLogReport &#39;{&quot;filepath&quot;: &quot;/path/to/file&quot;}&#39;</p>
+  </div>
+</div>

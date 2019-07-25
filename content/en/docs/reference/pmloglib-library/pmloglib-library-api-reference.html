@@ -1,0 +1,1908 @@
+---
+title: pmloglib Library API Reference
+date: 2019-04-26
+toc: true
+---
+
+<div>
+  <h2>API Summary</h2>
+  <p>The <strong>pmloglib</strong> library provides the API that enables applications to format the messages and put these messages to the&nbsp;<strong>syslog</strong>.</p>
+</div>
+<h2>Overview of the API</h2>
+<div>
+  <p>This library supports instrumenting code to produce runtime text output&nbsp; to indicate run status.<br />
+    We differentiate output into two types, tracing and logging.
+  </p>
+  <p>Tracing code is for detailed debugging for use by individual component development.&nbsp;It is turned on only locally and only as needed, and is&nbsp;<strong>not</strong> included in the main build or release product.&nbsp;The system that&nbsp;supports for tracing code will not be as efficient in this case as it&nbsp;will lean more towards ease of use.</p>
+  <p>Logging code, on the other hand, is included in the main build and&nbsp;release product.&nbsp;The purpose is to log errors and important diagnostics&nbsp;information in the device logs.&nbsp;</p>
+  <p>Logging code may also support more verbose diagnostic&nbsp;levels which may be turned on dynamically as needed on the device.&nbsp;The&nbsp;intent of the system is that logging code which is not enabled has&nbsp;minimal performance impact.&nbsp;In particular, a logging call which is not&nbsp;enabled should not result in a library call or evaluation of parameters.</p>
+  <p>This is enabled by requiring logging clients to initialize a logging&nbsp;context that is managed by the PmLog system.&nbsp;The context includes a&nbsp;memory field that can be quickly checked by the logging call to know&nbsp;whether the call is enabled.<br />
+    <br />
+    The <strong>pmloglib&nbsp;</strong>service provides the following core features:
+  </p>
+  <ul>
+    <li>Context support</li>
+    <li>Filter messages by id</li>
+    <li>Route messages by parameters</li>
+    <li>Provides C API for other components</li>
+    <li>Provide configuration through the <strong>pmlogctl</strong> utility</li>
+  </ul>
+  <p>The <strong>pmloglib</strong>&nbsp;supports contexts. Through the <strong>pmloglib</strong> API, you can configure the contexts, use different files for different contexts and manage the filtering level.</p>
+  <p>By default, the pmloglib provides 2 contexts:</p>
+  <ul>
+    <li>Executable files</li>
+    <li>Dynamic libraries that are used by the&nbsp;executable file</li>
+  </ul>
+  <p>The messages are formatted on the <strong>key - value</strong> basis. The key serves as a tag, by using which it is possible to get all messages that are marked by a certain key.</p>
+  <p>&nbsp;</p>
+  <p><u><strong>Example usage:</strong></u></p>
+  <p><br />
+    <em>&nbsp;&nbsp;&nbsp; PmLogContext&nbsp;&nbsp; &nbsp;gMyContext;<br />
+    <br />
+    &nbsp;&nbsp;&nbsp; void MyComponentInit(void)<br />
+    &nbsp;&nbsp;&nbsp; {<br />
+    &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; // Get a pointer to the context for this component.<br />
+    &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; // The context is created if it does not already exist.<br />
+    &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; PmLogGetContext(&quot;PmMyComponent&quot;, &amp;gMyContext);<br />
+    &nbsp;&nbsp;&nbsp; }<br />
+    <br />
+    &nbsp;&nbsp;&nbsp; void MyComponentRun(void)<br />
+    &nbsp;&nbsp;&nbsp; {<br />
+    &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; int err;<br />
+    <br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; PmLogDebug(gMyContext, &quot;Calling Foo&quot;);<br />
+    &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; err = Foo();<br />
+    &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; if (err)<br />
+    &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; PmLogError(gMyContext, &quot;FOOERR&quot;, 1, PMLOGKFV(ERROR_CODE,&quot;%d&quot;,err), &quot;&quot;);<br />
+    &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }<br />
+    &nbsp;&nbsp;&nbsp;&nbsp; }</em>
+  </p>
+  <p>&nbsp;</p>
+  <p><u><strong><em>Below are the list of functions which are exported :</em></strong></u></p>
+  <p><em># Exported functions<br />
+    {<br />
+    global:<br />
+    ### Public interface (PmLogLib.h) ###<br />
+    &nbsp;&nbsp; &nbsp;PmLogGetNumContexts;<br />
+    &nbsp;&nbsp; &nbsp;PmLogGetIndContext;<br />
+    &nbsp;&nbsp; &nbsp;PmLogFindContext;<br />
+    &nbsp;&nbsp; &nbsp;PmLogGetContext;<br />
+    &nbsp;&nbsp; &nbsp;PmLogGetContextInline;<br />
+    &nbsp;&nbsp; &nbsp;PmLogGetContextName;<br />
+    &nbsp;&nbsp; &nbsp;PmLogGetContextLevel;<br />
+    &nbsp;&nbsp; &nbsp;PmLogSetContextLevel;<br />
+    &nbsp;&nbsp; &nbsp;PmLogPrint_;<br />
+    &nbsp;&nbsp; &nbsp;PmLogVPrint_;<br />
+    &nbsp;&nbsp; &nbsp;PmLogDumpData_;<br />
+    &nbsp;&nbsp; &nbsp;PmLogLevelToString;<br />
+    &nbsp;&nbsp; &nbsp;PmLogStringToLevel;<br />
+    &nbsp;&nbsp; &nbsp;PmLogFacilityToString;<br />
+    &nbsp;&nbsp; &nbsp;PmLogStringToFacility;<br />
+    &nbsp;&nbsp; &nbsp;PmLogGetErrDbgString;<br />
+    &nbsp;&nbsp; &nbsp;PmLogString_;<br />
+    &nbsp;&nbsp; &nbsp;_PmLogMsgKV;<br />
+    &nbsp;&nbsp; &nbsp;PmLogGetLibContext;<br />
+    &nbsp;&nbsp; &nbsp;PmLogSetLibContext;<br />
+    &nbsp; &nbsp;<br />
+    ### Private interface (PmLogLibPrv.h) ###<br />
+    &nbsp;&nbsp; &nbsp;PmLogPrvGlobals;<br />
+    &nbsp;&nbsp; &nbsp;PmLogPrvLock;<br />
+    &nbsp;&nbsp; &nbsp;PmLogPrvUnlock;<br />
+    &nbsp;&nbsp; &nbsp;PmLogPrvTest;<br />
+    &nbsp;&nbsp; &nbsp;PmLogPrvReadConfigs;&nbsp;<br />
+    local:<br />
+    &nbsp;&nbsp; &nbsp;*;<br />
+    };</em>
+  </p>
+</div>
+<div>
+  <h2>Enumerators</h2>
+  <a id="PmLogErr"></a>
+  <h3>PmLogErr</h3>
+  <p>Type&nbsp;definition&nbsp;for&nbsp;error&nbsp;codes&nbsp;returned&nbsp;by&nbsp;this&nbsp;module&#39;s&nbsp;methods.</p>
+  <a id="PmLogLevel"></a>
+  <h3>PmLogLevel</h3>
+  <p>Type&nbsp;definition&nbsp;for&nbsp;discrete&nbsp;logging&nbsp;level</p>
+</div>
+<h2>Methods</h2>
+<div>
+  <a id="PmLogDumpData_"></a>
+  <h3>PmLogDumpData_</h3>
+  <div>
+    <h4>Description</h4>
+    <p>Logs the specified binary data as text dump to the specified context. Specify kPmLogDumpFormatDefault for the formatting parameter. For efficiency, this method should not be used directly, but instead use the wrappers (e.g., PmLogDumpData, ...) that bypass the library call if the logging is not enabled.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>context</td>
+            <td>Required</td>
+            <td>PmLogContext</td>
+            <td>
+              <p>Type&nbsp;definition&nbsp;for&nbsp;the&nbsp;logging&nbsp;context&nbsp;as&nbsp;returned&nbsp;by <strong>PmLogGetContext</strong> method.&nbsp;This&nbsp;is&nbsp;a&nbsp;read-only&nbsp;data.&nbsp;Clients&nbsp;should&nbsp;treat&nbsp;this&nbsp;as&nbsp;an&nbsp;opaque&nbsp;structure,&nbsp;however&nbsp;it&nbsp;is</p>
+              <p>referenced&nbsp;by&nbsp;the&nbsp;macro/inline&nbsp;functions&nbsp;here.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>level</td>
+            <td>Required</td>
+            <td>PmLogLevel</td>
+            <td>
+              <p>Type&nbsp;definition&nbsp;for&nbsp;discrete&nbsp;logging&nbsp;level. The&nbsp;values&nbsp;are&nbsp;intentionally&nbsp;identical&nbsp;to&nbsp;the&nbsp;equivalent&nbsp;syslog&nbsp;priority&nbsp;value.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>data</td>
+            <td>Required</td>
+            <td>const void *</td>
+            <td>
+              <p>Logs&nbsp;the&nbsp;specified&nbsp;binary&nbsp;data&nbsp;as&nbsp;text&nbsp;dump&nbsp;to&nbsp;the&nbsp;specified&nbsp;context</p>
+            </td>
+          </tr>
+          <tr>
+            <td>numBytes</td>
+            <td>Required</td>
+            <td>size_t</td>
+            <td>
+              <p>Size of the input data&nbsp;length</p>
+            </td>
+          </tr>
+          <tr>
+            <td>format</td>
+            <td>Required</td>
+            <td>const PmLogDumpFormat *</td>
+            <td>
+              <p>Specify&nbsp;kPmLogDumpFormatDefault&nbsp;for&nbsp;the&nbsp;formatting&nbsp;parameter.</p>
+              <p>currently other format support is not added</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>PmLogErr</td>
+            <td>Required</td>
+            <td><a href="#PmLogErr">PmLogErr</a></td>
+            <td>
+              <p>Type&nbsp;definition&nbsp;for&nbsp;error&nbsp;codes&nbsp;returned&nbsp;by&nbsp;the&nbsp;method.&nbsp;Refer to <strong>PmLogErr</strong> enumerator for values.</p>
+              <ul>
+                <li>Returns&nbsp;InvalidContext if&nbsp;PmLogContext_ handle is null.</li>
+                <li>Returns&nbsp;logErr&nbsp;if&nbsp;PrvCheckContext&nbsp;handle is not proper.</li>
+                <li>Returns&nbsp;NoData, if numbytes is zero.</li>
+                <li>Returns&nbsp;InvalidData, if input data is null.&nbsp;</li>
+                <li>Returns&nbsp;InvalidFormat if default format is not allowed, when the input format is not equal to NULL.</li>
+                <li>Returns logErr, if it succeeds.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div class="code-bg-grey">
+      <p>This method&nbsp;is used when user wants to logs&nbsp;the&nbsp;specified&nbsp;binary&nbsp;data&nbsp;as&nbsp;text&nbsp;dump&nbsp;to&nbsp;the&nbsp;specified&nbsp;context.</p>
+      <p>logErr &nbsp;=&nbsp;PmLogDumpData_(contextName,&nbsp;level,data,&nbsp;numBytes,&nbsp;format)</p>
+      <p>if (logErr &nbsp;== &nbsp;kPmLogErr_None) {</p>
+      <p>&nbsp; &nbsp; &nbsp;ErrPrint(&quot;PmLogDumpData_ call &nbsp;is success);</p>
+      <p>&nbsp; &nbsp; &nbsp;return RESULT_OK;</p>
+      <p>}</p>
+    </div>
+  </div>
+</div>
+<a id="PmLogFindContext"></a>
+<h3>PmLogFindContext</h3>
+<div>
+  <h4>Description</h4>
+  <p>Finds the logging context for the named context, or NULL if the context does not exist.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>contextName</td>
+          <td>Required</td>
+          <td>const char *</td>
+          <td>
+            <p>context name&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>pContext</td>
+          <td>Required</td>
+          <td>PmLogContext *</td>
+          <td>
+            <p>PmLogContext handle</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>PmLogErr</td>
+          <td>Required</td>
+          <td><a href="#PmLogErr">PmLogErr</a></td>
+          <td>
+            <p>Type&nbsp;definition&nbsp;for&nbsp;error&nbsp;codes&nbsp;returned&nbsp;by&nbsp;the&nbsp;method.&nbsp;Refer to <strong>PmLogErr</strong> enumerator for values.</p>
+            <ul>
+              <li>Returns&nbsp;InvalidParameter, if&nbsp;PmLogContext handle is null.</li>
+              <li>Returns&nbsp;Unknown, if&nbsp;PmLogGlobals handle&nbsp;is null.</li>
+              <li>Returns&nbsp;logErr, if&nbsp;contextName is invalid.</li>
+              <li>Returns&nbsp;None, if PmLogcontext name match found.</li>
+              <li>Returns&nbsp;ContextNotFound, if nothing context name match found.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>This method is used to find the context name with the previously resolved context name exist or not.</p>
+    <p>Success Cases:-</p>
+    <p>logErr = PmLogFindContext(contextName, &amp;context);</p>
+    <p>if (logErr == kPmLogErr_None) {</p>
+    <p>&nbsp; &nbsp; &nbsp;ErrPrint(&quot;Context &#39;%s&#39; is already defined.\n&quot;, contextName);</p>
+    <p>&nbsp; &nbsp; &nbsp;return RESULT_OK;</p>
+    <p>}</p>
+    <p>Failure Case:-</p>
+    <p>logErr = PmLogFindContext(matchContextName, &amp;matchedContext);</p>
+    <p>if (logErr != kPmLogErr_None) &nbsp; &nbsp; {</p>
+    <p>&nbsp; &nbsp; &nbsp;ErrPrint(&quot;Context &#39;%s&#39; not found.\n&quot;, matchContextName);</p>
+    <p>&nbsp; &nbsp; &nbsp;return RESULT_PARAM_ERR;</p>
+    <p>}</p>
+  </div>
+</div>
+<a id="PmLogGetContext"></a>
+<h3>PmLogGetContext</h3>
+<div>
+  <h4>Description</h4>
+  <p>Logs context for the named context. If contextName is NULL, returns the global context.Context names must be 1~31 characters long, and each character must be one of A-Z, a-z, 0-9, &#39;_&#39;, &#39;-&#39;, &#39;.&#39;. and&nbsp;Component hierarchies can be indicated using &#39;.&#39; as the path separator. E.g. &quot;FOO.BAR&quot; would indicate the &quot;BAR&quot; subcomponent of the &quot;FOO&quot; component.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>contextName</td>
+          <td>Required</td>
+          <td>const char *</td>
+          <td>
+            <p>Context name</p>
+          </td>
+        </tr>
+        <tr>
+          <td>pContext</td>
+          <td>Required</td>
+          <td>PmLogContext *</td>
+          <td>
+            <p>PmLogContext handle</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>PmLogErr</td>
+          <td>Required</td>
+          <td><a href="#PmLogErr">PmLogErr</a></td>
+          <td>
+            <p>Type&nbsp;definition&nbsp;for&nbsp;error&nbsp;codes&nbsp;returned&nbsp;by&nbsp;the&nbsp;method.&nbsp;Refer to&nbsp;<strong>PmLogErr</strong>&nbsp;enumerator for values.</p>
+            <ul>
+              <li>Returns&nbsp;InvalidContextIndex, if&nbsp;contextIndex is invalid.</li>
+              <li>Returns&nbsp;InvalidParameter, if PmLogContext handle is invalid.</li>
+              <li>Returns&nbsp;None, if it succeeds.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>This method&nbsp;is used to get the current context&nbsp;</p>
+    <p>Example 1:</p>
+    <p>logErr = PmLogGetContext(&quot;ASM.LIB&quot;, &amp;libContext);</p>
+    <p>if(logErr == kPmLogErr_None)</p>
+    <p>{</p>
+    <p>&nbsp; &nbsp; &nbsp; PmLogSetLibContext(libContext);</p>
+    <p>}</p>
+    <p>Example 2:</p>
+    <p>logErr&nbsp;=&nbsp;PmLogGetContext(contextName,&nbsp;&amp;context);</p>
+    <p>&nbsp; &nbsp; if&nbsp;(logErr&nbsp;!=&nbsp;kPmLogErr_None)&nbsp;{</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp;snprintf(errMsg,&nbsp;errMsgBuffSize,&nbsp;&quot;Error&nbsp;getting&nbsp;context:&nbsp;%s&quot;,PmLogGetErrDbgString(logErr));</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp;return&nbsp;false;</p>
+    <p>}</p>
+  </div>
+</div>
+<a id="PmLogGetContextInline"></a>
+<h3>PmLogGetContextInline</h3>
+<div>
+  <h4>Description</h4>
+  <p>Gets the logging context for the named context.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>contextName</td>
+          <td>Required</td>
+          <td>const char *</td>
+          <td>
+            <p>PmLogContext name&nbsp;</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>context</td>
+          <td>Required</td>
+          <td>struct PmLogContextInfo</td>
+          <td>
+            <ul>
+              <li>Returns PmLogContext handle if it succeeds.</li>
+              <li>Returns GlobalContext, if current contextName is not available.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>This method is used to support the trace macros that want to use a named context, but can&#39;t easily support a global variable to cache the context.<br />
+      &nbsp;
+    </p>
+    <p>Example 1:</p>
+    <p>static PmLogContext ctx = PmLogGetContextInline(&quot;hbb.avcontrol&quot;);</p>
+    <p>if (NULL == ctx)&nbsp;{</p>
+    <p>&nbsp; &nbsp; &nbsp; printf(&quot;context name does not exists.&quot;)</p>
+    <p>}<br />
+      static bool checkDebugMode = false;
+    </p>
+    <p>PmLogSetContextLevel(ctx, kPmLogLevel_Debug);</p>
+    <p>&nbsp;</p>
+    <p>Example 2:</p>
+    <p>m_context = PmLogGetContextInline(&quot;bootManager&quot;);</p>
+    <p>if (NULL != m_context )&nbsp;{</p>
+    <p>&nbsp; &nbsp; &nbsp; printf(&quot;context name &nbsp;exists.&quot;)</p>
+    <p>}</p>
+  </div>
+</div>
+<a id="PmLogGetContextLevel"></a>
+<h3>PmLogGetContextLevel</h3>
+<div>
+  <h4>Description</h4>
+  <p>Gets the logging level for the specified context. This method may be used for the global context. This should generally not be used by the components doing logging themselves. Instead just use the PmLogPrint, etc. methods which will do inline enabled checks.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>context</td>
+          <td>Required</td>
+          <td>PmLogContext</td>
+          <td>
+            <p>PmLogContext handle</p>
+          </td>
+        </tr>
+        <tr>
+          <td>levelP</td>
+          <td>Required</td>
+          <td>PmLogLevel *</td>
+          <td>
+            <p>Type&nbsp;definition&nbsp;for&nbsp;discrete&nbsp;logging&nbsp;level</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>PmLogErr</td>
+          <td>Required</td>
+          <td><a href="#PmLogErr">PmLogErr</a></td>
+          <td>
+            <p>Type&nbsp;definition&nbsp;for&nbsp;error&nbsp;codes&nbsp;returned&nbsp;by&nbsp;the&nbsp;method.&nbsp;Refer to&nbsp;<strong>PmLogErr</strong>&nbsp;enumerator for values.</p>
+            <ul>
+              <li>Returns&nbsp;InvalidContext, if&nbsp;context name is invalid.</li>
+              <li>Returns&nbsp;None, if it succeeds.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>This method is used to get the logging level for the specified context.<br />
+      &nbsp;<br />
+      PmLogGetContext(contextName, &amp;gmLogContext);
+    </p>
+    <p>if(gmLogContext != NULL)</p>
+    <p>{</p>
+    <p>&nbsp;&nbsp; &nbsp; logErr = PmLogGetContextLevel(gmLogContext, &amp;logLevel);</p>
+    <p>&nbsp;&nbsp; &nbsp; if (logErr == kPmLogErr_None) {</p>
+    <p>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;printf(&quot;PmLogGetContextLevel call is success&quot;);</p>
+    <p>&nbsp;&nbsp; &nbsp;&nbsp;}</p>
+    <p>}</p>
+  </div>
+</div>
+<a id="PmLogGetContextName"></a>
+<h3>PmLogGetContextName</h3>
+<div>
+  <h4>Description</h4>
+  <p>Gets&nbsp;the name of the specified context into the specified string buffer.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>context</td>
+          <td>Required</td>
+          <td>PmLogContext</td>
+          <td>
+            <p>PmLogContext handle</p>
+          </td>
+        </tr>
+        <tr>
+          <td>contextName</td>
+          <td>Required</td>
+          <td>char *</td>
+          <td>
+            <p>PmLogContext name</p>
+          </td>
+        </tr>
+        <tr>
+          <td>contextNameBuffSize</td>
+          <td>Required</td>
+          <td>size_t</td>
+          <td>
+            <p>Size of PmLogContext buffer</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>PmLogErr</td>
+          <td>Required</td>
+          <td><a href="#PmLogErr">PmLogErr</a></td>
+          <td>
+            <p>Type&nbsp;definition&nbsp;for&nbsp;error&nbsp;codes&nbsp;returned&nbsp;by&nbsp;the&nbsp;method.&nbsp;Refer to&nbsp;<strong>PmLogErr</strong>&nbsp;enumerator for values.</p>
+            <ul>
+              <li>Returns&nbsp;InvalidContext, if context name is invalid.</li>
+              <li>Returns&nbsp;InvalidParameter, if context name or&nbsp;contextNameBuffSize is invalid.</li>
+              <li>Returns&nbsp;BufferTooSmall, if&nbsp;contextNameBuffSize is very small.</li>
+              <li>Returns&nbsp;None, if it succeeds.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>This method is used to get the name of the specified context into the specified string buffer.<br />
+      &nbsp;<br />
+      logErr = PmLogGetContextName(contextInfoP-&gt;context,contextInfoP-&gt;contextName, sizeof(contextInfoP-&gt;contextName));
+    </p>
+    <p>if (logErr != kPmLogErr_None){</p>
+    <p>&nbsp; &nbsp; &nbsp;return logErr;</p>
+    <p>}</p>
+  </div>
+</div>
+<a id="PmLogGetIndContext"></a>
+<h3>PmLogGetIndContext</h3>
+<div>
+  <h4>Description</h4>
+  <p>Gets&nbsp;the context by index where index = 0 ~&nbsp;numContexts-1.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>contextIndex</td>
+          <td>Required</td>
+          <td>int</td>
+          <td>
+            <p>PmLogContext index</p>
+          </td>
+        </tr>
+        <tr>
+          <td>pContext</td>
+          <td>Required</td>
+          <td>PmLogContext *</td>
+          <td>
+            <p>Pointer to PmLogContext&nbsp;</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>PmLogErr</td>
+          <td>Required</td>
+          <td><a href="#PmLogErr">PmLogErr</a></td>
+          <td>
+            <p>Type&nbsp;definition&nbsp;for&nbsp;error&nbsp;codes&nbsp;returned&nbsp;by&nbsp;the&nbsp;method.&nbsp;Refer to&nbsp;<strong>PmLogErr</strong>&nbsp;enumerator for values.</p>
+            <ul>
+              <li>Returns&nbsp;InvalidContextIndex, if&nbsp;contextIndex&nbsp;is invalid.</li>
+              <li>Returns&nbsp;InvalidParameter, if context handle is null.</li>
+              <li>Returns&nbsp;None, if it succeeds.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>This method&nbsp;is used to get the context by index where index = 0&nbsp;~ numContexts-1.</p>
+    <p>logErr = PmLogGetIndContext(contextIndex, &amp;context);</p>
+    <p>if(logErr != kPmLogErr_None)</p>
+    <p>{</p>
+    <p>&nbsp; &nbsp; &nbsp;DbgPrint(&quot;Context no %d not found. Error no: %d&quot;, contextIndex, logErr);</p>
+    <p>}</p>
+  </div>
+</div>
+<a id="PmLogGetNumContexts"></a>
+<h3>PmLogGetNumContexts</h3>
+<div>
+  <h4>Description</h4>
+  <p>Gets&nbsp;the number of defined contexts, including the global context.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>pNumContexts</td>
+          <td>Required</td>
+          <td>int *</td>
+          <td>
+            <p>Number of PmLogContext&nbsp;</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>PmLogErr</td>
+          <td>Required</td>
+          <td><a href="#PmLogErr">PmLogErr</a></td>
+          <td>
+            <p>Type&nbsp;definition&nbsp;for&nbsp;error&nbsp;codes&nbsp;returned&nbsp;by&nbsp;the&nbsp;method.&nbsp;Refer to&nbsp;<strong>PmLogErr</strong>&nbsp;enumerator for values.</p>
+            <ul>
+              <li>Returns&nbsp;InvalidParameter, if&nbsp;pNumContexts is null.</li>
+              <li>Returns&nbsp;Unknown, if&nbsp;gGlobalsP is null.</li>
+              <li>Returns&nbsp;None, if it&nbsp;succeeds.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>This method is used to get the number of defined contexts, including the global context.</p>
+    <p>Example 1:</p>
+    <p>logErr = PmLogGetNumContexts(&amp;contextsNumber);</p>
+    <p>if (logErr != kPmLogErr_None){</p>
+    <p>&nbsp; &nbsp; &nbsp;DbgPrint(&quot;No contexts found. Error no: %d&quot;, logErr);</p>
+    <p>&nbsp; &nbsp; &nbsp;return false;</p>
+    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Example 2:</p>
+    <p>log_err = PmLogGetNumContexts(&amp;contexts_count);</p>
+    <p>if (log_err == kPmLogErr_None) {</p>
+    <p>&nbsp; &nbsp; &nbsp;printf(&quot;PmLogGetNumContexts call is success&quot;)</p>
+    <p>}</p>
+  </div>
+</div>
+<a id="PmLogPrint_"></a>
+<h3>PmLogPrint_</h3>
+<div>
+  <h4>Description</h4>
+  Logs the specified formatted text to the specified context.
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>context</td>
+          <td>Required</td>
+          <td>PmLogContext</td>
+          <td>
+            <p>PmLogContext handle</p>
+          </td>
+        </tr>
+        <tr>
+          <td>level</td>
+          <td>Required</td>
+          <td>PmLogLevel</td>
+          <td>
+            <p>Type&nbsp;definition&nbsp;for&nbsp;discrete&nbsp;logging&nbsp;level.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>fmt</td>
+          <td>Required</td>
+          <td>const char *</td>
+          <td>
+            <p>PmLogContext format string</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>PmLogErr</td>
+          <td>Required</td>
+          <td><a href="#PmLogErr">PmLogErr</a></td>
+          <td>
+            <p>Type&nbsp;definition&nbsp;for&nbsp;error&nbsp;codes&nbsp;returned&nbsp;by&nbsp;the&nbsp;method.&nbsp;Refer to&nbsp;<strong>PmLogErr</strong>&nbsp;enumerator for values.</p>
+            <ul>
+              <li>Returns&nbsp;InvalidContext, if context is invalid.</li>
+              <li>Returns&nbsp;logErr, if context and context level is invalid.</li>
+              <li>Returns&nbsp;None, if it succeeds.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>This method&nbsp;is used to log the specified formatted text to the specified context.</p>
+    <p>logErr = PmLogPrint_(context, *levelIntP, &quot;%s&quot;, msg);</p>
+    <p>if (logErr != kPmLogErr_None)</p>
+    <p>{</p>
+    <p>&nbsp; &nbsp; &nbsp;ErrPrint(&quot;Error logging: 0x%08X (%s)\n&quot;, logErr,PmLogGetErrDbgString(logErr));</p>
+    <p>&nbsp; &nbsp; &nbsp;return RESULT_RUN_ERR;</p>
+    <p>}</p>
+  </div>
+</div>
+<a id="PmLogSetContextLevel"></a>
+<h3>PmLogSetContextLevel</h3>
+<div>
+  <h4>Description</h4>
+  <p>Sets the logging level for the specified context. This method may be used for the global context.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>context</td>
+          <td>Required</td>
+          <td>PmLogContext</td>
+          <td>
+            <p>PmLogContext handle</p>
+          </td>
+        </tr>
+        <tr>
+          <td>level</td>
+          <td>Required</td>
+          <td>PmLogLevel</td>
+          <td>
+            <p>PmLogContext level&nbsp;</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>PmLogErr</td>
+          <td>Required</td>
+          <td><a href="#PmLogErr">PmLogErr</a></td>
+          <td>
+            <p>Type&nbsp;definition&nbsp;for&nbsp;error&nbsp;codes&nbsp;returned&nbsp;by&nbsp;the&nbsp;method.&nbsp;Refer to&nbsp;<strong>PmLogErr</strong>&nbsp;enumerator for values.</p>
+            <ul>
+              <li>Returns&nbsp;InvalidContext, if handle is invalid.</li>
+              <li>Returns&nbsp;InvalidLevel, if&nbsp;LogLevel is invalid.</li>
+              <li>Returns&nbsp;None, if it succeeds.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>This method&nbsp;is used to set the logging level for the specified context.</p>
+    <p>logErr = PmLogSetContextLevel(context, level);</p>
+    <p>if (logErr != kPmLogErr_None)</p>
+    <p>{</p>
+    <p>&nbsp; &nbsp; &nbsp;snprintf(errMsg, errMsgBuffSize, &quot;Error setting context level: %s&quot;,PmLogGetErrDbgString(logErr));</p>
+    <p>&nbsp; &nbsp; &nbsp;return false;</p>
+    <p>}</p>
+  </div>
+</div>
+<a id="PmLogString_"></a>
+<h3>PmLogString_</h3>
+<div>
+  <h4>Description</h4>
+  <p>Logs the specified string of key-value pairs and free text to the specified context.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>context</td>
+          <td>Required</td>
+          <td>PmLogContext</td>
+          <td>
+            <p>PmLogContext handle</p>
+          </td>
+        </tr>
+        <tr>
+          <td>level</td>
+          <td>Required</td>
+          <td>PmLogLevel</td>
+          <td>
+            <p>PmLogContext level&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>msgid</td>
+          <td>Required</td>
+          <td>const char *</td>
+          <td>
+            <p>PmLogContext msgId</p>
+          </td>
+        </tr>
+        <tr>
+          <td>kvpairs</td>
+          <td>Required</td>
+          <td>const char *</td>
+          <td>
+            <p>String&nbsp;of&nbsp;key-value&nbsp;pairs</p>
+          </td>
+        </tr>
+        <tr>
+          <td>message</td>
+          <td>Required</td>
+          <td>const char *</td>
+          <td>
+            <p>Free&nbsp;text&nbsp;to&nbsp;the&nbsp;specified&nbsp;context</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>PmLogErr</td>
+          <td>Required</td>
+          <td><a href="#PmLogErr">PmLogErr</a></td>
+          <td>
+            <p>Type&nbsp;definition&nbsp;for&nbsp;error&nbsp;codes&nbsp;returned&nbsp;by&nbsp;the&nbsp;method.&nbsp;Refer to&nbsp;<strong>PmLogErr</strong>&nbsp;enumerator for values.</p>
+            <ul>
+              <li>Returns&nbsp;InvalidContext, if context is NULL.</li>
+              <li>Returns InvalidMsgID, if&nbsp;msgid is invalid.</li>
+              <li>Returns InvalidFormat, if string&nbsp;of&nbsp;kvpairs is invalid or if string&nbsp;exceeds&nbsp;1024&nbsp;bytes.</li>
+              <li>Returns FormatStringFailed, if formatting of the string is not proper.</li>
+              <li>Returns None, if it succeeds.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>This method is used to log&nbsp;the specified string of key-value pairs and free text to the&nbsp;specified context.</p>
+    <p>logErr = PmLogSetContextLevel(context, level);</p>
+    <p>if (!PmLogIsEnabled(parent_ctx_, level_))</p>
+    <p>{</p>
+    <p>&nbsp; &nbsp; &nbsp;err_ = kPmLogErr_LevelDisabled;</p>
+    <p>}</p>
+    <p>else if (level_ == kPmLogLevel_Debug)</p>
+    <p>{</p>
+    <p>&nbsp; &nbsp; &nbsp;logErr = PmLogString_(parent_ctx_, level_, nullptr, nullptr, messages_.c_str());</p>
+    <p>}</p>
+    <p>else</p>
+    <p>{</p>
+    <p>&nbsp; &nbsp; &nbsp;logErr = PmLogString_(parent_ctx_, level_,msgId_.c_str(), (&quot;{&quot; + kvpairs_ + &quot;}&quot;).c_str(), messages_.c_str());</p>
+    <p>}</p>
+  </div>
+</div>
+<a id="PmLogVPrint_"></a>
+<h3>PmLogVPrint_</h3>
+<div>
+  <h4>Description</h4>
+  <p>Logs the specified formatted text to the specified context.&nbsp;For efficiency, this method should not be used directly, but instead use the wrappers (e.g., PmLogVPrint, PmLogVPrintError, ...) that bypass the library call if the logging is not enabled.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>context</td>
+          <td>Required</td>
+          <td>PmLogContext</td>
+          <td>
+            <p>PmLogContext Handle</p>
+          </td>
+        </tr>
+        <tr>
+          <td>level</td>
+          <td>Required</td>
+          <td>PmLogLevel</td>
+          <td>
+            <p>Type&nbsp;definition&nbsp;for&nbsp;discrete&nbsp;logging&nbsp;level&nbsp;</p>
+            <p>The&nbsp;values&nbsp;are&nbsp;intentionally&nbsp;identical&nbsp;to&nbsp;the&nbsp;equivalent&nbsp;syslog priority&nbsp;value.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>fmt</td>
+          <td>Required</td>
+          <td>const char *</td>
+          <td>
+            <p>Log format string&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>args</td>
+          <td>Required</td>
+          <td>va_list</td>
+          <td>
+            <p>Variable number of arguments</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>PmLogErr</td>
+          <td>Required</td>
+          <td>PmLogErr</td>
+          <td>
+            <p>Type&nbsp;definition&nbsp;for&nbsp;error&nbsp;codes&nbsp;returned&nbsp;by&nbsp;the&nbsp;method.&nbsp;Refer to&nbsp;<strong>PmLogErr</strong>&nbsp;enumerator for values.</p>
+            <ul>
+              <li>None</li>
+              <li>InvalidContext</li>
+              <li>InvalidLevel</li>
+              <li>InvalidFormat</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>This method is used to log&nbsp;the specified formatted text to the specified context.</p>
+    <p>logErr = PmLogVPrint_(context,level,fmt,args)</p>
+    <p>if (logErr != kPmLogErr_None)</p>
+    <p>{</p>
+    <p>&nbsp; &nbsp; &nbsp;return logErr;</p>
+    <p>}</p>
+  </div>
+</div>
+<a id="PmLogLevelToString"></a>
+<h3>PmLogLevelToString</h3>
+<div>
+  <h4>Description</h4>
+  <p>Returns&nbsp;the&nbsp;matching&nbsp;symbolic&nbsp;string for&nbsp;a given numeric&nbsp;level&nbsp;value.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>PmLogLevel</td>
+          <td>Required</td>
+          <td><a href="#PmLogLevel">PmLogLevel</a></td>
+          <td>
+            <p>&nbsp;The&nbsp;values&nbsp;are&nbsp;intentionally&nbsp;identical&nbsp;to&nbsp;the&nbsp;equivalent&nbsp;syslog&nbsp;priority&nbsp;value.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>s</td>
+          <td>Required</td>
+          <td>const char *</td>
+          <td>
+            <p>Returns&nbsp;the&nbsp;matching&nbsp;symbolic&nbsp;string. Otherwise, returns&nbsp;NULL&nbsp;if&nbsp;the&nbsp;level&nbsp;string&nbsp;is&nbsp;not&nbsp;matched.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>This method is used to convert numeric level value to symbolic string.</p>
+    <p>s = PmLogLevelToString(level);</p>
+    <p>if (s != NULL)</p>
+    <p>{</p>
+    <p>&nbsp; &nbsp; &nbsp;return s;</p>
+    <p>}&nbsp;&nbsp; &nbsp;</p>
+  </div>
+</div>
+<a id="PmLogStringToLevel"></a>
+<h3>PmLogStringToLevel</h3>
+<div>
+  <h4>Description</h4>
+  <p>Returns&nbsp;the&nbsp;matching&nbsp;numeric&nbsp;value for a given&nbsp;a&nbsp;symbolic&nbsp;level&nbsp;string.&nbsp;</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>levelStr</td>
+          <td>Required</td>
+          <td>const char *</td>
+          <td>
+            <p>Symbolic&nbsp;level&nbsp;string</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>nP</td>
+          <td>Required</td>
+          <td>int *</td>
+          <td>
+            <p>Returns&nbsp;the&nbsp;matching&nbsp;numeric&nbsp;value. Otherwise returns&nbsp;NULL&nbsp;if&nbsp;the&nbsp;level&nbsp;string&nbsp;is&nbsp;not&nbsp;matched.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>This method is used to&nbsp;convert symbolic level string to the numeric value.</p>
+    <p>s = PmLogStringToLevel(s);</p>
+    <p>if (s != NULL)</p>
+    <p>{</p>
+    <p>&nbsp; &nbsp; &nbsp;return true;</p>
+    <p>}</p>
+  </div>
+</div>
+<a id="PmLogFacilityToString"></a>
+<h3>PmLogFacilityToString</h3>
+<div>
+  <h4>Description</h4>
+  <p>Returns&nbsp;the&nbsp;matching&nbsp;symbolic&nbsp;string for a given&nbsp;numeric&nbsp;facility&nbsp;value.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>facility</td>
+          <td>Required</td>
+          <td>int</td>
+          <td>
+            <p>Numeric&nbsp;facility&nbsp;value</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>s</td>
+          <td>Required</td>
+          <td>const char *</td>
+          <td>
+            <p>Returns&nbsp;NULL&nbsp;if&nbsp;the&nbsp;facility&nbsp;is&nbsp;invalid. Otherwise&nbsp;returns&nbsp;the&nbsp;matching&nbsp;symbolic&nbsp;string.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>This method is used to convert the given numeric facility value to the symbolic string.</p>
+    <p>levelStr = PmLogLevelToString(level);</p>
+    <p>if (levelStr != NULL)</p>
+    <p>{</p>
+    <p>&nbsp;&nbsp; &nbsp;return true;</p>
+    <p>}&nbsp;&nbsp; &nbsp;</p>
+  </div>
+</div>
+<a id="PmLogStringToFacility"></a>
+<h3>PmLogStringToFacility</h3>
+<div>
+  <h4>Description</h4>
+  <p>Returns&nbsp;the&nbsp;matching&nbsp;numeric&nbsp;value for a given&nbsp;symbolic&nbsp;facility&nbsp;string.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>facilityStr</td>
+          <td>Required</td>
+          <td>const char *</td>
+          <td>
+            <p>Symbolic&nbsp;facility&nbsp;string</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>nP</td>
+          <td>Required</td>
+          <td>int *</td>
+          <td>
+            <p>Returns&nbsp;NULL&nbsp;if&nbsp;the&nbsp;facility&nbsp;string&nbsp;is&nbsp;not&nbsp;matched.&nbsp;Otherwise&nbsp;returns&nbsp;the&nbsp;matching&nbsp;numeric&nbsp;value.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>This method is used to convert the given symbolic facility string to the&nbsp;numeric value.</p>
+    <p>nP = PmLogStringToFacility(facilityStr);</p>
+    <p>if (nP != NULL)</p>
+    <p>{</p>
+    <p>&nbsp; &nbsp; &nbsp;return true;</p>
+    <p>}&nbsp;&nbsp; &nbsp;</p>
+  </div>
+</div>
+<a id="PmLogGetErrDbgString"></a>
+<h3>PmLogGetErrDbgString</h3>
+<div>
+  <h4>Description</h4>
+  <p>Returns a matching symbolic string for a given&nbsp;numeric&nbsp;error&nbsp;code&nbsp;value.</p>
+  <p><strong>Note</strong></p>
+  <ul>
+    <li>For&nbsp;debugging&nbsp;only method,&nbsp;never&nbsp;to&nbsp;appear&nbsp;in&nbsp;user&nbsp;interface!</li>
+  </ul>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>logErr</td>
+          <td>Required</td>
+          <td><a href="#PmLogErr">PmLogErr</a></td>
+          <td>
+            <p>Numeric&nbsp;error&nbsp;code&nbsp;value</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>&quot;?&quot;</td>
+          <td>Required</td>
+          <td>const char *</td>
+          <td>
+            <p>Always returns&nbsp;a&nbsp;matching&nbsp;symbolic default string.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>This method is used to convert the given&nbsp;numeric error code value to the&nbsp;symbolic string.</p>
+    <p>Example 1:</p>
+    <p>if (logErr != kPmLogErr_None)</p>
+    <p>{</p>
+    <p>&nbsp; &nbsp; &nbsp;ErrPrint(&quot;Error getting contexts info: 0x%08X (%s)\n&quot;, logErr,PmLogGetErrDbgString(logErr));</p>
+    <p>&nbsp; &nbsp; &nbsp;return RESULT_RUN_ERR;</p>
+    <p>}</p>
+    <p>Example 2:</p>
+    <p>snprintf(errMsg, errMsgBuffSize, &quot;Error getting context: %s&quot;,PmLogGetErrDbgString(logErr));</p>
+  </div>
+</div>
+<a id="_PmLogMsgKV"></a>
+<h3>_PmLogMsgKV</h3>
+<div>
+  <h4>Description</h4>
+  <p>Logs&nbsp;the&nbsp;specified&nbsp;key-value&nbsp;pair(s)&nbsp;and&nbsp;formatted&nbsp;text&nbsp;tagged&nbsp;at&nbsp;given&nbsp;level,&nbsp;to&nbsp;the&nbsp;specified&nbsp;context.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>context</td>
+          <td>Required</td>
+          <td>struct PmLogContextInfo</td>
+          <td>
+            <p>Type&nbsp;definition&nbsp;for&nbsp;the&nbsp;logging&nbsp;context&nbsp;as&nbsp;returned by&nbsp;<strong>PmLogGetContext</strong> method.&nbsp;This&nbsp;is&nbsp;a&nbsp;read-only&nbsp;data&nbsp;view.</p>
+            <p>Clients&nbsp;should&nbsp;treat&nbsp;this&nbsp;as&nbsp;an&nbsp;opaque&nbsp;structure,&nbsp;however&nbsp;it&nbsp;is&nbsp;referenced&nbsp;by&nbsp;the&nbsp;macro/inline&nbsp;functions&nbsp;here.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>level</td>
+          <td>Required</td>
+          <td><a href="#PmLogLevel">PmLogLevel</a></td>
+          <td>
+            <p>Type&nbsp;definition&nbsp;for&nbsp;discrete&nbsp;logging&nbsp;level</p>
+          </td>
+        </tr>
+        <tr>
+          <td>flags</td>
+          <td>Required</td>
+          <td>unsigned int</td>
+          <td>
+            <p>Indicates whether to&nbsp;enable or disable the version of&nbsp;backward&nbsp;compatibility.&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>msgid</td>
+          <td>Required</td>
+          <td>const char *</td>
+          <td>
+            <p>Message ID&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>kv_count</td>
+          <td>Required</td>
+          <td>size_t</td>
+          <td>
+            <p>Indicates the number of key value pairs in the message.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>check_keywords</td>
+          <td>Required</td>
+          <td>const char *</td>
+          <td>
+            <p>Checks for valid keys allowed to be passed that are seperated by one of SOH (start of heading), ASCII char,&#39;\\&#39;,&#39;&quot; &#39; &#39;&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>check_formats</td>
+          <td>Required</td>
+          <td>const char *</td>
+          <td>
+            <p>Contains kv_count number of &#39;%&#39; chars.</p>
+            <p>&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>fmt</td>
+          <td>Required</td>
+          <td>const char *</td>
+          <td>
+            <p>Indicates the format of the string. For example, %s ,%c, %d.&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>variable no of arguments</td>
+          <td>Optional</td>
+          <td>char</td>
+          <td>
+            <p>Variable numbers&nbsp;of arguments</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>PmLogErr</td>
+          <td>Required</td>
+          <td><a href="#PmLogErr">PmLogErr</a></td>
+          <td>
+            <p>Type&nbsp;definition&nbsp;for&nbsp;error&nbsp;codes&nbsp;returned&nbsp;by&nbsp;this method</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>This method is used when user wants to&nbsp;log&nbsp;the specified key-value pair(s) and formatted text, tagged at given level, to the specified context.</p>
+    <p>*(void **)(&amp;dPmLogMsg) = dlsym(hnd, &quot;_PmLogMsgKV&quot;);</p>
+  </div>
+</div>
+<a id="PmLogGetLibContext"></a>
+<h3>PmLogGetLibContext</h3>
+<div>
+  <h4>Description</h4>
+  <p>Returns the context of the process loading the library. This method&nbsp;may be used by shared libraries instead of <strong>PmLogGetContext</strong>&nbsp;method. That is, libraries do not setup their own context, but make this&nbsp;call to invoke the context of the calling process. This makes it easier for processes to control the logging level&nbsp;of library messages and direct them to specified file as needed.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>void</td>
+          <td>Required</td>
+          <td>void</td>
+          <td>
+            <p>No input parameter</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>libProcessContext</td>
+          <td>Required</td>
+          <td>struct PmLogContextInfo</td>
+          <td>
+            <p>Returns the library context information.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>This method&nbsp;is used to get the current loaded library context.</p>
+    <p>error.log(PmLogGetLibContext(), &quot;LS_SUBS_POST_FAIL&quot;);</p>
+  </div>
+</div>
+<a id="PmLogSetLibContext"></a>
+<h3>PmLogSetLibContext</h3>
+<div>
+  <h4>Description</h4>
+  <p>Sets PmLog context.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>libContext</td>
+          <td>Required</td>
+          <td>struct PmLogContextInfo</td>
+          <td>
+            <p>PmLog context information</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>void</td>
+          <td>Optional</td>
+          <td>void</td>
+          <td>
+            <p>No return parameter</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>This method is used to&nbsp;set&nbsp;up&nbsp;context&nbsp;for&nbsp;a&nbsp;process&nbsp;where&nbsp;all&nbsp;library&nbsp;messages&nbsp;can be directed.</p>
+    <p>PmLogSetLibContext(lib_context);</p>
+  </div>
+</div>

@@ -1,0 +1,402 @@
+---
+title: com.webos.service.contextintentmgr
+date: 2019-04-23
+toc: true
+---
+
+<div>
+  <H2>API Summary</h2>
+  <p>CIM is a service that adds AI logic to your web app, without actually modifying its source code.&nbsp;This makes your web app context-aware and therefore provide a better experience to your customers.</p>
+  <p>How does it work:</p>
+  <ol>
+    <li>The CIM service interacts with an app and workflow (defined by the&nbsp;Workflow Designer toolkit).</li>
+    <li>
+      The workflow must specify:
+      <ul>
+        <li>The AI engine to be used.</li>
+        <li>The condition, and the action to be performed when that&nbsp;condition is satisfied.</li>
+        <li>
+          Whether the app and workflow need to share data.
+          <ul>
+            <li>If yes, then the workflow must include the &#39;data-inject&#39;&nbsp;and/or &#39;data-publish&#39;&nbsp;nodes.</li>
+            <li>The app must correspondingly invoke the &#39;injectDataToWorkflow&#39;&nbsp;and/or &#39;getDataFromWorkflow&#39;&nbsp;methods.</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li>The workflow is packaged with the app.</li>
+    <li>The packaged app is then deployed on the device.</li>
+  </ol>
+</div>
+<h2>Overview of the API</h2>
+<div>
+  <p>NA</p>
+</div>
+<h2>Methods</h2>
+<div>
+  <h3>injectDataToWorkflow</h3>
+  <div>
+    <h4>Description</h4>
+    <p>Injects data from the app to the workflow.&nbsp;</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>key</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Identifies the &#39;data-inject&#39; node that is defined in the workflow.&nbsp;</p>
+              <p><span style="color:#FF0000"><strong>Note: </strong></span>Make sure that the key is associated with the relevant &#39;data-inject&#39; node.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>data</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>The actual data that must be sent to the workflow. It must be a stringified object.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation. Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>result</td>
+            <td>Required</td>
+            <td>Object: <a href="#result"> result</a></td>
+            <td>
+              <p>Contains the result.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div class="code-bg-grey"></div>
+  </div>
+</div>
+<h3>getDataFromWorkflow</h3>
+<div>
+  <h4>Description</h4>
+  <p>Publishes data from the workflow to the app.</p>
+  <p>The data can be consumed by an app which has subscribed to it.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>key</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Identifies the &#39;data-publish&#39; node&nbsp;that is defined in the workflow.</p>
+            <p><span style="color:#FF0000"><strong>Note: </strong></span>Make sure that the key is associated with the relevant &#39;data-publish&#39; node.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Subscribe for notifications when value changes.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Get notifications</li>
+              <li><strong>false&nbsp;</strong>- Notifications are not required</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if&nbsp;subscribed to get notified&nbsp;when there is a change in value.</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>result</td>
+          <td>Required</td>
+          <td>Object: <a href="#result"> result</a></td>
+          <td>
+            <p>Contains the result.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Subscription Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if&nbsp;subscribed to get notified&nbsp;when there is a change in value.</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>result</td>
+          <td>Required</td>
+          <td>Object: <a href="#result"> result</a></td>
+          <td>
+            <p>Contains the result.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey"></div>
+</div>
+<div>
+  <h2>Objects</h2>
+  <a id="result"></a>
+  <h3>result</h3>
+  <p>Contains the results.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>data</td>
+          <td>Required</td>
+          <td>Object</td>
+          <td>
+            <p>Depending on the method:</p>
+            <ul>
+              <li>For&nbsp;injectDataToWorkflow: It is the same data that is sent in the input of the method.</li>
+              <li>For getDataFromWorkflow: The data that is published from the flow (the&nbsp;msg object of the flow).</li>
+              <li>Example:<br />
+                {<br />
+                &nbsp; &nbsp;&nbsp;data: {<br />
+                &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;payload: {<br />
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;winner: undefined,<br />
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;depth: 8,<br />
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;nextBestGameState: [&#39;X&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;O&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;]<br />
+                &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;},<br />
+                &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;_msgid: &#39;bb8697a9.d885e8&#39;<br />
+                &nbsp; &nbsp;&nbsp;}<br />
+                }
+              </li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<h2>API Error Codes Reference</h2>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <tbody>
+      <tr>
+        <th width="15%">
+          <p>Error Code</p>
+        </th>
+        <th width="30%">
+          <p>Error Text</p>
+        </th>
+        <th width="55%">
+          <p>Error Description</p>
+        </th>
+      </tr>
+      <tr>
+        <td>0</td>
+        <td>Not a JSON data in the data-inject request.</td>
+        <td>
+          <p>The &#39;data-inject&#39; request does not include JSON data.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>0</td>
+        <td>Invalid call to API</td>
+        <td>
+          <p>Invalid call to API</p>
+        </td>
+      </tr>
+      <tr>
+        <td>0</td>
+        <td>Could not inject data</td>
+        <td>
+          <p>Could not inject the data.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>0</td>
+        <td>Associated flow is disabled, calls to APIs does not work</td>
+        <td>
+          <p>This error is thrown when workflow is disabled.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>0</td>
+        <td>Caller does not have permission for this API.</td>
+        <td>
+          <p>This error is thrown when the calling application does not include a &#39;data-inject&#39; or &#39;data-publish&#39; node with the specified key.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

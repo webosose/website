@@ -1,0 +1,32 @@
+<!-- build menu tree (as UL list) to implement sidebar menu based on Navgoco (https://plugins.jquery.com/navgoco/) -->
+<div class="sidebar-container column is-one-fifth">
+  <p class="sidebar-title is-hidden-tablet">Menu</p>
+  <div class="switch is-hidden-tablet">
+    <span class="slider round"></span>
+  </div>
+  <div class="custom-side">
+    <div class="sidebar-main sidebar">
+      <div class="sidebar-inner">
+        <p class="sidebar-title dis-hidden-mobile">About</p>
+        <ul class="sidebar-menu nav scrollbar-outer">
+          {{ range $.Site.Data.sidebars.about.about.entries }}
+          <li {{ if eq $.Page.RelPermalink .url }} class="active" {{ end }}>
+            {{ if .url }}
+            <a href="{{ .url }}"><strong>{{ .title }}</strong></a>
+            {{ else }}
+            <a href="#"><strong>{{ .title }}</strong></a>
+            <ul>
+              {{ range .sections }}
+              <li {{ if eq $.Page.RelPermalink .url }} class="active" {{ end }}>
+                <a href="{{ .url }}">{{ .title }}</a>
+              </li>
+              {{ end }}
+            </ul>
+            {{ end }}
+          </li>
+          {{ end }}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,220 @@
+---
+title: com.webos.pmlogd
+date: 2019-04-24
+toc: true
+---
+<div>
+  <H2>API Summary</h2>
+  <p>It is logging daemon implementation of webOS Open Source Edition (OSE).</p>
+</div>
+<h2>Overview of the API</h2>
+<div>
+  <p>The syslogd implementation is per RFC 3164 (The BSD syslog Protocol). This implementation is a subset of that functionality, intended to efficiently address the needs for webOS OSE embedded devices.</p>
+  <ul>
+    <li>it does not support remote logging (not needed);</li>
+    <li>it only supports the standard datagram socket on port 514;</li>
+    <li>it does not support /etc/syslog.conf or standard filtering/redirection.</li>
+  </ul>
+  <p>Additional features are:</p>
+  <ul>
+    <li>support for RFC 3339-style timestamps;</li>
+    <li>support for advanced file buffering + rotation configuration;</li>
+    <li>support for custom filtering/redirection.</li>
+  </ul>
+</div>
+<h2>Methods</h2>
+<div>
+  <h3>backuplogs</h3>
+  <div>
+    <h4>Description</h4>
+    <p><span style="line-height:1.6em">Combine all the log files present in /var/log into /mnt/lg/cmn_data/var/log/ directory and create a tar archive previous_boot_logs.tar.gz.</span></p>
+    <h4>Parameters</h4>
+    <p>None</p>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>boolean</td>
+            <td>
+              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed.&nbsp;</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div class="code-bg-grey">
+      <p>Example :</p>
+      <p># luna-send -n 1 luna://com.webos.pmlogd/backuplogs &#39;{}&#39;</p>
+    </div>
+  </div>
+</div>
+<h3>forcerotate</h3>
+<div>
+  <h4>Description</h4>
+  <p>Force a rotation of the log file. So&nbsp;/var/log/messages gets renamed to /var/log/messages.X and original log become clean.&nbsp;Notify rotation subscribers with log &#39;filename&#39; in payload.</p>
+  <h4>Parameters</h4>
+  <p>None</p>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.&nbsp;</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p><strong>errorText</strong>&nbsp;contains the error text &quot;Log rotation failed&quot; if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Example :</p>
+    <p># luna-send -n 1 luna://com.webos.pmlogd/forcerotate &#39;{}&#39;</p>
+  </div>
+</div>
+<h3>subscribeOnRotations</h3>
+<div>
+  <h4>Description</h4>
+  <p><span style="line-height:1.6em">Add a subscriber to the log rotation. When there is log rotation, daemon will notify the subscriber with the rotated log file name.&nbsp;</span></p>
+  <p>Currently only one subscriber is supported and the subscriber should manage the rotated log file.</p>
+  <h4>Parameters</h4>
+  <p>None</p>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.&nbsp;</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if&nbsp;subscribed. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Is subscribed&nbsp;</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p><strong>errorText</strong>&nbsp;contains the error text if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Subscription Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>filepath</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Filepath to rotated log file.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Example :</p>
+    <p># luna-send -f -n 1 luna://com.webos.pmlogd/subscribeOnRotations &#39;{}&#39;</p>
+  </div>
+</div>

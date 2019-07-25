@@ -1,0 +1,44 @@
+{{ $desc := .Get 0 }}
+{{ $hasCodeFence := .Get 1 }}
+
+{{/* Trims leading whitespace (usually tabs) for indented blocks. Supposed to be purged when Hugo can handle this. */}}
+{{/* credits to @kaushalmodi at Ref: https://github.com/gohugoio/hugo/issues/4717 */}}
+{{- $content := (trim .Inner "\n\r") -}}
+{{- $content_ending_in_line_with_spaces := (findRE "[\\r\\n][[:blank:]]+$" $content) -}}
+{{- with $content_ending_in_line_with_spaces -}}
+  {{- $content = (replace $content "\r" "") -}}
+  {{- $offset := (trim (index . 0) "\n") -}}
+  {{- $lines := (split $content "\n") -}}
+  {{- $num_lines := (len $lines) -}}
+  {{- $scratch := newScratch -}}
+  {{- $scratch.Add "lines_minus_offset" (slice) -}}
+  {{- range $i, $line := $lines -}}
+    {{- $line_minus_offset := (strings.TrimPrefix $offset $line) -}}
+    {{- if (lt $i (sub $num_lines 1)) -}} {{/* Do not add the last blank line */}}
+      {{- $scratch.Add "lines_minus_offset" (slice $line_minus_offset) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $content = (delimit ($scratch.Get "lines_minus_offset") "\n") -}}
+  {{- $scratch.Delete "lines_minus_offset" -}}
+{{- end -}}
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth is-paddingless">
+    <thead>
+      <tr>
+        <th>
+          {{ $desc | markdownify }}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        {{ if $hasCodeFence }}
+        <td>{{ $content | markdownify }}</td>
+        {{ else }}
+        <td>{{ .Inner }}</td>
+        {{ end }}
+      </tr>
+    </tbody>
+  </table>
+</div>

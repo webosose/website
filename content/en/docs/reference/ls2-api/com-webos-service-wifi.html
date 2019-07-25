@@ -1,0 +1,2369 @@
+---
+title: com.webos.service.wifi
+date: 2019-04-29
+toc: true
+---
+<div>
+  <H2>API Summary</h2>
+  <p><span style="color:rgb(77, 78, 83)">Manages Wi-Fi connections on a webOS device. It provides an interface to find available Wi-Fi networks and handle connecting and disconnecting the device from those networks.</span></p>
+</div>
+<h2>Overview of the API</h2>
+<div>
+  <p><u>About <strong>com.webos.service.wifi</strong> API:</u></p>
+  <p>This&nbsp;API provides the ability to manage varoius aspects of Wi-Fi connectivity like scanning the Wi-Fi networks, connecting to a network (open/secured/hidden) and managing Wi-Fi&nbsp;profiles.</p>
+  <p><u>About <strong>webos-connman-adapter daemon</strong>:</u></p>
+  <p>The <strong>webos-connman-adapter </strong>is a <strong>daemon </strong>which acts as the interface between <strong>connman (</strong>a daemon for managing internet connections)&nbsp;and rest of the webOS world. The <strong>webos-connman-adapter </strong>communicates to <strong>connman </strong>via <strong>dbus </strong>but provides the LS2 interface to all the webOS apps and services to enable them to get all the network related information and manage the connections.</p>
+  <p>​<u>Additional remarks:</u></p>
+  <p>Most of the methods under this API require that the&nbsp;<strong>connman </strong>be running and be able to communicate with the&nbsp;<strong>webos-connman-adapter&nbsp;</strong>else these methods will&nbsp;return an error.</p>
+</div>
+<h2>Methods</h2>
+<a id="changeNetwork"></a>
+<h3>changeNetwork</h3>
+<div>
+  <h4>Description</h4>
+  <p>This method allows users to change the properties of already stored Wi-Fi <strong>profiles</strong>.For non-enterprise networks,&nbsp;only the <strong>passphrase</strong> can be changed for now. In future when the support to enterprise networks will be added,&nbsp;this API will be extend to change the other properties as well.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>profileId</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>ID of the profile that needs to be changed.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>passKey</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The new passkey to be used for the profile.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Unknown error</td>
+          <td>
+            <p>Some unknown error in changing the passkey.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Connman service unavailable</td>
+          <td>
+            <p>Error when<strong> webos-connman-adapter</strong> is not able to talk to the <strong>connman</strong> daemon.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>WiFi technology unavailable</td>
+          <td>
+            <p>Error when the Wi-Fi technology is not available</p>
+            <p>This could happen either because the <strong>wpa-supplicant</strong> daemon is not running, <strong>connman</strong> is not able to communicate with <strong>wpa-supplicant</strong>&nbsp;or the device does not have Wi-Fi support<span style="background-color:rgb(244,244,244)">.</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td>105</td>
+          <td>Profile not found</td>
+          <td>
+            <p>Profile with the given <strong>profileId&nbsp;</strong>was not found.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.wifi/changeNetwork &#39;{&quot;profileId&quot;: 777, &quot;passKey&quot;: &quot;4321&quot; }&#39;</p>
+    <p>{</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true</p>
+    <p>}</p>
+  </div>
+</div>
+<a id="connect"></a>
+<h3>connect</h3>
+<div>
+  <h4>Description</h4>
+  <p>This method is used to connect to a given SSID, which can be an open network requiring no passphrase (i.e no <strong>security</strong> field in its argument), hidden network(requiring <strong>wasCreatedWithJoinOther</strong> field set to true in its argument), secure networks (authenticating with the specified passphrase), or enterprise networks(currently supported EAP methods are: PEAP, TLS and TTLS).</p>
+  <p>​Upon successful connection, the Wi-Fi <strong>profile </strong>is saved on the system along with its SSID and security details. On the other hand if the connection is unsuccessful but the parameter <strong>storeProfile</strong> is set to <strong>true </strong>then the&nbsp;Wi-Fi <strong>profile </strong>is still saved on the system along with the&nbsp;<strong>connman</strong> .config file, which enables <strong>connman</strong> to connect to this network once it is available.&nbsp;To connect to an already known network i.e a saved&nbsp;<strong>profile</strong>, the&nbsp;<strong>profileId</strong>&nbsp;parameter should be set.&nbsp;</p>
+  <p>&nbsp;</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>ssid</td>
+          <td>Optional</td>
+          <td>string</td>
+          <td>
+            <p>SSID of the desired network. Required for all connections except when using a known profile (<strong>profileId&nbsp;</strong>parameter is set).</p>
+          </td>
+        </tr>
+        <tr>
+          <td>wasCreatedWithJoinOther</td>
+          <td>Optional</td>
+          <td>boolean</td>
+          <td>
+            <p>To connect to a hidden network, set <strong>wasCreatedWithJoinOther</strong> to <strong>true</strong>.</p>
+            <p>To connect to a non-hidden network, set <strong>wasCreatedWithJoinOther</strong> to <strong>false</strong>.</p>
+            <p>The default value of <strong>wasCreatedWithJoinOther</strong> is <strong>false</strong>.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>storeProfile</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>To store a profile for the network when it is not available(i.e out of range), set <strong>storeProfile</strong> to <strong>true</strong>.</p>
+            <p>To ignore a profile for the network when it is not available(i.e out of range), set <strong>storeProfile</strong> to <strong>false</strong>.</p>
+            <p>The default value of <strong>storeProfile</strong>&nbsp;is <strong>true</strong>.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>security</td>
+          <td>Optional</td>
+          <td>Object: <a href="#security"> security</a></td>
+          <td>
+            <p>Set to connect to a secured network.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>profileId</td>
+          <td>Optional</td>
+          <td>number</td>
+          <td>
+            <p>ID of the desired profile, which can be obtained from the <strong>getprofilelist</strong> call. Required to connect with a known profile.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Unknown error</td>
+          <td>
+            <p>Connect failed due to unknown reasons.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Invalid Parameters</td>
+          <td>
+            <p>Error when neither the parameter <strong>SSID&nbsp;</strong>nor <strong>profileId</strong> was specified in the connect method call.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Connman service unavailable</td>
+          <td>
+            <p>Error when <strong>webos-connman-adapter </strong>is not able to commmunicate to the <strong>connman</strong> daemon.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>WiFi technology unavailable</td>
+          <td>
+            <p>Error when the Wi-Fi technology is not available.</p>
+            <p>This could happen either because the <strong>wpa-supplicant</strong> daemon is not running,&nbsp;<strong>connman </strong>is not able to communicate with <strong>wpa-supplicant</strong>&nbsp;or the device doesn&#39;t have Wi-Fi support.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>WiFi switched off</td>
+          <td>
+            <p>Error when Wi-Fi interface is down.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td>The supplied password is incorrect</td>
+          <td>
+            <p>An invalid key/passphrase was provided.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>11</td>
+          <td>Authentication with access point failed</td>
+          <td>
+            <p>The authentication with the access point failed.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>12</td>
+          <td>Login failed</td>
+          <td>
+            <p>The login failed.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>13</td>
+          <td>Could not establish a connection to access point</td>
+          <td>
+            <p>The association attempt with the selected access point failed.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>14</td>
+          <td>Could not retrieve a valid IP address by using DHCP</td>
+          <td>
+            <p>The DHCP process failed to gather a valid IP address from the access point.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>15</td>
+          <td>PIN is missing</td>
+          <td>
+            <p>There was no pin provided for the WPS pin connection mode.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>16</td>
+          <td>Out of range</td>
+          <td>
+            <p>The selected access point is out of range and no association could be made.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.wifi/connect&nbsp;&#39;{&quot;ssid&quot;: &quot;XXX&quot;, &quot;security&quot;: {&quot;securityType&quot;: &quot;psk&quot;, &quot;simpleSecurity&quot;: {&quot;passKey&quot;: &quot;1234&quot;} } }&#39;</p>
+    <p>{</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true</p>
+    <p>}</p>
+  </div>
+</div>
+<a id="deleteprofile"></a>
+<h3>deleteprofile</h3>
+<div>
+  <h4>Description</h4>
+  <p>This method is used to delete the profile with the given profile ID.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>profileId</td>
+          <td>Required</td>
+          <td>string</td>
+          <td>
+            <p>ID of the profile to be deleted.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Connman service unavailable</td>
+          <td>
+            <p>Error when <strong>webos-connman-adapter</strong> is not able to communicate with the <strong>connman</strong> daemon.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>WiFi technology unavailable</td>
+          <td>
+            <p>Error when the Wi-Fi technology is not available.</p>
+            <p>This could happen either because the <strong>wpa-supplicant</strong> daemon is not running, or <strong>connman</strong> is not able to communicate with <strong>wpa-supplicant</strong>&nbsp;or the device does not have Wi-Fi support.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>105</td>
+          <td>Profile not found</td>
+          <td>
+            <p>Profile with the given profileId was not found.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.wifi/deleteprofile &#39;{&quot;profileId&quot;: 777}&#39;</p>
+    <p>{</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true</p>
+    <p>}</p>
+  </div>
+</div>
+<a id="findnetworks"></a>
+<h3>findnetworks</h3>
+<div>
+  <h4>Description</h4>
+  <p>The <strong>findnetworks </strong>method lists&nbsp;all the available Wi-Fi access points found in the area (from a previous Wi-Fi scan) and list their details like SSID Name, available Security Types, Signal Strength and Connection Status. Callers can subscribe to this method to be notified of any changes.</p>
+  <p>As long as there are subscribers to this method, periodic scans will be triggered.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p style="text-align:left">Subscribe for notifications of change in the list of found networks.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Get notifications</li>
+              <li><strong>false&nbsp;</strong>- Notifications are not required</li>
+            </ul>
+            <p>​<strong>Default value:</strong>&nbsp;false</p>
+          </td>
+        </tr>
+        <tr>
+          <td>interval</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Interval in milliseconds which is used to trigger a scan for new networks.</p>
+            <p>Only the first subscriber is allowed to specify an interval. If any other subscriber provides an interval and error is returned.</p>
+            <p>The default interval is 15000 miliseconds (15 seconds).</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>foundNetworks</td>
+          <td>Required</td>
+          <td>Object: <a href="#networkInfo"> networkInfo</a></td>
+          <td>
+            <p>List of found networks.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if&nbsp;subscribed to get notified.</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Subscription Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>foundNetworks</td>
+          <td>Required</td>
+          <td>Object: <a href="#networkInfo"> networkInfo</a></td>
+          <td>
+            <p>List of found networks.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>If the subscription was set for this method,&nbsp;<strong>subscribed</strong>&nbsp;will contain&nbsp;<strong>true</strong>.</p>
+            <p>If the subscription was not set for this method,&nbsp;<strong>subscribed</strong>&nbsp;will contain&nbsp;<strong>false</strong>.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Unknown error</td>
+          <td>
+            <p>An internal error occurred when parsing the JSON object being prepared as a response (extremely unlikely).</p>
+          </td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Connman service unavailable</td>
+          <td>
+            <p>Error when<strong> webos-connman-adapter</strong> is not able to talk to the <strong>connman</strong>&nbsp;daemon.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>WiFi technology unavailable</td>
+          <td>
+            <p>Error when the Wi-Fi technology is not available.</p>
+            <p>This error can occur either because the <strong>wpa-supplicant</strong> daemon is not running, or <strong>connman </strong>is not able to communicate with <strong>wpa-supplicant</strong>&nbsp;or the device does not have Wi-Fi support.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>WiFi switched off</td>
+          <td>
+            <p>Error when Wi-Fi interface is down.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>108</td>
+          <td>Error in scanning network</td>
+          <td>
+            <p>Error occurred when trying to scan Wi-Fi interface for networks around.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>161</td>
+          <td>Not allowed to specify a scan interval</td>
+          <td>
+            <p>The client isn&#39;t allowed to specifiy a scan interval.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Example response for a successful&nbsp;call:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.wifi/findnetworks &#39;{&quot;interval&quot;: 15000}&#39;</p>
+    <p>{</p>
+    <p style="margin-left:40px">&quot;foundNetworks&quot;: [</p>
+    <p style="margin-left:80px">{</p>
+    <p style="margin-left:120px">&quot;networkInfo&quot;: {</p>
+    <p style="margin-left:160px">&quot;available&quot;: true,</p>
+    <p style="margin-left:160px">&quot;signalLevel&quot;: 70,</p>
+    <p style="margin-left:160px">&quot;signalBars&quot;: 3,</p>
+    <p style="margin-left:160px">&quot;displayName&quot;: &quot;XXX&quot;,</p>
+    <p style="margin-left:160px">&quot;supported&quot;: true,</p>
+    <p style="margin-left:160px">&quot;ssid&quot;: &quot;xxx&quot;,</p>
+    <p style="margin-left:160px">&quot;availableSecurityTypes&quot;: [</p>
+    <p style="margin-left:200px">&quot;psk&quot;,</p>
+    <p style="margin-left:200px">&quot;wps&quot;</p>
+    <p style="margin-left:160px">]</p>
+    <p style="margin-left:120px">}</p>
+    <p style="margin-left:80px">},</p>
+    <p style="margin-left:80px">{</p>
+    <p style="margin-left:120px">&quot;networkInfo&quot;: {</p>
+    <p style="margin-left:160px">&quot;available&quot;: true,</p>
+    <p style="margin-left:160px">&quot;signalLevel&quot;: 49,</p>
+    <p style="margin-left:160px">&quot;signalBars&quot;: 1,</p>
+    <p style="margin-left:160px">&quot;displayName&quot;: &quot;XXX2&quot;,</p>
+    <p style="margin-left:160px">&quot;supported&quot;: true,</p>
+    <p style="margin-left:160px">&quot;ssid&quot;: &quot;xxx&quot;,</p>
+    <p style="margin-left:160px">&quot;availableSecurityTypes&quot;: [</p>
+    <p style="margin-left:200px">&quot;psk&quot;,</p>
+    <p style="margin-left:200px">&quot;wps&quot;</p>
+    <p style="margin-left:160px">]</p>
+    <p style="margin-left:120px">}</p>
+    <p style="margin-left:80px">}</p>
+    <p style="margin-left:40px">],</p>
+    <p style="margin-left:40px">&quot;subscribed&quot;: false,</p>
+    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
+    <p>}</p>
+  </div>
+</div>
+<a id="getNetworks"></a>
+<h3>getNetworks</h3>
+<div>
+  <h4>Description</h4>
+  <p>This method will return a list of available, configured but not available(out of range) networks without triggering an active scan. The users can subscribe to this&nbsp;method to be notified when there is a change in the list of networks found.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Subscribe for notifications of change in the list of found networks.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Get notifications</li>
+              <li><strong>false&nbsp;</strong>- Notifications are not required</li>
+            </ul>
+            <p>​<strong>Default value:</strong>&nbsp;false</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>foundNetworks</td>
+          <td>Required</td>
+          <td>Object array: <a href="#networkInfo"> networkInfo</a></td>
+          <td>
+            <p>List of networks&nbsp;found.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>If the subscription was set for this method,&nbsp;<strong>subscribe</strong><strong>d</strong>&nbsp;will contain&nbsp;<strong>true</strong>.</p>
+            <p>If the subscription was not set for this method,&nbsp;<strong>subscribed</strong>&nbsp;will contain&nbsp;<strong>false</strong>.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Subscription Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>foundNetworks</td>
+          <td>Optional</td>
+          <td>Object: <a href="#networkInfo"> networkInfo</a></td>
+          <td>
+            <p>List of available and not available networks.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if&nbsp;subscribed.</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Unknown error</td>
+          <td>
+            <p>An internal error occurred when parsing the JSON object being prepared as a response (extremely unlikely).</p>
+          </td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Connman service unavailable</td>
+          <td>
+            <p>Error when<strong> webos-connman-adapter </strong>is not able to communicate with the&nbsp;<strong>connman</strong>&nbsp;daemon.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>WiFi technology unavailable</td>
+          <td>
+            <p>Error when the Wi-Fi technology is not available.</p>
+            <p>This error can occur either because the<strong> wpa-supplicant</strong> daemon is not running, <strong>connman </strong>is not able to communicate with<strong> wpa-supplican</strong>t&nbsp;or the device does not have Wi-Fi support.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>WiFi switched off</td>
+          <td>
+            <p>Error when Wi-Fi interface is down.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Example response for a successful call:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.wifi/getNetworks &#39;{}&#39;</p>
+    <p>{</p>
+    <p style="margin-left:40px">&quot;foundNetworks&quot;: [</p>
+    <p style="margin-left:80px">{</p>
+    <p style="margin-left:120px">&quot;networkInfo&quot;: {</p>
+    <p style="margin-left:160px">&quot;available&quot;: true,</p>
+    <p style="margin-left:160px">&quot;signalLevel&quot;: 70,</p>
+    <p style="margin-left:160px">&quot;signalBars&quot;: 3,</p>
+    <p style="margin-left:160px">&quot;displayName&quot;: &quot;xxx&quot;,</p>
+    <p style="margin-left:160px">&quot;supported&quot;: true,</p>
+    <p style="margin-left:160px">&quot;ssid&quot;: &quot;xxx&quot;,</p>
+    <p style="margin-left:160px">&quot;availableSecurityTypes&quot;: [</p>
+    <p style="margin-left:200px">&quot;psk&quot;,</p>
+    <p style="margin-left:200px">&quot;wps&quot;</p>
+    <p style="margin-left:160px">]</p>
+    <p style="margin-left:120px">}</p>
+    <p style="margin-left:80px">},</p>
+    <p style="margin-left:80px">{</p>
+    <p style="margin-left:120px">&quot;networkInfo&quot;: {</p>
+    <p style="margin-left:160px">&quot;available&quot;: true,</p>
+    <p style="margin-left:160px">&quot;signalLevel&quot;: 49,</p>
+    <p style="margin-left:160px">&quot;signalBars&quot;: 1,</p>
+    <p style="margin-left:160px">&quot;displayName&quot;: &quot;xxx&quot;,</p>
+    <p style="margin-left:160px">&quot;supported&quot;: true,</p>
+    <p style="margin-left:160px">&quot;ssid&quot;: &quot;xxx&quot;,</p>
+    <p style="margin-left:160px">&quot;availableSecurityTypes&quot;: [</p>
+    <p style="margin-left:200px">&quot;psk&quot;,</p>
+    <p style="margin-left:200px">&quot;wps&quot;</p>
+    <p style="margin-left:160px">]</p>
+    <p style="margin-left:120px">}</p>
+    <p style="margin-left:80px">}</p>
+    <p style="margin-left:40px">],</p>
+    <p style="margin-left:40px">&quot;subscribed&quot;: false,</p>
+    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
+    <p>}</p>
+  </div>
+</div>
+<a id="getprofile"></a>
+<h3>getprofile</h3>
+<div>
+  <h4>Description</h4>
+  <p>This method is used to list the profile with the given profile ID on the system.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>profileId</td>
+          <td>Required</td>
+          <td>string</td>
+          <td>
+            <p>ID of the profile to be listed.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>wifiProfile</td>
+          <td>Required</td>
+          <td>Object: <a href="#wifiProfile"> wifiProfile</a></td>
+          <td>
+            <p>Profile corresponding to the given ID.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Unknown error</td>
+          <td>
+            <p>An internal error occurred when parsing the JSON object being prepared as a response (extremely unlikely).</p>
+          </td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Connman service unavailable</td>
+          <td>
+            <p>Error when <strong>webos-connman-adapter</strong> is not able to communicate with the <strong>connman</strong> daemon.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>WiFi technology unavailable</td>
+          <td>
+            <p>Error when the Wi-Fi technology is not available.</p>
+            <p>This could happen either because the <strong>wpa-supplicant</strong> daemon is not running, or <strong>connman</strong> is not able to communicate with <strong>wpa-supplicant</strong>&nbsp;or the device does not have Wi-Fi support.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>105</td>
+          <td>Profile not found</td>
+          <td>
+            <p>A profile with the given profileId was not found.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Example response for a successful call:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.wifi/getprofile &#39;{&quot;profileId&quot;: 777}&#39;</p>
+    <p>{</p>
+    <p style="margin-left:40px">&quot;returnValue&quot;: true,</p>
+    <p style="margin-left:40px">&quot;wifiProfile&quot;: {</p>
+    <p style="margin-left:80px">&quot;profileId&quot;: 777,</p>
+    <p style="margin-left:80px">&quot;ssid&quot;: &quot;XXX&quot;,</p>
+    <p style="margin-left:80px">&quot;security&quot;: {</p>
+    <p style="margin-left:120px">&quot;securityType&quot;: [</p>
+    <p style="margin-left:160px">&quot;psk&quot;,</p>
+    <p style="margin-left:160px">&quot;wps&quot;</p>
+    <p style="margin-left:120px">]</p>
+    <p style="margin-left:80px">}</p>
+    <p style="margin-left:40px">}</p>
+    <p>}</p>
+  </div>
+</div>
+<a id="getprofilelist"></a>
+<h3>getprofilelist</h3>
+<div>
+  <h4>Description</h4>
+  <p>This method lists all the stored Wi-Fi profiles on the system.</p>
+  <h4>Parameters</h4>
+  <p>None</p>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>profileList</td>
+          <td>Required</td>
+          <td>Object: <a href="#wifiProfile"> wifiProfile</a></td>
+          <td>
+            <p>List of stored&nbsp;profiles.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Unknown error</td>
+          <td>
+            <p>An internal error occurred when parsing the JSON object being prepared as a response (extremely unlikely).</p>
+          </td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Connman service unavailable</td>
+          <td>
+            <p>Error when<strong> webos-connman-adapter</strong> is not able to communicate with the <strong>connman </strong>daemon.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>WiFi technology unavailable</td>
+          <td>
+            <p>Error when the Wi-Fi technology is not available.</p>
+            <p>This could happen either because the <strong>wpa-supplicant</strong> daemon is not running, or <strong>connman</strong> is not able to communicate with <strong>wpa-supplicant</strong>&nbsp;or the device does not have Wi-Fi support.</p>
+            <p>&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>105</td>
+          <td>Profile not found</td>
+          <td>
+            <p>There are no stored Wi-Fi profiles on the system.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Example response for a successful call:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.wifi/getprofilelist &#39;{}&#39;</p>
+    <p>{</p>
+    <p style="margin-left:40px">&quot;profileList&quot;: [</p>
+    <p style="margin-left:80px">{</p>
+    <p style="margin-left:120px">&quot;wifiProfile&quot;: {</p>
+    <p style="margin-left:160px">&quot;profileId&quot;: 777,</p>
+    <p style="margin-left:160px">&quot;ssid&quot;: &quot;xxx&quot;,</p>
+    <p style="margin-left:160px">&quot;security&quot;: {</p>
+    <p style="margin-left:200px">&quot;securityType&quot;: [</p>
+    <p style="margin-left:240px">&quot;psk&quot;,</p>
+    <p style="margin-left:240px">&quot;wps&quot;</p>
+    <p style="margin-left:200px">]</p>
+    <p style="margin-left:160px">}</p>
+    <p style="margin-left:120px">}</p>
+    <p style="margin-left:80px">}</p>
+    <p style="margin-left:40px">],</p>
+    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
+    <p>}</p>
+  </div>
+</div>
+<a id="getstatus"></a>
+<h3>getstatus</h3>
+<div>
+  <h4>Description</h4>
+  <p>The <strong>getstatus </strong>method returns:&nbsp;</p>
+  <ul>
+    <li>The current status of Wi-Fi connection on the system.</li>
+    <li>If the system is connected to an access point, then the details of the access point.</li>
+    <li>If the service is online, then the IP related infomation like address, gateway, DNS etc.</li>
+  </ul>
+  <p>Callers can subscribe to this method to be notified of any changes in the Wi-Fi connection status. In case there is no subscription, then it will just return the current status once.</p>
+  <p>&nbsp;</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p style="text-align:left">Subscribe for notifications when Wi-Fi connection status changes.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Get notifications</li>
+              <li><strong>false&nbsp;</strong>- Notifications are not required</li>
+            </ul>
+            <p>​<strong>Default value:</strong>&nbsp;false</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>status</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p><span style="line-height:1.6em">If wifi is enabled,&nbsp;</span><strong style="line-height:1.6em">status</strong><span style="line-height:1.6em">&nbsp;will contain&nbsp;</span><strong style="line-height:1.6em">&quot;serviceEnabled&quot;</strong><span style="line-height:1.6em">.</span></p>
+            <p>If wifi is disabled,&nbsp;<strong>status</strong>&nbsp;will contain <strong>&quot;serviceDisabled&quot;</strong>.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>networkInfo</td>
+          <td>Optional</td>
+          <td>Object: <a href="#networkInfo"> networkInfo</a></td>
+          <td>
+            <p>Provides information on the current Wi-Fi network. Appllicable only if the Wi-Fi is connected.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>If the subscription was set for this method, <strong>subscribe</strong><strong>d</strong> will contain <strong>true</strong>.</p>
+            <p>If the subscription was not set for this method, <strong>subscribed</strong> will contain <strong>false</strong>.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Subscription Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Always <strong>true</strong> in case of subscription response.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>status</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>If wifi is enabled,&nbsp;<strong>status</strong>&nbsp;will contain&nbsp;<strong>&quot;serviceEnabled&quot;</strong>.</p>
+            <p>If wifi is disabled,&nbsp;<strong>status</strong>&nbsp;will contain&nbsp;<strong>&quot;serviceDisabled&quot;</strong>.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>networkInfo</td>
+          <td>Optional</td>
+          <td>Object: <a href="#networkInfo"> networkInfo</a></td>
+          <td>
+            <p>Provides information on the current Wi-Fi network. Appllicable only if the Wi-Fi is connected.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if&nbsp;subscribed to get notified.</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Unknown error</td>
+          <td>
+            <p>An internal error occurred when parsing the JSON object being prepared as a response (extremely unlikely).</p>
+          </td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Connman service unavailable</td>
+          <td>
+            <p>Error when <strong>webos-connman-adapter</strong> is not able to communicate with the <strong>connman </strong>daemon.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>WiFi technology unavailable</td>
+          <td>
+            <p>Error when the Wi-Fi technology is not available.</p>
+            <p>This could happen either because the <strong>wpa-supplicant</strong> daemon is not running, or <strong>connman </strong>is not able to communicate with <strong>wpa-supplicant</strong> or the device does not have Wi-Fi support.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Example response for a successful call:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.wifi/getstatus {}</p>
+    <p>{</p>
+    <p style="margin-left:40px">&quot;subscribed&quot;: false,</p>
+    <p style="margin-left:40px">&quot;status&quot;: &quot;serviceEnabled&quot;,</p>
+    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
+    <p>}</p>
+  </div>
+</div>
+<a id="scan"></a>
+<h3>scan</h3>
+<div>
+  <h4>Description</h4>
+  <p>The <strong>scan </strong>method is used to trigger a manual scan for the Wi-Fi networks. It should not be used together with the <strong>findnetworks </strong>method as using both at the same time will result in errors.&nbsp;This method will trigger a scan and return immediately. Results of the scan are posted to the subscribers of <strong>findnetworks and&nbsp;getNetworks</strong>.</p>
+  <h4>Parameters</h4>
+  <p>None</p>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <ul>
+              <li>If the&nbsp;method succeeds,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>true</strong>.</li>
+              <li>If the&nbsp;method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false</strong>.<span style="color:black">&nbsp;</span></li>
+            </ul>
+            <p>The&nbsp;method may fail because of one the error conditions described in the&nbsp;<strong>Error Codes Reference</strong>&nbsp;table of this method. See the&nbsp;<strong>Error Code Reference</strong>&nbsp;table for more information.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p><strong style="line-height:1.6em">errorText</strong><span style="line-height:1.6em">&nbsp;contains the error text if the&nbsp;method fails. The&nbsp;method will return&nbsp;</span><strong style="line-height:1.6em">errorText</strong><span style="line-height:1.6em">&nbsp;only if it fails.</span></p>
+            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p><strong>errorCode</strong>&nbsp;contains the error code if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorCode</strong>&nbsp;only if it fails.</p>
+            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Unknown error</td>
+          <td>
+            <p>An internal error occurred when parsing the JSON object being prepared as a response (extremely unlikely).</p>
+          </td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Connman service unavailable</td>
+          <td>
+            <p>Error when <strong>webos-connman-adapter </strong>is not able to communicate with the&nbsp;<strong>connman</strong>&nbsp;daemon.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>WiFi technology unavailable</td>
+          <td>
+            <p>Error when the Wi-Fi technology is not available.</p>
+            <p>This error can occur because the<strong> wpa-supplicant</strong> daemon is not running, <strong>connman </strong>is not able to communicate with <strong>wpa-supplicant</strong>&nbsp;or the device does not have Wi-Fi support.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>WiFi switched off</td>
+          <td>
+            <p>Error when Wi-Fi interface is down.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>108</td>
+          <td>Error in scanning network</td>
+          <td>
+            <p>Error occurred when trying to scan the Wi-Fi interface for networks.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>160</td>
+          <td>Already actively scanning for networks</td>
+          <td>
+            <p>This error is returned when the <strong>scan </strong>method is called while clients are subscribed to the <strong>findnetworks </strong>method.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Example response for a successful call:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.wifi/scan &#39;{}&#39;</p>
+    <p>{</p>
+    <p>&nbsp; &nbsp; &quot;returnValue&quot;: true</p>
+    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Example response for a failed call:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.wifi/scan &#39;{}&#39;</p>
+    <p>{</p>
+    <p style="margin-left:40px">&quot;errorCode&quot;: 5,</p>
+    <p style="margin-left:40px">&quot;returnValue&quot;: false,</p>
+    <p style="margin-left:40px">&quot;errorText&quot;: &quot;WiFi technology unavailable&quot;</p>
+    <p>}</p>
+  </div>
+</div>
+<a id="setstate"></a>
+<h3>setstate</h3>
+<div>
+  <h4>Description</h4>
+  <p>The <strong>setstate </strong>method will simply enable or disable W-iFi on the system by enabling/disabling the Wi-Fi interface.</p>
+  <p>&nbsp;</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>state</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Set it to &quot;<strong>enabled</strong>&quot; to enable Wi-Fi.</p>
+            <p>Set it to &quot;<strong>disabled</strong>&quot; to disable Wi-Fi.</p>
+            <p>Any other value will result in an error.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <ul>
+              <li>If the&nbsp;method succeeds,&nbsp;<strong>returnValue</strong>&nbsp;will contain <strong>true</strong>.</li>
+              <li>If the&nbsp;method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false</strong>.<span style="color:black">&nbsp;</span></li>
+            </ul>
+            <p style="margin-left:0.0in">The&nbsp;method may fail because of one the error conditions described in the&nbsp;<strong>Error Codes Reference</strong>&nbsp;table of this method. See the&nbsp;<strong>Error Code Reference</strong>&nbsp;table for more information.<span style="color:black">&nbsp;</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p><strong>errorCode</strong> contains the error code if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorCode</strong>&nbsp;only if it fails.</p>
+            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p><strong>errorText</strong> contains the error text if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.</p>
+            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Connman service unavailable</td>
+          <td>
+            <p>Error when <strong>webos-connman-adapter</strong> is not able to communicate with the <strong>connman </strong>daemon.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>WiFi technology unavailable</td>
+          <td>
+            <p>Error when the Wi-Fi technology is not available.</p>
+            <p>This could occur either because the <strong>wpa-supplicant</strong> daemon is not running, connman is not able to communicate with the <strong>wpa-supplicant</strong>&nbsp;<span style="background-color:rgb(244, 244, 244)">or the device does not have Wi-Fi support.</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td>103</td>
+          <td>Already enabled</td>
+          <td>
+            <p>Error message when setting the <strong>state </strong>to&nbsp;<strong>enabled&nbsp;</strong>if the Wi-Fi is already enabled.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>104</td>
+          <td>Already disabled</td>
+          <td>
+            <p>Error message when setting the&nbsp;<strong>state </strong>to&nbsp;<strong>disabled </strong>if the Wi-Fi is already disabled.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Example response for a successful&nbsp;call:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.wifi/setstate &#39;{&quot;state&quot;: &quot;disabled&quot;}&#39;</p>
+    <p>{</p>
+    <p style="margin-left: 40px;">&quot;returnValue&quot;: true</p>
+    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Example response for a failed call:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.wifi/setstate &#39;{&quot;state&quot;: &quot;disabled&quot;}&#39;</p>
+    <p>{</p>
+    <p style="margin-left: 40px;">&quot;errorCode&quot;: 5,</p>
+    <p style="margin-left: 40px;">&quot;returnValue&quot;: false,</p>
+    <p style="margin-left: 40px;">&quot;errorText&quot;: &quot;WiFi technology unavailable&quot;</p>
+    <p>}</p>
+  </div>
+</div>
+<div>
+  <h2>Objects</h2>
+  <a id="wifiProfile"></a>
+  <h3>wifiProfile</h3>
+  <p>A Wi-Fi profile stores all information for a previously successfully connected wireless network. However, it does not store critical security things like the passphrase.</p>
+  <p>Example:</p>
+  <p>&quot;wifiProfile&quot;: {</p>
+  <p>&quot;profileId&quot;: 777,</p>
+  <p>&quot;ssid&quot;: &quot;xxx&quot;,</p>
+  <p>&quot;security&quot;: { &quot;securityType&quot;: [ &quot;psk&quot;, &quot;wps&quot; ] }</p>
+  <p>}</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>ssid</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>SSID associated with the profile.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>profileId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>ID string naming the profile (can be used with connect method).</p>
+          </td>
+        </tr>
+        <tr>
+          <td>security</td>
+          <td>Required</td>
+          <td>Object: <a href="#securityType"> securityType</a></td>
+          <td>Security type which was used to connect to the network the last time.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a id="security"></a>
+  <h3>security</h3>
+  <p>This object is used to provide security information for establishing a connection.</p>
+  <p>Example:</p>
+  <p>&quot;security&quot;: {</p>
+  <p>&quot;securityType&quot;: &quot;psk&quot;,</p>
+  <p>&quot;simpleSecurity&quot;: {&quot;passKey&quot;: &quot;1234&quot;}</p>
+  <p>}</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>securityType</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Connection type. e.g. <strong>wep</strong>&nbsp;or <strong>psk</strong>.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>simpleSecurity</td>
+          <td>Optional</td>
+          <td>Object: <a href="#simpleSecurity"> simpleSecurity</a></td>
+          <td>Security options when using simple security type.</td>
+        </tr>
+        <tr>
+          <td>enterpriseSecurity</td>
+          <td>Optional</td>
+          <td>Object: <a href="#enterpriseSecurity"> enterpriseSecurity</a></td>
+          <td>
+            <p>Different fields to connect to enterprise networks.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a id="networkInfo"></a>
+  <h3>networkInfo</h3>
+  <p>Information of each of the networks found by the <strong>findNetworks,&nbsp;getNetworks</strong> or <strong>getstatus</strong> method.</p>
+  <p>Example:</p>
+  <p>&quot;networkInfo&quot;: {</p>
+  <p>&quot;available&quot;: true,</p>
+  <p>&quot;signalLevel&quot;: 49,</p>
+  <p>&quot;signalBars&quot;: 1,</p>
+  <p>&quot;displayName&quot;: &quot;xxx&quot;,</p>
+  <p>&quot;supported&quot;: true,</p>
+  <p>&quot;ssid&quot;: &quot;xxx&quot;,</p>
+  <p>&quot;availableSecurityTypes&quot;: [ &quot;psk&quot;, &quot;wps&quot; ],</p>
+  <p>&quot;connectState<strong>&quot;:&nbsp;</strong>&quot;ipConfigured&quot;,</p>
+  <p>&quot;bssInfo&quot;:[<br />
+    <span style="line-height:1.6em">&nbsp; &nbsp; &nbsp;{&nbsp;&quot;frequency&quot;: 2462,</span><br />
+    <span style="line-height:1.6em">&nbsp; &nbsp; &nbsp; &nbsp;&quot;bssid&quot;: &quot;EE:94:F6:33:5F:F7&quot;,</span><br />
+    <span style="line-height:1.6em">&nbsp; &nbsp; &nbsp; &nbsp; &quot;signal&quot;: -65</span><span style="line-height:1.6em">&nbsp;}</span><br />
+    <span style="line-height:1.6em">&nbsp;]</span>
+  </p>
+  <p>}</p>
+  <p>&nbsp;</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>ssid</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>SSID of discovered AP.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>availableSecurityTypes</td>
+          <td>Required</td>
+          <td>String array</td>
+          <td>
+            <p>List of supported security mechanisms.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>signalBars</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Coarse indication of signal strength.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>available</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if the network is currently available or not.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>signalLevel</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Fine indication of signal strength.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>ipInfo</td>
+          <td>Optional</td>
+          <td>Object: <a href="#ipInfo"> ipInfo</a></td>
+          <td>
+            <p>Only returned for getstatus method.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>bssInfo</td>
+          <td>Optional</td>
+          <td>Object array: <a href="#bssInfo"> bssInfo</a></td>
+          <td>
+            <p>Radio information on stations associated with this network. Only returned for <strong>getNetworks</strong> and <strong>findNetworks</strong> methods, only for in-range wifi networks.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>displayName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Displayable name of the network.</p>
+            <p>The value of this field should be always used to the display the name of the network in the UI. The field <strong>ssid </strong>should never be used. It is only there to identify the network object and as an argument for several other methods like connect.</p>
+            <p>In most cases the content is the same as for the <strong>ssid</strong> field. The content will be different when the SSID the access point sends out is not encoded in UTF-8. In this case the service tries several conversion options to convert the SSID to UTF-8 and the result is the value in this field.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>connectState</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Current connection state of the service.</p>
+            <p>The following values are possible:&nbsp;<strong>&quot;notAssociated&quot;,&nbsp;&quot;associating&quot;,&nbsp;&quot;associated&quot;,&nbsp;&quot;ipConfigured&quot;,&nbsp;&quot;ipFailed&quot;.</strong></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  
+  
+  <a id="simpleSecurity"></a>
+  <h3>simpleSecurity</h3>
+  <p>Connection information for a simple connection.</p>
+  <p>Example:</p>
+  <p>&quot;simpleSecurity&quot;: {</p>
+  <p>&quot;passKey&quot;: &quot;1234&quot;</p>
+  <p>}</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>passKey</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Passkey for the network to be connected.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a id="securityType"></a>
+  <h3>securityType</h3>
+  <p>A list of array types.</p>
+  <p>Example:</p>
+  <p>&quot;securityType&quot;: [ &quot;open&quot;, &quot;psk&quot;, &quot;wps&quot; ]</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>securityType</td>
+          <td>Required</td>
+          <td>String array</td>
+          <td>
+            <p>Types of security supported.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <a id="ipInfo"></a>
+  <h3>ipInfo</h3>
+  <p>IP information for the connected network i.e. connected Wi-Fi interface returned as a response from the <strong>getstatus</strong>&nbsp;method.</p>
+  <p>Example:</p>
+  <p>&quot;ipInfo&quot;: {</p>
+  <p>&quot;interface&quot;: &quot;wifi0&quot;,</p>
+  <p>&quot;ip&quot;: &quot;192.168.1.2&quot;,</p>
+  <p>&quot;subnet&quot;: &quot;255.255.255.0&quot;,</p>
+  <p>&quot;gateway&quot;: &quot;192.168.1.1&quot;,</p>
+  <p>&quot;dns&quot;: [&quot;192.168.1.1&quot;]</p>
+  <p>}</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>interface</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The Wi-Fi interface for the connected network.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>ip</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>IP address of the Wi-Fi interface.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subnet</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Subnet for the Wi-Fi interface.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>gateway</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Gateway address for routing over Wi-Fi interface.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>dns</td>
+          <td>Required</td>
+          <td>String array</td>
+          <td>
+            <p>List of DNS server IP addresses for the Wi-Fi interface.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <a id="enterpriseSecurity"></a>
+  <h3>enterpriseSecurity</h3>
+  <p>Different security fields for connecting to enterprise networks.</p>
+  <p>Example:</p>
+  <p>&quot;enterpriseSecurity&quot;: {</p>
+  <p>&quot;eapType&quot;: &quot;tls&quot;,</p>
+  <p>&quot;identity&quot;: &quot;work&quot;,</p>
+  <p>&quot;passphrase&quot;: &quot;1234&quot;,</p>
+  <p>&quot;caCertFile&quot;: &quot;/etc/cert/ca.pem&quot;,</p>
+  <p>&quot;clientCertFile&quot;: &quot;/etc/cert/user.pem&quot;,</p>
+  <p>&quot;privateKeyFile&quot;: &quot;/etc/cert/user.prv&quot;,</p>
+  <p>&quot;privateKeyPassphrase&quot;: &quot;4321&quot;</p>
+  <p>}</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>eapType</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The authentication method for this connection, which is supported by the AP. Currently supported methods are <strong>peap</strong>,<strong> ttls&nbsp;</strong>and<strong> tls</strong>.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>identity</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The name of the user to be authenticated.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>passphrase</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Passphrase for authenticating the user.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>caCertFile</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The location of server certificate file for authenticating the server.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>clientCertFile</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The location of client side X.509 certificate file to authenticate the client.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>privateKeyFile</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The location of the private key file to decrypt the client certificate.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>privateKeyPassphrase</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Passphrase used to encrypt the private key file.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>phase2</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The inner authentication protocol for authenticating to user databases containing user information.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a id="bssInfo"></a>
+  <h3>bssInfo</h3>
+  <p>Information on one station in a Basic Service Set.</p>
+  <p>&nbsp;</p>
+  <p><strong>Example:</strong></p>
+  <p>&quot;bssInfo&quot;: {</p>
+  <p>&nbsp;&quot;frequency&quot;: 2462,<br />
+    &nbsp;&quot;bssid&quot;: &quot;EE:94:F6:33:5F:F7&quot;,<br />
+    &nbsp;&quot;signal&quot;: -65&nbsp;
+  </p>
+  <p>}</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>bssid</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Mac address of the wireless station.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>frequency</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Station frequency in MHZ</p>
+          </td>
+        </tr>
+        <tr>
+          <td>signal</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Station signal strength, DBm. Typical range -100 (weak) ... -10 (strong).</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+<link type="text/css" rel="stylesheet" href="{{"css/fonts.css" | relURL}}" />
+{{ if (and (not .IsHome) (not .Params.docs_home) )}}
+<link type="text/css" rel="stylesheet" href="{{"css/tocbot.css" | relURL}}" />
+<link type="text/css" rel="stylesheet" href="{{"css/scrollbar.css" | relURL}}" />
+{{ end }}
+{{ $sass := resources.Get "styles.sass" }}
+{{ if .Site.IsServer }}
+{{ $css := $sass | toCSS }}
+<link rel="stylesheet" type="text/css" href="{{ $css.Permalink }}">
+{{ else }}
+{{ $options := (dict "outputStyle" "compressed") }}
+{{ $css := $sass | toCSS $options | fingerprint }}
+<link rel="stylesheet" type="text/css" href="{{ $css.Permalink }}" integrity="{{ $css.Data.Integrity }}">
+{{ end }}
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+  integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+{{ if and (isset .Params "file_download") (.Params.file_download) }}
+<link type="text/css" rel="stylesheet" href="{{"css/dialog-box.css" | relURL}}" />
+{{ end }}

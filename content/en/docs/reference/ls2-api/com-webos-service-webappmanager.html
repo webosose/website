@@ -1,0 +1,1111 @@
+---
+title: com.webos.service.webappmanager
+date: 2019-04-23
+toc: true
+---
+<div>
+  <H2>API Summary</h2>
+  <p>Internal system service for handling web-based (HTML) applications.</p>
+  <p>The Web App Manager (WAM) is a component responsible for web application management in webOS platform. The Application Manager (SAM) sends a request to manage web applications to WAM.</p>
+  <p>WAM handles basic routines such as launching, closing apps as well as the following features of web applications.</p>
+  <ol>
+    <li>Running lists</li>
+    <li>Life cycles</li>
+    <li>Current status of applications</li>
+    <li>Application crash</li>
+  </ol>
+</div>
+<h2>Overview of the API</h2>
+<div>
+  <p>NA</p>
+  <ol></ol>
+</div>
+<h2>Methods</h2>
+<div>
+  <h3>closeAllApps</h3>
+  <div>
+    <h4>Description</h4>
+    <p>Close all currently running applications.</p>
+    <h4>Parameters</h4>
+    <p>None</p>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 luna://com.webos.service.webappmanager/closeAllApps &quot;{}&quot;</p>
+    </div>
+  </div>
+</div>
+<h3>closeByProcessId</h3>
+<div>
+  <h4>Description</h4>
+  <p>Close an application using the internal associated processId.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>processId</td>
+          <td>Required</td>
+          <td>number</td>
+          <td>
+            <p>The id of process to close.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.&nbsp;</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>appId</td>
+          <td>Optional</td>
+          <td>string</td>
+          <td>
+            <p>The id of closed app.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>processId</td>
+          <td>Optional</td>
+          <td>number</td>
+          <td>
+            <p>The id of closed process.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>string</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 luna://com.webos.service.webappmanager/closeByProcessId &quot;{\&quot;processId\&quot;:\&quot;1008\&quot;}&quot;</p>
+    <p>Returns:</p>
+    <p>{</p>
+    <p>&nbsp; &nbsp; &quot;appId&quot;: &quot;accuweather&quot;,</p>
+    <p>&nbsp; &nbsp; &quot;processId&quot;: &quot;1008&quot;,</p>
+    <p>&nbsp; &nbsp; &quot;returnValue&quot;: true</p>
+    <p>}</p>
+  </div>
+</div>
+<h3>getWebProcessSize</h3>
+<div>
+  <h4>Description</h4>
+  <p>Get the size of current running WebProcess.</p>
+  <h4>Parameters</h4>
+  <p>None</p>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>pid</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>The id of process.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>webProcessSize</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>The size of the process in KB.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>tileSize</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>The size of the tile in KB.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>runningApps</td>
+          <td>Required</td>
+          <td>String array</td>
+          <td>
+            <p>List of apps which the process is running.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p><strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>true</strong>.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 luna://com.webos.service.webappmanager/getWebProcessSize &quot;{}&quot;</p>
+    <p>Returns:</p>
+    <p>{</p>
+    <p>&nbsp; &nbsp; &quot;WebProcesses&quot;: [</p>
+    <p>&nbsp; &nbsp; {</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;pid&quot;: &quot;4252&quot;,</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;runningApps&quot;: [</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; {</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;id&quot;: &quot;com.webos.app.guide&quot;</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; }</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; ],</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;tileSize&quot;: 0,</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;webProcessSize&quot;: &quot;83924 kB&quot;</p>
+    <p>&nbsp; &nbsp; },</p>
+    <p>&nbsp; &nbsp; {</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;pid&quot;: &quot;4294&quot;,</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;runningApps&quot;: [</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; {</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;id&quot;: &quot;accuweather&quot;</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; }</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; ],</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;tileSize&quot;: 0,</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;webProcessSize&quot;: &quot;65832 kB&quot;</p>
+    <p>&nbsp; &nbsp; },</p>
+    <p>&nbsp; &nbsp; {</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;pid&quot;: &quot;4280&quot;,</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;runningApps&quot;: [</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; {</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;id&quot;: &quot;com.webos.app.container&quot;</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; }</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; ],</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;tileSize&quot;: 0,</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;webProcessSize&quot;: &quot;67444 kB&quot;</p>
+    <p>&nbsp; &nbsp; }</p>
+    <p>&nbsp; &nbsp; ],</p>
+    <p>&nbsp; &nbsp; &quot;returnValue&quot;: true</p>
+    <p>}</p>
+  </div>
+</div>
+<h3>killApp</h3>
+<div>
+  <h4>Description</h4>
+  <p>Kill all windows owned by the specified app. This is intended to be used by SAM if necessary.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>appId</td>
+          <td>Required</td>
+          <td>string</td>
+          <td>
+            <p>The id of app to kill.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.&nbsp;</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>string</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>appId</td>
+          <td>Optional</td>
+          <td>string</td>
+          <td>
+            <p>The id of killed app.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>#&nbsp;luna-send -n 1 luna://com.webos.service.webappmanager/killApp &quot;{\&quot;appId\&quot;:\&quot;com.lge.app.viewster\&quot;}&quot;</p>
+    <p>Returns:</p>
+    <p>{</p>
+    <p>&nbsp; &nbsp; &quot;appId&quot;: &quot;com.lge.app.viewster&quot;,</p>
+    <p>&nbsp; &nbsp; &quot;returnValue&quot;: true</p>
+    <p>}</p>
+  </div>
+</div>
+<h3>launchApp</h3>
+<div>
+  <h4>Description</h4>
+  <p>Launch an application by app id. This is the major function used by SAM to request launching an application.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>appDesc</td>
+          <td>Required</td>
+          <td>string</td>
+          <td>
+            <p>JSON object containing the appinfo.json parameters determined by SAM.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>parameters</td>
+          <td>Optional</td>
+          <td>string</td>
+          <td>
+            <p>JSON object containing the parameters to pass to the app.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>launchingAppId</td>
+          <td>Optional</td>
+          <td>string</td>
+          <td>
+            <p>The id of launching app.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>launchingProcId</td>
+          <td>Optional</td>
+          <td>number</td>
+          <td>
+            <p>The id of process launching the app.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>appId</td>
+          <td>Required</td>
+          <td>string</td>
+          <td>
+            <p>The id of the launched app. The app is launched according to the properties specified in the&nbsp;<strong>appDesc</strong> parameter.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>procId</td>
+          <td>Required</td>
+          <td>number</td>
+          <td>
+            <p>The id of process assigned to this launch.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>string</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<h3>listRunningApps</h3>
+<div>
+  <h4>Description</h4>
+  <p>Return a list of applications that Web App Manager is running. This method can be subscribed.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Optional</td>
+          <td>boolean</td>
+          <td>
+            <p>​Subscribe for notifications.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Get notifications</li>
+              <li><strong>false&nbsp;</strong>- Notifications are not required</li>
+            </ul>
+            <p>​<strong>Default value:</strong>&nbsp;false</p>
+          </td>
+        </tr>
+        <tr>
+          <td>includeSysApps</td>
+          <td>Optional</td>
+          <td>boolean</td>
+          <td>
+            <p>Includes/excludes&nbsp;system applications in the running app list.Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>:&nbsp;To include system applications in the running app list.</li>
+              <li><strong>false</strong>:&nbsp;To exclude&nbsp;system applications from the running app list.</li>
+            </ul>
+            <p><strong>Default value</strong>: false.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>running</td>
+          <td>Required</td>
+          <td>String array</td>
+          <td>
+            <p>Array of all running apps. Each app will be returned in the form of {&quot;id&quot;: appId, &quot;processId&quot;: processId, &quot;webprocessid&quot;: weprocessid}.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>boolean</td>
+          <td>
+            <p><strong>returnValue</strong>&nbsp;will <strong>always</strong> contain&nbsp;<strong>true</strong>.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Subscription Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>running</td>
+          <td>Required</td>
+          <td>String array</td>
+          <td>
+            <p>Array of all running apps. Each app will be returned in the form of {&quot;id&quot;: appId, &quot;processId&quot;: processId, &quot;webprocessid&quot;: weprocessid}.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p><strong>returnValue</strong>&nbsp;will&nbsp;<strong>always</strong>&nbsp;contain&nbsp;<strong>true</strong>.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if&nbsp;subscribed.</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Example 1:</p>
+    <p># luna-send -n 1 luna://com.webos.service.webappmanager/listRunningApps &quot;{}&quot;</p>
+    <p>Returns:</p>
+    <p>{</p>
+    <p>&nbsp; &nbsp; &quot;returnValue&quot;: true,</p>
+    <p>&nbsp; &nbsp; &quot;running&quot;: [</p>
+    <p>&nbsp; &nbsp; {</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;id&quot;: &quot;com.webos.app.guide&quot;,</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;processid&quot;: &quot;1006&quot;,</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;webprocessid&quot;: &quot;4252&quot;</p>
+    <p>&nbsp; &nbsp; },</p>
+    <p>&nbsp; &nbsp; {</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;id&quot;: &quot;accuweather&quot;,</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;processid&quot;: &quot;1008&quot;,</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;webprocessid&quot;: &quot;4294&quot;</p>
+    <p>&nbsp; &nbsp; }</p>
+    <p>&nbsp; &nbsp; ]</p>
+    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Example 2:</p>
+    <p># luna-send -n 1 luna://com.webos.service.webappmanager/listRunningApps &quot;{\&quot;includeSysApps\&quot;:true}&quot;</p>
+    <p>Returns:</p>
+    <p>{</p>
+    <p>&nbsp; &nbsp; &quot;returnValue&quot;: true,</p>
+    <p>&nbsp; &nbsp; &quot;running&quot;: [</p>
+    <p>&nbsp; &nbsp; {</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;id&quot;: &quot;com.webos.app.guide&quot;,</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;processid&quot;: &quot;1006&quot;,</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;webprocessid&quot;: &quot;4252&quot;</p>
+    <p>&nbsp; &nbsp; },</p>
+    <p>&nbsp; &nbsp; {</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;id&quot;: &quot;accuweather&quot;,</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;processid&quot;: &quot;1008&quot;,</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;webprocessid&quot;: &quot;4294&quot;</p>
+    <p>&nbsp; &nbsp; }</p>
+    <p>&nbsp; &nbsp; ]</p>
+    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Example 3:</p>
+    <p># luna-send -n 1 luna://com.webos.service.webappmanager/listRunningApps &quot;{\&quot;subscribe\&quot;:true}&quot;</p>
+    <p>Returns:</p>
+    <p>{</p>
+    <p>&nbsp; &nbsp; &quot;returnValue&quot;: true,</p>
+    <p>&nbsp; &nbsp; &quot;running&quot;: [</p>
+    <p>&nbsp; &nbsp; {</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;id&quot;: &quot;youtube.leanback.v4&quot;,</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;processid&quot;: &quot;1002&quot;,</p>
+    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;webprocessid&quot;: &quot;2618&quot;</p>
+    <p>&nbsp; &nbsp; }</p>
+    <p>&nbsp; &nbsp; ],</p>
+    <p>&nbsp; &nbsp; &quot;subscribed&quot;: true</p>
+    <p>}</p>
+  </div>
+</div>
+<h3>logControl</h3>
+<div>
+  <h4>Description</h4>
+  <p>Enable or disable whether to show logs with associated keys.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>keys</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Keys to determine which log to enable.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>value</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>To show log of specified key, set <strong>value</strong> to <strong>&quot;on&quot;</strong>.</p>
+            <p>To hide log of specified key, set <strong>value</strong> to <strong>&quot;off&quot;</strong>.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>event</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates whether event logs are shown or not. Possible values are:</p>
+            <ul>
+              <li><strong>true:</strong> If enabled to show event logs.</li>
+              <li><strong>false: </strong>If disabled to show event logs.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>bundleMessage</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates whether bundleMessage logs are shown or not.</p>
+            <ul>
+              <li><strong>true:&nbsp;</strong>If enabled showing&nbsp;bundleMessage logs.</li>
+              <li><strong>false:&nbsp;</strong>If disabled&nbsp;showing&nbsp;bundleMessage logs.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>mouseMove</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates whether mouseMove logs are shown or not.</p>
+            <ul>
+              <li><strong>true:&nbsp;</strong>If enabled showing&nbsp;mouseMove&nbsp;logs.</li>
+              <li><strong>false:&nbsp;</strong>If disabled&nbsp;showing&nbsp;mouseMove&nbsp;logs.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 luna://com.webos.service.webappmanager/logControl &quot;{\&quot;keys\&quot;:\&quot;event\&quot;,\&quot;value\&quot;:\&quot;on\&quot;}&quot;</p>
+    <p>Returns:</p>
+    <p>{</p>
+    <p>&nbsp; &nbsp; &quot;bundleMessage&quot;: false,</p>
+    <p>&nbsp; &nbsp; &quot;event&quot;: true,</p>
+    <p>&nbsp; &nbsp; &quot;mouseMove&quot;: false</p>
+    <p>}</p>
+  </div>
+</div>
+<h3>webProcessCreated</h3>
+<div>
+  <h4>Description</h4>
+  <p>Return the process id of launched application. This method can be subscribed.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>appId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The id of the launched application.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>​Subscribe for notifications.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Get notifications</li>
+              <li><strong>false&nbsp;</strong>- Notifications are not required</li>
+            </ul>
+            <p>​​<strong>Default value:</strong>&nbsp;false</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>id</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The id of the launched application.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>webprocessid</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The process id of the launched application.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Subscription Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if&nbsp;subscribed to get notified.</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 luna://com.webos.service.webappmanager/webProcessCreated &quot;{\&quot;appId\&quot;:\&quot;accuweather\&quot;}&quot;</p>
+    <p>Returns:</p>
+    <p>{</p>
+    <p>&nbsp; &nbsp; &quot;id&quot;: &quot;accuweather&quot;,</p>
+    <p>&nbsp; &nbsp; &quot;returnValue&quot;: true,</p>
+    <p>&nbsp; &nbsp; &quot;webprocessid&quot;: 4865</p>
+    <p>}</p>
+  </div>
+</div>
+<h3>clearBrowsingData</h3>
+<div>
+  <h4>Description</h4>
+  <p>Clears&nbsp;browsing data of a specific&nbsp;type.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>types</td>
+          <td>Optional</td>
+          <td>String array</td>
+          <td>
+            <p>Type of browsing data to be deleted.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>all </strong>(includes browsing data of all other specified types)</li>
+              <li><strong>appcache</strong></li>
+              <li><strong>cache</strong></li>
+              <li><strong>codecache</strong></li>
+              <li><strong>cookies</strong></li>
+              <li><strong>fileSystems</strong></li>
+              <li><strong>localStorage</strong></li>
+              <li><strong>channelIDs</strong></li>
+              <li><strong>serviceWorkers</strong></li>
+              <li><strong>cacheStorage</strong></li>
+              <li><strong>webSQL</strong></li>
+            </ul>
+            <p><strong>Note: </strong>If no&nbsp;value is provided, by default, the method deletes&nbsp;all&nbsp;browsing data.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText&nbsp;</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>3000</td>
+          <td>Empty array is not allowed.</td>
+          <td>
+            <p>Occurs because value of array type for &quot;types&quot; parameter is&nbsp;not specified. It means that the array is defined but the&nbsp;length is 0.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>3001</td>
+          <td>Invalid value (Only allowed for string type)</td>
+          <td>
+            <p>Occurs because data type of &quot;types&quot; parameter is wrong. Only string array is possible.&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>3002</td>
+          <td>Unknown data: [wrong value]</td>
+          <td>
+            <p>Occurs because value of &#39;types&#39; parameter is unknown data. Refer to possible values specified in the parameter section.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Example 1:&nbsp;Clear all browsing data</p>
+    <p style="margin-left:40px">- Using the &quot;all&quot; value for the &quot;types&quot; parameter</p>
+    <p style="margin-left:40px"># luna-send -n 1 luna://com.webos.service.webappmanager/clearBrowsingData &#39;{&quot;types&quot;:[&quot;all&quot;]}&#39;</p>
+    <p style="margin-left:40px">&nbsp;</p>
+    <p style="margin-left:40px">- Without specifying the &quot;types&quot; parameter</p>
+    <p style="margin-left:40px"># luna-send -n 1 luna://com.webos.service.webappmanager/clearBrowsingData &#39;{}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Example 2:&nbsp;Clear specific browsing data</p>
+    <p style="margin-left:40px">- Clears localstorage type browsing data</p>
+    <p style="margin-left:40px"># luna-send -n 1 luna://com.webos.service.webappmanager/clearBrowsingData &#39;{&quot;types&quot;:[&quot;localStorage&quot;]}&#39;</p>
+    <p style="margin-left:40px">&nbsp;</p>
+    <p style="margin-left:40px">- Clears localstorage and cache types of browsing data</p>
+    <p style="margin-left:40px"># luna-send -n 1 luna://com.webos.service.webappmanager/clearBrowsingData &#39;{&quot;types&quot;:[&quot;cache&quot;,&nbsp;&quot;localStorage&quot;]}&#39;</p>
+  </div>
+</div>

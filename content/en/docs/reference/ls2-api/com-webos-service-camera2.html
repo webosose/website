@@ -1,0 +1,2206 @@
+---
+title: com.webos.service.camera2
+date: 2019-04-29
+toc: true
+---
+
+<div>
+  <H2>API Summary</h2>
+  <p style="text-align:justify">Provides an interface to capture and stream images from a camera that is connected to a webOS device.</p>
+  <p style="text-align:justify"><strong>Note: </strong>Currently, only V4L2 USB cameras are supported.</p>
+  <p style="text-align:justify">It&nbsp;provides the following features:</p>
+  <ul>
+    <li style="text-align:justify"><strong>Live Camera Preview </strong>&ndash; Continuously streams live data from the camera to the shared memory. The data on the shared memory can be used by applications either using the native shared memory API for Linux or through multimedia middleware framework like GStreamer.</li>
+    <li style="text-align:justify"><strong>Capture Images</strong> &ndash; Allows you to capture images in various modes. You can take single or multiple images based on the selected mode.&nbsp;</li>
+    <li style="text-align:justify"><strong>Control Camera Settings</strong> &ndash; Allows you to adjust the camera frame size, output format, and properties such as brightness, exposure, etc.</li>
+  </ul>
+  <p style="text-align:justify"><strong>API Usage:</strong></p>
+  <p>{{< figure src="/images/docs/reference/com-webos-service-camera2-api-usage.png" alt="com.webos.service.camera2 API usage" >}}</p>
+  <p>&nbsp;</p>
+</div>
+<h2>Overview of the API</h2>
+<div>
+  <p>N/A</p>
+</div>
+<h2>Methods</h2>
+<div>
+  <a id="getCameraList"></a>
+  <h3>getCameraList</h3>
+  <div>
+    <h4>Description</h4>
+    <p>Gets the list of cameras connected to the webOS device.</p>
+    <p>This method returns IDs for each of the cameras connected to the device.</p>
+    <h4>Parameters</h4>
+    <p>None</p>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>deviceList</td>
+            <td>Optional</td>
+            <td>Object array: <a href="#deviceList">deviceList</a></td>
+            <td>
+              <p>List of cameras connected to the device.</p>
+              <p>Returns an empty list if no camera is connected.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation. Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.camera2/getCameraList &#39;{}&#39;</p>
+      <p>&nbsp;</p>
+      <p>Response:</p>
+      <p>{&nbsp;&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&quot;deviceList&quot;:[&nbsp;&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;id&quot;:&quot;camera1&quot;<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+        &nbsp;&nbsp;&nbsp;],<br />
+        &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+        }
+      </p>
+    </div>
+  </div>
+</div>
+<a id="open "></a>
+<h3>open </h3>
+<div>
+  <h4>Description</h4>
+  <p>Establishes a connection between a camera and the webOS device, and returns the device handle for this connection instance.&nbsp;</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>id</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the camera. Obtained&nbsp;using the getCameraList() API.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>mode</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates whether the calling app can update the camera settings. Possible values are:</p>
+            <ul>
+              <li><strong>primary </strong>- Calling app can update the camera settings.</li>
+              <li><strong>secondary </strong>- Calling app cannot update&nbsp;the camera settings.</li>
+            </ul>
+            <p><strong>Note: </strong></p>
+            <ul>
+              <li>If no mode is selected, then the first call to open the camera gets primary access, and others are given secondary access.</li>
+              <li>If there are multiple calls with the mode set as primary, then only the first call gets primary access.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>handle</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Unique identifier for each connection instance.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Example 1: Open command with no mode</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.camera2/open &#39;{&quot;id&quot;: &quot;camera1&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:<br />
+      {
+    </p>
+    <p>&nbsp; &nbsp; &quot;returnValue&quot;: true,</p>
+    <p>&nbsp; &nbsp; &quot;handle&quot;: 9383</p>
+    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Example 2: Open command with the mode set to primary</p>
+    <p>#luna-send -n 1 -f luna://com.webos.service.camera2/open &#39;{&quot;id&quot;: &quot;camera1&quot;,&quot;mode&quot;:&quot;primary&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:<br />
+      {
+    </p>
+    <p>&nbsp; &nbsp; &quot;returnValue&quot;: true,</p>
+    <p>&nbsp; &nbsp; &quot;handle&quot;: 886</p>
+    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Example 3: [Error case]&nbsp;Open command with mode as primary (when an application has already opened with mode as primary)</p>
+    <p>#luna-send -n 1 -f luna://com.webos.service.camera2/open &#39;{&quot;id&quot;: &quot;camera1&quot;,&quot;mode&quot;:&quot;primary&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{</p>
+    <p>&nbsp; &nbsp; &quot;errorCode&quot;: 44,</p>
+    <p>&nbsp; &nbsp; &quot;returnValue&quot;: false,</p>
+    <p>&nbsp; &nbsp; &quot;errorText&quot;: &quot;Already another device opened as primary&quot;</p>
+    <p>}</p>
+  </div>
+</div>
+<a id="startPreview "></a>
+<h3>startPreview </h3>
+<div>
+  <h4>Description</h4>
+  <p>Starts the preview stream on the camera and writes live data to the shared memory.</p>
+  <p>The method returns a&nbsp;key for accessing the shared memory. This key is required for applications to access data from the shared memory.</p>
+  <p><strong>Note:</strong>&nbsp;Use the <strong>setFormat() </strong>method to set the size and format of the preview stream.&nbsp;</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>handle</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Handle for the device. Obtained using the&nbsp;open() API.&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>params</td>
+          <td>Required</td>
+          <td>Object: <a href="#camera_memory_source"> camera_memory_source</a></td>
+          <td>
+            <p>Defines the type and source of the memory.<br />
+              Currently, supports only shared memory.
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>key</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Key for memory access.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.camera2/startPreview &#39;{<br />
+      &nbsp; &nbsp; &quot;handle&quot;: 9383,<br />
+      &nbsp; &nbsp; &quot;params&quot;:<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;type&quot;:&quot;sharedmemory&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;source&quot;:&quot;0&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      }&#39;
+    </p>
+    <p>&nbsp;</p>
+    <p>Response:<br />
+      {<br />
+      &nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp;&nbsp;&nbsp; &quot;key&quot;: 7011<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="startCapture "></a>
+<h3>startCapture </h3>
+<div>
+  <h4>Description</h4>
+  <p>Starts capturing images using the camera.&nbsp;</p>
+  <p>The captured images are stored as separate files at the location given by the &quot;path&quot; parameter.</p>
+  <p>The default file name is of the format <em>PictureDDMMYYYY-HHMMSS, </em>where&nbsp;<em>DDMMYYYY-HHMMSS</em><em><strong> </strong></em>is current date and time. Example: /tmp/Picture11022019-204128.jpeg</p>
+  <p>By default,&nbsp;captured images are&nbsp;saved in the&nbsp;<strong>/tmp/ </strong>folder.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>handle</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Handle for the device. Obtained using&nbsp;the&nbsp;open() API.&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>params</td>
+          <td>Required</td>
+          <td>Object: <a href="#camera_capture_format">camera_capture_format</a></td>
+          <td>
+            <p>Size and format in which images are to be captured.&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>path</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Location where the captured images are to be saved.</p>
+            <p><strong>Note:</strong>&nbsp;The API returns an error (error code 45) if the path specified&nbsp;is read-only.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Example 1: Without specifying the location</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.camera2/startCapture &#39;{<br />
+      &nbsp; &nbsp; &nbsp;&quot;handle&quot;: 9383,<br />
+      &nbsp; &nbsp; &nbsp;&quot;params&quot;:<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;width&quot;: 640,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;height&quot;: 480,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;format&quot;: &quot;JPEG&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;mode&quot;:&quot;MODE_BURST&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;nimage&quot;:2<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      }&#39;
+    </p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Example 2 : With location specified</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.camera2/startCapture &#39;{<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;handle&quot;: 9383,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;params&quot;:<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;width&quot;: 640,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;height&quot;: 480,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;format&quot;: &quot;JPEG&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;mode&quot;:&quot;MODE_BURST&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;nimage&quot;:2<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&nbsp; &quot;path&quot;:&quot;/tmp/&quot;<br />
+      }&#39;
+    </p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Example 3: [Error case] With read-only location specified</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.camera2/startCapture &#39;{<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;handle&quot;: 9383,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;params&quot;:<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;width&quot;: 640,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;height&quot;: 480,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;format&quot;: &quot;JPEG&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;mode&quot;:&quot;MODE_BURST&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;nimage&quot;:2<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&nbsp; &quot;path&quot;:&quot;/sys/&quot;<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 45,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Cannot write at specified location&quot;<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="stopCapture "></a>
+<h3>stopCapture </h3>
+<div>
+  <h4>Description</h4>
+  <p>Stops camera from capturing images in the continuous mode.</p>
+  <p>That is, continuous mode&nbsp;captures frames in succession till the stopCapture() method is called.&nbsp;</p>
+  <ul></ul>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>handle</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Handle for the device. Obtained using the&nbsp;open() API.&nbsp;</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.camera2/stopCapture &#39;{&quot;handle&quot;: 9383}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="stopPreview"></a>
+<h3>stopPreview</h3>
+<div>
+  <h4>Description</h4>
+  <p>Stops the preview stream.</p>
+  <ul></ul>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>handle</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Handle for the device. Obtained using the&nbsp;open() API.&nbsp;</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.camera2/stopPreview &#39;{&quot;handle&quot;: 9383}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="close"></a>
+<h3>close</h3>
+<div>
+  <h4>Description</h4>
+  <p>Closes the connection between the camera and the webOS device.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>handle</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Handle for the device. Obtained using the&nbsp;open() API.&nbsp;</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.camera2/close &#39;{&quot;handle&quot;: 886}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="getInfo"></a>
+<h3>getInfo</h3>
+<div>
+  <h4>Description</h4>
+  <p>Gets&nbsp;information about a camera that is connected to the webOS device.&nbsp;</p>
+  <ul></ul>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>id</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>ID of the camera. Obtained&nbsp;using the getCameraList() API.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>info</td>
+          <td>Optional</td>
+          <td>Object array: <a href="#capture_info"> capture_info</a></td>
+          <td>
+            <p>Information about the camera.&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.camera2/getInfo &#39;{&quot;id&quot;: &quot;camera1&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;info&quot;:{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;type&quot;:&quot;camera&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;builtin&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;details&quot;:{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;video&quot;:{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;maxWidth&quot;:800,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;maxHeight&quot;:600,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;frameRate&quot;:30,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;format&quot;:&quot;YUV|JPEG|&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;picture&quot;:{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;maxWidth&quot;:800,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;maxHeight&quot;:600,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;format&quot;:&quot;YUV|JPEG|&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;name&quot;:&quot;Logitech,&nbsp;Inc.&quot;<br />
+      &nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="getProperties"></a>
+<h3>getProperties</h3>
+<div>
+  <h4>Description</h4>
+  <p>Gets the current settings of the connected camera device.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>handle</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Handle for the device. Obtained using the&nbsp;open() API.&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>params</td>
+          <td>Optional</td>
+          <td>String array</td>
+          <td>
+            <p>List of specific properties for which settings are&nbsp;returned.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>params</td>
+          <td>Optional</td>
+          <td>Object: <a href="#camera_properties"> camera_properties</a></td>
+          <td>
+            <p>Current properties of the camera.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Example 1:</p>
+    <p>#&nbsp;&nbsp;luna-send -n 1 -f luna://com.webos.service.camera2/getProperties &#39;{&quot;handle&quot;: 9383}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;params&quot;:{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;frequency&quot;:2,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;saturation&quot;:128,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;brightness&quot;:128,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;autoWhiteBalance&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;tilt&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;contrast&quot;:128,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;backlightCompensation&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;gain&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;gamma&quot;:128,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;hue&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;pan&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;sharpness&quot;:128,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;resolution&quot;:{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;YUV&quot;:[&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;640,480,30&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;160,120,30&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;176,144,30&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;320,176,30&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;320,240,30&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;352,288,30&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;432,240,30&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;544,288,30&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;640,360,30&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;752,416,30&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;800,448,30&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;800,600,30&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;864,480,30&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;960,544,30&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;960,720,30&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;1024,576,30&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;1184,656,30&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;1280,720,30&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;1280,960,30&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;JPEG&quot;:[&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;640,480,30&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;160,120,30&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;176,144,30&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;320,176,30&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;320,240,30&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;352,288,30&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;432,240,30&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;544,288,30&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;}<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Example 2:&nbsp;</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.camera2/getProperties &#39;{&quot;handle&quot;: 9383,&quot;params&quot;:[&quot;frequency&quot;,&quot;saturation&quot;]}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:<br />
+      {<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&quot;params&quot;: {<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;frequency&quot;: 2,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;saturation&quot;: 128<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="setProperties"></a>
+<h3>setProperties</h3>
+<div>
+  <h4>Description</h4>
+  <p>Sets the properties of the connected camera device.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>handle</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Handle for the device. Obtained using the&nbsp;open() API.&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>params</td>
+          <td>Required</td>
+          <td>Object: <a href="#camera_properties"> camera_properties</a></td>
+          <td>
+            <p>Properties of the camera. At least one value must be included.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.camera2/setProperties &#39;{<br />
+      &nbsp; &nbsp; &nbsp;&quot;handle&quot;: 9383,<br />
+      &nbsp; &nbsp; &nbsp;&quot;params&quot;:<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;contrast&quot;: 100<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;}<br />
+      }&#39;
+    </p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="setFormat"></a>
+<h3>setFormat</h3>
+<div>
+  <h4>Description</h4>
+  <p>Sets the size and format of the preview stream. This includes the height and width of the frame and the format in which data is to be written to the shared buffer.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>handle</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Camera handle obtained using the&nbsp;open() API.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>params</td>
+          <td>Required</td>
+          <td>Object: <a href="#camera_format"> camera_format</a></td>
+          <td>
+            <p>Size and&nbsp;format of&nbsp;the preview stream.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>#luna-send -n 1 -f luna://com.webos.service.camera2/setFormat &#39;{<br />
+      &nbsp; &nbsp; &nbsp;&quot;handle&quot;: 9383,<br />
+      &nbsp; &nbsp; &nbsp;&quot;params&quot;:<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;width&quot;: 640,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;height&quot;: 480,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;format&quot;: &quot;JPEG&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;fps&quot;: 30<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      }&#39;
+    </p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="getEventNotification"></a>
+<h3>getEventNotification</h3>
+<div>
+  <h4>Description</h4>
+  <p>Get a notification&nbsp;when there is a change in any of the camera properties&nbsp;and formats.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Subscribe for notifications.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Get notifications.</li>
+              <li><strong>false&nbsp;</strong>- Notifications are not required.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true </strong>- Indicates that the operation was successful.</li>
+              <li><strong>false </strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>id</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>ID of the camera.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>eventType</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates whether there is a change in camera format or properties.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>format </strong>- If there is a change in camera format.&nbsp;</li>
+              <li><strong>properties </strong>- If there is a change in camera properties.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>propertiesInfo</td>
+          <td>Optional</td>
+          <td>Object: <a href="#camera_properties"> camera_properties</a></td>
+          <td>
+            <p>Details of camera properties when eventType is <strong>properties</strong>.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>formatInfo</td>
+          <td>Optional</td>
+          <td>Object: <a href="#camera_format"> camera_format</a></td>
+          <td>
+            <p>Details of camera format when eventType is <strong>format</strong>.</p>
+            <p><strong>Note: </strong>It may not return all the values mentioned in the <strong>formatInfo </strong>object.&nbsp;&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>#luna-send -n 1 -f luna://com.webos.service.camera2/getEventNotification &#39;{&quot;subscribe&quot;:true}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response (If no event received):&nbsp;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Response (If properties are changed) :</p>
+    <p>{<br />
+      &nbsp;&nbsp; &nbsp;&quot;id&quot;: &quot;camera1&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&quot;eventType&quot;:&quot;properties&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp; &nbsp;&quot;propertiesInfo&quot;:&nbsp;<br />
+      &nbsp;&nbsp; &nbsp;{<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;frequency&quot;:0,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;saturation&quot;:255,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;brightness&quot;:255,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;autoWhiteBalance&quot;:false,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;contrast&quot;:100,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;whiteBalanceTemperature&quot;:0,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;gain&quot;:255,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;backlightCompensation&quot;:true,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;sharpness&quot;:255<br />
+      &nbsp;&nbsp; &nbsp;}<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Response (If format changed to JPEG) :<br />
+      {<br />
+      &nbsp;&nbsp; &nbsp;&quot;id&quot;: &quot;camera1&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&quot;eventType&quot;:&quot;format&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp; &nbsp;&quot;formatInfo&quot;:<br />
+      &nbsp;&nbsp; &nbsp;{&nbsp; &nbsp; &nbsp; &nbsp;<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;format&quot;:&quot;JPEG&quot;,<br />
+      &nbsp; &nbsp; }<br />
+      }
+    </p>
+  </div>
+</div>
+<div>
+  <h2>Objects</h2>
+  <a id="camera_properties"></a>
+  <h3>camera_properties</h3>
+  <p>Properties of the camera.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>frequency</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Camera power line frequency (0-2)</p>
+          </td>
+        </tr>
+        <tr>
+          <td>saturation</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Camera saturation (0-255)</p>
+          </td>
+        </tr>
+        <tr>
+          <td>brightness</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Camera brightness (0-255)</p>
+          </td>
+        </tr>
+        <tr>
+          <td>autoWhiteBalance</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Camera auto white balance on/off (true/false)</p>
+          </td>
+        </tr>
+        <tr>
+          <td>tilt</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Tilt value</p>
+          </td>
+        </tr>
+        <tr>
+          <td>contrast</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Camera contrast (0-255)</p>
+          </td>
+        </tr>
+        <tr>
+          <td>backlightCompensation</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Backlight compensation value(true/false)</p>
+          </td>
+        </tr>
+        <tr>
+          <td>gain</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Camera gain (0-255)</p>
+          </td>
+        </tr>
+        <tr>
+          <td>gamma</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Camera gamma (1-255)</p>
+          </td>
+        </tr>
+        <tr>
+          <td>hue</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Camera hue (-180 ~ 180)</p>
+          </td>
+        </tr>
+        <tr>
+          <td>pan</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Pan value(0-255)</p>
+          </td>
+        </tr>
+        <tr>
+          <td>sharpness</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Camera sharpness (0-255)</p>
+          </td>
+        </tr>
+        <tr>
+          <td>resolution</td>
+          <td>Optional</td>
+          <td>Object</td>
+          <td>
+            <p>Supported format resolutions in string array format.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>whiteBalanceTemperature</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>White balance temperature (0-10000)</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a id="deviceList"></a>
+  <h3>deviceList</h3>
+  <p>List of cameras connected to the webOS device.&nbsp;</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>id</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Unique camera identifier</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a id="camera_format"></a>
+  <h3>camera_format</h3>
+  <p>Size and format for&nbsp;the preview stream and images.&nbsp;</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>width</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Width of the image to be captured. Default width is 640 pixels.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>height</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Height of the image to be captured. Default value is 480 pixels.&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>format</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Format of the image. Possible values are:</p>
+            <ul>
+              <li>JPEG</li>
+              <li>YUV</li>
+            </ul>
+            <p>The default value is YUV.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>fps</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Frames per second.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a id="capture_info"></a>
+  <h3>capture_info</h3>
+  <p>Information about the camera.&nbsp;</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>details</td>
+          <td>Optional</td>
+          <td>Object: <a href="#details"> details</a></td>
+          <td>
+            <p>Video and picture details</p>
+          </td>
+        </tr>
+        <tr>
+          <td>name</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Name of the camera</p>
+          </td>
+        </tr>
+        <tr>
+          <td>type</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Type of device. Possible values are:</p>
+            <ul>
+              <li>camera</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>builtin</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Denotes if the camera is built-in or not</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a id="picture"></a>
+  <h3>picture</h3>
+  <p>Image size and format.&nbsp;</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>maxWidth</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Width value</p>
+          </td>
+        </tr>
+        <tr>
+          <td>maxHeight</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Height&nbsp;value</p>
+          </td>
+        </tr>
+        <tr>
+          <td>format</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Supported formats</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a id="video"></a>
+  <h3>video</h3>
+  <p>Video size and format.&nbsp;</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>maxWidth</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Width value</p>
+          </td>
+        </tr>
+        <tr>
+          <td>maxHeight</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Height value</p>
+          </td>
+        </tr>
+        <tr>
+          <td>format</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Gives the supported&nbsp;format for video</p>
+          </td>
+        </tr>
+        <tr>
+          <td>frameRate</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Frame rate for video</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a id="camera_memory_source"></a>
+  <h3>camera_memory_source</h3>
+  <p>Type of memory for preview data to be written.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>type</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Type of memory. Currently supports only shared memory.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>source</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>ID&nbsp;of memory source, if the client has created the memory and wants data to be written at that specific address.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a id="details"></a>
+  <h3>details</h3>
+  <p>Picture and video details of the camera device.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>video</td>
+          <td>Optional</td>
+          <td>Object: <a href="#video"> video</a></td>
+          <td>
+            <p>Video info</p>
+          </td>
+        </tr>
+        <tr>
+          <td>picture</td>
+          <td>Optional</td>
+          <td>Object: <a href="#picture"> picture</a></td>
+          <td>
+            <p>Image info</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a id="camera_capture_format"></a>
+  <h3>camera_capture_format</h3>
+  <p>Size and format in which images are to be captured.&nbsp;</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>width</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Width of the image to be captured. Default width is 640 pixels.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>height</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Height of the image to be captured. Default value is 480 pixels.&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>format</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Format of the image. Possible values are:</p>
+            <ul>
+              <li>JPEG</li>
+              <li>YUV</li>
+            </ul>
+            <p>The default value is YUV.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>nimage</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Number of images to be captured. This field is required for capturing images in burst mode.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>mode</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Mode in which the image is to be captured. Possible values are:</p>
+            <ul>
+              <li>MODE_ONESHOT - For one-shot mode.&nbsp;</li>
+              <li>MODE_BURST - For&nbsp;burst mode.&nbsp;</li>
+              <li>MODE_CONTINUOUS - For continuous mode.&nbsp;</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<h2>API Error Codes Reference</h2>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <tbody>
+      <tr>
+        <th width="15%">
+          <p>Error Code</p>
+        </th>
+        <th width="30%">
+          <p>Error Text</p>
+        </th>
+        <th width="55%">
+          <p>Error Description</p>
+        </th>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Cannot close device</td>
+        <td>
+          <p>Device cannot be closed.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Cannot open device</td>
+        <td>
+          <p>Device cannot be opened.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>Cannot start device</td>
+        <td>
+          <p>Preview stream cannot be started.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>Cannot stop device</td>
+        <td>
+          <p>Preview stream cannot be stopped.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>Device already closed</td>
+        <td>
+          <p>Device is already closed.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td>Device is already open</td>
+        <td>
+          <p>Device is already opened.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td>Device is already started</td>
+        <td>
+          <p>Preview stream is already started.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>10</td>
+        <td>Device is already stopped</td>
+        <td>
+          <p>Preview stream is already stopped.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>11</td>
+        <td>Device not opened</td>
+        <td>
+          <p>Device is not opened.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>12</td>
+        <td>Device not started</td>
+        <td>
+          <p>Preview stream is not yet started.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>13</td>
+        <td>No Device</td>
+        <td>
+          <p>There is no device connected corresponding to input ID.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>19</td>
+        <td>Parsing error</td>
+        <td>
+          <p>Luna command parsing error.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>22</td>
+        <td>Param missing</td>
+        <td>
+          <p>One or more parameters are missing in luna command.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>23</td>
+        <td>Request Timeout</td>
+        <td>
+          <p>Requested operation&nbsp;is timed out.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>29</td>
+        <td>Device unsupported</td>
+        <td>
+          <p>Device is not supported.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>30</td>
+        <td>Format unsupported</td>
+        <td>
+          <p>Format is not supported.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>32</td>
+        <td>Wrong param</td>
+        <td>
+          <p>Input parameter is incorrect.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>38</td>
+        <td>Unknown error</td>
+        <td>
+          <p>Unknown error.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>44</td>
+        <td>Already another device opened as primary</td>
+        <td>
+          <p>Only one application can open a camera device as primary. Other application will not be allowed to open camera if an application has already opened with primary priority.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>45</td>
+        <td>Cannot write at specified location</td>
+        <td>
+          <p>Cannot write at the specified location.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

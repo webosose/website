@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+{{ partial "head.html" . }}
+
+<body class="has-navbar-fixed-top">
+  <section class="gen-wrapper">
+    {{ partial "header.html" . }}
+    <!--{{ partialCached "hero.html" . .Section }}-->
+    {{ partial "docs/top-menu.html" . }}
+    <div class="container is-fluid">
+      <div class="columns verticals">
+        {{ partial "docs/sidebar.html" . }}
+        <div class="content-container column is-three-fifths-desktop is-two-thirds-tablet">
+          <div class="content-main content">
+            {{ partial "breadcrumb.html" . }}
+            <h1 class="title">{{ .Title }}</h1>
+            {{ block "main" . }}{{ end }}
+          </div>
+          {{ partialCached "license-footer.html" . }}
+        </div>
+        {{ partial "toc.html" . }}
+      </div>
+    </div>
+    {{ partial "scripts-footer.html" . }}
+    {{ partialCached "footer.html" . }}
+    {{ if and (isset .Params "file_download") (.Params.file_download) }}
+    {{ partial "docs/file-download-terms.html" . }}
+    {{ end }}
+  </section>
+</body>
+
+</html>

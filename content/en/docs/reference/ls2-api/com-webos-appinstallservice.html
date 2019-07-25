@@ -1,0 +1,736 @@
+---
+title: com.webos.appInstallService
+date: 2019-04-23
+toc: true
+---
+<div>
+  <h2>API Summary</h2>
+  <p>This API carries out the application installation and provides information of the application being installed.&nbsp;</p>
+</div>
+<h2>Overview of the API</h2>
+<div>
+  <p>NA</p>
+</div>
+<h2>Methods</h2>
+<h3>install</h3>
+<div>
+  <h4>Description</h4>
+  <p>Used to install an app to a device.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>id</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>ID of an app to be installed.</p>
+            <p><strong>Note</strong>: The ID must exist in be unique.&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Subscribe for notifications.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- To enable subscribe.</li>
+              <li><strong>false&nbsp;</strong>- To disable subscribe.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>ipkUrl</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The path of an ipk file to be installed.</p>
+            <p><strong>Note</strong>: The path must be absolute.</p>
+            <p>For example,&nbsp;&quot;<em>/media/internal/downloads/com.yourdomain.app.ipk</em>&quot;</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if&nbsp;subscribed to get notified.</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Subscription Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>id</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>ID of an app to be installed.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>statusValue</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>The current install status.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>details</td>
+          <td>Required</td>
+          <td>Object: <a href="#details"> details</a></td>
+          <td>
+            <p>The&nbsp;details&nbsp;object indicates the detailed information of installation progress.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>installDataPath</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Temporary data path that is being used during installation.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>-1</td>
+          <td>General error text is displayed such as &quot;fail to extract ipk file&quot;, &quot;fail to install service file&quot;, &quot;unable to call ApplicationInstallerUtility&quot; and so on.</td>
+          <td>
+            <p>General error during app installation request.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-2</td>
+          <td>The same error text will be displayed as a system generates. The error occurs when an invalid parameter type or an invalid parameter value is passed.</td>
+          <td>
+            <p>Invalid parameter.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<h4>Example</h4>
+<div class="code-bg-grey">
+  <p>luna-send -i -f luna://com.webos.appInstallService/install</p>
+  <p>&#39;{</p>
+  <p>&nbsp;&nbsp;&nbsp; &quot;id&quot;:&quot;com.test.app.hello&quot;,</p>
+  <p>&nbsp;&nbsp;&nbsp; &quot;ipkUrl&quot;:&quot;/media/internal/downloads/com.test.app.hello_0.0.1_all.ipk&quot;,</p>
+  <p>&nbsp;&nbsp;&nbsp; &quot;subscribe&quot;:true</p>
+  <p>}&#39;</p>
+  <p>// Example response for a successful call:</p>
+  <p>{</p>
+  <p>&nbsp;&nbsp;&nbsp; &quot;subscribed&quot;: true,</p>
+  <p>&nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true</p>
+  <p>}</p>
+  <p>// Example response for a failed call:</p>
+  <p>{</p>
+  <p>&nbsp;&nbsp;&nbsp; &quot;subscribed&quot;: false,</p>
+  <p>&nbsp;&nbsp;&nbsp; &quot;errorCode&quot;: -2,</p>
+  <p>&nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: false,</p>
+  <p>&nbsp;&nbsp;&nbsp; &quot;errorText&quot;: &quot;Missing required key is required but it is missing&quot;</p>
+  <p>}</p>
+</div>
+<h3>remove</h3>
+<div>
+  <h4>Description</h4>
+  <p>Used to remove an installed app from a device.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>id</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>ID of an app to be removed.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Subscribe for notifications.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- To enable subscribe</li>
+              <li><strong>false&nbsp;</strong>- To disable subscribe</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if&nbsp;subscribed to get notified.</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Subscription Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>id</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>ID of an app to be removed.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>statusValue</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>The current remove status.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>details</td>
+          <td>Required</td>
+          <td>Object: <a href="#details"> details</a></td>
+          <td>
+            <p>The&nbsp;<strong>details</strong>&nbsp;object indicates the detailed information of remove progress.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>-2</td>
+          <td>The same error text will be displayed as a system generates. The error occurs when an invalid parameter type or an invalid parameter value is passed.</td>
+          <td>
+            <p>Invalid parameter.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-7</td>
+          <td>The same error text will be displayed as a system or another service generates. The error text is passed when an error occurs during removing an app.</td>
+          <td>
+            <p>Remove operation error during app removal.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>luna-send -i -f luna://com.webos.appInstallService/remove &#39;{&quot;id&quot;:&quot;com.test.app.hello&quot;, &quot;subscribe&quot;:true}&#39;</p>
+    <p>&nbsp;</p>
+    <p>// Example response for a successful call:</p>
+    <p>{</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;subscribed&quot;: true,</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true</p>
+    <p>}</p>
+    <p>&nbsp;</p>
+    <p>// Example response for a failed call:</p>
+    <p>{</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;subscribed&quot;: false,</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;errorCode&quot;: -2,</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: false,</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;errorText&quot;: &quot;Missing required key is required but it is missing&quot;</p>
+    <p>}</p>
+  </div>
+</div>
+<h3>status</h3>
+<div>
+  <h4>Description</h4>
+  <p>Used to monitor the status of all installed and removed&nbsp;apps that are operating in the com.webos.appInstallService.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Subscribe for notifications.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- To enable subscribe</li>
+              <li><strong>false&nbsp;</strong>- To disable subscribe</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if&nbsp;subscribed to get notified.</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>status</td>
+          <td>Required</td>
+          <td>Object: <a href="#status"> status</a></td>
+          <td>
+            <p>The&nbsp;status&nbsp;indicates all apps lists that are currently being installed and removed.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Subscription Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>id</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>ID of an app to be installed or removed.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>statusValue</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>The current status.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>details</td>
+          <td>Required</td>
+          <td>Object: <a href="#details"> details</a></td>
+          <td>
+            <p>The&nbsp;details&nbsp;object indicates the detailed information of status.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>installDataPath</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Temporary data path that is being used during installation.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>-2</td>
+          <td>The same error text will be displayed as a system generates. The error occurs when an invalid parameter type or an invalid parameter value is passed.</td>
+          <td>
+            <p>Invalid parameter.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>// Example response for a successful call:</p>
+    <p>luna-send -n 1 -f luna://com.webos.appInstallService/status &#39;{}&#39;</p>
+    <p>{</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;subscribed&quot;: true,</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;status&quot;: {</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;apps&quot;: [</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ]</p>
+    <p>&nbsp;&nbsp;&nbsp; },</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true</p>
+    <p>}</p>
+  </div>
+</div>
+<div>
+  <h2>Objects</h2>
+  <a id="details"></a>
+  <h3>details</h3>
+  <p>The object describes the progress on all operations that are managed by the com.webos.appInstallService.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>packageId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Package ID extracted from a control file within an ipk file.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>verified</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>This indicates whether an app is verified by App Server or not. If this is false, an app is to be installed internally such as a secure developer mode.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>progress</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The download progress of an ipk file from 0 to 100.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>installBasePath</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The base path where an app is installed.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>state</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>State of the requested progress.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>update</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>This indicates whether the operation is to update an app or not when installing an app.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>client</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Client who calls the operation request.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a id="status"></a>
+  <h3>status</h3>
+  <p>The object contains all operations&#39; status that is managed by the com.webos.appInstallService.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>apps</td>
+          <td>Required</td>
+          <td>Object array: <a href="#details"> details</a></td>
+          <td>
+            <p>The&nbsp;<strong>details</strong>&nbsp;object indicates the detailed information of all operation progress.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

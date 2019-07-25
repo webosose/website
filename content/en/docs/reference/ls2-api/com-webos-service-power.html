@@ -1,0 +1,746 @@
+---
+title: com.webos.service.power
+date: 2019-04-25
+toc: true
+---
+
+<div>
+  <H2>API Summary</h2>
+  <p>The com.webos.service.power service is provided by the sleep daemon (sleepd), and allows applications to interact with (e.g. defer or prevent) the&nbsp;system suspend/resume cycle.</p>
+</div>
+<h2>Overview of the API</h2>
+<div>
+  <p><u><strong>Shutdown Process:</strong></u></p>
+  <p>The sleep daemon (sleepd) also transitions the system (and ultimately the device) from &quot;On&quot; to &quot;Off&quot;. Clients that wish to be notified of this transition and optionally defer or prevent it must first register with sleepd using the &quot;<strong>shutdown/shutdownApplicationsRegister</strong>&quot; or &quot;<strong>shutdown/ShutdownServicesRegister</strong>&quot; method.</p>
+  <p>When sleepd receives a &quot;<strong>shutdown/initiate</strong>&quot; request, it will transition to the &quot;ShutdownApplications&quot; state.</p>
+  <p>In the &quot;ShutdownApplications&quot; state, sleepd will broadcast the &quot;<strong>ShutdownApplications</strong>&quot; signal to all clients which have registered for this signal using the &quot;<strong>shutdown/shutdownApplicationsRegister</strong>&quot; method, and will wait a maximum of 15 seconds for all responses.&nbsp;Each registered client should respond back&nbsp;with an ACK using the &quot;<strong>shutdown/shutdownApplicationsAck</strong>&quot; method.&nbsp;As soon as all clients respond back with an ACK, or the &quot;ShutdownApplications&quot; timeout expires, sleepd will transition to the&nbsp;&quot;ShutdownServices&quot; state.</p>
+  <p>In the &quot;ShutdownServices&quot; state, sleepd will broadcast the &quot;<strong>ShutdownServices</strong>&quot; signal to all clients which have registered for this signal using the &quot;<strong>shutdown/shutdownServicesRegister</strong>&quot; method, and will wait a maximum of 15 seconds for all responses.&nbsp;Each registered client should respond back&nbsp;with an ACK using the &quot;<strong>shutdown/shutdownServicesAck</strong>&quot; method.&nbsp;As soon as all clients respond back with an ACK, or the &quot;ShutdownServices&quot; timeout expires, sleepd will reply to the caller of the &quot;<strong>shutdown/initiate</strong>&quot; request.</p>
+  <p>After receiving the reply to the &quot;<strong>shutdown/initiate</strong>&quot; request, the&nbsp;caller&nbsp;should then call &quot;<strong>shutdown/machineOff</strong>&quot; or &quot;<strong>shutdown/machineReboot</strong>&quot; to forcefully shut down or reboot the device, respectively.</p>
+</div>
+<h2>Methods</h2>
+<a id="shutdown/initiate"></a>
+<h3>shutdown/initiate</h3>
+<div>
+  <h4>Description</h4>
+  <p>Starts the shutdown process - sending the shutdownApplications and shutdownServices signals to all the registered apps/services. Once the shutdown process completes and the system decides it can shutdown, this call returns.</p>
+  <p><strong>Note</strong>: This call does not do the actual shutdown , for that you need to call <strong>machineOff </strong>method.</p>
+  <h4>Parameters</h4>
+  <p>None</p>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>success</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Always <strong>true</strong></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 luna://com.webos.service.power/shutdown/initiate &#39;{}&#39;</p>
+    <p>Response:</p>
+    <p>{ &quot;success&quot;:true }<br /></p>
+  </div>
+</div>
+<a id="shutdown/machineOff"></a>
+<h3>shutdown/machineOff</h3>
+<div>
+  <h4>Description</h4>
+  <p>Shuts down the system forcefully</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>reason</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The reason why caller wants to shutdown the system</p>
+            <p>Possible reasons are:</p>
+            <ul>
+              <li><strong>remoteKey&nbsp;</strong>- Power off using remote control</li>
+              <li><strong>offTimer&nbsp;</strong>- Power off using OFF timer</li>
+              <li><strong>localKey&nbsp;</strong>- Power off using using the devices hardware power on/off key</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check&nbsp; &quot;errorText&quot; fields for details</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>-1</td>
+          <td>Invalid parameters.</td>
+          <td>
+            <p>The <strong>reason</strong> parameter was not provided</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 luna://com.webos.service.power/shutdown/machineOff &#39;{&quot;reason&quot;:&quot;power off&quot;}&#39;<br />
+      <br />
+      Response:
+    </p>
+    <p>{ &quot;returnValue&quot;:true }</p>
+  </div>
+</div>
+<a id="shutdown/machineReboot"></a>
+<h3>shutdown/machineReboot</h3>
+<div>
+  <h4>Description</h4>
+  <p>Reboots the system forcefully.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>reason</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The reason why caller wants to reboot the system</p>
+            <p>Possible reasons are:</p>
+            <ul>
+              <li><strong>reset&nbsp;</strong>-&nbsp;Reboot after device was reset</li>
+              <li><strong>ota&nbsp;</strong>- Reboot after OTA update completion</li>
+              <li><strong>SwDownload&nbsp;</strong>- Reboot after software download</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check&nbsp; &quot;errorText&quot; fields for details</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>-1</td>
+          <td>Invalid parameters</td>
+          <td>
+            <p>The <strong>reason</strong> parameter was not provided</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 luna://com.webos.service.power/shutdown/machineReboot &#39;{&quot;reason&quot;:&quot;none&quot;}&#39;<br />
+      <br />
+      Response:
+    </p>
+    <p>{ &quot;returnValue&quot;:true }</p>
+  </div>
+</div>
+<a id="shutdown/shutdownApplicationsRegister"></a>
+<h3>shutdown/shutdownApplicationsRegister</h3>
+<div>
+  <h4>Description</h4>
+  <p>Register an application for the &quot;shutdownApplications&quot; signal. The caller provides a unique name for the application with this method.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>clientName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>A unique name which the caller decides for the application</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>clientId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>This is a unique token generated for this client by this method, which should be used by the caller for acking the shutdownApplications signal later.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check&nbsp; &quot;errorText&quot; fields for details</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>-1</td>
+          <td>Invalid parameters</td>
+          <td>
+            <p>The <strong>clientName</strong> parameter was not provided</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 luna://com.webos.service.power/shutdown/shutdownApplicationsRegister &#39;{&quot;clientName&quot;:&quot;facebook app&quot;}&#39;<br />
+      &nbsp;
+    </p>
+    <p>Response:</p>
+    <p>{ &quot;returnValue&quot;:true, &quot;clientId&quot;:&quot;/var/run/ls2/T4fb64.4&quot; }</p>
+  </div>
+</div>
+<a id="shutdown/shutdownApplicationsAck"></a>
+<h3>shutdown/shutdownApplicationsAck</h3>
+<div>
+  <h4>Description</h4>
+  <p>Sets the client&#39;s response as ACK for the &quot;shutdownApplications&quot; signal and trigger the dispatcher for the shutdown state machine, so that if the total client ACK count is equal to the total number of clients, it can proceed to the next state.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>clientId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The unique token for this client which was generated in a previous <strong>shutdownApplicationsRegister</strong> call.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check&nbsp; &quot;errorText&quot; fields for details</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>-1</td>
+          <td>Invalid parameters</td>
+          <td>
+            <p>The <strong>clientId</strong> parameter was not provided</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 luna://com.webos.service.power/shutdown/shutdownApplicationsAck &#39;{&quot;clientId&quot;:&quot;/var/run/ls2/T4fb64.4&quot;}&#39;</p>
+  </div>
+</div>
+<a id="shutdown/shutdownServicesRegister"></a>
+<h3>shutdown/shutdownServicesRegister</h3>
+<div>
+  <h4>Description</h4>
+  <p>Register an application for the &quot;shutdownServices&quot; signal. The caller provides a unique name for the application with this method.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>clientName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>A unique name which the caller decides for the application</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>clientId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>This is a unique token generated for this client by this method, which should be used by the caller for acking the shutdownApplications signal later.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check&nbsp; &quot;errorText&quot; fields for details</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>-1</td>
+          <td>Invalid parameters</td>
+          <td>
+            <p>The <strong>clientName</strong> parameter was not provided</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 luna://com.webos.service.power/shutdown/shutdownServicesRegister &#39;{&quot;clientName&quot;:&quot;facebook service&quot;}&#39;</p>
+    <p>Response:</p>
+    <p>{ &quot;returnValue&quot;:true, &quot;clientId&quot;:&quot;/var/run/ls2/T4fb64.5&quot; }</p>
+  </div>
+</div>
+<a id="shutdown/shutdownServicesAck"></a>
+<h3>shutdown/shutdownServicesAck</h3>
+<div>
+  <h4>Description</h4>
+  <p>Sets the client&#39;s response as ACK for the &quot;shutdownServices&quot; signal and trigger the dispatcher for the shutdown state machine, so that if the total client ACK count is equal to the total number of clients, it can proceed to the next state.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>clientId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The unique token for this client which was generated in a previous <strong>shutdownServicesRegister</strong> call.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check&nbsp; &quot;errorText&quot; fields for details</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>-1</td>
+          <td>Invalid parameters</td>
+          <td>
+            <p>The <strong>clientId </strong>parameter was not provided</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>luna-send -n 1 luna://com.webos.service.power/shutdown/shutdownServicesAck &#39;{&quot;clientId&quot;:&quot;/var/run/ls2/T4fb64.5&quot;}&#39;</p>
+    <p>Response:</p>
+    <p>{ &quot;returnValue&quot;:true }</p>
+  </div>
+</div>
+<div>
+  <a id="shutdown/shutdownServicesAck"></a>
+  <h2>Signals/Events</h2>
+  <h3>shutdown/shutdownApplications</h3>
+  <p>This is the signal sent out by the sleepd daemon when the shutdown process starts. The daemon expects to get a response from all the registered applications if they are ready for the system shutdown.</p>
+  <h3>shutdown/shutdownServices</h3>
+  <p>This is the signal sent out by the sleepd daemon when the shutdown process starts. The daemon expects to get a response&nbsp;from all the registered services if they are ready for the system shutdown.</p>
+</div>

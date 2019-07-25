@@ -1,0 +1,830 @@
+---
+title: com.webos.service.tts
+date: 2019-04-23
+toc: true
+---
+
+<div>
+  <H2>API Summary</h2>
+  <p>The TTS (Text-to-Speech) service converts plain language text into speech output.&nbsp;The synthesized speech can be used by applications such as voice assistants.&nbsp;</p>
+</div>
+<h2>Overview of the API</h2>
+<div>
+  <p>Before using the service, you need to enable Google Cloud Text-to-speech API on the device.&nbsp;</p>
+  <ol>
+    <li>Log in to <a href="https://accounts.google.com">Google Cloud Account</a>.&nbsp;</li>
+    <li>
+      Go to <a href="https://console.cloud.google.com">Google Cloud Console</a>&nbsp;and perform the following steps:
+      <ol start="1" style="list-style-type:lower-alpha">
+        <li>Create a new project.<br />
+          <strong>Note:</strong>&nbsp;You can also use an existing project&nbsp;to configure the API.&nbsp;
+        </li>
+        <li>Enable <strong>Cloud Text-to-Speech API</strong>. (<a href="https://cloud.google.com/apis/docs/enable-disable-apis">See instructions</a>.)</li>
+        <li>
+          Create the credentials file.
+          <ol start="1" style="list-style-type:lower-roman">
+            <li>From the APIs and Services page, click <strong>Credentials</strong>.&nbsp;</li>
+            <li>Click <strong>Create Credentials</strong>, and select <strong>Service account key</strong>.&nbsp;</li>
+            <li>Select a <strong>Service account</strong> and key type as <strong>JSON</strong>.</li>
+            <li>Click <strong>Create</strong>. The JSON file containing the credentials is downloaded to your system.</li>
+            <li>Rename the&nbsp;file to <strong>google_tts_credentials.json</strong>.</li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li>
+      Copy the credentials.json file to the target device.
+      <ol start="1" style="list-style-type:lower-alpha">
+        <li>
+          From the device terminal, run the following command:
+          <ul>
+            <li><strong>mkdir&nbsp;/etc/google</strong></li>
+          </ul>
+        </li>
+        <li>Copy the&nbsp;credentials file&nbsp;to <strong>/etc/google/google_tts_credentials.json.</strong></li>
+      </ol>
+    </li>
+  </ol>
+</div>
+<h2>Methods</h2>
+<div>
+  <h3>speak</h3>
+  <div>
+    <h4>Description</h4>
+    <p>Reads out an input text in the language of your choice.</p>
+    <p>It generates a series of audio and outputs sound until the complete speech signal for the input text is synthesized.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>text</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Text to be converted.</p>
+              <p>The expected character encoding is platform-endian UTF-8.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>clear</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates if the current text is to be cleared. Possible values are:</p>
+              <ul>
+                <li><strong>true</strong> -&nbsp;Stops processing the current text, and processes the next one.</li>
+                <li><strong>false</strong> -&nbsp;Processes the next text only after completing the current one.&nbsp;</li>
+              </ul>
+              <p><strong>Default value:</strong>&nbsp;false</p>
+            </td>
+          </tr>
+          <tr>
+            <td>subscribe</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Subscribe for notifications.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Get notifications.</li>
+                <li><strong>false&nbsp;</strong>- Notifications are not required.</li>
+              </ul>
+              <p>​<strong>Default value:</strong>&nbsp;false</p>
+            </td>
+          </tr>
+          <tr>
+            <td>language</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Language in which the input text is read out.&nbsp;</p>
+              <p>Default language is English (en-US).&nbsp;</p>
+              <p><strong>Note:</strong>&nbsp;To get the list supported languages, use the <strong>getAvailableLanguages()</strong> method.&nbsp;</p>
+            </td>
+          </tr>
+          <tr>
+            <td>appID</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Application ID&nbsp;(e.g. com.webos.app.voice).</p>
+            </td>
+          </tr>
+          <tr>
+            <td>feedback</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates if a unique identifier is to be returned for the input text. Possible values are:&nbsp;</p>
+              <ul>
+                <li><strong>true</strong> - Provides msgIDs for texts.&nbsp;</li>
+                <li><strong>false - </strong>&nbsp;Does not provide identifiers for texts.&nbsp;</li>
+              </ul>
+              <p><strong>Default value:&nbsp;</strong>false</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation. Possible values are:</p>
+              <ul>
+                <li><strong>true </strong>-&nbsp;Indicates that the operation was successful.</li>
+                <li><strong>false </strong>-&nbsp;Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>msgID</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Unique identifier representing the input text. Contains 12 characters.</p>
+              <p>This value is returned only if <strong>feedback</strong>&nbsp;is set to <strong>true</strong>.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>language</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Language in which the input text is processed.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Subscription Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>msgStatus</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Status of the message (input text). Possible values are:&nbsp;</p>
+              <ul>
+                <li><strong>done</strong>: Processing of the message is completed.</li>
+                <li><strong>stopped</strong>: Message being played is interrupted by another message.</li>
+                <li><strong>canceled</strong>: Canceled by another message before the voice output of the current message began.</li>
+                <li><strong>error</strong>: Internal error.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>msgID</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Unique identifier representing the input text. Contains 12 characters.</p>
+              <p>This value is returned only if&nbsp;<strong>feedback</strong>&nbsp;is set to&nbsp;<strong>true</strong>.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation. Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div class="code-bg-grey">
+      <p>Example 1:</p>
+      <p># luna-send -n 1 -f luna://com.webos.service.tts/speak &#39;{&quot;text&quot; : &quot;text to speech test&quot;, &quot;clear&quot; : true}&#39;</p>
+      <p>&nbsp;</p>
+      <p>Response:</p>
+      <p>{&nbsp;&nbsp;<br />
+        &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+        }
+      </p>
+      <p>&nbsp;</p>
+      <p>Example 2:</p>
+      <p># luna-send -n 1 -f luna://com.webos.service.tts/speak &#39;{&quot;text&quot; : &quot;English. TTS API test.&quot;, &quot;language&quot; : &quot;en-US&quot;}&#39;</p>
+      <p>&nbsp;</p>
+      <p>Response:</p>
+      <p>{&nbsp;&nbsp;<br />
+        &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+        }
+      </p>
+      <p>&nbsp;</p>
+      <p>Example 3:</p>
+      <p># luna-send -n 1 -f luna://com.webos.service.tts/speak &#39;{&quot;text&quot; : &quot;English. TTS API test.&quot;, &quot;clear&quot; : true, &quot;feedback&quot; : true}&#39;</p>
+      <p>&nbsp;</p>
+      <p>Response:</p>
+      <p>{&nbsp;&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&quot;msgID&quot;:&quot;47709fc00000&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+        }
+      </p>
+    </div>
+  </div>
+</div>
+<h3>stop</h3>
+<div>
+  <h4>Description</h4>
+  <p>Stops the text-to-speech processing immediately and ignores the pending text on the buffer.&nbsp;</p>
+  <p><strong>Note</strong>:</p>
+  <ul>
+    <li>There could be some noise in the output when the service is stopped abruptly. To avoid this, you can set the <strong>fadeOut</strong>&nbsp;parameter to <strong>true</strong>. This will gradually reduce the&nbsp;output sound to zero&nbsp;without any noise. &nbsp;</li>
+    <li>If both <strong>appID </strong>and <strong>msgID</strong> are passed in the API call, it will consider only the <strong>msgID</strong> and stop the service based on this value.&nbsp;</li>
+  </ul>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>appID</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Application ID passed in&nbsp;the speak() method.&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>msgID</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier representing the text.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>fadeOut</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Reduces the output sound without any noise. Possible values are:&nbsp;</p>
+            <ul>
+              <li><strong>true - </strong>Gradually reduces the output sound to zero.&nbsp;</li>
+              <li><strong>false</strong>&nbsp;- Immediately stops the speech processing. This can result in unwanted noise.&nbsp;</li>
+            </ul>
+            <p><strong>Default value</strong>: true&nbsp;</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation. Possible values are:</p>
+            <ul>
+              <li><strong>true </strong>-&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false</strong> -&nbsp;Indicates that the operation failed. Check the&nbsp;<strong>errorCode</strong>&nbsp;and <strong>errorText</strong>&nbsp;fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Example 1: With no parameters</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.tts/stop &#39;{}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Example 2: Using appID</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.tts/stop &#39;{&quot;appID&quot; : &quot;com.webos.app.tts&quot;, &quot;fadeOut&quot;:true}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Example 3: Using msgID</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.tts/stop &#39;{&quot;msgID&quot; : &quot;2a487d800032&quot;, &quot;fadeOut&quot;:true}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Example 4: To stop messages from a particular&nbsp;app, when multiple app IDs are passed</p>
+    <p style="margin-left: 40px;">Consider that the following commands were entered previously:</p>
+    <p style="margin-left: 40px;"># luna-send -n 1 -f luna://com.webos.service.tts/speak &#39;{&quot;text&quot; : &quot;First test message.&quot;, &quot;clear&quot; : false, &quot;appID&quot; : &quot;TestEven&quot;}&#39;</p>
+    <p style="margin-left: 40px;"># luna-send -n 1 -f luna://com.webos.service.tts/speak &#39;{&quot;text&quot; : &quot;Second&nbsp;test message.&quot;, &quot;clear&quot; : false, &quot;appID&quot; : &quot;TestOdd&quot;}&#39;</p>
+    <p style="margin-left: 40px;"># luna-send -n 1 -f luna://com.webos.service.tts/speak &#39;{&quot;text&quot; : &quot;Third&nbsp;test message.&quot;, &quot;clear&quot; : false, &quot;appID&quot; : &quot;TestEven&quot;}&#39;</p>
+    <p style="margin-left: 40px;"># luna-send -n 1 -f luna://com.webos.service.tts/speak &#39;{&quot;text&quot; : &quot;Fourth test message.&quot;, &quot;clear&quot; : false, &quot;appID&quot; : &quot;TestOdd&quot;}&#39;</p>
+    <p style="margin-left: 40px;"># luna-send -n 1 -f luna://com.webos.service.tts/speak &#39;{&quot;text&quot; : &quot;Fifth test message&quot;, &quot;clear&quot; : false, &quot;appID&quot; : &quot;TestEven&quot;}&#39;</p>
+    <p style="margin-left: 40px;"># luna-send -n 1 -f luna://com.webos.service.tts/speak &#39;{&quot;text&quot; : &quot;Sixth&nbsp;test message.&quot;, &quot;clear&quot; : false, &quot;appID&quot; : &quot;TestOdd&quot;}&#39;</p>
+    <p style="margin-left: 40px;"># luna-send -n 1 -f luna://com.webos.service.tts/speak &#39;{&quot;text&quot; : &quot;Seventh test message.&quot;, &quot;clear&quot; : false, &quot;appID&quot; : &quot;TestEven&quot;}&#39;</p>
+    <p>Now, to stop messages from appID, &quot;TestOdd&quot;, use the command:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.tts/stop &#39;{&quot;appID&quot; : &quot;TestOdd&quot;, &quot;fadeOut&quot;:true}&#39;&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Example 5: To stop a particular message, when multiple msg IDs are passed&nbsp;</p>
+    <p style="margin-left: 40px;">Consider that the following commands were entered previously and that they returned msgIDs for each command:</p>
+    <p style="margin-left: 40px;"># luna-send -n 2 -f luna://com.webos.service.tts/speak &#39;{&quot;text&quot; : &quot;It&#39;s the twelve&nbsp;test message.&quot;, &quot;clear&quot; : false, &quot;appID&quot; : &quot;TestOdd&quot;, &quot;subscribe&quot; : true}&#39;&nbsp;</p>
+    <p style="margin-left: 40px;"># luna-send -n 1 -f luna://com.webos.service.tts/speak &#39;{&quot;text&quot; : &quot;It&#39;s the thirteenth&nbsp;test message.&quot;, &quot;clear&quot; : false, &quot;appID&quot; : &quot;TestEven&quot;}&#39;</p>
+    <p>Now, to stop the service&nbsp;using the returned msgID, use the command:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.tts/stop &#39;{&quot;msgID&quot; : &quot;2a487d800032&quot;, &quot;fadeOut&quot;:true}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>getAvailableLanguages</h3>
+<div>
+  <h4>Description</h4>
+  <p>Gets the list of&nbsp;languages that are supported by the TTS provider.&nbsp;</p>
+  <h4>Parameters</h4>
+  <p>None</p>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>languages</td>
+          <td>Required</td>
+          <td>String array</td>
+          <td>
+            <p>List of&nbsp;supported languages.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.tts/getAvailableLanguages &#39;{}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;Languages&quot;:[&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;ko-KR&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;en-US&quot;<br />
+      &nbsp;&nbsp;&nbsp;],<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>getStatus</h3>
+<div>
+  <h4>Description</h4>
+  <p>Gets the current state of the service.&nbsp;</p>
+  <h4>Parameters</h4>
+  <p>None</p>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>status</td>
+          <td>Required</td>
+          <td>Object: <a href="#status"> status</a></td>
+          <td>
+            <p>Current state of the service.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.tts/getStatus &#39;{}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;status&quot;:{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;pitch&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;status&quot;:&quot;TTS&nbsp;Task&nbsp;is&nbsp;Ready&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;speechRate&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;ttsCurrLang&quot;:&quot;en-US&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;ttsMainLang&quot;:&quot;en-US&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;volume&quot;:75<br />
+      &nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+  </div>
+</div>
+<div>
+  <h2>Objects</h2>
+  <a id="status"></a>
+  <h3>status</h3>
+  <p>Object to depict the current state of the service.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>pitch</td>
+          <td>Optional</td>
+          <td>Number (float)</td>
+          <td>
+            <p>Pitch value of the audio.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>status</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Status of the TTS task instance. Possible values are:</p>
+            <ul>
+              <li>TTS Task is Ready</li>
+              <li>TTS Task is Not Ready</li>
+              <li>TTS Task is Done</li>
+              <li>Error: TTS task is not running</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>speechRate</td>
+          <td>Optional</td>
+          <td>Number (float)</td>
+          <td>
+            <p>Speaking rate value of the audio.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>ttsCurrLang</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Language currently set/playing. Obtained from the speak() API.&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>ttsMainLang</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Language set as&nbsp;the menu language. Obtained from the Settings service.&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>volume</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Volume value of the audio.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<h2>API Error Codes Reference</h2>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <tbody>
+      <tr>
+        <th width="15%">
+          <p>Error Code</p>
+        </th>
+        <th width="30%">
+          <p>Error Text</p>
+        </th>
+        <th width="55%">
+          <p>Error Description</p>
+        </th>
+      </tr>
+      <tr>
+        <td>8000</td>
+        <td>Unknown error</td>
+        <td>
+          <p>Unknown error.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>8001</td>
+        <td>Service is not ready</td>
+        <td>
+          <p>TTS service is not ready.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>8002</td>
+        <td>Initialize error</td>
+        <td>
+          <p>TTS service initialization error.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>8003</td>
+        <td>Invalid parameter</td>
+        <td>
+          <p>Invalid parameter.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>8004</td>
+        <td>Internal error</td>
+        <td>
+          <p>Internal interface function call error.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>8005</td>
+        <td>Required parameter is missing</td>
+        <td>
+          <p>Parameter missing.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>8006</td>
+        <td>Not supported language</td>
+        <td>
+          <p>Language is not supported.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>8007</td>
+        <td>Not supported country</td>
+        <td>
+          <p>Country is not supported.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>8008</td>
+        <td>Play error</td>
+        <td>
+          <p>Playback error.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>8009</td>
+        <td>Audio resource is not available</td>
+        <td>
+          <p>Audio playback is not possible.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>8010</td>
+        <td>Speech data creating error</td>
+        <td>
+          <p>TTS internal engine error.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>8011</td>
+        <td>Finalize error</td>
+        <td>
+          <p>TTS service termination error.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>8012</td>
+        <td>Service is already running</td>
+        <td>
+          <p>TTS service is already running.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

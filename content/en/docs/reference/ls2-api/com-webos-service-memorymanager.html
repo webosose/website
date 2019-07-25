@@ -1,0 +1,787 @@
+---
+title: com.webos.service.memorymanager
+date: 2019-04-25
+toc: true
+---
+
+<div>
+  <H2>API Summary</h2>
+  <p>Manages applications&nbsp;to ensure that the system does not run into kernel-Out-Of-Memory situation. This is achieved by killing applications that are in the background when we reach low memory conditions.</p>
+  <p>The goal of MemoryManager:</p>
+  <ul>
+    <li>To maintain the state of memory usage across the app</li>
+    <li>To prevent running OOM (out of memory)</li>
+    <li>To correct the situation where memory runs out.&nbsp;</li>
+  </ul>
+</div>
+<h2>Overview of the API</h2>
+<div>
+  <p>N/A</p>
+</div>
+<h2>Methods</h2>
+<div>
+  <a id="getMemoryStatus"></a>
+  <h3>getMemoryStatus</h3>
+  <div>
+    <h4>Description</h4>
+    <p>Provides current status of the memory.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>subscribe</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Subscribe for notifications.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Get notifications</li>
+                <li><strong>false&nbsp;</strong>- Notifications are not required</li>
+              </ul>
+              <p>​<strong>Default value:</strong>&nbsp;false</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>applications</td>
+            <td>Required</td>
+            <td>Object array: <a href="#application"> application</a></td>
+            <td>
+              <p>List of running applications.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>system</td>
+            <td>Required</td>
+            <td>Object: <a href="#system"> system</a></td>
+            <td>
+              <p>Current system information.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>threshold</td>
+            <td>Required</td>
+            <td>Object: <a href="#threshold"> threshold</a></td>
+            <td>
+              <p>Threshold values.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>subscribed</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates if&nbsp;subscribed to get notified.</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Subscribed for changes</li>
+                <li><strong>false&nbsp;</strong>- Not subscribed</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check &quot;errorText&quot; field&nbsp;for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>API Error Codes Reference&quot;</strong>&nbsp;section for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div class="code-bg-grey">
+      <p>root@raspberrypi3:~# luna-send -f -i luna://com.webos.service.memorymanager/getMemoryStatus &#39;{ &quot;subscribe&quot;:true }&#39;</p>
+      <p>&nbsp;</p>
+      <p>Returns:<br />
+        {<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;applications&quot;: [<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;appId&quot;: &quot;com.webos.app.test.enact&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;status&quot;: &quot;foreground&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;pid&quot;: 2528,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;time&quot;: 11147,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;type&quot;: &quot;web&quot;<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;],<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;system&quot;: {<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;free&quot;: 386,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;total&quot;: 681,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;level&quot;: &quot;normal&quot;<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;},<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;threshold&quot;: {<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;low&quot;: {<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&quot;enter&quot;: 200,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&quot;exit&quot;: 250<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;critical&quot;: {<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&quot;enter&quot;: 100,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&quot;exit&quot;: 150<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;},<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;subscribed&quot;: true<br />
+        }
+      </p>
+    </div>
+  </div>
+</div>
+<a id="getManagerEvent"></a>
+<h3>getManagerEvent</h3>
+<div>
+  <h4>Description</h4>
+  <p>Subscribe to be notified when a MemoryManager internal event occurs.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>type</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Memory Manager Event Type.</p>
+            <ul>
+              <li>&#39;killing&#39; : application killing event when memory level is under &#39;low&#39;</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Subscribe for notifications.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Get notifications</li>
+              <li><strong>false&nbsp;</strong>- Notifications are not required</li>
+            </ul>
+            <p>​This is subscription API so value MUST <strong>true</strong>.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if&nbsp;subscribed to get notified.</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check &quot;errorText&quot; field&nbsp;for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>API Error Codes Reference&quot;</strong>&nbsp;section for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Subscription Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>id</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The app ID. The value exists only for &#39;killing&#39; type event.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>type</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Memory Manager Event Type.</p>
+            <ul>
+              <li>&#39;killing&#39; : application killing event when memory level is under &#39;low&#39;</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check &quot;errorText&quot; field&nbsp;for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if&nbsp;subscribed to get notified.</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>root@raspberrypi3:~# luna-send -f -i luna://com.webos.service.memorymanager/getManagerEvent &#39;{ &quot;type&quot;: &quot;killing&quot;, &quot;subscribe&quot;:true }&#39;</p>
+    <p>&nbsp;</p>
+    <p>Returns:<br />
+      {<br />
+      &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p><br />
+      Subscription returns:<br />
+      {<br />
+      &nbsp; &nbsp; &quot;id&quot;: &quot;com.webos.app.test.enact&quot;,<br />
+      &nbsp; &nbsp; &quot;type&quot;: &quot;killing&quot;,<br />
+      &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="requireMemory"></a>
+<h3>requireMemory</h3>
+<div>
+  <h4>Description</h4>
+  <p>Requests for the memory that is required to launch an application.</p>
+  <p><span style="color:#FF0000"><strong>Note: </strong></span>This method is called by SAM when it about to launch an application.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>requiredMemory</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Amount of memory required to launch the application.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check &quot;errorText&quot; field&nbsp;for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>API&nbsp;Error Codes Reference&quot;</strong>&nbsp;section for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>root@raspberrypi3:~# luna-send -f -n 1 luna://com.webos.service.memorymanager/requireMemory &#39;{ &quot;requiredMemory&quot;: 120 }&#39;</p>
+    <p>&nbsp;</p>
+    <p>Returns:<br />
+      {<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+</div>
+<div>
+  <h2>Objects</h2>
+  <a id="system"></a>
+  <h3>system</h3>
+  <p>Current&nbsp;memory information</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>free</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Free memory.&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>total</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Total memory.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>level</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Current memory status. Possible values are:</p>
+            <ul>
+              <li>normal</li>
+              <li>low</li>
+              <li>critical</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a id="application"></a>
+  <h3>application</h3>
+  <p>application memory description.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>appId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Application ID.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>status</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Status of application. Possible values are:</p>
+            <ul>
+              <li>foreground</li>
+              <li>background</li>
+              <li>unknown</li>
+              <li>....</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>pid</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Process ID.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>time</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Timestamp about &#39;foreground&#39; apps.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>type</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Application type. Possible values are:</p>
+            <ul>
+              <li>web</li>
+              <li>native</li>
+              <li>qml</li>
+              <li>unknown</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a id="threshold"></a>
+  <h3>threshold</h3>
+  <p>memory level threshold</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>low</td>
+          <td>Required</td>
+          <td>Object: <a href="#threshold_item"> threshold_item</a></td>
+          <td>
+            <p>Low threshold.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>critical</td>
+          <td>Required</td>
+          <td>Object: <a href="#threshold_item"> threshold_item</a></td>
+          <td>
+            <p>Critical threshold.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a id="threshold_item"></a>
+  <h3>threshold_item</h3>
+  <p>Threshold Item.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>enter</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Enter threshold.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>exit</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Exit threshold.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div>
+  <a id="threshold_item"></a>
+  <h2>Signals/Events</h2>
+  <h3>levelChanged</h3>
+  <p>LS signal for memory level change. The signal is always sent whenever memory level is changed.</p>
+  <div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>previous</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>Previous memory level.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>current</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>Current memory level.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<h2>API Error Codes Reference</h2>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <tbody>
+      <tr>
+        <th width="15%">
+          <p>Error Code</p>
+        </th>
+        <th width="30%">
+          <p>Error Text</p>
+        </th>
+        <th width="55%">
+          <p>Error Description</p>
+        </th>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>Unknown Error</td>
+        <td>
+          <p>Unknown Error</p>
+        </td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Wrong Json Format Error</td>
+        <td>
+          <p>Wrong Json Format Error</p>
+        </td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>No Required Parameters Error</td>
+        <td>
+          <p>No Required Parameters Error</p>
+        </td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>Invalid Parameters Error</td>
+        <td>
+          <p>Invalid Parameters Error</p>
+        </td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>LS2 Internal Error</td>
+        <td>
+          <p>LS2 Internal Error</p>
+        </td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>Unsupported API</td>
+        <td>
+          <p>Unsupported API</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

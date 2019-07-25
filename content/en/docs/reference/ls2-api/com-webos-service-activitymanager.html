@@ -1,0 +1,2648 @@
+---
+title: com.webos.service.activitymanager
+date: 2019-04-28
+toc: true
+---
+<div>
+  <h2>API Summary</h2>
+  <p>Monitors various parts of the system and does actions&nbsp;when the corresponding events happen.&nbsp;Activities can also be used to schedule work periodically or at particular times.</p>
+</div>
+<h2>Overview of the API</h2>
+<div>
+  <p>The <strong>Activity Manager</strong> is responsible for coordinating work in the system. This includes work currently being done and work that is scheduled to be done at some point in the future. The primary unit of control is the <strong>Activity</strong>, which represents some specific item of work in the system - such as syncing an email account or a game that is being played.</p>
+  <p>The Activity Manager will track <strong>H/W and S/W</strong> through Activity and notify when the specified events occur. If there is a dynamic service that needs to wake up when certain conditions are met, Activity Manager is the best choice.</p>
+  <p>{{< figure src="/images/docs/reference/com-webos-service-activitymanager-activity-state-transition-diagram.png" alt="activity state transition diagram" >}}</p>
+  <p>An&nbsp;Activity can have the state shown in the diagram above. What the Activity does for each state is as follows.</p>
+  <ul>
+    <li><span style="color:#0000FF"><strong>creating</strong></span><span style="color:#00B050">&nbsp;</span>: The <strong>create</strong>&nbsp;method is called and the Activity is&nbsp;<span style="color:#0000FF"><strong>creating</strong></span>.</li>
+    <li><span style="color:#008000"><strong>created</strong></span><span style="color:#40C47C">&nbsp;</span>: The&nbsp;Activity was <span style="color:#008000"><strong>created</strong></span><span style="color:#40C47C">&nbsp;</span>successfully.&nbsp;When calling&nbsp;<strong>create</strong> method with { &#39;start&#39;&nbsp;<strong>:&nbsp;</strong>true }, the Activity will move to&nbsp;<span style="color:#008000"><strong>unsatisfied</strong></span><span style="color:#00B050"><strong>&nbsp;</strong></span>state automatically.</li>
+    <li><span style="color:#0000FF"><strong>starting</strong></span><span style="color:#00B050">&nbsp;</span>: The <strong>start</strong> method is called and the Activity is&nbsp;<span style="color:#0000FF"><strong>starting</strong></span>. In this step, the Activity will subscribe Requirements, Triggers and Schedule.</li>
+    <li><span style="color:#008000"><strong>unsatisfied</strong></span><span style="color:#00B050"><strong>&nbsp;</strong></span>: The Activity waits for all conditions are satisfied - Requirements, Triggers and Schedule. The Activity in <span style="color:#008000"><strong>unsatisfied</strong></span>&nbsp;can be paused by <strong>pause</strong>&nbsp;method.</li>
+    <li><strong><span style="color:#0000FF">pausing</span>&nbsp;</strong>: The <strong>pause</strong>&nbsp;method is called and the Activity is&nbsp;<strong><span style="color:#0000FF">pausing</span></strong>.</li>
+    <li><strong><span style="color:#008000">paused</span>&nbsp;</strong>: The Activity is <strong><span style="color:#008000">paused</span></strong>. In this state, the Activity&nbsp;does not move to the <strong><span style="color:#008000">satisfied</span>&nbsp;</strong>state, although all conditions&nbsp;are satisfied. The Activity can move to unsatisfied state by <strong>start</strong>&nbsp;method.</li>
+    <li><strong><span style="color:#0000FF">satisfying</span>&nbsp;</strong>: All conditions of the Activity are&nbsp;<strong><span style="color:#0000FF">satisfying</span></strong>.&nbsp;An activity in <span style="color:#008000"><strong>unsatisfied</strong></span><span style="color:#00B050"><strong>&nbsp;</strong></span>state automatically moves to this state without an API&nbsp;call.</li>
+    <li><strong><span style="color:#008000">satisfied</span>&nbsp;</strong>: All conditions&nbsp;of the Activity are <strong><span style="color:#008000">satisfied</span></strong>. And there is nothing to do special.</li>
+    <li><strong><span style="color:#0000FF">expiring</span>&nbsp;</strong>: The Activity is <strong><span style="color:#0000FF">expiring</span></strong>. The Activity&nbsp;will call Callback method and unsubscribe&nbsp;Triggers and cancel Schedule.</li>
+    <li><strong><span style="color:#008000">expired</span>&nbsp;</strong>: The Activity is over. All callbacks are handled successfully. If the Activity is not set&nbsp;continuous<strong>&nbsp;</strong>property, the activity is in <strong><span style="color:#008000">expired&nbsp;</span></strong>state forever. If its parent wants to start it again, the&nbsp;parent should call <strong>complete</strong> with { &#39;restart &#39;: true }. If parent doesn&#39;t&nbsp;want to restart it, then need to call <strong>cancel</strong>.</li>
+    <li><strong><span style="color:#0000FF">restarting</span>&nbsp;</strong>: The Activity is <strong><span style="color:#0000FF">restarting</span></strong>. There are two ways to restart Activity. One is to call <strong>complete </strong>method with { &#39;restart&#39; : true }. And the other is to give the continuous&nbsp;property to true when creating the Activity. If the Activity was created with continuous property, the Activity will move to <span style="color:#008000"><strong>unsatisfied</strong></span><span style="color:#00B050"><strong>&nbsp;</strong></span>state as soon as receive the Callback&nbsp;response.</li>
+    <li><strong><span style="color:#0000FF">failing</span>&nbsp;</strong>: An error occurs during Activity job and the Activity is <strong><span style="color:#0000FF">failing</span></strong>. Any Activity in any state can move to this state, if an error occurs. Make sure that Triggers or Callbacks do not fail for any reason. Their failure will move the Activity immediately to this state.</li>
+    <li><strong><span style="color:#008000">failed</span>&nbsp;</strong>: The Activity is <strong><span style="color:#008000">failed,</span></strong>&nbsp;and the Activity Manager cannot do anything anymore. The parent should call <strong>cancel</strong>&nbsp;method to destroy the Activity.</li>
+    <li><strong><span style="color:#0000FF">destroying</span>&nbsp;</strong>: The <strong>cancel&nbsp;</strong>method is called and the Activity is <strong><span style="color:#0000FF">destroying</span></strong>. The <strong>cancel</strong> method can be called in any Activity state,</li>
+    <li><strong><span style="color:#008000">destroyed</span>&nbsp;</strong>: The Activity is <strong><span style="color:#008000">destroyed</span></strong>. In this state, the Activity will be&nbsp;excluded from being managed by the Activity Manager.</li>
+  </ul>
+  <p>&nbsp;</p>
+</div>
+<h2>Methods</h2>
+<div>
+  <a id="create"></a>
+  <h3>create</h3>
+  <div>
+    <h4>Description</h4>
+    <p><strong><span style="color:#FF0000">NOTE: The &#39;creator&#39; in Activity object can be set only&nbsp;by </span><span style="color:#FF0000">configurator</span><span style="color:#FF0000">.</span></strong></p>
+    <p>Create a new Activity and return its ID.&nbsp;Each of created Activities must have a unique name.</p>
+    <p>Activities can be scheduled to run at a specific time or when certain conditions are met or events occur.</p>
+    <p>If the Activity specify start as true, because the Activity moves to unsatisfied state, you do not need to call start method.</p>
+    <p>If this method is failed with &#39;activitymanager doesn&#39;t have rights to call callback/trigger&#39;.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>activity</td>
+            <td>Required</td>
+            <td>Object: <a href="#Activity"> Activity</a></td>
+            <td>
+              <p>Activity object.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>subscribe</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Flag that enables whether to subscribe or not.</p>
+              <ul>
+                <li>To enable subscribe, set&nbsp;<strong>subscribe</strong>&nbsp;to&nbsp;<strong>true</strong>. The caller becomes a parent of the Activity.</li>
+                <li>To disable&nbsp;subscribe, set&nbsp;<strong>subscribe&nbsp;</strong>to&nbsp;<strong>false</strong>. When the caller does not subscribe to the Activity, callback must be specified and <strong>start</strong> must set to <strong>true</strong>.</li>
+                <li>The default value of&nbsp;<strong>subscribe&nbsp;</strong>is&nbsp;<strong>false</strong>.&nbsp;</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>detailedEvents</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Flag that enables to return detailed Activity information in a subscription response. It needs to be used when&nbsp;<strong>subscribe</strong>&nbsp;is set to&nbsp;<strong>true</strong>.</p>
+              <ul>
+                <li>To enable&nbsp;<strong>detailedEvents</strong>, set&nbsp;<strong>detailedEvents&nbsp;</strong>to&nbsp;<strong>true</strong>.</li>
+                <li>To disable&nbsp;<strong>detailedEvents</strong>, set&nbsp;<strong>detailedEvents</strong>&nbsp;to&nbsp;<strong>false</strong>.</li>
+                <li>The default value of&nbsp;<strong>detailedEvents&nbsp;</strong>is&nbsp;<strong>false</strong>.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>start</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Start Activity immediately flag.</p>
+              <ul>
+                <li>To indicate the Activity is fully-initialized and ready to launch,&nbsp;set <strong>start </strong>to <strong>true</strong>. When subscribe is set to false, <strong>must</strong> set <strong>start</strong> to <strong>true</strong>.&nbsp;</li>
+                <li>To disable <strong>start</strong>, set <strong>start </strong>to <strong>false</strong>. If start is set to false, you need to call the <strong>start</strong> method to make the Activity runnable. &nbsp;&nbsp;</li>
+                <li>The default value of <strong>start </strong>is <strong>false</strong>.</li>
+              </ul>
+              <p><span style="color:#FF0000"><strong>NOTE</strong>: </span>It is recommended to use <strong>start&nbsp;</strong>as <strong>true </strong>regardless of the default value of this. Then you do not need to call start method.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>replace</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <ul>
+                <li>To create a new Activity with the same name with the existing Activity, set <strong>replace</strong>&nbsp;to <strong>true</strong>. This cancels the existing Activity and replaces it to new one.</li>
+                <li>Otherwise, set <strong>replace </strong>to <strong>false</strong>.</li>
+                <li>The default value of <strong>replace </strong>is <strong>false</strong>.</li>
+              </ul>
+              <p><span style="color:#FF0000"><strong>NOTE:</strong></span>&nbsp;If <strong>replace </strong>is true, the Activity created by configurator can overwrite the existing Activity.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>activityId</td>
+            <td>Optional</td>
+            <td>Number (uint64_t)</td>
+            <td>
+              <p>Activity ID.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>subscribed</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>If it is subscribed, <strong>subscribed</strong> will contain <strong>true</strong>.<br />
+                If it is not subscribed, <strong>subscribed</strong> will contain <strong>false</strong>.
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number (int64_t)</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Subscription Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>activityId</td>
+            <td>Required</td>
+            <td>Number (uint64_t)</td>
+            <td>
+              <p>Created Activity ID. You could get a subscription when there&#39;s status updates.&nbsp;<span style="display:none">&nbsp;</span></p>
+            </td>
+          </tr>
+          <tr>
+            <td>event</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p><span style="color:#FF0000"><strong>NOTE:&nbsp;These&nbsp;events may be changed,&nbsp;as the&nbsp;activity state has been redefined.</strong></span></p>
+              <p>Indicate what the created Activity just has been done.&nbsp;The Activity Manager will generate the following events when the corresponding requirements are met:</p>
+              <ul>
+                <li>&quot;start&quot;</li>
+                <li>&quot;cancel&quot;</li>
+                <li>&quot;stop&quot;</li>
+                <li>&ldquo;pause&rdquo;</li>
+                <li>&quot;complete&rdquo;</li>
+                <li>&ldquo;orphan&rdquo;</li>
+                <li>&ldquo;adopted&rdquo;</li>
+                <li>&quot;update&quot; (available only when&nbsp;<strong>detailedEvents</strong>&nbsp;input parameter is set to&nbsp;<strong>true</strong>)</li>
+              </ul>
+              <p>The following JSON object is a subscription example that shows the created activity just started:</p>
+              <p>{<br />
+                &nbsp; &nbsp; &quot;activityId&quot;: 10813,<br />
+                &nbsp; &nbsp; &quot;event&quot;: &quot;start&quot;,<br />
+                &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+                }
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td>$activity</td>
+            <td>Optional</td>
+            <td>Object: <a href="#Activity">Activity</a></td>
+            <td>
+              <p>Acitivity object.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>subscribed</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>If it is subscribed, <strong>subscribed</strong> will contain <strong>true</strong>.<br />
+                If it is not subscribed, <strong>subscribed</strong> will contain <strong>false</strong>.
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div class="code-bg-grey">
+      <p>1. Example code to create basic activity:</p>
+      <p># luna-send -f -i luna://com.webos.service.activitymanager/create &#39;{<br />
+        &nbsp; &quot;activity&quot;: {<br />
+        &nbsp; &nbsp; &quot;name&quot;: &quot;basicactivity&quot;,<br />
+        &nbsp; &nbsp; &quot;description&quot;: &quot;Test create&quot;,<br />
+        &nbsp; &nbsp; &quot;type&quot;: { &quot;foreground&quot;: true }<br />
+        &nbsp; },<br />
+        &nbsp; &quot;start&quot;: true,<br />
+        &nbsp; &quot;subscribe&quot;: true<br />
+        }&#39;
+      </p>
+      <p>Example return:<br />
+        {<br />
+        &nbsp; &quot;activityId&quot;: 83,<br />
+        &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp; &quot;subscribed&quot;: true<br />
+        }
+      </p>
+      <p>Example subscription return:<br />
+        {<br />
+        &nbsp; &quot;event&quot;: &quot;start&quot;,<br />
+        &nbsp; &quot;activityId&quot;: 83,<br />
+        &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp; &quot;subscribed&quot;: true<br />
+        }
+      </p>
+      <p>-----------------------------------------------------------------------------------------------------------------------</p>
+      <p>2. Example code to create scheduled activity:</p>
+      <p># luna-send -f -i luna://com.webos.service.activitymanager/create &#39;{<br />
+        &nbsp; &quot;activity&quot;: {<br />
+        &nbsp; &nbsp; &quot;name&quot;: &quot;ScheduledActivity&quot;,<br />
+        &nbsp; &nbsp; &quot;description&quot;: &quot;Test create of scheduled activity&quot;,<br />
+        &nbsp; &nbsp; &quot;type&quot;: { &quot;foreground&quot;: true },<br />
+        &nbsp; &nbsp; &quot;schedule&quot;: { &quot;start&quot;: &quot;2015-02-15 13:22:00&quot; }<br />
+        &nbsp; },<br />
+        &nbsp; &quot;start&quot;: true,<br />
+        &nbsp; &quot;subscribe&quot;: true<br />
+        }&#39;
+      </p>
+      <p>Example return:<br />
+        {<br />
+        &nbsp; &quot;activityId&quot;: 102,<br />
+        &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp; &quot;subscribed&quot;: true<br />
+        }
+      </p>
+      <p>Example subscription return:<br />
+        {<br />
+        &nbsp; &quot;event&quot;: &quot;start&quot;,<br />
+        &nbsp; &quot;activityId&quot;: 102,<br />
+        &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp; &quot;subscribed&quot;: true<br />
+        }
+      </p>
+      <p>-----------------------------------------------------------------------------------------------------------------------</p>
+      <p>3. Example code to create scheduled activity with callback:</p>
+      <p># luna-send -f -i luna://com.webos.service.activitymanager/create &#39;{<br />
+        &nbsp; &quot;activity&quot;: {<br />
+        &nbsp; &nbsp; &quot;name&quot;: &quot;ScheduledActivityWithCallback&quot;,<br />
+        &nbsp; &nbsp; &quot;description&quot;: &quot;Test create of scheduled activity with callback&quot;,<br />
+        &nbsp; &nbsp; &quot;type&quot;: { &quot;foreground&quot;: true },<br />
+        &nbsp; &nbsp; &quot;callback&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &quot;method&quot;: &quot;luna://com.webos.applicationmanager/launch&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &quot;params&quot;: { &quot;id&quot;: &quot;com.webos.app.browser&quot; }<br />
+        &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &quot;schedule&quot;: { &quot;start&quot;: &quot;2015-02-15 00:05:00&quot; }<br />
+        &nbsp; },<br />
+        &nbsp; &quot;start&quot;: true,<br />
+        &nbsp; &quot;subscribe&quot;: true<br />
+        }&#39;
+      </p>
+      <p>Example return:<br />
+        {<br />
+        &nbsp; &quot;activityId&quot;: 84,<br />
+        &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp; &quot;subscribed&quot;: true<br />
+        }
+      </p>
+      <p>Example subscription return:<br />
+        {<br />
+        &nbsp; &quot;event&quot;: &quot;start&quot;,<br />
+        &nbsp; &quot;activityId&quot;: 84,<br />
+        &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp; &quot;subscribed&quot;: true<br />
+        }
+      </p>
+      <p>-----------------------------------------------------------------------------------------------------------------------</p>
+      <p>4. Example code to create activity with multiple trigger:</p>
+      <p># luna-send -i&nbsp;-f luna://com.webos.service.activitymanager/create &#39;{<br />
+        &nbsp; &quot;activity&quot;: {<br />
+        &nbsp;&nbsp;&nbsp; &quot;name&quot;: &quot;browser restart&quot;, &quot;description&quot;:&quot;&quot;,<br />
+        &nbsp; &nbsp; &quot;type&quot;: { &quot;foreground&quot;:true, &quot;continuous&quot;: true },<br />
+        &nbsp; &nbsp; &quot;callback&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &quot;method&quot;: &quot;luna://com.webos.applicationmanager/launch&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &quot;params&quot;: { &quot;id&quot;: &quot;com.webos.app.browser&quot; }<br />
+        &nbsp; &nbsp; },<br />
+        &nbsp;&nbsp;&nbsp; &quot;trigger&quot;: {<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;and&quot;: [<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;method&quot;: &quot;luna://com.webos.applicationmanager/getAppLifeStatus&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;params&quot;: { &quot;subscribe&quot;: true },<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;where&quot;: {<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;and&quot;: [<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; { &quot;op&quot;: &quot;=&quot;, &quot;prop&quot;: &quot;appId&quot;, &quot;val&quot;: &quot;com.webos.app.browser&quot; },<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; { &quot;op&quot;: &quot;=&quot;, &quot;prop&quot;: &quot;status&quot;, &quot;val&quot;: &quot;stop&quot;}<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ]<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;method&quot;: &quot;luna://com.webos.service.connectionmanager/getstatus&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;params&quot;: { &quot;subscribe&quot;: true },<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;where&quot;: { &quot;prop&quot;: &quot;isInternetConnectionAvailable&quot;, &quot;op&quot;: &quot;=&quot;, &quot;val&quot;: true }<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ]<br />
+        &nbsp;&nbsp;&nbsp; }<br />
+        &nbsp; },<br />
+        &nbsp; &quot;start&quot;: true,<br />
+        &nbsp; &quot;subscribe&quot;: true<br />
+        }&#39;
+      </p>
+      <p>Example return:<br />
+        {<br />
+        &nbsp; &quot;activityId&quot;: 85,<br />
+        &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp; &quot;subscribed&quot;: true<br />
+        }
+      </p>
+      <p>Example subscription return:<br />
+        {<br />
+        &nbsp; &quot;event&quot;: &quot;start&quot;,<br />
+        &nbsp; &quot;activityId&quot;: 85,<br />
+        &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp; &quot;subscribed&quot;: true<br />
+        }
+      </p>
+      <p>-----------------------------------------------------------------------------------------------------------------------</p>
+      <p>5. Example code to create continuous activity</p>
+      <p># luna-send -n 1 -f luna://com.webos.service.activitymanager/create &#39;{<br />
+        &nbsp; &quot;activity&quot;: {<br />
+        &nbsp;&nbsp; &nbsp;&quot;name&quot;: &quot;continuous-schedule&quot;, &quot;description&quot;:&quot;&quot;,<br />
+        &nbsp;&nbsp;&nbsp; &quot;type&quot;: {&quot;foreground&quot;: true, &quot;continuous&quot;: true},<br />
+        &nbsp;&nbsp; &nbsp;&quot;callback&quot;: {&quot;method&quot;: &quot;luna://com.webos.notification/createToast&quot;, &quot;params&quot;: {&quot;message&quot;: &quot;5m&quot;, &quot;persistent&quot;: true}},<br />
+        &nbsp;&nbsp; &nbsp;&quot;schedule&quot;: {&quot;interval&quot;: &quot;5m&quot;}<br />
+        &nbsp;&nbsp;},<br />
+        &nbsp;&nbsp;&quot;replace&quot;:true,<br />
+        &nbsp;&nbsp;&quot;start&quot;:true<br />
+        }&#39;
+      </p>
+      <p>Example return:<br />
+        {<br />
+        &nbsp; &quot;activityId&quot;: 60,<br />
+        &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp; &quot;subscribed&quot;: false<br />
+        }
+      </p>
+      <p>Example subscription return:<br />
+        {<br />
+        &nbsp; &quot;event&quot;: &quot;start&quot;,<br />
+        &nbsp; &quot;activityId&quot;: 60,<br />
+        &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp; &quot;subscribed&quot;: true<br />
+        }
+      </p>
+    </div>
+  </div>
+</div>
+<p><a id="start"></a></p>
+<h3>start</h3>
+<div>
+  <h4>Description</h4>
+  <p>Attempt to start the specified Activity, either moving its state from &#39;created&#39;&nbsp;to &#39;starting&#39;, or from &#39;paused&#39;&nbsp;to &#39;resuming&#39;.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>activityId</td>
+          <td>Required</td>
+          <td>Number (uint64_t)</td>
+          <td>
+            <p>Activity ID.&nbsp;</p>
+            <p><strong><span style="color:#FF0000">Note:</span>&nbsp;</strong>Either&nbsp;<strong>activityId</strong>&nbsp;or&nbsp;<strong>activityName&nbsp;</strong>is a REQUIRED&nbsp;field.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>activityName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Activity name. Only the creator of the Activity can specify <strong>activityName</strong>.</p>
+            <p><strong><span style="color:#FF0000">Note:</span>&nbsp;</strong>Either&nbsp;<strong>activityId</strong>&nbsp;or&nbsp;<strong>activityName&nbsp;</strong>is a REQUIRED&nbsp;field.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.&nbsp;</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number (int64_t)</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.activitymanager/start &#39;{&quot;activityId&quot; : 93}&#39;</p>
+    <p>Example response for a successful call:<br />
+      {<br />
+      &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>Example response for a failed call:<br />
+      {<br />
+      &nbsp; &quot;errorCode&quot;: 2,<br />
+      &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &quot;errorText&quot;: &quot;activityId not found&quot;<br />
+      }
+    </p>
+  </div>
+</div>
+<p><a id="complete"></a></p>
+<h3>complete</h3>
+<div>
+  <h4>Description</h4>
+  <p>Terminate the specified Activity and optionally <strong>restart </strong>it with(or without)&nbsp;new callback, schedule or trigger. Only the Activity&#39;s parent can call this method. Other subscribers to the Activity receive a &quot;complete&quot; event.</p>
+  <p>If the Activity is persistent (i.e., <strong>persist</strong>&nbsp;in the Type object is set to true), the db8 is updated before the call returns.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>activityId</td>
+          <td>Required</td>
+          <td>Number (uint64_t)</td>
+          <td>
+            <p>Activity ID.</p>
+            <p><strong><span style="color:#FF0000">Note:</span>&nbsp;</strong>Either&nbsp;<strong>activityId</strong>&nbsp;or&nbsp;<strong>activityName&nbsp;</strong>is a REQUIRED&nbsp;field.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>activityName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Activity name. Only the creator of the Activity can specify <strong>activityName</strong>.</p>
+            <p><strong><span style="color:#FF0000">Note:</span>&nbsp;</strong>Either&nbsp;<strong>activityId</strong>&nbsp;or&nbsp;<strong>activityName&nbsp;</strong>is a REQUIRED&nbsp;field.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>restart</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <ul>
+              <li>To restart the Activity with any new callback, schedule or trigger, set <strong>restart</strong> to <strong>true</strong>. The restarted Activity goes into the Activity Manager queue.</li>
+              <li>To disable restart, set <strong>restart</strong> to <strong>false</strong>.</li>
+              <li>The default value of&nbsp;<strong>restart&nbsp;</strong>is&nbsp;<strong>false</strong>.</li>
+            </ul>
+            <p><span style="color:#FF0000"><strong>NOTE:</strong></span>&nbsp;If <strong>restart </strong>is <strong>false</strong>, this is equivalent to <strong>cancel</strong>. Therefore, it is recommended to always set <strong>restart </strong>to true to avoid confusion.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>callback</td>
+          <td>Optional</td>
+          <td>Object: <a href="#Callback">Callback</a></td>
+          <td>
+            <p>Callback to use when the specified Activity is restarted.</p>
+            <ul>
+              <li>To use the current callback condition, <strong>do not specify callback</strong> parameter.</li>
+              <li>To remove the current callback condition, set <strong>callback</strong> to <strong>false</strong>.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>schedule</td>
+          <td>Optional</td>
+          <td>Object: <a href="#Schedule">Schedule</a></td>
+          <td>
+            <p>Schedule to use when Activity is restarted.</p>
+            <ul>
+              <li>To use the current callback condition,&nbsp;<strong>do not specify schedule</strong>&nbsp;parameter.</li>
+              <li>To remove the current callback condition, set <strong>schedule</strong>&nbsp;to&nbsp;<strong>false</strong>.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>trigger</td>
+          <td>Optional</td>
+          <td>Object: <a href="#Trigger">Trigger</a></td>
+          <td>
+            <p>Trigger&nbsp;to use when the specified Activity is restarted.</p>
+            <ul>
+              <li>To use the current callback condition,&nbsp;<strong>do not specify trigger</strong>&nbsp;parameter.</li>
+              <li>To remove the current callback condition, set <strong>trigger</strong>&nbsp;to&nbsp;<strong>false</strong>.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>metadata</td>
+          <td>Optional</td>
+          <td>Object</td>
+          <td>
+            <p>Opaque object the Activity Manager stores and returns in the callback parameters.</p>
+            <ul>
+              <li>To use the current metadata,&nbsp;<strong>do not specify metadata</strong>&nbsp;parameter.</li>
+              <li>To remove the current metadata, set&nbsp;<strong>metadata</strong>&nbsp;to&nbsp;<strong>false</strong>.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number (int64_t)</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f -a myapp luna://com.webos.service.activitymanager/create &#39;{<br />
+      &nbsp; &nbsp; &quot;activity&quot;: {&quot;name&quot;: &quot;browser closed&quot;, &quot;description&quot;: &quot;&quot;, &quot;type&quot;: {&quot;foreground&quot;: true},<br />
+      &nbsp; &nbsp; &quot;callback&quot;: {&quot;method&quot;: &quot;luna://com.webos.notification/createToast&quot;, &quot;params&quot;: {&quot;message&quot;: &quot;browser closed&quot;, &quot;persistent&quot;: true}},<br />
+      &nbsp; &nbsp; &quot;trigger&quot;: {&quot;method&quot;: &quot;luna://com.webos.applicationmanager/getAppLifeStatus&quot;, &quot;params&quot;: {&quot;subscribe&quot;: true},<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;where&quot;: {&quot;prop&quot;: &quot;status&quot;, &quot;op&quot;: &quot;=&quot;, &quot;val&quot;: &quot;stop&quot;}}},<br />
+      &nbsp; &nbsp; &quot;replace&quot;: true, &quot;start&quot;: true}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;subscribed&quot;: false,<br />
+      &nbsp; &nbsp; &quot;activityId&quot;: 62,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p># luna-send -n 1 -f luna://com.webos.applicationmanager/launch &#39;{&quot;id&quot;:&quot;com.webos.app.browser&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p># luna-send -n 1 -f luna://com.webos.applicationmanager/closeByAppId &#39;{&quot;id&quot;:&quot;com.webos.app.browser&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;appId&quot;: &quot;com.webos.app.browser&quot;,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p># luna-send -n 1 -f -a myapp luna://com.webos.service.activitymanager/complete &#39;{&quot;activityName&quot;: &quot;browser closed&quot;, &quot;restart&quot;: true}&#39;</p>
+    <p>Example response for a successful call:<br />
+      {<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>Example response for a failed call:<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 2,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Activity name/creator pair not found&quot;<br />
+      }
+    </p>
+  </div>
+</div>
+<p><a id="cancel"></a></p>
+<h3>cancel</h3>
+<div>
+  <h4>Description</h4>
+  <p>Terminate the specified Activity and send a &quot;cancel&quot; event to all subscribers to this Activity.&nbsp;This&nbsp;method succeeds if the Activity exists.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>activityId</td>
+          <td>Required</td>
+          <td>Number (uint64_t)</td>
+          <td>
+            <p>Activity ID.</p>
+            <p><strong><span style="color:#FF0000">Note:</span>&nbsp;</strong>Either&nbsp;<strong>activityId</strong>&nbsp;or&nbsp;<strong>activityName&nbsp;</strong>is a REQUIRED&nbsp;field.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>activityName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Activity name. Only the creator of the Activity can specify <strong>activityName</strong>.</p>
+            <p><strong><span style="color:#FF0000">Note:</span>&nbsp;</strong>Either&nbsp;<strong>activityId</strong>&nbsp;or&nbsp;<strong>activityName&nbsp;</strong>is a REQUIRED&nbsp;field.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>If the <strong>cancel </strong>method succeeds, returnValue will contain <strong>true</strong>.</p>
+            <p>If the <strong>cancel</strong> method fails, returnValue will contain <strong>false</strong>.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number (int64_t)</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.activitymanager/cancel &#39;{&quot;activityId&quot; : 93}&#39;</p>
+    <p>Example response for a successful call:<br />
+      {<br />
+      &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>Example response for a failed call:<br />
+      {<br />
+      &nbsp; &quot;errorCode&quot;: 2,<br />
+      &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &quot;errorText&quot;: &quot;activityId not found&quot;<br />
+      }
+    </p>
+  </div>
+</div>
+<p><a id="stop"></a></p>
+<h3>stop</h3>
+<div>
+  <h4>Description</h4>
+  <p>Stop&nbsp;the specified Activity and send a &quot;stop&quot; event to subscribers to this Activity.&nbsp;This&nbsp;method succeeds if the Activity exists.</p>
+  <p>This method is exactly the same as <strong>cancel</strong> method.&nbsp;It is recommended to use <strong>cancel </strong>to avoid confusion.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>activityId</td>
+          <td>Required</td>
+          <td>Number (uint64_t)</td>
+          <td>
+            <p>Activity ID.</p>
+            <p><strong><span style="color:#FF0000">Note:</span>&nbsp;</strong>Either&nbsp;<strong>activityId</strong>&nbsp;or&nbsp;<strong>activityName&nbsp;</strong>is a REQUIRED&nbsp;field.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>activityName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Activity name.Only the creator of the Activity can specify <strong>activityName</strong>.</p>
+            <p><strong><span style="color:#FF0000">Note:</span>&nbsp;</strong>Either&nbsp;<strong>activityId</strong>&nbsp;or&nbsp;<strong>activityName&nbsp;</strong>is a REQUIRED&nbsp;field.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number (int64_t)</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.activitymanager/stop &#39;{&quot;activityId&quot; : 95}&#39;</p>
+    <p>Example response for a successful call:<br />
+      {<br />
+      &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>Example response for a failed call:<br />
+      {<br />
+      &nbsp; &quot;errorCode&quot;: 2,<br />
+      &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &quot;errorText&quot;: &quot;activityId not found&quot;<br />
+      }
+    </p>
+  </div>
+</div>
+<p><a id="adopt"></a></p>
+<h3>adopt</h3>
+<div>
+  <h4>Description</h4>
+  <p>The Activity Manager considers the creator of the Activity as a parent.</p>
+  <p>Therefore, the creator of the activity does not need to <strong>adopt </strong>the Activity&nbsp;to be a parent.</p>
+  <p>An app or a service registers its willingness to become an Activity&#39;s parent, which means becoming an adopter.</p>
+  <ul>
+    <li>If there are adopters, all subscribers to this Activity receives&nbsp;an &quot;orphan&quot; event and the Activity is adopted to the new parent, one of the adopters.&nbsp;</li>
+    <li>If&nbsp;there are no waiting adopters, all subscribers to this Activity receives&nbsp;a &quot;cancel&quot; event and the Activity disappears immediately.</li>
+  </ul>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>activityId</td>
+          <td>Required</td>
+          <td>Number (uint64_t)</td>
+          <td>
+            <p>Activity ID.</p>
+            <p><strong><span style="color:#FF0000">Note:</span>&nbsp;</strong>Either&nbsp;<strong>activityId</strong>&nbsp;or&nbsp;<strong>activityName&nbsp;</strong>is a REQUIRED&nbsp;field.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>activityName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Activity name. Only the creator of the Activity can specify activityName.</p>
+            <p><strong><span style="color:#FF0000">Note:</span>&nbsp;</strong>Either&nbsp;<strong>activityId</strong>&nbsp;or&nbsp;<strong>activityName&nbsp;</strong>is a REQUIRED&nbsp;field.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>wait</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Flag that enables whether to wait until the Activity is available to be adopted&nbsp;or not.</p>
+            <ul>
+              <li>If an app or a service wants to wait until the Activity is available to be adopted, set&nbsp;<strong>wait</strong>&nbsp;to&nbsp;<strong>true</strong>. If the Activity is not immediately adopted,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>true</strong>&nbsp;and&nbsp;<strong>adopted</strong>&nbsp;will contain&nbsp;<strong>false</strong>. Once the Activity is disconnected with its parent, the caller is informed of an &quot;orphan&quot; event and becomes the new parent of the Activity.</li>
+              <li>Otherwise, set&nbsp;<strong>wait</strong>&nbsp;to&nbsp;<strong>false</strong>. Generally&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false</strong>&nbsp;with an errorCode. If the Activity does not have a parent <strong>returnValue</strong> will contain <strong>true</strong>.</li>
+              <li>The default value of <strong>wait</strong> is <strong>false</strong>.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p><span style="line-height:1.6em">Flag that enables whether to </span><span style="line-height:1.6em">get informed when status of the created activity has been changed</span><span style="line-height:1.6em">&nbsp;or not.</span></p>
+            <ul>
+              <li>To enable <strong>subscribe</strong>, set <strong>subscribe </strong>to <strong>true</strong>.</li>
+              <li>To disable <strong>subscribe</strong>, set <strong>subscribe</strong> to <strong>false</strong>.</li>
+              <li>The default value of <strong>subscribe</strong> is <strong>false</strong>.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>detailedEvents</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Flag that enables to return detailed Activity information in a subscription response. It needs to be used when&nbsp;<strong>subscribe</strong>&nbsp;is set to&nbsp;<strong>true</strong>.</p>
+            <ul>
+              <li>To enable&nbsp;<strong>detailedEvents</strong>, set&nbsp;<strong>detailedEvents&nbsp;</strong>to&nbsp;<strong>true</strong>.</li>
+              <li>To disable&nbsp;<strong>detailedEvents</strong>, set&nbsp;<strong>detailedEvents</strong>&nbsp;to&nbsp;<strong>false</strong>.</li>
+              <li>The default value of&nbsp;<strong>detailedEvents&nbsp;</strong>is&nbsp;<strong>false</strong>.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>If it is subscribed, <strong>subscribed</strong> will contain <strong>true</strong>.<br />
+              If it is not subscribed, <strong>subscribed</strong> will contain <strong>false</strong>.
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number (int64_t)</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>adopted</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p><strong>adopted</strong> indicates a successful or failed adoption.</p>
+            <p>If the app or service adopts the Activity, <strong>adopted</strong> will contain true.<br />
+              If the app or service does not adopt the Activity, <strong>adopted</strong> will contain&nbsp;false.
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Subscription Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>activityId</td>
+          <td>Required</td>
+          <td>Number (uint64_t)</td>
+          <td>
+            <p>Created Activity ID.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>event</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p><span style="color:#FF0000"><strong>NOTE:&nbsp;These&nbsp;events may be changed,&nbsp;as the&nbsp;activity state has been redefined.</strong></span></p>
+            <p>Indicate what the created Activity just has been done.&nbsp;The Activity Manager will generate the following events when the corresponding requirements are met:</p>
+            <ul>
+              <li>&quot;start&quot;</li>
+              <li>&quot;cancel&quot;</li>
+              <li>&quot;stop&quot;</li>
+              <li>&ldquo;pause&rdquo;</li>
+              <li>&quot;complete&rdquo;</li>
+              <li>&ldquo;orphan&rdquo;</li>
+              <li>&ldquo;adopted&rdquo;</li>
+              <li>&quot;update&quot; (available only when&nbsp;<strong>detailedEvents</strong>&nbsp;is set to&nbsp;<strong>true</strong>)</li>
+            </ul>
+            <p>The following JSON object is a subscription example that shows the created activity just started:</p>
+            <p>{<br />
+              &nbsp; &nbsp; &quot;activityId&quot;: 10813,<br />
+              &nbsp; &nbsp; &quot;event&quot;: &quot;start&quot;,<br />
+              &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+              }
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td>$activity</td>
+          <td>Optional</td>
+          <td>Object: <a href="#Activity">Activity</a></td>
+          <td>
+            <p>Acitivity object.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>If it is subscribed, <strong>subscribed</strong> will contain <strong>true</strong>.<br />
+              If it is not subscribed, <strong>subscribed</strong> will contain <strong>false</strong>.
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -i -f luna://com.webos.service.activitymanager/adopt &#39;{<br />
+      &nbsp;&nbsp;&quot;activityId&quot;: 90,<br />
+      &nbsp;&nbsp;&quot;wait&quot;: true,<br />
+      &nbsp;&nbsp;&quot;subscribe&quot;: true,<br />
+      &nbsp;&nbsp;&quot;detailedEvents&quot;: false<br />
+      }&#39;
+    </p>
+    <p>Example response for a successful call:</p>
+    <p>Subscription return: If parent of the activity did not release the activity<br />
+      {<br />
+      &nbsp;&nbsp;&quot;adopted&quot;: false,<br />
+      &nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
+      &nbsp;&nbsp;&quot;subscribed&quot;: true<br />
+      }
+    </p>
+    <p>Subscription return: When the activity is released and current app or service adopts the activity.<br />
+      Only one adopter receives this result and it becomes the parent of the activity.<br />
+      Other adopter candidates remain as adopter continuously. (First in, First out)<br />
+      {<br />
+      &nbsp;&nbsp;&quot;event&quot;: &quot;orphan&quot;,<br />
+      &nbsp;&nbsp;&quot;activityId&quot;: 90,<br />
+      &nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
+      &nbsp;&nbsp;&quot;subscribed&quot;: true<br />
+      }
+    </p>
+    <p>Subscription return: When the activity is transfered to another adopter.<br />
+      {<br />
+      &nbsp;&nbsp;&quot;adopted&quot;: true,<br />
+      &nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
+      &nbsp;&nbsp;&quot;subscribed&quot;: true<br />
+      }
+    </p>
+    <p>Example response for a failed call:<br />
+      {<br />
+      &nbsp;&nbsp;&quot;errorCode&quot;: 2,<br />
+      &nbsp;&nbsp;&quot;returnValue&quot;: false,<br />
+      &nbsp;&nbsp;&quot;errorText&quot;: &quot;activityId not found&quot;<br />
+      }
+    </p>
+  </div>
+</div>
+<p><a id="release"></a></p>
+<h3>release</h3>
+<div>
+  <h4>Description</h4>
+  <p><span style="line-height:1.6em">Allow a parent to free an Activity and notify other subscribers. The Activity is canceled unless one of its non-parent subscribers adopts it and becomes the new parent.&nbsp;For a completely safe transfer, a subscribing app or service, prior to the release, should already have called the&nbsp;<strong>adopt</strong> method.</span></p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>activityId</td>
+          <td>Required</td>
+          <td>Number (uint64_t)</td>
+          <td>
+            <p>Activity ID.</p>
+            <p><strong><span style="color:#FF0000">Note:</span>&nbsp;</strong>Either&nbsp;<strong>activityId</strong>&nbsp;or&nbsp;<strong>activityName&nbsp;</strong>is a REQUIRED&nbsp;field.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>activityName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Activity name. Only the creator of the Activity can specify <strong>activityName</strong>.</p>
+            <p><strong><span style="color:#FF0000">Note:</span>&nbsp;</strong>Either&nbsp;<strong>activityId</strong>&nbsp;or&nbsp;<strong>activityName&nbsp;</strong>is a REQUIRED&nbsp;field.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number (int64_t)</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -a test -f luna://com.webos.service.activitymanager/release &#39;{&quot;activityId&quot; : 98}&#39;</p>
+    <p>Example response for a successful call:<br />
+      {<br />
+      &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>Example response for a failed call:<br />
+      {<br />
+      &nbsp; &quot;errorCode&quot;: 2,<br />
+      &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &quot;errorText&quot;: &quot;activityId not found&quot;<br />
+      }
+    </p>
+  </div>
+</div>
+<p><a id="pause"></a></p>
+<h3>pause</h3>
+<div>
+  <h4>Description</h4>
+  <p>Suspend the work on the specified Activity and place the Activity in <strong>pause</strong> state.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>activityId</td>
+          <td>Optional</td>
+          <td>Number (uint64_t)</td>
+          <td>
+            <p>Activity ID.</p>
+            <p><strong><span style="color:#FF0000">Note:</span>&nbsp;</strong>Either&nbsp;<strong>activityId</strong>&nbsp;or&nbsp;<strong>activityName&nbsp;</strong>is a REQUIRED&nbsp;field.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>activityName</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Activity name. Only the creator of the Activity can specify <strong>activityName</strong>.</p>
+            <p><strong><span style="color:#FF0000">Note:</span>&nbsp;</strong>Either&nbsp;<strong>activityId</strong>&nbsp;or&nbsp;<strong>activityName&nbsp;</strong>is a REQUIRED&nbsp;field.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>If the <strong>pause </strong>method succeeds, <strong>returnValue</strong> will contain <strong>true</strong>.&nbsp;The method succeeds only if the Activity is in<span style="color:#000000"> <strong>unsatisfied</strong></span><span style="color:#008000"><strong> </strong></span>state.</p>
+            <p>If the <strong>pause </strong>method fails,<strong> returnValue</strong> will contain <strong>false</strong>. The method fails&nbsp;the Activity has ended (and is waiting for its subscribers to unsubscribe before cleaning up) or has been canceled.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number (int64_t)</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Sample code with activityName:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.activitymanager/create &#39;{<br />
+      &nbsp;&nbsp;&quot;activity&quot;:{&quot;description&quot;:&quot;&quot;,&quot;name&quot;:&quot;basic&quot;,&quot;schedule&quot;:{&quot;start&quot;:&quot;2030-12-31 09:00:00&quot;},<br />
+      &nbsp;&nbsp; &nbsp; &nbsp;&quot;callback&quot;:{&quot;method&quot;:&quot;luna://com.webos.service.config/setConfigs&quot;,&quot;params&quot;:{&quot;configs&quot;:{&quot;com.webos.service.activitymanager.basic&quot;:true}}}},<br />
+      &nbsp;&nbsp;&quot;start&quot;:true}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;subscribed&quot;: false,<br />
+      &nbsp; &nbsp; &quot;activityId&quot;: 58,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>Sample code with activityId:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.activitymanager/pause &#39;{&quot;activityId&quot;:58}&#39;</p>
+    <p>Example response for a successful call:<br />
+      {<br />
+      &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>Example response for a failed call:<br />
+      {<br />
+      &nbsp; &quot;errorCode&quot;: 2,<br />
+      &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &quot;errorText&quot;: &quot;activityId not found&quot;<br />
+      }
+    </p>
+  </div>
+</div>
+<p><a id="getActivityInfo"></a></p>
+<h3>getActivityInfo</h3>
+<div>
+  <h4>Description</h4>
+  <p>Gets information&nbsp;of Activities.</p>
+  <p>If activityId or activityName is given, getActivityInfo only&nbsp;returns information&nbsp;about that&nbsp;activity.</p>
+  <p>Conversely, if activityId or activityName is not given, getActivityInfo returns all undestroyed activities.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>activityId</td>
+          <td>Optional</td>
+          <td>Number (uint64_t)</td>
+          <td>
+            <p>Activity ID</p>
+          </td>
+        </tr>
+        <tr>
+          <td>activityName</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Activity name.&nbsp;Only the creator of the Activity can specify&nbsp;<strong>activityName</strong>.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribers</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <ul>
+              <li>To return the current parent, queued adopters, and subscribers for each Activity, set&nbsp;<strong>subscribers</strong>&nbsp;to&nbsp;<strong>true</strong>.</li>
+              <li>To not return the current parent, queued adopters, and subscribers for each Activity, set&nbsp;<strong>subscribers</strong>&nbsp;to&nbsp;<strong>false</strong>.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>details</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <ul>
+              <li>To return detailed information for each Activity, set&nbsp;<strong>details</strong>&nbsp;to&nbsp;<strong>true</strong>.</li>
+              <li>To return brief information&nbsp;for each Activity, set&nbsp;<strong>details</strong>&nbsp;to&nbsp;<strong>false</strong>.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>current</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <ul>
+              <li>To&nbsp;return the state of the Activity prerequisites (e.g., whether the Activity is scheduled or not, whether the trigger is invoked or not), set&nbsp;<strong>current</strong>&nbsp;to&nbsp;<strong>true</strong>.</li>
+              <li>Otherwise, set&nbsp;<strong>current</strong>&nbsp;to&nbsp;<strong>false</strong>.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number (int64_t)</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>activity</td>
+          <td>Optional</td>
+          <td>Object: <a href="#Activity"> Activity</a></td>
+          <td>
+            <p>The Activity object.</p>
+            <p>If <strong>activityId </strong>or <strong>activityName </strong>is given, <strong>getActivityInfo</strong> will contain the property.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>activities</td>
+          <td>Optional</td>
+          <td>Object array: <a href="#Activity"> Activity</a></td>
+          <td>
+            <p>Array with Activity objects.</p>
+            <p>If <strong>activityId </strong>or <strong>activityName</strong> is not given, <strong>getActivityInfo </strong>will contain this property.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>1. luna-send -n 1 -f luna://com.webos.service.activitymanager/getActivityInfo<br />
+      &#39;{<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&quot;activityId&quot;:36<br />
+      }&#39;
+    </p>
+    <p>&nbsp;</p>
+    <p>1-1. Example response for a successful call:</p>
+    <p>&nbsp;</p>
+    <p>{</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;activity&quot;: {</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;type&quot;: {</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;foreground&quot;: true</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;name&quot;: &quot;myactivity&quot;,</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;adopters&quot;: [],</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;callback&quot;: {</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;method&quot;: &quot;luna://com.webos.service.test/callback&quot;</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;subscribers&quot;: [],</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;creator&quot;: {</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;serviceId&quot;: &quot;com.webos.service.test&quot;</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;state&quot;: &quot;expired&quot;,</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;schedule&quot;: {</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;interval&quot;: &quot;1d&quot;,</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;local&quot;: true,</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;lastFinished&quot;: &quot;2015-03-20 00:37:38&quot;</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;description&quot;: &quot;my test activity&quot;,</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;activityId&quot;: 36</p>
+    <p>&nbsp;&nbsp;&nbsp; },</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true</p>
+    <p>}</p>
+    <p>&nbsp;</p>
+    <p>1-2. Example response for a failed call:</p>
+    <p>&nbsp;</p>
+    <p>{</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;errorCode&quot;: 2,</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: false,</p>
+    <p>&nbsp;&nbsp; &nbsp;&quot;errorText&quot;: &quot;activityId not found&quot;</p>
+    <p>}</p>
+    <p>&nbsp;</p>
+    <p>2. luna-send -i -f -a &quot;creator&quot; luna://com.webos.service.activitymanager/create</p>
+    <p>&#39;{</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;start&quot;: true,</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;activity&quot;: {</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;type&quot;: {</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;foreground&quot;: true</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;name&quot;: &quot;sdet&quot;,</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;description&quot;: &quot;Test create&quot;</p>
+    <p>&nbsp;&nbsp;&nbsp; },</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;subscribe&quot;: true,</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;replace&quot;: true</p>
+    <p>}&#39;</p>
+    <p>&nbsp;</p>
+    <p>2-1. Example response for a successful call:</p>
+    <p>&nbsp;</p>
+    <p>luna-send -n 1 -f -a &quot;creator&quot; luna://com.webos.service.activitymanager/getActivityInfo</p>
+    <p>&#39;{</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;current&quot;: true,</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;activityName&quot;: &quot;sdet&quot;</p>
+    <p>}&#39;</p>
+    <p>{</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;activity&quot;: {</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;type&quot;: {</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;foreground&quot;: true</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;parent&quot;: {</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;appId&quot;: &quot;creator&quot;</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;name&quot;: &quot;sdet&quot;,</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;adopters&quot;: [</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ],</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;subscribers&quot;: [</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;appId&quot;: &quot;creator&quot;</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ],</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;state&quot;: &quot;expired&quot;,</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;creator&quot;: {</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;appId&quot;: &quot;creator&quot;</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;description&quot;: &quot;Test create&quot;,</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;activityId&quot;: 82</p>
+    <p>&nbsp;&nbsp;&nbsp; },</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true</p>
+    <p>}</p>
+    <p>&nbsp;</p>
+    <p>2-2. Example response for a failed call:</p>
+    <p>&nbsp;</p>
+    <p>luna-send -n 1 -f luna://com.webos.service.activitymanager/getActivityInfo</p>
+    <p>&#39;{</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;current&quot;: true,</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;activityName&quot;: &quot;sdet&quot;</p>
+    <p>}&#39;</p>
+    <p>{</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;errorCode&quot;: 2,</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;errorText&quot;: &quot;Activity name/creator pair not found&quot;,</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: false</p>
+    <p>}</p>
+    <p>&nbsp;</p>
+    <p>3. luna-send -n 1 -f luna://com.webos.service.activitymanager/getActivityInfo</p>
+    <p>&#39;{</p>
+    <p>}&#39;</p>
+    <p>&nbsp;</p>
+    <p>3-1. Example response for a successful call:</p>
+    <p>{</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;activities&quot;: [</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;state&quot;: &quot;expired&quot;,</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;description&quot;: &quot;my test activity&quot;,</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;activityId&quot;: 2,</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;creator&quot;: { &quot;serviceId&quot;: &quot;com.webos.service.test&quot; },</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;name&quot;: &quot;test&quot;</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
+    <p>&nbsp;&nbsp;&nbsp; ],</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true</p>
+    <p>}</p>
+    <p>&nbsp;</p>
+    <p>3-2. Example response for a failed call:</p>
+    <p>N/A</p>
+  </div>
+</div>
+<p><a id="getManagerInfo"></a></p>
+<h3>getManagerInfo</h3>
+<div>
+  <h4>Description</h4>
+  <p>Gets Activity Manager related information such as:</p>
+  <ul>
+    <li>List of activities for which power is currently locked</li>
+    <li>Supported requirements</li>
+  </ul>
+  <h4>Parameters</h4>
+  <p>None</p>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>queues</td>
+          <td>Optional</td>
+          <td>Object: <a href="#InfoQueue"> InfoQueue</a></td>
+          <td>
+            <p>Queued Activity information.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>requirements</td>
+          <td>Optional</td>
+          <td>Object array: <a href="#InfoRequirement"> InfoRequirement</a></td>
+          <td>
+            <p>Supported requirement</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number (int64_t)</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.activitymanager/getManagerInfo &#39;{}&#39;</p>
+    <p>Example response:<br />
+      {<br />
+      &nbsp; &quot;queues&quot;: [<br />
+      &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &quot;activities&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; { &quot;activityId&quot;: 20, &quot;name&quot;: &quot;mojotempdbspace&quot;, &quot;creator&quot;: { &quot;serviceId&quot;: &quot;com.webos.service.db&quot; } },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; ...<br />
+      &nbsp; &nbsp; &nbsp; ]<br />
+      &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; ...<br />
+      &nbsp; ],<br />
+      &nbsp; &quot;requirements&quot;: [<br />
+      &nbsp; &nbsp; { &quot;name&quot;: &quot;bootup&quot;, &quot;type-schema&quot;: {&quot;type&quot;: &quot;boolean&quot;} },<br />
+      &nbsp; &nbsp; { &quot;name&quot;: &quot;internet&quot;, &quot;type-schema&quot;: {&quot;type&quot;: &quot;boolean&quot;} },<br />
+      &nbsp; &nbsp; { &quot;name&quot;: &quot;wifi&quot;, &quot;type-schema&quot;: {&quot;type&quot;: &quot;boolean&quot;} }<br />
+      &nbsp; ]<br />
+      }
+    </p>
+  </div>
+</div>
+<div>
+<h2>Objects</h2>
+<a id="Activity"></a>
+<h3>Activity</h3>
+<p>Represent everything about an Activity-name, type, state, requirements, schedule, trigger, callback, id,creator, adopters, processes, flows, and associations.&nbsp;</p>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <tbody>
+      <tr>
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+      <tr>
+        <td>name</td>
+        <td>Required</td>
+        <td>String</td>
+        <td>
+          <p>Activity name. Must be unique for creator. Applies to both persistent and non-persistent Activities. The create call will fail if this field is not unique unless the &quot;replace&quot; field is true.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>description</td>
+        <td>Required</td>
+        <td>String</td>
+        <td>
+          <p>Activity description.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>type</td>
+        <td>Required</td>
+        <td>Object: <a href="#Type"> Type</a></td>
+        <td>
+          <p>Indicates how the Activity is handled. Principally, it is used to denote the Activity as either foreground or background, and whether it is continuous&nbsp;or not.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>schedule</td>
+        <td>Optional</td>
+        <td>Object: <a href="#Schedule">Schedule</a></td>
+        <td>
+          <p>Time-based requirements for Activity.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>trigger</td>
+        <td>Optional</td>
+        <td>Object: <a href="#Trigger">Trigger</a></td>
+        <td>Event that must occur for Activity to run.</td>
+      </tr>
+      <tr>
+        <td>requirements</td>
+        <td>Optional</td>
+        <td>Object: <a href="#Requirement"> Requirement</a></td>
+        <td>
+          <p>Conditions that must satisfy&nbsp;for Activity to run.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>callback</td>
+        <td>Optional</td>
+        <td>Object: <a href="#Callback">Callback</a></td>
+        <td>
+          <p>Call to invoke when Activity runs. This object should be defined when activity is needed to start immediately.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>metadata</td>
+        <td>Optional</td>
+        <td>Object</td>
+        <td>
+          <p>Opaque object the Activity Manager stores and returns in the callback parameters.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>activityId</td>
+        <td>Optional</td>
+        <td>Number (uint64_t)</td>
+        <td>
+          <p>Activity ID</p>
+        </td>
+      </tr>
+      <tr>
+        <td>creator</td>
+        <td>Optional</td>
+        <td>Object: <a href="#Parent"> Parent</a></td>
+        <td>
+          <p><strong><span style="color:#FF0000">NOTE: The &#39;creator&#39; in Activity object can be set only&nbsp;by </span><span style="color:#FF0000">configurator</span><span style="color:#FF0000">.</span></strong></p>
+        </td>
+      </tr>
+      <tr>
+        <td>parent</td>
+        <td>Optional</td>
+        <td>Object: <a href="#Parent"> Parent</a></td>
+        <td>
+          <p>Activity parent</p>
+        </td>
+      </tr>
+      <tr>
+        <td>adopters</td>
+        <td>Optional</td>
+        <td>Object array: <a href="#Parent"> Parent</a></td>
+        <td>
+          <p>Activity adopters&nbsp;<span style="background-color: initial;">(parent object array)</span></p>
+        </td>
+      </tr>
+      <tr>
+        <td>state</td>
+        <td>Optional</td>
+        <td>String</td>
+        <td>
+          <p><span style="color:#FF0000"><strong>NOTE:&nbsp;These states are deprecated. These&nbsp;will be replaced with new states in the next version.</strong></span></p>
+          <p>Activity state. Property that represents current activity state with following strings:</p>
+          <ul>
+            <li>init : Activity has been created and is waiting for Activity&#39;s associations and initial app and service subscriptions to be in place.</li>
+            <li>waiting: Activity is waiting for a trigger to fire or its scheduled time to begin running.</li>
+            <li>blocked: Activity is waiting for its specified Requirements to be met.</li>
+            <li>queued: The Activity is queued and ready to run.</li>
+            <li>running: The Activity is running.</li>
+            <li>pause: The Activity is paused.</li>
+            <li>cancelling: The Activity has been cancelled and waiting for potential adopters to take over as the parent.</li>
+            <li>cancelled: The Activity is cancelled.</li>
+            <li>stopping: The Activity is in the process of stopping.</li>
+            <li>stopped: The Activity has been stopped.</li>
+            <li>complete: The Activity is complete and has stopped.</li>
+          </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<a id="Callback"></a>
+<h3>Callback</h3>
+<p>The <strong>Callback</strong> object<strong>&nbsp;</strong>specifies a method to be called, and optionally arguments that should be passed to that method when the activity moves from &#39;satisfied&#39; state to &#39;expiring&#39;.</p>
+<p>If the&nbsp;<strong>callback</strong> method&nbsp;fails::</p>
+<ul>
+  <li>For normal (non-continuous) activity: activity is moved to &#39;failed&#39; state.</li>
+  <li>For continuous activity: activity moved to &#39;unsatisfied&#39; state.</li>
+</ul>
+<p>To change the behavior when callback fails, use the &#39;<strong>ignoreReturn</strong>&#39; property.</p>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <tbody>
+      <tr>
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+      <tr>
+        <td>method</td>
+        <td>Required</td>
+        <td>String</td>
+        <td>Callback URI.</td>
+      </tr>
+      <tr>
+        <td>params</td>
+        <td>Optional</td>
+        <td>any</td>
+        <td>
+          <p>Parameters to be passed to the callback method.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>ignoreReturn</td>
+        <td>Optional</td>
+        <td>Boolean</td>
+        <td>
+          <p>Keeps the activity alive when the activity&nbsp;callback fails. Possible values are:</p>
+          <ul>
+            <li>
+              <strong>true </strong>: Activity manager does not cancel the activity but moves it to the next step.
+              <ul>
+                <li>For normal (non-continuous) activity: waits for client to complete (or cancel)</li>
+                <li>For continuous activity: restarts activity</li>
+              </ul>
+            </li>
+            <li><strong>false </strong>:Activity manager&nbsp;moves the activity to failed&nbsp;state and ultimately cancels it.</li>
+          </ul>
+          <p>Default values:</p>
+          <ul>
+            <li><strong>false&nbsp;:</strong> For non-continuous (normal) activity.&nbsp;(because backward compatibility should be maintained)</li>
+            <li><strong>true : </strong>For continuous activity.</li>
+          </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<a id="InfoActivity"></a>
+<h3>InfoActivity</h3>
+<p>Activity information</p>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <tbody>
+      <tr>
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+      <tr>
+        <td>activityId</td>
+        <td>Required</td>
+        <td>Number (uint64_t)</td>
+        <td>
+          <p>Activity ID</p>
+        </td>
+      </tr>
+      <tr>
+        <td>creator</td>
+        <td>Required</td>
+        <td>Object: <a href="#InfoCreator"> InfoCreator</a></td>
+        <td>
+          <p>Indicates creator</p>
+        </td>
+      </tr>
+      <tr>
+        <td>name</td>
+        <td>Required</td>
+        <td>String</td>
+        <td>
+          <p>Activity name</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<a id="InfoCreator"></a>
+<h3>InfoCreator</h3>
+<p>Creator information</p>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <tbody>
+      <tr>
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+      <tr>
+        <td>serviceId</td>
+        <td>Required</td>
+        <td>String</td>
+        <td>
+          <p>Service ID</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<a id="InfoQueue"></a>
+<h3>InfoQueue</h3>
+<p>List of Activities for which power is currently locked.</p>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <tbody>
+      <tr>
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+      <tr>
+        <td>activities</td>
+        <td>Required</td>
+        <td>Object array: <a href="#InfoActivity">InfoActivity</a></td>
+        <td>
+          <p>Activities array</p>
+        </td>
+      </tr>
+      <tr>
+        <td>name</td>
+        <td>Required</td>
+        <td>String</td>
+        <td>
+          <p>Queued status</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<a id="InfoRequirement"></a>
+<h3>InfoRequirement</h3>
+<p>Supported requirement information</p>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <tbody>
+      <tr>
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+      <tr>
+        <td>name</td>
+        <td>Optional</td>
+        <td>String</td>
+        <td>
+          <p>requirement name</p>
+        </td>
+      </tr>
+      <tr>
+        <td>type-schema</td>
+        <td>Optional</td>
+        <td>Object</td>
+        <td>
+          <p>requirement type</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<a id="Parent"></a>
+<h3>Parent</h3>
+The Parent (or potential parent) of an Activity specified as an app ID or service ID. The Activity Manager automatically obtains this value when the app or service invokes the create() or adopt()
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <tbody>
+      <tr>
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+      <tr>
+        <td>appId</td>
+        <td>Optional</td>
+        <td>String</td>
+        <td>Application ID. Either this or serviceId must be specified.</td>
+      </tr>
+      <tr>
+        <td>serviceId</td>
+        <td>Optional</td>
+        <td>String</td>
+        <td>Service ID. Either this or appId must be specified.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<a id="Requirement"></a>
+<h3>Requirement</h3>
+<p>The <strong>Requirements </strong>are preconditions that the Activity Manager will ensure are met before an Activity will be run. Any number of requirements may be specified for a single Activity, and all must be met in order for the Activity to move to the&nbsp;<span style="color:#008000"><strong>satisfied&nbsp;</strong></span>state.&nbsp;<strong>Requirements&nbsp;</strong>can transition from the met state back to unmet if the condition the particular requirement is monitoring for no longer holds true.</p>
+<p>The Requirements available on the system can be queried&nbsp;using <strong>getManagerInfo&nbsp;</strong>method.</p>
+<p>Example :<br />
+  luna-send -n 1 -f luna://com.webos.service.activitymanager/create &#39;{<br />
+  &nbsp;&nbsp; &nbsp;&quot;activity&quot;: {<br />
+  &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;<strong>&quot;requirements&quot;: {&quot;bootup&quot;: true, &quot;internet&quot;: true}</strong>,<br />
+  &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&quot;name&quot;: &quot;browser-restart&quot;, &quot;description&quot;: &quot;&quot;, &quot;type&quot;: {&quot;foreground&quot;: true},<br />
+  &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&quot;callback&quot;: {&quot;method&quot;: &quot;luna://com.webos.service.applicationmanager/launch&quot;, &quot;params&quot;: {&quot;id&quot;: &quot;com.webos.app.browser&quot;}},<br />
+  &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&quot;trigger&quot;: {&quot;method&quot;:&quot;luna://com.webos.service.applicationmanager/getAppLifeStatus&quot;, &quot;params&quot;: {&quot;subscribe&quot;: true},<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;where&quot;: {&quot;and&quot;:[{&quot;op&quot;: &quot;=&quot;, &quot;prop&quot;: &quot;appId&quot;, &quot;val&quot;: &quot;com.webos.app.browser&quot;}, {&quot;op&quot;: &quot;=&quot;, &quot;prop&quot;: &quot;status&quot;, &quot;val&quot;:&quot;stop&quot;}]}}<br />
+  &nbsp;&nbsp; &nbsp;},<br />
+  &nbsp;&nbsp;&nbsp; &quot;replace&quot;: true,<br />
+  &nbsp;&nbsp;&nbsp; &quot;start&quot;: true<br />
+  }&#39;
+</p>
+<p>&nbsp;</p>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <tbody>
+      <tr>
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+      <tr>
+        <td>bootup</td>
+        <td>Optional</td>
+        <td>Boolean</td>
+        <td>
+          <p>bootup</p>
+        </td>
+      </tr>
+      <tr>
+        <td>internet</td>
+        <td>Optional</td>
+        <td>Boolean</td>
+        <td>
+          <p>internet</p>
+        </td>
+      </tr>
+      <tr>
+        <td>wifi</td>
+        <td>Optional</td>
+        <td>Boolean</td>
+        <td>
+          <p>wifi</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<a id="Schedule"></a>
+<h3>Schedule</h3>
+<p>The&nbsp;<strong>Schedule</strong> object will define the time-based requirements for an Activity. If <strong>Schedule </strong>is specified, the schedule must be met before the Activity move to&nbsp;<strong>satisfied </strong>state.</p>
+<p>Note: Some properties of Schedule may be changed.</p>
+<p>&nbsp;</p>
+<p><strong>1. Basic schedule</strong></p>
+<p><strong>&quot;schedule&quot;: {</strong><br />
+  &nbsp;&nbsp; &nbsp;// Start time. Time format is a subset of&nbsp;ISO 8601.<br />
+  &nbsp;&nbsp; &nbsp;// That is, &quot;YYYY-MM-DD HH:MM:SS&quot; for local, or&nbsp;&quot;YYYY-MM-DD HH:MM:SSZ&quot; for UTC.<br />
+  &nbsp;&nbsp; &nbsp;&quot;<strong>start</strong>&quot;: &quot;2017-03-01 21:00:00&quot;,<br />
+  <strong>}</strong>
+</p>
+<p>&nbsp;</p>
+<p><strong>2. Smart interval</strong></p>
+<p>Smart intervals align all Activities operating with that period to the same start times, allowing them to batch up and avoid unnecessary device wakeups, potentially saving significant amounts of power.</p>
+<p><strong>&quot;schedule&quot;: {</strong><br />
+  &nbsp; &nbsp; // Time between events, in seconds.<br />
+  &nbsp; &nbsp; //&nbsp;For a smart interval, the interval must be an even multiple of days,<br />
+  &nbsp;&nbsp; &nbsp;// or one of the following: 12h, 6h, 3h, 1h, 30m, 15m, 10m, or 5m.<br />
+  &nbsp; &nbsp; &quot;<strong>interval</strong>&quot;:&nbsp;&quot;5m&quot;<br />
+  <strong>}</strong>
+</p>
+<p>&nbsp;</p>
+<p><strong>3. Precise interval</strong></p>
+<p><strong>&quot;schedule&quot;: {</strong><br />
+  &nbsp; &nbsp; //&nbsp;Specifies that the Interval should occur at the precisely specified start time, and every&nbsp;given interval thereafter.<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&quot;<strong>precise</strong>&quot;:&nbsp;true,<br />
+  <br />
+  &nbsp;&nbsp; &nbsp;// Start time. Time format is a subset of ISO 8601.<br />
+  &nbsp;&nbsp; &nbsp;// That is&nbsp;&quot;YYYY-MM-DD HH:MM:SS&quot; for local, and&nbsp;&quot;YYYY-MM-DD HH:MM:SSZ&quot; for UTC.<br />
+  &nbsp; &nbsp; &quot;<strong>start</strong>&quot;: &quot;2017-03-01 21:00:00&quot;,<br />
+  <br />
+  &nbsp;&nbsp; &nbsp;// End time for the interval (<strong>NOTE. </strong>This does not work currently.)<br />
+  &nbsp; &nbsp; [ &quot;<strong>end</strong>&quot;: &quot;2017-03-01 22:00:00&quot;, ]<br />
+  <br />
+  &nbsp;&nbsp; &nbsp;// Time between events, in seconds.<br />
+  &nbsp;&nbsp; &nbsp;//&nbsp;Specifies the number of days, hours, minutes, and seconds between executions of the Activity.<br />
+  &nbsp;&nbsp; &nbsp;//&nbsp;They must be specified in order, but any can be&nbsp;left out.&nbsp; Any interval is valid.<br />
+  &nbsp;&nbsp; &nbsp;&quot;<strong>interval</strong>&quot;: &quot;1m&quot;,<br />
+  <strong>}</strong>
+</p>
+<p>&nbsp;</p>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <tbody>
+      <tr>
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+      <tr>
+        <td>start</td>
+        <td>Optional</td>
+        <td>String</td>
+        <td>
+          <p><strong>start </strong>is required for basic schedue or precise interval.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>end</td>
+        <td>Optional</td>
+        <td>String</td>
+        <td>
+          <p>end time</p>
+        </td>
+      </tr>
+      <tr>
+        <td>precise</td>
+        <td>Optional</td>
+        <td>Boolean</td>
+        <td>
+          <p><strong>precise</strong> is required for precise interval</p>
+        </td>
+      </tr>
+      <tr>
+        <td>interval</td>
+        <td>Optional</td>
+        <td>String</td>
+        <td>
+          <p><strong>interval </strong>is required for smart or precise interval</p>
+        </td>
+      </tr>
+      <tr>
+        <td>skip</td>
+        <td>Optional</td>
+        <td>Boolean</td>
+        <td>
+          <p>skip</p>
+        </td>
+      </tr>
+      <tr>
+        <td>local</td>
+        <td>Optional</td>
+        <td>Boolean</td>
+        <td>
+          <p>local</p>
+        </td>
+      </tr>
+      <tr>
+        <td>relative</td>
+        <td>Optional</td>
+        <td>Boolean</td>
+        <td>
+          <p>relative</p>
+        </td>
+      </tr>
+      <tr>
+        <td>lastFinished</td>
+        <td>Optional</td>
+        <td>String</td>
+        <td>
+          <p>lastFinished</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<a id="Trigger"></a>
+<h3>Trigger</h3>
+<p>Activities with Triggers do not become runnable until an event occurs on a subscribed method. In addition, other requirements or scheduling constraints may also need to be met before the Activity is runnable. When the Activity starts, the specified method is called with &quot;subscribe=true&quot;, and any additional arguments the Activity creator provides. If another Activity has previously been created and started with an identical Trigger, with the same method and arguments, then the Activity Manager may utilize its existing subscription to monitor the Triggering event, unless &quot;unique&quot; is true in the Trigger specification.</p>
+<p>Note: Key Trigger and Compare Trigger are deprecated.</p>
+<p>&nbsp;</p>
+<p><strong>1. Key Trigger</strong> is triggered when the specified key exists.</p>
+<p><strong>&quot;trigger&quot;: {</strong><br />
+  &nbsp; &nbsp; &quot;<strong>method</strong>&quot;:&nbsp;&quot;luna://com.webos.service.applicationmanager/getForegroundAppInfo&quot;,<br />
+  &nbsp; &nbsp; &quot;<strong>params</strong>&quot;: {&nbsp;&quot;subscribe&quot;:&nbsp;true,&nbsp;&quot;extraInfo&quot;:&nbsp;true&nbsp;},<br />
+  &nbsp;&nbsp; &nbsp;&quot;<strong>key</strong>&quot;:&nbsp;&quot;foregroundAppInfo&quot;<br />
+  <strong>}</strong>
+</p>
+<p>&nbsp;</p>
+<p><strong>2. Compare Trigger</strong> is triggered when<strong>&nbsp;</strong>the specified key &amp; value pair in compare&nbsp;are matched.</p>
+<p><strong>&quot;trigger&quot;: {</strong><br />
+  &nbsp; &nbsp; &quot;<strong>method</strong>&quot;:&nbsp;&quot;luna://com.webos.service.applicationmanager/getForegroundAppInfo&quot;,<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&quot;<strong>params</strong>&quot;: {&nbsp;&quot;subscribe&quot;:&nbsp;true&nbsp;},<br />
+  &nbsp; &nbsp; &quot;<strong>compare</strong>&quot;: {&nbsp;&quot;appId&quot;:&nbsp;&quot;com.webos.app.browser&quot;&nbsp;}<br />
+  <strong>}</strong>
+</p>
+<p>&nbsp;</p>
+<p><strong>3. Where Trigger</strong> is triggered when the conditions of where clauses are satisfied.</p>
+<p>3-1. Single Trigger</p>
+<p><strong>&quot;trigger&quot;: {</strong><br />
+  &nbsp; &nbsp; &quot;<strong>method</strong>&quot;:&nbsp;&quot;luna://com.webos.service.connectionmanager/getstatus&quot;,<br />
+  &nbsp;&nbsp; &nbsp;&quot;<strong>params</strong>&quot;: {&nbsp;&quot;subscribe&quot;:&nbsp;true&nbsp;},<br />
+  &nbsp; &nbsp; &quot;<strong>where</strong>&quot;: {&nbsp;&quot;prop&quot;: &quot;isInternetConnectionAvailable&quot;,&nbsp;&quot;op&quot;: &quot;=&quot;,&nbsp;&quot;val&quot;: true&nbsp;}<br />
+  <strong>}</strong>
+</p>
+<p>3-2.&nbsp;Multiple Trigger can be combined by &#39;<strong>and</strong>&#39; or &#39;<strong>or</strong>&#39;</p>
+<p><strong>&quot;trigger&quot;: {</strong><br />
+  &nbsp;&nbsp; &nbsp;&quot;<strong>and</strong>&quot;: [<br />
+  &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;{<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ....<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+  &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;{<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;<strong>method</strong>&quot;:&nbsp;&quot;luna://com.webos.service.application,anager/getAppLifeStatus&quot;,<br />
+  &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&quot;<strong>params</strong>&quot;: {&nbsp;&quot;subscribe&quot;:&nbsp;true&nbsp;},<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;<strong>where</strong>&quot;: {&nbsp;&quot;and&quot;: [<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {&nbsp;&quot;op&quot;:&nbsp;&quot;=&quot;,&nbsp;&quot;prop&quot;:&nbsp;&quot;appId&quot;,&nbsp;&quot;val&quot;:&nbsp;&quot;com.webos.app.browser&quot;&nbsp;},<br />
+  &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&quot;op&quot;:&nbsp;&quot;=&quot;,&nbsp;&quot;prop&quot;:&nbsp;&quot;status&quot;,&nbsp;&quot;val&quot;:&nbsp;&quot;close&quot;&nbsp;}<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]}<br />
+  &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;},<br />
+  &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;{<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ....<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+  &nbsp;&nbsp; &nbsp;]<br />
+  <strong>}</strong>
+</p>
+<p>&nbsp;</p>
+<p>The Activity Manager will unsubscribe all subscriptions of Triggers, if the Activity arrives &#39;satisfied&#39; state, and re-subscribe Triggers when &#39;restarting&#39;.<br />
+  <br />
+  <strong>WARNING</strong><br />
+  <br />
+  Do<strong> NOT</strong> ignore the trigger information returned in a callback. If an error is returned to the method specified for a Trigger, then the Trigger fires immediately. This could happen if, for example, the parameters passed to the method were invalid or wrong. If the Trigger callback re-starts the Activity, i.e., in the case of a db8 watch, then the potential exists for an infinite loop. Check for errors.
+</p>
+<p><span style="color:#FF0000"><strong>NOTE.</strong></span> <strong>As the &#39;failed&#39; state is added, if an error is returned from the Trigger method, the Activity will move to &#39;failed&#39; state without calling Callback in the next version.</strong><br />
+  <br />
+  Keep the mutual exclusion among the &quot;key&quot;, &quot;compare&quot;, and &quot;where&quot; properties. They are incompatible with each other.
+</p>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <tbody>
+      <tr>
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+      <tr>
+        <td>method</td>
+        <td>Required</td>
+        <td>String</td>
+        <td>Name of callback method.</td>
+      </tr>
+      <tr>
+        <td>params</td>
+        <td>Optional</td>
+        <td>Object</td>
+        <td>Parameters for subscription or watch.</td>
+      </tr>
+      <tr>
+        <td>where</td>
+        <td>Optional</td>
+        <td>Object</td>
+        <td>
+          <p>Single db8 where clause or array of db8 where clauses.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>compare</td>
+        <td>Optional</td>
+        <td>Object</td>
+        <td>
+          <p>Object that holds key and value properties. Trigger will query with the key and compare old value with specified value.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>key</td>
+        <td>Optional</td>
+        <td>String</td>
+        <td>
+          <p>Key property name. Activity Manager looks for this field in callback response, i.e., &quot;fired&quot; from db8 watch where query results have changed.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>and</td>
+        <td>Optional</td>
+        <td>Object array: <a href="#Trigger"> Trigger</a></td>
+        <td>
+          <p>The <strong>and</strong> field is used when combining multiple triggers to be combined with an &#39;and&#39; condition.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>or</td>
+        <td>Optional</td>
+        <td>Object array: <a href="#Trigger"> Trigger</a></td>
+        <td>
+          <p>The <strong>or</strong> field is used when combining multiple triggers to be combined with an &#39;or&#39; condition.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>
+<h2>API Error Codes Reference</h2>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <tbody>
+      <tr>
+        <th width="15%">
+          <p>Error Code</p>
+        </th>
+        <th width="30%">
+          <p>Error Text</p>
+        </th>
+        <th width="55%">
+          <p>Error Description</p>
+        </th>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>No such file or directory</td>
+        <td>
+          <p>No such file or directory</p>
+        </td>
+      </tr>
+      <tr>
+        <td>11</td>
+        <td>Operation blocked</td>
+        <td>
+          <p><span style="background-color:rgb(244, 244, 244)">Operation blocked</span></p>
+        </td>
+      </tr>
+      <tr>
+        <td>12</td>
+        <td>Out of memory</td>
+        <td>
+          <p>Out of memory</p>
+        </td>
+      </tr>
+      <tr>
+        <td>13</td>
+        <td>Permission denied</td>
+        <td>
+          <p><span style="background-color:rgb(244, 244, 244)">Permission denied</span></p>
+        </td>
+      </tr>
+      <tr>
+        <td>17</td>
+        <td>File already exists</td>
+        <td>
+          <p>File already exists</p>
+        </td>
+      </tr>
+      <tr>
+        <td>22</td>
+        <td>Invalid argument</td>
+        <td>
+          <p><span style="background-color:rgb(244, 244, 244)">Invalid argument</span></p>
+        </td>
+      </tr>
+      <tr>
+        <td>38</td>
+        <td>Function not implemented</td>
+        <td>
+          <p>Function not implemented</p>
+        </td>
+      </tr>
+      <tr>
+        <td>-1000</td>
+        <td>Internal error</td>
+        <td>
+          <p><span style="background-color:rgb(244, 244, 244)">Internal error</span></p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,68 @@
+<!-- figure out the current section below Documentation -->
+{{ $p := . }}
+{{ $docs := .Site.GetPage "/docs" }}
+{{ $menuSections := (where $docs.Sections ".Params.section_main" true) }}
+{{ $.Scratch.Set "sectionName" "overview" }}
+{{ range $menuSections }}
+  {{ $isDescendant := $p.IsDescendant . }}
+  {{ if $isDescendant }}
+    {{ $.Scratch.Set "sectionName" (.LinkTitle | lower) }}
+  {{ end }}
+{{ end }}
+
+{{ $sidebar := (index .Site.Data.sidebars.docs  ($.Scratch.Get "sectionName") ) }}
+{{ $entries := index $sidebar "entries" }}
+
+<!-- build menu tree (as UL list) to implement sidebar menu based on Navgoco (https://plugins.jquery.com/navgoco/) -->
+<div class="sidebar-container column is-one-fifth">
+  <p class="sidebar-title is-hidden-tablet">Menu</p>
+  <div class="switch is-hidden-tablet">
+    <span class="slider round"></span>
+  </div>
+  <div class="custom-side">
+    <div class="sidebar-main sidebar">
+      <div class="sidebar-inner">
+        <p class="sidebar-title dis-hidden-mobile">
+          {{ ($.Scratch.Get "sectionName") | humanize }}
+        </p>
+        <ul class="sidebar-menu nav scrollbar-outer">
+          {{ range $entries }}
+          <li {{ if eq $.Page.RelPermalink .url }} class="active" {{ end }}>
+            {{ if .url }}
+            <a href="{{ .url }}"><strong>{{ .title }}</strong></a>
+            {{ else }}
+            <a href="#"><strong>{{ .title }}</strong></a>
+            <ul>
+              {{ range .sections }}
+                {{ if .url }}
+                <li {{ if eq $.Page.RelPermalink .url }} class="active" {{ end }} class="subsections">
+                  <a href="{{ .url }}">{{ .title }}</a>
+                </li>
+                {{ else }}
+                <li class="subsections">
+                  <a href="#">{{ .title }}</a>
+                  <ul>
+                    {{ range .subsections }}
+                      {{ if isset . "externalurl" }}
+                      <li>
+                        <a href="{{ .externalurl }}" target="_blank">{{ .title }} <i class="fas fa-external-link-alt"></i></a>
+                      </li>
+                      {{ else }}
+                      <li {{ if eq $.Page.RelPermalink .url }} class="active" {{ end }}>
+                        <a href="{{ .url }}">{{ .title }}</a>
+                      </li>
+                      {{ end }}
+                    {{ end }}
+                  </ul>
+                </li>
+                {{ end }}
+              {{ end }}
+            </ul>
+            {{ end }}
+          </li>
+          {{ end }}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

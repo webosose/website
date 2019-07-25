@@ -1,0 +1,2265 @@
+---
+title: com.webos.service.filecache
+date: 2019-04-23
+toc: true
+---
+<div>
+  <H2>API Summary</h2>
+  <p>This service enables you to manage caching of files. It implements the global shared cache space, which webOS applications (such as&nbsp;<strong>Email</strong>) can use to temporary store cache files or send files to other webOS applications.</p>
+</div>
+<h2>Overview of the API</h2>
+<div>
+  <p>On the system level, the&nbsp;<strong>File Cache</strong>&nbsp;service is a daemon that starts after the&nbsp;<strong>webOS</strong>&nbsp;boots. It is responsible for caching filesystem requests, enabling to improve the performance of I/O operations and to save space on the the flash storage device.</p>
+  <p>You can configure the <strong>File Cache</strong> service behavior by calling its methods or by editing the options in the&nbsp;<strong>FileCache.conf</strong>&nbsp;file.&nbsp;In particular, you can:</p>
+  <ul>
+    <li>specify the global shared cache space</li>
+    <li>configure space and object parameters</li>
+    <li>specify automatic expiration options or select to control expiration manually.</li>
+  </ul>
+  <p>The default setting of the <strong>FileCache.conf</strong>&nbsp;file is:</p>
+  <ul>
+    <li>totalCacheSpace 104857600 (100 MiB)</li>
+  </ul>
+</div>
+<h2>Methods</h2>
+<div>
+  <h3>ChangeType</h3>
+  <div>
+    <h4>Description</h4>
+    <p>Allows apps to modify the parameters of a cache type other than it&rsquo;s name. You must specify the name of the cache type, and those cache type parameters that have to be modified. The cache type values are all as defined in&nbsp;<strong>DefineType</strong>.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>typeName</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Name of cache type to be modified.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>loWatermark</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p style="text-align: left;">The minimum space in bytes guaranteed to be available for this cache type.<br></p>
+            </td>
+          </tr>
+          <tr>
+            <td>hiWatermark</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p style="text-align: left;">The maximum space in bytes allowed to be used by this cache type.<br></p>
+            </td>
+          </tr>
+          <tr>
+            <td>size</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p style="text-align:left">Default value in bytes for any object inserted into this cache type that does not specify a value for size. Size must not be negative.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>cost</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p style="text-align: left;">Default value between 0 and 100 for any object inserted into this cache type that does not specify a value for cost.<br></p>
+            </td>
+          </tr>
+          <tr>
+            <td>lifetime</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p style="text-align:left">Default value in seconds for any object inserted into this cache type that does not specify a value for lifetime. <strong>lifetime</strong> must not be negative.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>-200</td>
+            <td>&quot;ChangeType: Invalid params: hiWatermark must be greater than loWatermark.&quot;</td>
+            <td>
+              <p>Parameters set are invalid</p>
+            </td>
+          </tr>
+          <tr>
+            <td>-196</td>
+            <td>&quot;ChangeType: Type &#39;test&#39; does not exist.&quot;</td>
+            <td>
+              <p>Type is not yet defined</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div class="code-bg-grey">
+      <p>Prerequisite: Invoke DefineType API to define the type name &quot;test&quot;.</p>
+      <p># luna-send -f -n 1 luna://com.webos.service.filecache/DefineType &#39;{&quot;typeName&quot;:&quot;test&quot;, &quot;size&quot;:1024, &quot;loWatermark&quot;:102400, &quot;hiWatermark&quot;:409600, &quot;cost&quot;:5}&#39;</p>
+      <p>Example:</p>
+      <p># luna-send -f -n 1 luna://com.webos.service.filecache/ChangeType &#39;{&quot;typeName&quot;:&quot;test&quot;, &quot;size&quot;:2048, &quot;cost&quot;:10}&#39;</p>
+    </div>
+  </div>
+</div>
+<h3>CopyCacheObject</h3>
+<div>
+  <h4>Description</h4>
+  <p>Enables copying of an object from the file cache to a non-cached location.&nbsp;On successful completion, <strong>newPathName</strong> will be returned as it may be different than expected due to filename collisions. If there is a name collision, the name will be made unique by adding a number to the file basename (i.e. foo.bar may become foo-(1).bar).</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>pathName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p style="text-align: left;">The <strong>pathName </strong>​is the&nbsp;path of the cache object to be copied<br></p>
+          </td>
+        </tr>
+        <tr>
+          <td>destination</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p style="text-align: left;">The <strong>destination</strong><b>&nbsp;</b>is the path to a target directory, this path will be validated to ensure you have write permissions to that directory.<br></p>
+          </td>
+        </tr>
+        <tr>
+          <td>fileName</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p style="text-align:left">The <strong>fileName </strong>is the name&nbsp;for the target file. If not passed, the fileName will be the value passed when calling <strong>InsertCacheObject</strong>.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>newPathName</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>On success, the&nbsp;<strong>newPathName</strong>&nbsp;will be returned. This file name may be different than expected due to filename collisions. If there is a name collision, the name will be made unique by adding a number to the file basename (i.e. foo.bar may become foo-(1).bar).</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>-199</td>
+          <td>&quot;CopyCacheObject: Could not locate object&quot;</td>
+          <td>
+            <p>Object does not exist.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-199</td>
+          <td>&quot;CopyCacheObject: pathName no longer found in cache.&quot;</td>
+          <td>
+            <p>Path not available anymore.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-199</td>
+          <td>&quot;CopyCacheObject: Invalid object id derived from pathname.&quot;</td>
+          <td>
+            <p>Invalid object ID.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-193</td>
+          <td>&quot;CopyCacheObject: Invalid destination, no write permission.&quot;</td>
+          <td>
+            <p>No write permission.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-192</td>
+          <td>&quot;CopyCacheObject: No fileName specified or found.&quot;</td>
+          <td>
+            <p>Invalid filename argument.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-192</td>
+          <td>&quot;CopyCacheObject: No unique destination name found.&quot;</td>
+          <td>
+            <p>Destination not found.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-192</td>
+          <td>&quot;CopyCacheObject: Invalid destination, not a directory.&quot;</td>
+          <td>
+            <p>Invalid destination path.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Example:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.filecache/CopyCacheObject &#39;{&quot;pathName&quot;:&quot;/var/file-cache/test/M/OnRpQABl.bar&quot;, &quot;destination&quot;:&quot;&quot;, &quot;fileName&quot;:&quot;foo.bar&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Returns:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;newPathName&quot;: &quot;/media/internal/downloads/foo.bar&quot;,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>DefineType</h3>
+<div>
+  <h4>Description</h4>
+  <p>Defines a new cache type.&nbsp;This is intended for use by the backup service.</p>
+  <p>Optionally you may specify the default values for the size, cost, and lifetime. These defaults will be applied to all objects inserted into this cache type that do not specify their own values for these arguments. The size is in bytes, the cost is an integer between 0 and 100, and the lifetime is in seconds. &nbsp;</p>
+  <p>The&nbsp;<strong>errorCode</strong>&nbsp;and&nbsp;<strong>errorText&nbsp;</strong>are only be returned if the <strong>returnValue</strong> is false.</p>
+  <p>Note: You can not define type with the same <strong>typeName</strong>. Use&nbsp;<strong>changeType</strong> to change an existing type.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>typeName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p style="text-align: left;">A <strong>typeName </strong>is a&nbsp;string up to 64 characters that uniquely identifies the new cache type. A <strong>typeName</strong> cannot start with a<strong>&nbsp;. </strong>( the<strong>&nbsp;</strong>period character).<br></p>
+          </td>
+        </tr>
+        <tr>
+          <td>loWatermark</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p style="text-align: left;">The minimum space in bytes guaranteed to be available for the cache type.<br></p>
+          </td>
+        </tr>
+        <tr>
+          <td>hiWatermark</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p style="text-align: left;">The maximum space in bytes allowed to be used by the cache type.<br></p>
+          </td>
+        </tr>
+        <tr>
+          <td>size</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p style="text-align: left;"><strong></strong>Default value in bytes for any object inserted into the cache type that does not specify a value for <strong>size</strong>.<br></p>
+          </td>
+        </tr>
+        <tr>
+          <td>cost</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Default value between 0 and 100 for any object inserted into this cache type that does not specify a value for <strong>cost</strong>.<br></p>
+          </td>
+        </tr>
+        <tr>
+          <td>lifetime</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Default value in seconds for any object inserted into this cache type that does not specify a value for <strong>lifetime</strong>.<br></p>
+          </td>
+        </tr>
+        <tr>
+          <td>dirType</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Specifies whether the cache type should create directory entries. This is intended for use by the backup service.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>-200</td>
+          <td>&quot;DefineType: Invalid params: hiWatermark must be greater than loWatermark.&quot;</td>
+          <td>
+            <p>Invalid parameters set.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-199</td>
+          <td>&quot;DefineType: Type &#39;test&#39; already exists.&quot;</td>
+          <td>
+            <p>Typename already exists.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-197</td>
+          <td>&quot;DefineType: Failed to configure &#39;test&#39;&quot;</td>
+          <td>
+            <p>Type configuration failed.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-197</td>
+          <td>&quot;DefineType: Failed to allocate &#39;test&#39;.&quot;</td>
+          <td>
+            <p>Type allocation failed.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-197</td>
+          <td>&quot;DefineType: Type &#39;test&#39; already exists.&quot;</td>
+          <td>
+            <p>Type already exists.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-189</td>
+          <td>&quot;DefineType: Type &#39;test&#39; has different configuration.&quot;</td>
+          <td>
+            <p>Configuration error.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Example:</p>
+    <p># luna-send -f -n 1 luna://com.webos.service.filecache/DefineType &#39;{&quot;typeName&quot;:&quot;test&quot;,&quot;size&quot;:1024,&quot;loWatermark&quot;:102400,&quot;hiWatermark&quot;:409600,&quot;cost&quot;:5}&#39;</p>
+  </div>
+</div>
+<h3>DeleteType</h3>
+<div>
+  <h4>Description</h4>
+  <p style="text-align:left">Allows you to delete a previously defined cache type and frees up its space. All objects in the cache must be expired in order to delete a cache type. The app can call the <strong>ExpireCacheObject&nbsp;</strong>to force the&nbsp;objects to expire in the cache type.&nbsp;</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>typeName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p style="text-align: left;"><strong></strong>The <strong>typeName </strong>is the name of the cache type to be deleted<br></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>freedSpace</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Show the space freed by the cache being deleted on success.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>-195</td>
+          <td>&quot;DeleteType: Type &#39;test&#39; has subscribed objects.&quot;</td>
+          <td>
+            <p>Type has subscribed objects, hence, cannot be deleted.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-195</td>
+          <td>&quot;DeleteType: Type &#39;test&#39; does not exist.&quot;</td>
+          <td>
+            <p>Type does not exist.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Prerequisite: Invoke DefineType API to define the type name &quot;test&quot;.</p>
+    <p># luna-send -f -n 1 luna://com.webos.service.filecache/DefineType &#39;{&quot;typeName&quot;:&quot;test&quot;, &quot;size&quot;:1024, &quot;loWatermark&quot;:102400, &quot;hiWatermark&quot;:409600, &quot;cost&quot;:5}&#39;</p>
+    <p>Example:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.filecache/DeleteType &#39;{&quot;typeName&quot;:&quot;test&quot;}&#39;</p>
+  </div>
+</div>
+<h3>DescribeType</h3>
+<div>
+  <h4>Description</h4>
+  <p style="text-align:left">Returns&nbsp;cache type details.&nbsp;The <strong>DescribeType </strong>will return the currently assigned values for all cache type parameters.&nbsp;</p>
+  <p style="text-align:left">Note: Filesize&nbsp;as&nbsp;it&nbsp;resides&nbsp;on&nbsp;disk&nbsp;after&nbsp;accounting&nbsp;for&nbsp;the&nbsp;filesystem&nbsp;blocksize of 4096 &nbsp;loWatermark/hiWatermark&nbsp;will be padded with filesystem&nbsp;block size of&nbsp;4096.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>typeName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The<strong> typeName</strong> is the name of the cache type for which more information about the cache type is needed.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>loWatermark</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The minimum space in bytes guaranteed to be available for this cache type.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>hiWatermark</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The maximum space in bytes guaranteed to be available for this cache type.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>size</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Default value in bytes for any object inserted into this cache type that does not specify a value for size.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>cost</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Default value between 0 and 100 for any object inserted into this cache type that does not specify a value for cost.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>lifetime</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Default value in seconds for any object inserted into this cache type that does not specify a value for lifetime.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>-199</td>
+          <td>&quot;DescribeType: Type &#39;test&#39; does not exists.&quot;</td>
+          <td>
+            <p>Type does not exist.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Prerequisite: Invoke DefineType API to define the type name &quot;test&quot;.</p>
+    <p># luna-send -f -n 1 luna://com.webos.service.filecache/DefineType &#39;{&quot;typeName&quot;:&quot;test&quot;, &quot;size&quot;:1024, &quot;loWatermark&quot;:102400, &quot;hiWatermark&quot;:409600, &quot;cost&quot;:5}&#39;</p>
+    <p>Example:</p>
+    <p># luna-send -f -n 1 luna://com.webos.service.filecache/DescribeType &#39;{&quot;typeName&quot;:&quot;test&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Returns:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;size&quot;: 1024,<br />
+      &nbsp; &nbsp; &quot;hiWatermark&quot;: 413696,<br />
+      &nbsp; &nbsp; &quot;lifetime&quot;: 1,<br />
+      &nbsp; &nbsp; &quot;loWatermark&quot;: 106496,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;cost&quot;: 5<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>ExpireCacheObject</h3>
+<div>
+  <h4>Description</h4>
+  <p style="text-align:left">Objects will normally be automatically expired form the cache as space is needed. If you want to force an item to be removed or if you want to remove items prior to calling <strong>DeleteType</strong>, you can expire an object manually.</p>
+  <p style="text-align:left">The&nbsp;<strong>ExpireCacheObject </strong>method will not actually remove a subscribed object from the cache, but will mark the object for removal. The object is physically removed, when it has no active subscriptions.</p>
+  <p style="text-align:left"><strong>NOTE</strong>: By default, objects in a cache type will be automatically expired from the cache as space is needed.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>pathName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p style="text-align:left">Path of the object to be manually expired.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>-199</td>
+          <td>&quot;ExpireCacheObject: pathName no longer found in cache.&quot;</td>
+          <td>
+            <p>Path not found.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-199</td>
+          <td>&quot;ExpireCacheObject: Invalid object id derived from pathname.&quot;</td>
+          <td>
+            <p>Invalid object ID.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-198</td>
+          <td>&quot;ExpireCacheObject: Expire deferred, object in use.&quot;</td>
+          <td>
+            <p>Object in use, cannot expire.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Example:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.filecache/ExpireCacheObject &#39;{&quot;pathName&quot;:&quot;/var/file-cache/test/M/OnRpQABl.bar&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Returns:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>GetCacheObjectFilename</h3>
+<div>
+  <h4>Description</h4>
+  <p style="text-align:left">Allows you to query the original filename of a particular object in a cache type. &nbsp;In order to get the cache object file name the app must specify the path name of the object. &nbsp;</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>pathName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p style="text-align: left;">Path of the object for which the filename is to be queried.<br></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>fileName</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Original filename of the specified object if the call succeeds.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>-199</td>
+          <td>&quot;GetCacheObjectFilename: Object &#39;&#39; doesn&#39;t exist&quot;</td>
+          <td>
+            <p>Object path does not exist.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Example:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.filecache/GetCacheObjectFilename &#39;{&quot;pathName&quot;:&quot;/var/file-cache/test/L/cvrKwABm.bar&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Returns:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;fileName&quot;: &quot;foo.bar&quot;,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>GetCacheObjectSize</h3>
+<div>
+  <h4>Description</h4>
+  <p>Allows you to query a particular object size in a cache type. In order to get the cache object size, the app must specify the pathname of the object.&nbsp;</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>pathName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p style="text-align: left;">Path for the cache object to be queried for its size.<br></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>size</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Size of the specified object on success</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>-199</td>
+          <td>&quot;GetCacheObjectSize: Object &#39;&#39; doesn&#39;t exist&quot;</td>
+          <td>
+            <p>Object path does not exist.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Example:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.filecache/GetCacheObjectSize &#39;{&quot;pathName&quot;:&quot;/var/file-cache/test/L/cvrKwABm.bar&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Returns:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;size&quot;: 1024<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>GetCacheStatus</h3>
+<div>
+  <h4>Description</h4>
+  <p>Give status of the cache as a whole. The <strong>GetCacheStatus</strong> will return:</p>
+  <ul>
+    <li>the number of cache types defined</li>
+    <li>the total space used by the objects in all cache types</li>
+    <li>the number of objects in all cache types</li>
+    <li>the available space in the cache</li>
+  </ul>
+  <h4>Parameters</h4>
+  <p>None</p>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Always returns <strong>true</strong>.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>numTypes</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>The number of cached types defined</p>
+          </td>
+        </tr>
+        <tr>
+          <td>size</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>The total space used by the objects in all cache types</p>
+          </td>
+        </tr>
+        <tr>
+          <td>numObjs</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>The number of objects in all cache types</p>
+          </td>
+        </tr>
+        <tr>
+          <td>availSpace</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>The available space in the cache</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Example:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.filecache/GetCacheStatus &#39;{}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Returns:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;availSpace&quot;: 98304,<br />
+      &nbsp; &nbsp; &quot;numObjs&quot;: 1,<br />
+      &nbsp; &nbsp; &quot;numTypes&quot;: 1,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;size&quot;: 8192<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>GetCacheTypes</h3>
+<div>
+  <h4>Description</h4>
+  <p>Returns an array of all defined cache types.</p>
+  <h4>Parameters</h4>
+  <p>None</p>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Always returns <strong>true</strong>.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>types</td>
+          <td>Optional</td>
+          <td>String array</td>
+          <td>
+            <p>Array of all defined cache types.</p>
+            <p><strong>NOTE:&nbsp;</strong>If cache types are not defined, the &ldquo;types&rdquo; array is not returned.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Prerequisite: Invoke DefineType API to define the type name &quot;test&quot;.</p>
+    <p># luna-send -f -n 1 luna://com.webos.service.filecache/DefineType &#39;{&quot;typeName&quot;:&quot;test&quot;, &quot;size&quot;:1024, &quot;loWatermark&quot;:102400, &quot;hiWatermark&quot;:409600, &quot;cost&quot;:5}&#39;</p>
+    <p>Example:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.filecache/GetCacheTypes &#39;{}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Returns:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;types&quot;: [&quot;test&quot;]<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>GetCacheTypeStatus</h3>
+<div>
+  <h4>Description</h4>
+  <p>Allows you to query the status of a particular cache type to obtain:</p>
+  <ul>
+    <li>the total space used by the objects in the specified cache type</li>
+    <li>the number of objects in the specified cache type</li>
+  </ul>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>typeName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p style="text-align: left;">The name of the cache type for which the status information is to be retrieved.<br></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>size</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The total space used by the objects in the specified cache type, if succeed</p>
+          </td>
+        </tr>
+        <tr>
+          <td>numObjs</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The number of objects in the specified cache type, if succeed.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>-199</td>
+          <td>&quot;GetCacheTypeStatus: Type &#39;test&#39; doesn&#39;t exist&quot;</td>
+          <td>
+            <p>Type does not exist.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Prerequisite: &nbsp;</p>
+    <p># luna-send -f -n 1 luna://com.webos.service.filecache/DefineType &#39;{&quot;typeName&quot;:&quot;test&quot;, &quot;size&quot;:1024, &quot;loWatermark&quot;:102400, &quot;hiWatermark&quot;:409600, &quot;cost&quot;:5}&#39;</p>
+    <p>Example:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.filecache/GetCacheTypeStatus &#39;{&quot;typeName&quot;:&quot;test&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Returns:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;numObjs&quot;: 1,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;size&quot;: 8192<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>GetVersion</h3>
+<div>
+  <h4>Description</h4>
+  <p style="text-align:left">Returns the version of the File Cache API.</p>
+  <h4>Parameters</h4>
+  <p>None</p>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>version</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>File Cache API version.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Example:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.filecache/GetVersion &#39;{}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Returns:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;version&quot;: &quot;1.1&quot;<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>InsertCacheObject</h3>
+<div>
+  <h4>Description</h4>
+  <p>Inserts a new object of the specified type into the cache. The&nbsp;<strong>pathname&nbsp;</strong>parameter is required. It is stored with the object to ensure that the correct extension is provided, so that other module can choose a strategy to process this file (for example, choose the file viewer matching the extension).</p>
+  <p>Other&nbsp;parameters are optional. If not provided, the cache type default values defined are be used.</p>
+  <p>Returned is the path to the object in the cache. The&nbsp;<strong>subscribe</strong>&nbsp;setting should be set to true so that after the object is inserted you can write the file.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>typeName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p style="text-align: left;">The cache type of the object being inserted.<br></p>
+          </td>
+        </tr>
+        <tr>
+          <td>fileName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p style="text-align: left;">The <strong>filename</strong> is stored with the object and is used to ensure the correct extension is provided on the cache object. The <strong>filename&nbsp;</strong>will help any code, for example, &nbsp;one that determines a file viewer, to operate correctly on a cached object file.<br></p>
+          </td>
+        </tr>
+        <tr>
+          <td>size</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p style="text-align:left">The&nbsp;<strong>size&nbsp;</strong>is a&nbsp;value in bytes, should be greater than zero. Note that,&nbsp;<strong>size</strong>&nbsp;parameter is required, if type has no default size.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>cost</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p style="text-align: left;">The <strong>cost</strong> is a number between 1 and 100.<br></p>
+          </td>
+        </tr>
+        <tr>
+          <td>lifetime</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p style="text-align: left;">The <strong>lifetime </strong>is value in seconds.<br></p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p style="text-align: left;">Subscribe should be set to true so that after the object is inserted one can continues to make updates to the file.<br></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>pathName</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The path to the object in the cache is returned on success.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Returns true if the subscription has been successful, returns false if it fails. May not be returned if subscribe was set to false in the arguments.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>-200</td>
+          <td>&quot;InsertCacheObject: No type &#39;test&#39; defined.&quot;</td>
+          <td>
+            <p>Type not defined.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-200</td>
+          <td>&quot;InsertCacheObject: Invalid params: size must be greater than 1 block when dirType = true.&quot;</td>
+          <td>
+            <p>Invalid parameters set.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-199</td>
+          <td>&quot;InsertCacheObject: Could not find &#39;&#39; bytes for object insert.&quot;</td>
+          <td>
+            <p>Size does not exist.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-199</td>
+          <td>&quot;InsertCacheObject: Type &#39;test&#39; does not exist.&quot;</td>
+          <td>
+            <p>Type does not exist.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Prerequisite: Invoke DefineType API to define the type name &quot;test&quot;.</p>
+    <p># luna-send -f -n 1 luna://com.webos.service.filecache/DefineType &#39;{&quot;typeName&quot;:&quot;test&quot;, &quot;size&quot;:1024, &quot;loWatermark&quot;:102400, &quot;hiWatermark&quot;:409600, &quot;cost&quot;:5}&#39;</p>
+    <p>Example:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.filecache/InsertCacheObject &#39;{&quot;typeName&quot;:&quot;test&quot;, &quot;fileName&quot;:&quot;foo.bar&quot;, &quot;size&quot;:1024, &quot;subscribe&quot;:false}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Returns:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;pathName&quot;: &quot;/var/file-cache/test/M/OnRpQABl.bar&quot;,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>ResizeCacheObject</h3>
+<div>
+  <h4>Description</h4>
+  <p style="text-align:left">By calling the <strong>ResizeCache</strong> you can specify the size of the cached object after it is inserted into the cache. Call this method if the final size of the object, which is being inserted into the cache, is not known by the moment, when you call the&nbsp;<strong>InsertCacheObject</strong>&nbsp;method. In this case:</p>
+  <ol>
+    <li>Call the&nbsp;<strong>InsertCacheObject</strong>&nbsp;method specifying the best approximate object size you can guess.</li>
+    <li>Then call the&nbsp;<strong>ResizeCacheObject</strong>&nbsp;method on a subscribed object, if the the object size grows out of the previously specified size.</li>
+  </ol>
+  <p>If the object is larger than the specified size when the write operation is complete, the object will be automatically removed from the cache. If the object is smaller than the specified size, the recorded object size will be adjusted to the correct size.</p>
+  <p><strong>Remark: </strong>it is not a good practice to just specify a larger than expected size though as this could cause other objects to be expired from the cache to make room for the specified size.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>pathName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p style="text-align: left;">The&nbsp;path of the object to be resized.<br></p>
+          </td>
+        </tr>
+        <tr>
+          <td>newSize</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p style="text-align: left;">The new size of the object in bytes.<br></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>newSize</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The new size of the resized object on success.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>-199</td>
+          <td>&quot;ResizeCacheObject: pathName no longer found in cache.&quot;</td>
+          <td>
+            <p>Path not found.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-199</td>
+          <td>&quot;ResizeCacheObject: Invalid object id derived from pathname.&quot;</td>
+          <td>
+            <p>Invalid object ID.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-194</td>
+          <td>&quot;ResizeCacheObject: Unable to resize object.&quot;</td>
+          <td>
+            <p>Unable to resize object.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Example:<br />
+      <br />
+      # luna-send -f -n 1 luna://com.webos.service.filecache/ResizeCacheObject &#39;{&quot;newSize&quot;: 1024, &quot;pathName&quot;: &quot;/var/file-cache/test/H/LCWlwAJb.cat&quot;}&#39;
+    </p>
+    <p>&nbsp;</p>
+    <p>Returns:<br />
+      {<br />
+      &nbsp; &nbsp;&nbsp;&quot;newSize&quot;: 1024,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>SubscribeCacheObject</h3>
+<div>
+  <h4>Description</h4>
+  <p style="text-align:left">Enables you to subscribe an object in the cache and hold a subscription to the object for the duration of your usage. An object cannot be expired from the cache while at least one subscription is active.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>pathName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p style="text-align:left">The path for the object to be subscribed.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if&nbsp;subscribed to get notified.</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Subscribed</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>-199</td>
+          <td>&quot;SubscribeCacheObject: &quot;Invalid object id derived from pathname.&quot;</td>
+          <td>
+            <p>Invalid object ID.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-199</td>
+          <td>&quot;SubscribeCacheObject: No cache of type &#39;test&#39; found for id &#39;&#39;.&quot;</td>
+          <td>
+            <p>Cache type not found.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-199</td>
+          <td>&quot;SubscribeCacheObject: Cache type not found for id &#39;&#39;.&quot;</td>
+          <td>
+            <p>Cache type not found.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Example:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.filecache/SubscribeCacheObject &#39;{&quot;pathName&quot;: &quot;/var/file-cache/test/H/LCWlwAJb.cat&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Returns:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>TouchCacheObject</h3>
+<div>
+  <h4>Description</h4>
+  <p>Allows you to mark an object as recently used. This decreases the chances&nbsp;of&nbsp;the object from getting expired from the cache when the space is being reclaimed.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>pathName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p style="text-align: left;">path of the object to be marked as touched.<br></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>-199</td>
+          <td>&quot;TouchCacheObject: Could not locate object&quot;</td>
+          <td>
+            <p>Cache object not found.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-199</td>
+          <td>&quot;TouchCacheObject: pathName no longer found in cache.&quot;</td>
+          <td>
+            <p>Path not found.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-199</td>
+          <td>&quot;TouchCacheObject: Invalid object id derived from pathname.&quot;</td>
+          <td>
+            <p>Invalid object ID.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Example:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.filecache/TouchCacheObject &#39;{&quot;pathName&quot;:&quot;/var/file-cache/test/D2_/aJQCH9.bar&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Returns:<br />
+      {<br />
+      &nbsp;&nbsp; &nbsp;&quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+</div>

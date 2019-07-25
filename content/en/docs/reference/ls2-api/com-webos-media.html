@@ -1,0 +1,5251 @@
+---
+title: com.webos.media
+date: 2019-04-25
+toc: true
+---
+
+<div>
+  <H2>API Summary</h2>
+  <p>Provides access to the functionality provided&nbsp;by the webOS media server. The webOS media server supports both<strong> </strong>managed and unmanaged pipelines.&nbsp;For managed pipelines, com.webos.media provides high-level&nbsp;methods to control the playback of media content (e.g. load, play, seek).&nbsp;For unmanaged pipelines, com.webos.media provides low-level methods for resource management and display control.</p>
+  <p>Direct use of com.webos.media by application developers is strongly discouraged.&nbsp;Instead, the media interfaces native to a particular application framework&nbsp;(e.g. Web, QT, SDL/NDL) should be used.</p>
+  <ul></ul>
+</div>
+<h2>Overview of the API</h2>
+<div>
+  <p>See <strong>Summary</strong>.</p>
+  <ul></ul>
+</div>
+<h2>Methods</h2>
+<div>
+  <a id="load"></a>
+  <h3>load</h3>
+  <div>
+    <h4>Description</h4>
+    <p>The <strong>load </strong>method loads a new pipeline for the specified URI. The media server returns a unique id to the client which is used for subsequent operations on the pipeline.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>uri</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>The URI<strong>&nbsp;</strong>of the media object.</p>
+              <p>For example,&nbsp;<em>http://mymovie.mp4</em>, file://mymovie.mp4</p>
+            </td>
+          </tr>
+          <tr>
+            <td>type</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Determines which type of pipeline to load. Currently, the following pipeline types are supported:</p>
+              <ul>
+                <li>media: Media playback pipeline</li>
+              </ul>
+              <p>Media server also supports run-time installation of additional pipelines, but that is outside the scope of this API document.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>payload</td>
+            <td>Optional</td>
+            <td>Object: <a href="#payload"> payload</a></td>
+            <td>
+              <p>See &quot;payload&quot; object.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed.&nbsp;</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the operation.</p>
+              <p><strong>Note: </strong>Currently, it returns 0 even when the returnValue is true and returns&nbsp;-1 if JSON parsing fails.&nbsp;&nbsp;</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.</p>
+              <p><strong>Note:</strong> Currently, it returns &quot;No&nbsp;Error&quot; even when the returnValue is true. If JSON parsing fails, then errorText is updated accordingly.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>mediaId</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Unique identifier of the loaded media/camera pipeline which is used for subsequent operations.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.media/load &#39;{&quot;uri&quot;: &quot;https://media.w3.org/2010/05/sintel/trailer.mp4&quot;,&quot;type&quot;: &quot;media&quot;,&quot;payload&quot;: {&quot;option&quot;: {&quot;appId&quot;: &quot;com.webos.app.browser&quot;,&quot;display-path&quot;: 0}}}&#39;</p>
+      <p>Response:</p>
+      <p>{&nbsp;&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:0,<br />
+        &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+        &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;No&nbsp;Error&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&quot;mediaId&quot;:&quot;_Pvzj2FRn42sL99&quot;<br />
+        }
+      </p>
+    </div>
+  </div>
+</div>
+<a id="unload"></a>
+<h3>unload</h3>
+<div>
+  <h4>Description</h4>
+  <p>The <strong>unload </strong>method unloads the pipeline and releases all AV resources.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the loaded media/camera pipeline.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.&nbsp;</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The error code for the operation.</p>
+            <p><strong>Note: </strong>Currently, it returns 0 even when the returnValue is true and returns&nbsp;-1 if JSON parsing fails.&nbsp;&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+            <p><strong>Note:</strong> Currently, it returns &quot;No&nbsp;Error&quot; even when the returnValue is true. If JSON parsing fails, then errorText is updated accordingly.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the loaded media/camera pipeline which is requested to unload.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.media/unload &#39;{&quot;mediaId&quot;:&quot;_Pvzj2FRn42sL99&quot;}&#39;</p>
+    <p>Response:</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;No&nbsp;Error&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;mediaId&quot;:&quot;_Pvzj2FRn42sL99&quot;<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="notifyForeground"></a>
+<h3>notifyForeground</h3>
+<div>
+  <h4>Description</h4>
+  <p><span style="color:rgb(102, 51, 0)">&nbsp;The</span><span style="color:#000000"> <strong>notifyForeground </strong></span>method marks a pipeline as foreground.</p>
+  <p>This API is called when the media object in question is un-carded and made visible.</p>
+  <p>Foreground pipeline video content is currently visible on the display surface</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>connectionId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the registered pipeline.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+            </ul>
+            <p>The&nbsp;<strong>notifyForeground&nbsp;</strong>method&nbsp;may fail because of:</p>
+            <ul>
+              <li>Command sent with wrong JSON format.</li>
+              <li>missing connectionId (required field).</li>
+              <li>Unexisting connectionId.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.media/notifyForeground &#39;{&quot;connectionId&quot;: &quot;_z6SJt11Yx0mVp1&quot;}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &nbsp;&quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="notifyBackground"></a>
+<h3>notifyBackground</h3>
+<div>
+  <h4>Description</h4>
+  <p><span style="color:rgb(102, 51, 0)">The</span><span style="color:#000000"> <strong>notifiyBackground</strong></span><strong> </strong>method marks a pipeline as background.</p>
+  <p>This API is called when the media object in question is carded, deleted, or otherwise&nbsp;removed from view.</p>
+  <p>Background video content is not currently visible on the display surface</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>connectionId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the registered pipeline.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+            </ul>
+            <p>The&nbsp;<strong>notifyBackground</strong><strong>&nbsp;</strong>method&nbsp;may fail because of:</p>
+            <ul>
+              <li>Command sent with wrong JSON format.</li>
+              <li>missing connectionId (required field).</li>
+              <li>Unexisting connectionId.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.media/notifyBackground &#39;{&quot;connectionId&quot;: &quot;_c5zE4w2k7rqmC5&quot;}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &nbsp;&quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="subscribe"></a>
+<h3>subscribe</h3>
+<div>
+  <h4>Description</h4>
+  <p>The <strong>subscribe </strong>method subscribes the media client to receive events from a media pipeline.</p>
+  <p>These events, described in the tables above, allow the media client (generally an app or test tool) to monitor pipeline status (including playback position) and adjust their internal state appropriately.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the loaded media/camera pipeline.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the operation</p>
+            <p><strong>Note: </strong>Currently, it returns 0 even when the returnValue is true and returns&nbsp;-1 if JSON parsing fails.&nbsp;&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+            <p><strong>Note:</strong> Currently, it returns &quot;No&nbsp;Error&quot; even when the returnValue is true. If JSON parsing fails, then errorText is updated accordingly.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the loaded media pipeline which is requested to subscribe.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscription</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the current subscription status. Possible values are:</p>
+            <ul>
+              <li>true: Subscription is ON</li>
+              <li>false: Subscription is OFF</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 2 -f luna://com.webos.media/subscribe &#39;{&nbsp;&quot;mediaId&quot;: &quot;_rTNwzp81clPsxX&quot;}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;subscription&quot;: true<br />
+      }<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 0,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;No Error&quot;,<br />
+      &nbsp; &nbsp; &quot;mediaId&quot;: &quot;_rTNwzp81clPsxX&quot;<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="attach"></a>
+<h3>attach</h3>
+<div>
+  <h4>Description</h4>
+  <p>The <strong>attach </strong>method allows to transfer the control of a pipeline to be handed over to a different client. When this occurs, the original client gets notified that it got detached from the pipeline and can no longer control the pipeline.</p>
+  <p>This method was added to address a specific early boot situation where the pipeline was initially created by one client process and then another client process takes over control of the pipeline.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the loaded media/camera pipeline.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the operation</p>
+            <p><strong>Note: </strong>Currently, it returns 0 even when the returnValue is true and returns&nbsp;-1 if JSON parsing fails.&nbsp;&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+            <p><strong>Note:</strong> Currently, it returns &quot;No&nbsp;Error&quot; even when the returnValue is true. If JSON parsing fails, then errorText is updated accordingly.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p><span style="background-color:rgb(244, 244, 244)">Unique identifier of the loaded media pipeline which is requested to subscribe.</span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.media/attach &#39;{&quot;mediaId&quot;:&quot;_IsGbw614gu7xRB&quot;}&#39;</p>
+    <p>Response:</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;No&nbsp;Error&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;mediaId&quot;:&quot;_IsGbw614gu7xRB&quot;<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="play"></a>
+<h3>play</h3>
+<div>
+  <h4>Description</h4>
+  <p>The <strong>play </strong>method requests the media server to play the media object.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the loaded media/camera pipeline.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the operation.</p>
+            <p><strong>Note: </strong>Currently, it returns 0 even when the returnValue is true and returns&nbsp;-1 if JSON parsing fails.&nbsp;&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+            <p><strong>Note:</strong> Currently, it returns &quot;No&nbsp;Error&quot; even when the returnValue is true. If JSON parsing fails, then errorText is updated accordingly.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the loaded media/camera pipeline which is requested to play.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.media/play &#39;{&nbsp;&quot;mediaId&quot;:&quot;_IsGbw614gu7xRB&quot;}&#39;</p>
+    <p>Response:</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;No&nbsp;Error&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;mediaId&quot;:&quot;_IsGbw614gu7xRB&quot;<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="pause "></a>
+<h3>pause </h3>
+<div>
+  <h4>Description</h4>
+  <p>The <strong>pause </strong>method requests the media server to pause the media object.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the loaded media/camera pipeline.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the operation</p>
+            <p><strong>Note: </strong>Currently, it returns 0 even when the returnValue is true and returns&nbsp;-1 if JSON parsing fails.&nbsp;&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+            <p><strong>Note:</strong> Currently, it returns &quot;No&nbsp;Error&quot; even when the returnValue is true. If JSON parsing fails, then errorText is updated accordingly.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the loaded media/camera pipeline which is requested to pause.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.media/pause &#39;{&quot;mediaId&quot;:&quot;_IsGbw614gu7xRB&quot;}&#39;</p>
+    <p>Response:</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;No&nbsp;Error&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;mediaId&quot;:&quot;_IsGbw614gu7xRB&quot;<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="seek"></a>
+<h3>seek</h3>
+<div>
+  <h4>Description</h4>
+  <p>The <strong>seek </strong>method seeks the media object to a specified time position.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>position</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p><span style="line-height:1.6em">Position (in milliseconds) from the start position to seek position.</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the loaded media/camera pipeline.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the operation.</p>
+            <p><strong>Note: </strong>Currently, it returns 0 even when the returnValue is true and returns&nbsp;-1 if JSON parsing fails.&nbsp;&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+            <p><strong>Note:</strong> Currently, it returns &quot;No&nbsp;Error&quot; even when the returnValue is true. If JSON parsing fails, then errorText is updated accordingly.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the loaded media pipeline which is requested to seek.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.media/seek &#39;{&quot;position&quot;:64935,&quot;mediaId&quot;:&quot;_IsGbw614gu7xRB&quot;}&#39;</p>
+    <p>Response:</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;No&nbsp;Error&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;mediaId&quot;:&quot;_IsGbw614gu7xRB&quot;<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="registerPipeline"></a>
+<h3>registerPipeline</h3>
+<div>
+  <h4>Description</h4>
+  <p><strong>Unmanaged Pipeline</strong>&nbsp;Only</p>
+  <p>The <strong>registerPipeline </strong>method registers with the Resource Manager. Session is persistent across all start/end transaction and acquire/release cycles. Registered clients and their current resource requirements will be tracked by Resource Manager. Param type as specified in Resource Manager configuration file pipeline settings.</p>
+  <p>For Managed Pipelines, this is taken care of internally by the mediaserver.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>type</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Type of pipeline to register</p>
+            <ul>
+              <li>ref</li>
+              <li>media</li>
+              <li>sim</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>connectionId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the registered pipeline.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.media/registerPipeline &#39;{&quot;type&quot;: &quot;media&quot;}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &nbsp;&quot;connectionId&quot;: &quot;_KXpMET1Sxc1eGO&quot;<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="unregisterPipeline"></a>
+<h3>unregisterPipeline</h3>
+<div>
+  <h4>Description</h4>
+  <p><strong>Unmanaged Pipeline</strong></p>
+  <p>The <strong>unregisterPipeline </strong>method unregisters pipeline with Resource Manager.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>connectionId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the pipeline to unregister.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the operation.</p>
+            <p><strong>Note: </strong>Currently, it returns 0 even when the returnValue is true and returns&nbsp;-1 if JSON parsing fails.&nbsp;&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+            <p><strong>Note:</strong> Currently, it returns &quot;No&nbsp;Error&quot; even when the returnValue is true. If JSON parsing fails, then errorText is updated accordingly.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the loaded media pipeline which is requested.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.media/unregisterPipeline &#39;{&quot;connectionId&quot;: &quot;_KXpMET1Sxc1eGO&quot;}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &nbsp;&quot;errorCode&quot;: 0,<br />
+      &nbsp;&nbsp; &nbsp;&quot;returnValue&quot;: true,<br />
+      &nbsp;&nbsp; &nbsp;&quot;errorText&quot;: &quot;No Error&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&quot;mediaId&quot;: &quot;_KXpMET1Sxc1eGO&quot;<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="acquire"></a>
+<h3>acquire</h3>
+<div>
+  <h4>Description</h4>
+  <p>The <strong>acquire </strong>method requests resources from the mediaserver.</p>
+  <p>Typical usage is to request the number of audio and video decoders&nbsp;or other hardware components used by the pipeline.</p>
+  <p>Acquire calls can be used to dynamically add more resources to the pipeline. This allows the pipeline to dynamically grow or shrink without monopolizing the resources from startup. &nbsp;Each time a resource is acquired, the indexes of the newly acquired resources are included in the acquireComplete event.</p>
+  <p>The types and quantities of resources available to be managed are&nbsp;specified in the file umediaserver_resource_config.txt.in file.</p>
+  <p>This file is customized for each hardware platform.</p>
+  <p>If required to satisfy the acquisition of requested resources, a policyAction may be issued to other pipelines, forcing them to release their resources.</p>
+  <p>For format and list of acquired resources see acquireComplete event.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>resources</td>
+          <td>Required</td>
+          <td>Object: <a href="#resources"> resources</a></td>
+          <td>
+            <p>See &quot;resources&quot; object.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>connectionId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the pipeline to acquire resource.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.media/acquire &#39;{<br />
+      &nbsp;&nbsp; &nbsp;&quot;resources&quot;: &quot;[{\&quot;resource\&quot;:\&quot;DISP0\&quot;,\&quot;qty\&quot;:1}, {\&quot;resource\&quot;:\&quot;VDEC\&quot;,\&quot;qty\&quot;:1},{\&quot;resource\&quot;:\&quot;ADEC\&quot;,\&quot;qty\&quot;:1}]&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&quot;connectionId&quot;: &quot;_UZRkgE3EJgXvwl&quot;<br />
+      }&#39;
+    </p>
+    <p>&nbsp;</p>
+    <p>Response:<br />
+      {<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>acquireComplete<br />
+      {<br />
+      &nbsp;&nbsp; &nbsp;&quot;resources&quot;: [{<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;qty&quot;: 1,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;resource&quot;: &quot;ADEC&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;index&quot;: 3<br />
+      &nbsp;&nbsp; &nbsp;}, {<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;qty&quot;: 1,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;resource&quot;: &quot;VDEC&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;index&quot;: 3<br />
+      &nbsp;&nbsp; &nbsp;}, {<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;qty&quot;: 1,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;display_attr&quot;: {<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;crtc-id&quot;: 43,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;plane-id&quot;: 44,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;conn-id&quot;: 19<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;resource&quot;: &quot;DISP0&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;index&quot;: 3<br />
+      &nbsp;&nbsp; &nbsp;}],<br />
+      &nbsp;&nbsp; &nbsp;&quot;state&quot;: true,<br />
+      &nbsp;&nbsp; &nbsp;&quot;connectionId&quot;: &quot;_UZRkgE3EJgXvwl&quot;<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="tryAcquire"></a>
+<h3>tryAcquire</h3>
+<div>
+  <h4>Description</h4>
+  <p>Try to acquire resources from mediaserver.</p>
+  <p>This API will not issue policyAction to other pipelines in order to force them to release resources.</p>
+  <p>If there are insufficient resources to honor the request without issuing a policyAction, the request will fail.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>resources</td>
+          <td>Required</td>
+          <td>Object: <a href="#resources"> resources</a></td>
+          <td>
+            <p>See &quot;resources&quot; object.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>connectionId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the pipeline to acquire resource.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 luna://com.webos.media/tryAcquire &#39;{<br />
+      &nbsp;&nbsp; &nbsp;&quot;resources&quot;: &quot;[{\&quot;resource\&quot;:\&quot;DISP0\&quot;,\&quot;qty\&quot;:1},{\&quot;resource\&quot;:\&quot;VDEC\&quot;,\&quot;qty\&quot;:1},{\&quot;resource\&quot;:\&quot;ADEC\&quot;,\&quot;qty\&quot;:1}]&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&quot;connectionId&quot;: &quot;_7P3y7e9AcPv8t1&quot;<br />
+      }&#39;
+    </p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>acquireComplete</p>
+    <p>{<br />
+      &nbsp;&nbsp; &nbsp;&quot;resources&quot;: [{<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;qty&quot;: 1,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;resource&quot;: &quot;ADEC&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;index&quot;: 3<br />
+      &nbsp;&nbsp; &nbsp;}, {<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;qty&quot;: 1,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;resource&quot;: &quot;VDEC&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;index&quot;: 3<br />
+      &nbsp;&nbsp; &nbsp;}, {<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;qty&quot;: 1,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;display_attr&quot;: {<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;crtc-id&quot;: 43,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;plane-id&quot;: 44,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;conn-id&quot;: 19<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;resource&quot;: &quot;DISP0&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;index&quot;: 3<br />
+      &nbsp;&nbsp; &nbsp;}],<br />
+      &nbsp;&nbsp; &nbsp;&quot;state&quot;: true,<br />
+      &nbsp;&nbsp; &nbsp;&quot;connectionId&quot;: &quot;_7P3y7e9AcPv8t1&quot;<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="release"></a>
+<h3>release</h3>
+<div>
+  <h4>Description</h4>
+  <p><strong>Unmanaged Pipeline</strong></p>
+  <p>The <strong>release </strong>method&nbsp;informs media server the resources are released correctly and are not being used anymore.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>resources</td>
+          <td>Required</td>
+          <td>Object: <a href="#resources"> resources</a></td>
+          <td>
+            <p>See &quot;resources&quot; object.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>connectionId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the pipeline to release resource.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: For released resources.</li>
+              <li><strong>false</strong>: For malformed request.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.media/release &#39;{<br />
+      &nbsp;&nbsp; &nbsp;&quot;resources&quot;: &quot;[{\&quot;resource\&quot;:\&quot;DISP0\&quot;,\&quot;qty\&quot;:1,\&quot;index\&quot;:3},{\&quot;resource\&quot;:\&quot;VDEC\&quot;,\&quot;qty\&quot;:1,\&quot;index\&quot;:3},{\&quot;resource\&quot;:\&quot;ADEC\&quot;,\&quot;qty\&quot;:1,\&quot;index\&quot;:3}]&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&quot;connectionId&quot;: &quot;_QY7tkX1XEfBct3&quot;<br />
+      }&#39;
+    </p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &nbsp;&quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="notifyActivity"></a>
+<h3>notifyActivity</h3>
+<div>
+  <h4>Description</h4>
+  <p><strong>Unmanaged Pipeline</strong></p>
+  <p>The <strong>notifyActivity</strong> method&nbsp;notifies media server that the specific pipeline is currently in use.&nbsp;This command raises time stamp record of the&nbsp;corresponding pipeline to lessen chance to be picked as the target for a policyAction, which would require the pipeline to release its resources. This method is providing a specific capability for TVService and should not be used elsewhere.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>connectionId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the registered pipeline.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: For released resources.</li>
+              <li><strong>false</strong>: For malformed request.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.media/notifyActivity &#39;{&quot;connectionId&quot;: &quot;_EYv0VPazu3aGo0&quot;}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &nbsp;&quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="trackAppProcesses"></a>
+<h3>trackAppProcesses</h3>
+<div>
+  <h4>Description</h4>
+  <p>The <strong>trackAppProcesses</strong> method subscribes to messages containing the mapping of application ID (AppID) and pipeline process ID (PID), i.e. it returns information about which application each managed pipeline belongs to.</p>
+  <p>The return value of the method contains an array of the PIDs of all currently existing pipelines mapped to the corresponding AppIDs.</p>
+  <p>The subscription messages contain information about changes to these mappings, i.e. new mappings when a pipeline is associated with an application&nbsp;or destroyed mappings when a pipeline exits.</p>
+  <h4>Parameters</h4>
+  <p>None</p>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Returns true if the subscriber was successfully added.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>mediaPipelines</td>
+          <td>Required</td>
+          <td>Object array: <a href="#mediaPipelines"> mediaPipelines</a></td>
+          <td>
+            <p>See &quot;mediaPipelines&quot; object.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscription</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the current subscription status. Possible values are:</p>
+            <ul>
+              <li>true: Subscription is ON</li>
+              <li>false: Subscription is OFF</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Subscription Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>procUpdate</td>
+          <td>Required</td>
+          <td>Object: <a href="#procUpdate"> procUpdate</a></td>
+          <td>
+            <p>See &quot;procUpdate&quot; object.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 2 -f luna://com.webos.media/trackAppProcesses &#39;{}&#39;</p>
+    <p>Response:&nbsp;</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;subscription&quot;: true<br />
+      }
+    </p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
+      &nbsp; &nbsp; &quot;mediaPipelines&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;appId&quot;: &quot;com.webos.app.enactbrowser&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;pid&quot;: 1685<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Subscription Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;procUpdate&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;appId&quot;: &quot;com.webos.app.enactbrowser&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;exec&quot;: false,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;pid&quot;: 1685<br />
+      &nbsp; &nbsp; }<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="contentReady"></a>
+<h3>contentReady</h3>
+<div>
+  <h4>Description</h4>
+  <p>Media Content Providers must send contentReady event when the first frame or buffer of valid media data is available to display or output to speakers.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the media object</p>
+          </td>
+        </tr>
+        <tr>
+          <td>state</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates whether the media content is available and ready to display.</p>
+            <ul>
+              <li><strong>true</strong>: The media content is available and ready to display</li>
+              <li><strong>false</strong>: The media content is not available</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.media/contentReady &#39;{&quot;state&quot;: true,&quot;mediaId&quot;: &quot;_dPEZRY4C47nwBZ&quot;}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &nbsp;&quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="setVideoInfo"></a>
+<h3>setVideoInfo</h3>
+<div>
+  <h4>Description</h4>
+  <p>Media Content Provider must send an event when media&nbsp;content containers are parsed.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>videoInfo</td>
+          <td>Required</td>
+          <td>Object: <a href="#videoInfo"> videoInfo</a></td>
+          <td>
+            <p>See &quot;videoInfo&quot; object.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.media/setVideoInfo &#39;{&nbsp;&nbsp;&quot;videoInfo&quot;:{&nbsp;&nbsp;&quot;width&quot;:854,&quot;frameRate&quot;:{&nbsp;&nbsp;&quot;num&quot;:24,&quot;den&quot;:1},&quot;mediaId&quot;:&quot;_IiQr7B7P1zDGbd&quot;,&quot;height&quot;:480}}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &nbsp;&quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="registerMedia"></a>
+<h3>registerMedia</h3>
+<div>
+  <h4>Description</h4>
+  <p>Media Content Provider (unmanaged) must register with Media Display Controller to allow proper management of video content and displays or audio outputs.</p>
+  <p>NOTE: In managed case, this API is internally invoked from &#39;load&#39; API.&nbsp;Thus, using this API with load is strongly discouraged.<br />
+    (Duplicated calls for same mediaId are not allowed.)
+  </p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the media object to be registered</p>
+          </td>
+        </tr>
+        <tr>
+          <td>appId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Application ID</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the media object registered</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.media/registerMedia &#39;{&quot;mediaId&quot;:&quot;_IsGbw614gu7xRB&quot;, &quot;appId&quot;:&quot;com.webos.app.browser&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="unregisterMedia"></a>
+<h3>unregisterMedia</h3>
+<div>
+  <h4>Description</h4>
+  <p>Media Content Provider&nbsp;must unregister with Media Display Controller before terminating</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the media object to be unregistered</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.media/unregisterMedia &#39;{&quot;mediaId&quot;: &quot;_IsGbw614gu7xRB&quot;}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="focus"></a>
+<h3>focus</h3>
+<div>
+  <h4>Description</h4>
+  <p>Media application sets media object&nbsp;currently in focus.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the media object&nbsp;currently in focus</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.&nbsp;</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the media object</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.media/focus &#39;{&quot;mediaId&quot;: &quot;_rWmN6P17iENX5aD&quot;}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="setDisplayWindow"></a>
+<h3>setDisplayWindow</h3>
+<div>
+  <h4>Description</h4>
+  <p>Set video source and destination window sizes.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the media object</p>
+          </td>
+        </tr>
+        <tr>
+          <td>source</td>
+          <td>Optional</td>
+          <td>Object: <a href="#WindowObject"> WindowObject</a></td>
+          <td>
+            <p>Source window size</p>
+            <ul>
+              <li>x - upper left corner x coordinate location</li>
+              <li>y&nbsp;- upper left corner y&nbsp;coordinate location</li>
+              <li>width</li>
+              <li>height</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>destination</td>
+          <td>Optional</td>
+          <td>Object: <a href="#WindowObject"> WindowObject</a></td>
+          <td>
+            <p>Destination window size</p>
+            <ul>
+              <li>x - upper left corner x coordinate location</li>
+              <li>y&nbsp;- upper left corner y&nbsp;coordinate location</li>
+              <li>width</li>
+              <li>height</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the media object</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.media/setDisplayWindow &#39;{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;source&quot;:{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;x&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;y&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;width&quot;:1920,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;height&quot;:1080<br />
+      &nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&quot;destination&quot;:{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;x&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;y&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;width&quot;:1920,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;height&quot;:1080<br />
+      &nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&quot;mediaId&quot;:&quot;_IsGbw614gu7xRB&quot;<br />
+      }&#39;
+    </p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="switchToFullScreen"></a>
+<h3>switchToFullScreen</h3>
+<div>
+  <h4>Description</h4>
+  <p>Set full screen on media object.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the media object</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.media/switchToFullScreen &#39;{&quot;mediaId&quot;: &quot;_MTr6o3sZayV7S5&quot;}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &nbsp;&quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="setVisibility"></a>
+<h3>setVisibility</h3>
+<div>
+  <h4>Description</h4>
+  <p>Sets the visibility of media object.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the media object</p>
+          </td>
+        </tr>
+        <tr>
+          <td>visible</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates media object visibility state.</p>
+            <ul>
+              <li><strong>true</strong>: Set to visible state</li>
+              <li><strong>false</strong>: Set to invisible&nbsp;state&nbsp;</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the media object</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.media/setVisibility &#39;{&nbsp; &quot;mediaId&quot;:&quot;_nePLk54ziXgMRj&quot;, &quot;visible&quot;: true}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &nbsp;&quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="unsubscribe"></a>
+<h3>unsubscribe</h3>
+<div>
+  <h4>Description</h4>
+  <p>Unsubscribes from media pipeline related events.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the media object to unsubscribe</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the operation.</p>
+            <p><strong>Note: </strong>Currently, it returns 0 even when the returnValue is true and returns&nbsp;-1 if JSON parsing fails.&nbsp;&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+            <p><strong>Note:</strong> Currently, it returns &quot;No&nbsp;Error&quot; even when the returnValue is true. If JSON parsing fails, then errorText is updated accordingly.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the loaded media pipeline which is requested to unsubscribe.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.media/unsubscribe &#39;{&nbsp;&quot;mediaId&quot;:&quot;_gmkaR0OtGWxr6z&quot;}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 0,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;No Error&quot;,<br />
+      &nbsp; &nbsp; &quot;mediaId&quot;: &quot;_gmkaR0OtGWxr6z&quot;<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="getActivePipelines"></a>
+<h3>getActivePipelines</h3>
+<div>
+  <h4>Description</h4>
+  <p>Get JSON formatted output of&nbsp;currently active media pipelines.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the media object</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>Id</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the media object</p>
+          </td>
+        </tr>
+        <tr>
+          <td>type</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Media type</p>
+          </td>
+        </tr>
+        <tr>
+          <td>pid</td>
+          <td>Optional</td>
+          <td>Number (int16_t)</td>
+          <td>
+            <p>Process ID of Media Content Provider</p>
+          </td>
+        </tr>
+        <tr>
+          <td>mdc</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Media Display Controller state</p>
+          </td>
+        </tr>
+        <tr>
+          <td>is_managed</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates whether Media Content Provider is a managed pipeline or not.</p>
+            <ul>
+              <li><strong>true</strong>: Managed</li>
+              <li><strong>false</strong>: Not managed</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>is_foreground</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates whether media object is currently in the foreground or not</p>
+            <ul>
+              <li><strong>true</strong>: Media object is currently in the foreground</li>
+              <li><strong>false</strong>: Media object is currently in the background</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>mediaState</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Current state of Media Content Provider</p>
+            <ul>
+              <li>MEDIA_LOAD - Media is loaded and ready to play</li>
+              <li>MEDIA_UNLOAD - Media is unloaded</li>
+              <li>MEDIA_PLAY - Media is currently in play state</li>
+              <li>MEDIA_PAUSE - Media is in pause state</li>
+              <li>MEDIA_STOP - Media is in stop state</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>policy_state</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Media is currently selected for Resource Management Policy Action and is in suspended state</p>
+          </td>
+        </tr>
+        <tr>
+          <td>uri</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>URI of media object</p>
+          </td>
+        </tr>
+        <tr>
+          <td>appId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Application ID of application using media object</p>
+          </td>
+        </tr>
+        <tr>
+          <td>processState</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>State of Media Content Provider process</p>
+            <ul>
+              <li>PIPELINE_STARTING - Media pipeline is starting but currently unable to process or respond to commands</li>
+              <li>PIPELINE_RESTARTING - Media pipeline is being restarted due to crash recovery or resume from Resource Manager Policy Action</li>
+              <li>PIPELINE_RUNNING - Media pipeline is running and able to process and respond to commands</li>
+              <li>PIPELINE_MEDIA_LOADED - Media pipeline has loaded and valid media content</li>
+              <li>PIPELINE_SUSPENDED - Media pipeline has been suspended due to Resource Manager Policy Action</li>
+            </ul>
+            <p>&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>is_focus</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Media object is currently selected for focus.</p>
+            <p><span style="color:#000000"><strong>NOTE:</strong> Focus is not the same thing as &quot;visible&quot;.</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td>timestamp</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Timestamp of last activity on Media Content Provider pipeline. Pipeline activity is used to adjust the Resource Manager Policy Action Candidate Selection Policy.</p>
+            <p>Events which update pipeline activity</p>
+            <ul>
+              <li>PLAY</li>
+              <li>SEEK</li>
+              <li>LOAD</li>
+              <li>notifyForeground</li>
+              <li>notifyActivity</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>resources</td>
+          <td>Required</td>
+          <td>Object array: <a href="#resources"> resources</a></td>
+          <td>
+            <p>See &quot;resources&quot; object.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Media Id of the object</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the operation.</p>
+            <p><strong>Note: </strong>Currently, it returns 0 even when the returnValue is true and returns&nbsp;-1 if JSON parsing fails.&nbsp;&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+            <p><strong>Note:</strong> Currently, it returns &quot;No&nbsp;Error&quot; even when the returnValue is true. If JSON parsing fails, then errorText is updated accordingly.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.media/getActivePipelines &#39;{ &quot;mediaId&quot;:&quot;_IsGbw614gu7xRB&quot;}&#39;</p>
+    <p>Response: JSON array of pipelines and current their current state</p>
+    <p>[<br />
+      &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;resources&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;resource&quot;: &quot;ADEC&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;index&quot;: 3<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;resource&quot;: &quot;VDEC&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;index&quot;: 3<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;resource&quot;: &quot;DISP0&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;index&quot;: 3<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;pid&quot;: 1272,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;type&quot;: &quot;media&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;id&quot;: &quot;_IsGbw614gu7xRB&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;mdc&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;states&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;Foreground&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;ContentNotReady&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;Unfocused&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;Visible&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;AudioConnecting&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;OffScreen&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;connections&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;DISP0_MAIN&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;is_managed&quot;: true,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;mediaState&quot;: &quot;play&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;is_foreground&quot;: true,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;policy_state&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;uri&quot;: &quot;https://media.w3.org/2010/05/sintel/trailer.mp4&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;appId&quot;: &quot;com.webos.app.enactbrowser&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;processState&quot;: &quot;media_loaded&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;is_focus&quot;: false,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;timestamp&quot;: 16304803045079<br />
+      &nbsp; &nbsp; }<br />
+      ]
+    </p>
+  </div>
+</div>
+<a id="setVolume"></a>
+<h3>setVolume</h3>
+<div>
+  <h4>Description</h4>
+  <p>Sets the volume for the specified media object. Additionally, it specifies the ease (fade-in and fade-out) properties for the media object.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the media object.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>volume</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>The volume to be set. Can be set to any value between 0&nbsp;and 100.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>ease</td>
+          <td>Optional</td>
+          <td>Object: <a href="#ease"> ease</a></td>
+          <td>
+            <p>Object to specify the easing&nbsp;(fade-in and fade-out) properties for the media object.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <ul>
+              <li><strong>true</strong>: Indicates success of the operation.</li>
+              <li><strong>false</strong>:&nbsp;Indicates failure in the operation. Errors with the arguments will be provided in the logs.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the operation.</p>
+            <p><strong>Note: </strong>Currently, it returns 0 even when the returnValue is true and returns&nbsp;-1 if JSON parsing fails.&nbsp;&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+            <p><strong>Note:</strong> Currently, it returns &quot;No&nbsp;Error&quot; even when the returnValue is true. If JSON parsing fails, then errorText is updated accordingly.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the media object.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n &nbsp;1 -f luna://com.webos.media/setVolume &#39;{&quot;mediaId&quot;:&quot;_IsGbw614gu7xRB&quot;,&quot;volume&quot;:60,&quot;ease&quot;:{&nbsp;&nbsp;&quot;duration&quot;:0,&quot;type&quot;:&quot;Linear&quot;}}&#39;</p>
+    <p>Response:</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;No&nbsp;Error&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;mediaId&quot;:&quot;_IsGbw614gu7xRB&quot;<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="getForegroundAppInfo"></a>
+<h3>getForegroundAppInfo</h3>
+<div>
+  <h4>Description</h4>
+  <p>Provides the application&#39;s foreground information.</p>
+  <h4>Parameters</h4>
+  <p>None</p>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>appId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Application ID</p>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>acbs</td>
+          <td>Required</td>
+          <td>Object array: <a href="#acbs">acbs</a></td>
+          <td>
+            <p>Array of objects that gives&nbsp;details of the media (pipeline ID, playstate, position etc.)</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.media/getForegroundAppInfo&nbsp;&#39;{}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;acbs&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;positionY&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;playStateNow&quot;: &quot;&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;width&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;height&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;isFullScreen&quot;: false,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;pipelineId&quot;: &quot;&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;positionX&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;playStateNext&quot;: &quot;&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &quot;appId&quot;: &quot;com.webos.app.browser&quot;,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="setPlayRate"></a>
+<h3>setPlayRate</h3>
+<div>
+  <h4>Description</h4>
+  <p>Sets the pipeline media play rate.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>playRate</td>
+          <td>Required</td>
+          <td>Number (double)</td>
+          <td>
+            <p>Playback rate for the media.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the loaded media pipeline which is requested.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>audioOutput</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Determine to mute audio</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.&nbsp;</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the operation.</p>
+            <p><strong>Note: </strong>Currently, it returns 0 even when the returnValue is true and returns&nbsp;-1 if JSON parsing fails.&nbsp;&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+            <p><strong>Note:</strong> Currently, it returns &quot;No&nbsp;Error&quot; even when the returnValue is true. If JSON parsing fails, then errorText is updated accordingly.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the media object</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>#&nbsp;luna-send -n 1 -f luna://com.webos.media/setPlayRate &#39;{&quot;playRate&quot;: 2.0,&quot;mediaId&quot;: &quot;_QnGGXr7BdWsOV1&quot;,&quot;audioOutput&quot;:true}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 0,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;No Error&quot;,<br />
+      &nbsp; &nbsp; &quot;mediaId&quot;: &quot;_QnGGXr7BdWsOV1&quot;<br />
+      }
+    </p>
+  </div>
+</div>
+<a id="startCameraRecord"></a>
+<h3>startCameraRecord</h3>
+<div>
+  <h4>Description</h4>
+  <p>Starts camera recording.</p>
+  <p>The camera pipeline stores streamed data from the camera at the specified location.&nbsp;</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>location</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Path for storing the recorded file.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>format</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Format in which data is stored. Possible values are:</p>
+            <ul>
+              <li><strong>h264 </strong>(currently supports only H264 TS format)&nbsp;</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the camera pipeline. Obtained using the load() API.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.&nbsp;Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+            <p><strong>Note:</strong> errorCode always defaults to&nbsp;0. Details of the error&nbsp;will be available in the logs.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+            <p><strong>Note: </strong>errorText&nbsp;is always empty.&nbsp;Details of the error&nbsp;will be available in the logs.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the camera pipeline.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 luna://com.webos.media/startCameraRecord &#39;{&nbsp;&quot;mediaId&quot;:&quot;_JtLZrGoEAoRa1d&quot;,&quot;location&quot;:&quot;/media/internal/&quot;,&quot;format&quot;:&quot;h264&quot;}&#39;</p>
+  </div>
+</div>
+<a id="stopCameraRecord"></a>
+<h3>stopCameraRecord</h3>
+<div>
+  <h4>Description</h4>
+  <p>Requests media server to stop&nbsp;camera recording and change to the preview state.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the camera pipeline. Obtained using the load() API.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.&nbsp;Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+            <p><strong>Note:</strong>&nbsp;errorCode always defaults to&nbsp;0.&nbsp;Details of the error&nbsp;will be available in the logs.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+            <p><strong>Note:&nbsp;</strong>errorText&nbsp;is always empty.&nbsp;Details of the error&nbsp;will be available in the logs.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier the camera pipeline.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 luna://com.webos.media/stopCameraRecord &#39;{ &quot;mediaId&quot; : &quot;_JtLZrGoEAoRa1d&quot;}&#39;</p>
+  </div>
+</div>
+<a id="takeCameraSnapshot"></a>
+<h3>takeCameraSnapshot</h3>
+<div>
+  <h4>Description</h4>
+  <p>Captures a frame from the camera preview.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier of the camera pipeline. Obtained using the load() API.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>location</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Path where the captured image is to be stored.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>format</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Format in which the frame is to be captured. Possible values are:</p>
+            <ul>
+              <li>jpg</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>width</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Width of the captured image in pixels.</p>
+            <p><strong>Note:&nbsp;</strong>This should be within the range supported by the camera&nbsp;hardware.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>height</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Height of the captured image in pixels.&nbsp;</p>
+            <p><strong>Note:&nbsp;</strong>This should be within the range supported by the camera&nbsp;hardware.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>pictureQuality</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Percentage of picture quality. Possible values are:</p>
+            <ul>
+              <li>0-100&nbsp;</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.&nbsp;Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+            <p><strong>Note:</strong>&nbsp;errorCode always defaults to&nbsp;0. Details of the error&nbsp;will be available in the logs.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+            <p><strong>Note:&nbsp;</strong>errorText&nbsp;is always empty.&nbsp;Details of the error&nbsp;will be available in the logs.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Unique identifier the camera pipeline.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 luna://com.webos.media/takeCameraSnapshot &#39;{&quot;mediaId&quot;:&quot;&quot;,&quot;location&quot;:&quot;/tmp/&quot;,&quot;format&quot;:&quot;jpg&quot;,&quot;width&quot;:640,&quot;height&quot;:480,&quot;pictureQuality&quot;:30}&#39;</p>
+  </div>
+</div>
+<div>
+  <h2>Objects</h2>
+  <a id="WindowObject"></a>
+  <h3>WindowObject</h3>
+  <p>Defines source and destination window parameters.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>x</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Upper left corner x coordinate location</p>
+          </td>
+        </tr>
+        <tr>
+          <td>y</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Upper left corner y&nbsp;coordinate location</p>
+          </td>
+        </tr>
+        <tr>
+          <td>width</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Window&#39;s width</p>
+          </td>
+        </tr>
+        <tr>
+          <td>height</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Window&#39;s height</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a id="ResponseObject"></a>
+  <h3>ResponseObject</h3>
+  Provide a detailed description of the object. Limit to 2-3 paragraphs.
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Return value of command. Command succeeded true/false.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Error Code (if failure) of command.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Human readable and HMI/UX displayable text of reported error. If any.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Media ID</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a id="ease"></a>
+  <h3>ease</h3>
+  <p>Defines the ease (fade-in and fade-out) properties for the media object.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>duration</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Duration (in msec) for the easing effect (fade-in and fade-out).</p>
+            <p>Value can be between 0 and 60000.&nbsp;</p>
+            <p>Default duration is 0.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>type</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Easing mode for the media object.</p>
+            <p>Possible values:</p>
+            <ul>
+              <li>Linear: The volume fades constantly or linearly.</li>
+              <li>InCubic: The volume fades slowly at beginning&nbsp;in a cubical&nbsp;way.</li>
+              <li>OutCubic: The volume fades quickly&nbsp;at beginning&nbsp;in a cubical&nbsp;way.</li>
+            </ul>
+            <p>Default value: Linear</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a id="resources"></a>
+  <h3>resources</h3>
+  <p>Object of resource name, quantity, and index.</p>
+  <p>Resources can hold more than one set of resource, quantity, and index.</p>
+  <p>Example:</p>
+  <p>{<br />
+    &nbsp;&nbsp; &nbsp;&quot;resources&quot;: &quot; [{<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;resource&quot;: &quot;DISP0&quot;,<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;qty&quot;: 1,<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;index&quot;: 3,<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;display_attr&quot;: {<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;crtc-id&quot;: 43,<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;plane-id&quot;: 44,<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;conn-id&quot;: 19<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;{<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;resource&quot;: &quot;VDEC&quot;,<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;qty&quot;: 1,<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;index&quot;: 3<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;{<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;resource&quot;: &quot;ADEC&quot;,<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;qty&quot;: 1,<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;index&quot;: 3<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />
+    &nbsp;&nbsp; &nbsp;]<br />
+    }
+  </p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>resource</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Name of resource to acquire.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>VDEC:&nbsp;It describes source of video decoder</li>
+              <li>ADEC: It&nbsp;describes source of audio&nbsp;decoder</li>
+              <li>DISPX:&nbsp;It&nbsp;describes display resource. X represents a number corresponds to display starting with 0. If a device has more than one display, there can be&nbsp;multiple DISP resources(e.g., DISP0, DISP1). It only applied to <strong>Open</strong>.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>qty</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Quantity of resource to acquire.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>index</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Specific index of resource to acquire.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>display_attr</td>
+          <td>Optional</td>
+          <td>Object: <a href="#display_attr"> display_attr</a></td>
+          <td>
+            <p>See &quot;display_attr&quot; object.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a id="videoInfo"></a>
+  <h3>videoInfo</h3>
+  <p>Provides information related to video.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>width</td>
+          <td>Required</td>
+          <td>Number (uint32_t)</td>
+          <td>
+            <p>Actual width value of input video (before cropping in video decoder. Used for&nbsp;UI presentation.)</p>
+          </td>
+        </tr>
+        <tr>
+          <td>height</td>
+          <td>Required</td>
+          <td>Number (uint32_t)</td>
+          <td>
+            <p>Actual height value of input video (before cropping in video decoder. Used for&nbsp;UI presentation.)</p>
+          </td>
+        </tr>
+        <tr>
+          <td>frameRate</td>
+          <td>Required</td>
+          <td>Object: <a href="#frameRate"> frameRate</a></td>
+          <td>
+            <p>See &quot;frameRate&quot; object.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>codec</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Codec information.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>bitRate</td>
+          <td>Optional</td>
+          <td>Number (uint64_t)</td>
+          <td>
+            <p>Bit rate value of content.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a id="frameRate"></a>
+  <h3>frameRate</h3>
+  <p>Provides information about the number of frames per second at which the video is being played.</p>
+  <p>It is represented as a combination of numerator and denominator.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>num</td>
+          <td>Required</td>
+          <td>Number (int32_t)</td>
+          <td>
+            <p>Numerator of frame rate</p>
+          </td>
+        </tr>
+        <tr>
+          <td>den</td>
+          <td>Required</td>
+          <td>Number (int32_t)</td>
+          <td>
+            <p>Denominator of frame rate</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a id="audioInfo"></a>
+  <h3>audioInfo</h3>
+  <p>Provides information related to audio.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>codec</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Codec information</p>
+          </td>
+        </tr>
+        <tr>
+          <td>bitrate</td>
+          <td>Optional</td>
+          <td>Number (int64_t)</td>
+          <td>
+            <p>Bit rate value of content.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>sample_rate</td>
+          <td>Optional</td>
+          <td>Number (int32_t)</td>
+          <td>
+            <p>Samples of audio carried per second, measured in kHz.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a id="mediaPipelines"></a>
+  <h3>mediaPipelines</h3>
+  <p>Contains the AppID-PID mapping&nbsp;of the currently running pipelines. Returns an empty array if no pipelines associated with any applications.<br />
+    Each array element is an object of type {&quot;appId&quot;: string, &quot;pid&quot;: number}. If the appId string is empty it means the pipeline was loaded without an application ID being provided.
+  </p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>appId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates application id</p>
+          </td>
+        </tr>
+        <tr>
+          <td>pid</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Indicates process id of pipeline</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a id="procUpdate"></a>
+  <h3>procUpdate</h3>
+  <p>The procUpdate object value is an object of type: {&quot;appId&quot; : string, &quot;exec&quot; : bool, &quot;pid&quot; : number}<br />
+    where exec is true when a pipeline appid mapping is added and false when it is destroyed.<br />
+    If the appId string is empty it means the pipeline was loaded without an application ID being provided.
+  </p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>appId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates application ID.&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>pid</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Indicates process ID of pipeline.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>exec</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Provides information on the mapping status of&nbsp;app ID&nbsp;and a pipeline. Possible values are:</p>
+            <ul>
+              <li>true:&nbsp;when a pipeline app ID mapping is added</li>
+              <li>false: when a pipeline app ID&nbsp;mapping is destroyed.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a id="payload"></a>
+  <h3>payload</h3>
+  <p>Payload format used in load API. It represents the JSON payload object for a specific type of pipeline.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>option</td>
+          <td>Optional</td>
+          <td>Object: <a href="#option"> option</a></td>
+          <td>
+            <p>See &quot;option&quot; object.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a id="option"></a>
+  <h3>option</h3>
+  <p>Provides parameters used in load/preload API.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>appId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates application id</p>
+          </td>
+        </tr>
+        <tr>
+          <td>display-path</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Indicates display path(default value: 0).&nbsp;</p>
+            <p>Multiple values can be supported if a device has multiple screens (i.e., 0 for primary display, 1 for secondary display).</p>
+            <p>It is only applied to <strong>Open</strong>.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a id="programs"></a>
+  <h3>programs</h3>
+  <p>Provides audio/video stream information.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>video_stream</td>
+          <td>Required</td>
+          <td>Number (int32_t)</td>
+          <td>
+            <p>The number of video streams in program.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>audio_stream</td>
+          <td>Required</td>
+          <td>Number (int32_t)</td>
+          <td>
+            <p>The number of audio streams in program.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a id="sourceInfo"></a>
+  <h3>sourceInfo</h3>
+  <p>Provides information of the media that has just been loaded.</p>
+  <p>Example:</p>
+  <p>{<br />
+    &nbsp;&nbsp; &nbsp;&quot;sourceInfo&quot;: {<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;programs&quot;: [{<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;audio_stream&quot;: 1,<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;video_stream&quot;: 1<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}],<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;seekable&quot;: true,<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;video_streams&quot;: [{<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;width&quot;: 854,<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;frame_rate&quot;: {<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;num&quot;: 24,<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;den&quot;: 1<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;bitrate&quot;: 535929,<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;height&quot;: 480<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}],<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;audio_streams&quot;: [{<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;sample_rate&quot;: 48000,<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;bit_rate&quot;: 0<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}],<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;container&quot;: &quot;&quot;,<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;duration&quot;: 52209<br />
+    &nbsp;&nbsp; &nbsp;}<br />
+    }
+  </p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>programs</td>
+          <td>Required</td>
+          <td>Object array: <a href="#programs"> programs</a></td>
+          <td>
+            <p>See &quot;programs&quot; object.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>seekable</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Flag&nbsp;indicating whether the media supports seek operations.&nbsp;</p>
+            <ul>
+              <li>To send information that the content is available for seek, set&nbsp;<strong>seekable&nbsp;</strong>to&nbsp;<strong>true</strong>.</li>
+              <li>To send information that the content is not available for seek, set&nbsp;<strong>seekable&nbsp;</strong>to&nbsp;<strong>false</strong>.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>video_streams</td>
+          <td>Required</td>
+          <td>Object array: <a href="#videoInfo"> videoInfo</a></td>
+          <td>
+            <p>See &quot;videoInfo&quot; object.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>audio_streams</td>
+          <td>Required</td>
+          <td>Object array: <a href="#audioInfo"> audioInfo</a></td>
+          <td>
+            <p>See &quot;audioInfo&quot; object.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>container</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Media format (container type) of source</p>
+            <ul>
+              <li>&quot;RAW&quot;,&quot;WAV&quot;,&quot;MP3&quot;, &quot;AAC&quot;, &quot;RA&quot;, &quot;AVI&quot;, &quot;MP4&quot;, &quot;MPEG1&quot;, &quot;MPEG2&quot;, &quot;ASF&quot;, &quot;MKV&quot;, &quot;PS&quot;, &quot;TS&quot;, &quot;RM&quot;, &quot;FLV&quot;, &quot;F4V&quot;, &quot;ISM&quot;</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>duration</td>
+          <td>Required</td>
+          <td>Number (int64_t)</td>
+          <td>
+            <p>Total duration in milli-seconds of the program.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a id="display_attr"></a>
+  <h3>display_attr</h3>
+  <p>Provides detailed information for display resource.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>crtc-id</td>
+          <td>Required</td>
+          <td>Number (int32_t)</td>
+          <td>
+            <p>Crtc id of display</p>
+          </td>
+        </tr>
+        <tr>
+          <td>plane-id</td>
+          <td>Required</td>
+          <td>Number (uint32_t)</td>
+          <td>
+            <p>Plane id of display</p>
+          </td>
+        </tr>
+        <tr>
+          <td>conn-id</td>
+          <td>Required</td>
+          <td>Number (int32_t)</td>
+          <td>
+            <p>Connector id of display</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a id="acbs"></a>
+  <h3>acbs</h3>
+  <p>Array of objects that gives details of media for foreground application (such as pipeline Id, playstate, position, etc.)</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>pipelineId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Pipeline id</p>
+          </td>
+        </tr>
+        <tr>
+          <td>playStateNow</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Current playback status</p>
+          </td>
+        </tr>
+        <tr>
+          <td>playStateNext</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Next playback status</p>
+          </td>
+        </tr>
+        <tr>
+          <td>isFullScreen</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Specifies if the app is in full screen mode.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>positionX</td>
+          <td>Required</td>
+          <td>Number (int32_t)</td>
+          <td>
+            <p>X Position of window</p>
+          </td>
+        </tr>
+        <tr>
+          <td>positionY</td>
+          <td>Required</td>
+          <td>Number (int32_t)</td>
+          <td>
+            <p>Y Position of window</p>
+          </td>
+        </tr>
+        <tr>
+          <td>width</td>
+          <td>Required</td>
+          <td>Number (int32_t)</td>
+          <td>
+            <p>Width of the app window.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>height</td>
+          <td>Required</td>
+          <td>Number (int32_t)</td>
+          <td>
+            <p>Height of the app window.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div>
+  <a id="acbs"></a>
+  <h2>Signals/Events</h2>
+  <h3>loadCompleted</h3>
+  <p>The&nbsp;<strong>loadCompleted&nbsp;</strong>event is raised when a specific media pipeline has been successfully loaded.</p>
+  <div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>loadCompleted</td>
+            <td>Required</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>Unique identifier of the loaded pipeline.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h3>unloadCompleted</h3>
+  <p>The&nbsp;<strong>unloadCompleted&nbsp;</strong>event is raised when a specific media pipeline has been successfully unloaded.</p>
+  <div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>mediaId</td>
+            <td>Required</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>Unique identifier of the unloaded pipeline.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h3>detached</h3>
+  <p><span style="color:rgb(102, 102, 102)">The&nbsp;</span><strong>detached<span style="color:#FF0000">&nbsp;</span></strong>event is raised when a specific media has been detached from the client by another client attaching to the corresponding pipeline.&nbsp;The <strong>detached </strong>event is related to the <strong>attach </strong>command. <strong>Attach </strong>allows to transfer the control of a pipeline to be handed over to a different client. When that happens the original client gets notified that it got detached from the pipeline and is hence no longer able to control the pipeline. This feature is related to fast boot scenarios where we have a mini-app controlling media upon initial launch and the control is handed over to the real/full application once the system has started in full.&nbsp;</p>
+  <div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>mediaId</td>
+            <td>Optional</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>Unique identifier of detached pipeline.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h3>seekDone</h3>
+  <p>The&nbsp;<strong>seekDone</strong>&nbsp;event is raised when a seek operation for a media has been successfully completed.</p>
+  <div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>mediaId</td>
+            <td>Required</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>Unique identifier of the requested pipeline to seek.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h3>playing</h3>
+  <p><span style="color:#000000">The&nbsp;<strong>playing</strong>&nbsp;event </span>is raised<span style="color:#000000">&nbsp;once, in response to the play method, when a specified media pipeline has transitioned into the playing state.&nbsp;</span></p>
+  <div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>mediaId</td>
+            <td>Required</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>Unique identifier of the requested pipeline to play.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h3>paused</h3>
+  <p>The&nbsp;<strong>paused&nbsp;</strong>event is raised when a specific media has been successfully paused.</p>
+  <div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>mediaId</td>
+            <td>Required</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>Unique identifier of the requested pipeline to pause.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h3>endOfStream</h3>
+  <p>The&nbsp;<strong>endOfStream</strong>&nbsp;event is raised when a specific media has received all of its data.</p>
+  <div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>mediaId</td>
+            <td>Required</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>Unique identifier of pipeline met end of stream.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h3>currentTime</h3>
+  <p>The&nbsp;<strong>currentTime</strong>&nbsp;event is raised multiple times when a specific media is playing. It indicates the progress of the media being played and provides the current time at which the media is being played.</p>
+  <div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>currentTime</td>
+            <td>Required</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>Current time at which the media is being played.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>mediaId</td>
+            <td>Required</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>Unique identifier of pipeline which reports current time.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h3>sourceInfo</h3>
+  <p>The&nbsp;<strong>sourceInfo</strong>&nbsp;event provides information about&nbsp;the media that has just been loaded.</p>
+  <div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>sourceInfo</td>
+            <td>Required</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>See &quot;sourceInfo&quot; object.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h3>videoInfo</h3>
+  <p><span style="color:rgb(102, 102, 102)">The&nbsp;</span><strong>videoInfo</strong>&nbsp;<span style="color:rgb(102, 102, 102)">event provides information related to video.</span></p>
+  <div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>videoInfo</td>
+            <td>Required</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>See &quot;videoInfo&quot; object.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h3>audioInfo</h3>
+  <p><span style="color:rgb(102, 102, 102)">The</span>&nbsp;<strong>audioInfo</strong>&nbsp;<span style="color:rgb(102, 102, 102)">event provides information related to audio.</span></p>
+  <div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>audioInfo</td>
+            <td>Required</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p><span style="color:#000000">See &quot;audioInfo&quot; object.</span></p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h3>error</h3>
+  <p><span style="color:#000000">The&nbsp;<strong>error</strong>&nbsp;event reports errors thrown by pipelines.&nbsp;</span></p>
+  <div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p><span style="color:rgb(0, 0, 0)">Error code from the service.</span></p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>Error code description from the service.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>mediaId</td>
+            <td>Required</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>Unique identifier of pipeline sending error information.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h3>acquireComplete&nbsp;</h3>
+  <p style="text-align:justify"><span style="color:#000000">The&nbsp;<strong>acquireCompete</strong>&nbsp;event is invoked when the acquire request is performed and the result comes out.</span></p>
+  <p>&nbsp;</p>
+  <div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>resources</td>
+            <td>Required</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>See &quot;resources&quot; object.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>state</td>
+            <td>Required</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>Flag indicating the result of acquire request.</p>
+              <ul>
+                <li>To send information that resource acquisition is successfully performed, set&nbsp;<strong>state&nbsp;</strong>to&nbsp;<strong>true</strong>.</li>
+                <li>To send information that resource acquisition&nbsp;failed, set&nbsp;<strong>state&nbsp;</strong>to <strong>false</strong>.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>connectionId</td>
+            <td>Required</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>Unique identifier of the pipeline to acquire resource.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h3>policyAction</h3>
+  <p style="text-align:justify">The&nbsp;<strong>policyAction</strong>&nbsp;event is invoked when the resources are short of quantity to&nbsp;playing new media content and request pipeline to release regarding resource.</p>
+  <div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>requestor_type</td>
+            <td>Required</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>Type of pipeline that made a new request.</p>
+              <p>This is the pipeline requesting the additional resources.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>requestor_name</td>
+            <td>Required</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>Name of pipeline that made new request.</p>
+              <p>This is the pipeline requesting additional resources.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>action</td>
+            <td>Required</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>Action requested to do at the pipeline when this policyAction is delivered.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>resources</td>
+            <td>Required</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>See &quot;resources&quot; object.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>connectionId</td>
+            <td>Required</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>Unique identifier of the pipeline to get policyAction event</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h3>activeRegion</h3>
+  <p>This event will notify video object of overlay rectangle (active region) video frame is being rendered to. This event is relevant for auto layout mode (see switchToAutoLayout method for more info).&nbsp;</p>
+  <div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>mediaId</td>
+            <td>Required</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>Media ID of the addressed pipeline.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>x</td>
+            <td>Required</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>x coordinate of active region</p>
+            </td>
+          </tr>
+          <tr>
+            <td>y</td>
+            <td>Required</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>y coordinate of active region</p>
+            </td>
+          </tr>
+          <tr>
+            <td>width</td>
+            <td>Required</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>width of active region</p>
+            </td>
+          </tr>
+          <tr>
+            <td>height</td>
+            <td>Required</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>height of active region</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<h2>API Error Codes Reference</h2>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <tbody>
+      <tr>
+        <th width="15%">
+          <p>Error Code</p>
+        </th>
+        <th width="30%">
+          <p>Error Text</p>
+        </th>
+        <th width="55%">
+          <p>Error Description</p>
+        </th>
+      </tr>
+      <tr>
+        <td>600</td>
+        <td>PolicyAction</td>
+        <td>
+          <p>Media related errors reported by the media pipeline are reported into several categories.</p>
+          <ul>
+            <li>RM category related errors are reported in the 600 range.</li>
+            <li>For managed pipelines</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>601</td>
+        <td>Resource Allocation Error</td>
+        <td>
+          <p>Media related&nbsp;errors reported by the media pipeline are reported into several categories.</p>
+          <ul>
+            <li>RM category related errors are reported in the 600 range.</li>
+            <li>For managed pipelines</li>
+          </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
