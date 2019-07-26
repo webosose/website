@@ -30,3 +30,7 @@ In a webOS system, web apps are categorized by the packaging/delivery method as 
 - **Built-in Web App**
     - The web app is built into the webOS image.
     - This approach is used by platform developers and contributors to add a web app that enhances the functionality of the platform.
+
+## Web App Framework
+
+webOS OSE provides Enact, a React-based application framework optimized for webOS OSE. For developer guides and API reference of Enact, check the [project website](http://enactjs.com).
