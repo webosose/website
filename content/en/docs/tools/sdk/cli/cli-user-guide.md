@@ -70,26 +70,21 @@ To make it easy to execute CLI commands, you need to add the CLI directory to th
 
 #### Windows
 
-If you unzipped the package under `C:\`, the CLI commands would be located in `C:\ares-cli`. You need to add the directory to the environment variable.
+If you unzipped the package under `C:\`, the CLI commands would be located in `C:\ares-cli`. You need to add the directory to the environment variable using one of the commands below in a command shell.
 
-You can create a system variable pointing to the directory and add the system variable to the PATH.
-
-``` bash
-C:\> setx /m WEBOS_CLI_HOME "C:\ares-cli"
-C:\> setx /m PATH "%WEBOS_CLI_HOME%;%PATH%"
+{{< code "Setting the PATH variable in the system environment (run the shell as Administrator)" true >}}
+```shell
+C:\> setx /m PATH "C:\ares-cli;%PATH%"
 ```
+{{< /code >}}
 
-Otherwise, you can add the directory to the PATH directly.
-
-``` bash
-C:\> setx /m PATH "C:\ares-cli; %PATH%"
+{{< code "Setting the PATH variable in the user environment" true >}}
+```shell
+C:\> setx PATH "C:\ares-cli;%PATH%"
 ```
+{{< /code >}}
 
-{{< note >}}
-To set the PATH for current user only, remove "/m" from the commands above.
-{{< /note >}}
-
-To make the changes take effect, you must restart the command prompt.
+To make the changes take effect, you must restart the command shell.
 
 #### Linux & macOS
 
@@ -97,13 +92,13 @@ There are many ways to set the environment variable in Linux and macOS. Here, we
 
 First, open the `.profile` which is located in the home directory. If the file does not exist, the command will create one.
 
-``` bash
+```shell
 $ vi ~/.profile
 ```
 
 Add the lines below at the end of the file.
 
-``` bash
+```shell
 ...
 # add CLI path
 if [ -d "$HOME/ares-cli/bin" ]; then
@@ -113,7 +108,7 @@ fi
 
 To make the changes take effect, you must execute the following command or restart the shell.
 
-``` bash
+```shell
 $ source ~/.profile
 ```
 
@@ -203,7 +198,7 @@ The `ares-generate` command requires Git and internet connection. So, before you
 
 #### Usages
 
-``` bash
+```shell
 ares-generate [OPTION...] APP_DIR
 
 ares-generate [OPTION...] -t js_service SERVICE_DIR
@@ -355,25 +350,25 @@ Here are some examples of the CLI usage:
 
 **Listing the templates (web application templates)**
 
-``` bash
+```shell
 ares-generate -l
 ```
 
 **Creating a web application with the default template in ./sampleApp directory**
 
-``` bash
+```shell
 ares-generate sampleApp
 ```
 
 **Creating a web application with custom App ID in ./sampleApp directory**
 
-``` bash
+```shell
 ares-generate -p "id=com.example.sampleapp" sampleApp
 ```
 
 **Creating a JS Service with custom Service ID in ./sampleService directory**
 
-``` bash
+```shell
 ares-generate -t js_service -s com.example.sampleapp.sampleservice sampleService
 ```
 
@@ -383,7 +378,7 @@ The service ID should be a sub-domain of the ID of the app which the service bel
 
 **Creating a web app in the ./sampleApp and setting properties with JSON string**
 
-``` bash
+```shell
 ares-generate -p "{'id':'com.example.sampleapp', 'version':'1.0.0', 'icon':'icon.png', 'type':'web', 'title':'Sample App', 'main':'index.html'}" sampleApp
 ```
 
@@ -393,7 +388,7 @@ This command packages an app and a JS service into a package file (`.ipk`) which
 
 #### Usages
 
-``` bash
+```shell
 ares-package [OPTION...] APP_DIR [SERVICE_DIR]
 
 ares-package --version
@@ -495,25 +490,25 @@ Here are some examples of the different uses:
 
 **Creating a package file from ./sampleApp directory and outputting it in the working directory**
 
-``` bash
+```shell
 ares-package sampleApp
 ```
 
 **Creating a package file from the ./sampleApp directory and outputting it in ./output directory**
 
-``` bash
+```shell
 ares-package -o output sampleApp
 ```
 
 **Creating a package file except for testCode1 sub-directory, README.md file and all text file (.txt)**
 
-``` bash
+```shell
 ares-package -e "testCode1" -e "README.md" -e "*.txt" samplePrj
 ```
 
 **Creating a package file with external JS service directory**
 
-``` bash
+```shell
 ares-package sampleApp sampleService
 ```
 
@@ -523,7 +518,7 @@ This command displays a list of registered target devices. You can also add, mod
 
 #### Usages
 
-``` bash
+```shell
 ares-setup-device
 
 ares-setup-device [OPTION...] --add|-a [TARGET_NAME] [--info|-i [DEVICE_INFO]]
@@ -680,7 +675,7 @@ ares-setup-device --help|-h
 
 The following example shows a `DEVICE_INFO` written in JSON format:
 
-``` bash
+```shell
 {"host":"127.0.0.1", "port":"22"}
 ```
 
@@ -690,7 +685,7 @@ Here are some examples of the CLI usage:
 
 **Listing target devices**
 
-``` bash
+```shell
 ares-setup-device --list
 
 name        deviceinfo               connection
@@ -700,7 +695,7 @@ device      root@127.0.0.1:22        ssh
 
 **Listing all details of target devices**
 
-``` bash
+```shell
 ares-setup-device --listfull
 
 [
@@ -726,19 +721,19 @@ ares-setup-device --listfull
 
 **Adding the target device (Target device name: target, Host address: 10.123.45.67, Port number: 22 User: root)**
 
-``` bash
+```shell
 ares-setup-device --add target -i "host=10.123.45.67" -i "port=22" -i "username=root"
 ```
 
 **Adding the target device with JSON format (Target device name: target, Host address: 10.123.45.67, Port number: 22 User: root)**
 
-``` bash
+```shell
 ares-setup-device --add target --info "{'host':'10.123.45.67', 'port':'22', 'username':'root'}"
 ```
 
 **Adding the target device with interactive mode (Target device name: target, Host address: 10.123.45.67, Port number: 22, User: root)**
 
-``` bash
+```shell
 ares-setup-device
 
 name     deviceinfo               connection
@@ -768,13 +763,13 @@ If you want to input default value or set empty, press the enter key without any
 
 **Modifying the target device (Target device name: target, Port Number: 9922)**
 
-``` bash
+```shell
 ares-setup-device --modify target -i "port=9922"
 ```
 
 **Modifying the target device with interactive mode (Target device name: target, Port number: 9922)**
 
-``` bash
+```shell
 ares-setup-device
 
 name     deviceinfo                  connection
@@ -806,7 +801,7 @@ If you want to keep the previous value, press Enter without any value.
 
 **Removing the target device (Target device name: target)**
 
-``` bash
+```shell
 ares-setup-device --remove target
 ```
 
@@ -816,7 +811,7 @@ To remove a target device, you only need to enter the name of the target device 
 
 **Searching webOS devices**
 
-``` bash
+```shell
 ares-setup-device --search
 ```
 
@@ -826,14 +821,14 @@ This command installs the app for a specified app package file (`.ipk`) on the t
 
 #### Usages
 
-``` bash
+```shell
 ares-install [OPTION...] PKG_FILE
 
 ares-install [OPTION...] --remove|-r APP_ID
 
-ares-install [OPTION...] --list|-l 
+ares-install [OPTION...] --list|-l
 
-ares-install [OPTION...] --listfull|-F 
+ares-install [OPTION...] --listfull|-F
 
 ares-install --device-list|-D
 
@@ -936,25 +931,25 @@ Here are some examples of the CLI usage:
 
 **Listing available target devices**
 
-``` bash
+```shell
 ares-install --device-list
 ```
 
 **Installing the app on the target device**
 
-``` bash
+```shell
 ares-install --device target com.example.sampleapp_1.0.0_all.ipk
 ```
 
 **Listing apps which are installed on the target device**
 
-``` bash
+```shell
 ares-install --device target --list
 ```
 
 **Removing the app from the target device**
 
-``` bash
+```shell
 ares-install --device target --remove com.example.sampleapp
 ```
 
@@ -964,7 +959,7 @@ This command runs or terminates the application installed on the target device. 
 
 #### Usages
 
-``` bash
+```shell
 ares-launch [OPTION...] APP_ID
 
 ares-launch [OPTION...] --close APP_ID
@@ -1069,13 +1064,13 @@ Here are some examples of the different uses:
 
 **Running the application installed on the target device**
 
-``` bash
+```shell
 ares-launch --device target com.example.sampleapp
 ```
 
 **Running the application with url parameter**
 
-``` bash
+```shell
 ares-launch --device target com.example.sampleapp --params "{'url':'webosose.org'}"
 ```
 
@@ -1085,13 +1080,13 @@ When you use a parameter, web app will receive the parameter with the `webOSLaun
 
 **Listing applications running on the target device**
 
-``` bash
+```shell
 ares-launch --device target --running
 ```
 
 **Terminating application currently running**
 
-``` bash
+```shell
 ares-launch --device target --close com.example.sampleapp
 ```
 
@@ -1101,7 +1096,7 @@ This command provides Web Inspector and Node Inspector. Web Inspector and Node I
 
 #### Usages
 
-``` bash
+```shell
 ares-inspect [OPTION...] [--app|-a] APP_ID
 
 ares-inspect [OPTION...] --service|-s SERVICE_ID
@@ -1201,13 +1196,13 @@ Here are some examples of the different uses:
 
 **Running the Web Inspector for an application**
 
-``` bash
+```shell
 ares-inspect --device target --app com.example.sampleapp
 ```
 
 **Running the Node Inspector for a JS service**
 
-``` bash
+```shell
 ares-inspect --device target --service com.example.sampleapp.sampleservice
 ```
 
@@ -1217,7 +1212,7 @@ This command runs a web server for testing local file. The web server will run o
 
 #### Usages
 
-``` bash
+```shell
 ares-server [OPTION...] APP_DIR
 
 ares-server --version|-V
@@ -1291,13 +1286,13 @@ Here are some examples of the different uses:
 
 **Running the Web Server in a source directory**
 
-``` bash
+```shell
 ares-server ./source
 ```
 
 **Running the Web Server with browser**
 
-``` bash
+```shell
 ares-server ./source --open
 ```
 
@@ -1307,7 +1302,7 @@ This command opens a shell of a target device and executes shell commands in the
 
 #### Usages
 
-``` bash
+```shell
 ares-shell -d TARGET_DEVICE
 
 ares-shell -d TARGET_DEVICE -r CMD
@@ -1394,17 +1389,17 @@ Here are some examples of the different uses:
 
 **Opening the remote shell of the target device**
 
-``` bash
+```shell
 ares-shell --device target
 ```
 
 **Executing a command inside the shell of the target device**
 
-``` bash
+```shell
 ares-shell --device target -r "pwd"
 ```
 
-``` bash
+```shell
 ares-shell --device target -r "echo hello webOS"
 ```
 
@@ -1414,7 +1409,7 @@ This command pushes file(s) from a host machine to a target device.
 
 #### Usages
 
-``` bash
+```shell
 ares-push [OPTION...] SOURCE DESTINATION
 
 ares-push --device-list|-D
@@ -1508,19 +1503,19 @@ Here are some examples of the different uses:
 
 **Listing available targets**
 
-``` bash
+```shell
 ares-push --device-list
 ```
 
 **Pushing contents of a specific directory from the host machine to the target device**
 
-``` bash
+```shell
 ares-push --device target /home/username/foo /home/username/foo
 ```
 
 **Pushing a file from the host machine to the target device**
 
-``` bash
+```shell
 ares-push --device target /home/username/foo.txt  /home/username/foo.txt
 ```
 
@@ -1530,7 +1525,7 @@ This command pulls file(s) from a target device to a host machine.
 
 #### Usages
 
-``` bash
+```shell
 ares-pull [OPTION...] SOURCE DESTINATION
 
 ares-pull --device-list|-D
@@ -1624,18 +1619,18 @@ Here are some examples of the different uses:
 
 **Listing available target devices**
 
-``` bash
+```shell
 ares-pull --device-list
 ```
 
 **Pulling contents of a specific directory from the target device to the host machine**
 
-``` bash
+```shell
 ares-pull --device target /home/username/foo /home/username/foo
 ```
 
 **Pulling a file from the target device to the host machine**
 
-``` bash
+```shell
 ares-pull --device target /home/username/foo.txt  /home/username/foo.txt
 ```
