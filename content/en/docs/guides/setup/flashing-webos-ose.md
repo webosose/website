@@ -27,19 +27,19 @@ Flash the image using [Win32DiskImager](https://sourceforge.net/projects/win32di
 
 First, change directory to where the image is located.
 
-```bash
+```shell
 $ cd <path where the image is located>
 ```
 
 Check the device name of the microSD card using the following command.
 
-```bash
+```shell
 $ sudo fdisk -l
 ```
 
 To flash the image to the microSD card, run the following commands.
 
-```bash
+```shell
 $ sudo umount /dev/<sdXn>
 $ sudo dd bs=4M if=./<**.rpi-sdimg> of=/dev/<sdX>
 $ sudo umount /dev/<sdXn>
@@ -54,7 +54,7 @@ After you run the `dd` command, the shell prompt will not display any message un
 
 #### Flashing Command Example for Linux
 
-```bash
+```shell
 $ sudo umount /dev/sdb1
 $ sudo dd bs=4M if=./webos-image-raspberrypi3.rootfs.rpi-sdimg of=/dev/sdb
 $ sudo umount /dev/sdb1
@@ -64,19 +64,19 @@ $ sudo umount /dev/sdb1
 
 First, change directory to where the image is located.
 
-```bash
+```shell
 $ cd <path where the image is located>
 ```
 
 Check the device name of the microSD card using the following command.
 
-```bash
+```shell
 $ diskutil list
 ```
 
 To flash the image to the microSD card, run the following commands.
 
-```bash
+```shell
 $ sudo diskutil umountDisk /dev/<diskn>
 $ sudo dd bs=4m if=./<**.rpi-sdimg> of=/dev/<rdiskn>
 $ sudo diskutil umountDisk /dev/<diskn>
@@ -92,7 +92,7 @@ $ sudo diskutil umountDisk /dev/<diskn>
 
 #### Flashing Command Example for macOS
 
-```bash
+```shell
 $ sudo diskutil umountDisk /dev/disk2
 $ sudo dd bs=4m if=./webos-image-raspberrypi3.rootfs.rpi-sdimg of=/dev/rdisk2
 $ sudo diskutil umountDisk /dev/disk2
@@ -109,6 +109,6 @@ After you finish flashing the webOS OSE image to the microSD card, you can check
     * Connect Ethernet cable to the target device.
 3. Set the input mode of the monitor to the port connected with the target device.
 4. Plug the power cable into the target device. The target device will boot up. Wait until the start-up screen with webOS OSE logo appears on the screen.
-5. Press Windows key on the keyboard, and you will see the Home Launcher UI popping up from the right side of the screen. Home Launcher should contain a list of pre-installed apps and an icon for Settings app, as shown in the figure below.
+5. Press the Windows key (Linux, Windows) or the right command key (macOS) on your keyboard, and you will see the Home Launcher UI popping up from the right side of the screen. Home Launcher should contain a list of pre-installed apps and an icon for Settings app, as shown in the figure below.
 
 {{< figure src="/images/docs/guides/setup/webosose-bootup-launcher.png" alt="webOS OSE Bootup Screen" >}}
