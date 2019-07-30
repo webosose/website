@@ -9,7 +9,7 @@ toc: true
 This page provides the package download links for webOS Open Source Edition (OSE) SDK.
 
 {{< note >}}
-QEMU Emulator is provided as a pre-built package on the GitHub. For details, check the [Emulator user guide]({{< relref "emulator-user-guide#downloading-the-emulator" >}}).
+Emulator is created as a virtual machine image when you build webOS OSE platform source code with `qemux86` option configured. For more information, see [Building webOS Open Source Edition]({{< relref "building-webos-ose" >}}).
 {{< /note >}}
 
 ## Command-Line Interface

@@ -31,7 +31,6 @@ Check the user guides, download links, and release notes for SDK tools.
 ### Emulator
 
 * [User Guide]({{< relref "emulator-user-guide" >}})
-* [Release Notes]({{< relref "emulator-release-notes" >}})
 
 ### Beanviser
 

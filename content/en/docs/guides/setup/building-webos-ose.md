@@ -15,7 +15,7 @@ Ensure that your system meets the [Build System Requirements]({{< relref "system
 
 To build a webOS OSE image, `build-webos` repository is used. This repository contains the top level code that aggregates the various [OpenEmbedded](http://openembedded.org/) layers into a whole from which webOS OSE images can be built.
 
-Set up `build-webos` by cloning its Git repository, and move into the cloned directory:
+Set up `build-webos` by cloning its Git repository, and cd into the cloned directory:
 
 ```bash
 $ git clone https://github.com/webosose/build-webos.git
@@ -112,8 +112,8 @@ $ bitbake webos-image-devel
 
 To see if the image has been created successfully, check the following files:
 
-* For Rasberry Pi 3, the resulting image will be created at `BUILD/deploy/images/raspberrypi3/webos-image-raspberrypi3.rootfs.rpi-sdimg`.
-* For the emulator, the resulting image will be created at `BUILD/deploy/images/qemux86/webos-image-qemux86.vmdk`.
+* For Raspberry Pi 3, the resulting image will be created at `BUILD/deploy/images/raspberrypi3/webos-image-raspberrypi3.rootfs.rpi-sdimg`.
+* For the emulator, the resulting image will be created at `BUILD/deploy/images/qemux86/webos-image-qemux86-master-*-wic.vmdk`.
 
 ## Cleaning
 

@@ -1,9 +1,13 @@
 ---
-title: Emulator Release Notes
+title: QEMUx86 Emulator for Linux Release Notes
 date: 2018-08-20
 weight: 20
 toc: true
 ---
+
+{{< caution "Deprecation Warning" >}}
+QEMUx86 Emulator for Linux is no longer actively maintained, so it is strongly recommended that you use [VirtualBox Emulator]({{< relref "emulator-user-guide" >}}) instead.
+{{< /caution >}}
 
 webOS Open Source Edition (OSE) emulator is an x86 (x86_64) virtualization system based on QEMU virtualizer. Currently, the emulator only supports Linux Ubuntu as a host operating system.
 
