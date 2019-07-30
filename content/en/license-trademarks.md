@@ -25,6 +25,7 @@ You may use the content of this site in any way that is consistent with the spec
 * Mac and macOS are registered trademarks of Apple Inc. in the U.S. and other countries.
 * Microsoft and Windows are registered trademarks of Microsoft Corporation in the U.S. and/or other countries.
 * Intel, Pentium, Intel Core i5, Intel Core i7, and Intel Movidius are registered trademarks or trademarks of Intel Corporation in the U.S. and/or other countries.
+* Oracle and VirtualBox are trademarks or registered trademarks of Oracle and/or its affiliates in the U.S. and/or other countries.
 * Qt and respective logos are registered trademarks of The Qt Company Ltd. and its subsidiaries in Finland and/or other countries worldwide.
 * OpenGL is a trademark or a registered trademark of Hewlett Packard Enterprise in the U.S. and/or other countries.
 * EGL is a trademark of the Khronos Group Inc.
