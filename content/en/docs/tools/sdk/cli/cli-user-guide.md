@@ -53,7 +53,7 @@ First, download the CLI package for your operating system from the [SDK download
 
 Unzip the downloaded CLI package. After unzipping the package, you can execute the CLI commands located in the following directories.
 
-  - Windows: `ares-cli`
+  - Windows: `ares-cli\bin`
   - Linux & macOS: `ares-cli/bin`
 
 {{< caution "Alerts for CLI Installation on Windows" >}}
@@ -70,17 +70,17 @@ To make it easy to execute CLI commands, you need to add the CLI directory to th
 
 #### Windows
 
-If you unzipped the package under `C:\`, the CLI commands would be located in `C:\ares-cli`. You need to add the directory to the environment variable using one of the commands below in a command shell.
+If you unzipped the package under `C:\`, the CLI commands would be located in `C:\ares-cli\bin`. You need to add the directory to the environment variable using one of the commands below in a command shell.
 
 {{< code "Setting the PATH variable in the system environment (run the shell as Administrator)" true >}}
 ```shell
-C:\> setx /m PATH "C:\ares-cli;%PATH%"
+C:\> setx /m PATH "C:\ares-cli\bin;%PATH%"
 ```
 {{< /code >}}
 
 {{< code "Setting the PATH variable in the user environment" true >}}
 ```shell
-C:\> setx PATH "C:\ares-cli;%PATH%"
+C:\> setx PATH "C:\ares-cli\bin;%PATH%"
 ```
 {{< /code >}}
 
@@ -1141,7 +1141,10 @@ ares-inspect --help|-h
 <td><p>-o, --open</p></td>
 <td><p>None</p></td>
 <td><p>Opens the default browser of the host machine.</p>
-<p>Web Inspector and Node Inspector work in the Blink-based web browsers (e.g. Chrome or Opera) only. You have to re-open the inspector page in one of those browsers if another browser is your default web browser (e.g. Safari or Internet Explorer).</p></td>
+{{< note >}}
+<p>Web Inspector and Node Inspector work in the Blink-based web browsers (e.g. Chrome or Opera) only. You have to re-open the inspector page in one of those browsers if another browser is your default web browser (e.g. Safari or Internet Explorer).</p>
+{{< /note >}}
+</td>
 </tr>
 <tr class="odd">
 <td><p>-v</p></td>
@@ -1208,7 +1211,7 @@ ares-inspect --device target --service com.example.sampleapp.sampleservice
 
 ### ares-server
 
-This command runs a web server for testing local file. The web server will run on the given path. You can terminate the web server with **Control+C** (in Windows and Linux) or **Command+C** (in macOS).
+This command runs a web server for testing a local file. The web server will run on the given path. You can terminate the web server by pressing **Control+C** on the shell prompt.
 
 #### Usages
 

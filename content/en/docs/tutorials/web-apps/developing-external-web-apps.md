@@ -253,5 +253,5 @@ $ ares-server ./sampleApp --open
 ```
 
 {{< note >}}
-To terminate the web server, use **Control+C** (in Windows and Linux) or **Command+C** (in macOS) on the shell prompt.
+To terminate the web server, press **Control+C** on the shell prompt.
 {{< /note >}}

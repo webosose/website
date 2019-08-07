@@ -51,7 +51,7 @@ This is the first official release of CLI for webOS OSE. For a detailed list of 
 
   - The emulator should be running prior to using `ares-install` or `ares-launch` commands. CLI does not run the emulator automatically.
 
-  - `ares-server` and `ares-inspect` commands are not terminated on their own, and can only be terminated manually by pressing **Control+C** (Windows, Linux) or **Command+C** (macOS).
+  - `ares-server` and `ares-inspect` commands are not terminated on their own, and can only be terminated manually by pressing **Control+C**.
 
   - `ares-package` shows an error message if an app filename contains non-ASCII characters. (App filenames should contain Latin letters ONLY.)
 
