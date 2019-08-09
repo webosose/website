@@ -22,7 +22,7 @@ thumbnail: th-adding-wiringpi-library.jpg
 
 -------------------
 
-As mentioned in the Q&A above, there is no GPIO service available on webOS OSE at the moment, but you can create one capable of controlling the GPIOs using the [wiringPi library](<http://wiringpi.com/>). It was demonstrated in the service (<https://github.com/webosce/com.webos.service.rpi.gpio>) developed by Ryu Jun-ho at the last year's contributhon (a compound word of contribution and marathon). However, even if you decide to try writing a native service on your own, you will realize the wiringPi library is not found. You have to add it first.
+As mentioned in the Q&A above, there is no GPIO service available on webOS OSE at the moment, but you can create one capable of controlling the GPIOs using the [wiringPi library](<http://wiringpi.com/>). It was demonstrated in the service (<https://github.com/webosce/com.webos.service.rpi.gpio>) developed by Jun-ho Ryu at the last year's contributhon (a portmanteau of "contribution" and "marathon"). However, even if you decide to try writing a native service on your own, you will realize the wiringPi library is not found. You have to add it first.
 
 You can either include the library when building the webOS OSE image or, if you already have the built webOS OSE image, build the library separately and install it on webOS OSE.
 
@@ -34,7 +34,7 @@ The GPIO service in the webOS Community Edition (webosce) mentioned above includ
 
 First, let me explain how to add the wiringPi library when building a webOS OSE image.
 
-About the requirements for a build environment, refer to [System Requirements](https://www.webosose.org/docs/guides/setup/system-requirements/).
+About the requirements for a build environment, refer to [System Requirements]({{< relref "system-requirements" >}}).
 
 1.  Clone `build-webos` in the host PC and install required tools.
 
@@ -79,7 +79,7 @@ About the requirements for a build environment, refer to [System Requirements](h
     MyLinux:~/ose/build-webos$ make webos-image
     ```
 
-5.  When the build is done, flash `webos-image-raspberrypi3.rootfs.rpi-sdimg` to the SD card. (Refer to [Flashing webOS OSE](https://www.webosose.org/docs/guides/setup/flashing-webos-ose/).)
+5.  When the build is done, flash `webos-image-raspberrypi3.rootfs.rpi-sdimg` to the SD card. (Refer to [Flashing webOS OSE]({{< relref "flashing-webos-ose" >}}).)
 
 6.  Type the **`gpio`** command to test. If the result is shown as in the following, the installation is successful.
 
@@ -93,7 +93,7 @@ About the requirements for a build environment, refer to [System Requirements](h
 
 ## Building only the wiringPi library and installing it onto webOS OSE
 
-If you already have a built webOS OSE image, you don't have to build the entire image again. Build only the wiringPi library and install it onto the webOS OSE.
+If you already have a built webOS OSE image, you don't have to build the entire image again. Build only the wiringPi library and install it onto webOS OSE.
 
 1.  Clone `build-webos` on the host PC and install required tools.
 
@@ -162,9 +162,10 @@ If you already have a built webOS OSE image, you don't have to build the entire 
     root@raspberrypi3:~#
     ```
 
-Now you have the wiringPi library installed on webOS OSE. In the following article which will come soon, you will learn how to actually control the GPIOs on webOS OSE.
 
 ## Before using GPIOs in your app
+
+Now you have the wiringPi library installed on webOS OSE. In the following article which will come soon, you will learn how to actually control the GPIOs on webOS OSE.
 
 As the GPIO pin arrangement of the Raspberry Pi is different from that of wiringPi, you have to check the mapping table before specifying a pin number. To see the pin mapping table between the Raspberry Pi and wiringPi, type the **`gpio readall`** command on the console.
 
