@@ -502,7 +502,7 @@ After building the app, you must verify its functionality.
             Specify the `params` parameter to pass specific values to the app via SAM, as follows:
 
             ``` bash
-            root@raspberrypi3:~# luna-send -n 1 luna://com.webos.applicationManager/launch '{"id":"com.example.app.qml", "params" : {"test":"key1"}}'
+            root@raspberrypi3:~# luna-send -n 1 luna://com.webos.service.applicationmanager/launch '{"id":"com.example.app.qml", "params" : {"test":"key1"}}'
             ```
 
             See the log.

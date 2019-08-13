@@ -341,7 +341,7 @@ toc: true
         &nbsp; &nbsp; &quot;description&quot;: &quot;Test create of scheduled activity with callback&quot;,<br />
         &nbsp; &nbsp; &quot;type&quot;: { &quot;foreground&quot;: true },<br />
         &nbsp; &nbsp; &quot;callback&quot;: {<br />
-        &nbsp; &nbsp; &nbsp; &quot;method&quot;: &quot;luna://com.webos.applicationmanager/launch&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &quot;method&quot;: &quot;luna://com.webos.service.applicationmanager/launch&quot;,<br />
         &nbsp; &nbsp; &nbsp; &quot;params&quot;: { &quot;id&quot;: &quot;com.webos.app.browser&quot; }<br />
         &nbsp; &nbsp; },<br />
         &nbsp; &nbsp; &quot;schedule&quot;: { &quot;start&quot;: &quot;2015-02-15 00:05:00&quot; }<br />
@@ -372,13 +372,13 @@ toc: true
         &nbsp;&nbsp;&nbsp; &quot;name&quot;: &quot;browser restart&quot;, &quot;description&quot;:&quot;&quot;,<br />
         &nbsp; &nbsp; &quot;type&quot;: { &quot;foreground&quot;:true, &quot;continuous&quot;: true },<br />
         &nbsp; &nbsp; &quot;callback&quot;: {<br />
-        &nbsp; &nbsp; &nbsp; &quot;method&quot;: &quot;luna://com.webos.applicationmanager/launch&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &quot;method&quot;: &quot;luna://com.webos.service.applicationmanager/launch&quot;,<br />
         &nbsp; &nbsp; &nbsp; &quot;params&quot;: { &quot;id&quot;: &quot;com.webos.app.browser&quot; }<br />
         &nbsp; &nbsp; },<br />
         &nbsp;&nbsp;&nbsp; &quot;trigger&quot;: {<br />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;and&quot;: [<br />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;method&quot;: &quot;luna://com.webos.applicationmanager/getAppLifeStatus&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;method&quot;: &quot;luna://com.webos.service.applicationmanager/getAppLifeStatus&quot;,<br />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;params&quot;: { &quot;subscribe&quot;: true },<br />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;where&quot;: {<br />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;and&quot;: [<br />
@@ -712,40 +712,44 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
+    <p>Create an activity...</p>
     <p># luna-send -n 1 -f -a myapp luna://com.webos.service.activitymanager/create &#39;{<br />
       &nbsp; &nbsp; &quot;activity&quot;: {&quot;name&quot;: &quot;browser closed&quot;, &quot;description&quot;: &quot;&quot;, &quot;type&quot;: {&quot;foreground&quot;: true},<br />
       &nbsp; &nbsp; &quot;callback&quot;: {&quot;method&quot;: &quot;luna://com.webos.notification/createToast&quot;, &quot;params&quot;: {&quot;message&quot;: &quot;browser closed&quot;, &quot;persistent&quot;: true}},<br />
-      &nbsp; &nbsp; &quot;trigger&quot;: {&quot;method&quot;: &quot;luna://com.webos.applicationmanager/getAppLifeStatus&quot;, &quot;params&quot;: {&quot;subscribe&quot;: true},<br />
+      &nbsp; &nbsp; &quot;trigger&quot;: {&quot;method&quot;: &quot;luna://com.webos.service.applicationmanager/getAppLifeStatus&quot;, &quot;params&quot;: {&quot;subscribe&quot;: true},<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;where&quot;: {&quot;prop&quot;: &quot;status&quot;, &quot;op&quot;: &quot;=&quot;, &quot;val&quot;: &quot;stop&quot;}}},<br />
-      &nbsp; &nbsp; &quot;replace&quot;: true, &quot;start&quot;: true}&#39;<br />
-      {<br />
+      &nbsp; &nbsp; &quot;replace&quot;: true, &quot;start&quot;: true}&#39;
+    </p>
+    <p>Returns:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;subscribed&quot;: false,<br />
       &nbsp; &nbsp; &quot;activityId&quot;: 62,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
       }
     </p>
-    <p># luna-send -n 1 -f luna://com.webos.applicationmanager/launch &#39;{&quot;id&quot;:&quot;com.webos.app.browser&quot;}&#39;<br />
-      {<br />
+    <p>&nbsp;</p>
+    <p>Launch the activity...</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/launch &#39;{&quot;id&quot;:&quot;com.webos.app.browser&quot;}&#39;</p>
+    <p>Returns:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
       }
     </p>
-    <p># luna-send -n 1 -f luna://com.webos.applicationmanager/closeByAppId &#39;{&quot;id&quot;:&quot;com.webos.app.browser&quot;}&#39;<br />
-      {<br />
+    <p>&nbsp;</p>
+    <p>Closes the activity...</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/closeByAppId &#39;{&quot;id&quot;:&quot;com.webos.app.browser&quot;}&#39;</p>
+    <p>Returns:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;appId&quot;: &quot;com.webos.app.browser&quot;,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
       }
     </p>
+    <p>&nbsp;</p>
+    <p>Completes the activity...</p>
     <p># luna-send -n 1 -f -a myapp luna://com.webos.service.activitymanager/complete &#39;{&quot;activityName&quot;: &quot;browser closed&quot;, &quot;restart&quot;: true}&#39;</p>
-    <p>Example response for a successful call:<br />
-      {<br />
+    <p>Returns:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
-    <p>Example response for a failed call:<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 2,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Activity name/creator pair not found&quot;<br />
       }
     </p>
   </div>
