@@ -14,23 +14,121 @@ toc: true
   <p>{{< figure src="/images/docs/reference/com-webos-service-activitymanager-activity-state-transition-diagram.png" alt="activity state transition diagram" >}}</p>
   <p>An&nbsp;Activity can have the state shown in the diagram above. What the Activity does for each state is as follows.</p>
   <ul>
-    <li><span style="color:#0000FF"><strong>creating</strong></span><span style="color:#00B050">&nbsp;</span>: The <strong>create</strong>&nbsp;method is called and the Activity is&nbsp;<span style="color:#0000FF"><strong>creating</strong></span>.</li>
-    <li><span style="color:#008000"><strong>created</strong></span><span style="color:#40C47C">&nbsp;</span>: The&nbsp;Activity was <span style="color:#008000"><strong>created</strong></span><span style="color:#40C47C">&nbsp;</span>successfully.&nbsp;When calling&nbsp;<strong>create</strong> method with { &#39;start&#39;&nbsp;<strong>:&nbsp;</strong>true }, the Activity will move to&nbsp;<span style="color:#008000"><strong>unsatisfied</strong></span><span style="color:#00B050"><strong>&nbsp;</strong></span>state automatically.</li>
-    <li><span style="color:#0000FF"><strong>starting</strong></span><span style="color:#00B050">&nbsp;</span>: The <strong>start</strong> method is called and the Activity is&nbsp;<span style="color:#0000FF"><strong>starting</strong></span>. In this step, the Activity will subscribe Requirements, Triggers and Schedule.</li>
-    <li><span style="color:#008000"><strong>unsatisfied</strong></span><span style="color:#00B050"><strong>&nbsp;</strong></span>: The Activity waits for all conditions are satisfied - Requirements, Triggers and Schedule. The Activity in <span style="color:#008000"><strong>unsatisfied</strong></span>&nbsp;can be paused by <strong>pause</strong>&nbsp;method.</li>
-    <li><strong><span style="color:#0000FF">pausing</span>&nbsp;</strong>: The <strong>pause</strong>&nbsp;method is called and the Activity is&nbsp;<strong><span style="color:#0000FF">pausing</span></strong>.</li>
-    <li><strong><span style="color:#008000">paused</span>&nbsp;</strong>: The Activity is <strong><span style="color:#008000">paused</span></strong>. In this state, the Activity&nbsp;does not move to the <strong><span style="color:#008000">satisfied</span>&nbsp;</strong>state, although all conditions&nbsp;are satisfied. The Activity can move to unsatisfied state by <strong>start</strong>&nbsp;method.</li>
-    <li><strong><span style="color:#0000FF">satisfying</span>&nbsp;</strong>: All conditions of the Activity are&nbsp;<strong><span style="color:#0000FF">satisfying</span></strong>.&nbsp;An activity in <span style="color:#008000"><strong>unsatisfied</strong></span><span style="color:#00B050"><strong>&nbsp;</strong></span>state automatically moves to this state without an API&nbsp;call.</li>
-    <li><strong><span style="color:#008000">satisfied</span>&nbsp;</strong>: All conditions&nbsp;of the Activity are <strong><span style="color:#008000">satisfied</span></strong>. And there is nothing to do special.</li>
-    <li><strong><span style="color:#0000FF">expiring</span>&nbsp;</strong>: The Activity is <strong><span style="color:#0000FF">expiring</span></strong>. The Activity&nbsp;will call Callback method and unsubscribe&nbsp;Triggers and cancel Schedule.</li>
-    <li><strong><span style="color:#008000">expired</span>&nbsp;</strong>: The Activity is over. All callbacks are handled successfully. If the Activity is not set&nbsp;continuous<strong>&nbsp;</strong>property, the activity is in <strong><span style="color:#008000">expired&nbsp;</span></strong>state forever. If its parent wants to start it again, the&nbsp;parent should call <strong>complete</strong> with { &#39;restart &#39;: true }. If parent doesn&#39;t&nbsp;want to restart it, then need to call <strong>cancel</strong>.</li>
-    <li><strong><span style="color:#0000FF">restarting</span>&nbsp;</strong>: The Activity is <strong><span style="color:#0000FF">restarting</span></strong>. There are two ways to restart Activity. One is to call <strong>complete </strong>method with { &#39;restart&#39; : true }. And the other is to give the continuous&nbsp;property to true when creating the Activity. If the Activity was created with continuous property, the Activity will move to <span style="color:#008000"><strong>unsatisfied</strong></span><span style="color:#00B050"><strong>&nbsp;</strong></span>state as soon as receive the Callback&nbsp;response.</li>
-    <li><strong><span style="color:#0000FF">failing</span>&nbsp;</strong>: An error occurs during Activity job and the Activity is <strong><span style="color:#0000FF">failing</span></strong>. Any Activity in any state can move to this state, if an error occurs. Make sure that Triggers or Callbacks do not fail for any reason. Their failure will move the Activity immediately to this state.</li>
-    <li><strong><span style="color:#008000">failed</span>&nbsp;</strong>: The Activity is <strong><span style="color:#008000">failed,</span></strong>&nbsp;and the Activity Manager cannot do anything anymore. The parent should call <strong>cancel</strong>&nbsp;method to destroy the Activity.</li>
-    <li><strong><span style="color:#0000FF">destroying</span>&nbsp;</strong>: The <strong>cancel&nbsp;</strong>method is called and the Activity is <strong><span style="color:#0000FF">destroying</span></strong>. The <strong>cancel</strong> method can be called in any Activity state,</li>
-    <li><strong><span style="color:#008000">destroyed</span>&nbsp;</strong>: The Activity is <strong><span style="color:#008000">destroyed</span></strong>. In this state, the Activity will be&nbsp;excluded from being managed by the Activity Manager.</li>
+    <li>
+      <span style="color:#0000FF"><strong>creating</strong></span>
+      <ul>
+        <li>The <strong>create</strong>&nbsp;method is called and the activity is <strong>creating</strong>.</li>
+      </ul>
+    </li>
+    <li>
+      <span style="color:#008000"><strong>created</strong></span>&nbsp;
+      <ul>
+        <li>The&nbsp;activity was <strong>created&nbsp;</strong>successfully.&nbsp;</li>
+        <li>When the&nbsp;<strong>create</strong> method is called with <strong>{&#39;start&#39;&nbsp;:&nbsp;true}</strong>, the activity automatically moves to&nbsp;<strong>unsatisfied&nbsp;</strong>state.</li>
+      </ul>
+    </li>
+    <li>
+      <span style="color:#0000FF"><strong>starting</strong></span>
+      <ul>
+        <li>The <strong>start </strong>method is called and the activity is <strong>starting</strong>.</li>
+        <li>In this step, the activity will subscribe requirements, triggers, and schedule.</li>
+      </ul>
+    </li>
+    <li>
+      <span style="color:#008000"><strong>unsatisfied</strong></span>
+      <ul>
+        <li><span style="color:#008000"><strong></strong></span>The activity waits for all conditions to be satisfied - requirements, triggers and schedule.</li>
+        <li>The activity in <strong>unsatisfied</strong>&nbsp;state can be paused by the&nbsp;<strong>pause</strong>&nbsp;method.</li>
+      </ul>
+    </li>
+    <li>
+      <strong><span style="color:#0000FF">pausing</span></strong>
+      <ul>
+        <li><strong><span style="color:#0000FF"></span></strong>The <strong>pause</strong>&nbsp;method is called and the activity is&nbsp;<strong>pausing</strong>.</li>
+      </ul>
+    </li>
+    <li>
+      <strong><span style="color:#008000">paused</span></strong>
+      <ul>
+        <li><strong><span style="color:#008000"></span></strong>The activity is <strong>paused</strong>.</li>
+        <li>In this state, the activity&nbsp;does not move to the <strong>satisfied&nbsp;</strong>state, although all conditions&nbsp;are satisfied.</li>
+        <li>The activity can move to unsatisfied state by <strong>start</strong>&nbsp;method.</li>
+      </ul>
+    </li>
+    <li>
+      <strong><span style="color:#0000FF">satisfying</span></strong>
+      <ul>
+        <li><strong><span style="color:#0000FF"></span></strong>All conditions of the activity are&nbsp;<strong>satisfying</strong>.&nbsp;</li>
+        <li>An activity in <strong>unsatisfied&nbsp;</strong>state automatically moves to this state without an API&nbsp;call.</li>
+      </ul>
+    </li>
+    <li>
+      <strong><span style="color:#008000">satisfied</span></strong>
+      <ul>
+        <li><strong><span style="color:#008000"></span></strong>All conditions&nbsp;of the activity are <strong>satisfied</strong>.</li>
+        <li>There is nothing to do special.</li>
+      </ul>
+    </li>
+    <li>
+      <strong><span style="color:#0000FF">expiring</span></strong>
+      <ul>
+        <li><strong><span style="color:#0000FF"></span></strong>The activity is <strong>expiring</strong>.</li>
+        <li>The activity&nbsp;will call the callback method and unsubscribe&nbsp;triggers and cancel schedule.</li>
+      </ul>
+    </li>
+    <li>
+      <strong><span style="color:#008000">expired</span></strong>
+      <ul>
+        <li><strong><span style="color:#008000"></span></strong>The activity is over.</li>
+        <li>All callbacks are handled successfully.</li>
+        <li>If the activity is not set to&nbsp;<strong>continuous&nbsp;</strong>property, the activity is in <strong>expired&nbsp;</strong>state forever.</li>
+        <li>If its parent wants to start it again, the&nbsp;parent should call <strong>complete</strong>&nbsp;method with <strong>{&#39;restart &#39;: true}</strong>.</li>
+        <li>If parent does not want to restart it, then it must call the <strong>cancel&nbsp;</strong>method.</li>
+      </ul>
+    </li>
+    <li>
+      <strong><span style="color:#0000FF">restarting</span></strong>
+      <ul>
+        <li><strong><span style="color:#0000FF"></span></strong>The activity is <strong>restarting</strong>.</li>
+        <li>
+          There are two ways to restart an activity.
+          <ul>
+            <li>One is to call the&nbsp;<strong>complete </strong>method with <strong>{&#39;restart&#39; : true}</strong>.</li>
+            <li>Another is to give the <strong>continuous</strong>&nbsp;property to true when creating the activity. If the activity was created with <strong>continuous</strong> property, the activity will move to <strong>unsatisfied&nbsp;</strong>state as soon as receive the callback&nbsp;response.</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <strong><span style="color:#0000FF">failing</span></strong>
+      <ul>
+        <li><strong><span style="color:#0000FF"></span></strong>An error occurs during activity job and the activity is <strong>failing</strong>.</li>
+        <li>Any activity in any state can move to this state, if an error occurs.</li>
+        <li>Make sure that Triggers or Callbacks do not fail for any reason. Their failure will move the activity immediately to this state.</li>
+      </ul>
+    </li>
+    <li>
+      <strong><span style="color:#008000">failed</span></strong>
+      <ul>
+        <li><strong><span style="color:#008000"></span></strong>The activity has&nbsp;<strong>failed<span style="color:#008000">,</span></strong>&nbsp;and the activity manager cannot do anything anymore.</li>
+        <li>The parent should call <strong>cancel</strong>&nbsp;method to destroy the activity.</li>
+      </ul>
+    </li>
+    <li>
+      <strong><span style="color:#0000FF">destroying</span></strong>
+      <ul>
+        <li><strong><span style="color:#0000FF"></span></strong>The <strong>cancel&nbsp;</strong>method is called and the activity is <strong>destroying</strong>.</li>
+        <li>The <strong>cancel</strong> method can be called in any activity state,</li>
+      </ul>
+    </li>
+    <li>
+      <strong><span style="color:#008000">destroyed</span></strong>
+      <ul>
+        <li><strong><span style="color:#008000"></span></strong>The activity is <strong>destroyed</strong>.</li>
+        <li>In this state, the activity will be&nbsp;excluded from being managed by the activity manager.</li>
+      </ul>
+    </li>
   </ul>
-  <p>&nbsp;</p>
 </div>
 <h2>Methods</h2>
 <div>
