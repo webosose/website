@@ -185,10 +185,10 @@ $ luna-send -n 1 -f luna://com.webos.service.applicationManager/listApps '{}'
 }
 ```
 
-Launch an app which has ID of "com.webos.app.browser" by calling `launch` method.
+Launch an app which has ID of "com.webos.app.enactbrowser" by calling `launch` method.
 
 ```bash
-$ luna-send -n 1 -f luna://com.webos.service.applicationManager/launch '{"id":"com.webos.app.browser"}'
+$ luna-send -n 1 -f luna://com.webos.service.applicationManager/launch '{"id":"com.webos.app.enactbrowser"}'
 
 {
     "returnValue": true
