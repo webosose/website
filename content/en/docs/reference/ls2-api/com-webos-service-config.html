@@ -1,11 +1,11 @@
 ---
 title: com.webos.service.config
-date: 2019-04-24
+date: 2019-08-22
 toc: true
 ---
 <div>
   <H2>API Summary</h2>
-  <p>The <strong>&#39;com.webos.service.config&#39;</strong> is a static service in the system that provides product specific configurations to webOS components.</p>
+  <p>A static service in the system that provides product specific configurations to webOS components.</p>
   <p>This service provides simple <strong>get/set</strong> interfaces to access the configurations.</p>
   <p><span style="color:#0000FF"><strong>[Terminology]</strong></span></p>
   <ul>
@@ -37,7 +37,6 @@ toc: true
       </ul>
     </li>
   </ul>
-  <p>&nbsp;</p>
 </div>
 <h2>Overview of the API</h2>
 <div>
@@ -315,26 +314,30 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>// # luna-send -f -i palm://com.webos.service.config/getConfigs &#39;{&quot;configNames &quot;:[&quot;com.webos.surfacemanager.compositorGeometry&quot;]}&#39;<br />
-      {<br />
-      &nbsp;&nbsp;&nbsp; &quot;subscribed&quot;: false,<br />
-      &nbsp;&nbsp;&nbsp; &quot;configs&quot;: {<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;com.webos.surfacemanager.compositorGeometry&quot;: &quot;1920x1080+0+0r0&quot;<br />
-      &nbsp;&nbsp;&nbsp; },<br />
-      &nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true<br />
-      }&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-    </p>
-    <p>// missingConfigs/ # luna-send -f -i palm://com.webos.service.config/getConfigs &#39;{&quot;configNames<br />
-      &quot;:[&quot;com.webos.test.missingConfigs&quot;, &quot;com.webos.surfacemanager.missingForegroundApp&quot;]}&#39;<br />
-      {<br />
-      &nbsp;&nbsp;&nbsp; &quot;missingConfigs&quot;: [<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;com.webos.test.missingConfigs&quot;,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;com.webos.surfacemanager.missingForegroundApp&quot;<br />
-      &nbsp;&nbsp;&nbsp; ],<br />
-      &nbsp;&nbsp;&nbsp; &quot;subscribed&quot;: false,<br />
-      &nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
+      <p># luna-send -f -i luna://com.webos.service.config/getConfigs &#39;{&quot;configNames &quot;:[&quot;com.webos.surfacemanager.compositorGeometry&quot;]}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp;&nbsp;&nbsp; &quot;subscribed&quot;: false,<br />
+        &nbsp;&nbsp;&nbsp; &quot;configs&quot;: {<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;com.webos.surfacemanager.compositorGeometry&quot;: &quot;1920x1080+0+0r0&quot;<br />
+        &nbsp;&nbsp;&nbsp; },<br />
+        &nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true<br />
+        }&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+      </p>
+      <p>&nbsp; &nbsp;</p>
+      <p># luna-send -f -i luna://com.webos.service.config/getConfigs &#39;{<br />
+        &nbsp; &nbsp;&nbsp;&quot;configNames&quot;:[&quot;com.webos.test.missingConfigs&quot;, &quot;com.webos.surfacemanager.missingForegroundApp&quot;]}&#39;
+      </p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp;&nbsp;&nbsp; &quot;missingConfigs&quot;: [<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;com.webos.test.missingConfigs&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;com.webos.surfacemanager.missingForegroundApp&quot;<br />
+        &nbsp;&nbsp;&nbsp; ],<br />
+        &nbsp;&nbsp;&nbsp; &quot;subscribed&quot;: false,<br />
+        &nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true<br />
+        }
+      </p>
   </div>
 </div>
 <h3>reconfigure</h3>
@@ -394,18 +397,15 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -n 1 palm://com.webos.service.config/reconfigure &#39;{}&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p># luna-send -n 1 luna://com.webos.service.config/reconfigure &#39;{}&#39;</p>
   </div>
 </div>
 <h3>setConfigs</h3>
 <div>
   <h4>Description</h4>
-  <p>It overrides current settings of the <strong>configs </strong>with the passed value. The&nbsp;overridden values will be kept until rebooting or returning back in any future queries for the config. It is useful for changing configuration in factory test process.</p>
-  <p>User can set multiple&nbsp;Configs at once.</p>
-  <p>&nbsp;</p>
+  <p>Overrides current settings of the <strong>configs</strong>.</p>
+  <p>The&nbsp;overridden values will be kept until rebooting or returning back in any future queries for the config. It is useful for changing configuration in factory test process.</p>
+  <p>User can set multiple&nbsp;configurations at once.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -486,15 +486,20 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>//single config</p>
+    <p>// Single config</p>
     <p># luna-send -n 1 -f luna://com.webos.service.config/setConfigs &#39;{ &quot;configs&quot;: {&quot;com.webos.surfacemanager.testSetConfigs&quot;: true}}&#39;</p>
+    <p>Response:</p>
     <p>{</p>
     <p>&nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true</p>
     <p>}</p>
     <p>&nbsp;</p>
-    <p>//multiple configs</p>
-    <p># luna-send -n 1 -f luna://com.webos.service.config/setConfigs &#39;{ &quot;configs&quot;: {&quot;com.webos.surfacemanager.testSetConfigs&quot;: true,</p>
-    <p>&quot;com.webos.surfacemanager.testSetConfigsArray&quot;: [&quot;com.webos.app.test1&quot;, &quot;com.webos.app.test2&quot;]}}&#39;</p>
+    <p>// Multiple configs</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.config/setConfigs &#39;{<br />
+      &nbsp; &nbsp;&nbsp;&quot;configs&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;com.webos.surfacemanager.testSetConfigs&quot;: true,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;com.webos.surfacemanager.testSetConfigsArray&quot;: [&quot;com.webos.app.test1&quot;, &quot;com.webos.app.test2&quot;]}}&#39;
+    </p>
+    <p>Response:</p>
     <p>{</p>
     <p>&nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true</p>
     <p>}</p>
