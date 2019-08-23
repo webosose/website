@@ -21,10 +21,14 @@ As we were rushing towards the event day, a few teams dropped out due to their s
 
 The judges selected the first-prize and second-prize winners and they were given 5,000 and 3,000 Singapore Dollars. The winners were Floodsensed and BAWA and they were selected based on 17 criteria such as difficulties of problems, potential benefits, degree of innovation, and good use of Infineon hardware and LG webOS.
 
-{{< figure src="/images/blog/news/infineon-lg-make-hackathon-singapore.jpg" caption="Group photo" >}}
+{{< figure src="/images/blog/articles/infineon-lg-hackathon-1st-floodsensed.jpg" caption="First prize winner - Floodsensed" >}}
+
+{{< figure src="/images/blog/articles/infineon-lg-hackathon-2nd-bawa.jpg" caption="Second prize winner - BAWA" >}}
 
 All other teams’ ideas were brilliant, although not everyone was given prizes. One noticeable team was Safety In Motion (or S.I.M.). They were students from China and their app was about a safety monitoring system for children in rear seats. What is interesting about them is that they went further than what was offered. They studied [Enact] (https://enactjs.com/), which is a UI framework for webOS, on their own and applied it to their design. Although Enact is an open source project and available to anyone, we never had a chance to give them a webinar or any technical support for it but they used it anyway and managed to develop a cool UI. It was amazing to hear what they have done with Enact.
 
 The event went very smoothly without unexpected problems and the food was great. The teams were very enthusiastic about technology. Everyone seemed to be enjoying the event. The journalists interviewed the teams and the news were out globally right after the winners were announced. Medias in Singapore as well as in Europe, Korea, and other countries in Asia posted about the hackathon. It was such a rewarding experience.
+
+{{< figure src="/images/blog/news/infineon-lg-make-hackathon-singapore.jpg" caption="Group photo" >}}
 
 Although planning for an event is important, what is equally important is the follow-up actions after the event. It would be meaningless if this is to be just about the hackathon. To make them stay in the community, we must offer them incentives, whether it be technology, partnership, or opportunities. The first-prize winner, Floodsensed, has plans to expand their apps to LG’s other display products by taking advantage of the cross-platform characteristics of a web app that webOS supports. In doing so, they will be given technical support and partnership with LG’s other division. We wish to do the same for every team and expand the webOS community.
