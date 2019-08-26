@@ -24,6 +24,7 @@ You may use the content of this site in any way that is consistent with the spec
 * Ubuntu is the registered trademark of Canonical Ltd.
 * Mac and macOS are registered trademarks of Apple Inc. in the U.S. and other countries.
 * Microsoft and Windows are registered trademarks of Microsoft Corporation in the U.S. and/or other countries.
+* Raspberry Pi is a trademark of the Raspberry Pi Foundation.
 * Intel, Pentium, Intel Core i5, Intel Core i7, and Intel Movidius are registered trademarks or trademarks of Intel Corporation in the U.S. and/or other countries.
 * Oracle and VirtualBox are trademarks or registered trademarks of Oracle and/or its affiliates in the U.S. and/or other countries.
 * Qt and respective logos are registered trademarks of The Qt Company Ltd. and its subsidiaries in Finland and/or other countries worldwide.
