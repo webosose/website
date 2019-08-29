@@ -1,6 +1,6 @@
 ---
 title: Building webOS Open Source Edition
-date: 2019-03-05
+date: 2019-08-29
 weight: 20
 toc: true
 ---
@@ -13,7 +13,7 @@ Ensure that your system meets the [Build System Requirements]({{< relref "system
 
 ## Cloning the Repository
 
-To build a webOS OSE image, `build-webos` repository is used. This repository contains the top level code that aggregates the various [OpenEmbedded](http://openembedded.org/) layers into a whole from which webOS OSE images can be built.
+To build a webOS OSE image, [`build-webos`](https://github.com/webosose/build-webos) repository is used. This repository contains the top level code that aggregates the various [OpenEmbedded](http://openembedded.org/) layers into a whole from which webOS OSE images can be built.
 
 Set up `build-webos` by cloning its Git repository, and cd into the cloned directory:
 
@@ -36,14 +36,48 @@ For more details about BitBake, refer to the [BitBake Manual](https://www.yoctop
 
 ## Configuring the Build
 
-At this step, you can configure the build for Raspberry Pi 3 or the emulator.
+At this step, you can configure the build for Raspberry Pi 3 or the emulator using the `mcf` script.
+
+### Setting the Parallelism Values
+
+To set the make and BitBake parallelism values, use `-p` and `-b` options to the `mcf` script. The `-p` and `-b` options correspond to `PARALLEL_MAKE` and `BB_NUMBER_THREADS` variables described in [Yocto Project Development Tasks Manual](https://www.yoctoproject.org/docs/latest/dev-manual/dev-manual.html#speeding-up-a-build).
+
+The recommended value for `-p` and `-b` option is (number of physical CPU cores / 2). To get the number of physical CPU cores on your build system, use the following commands.
+
+1. Get the number of physical CPUs.
+
+    ```bash
+    $ cat /proc/cpuinfo | grep "physical id" | sort | uniq | wc -l
+    1
+    ```
+
+2. Get the number of cores per physical CPU.
+
+	```bash
+  	$ cat /proc/cpuinfo | grep "cpu cores" | uniq
+	cpu cores    : 4
+	```
+
+3. Multiply the above two values.
+
+	1 * 4 = 4 (The number of physical CPU cores)
+
+With the above example, the recommended value for `-p` and `-b` option becomes 4 / 2 = 2.
+
+{{< note >}}
+You can increase the value slightly, but make sure that the value does not exceed two-thirds of the number of CPU cores.
+{{< /note >}}
+
+{{< caution >}}
+Omitting `-p` and `-b` options are equivalent to using `-p 0 -b 0`, which forces the build to use all CPU cores. This can cause an unexpected behavior or a build failure, so it is strongly discouraged.
+{{< /caution >}}
 
 ### Configuring the Build for Raspberry Pi 3
 
 To configure the build for Raspberry Pi 3 and to fetch the sources, type:
 
 ```bash
-$ ./mcf raspberrypi3
+$ ./mcf -p <number of physical CPU cores / 2> -b <number of physical CPU cores / 2> raspberrypi3
 ```
 
 ### Configuring the Build for the Emulator
@@ -51,24 +85,8 @@ $ ./mcf raspberrypi3
 To configure the build for the emulator and to fetch the sources, type:
 
 ```bash
-$ ./mcf qemux86
+$ ./mcf -p <number of physical CPU cores / 2> -b <number of physical CPU cores / 2> qemux86
 ```
-
-### Setting the Parallelism Values
-
-You can use `-p` and `-b` options to set the make and BitBake parallelism values. The `-p` and `-b` options correspond to `PARALLEL_MAKE` and `BB_NUMBER_THREADS` variables described in [Yocto Project Development Tasks Manual](https://www.yoctoproject.org/docs/latest/dev-manual/dev-manual.html#speeding-up-a-build).
-
-The default value for these options is 0, so the commands above are equivalent to the following:
-
-```bash
-For Raspberry Pi 3
-$ ./mcf -p 0 -b 0 raspberrypi3
-
-For the Emulator
-$ ./mcf -p 0 -b 0 qemux86
-```
-
-Using 0 for these options sets the make and BitBake parallelism values to the number of CPU cores found on your computer, which means the build process will use all CPU cores. If you do not want to use all CPU cores on your computer, use different values for `-p` and `-b` options.
 
 ## Building the Image
 
@@ -115,6 +133,8 @@ To see if the image has been created successfully, check the following files:
 * For Raspberry Pi 3, the resulting image will be created at `BUILD/deploy/images/raspberrypi3/webos-image-raspberrypi3.rootfs.rpi-sdimg`.
 * For the emulator, the resulting image will be created at `BUILD/deploy/images/qemux86/webos-image-qemux86-master-*-wic.vmdk`.
 
+Once you checked the image file, move on to the [Next Steps]({{< relref "#next-steps" >}}).
+
 ## Cleaning
 
 To blow away the build artifacts and prepare to do the clean build, you can remove the build directory and recreate it by typing:
@@ -141,7 +161,7 @@ Alternatively, you can enter:
 $ make <component-name>
 ```
 
-To clean a component's build artifacts under BUILD, enter:
+To clean a component's build artifacts under `BUILD`, enter:
 
 ```bash
 $ source oe-init-build-env
@@ -154,3 +174,8 @@ To remove the shared state for a component as well as its build artifacts to ens
 $ source oe-init-build-env
 $ bitbake -c cleansstate <component-name>
 ```
+
+## Next Steps
+
+- If you built the image for Raspberry Pi 3, it's time to flash the image to the target device. See [Flashing webOS OSE]({{< relref "flashing-webos-ose" >}}).
+- If you built the image for the emulator, refer to the [Emulator User Guide]({{< relref "emulator-user-guide" >}}) to set up and use the emulator.
