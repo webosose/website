@@ -14,7 +14,7 @@ To get some insights into what is expected from the partnership, the editor had 
 
 **Q: What brought about this partnership and what will it change?**
 
-**A**: Qt is a native development framework for an embedded environment, in particular, specialized in GUI development, and webOS has been supporting Qt for a long time. One of the best practices is webOS TV. (Watch the [full video](https://www.youtube.com/watch?v=VXjS_GQmBa0) explaining how webOS benefits from Qt.)
+**A**: Qt is a native development framework for an embedded environment, in particular, specialized in GUI development, and webOS has been supporting Qt for a long time. One of the best practices is webOS TV. (Watch the [full video](https://resources.qt.io/customer-stories-all/qt-testimonial-webos-lg-electronics-joseph-park) explaining how webOS benefits from Qt.)
 
 {{< figure src="/images/blog/articles/qt-powered-webos-tv.png" caption="Qt powered webOS TV">}}
 
