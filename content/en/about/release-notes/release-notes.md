@@ -1,9 +1,23 @@
 ---
 title: Release Notes
-date: 2019-07-30
+date: 2019-08-30
 weight: 10
 toc: true
 ---
+
+## 7th Release in 2019 (August 30, 2019)
+
+### Changed Features
+
+#### Base Components
+
+* ROS2
+    * Updated meta-ros to use [`legacy`](https://github.com/ros/meta-ros/tree/legacy) branch from [ros/meta-ros](https://github.com/ros/meta-ros).
+    * Un-blacklisted many ROS packages as their compilation is now fixed on [`legacy`](https://github.com/ros/meta-ros/tree/legacy) branch.
+
+{{< note >}}
+This release is a preparation to use webOS OSE with [ros/meta-ros](https://github.com/ros/meta-ros) using the official ROS build instructions.
+{{< /note >}}
 
 ## 6th Release in 2019 (July 30, 2019)
 
