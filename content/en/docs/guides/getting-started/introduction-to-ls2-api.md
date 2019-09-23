@@ -15,7 +15,7 @@ The following outlines the key terms and concepts that you will come across whil
 
 ### Service URI
 
-A service URI is a unique address that makes each platform service accessible via Luna Bus. A service URI follows the format of `luna://<service name>`.
+A service URI is a unique address that makes each platform service accessible via [Luna Bus]({{< relref "architecture-overview#ls2" >}}). A service URI follows the format of `luna://<service name>`.
 
 Therefore, the clients (other apps or services) can make a request to `com.webos.service.systemservice` using the address `luna://com.webos.service.systemservice`.
 
