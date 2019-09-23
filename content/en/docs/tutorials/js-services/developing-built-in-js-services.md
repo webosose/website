@@ -545,7 +545,7 @@ Now that you have developed the service and verified its execution, you are read
 
 ### Add the Service to Build Recipe
 
-Add the JS service to the packagergoup recipe file.
+Add the JS service to the packagegroup recipe file.
 
 - **Update the file:** `packagegroup-webos-extended.bb`
 - **Directory:** `build-webos/meta-webosose/meta-webos/recipes-core/packagegroups`
@@ -566,7 +566,7 @@ RDEPENDS_${PN} = " \
 
 For more details, see [Yocto Project Reference Manual](https://www.yoctoproject.org/docs/current/ref-manual/ref-manual.html).
 
-### Build WebOS Image
+### Build webOS Image
 
 Build the webOS image so that it includes the JS service.
 
