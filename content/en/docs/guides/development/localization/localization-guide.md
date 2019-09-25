@@ -7,13 +7,12 @@ toc: true
 
 To reach out to the users in the global market, it is essential to provide your apps and services in many different languages. There are a few things to keep in mind when you localize your apps or services for webOS Open Source Edition (OSE).
 
-* Write code using the internationalization library provided by webOS OSE.
+* Write code using the internationalization (i18n) library provided by webOS OSE.
     * This page provides the links to external pages with detailed information on libraries and coding rules for each programming language.
 * Prepare multi-language string resources in the guided format.
     * You can prepare string resources yourself, or use the localization tool to make string resources generated at build time.
 
 {{< note "Locale identification in webOS OSE" >}}
-
 Locales in webOS OSE follow the BCP 47 standard. A locale is represented as a language tag, typically in *language*-[*script*]-[*region*] format, where the language code is a required field. For example,
 
 * *ko*: Korean
@@ -21,10 +20,10 @@ Locales in webOS OSE follow the BCP 47 standard. A locale is represented as a la
 * *fr-CA*: French - Canada
 * *zh-Hant-HK*: Chinese - Chinese Traditional - Hong Kong
 
-For more information about BCP 47 and the language tag, refer to the following links.
+For more information about BCP 47 and the language tag, refer to the following:
 
-* BCP 47 Format: https://tools.ietf.org/html/bcp47
-* Language Tag: http://en.wikipedia.org/wiki/IETF_language_tag
+* [BCP 47 Format](https://tools.ietf.org/html/bcp47)
+* [Language Tag](http://en.wikipedia.org/wiki/IETF_language_tag)
 {{< /note >}}
 
 ## Localization Tool
@@ -61,15 +60,15 @@ The following shows an example of XLIFF, which represents the translation data f
 ```
 {{< /code >}}
 
-**Key attributes of XLIFF**
+**Key elements and attributes of XLIFF**
 
-| Attribute | Description |
+| Element/Attribute | Description |
 | --- | --- |
-| srcLang | Source language - the code of the language, in which *the text to be translated* is expressed |
-| tarLang | Target language - the code of the language, in which *the translated text* is expressed |
-| group - name | Programming language type - "javacript", "c", "cpp", "x-qml" (for Qt/QML) |
-| source | Source string - *the text to be translated* |
-| target | Target string - *the translated text* |
+| `<xliff> - srcLang` | Source language - the code of the language, in which *the text to be translated* is expressed |
+| `<xliff> - trgLang` | Target language - the code of the language, in which *the translated text* is expressed |
+| `<group> - name` | Programming language type - "javascript", "c", "cpp", "x-qml" (for Qt/QML) |
+| `<source>` | Source string - *the text to be translated* |
+| `<target>` | Target string - *the translated text* |
 
 XLIFF files for each locale must be placed in the directory with the same name as the module name, as shown below.
 
@@ -97,7 +96,7 @@ inherit webos_localizable
 ```
 {{< /code >}}
 
-For Qt/QML app, the recipe must inherit `webos_qt_localization` instead of `webos_localizable`. `webos_qt_localization` bbclass includes an additional process to convert a ts file into a qm file.
+For Qt/QML app, the recipe must inherit `webos_qt_localization` instead of `webos_localizable`. `webos_qt_localization` bbclass includes an additional process to convert a `.ts` file into a `.qm` file.
 
 {{< code "sample.bb for QtQml" true >}}
 ```bash
@@ -120,25 +119,64 @@ For example, if the package name of an application is "com.webos.app.sample", th
 
 ## JavaScript
 
-For Enact apps or plain web apps developed in JavaScript, use *iLib* to write code for localization.
+For web apps developed in JavaScript, use [iLib](https://github.com/iLib-js/iLib) to write code for localization.
 
 {{< note >}}
-For more information about iLib and Enact app development, refer to the following links.
-
-* iLib: https://github.com/iLib-js/iLib/blob/development/docs/index.md
-* Enact: https://enactjs.com/docs/modules/i18n/$L/
+For more information about iLib, refer to the [iLib documentation](https://github.com/iLib-js/iLib/blob/development/docs/index.md).
 {{< /note >}}
 
-For plain web apps that does not utilize Enact framework, use `getString()` API of *ResBundle* feature as shown in the example below.
+### Enact Apps
 
-{{< code "Example for web app" true >}}
-```js
-var ResBundle = require("ResBundle.js");
-var rb = new ResBundle({locale: "en-US"});
-var str = rb.getString("String 1"); // str is iLib string object
-var jsStr = str.toString(); // jsStr is js string object
+Enact framework offers [`$L`](https://enactjs.com/docs/modules/i18n/$L/) component as part of its i18n library, which provides functions to map to translated strings.
+
+{{< code "Example for $L usage" true >}}
+``` js
+import $L, {toIString} from '@enact/i18n/$L';
+
+$L('Close'); // => "Close" in the current locale
+toIString('Close'); // => an ilib IString representing "Close" in the current locale
 ```
 {{< /code >}}
+
+{{< note >}}
+For more information on the functions above, refer to the [Enact documentation](https://enactjs.com/docs/modules/i18n/$L/).
+{{< /note >}}
+
+### Non-Enact Apps
+
+For web apps that do not utilize Enact framework, use [`getString()`]((http://www.translationcircle.com/ilib/doc/jsdoc/symbols/ResBundle.html#getString)) API of [ResBundle](http://www.translationcircle.com/ilib/doc/jsdoc/symbols/ResBundle.html) feature in iLib.
+
+1.  First, load the iLib library (`ilib-web.js`) through the `<script>` tag.
+
+    {{< code "Example for loading ilib-web.js" true >}}
+    ``` html
+    <html>
+    <head>
+    <script src=<path-to-ilib>/lib/ilib-web.js type="text/javascript"></script>
+    ...
+    </head>
+    </html>
+    ```
+    {{< /code >}}
+
+    For instance, if you're developing a built-in web app, the iLib library can be loaded as follows:
+
+    ``` html
+    <script src=file://usr/share/javascript/ilib/lib/ilib-web.js type="text/javascript"></script>
+    ```
+
+2.  After that, use [`ResBundle.getString()`](http://www.translationcircle.com/ilib/doc/jsdoc/symbols/ResBundle.html#getString) method of iLib as shown in the example below.
+
+    {{< code "Example for a non-Enact web app" true >}}
+    ```js
+    var ResBundle = require("ResBundle.js");
+    var rb = new ResBundle({locale: "en-US"});
+    var str = rb.getString("String 1"); // str is iLib string object
+    var jsStr = str.toString(); // jsStr is js string object
+    ```
+    {{< /code >}}
+
+### Resource Format
 
 iLib requires string resources in JSON format.
 
@@ -271,7 +309,7 @@ You can also specify the name of the JSON file, but it is recommended that you u
 
 ## Qt/QML
 
-For Qt/QML apps, the recipe must inherit `webos_qt_localization` instead of `webos_localizable`. `webos_qt_localization` bbclass includes an additional process to convert a ts file into a qm file.
+For Qt/QML apps, the recipe must inherit `webos_qt_localization` instead of `webos_localizable`. `webos_qt_localization` bbclass includes an additional process to convert a `.ts` file into a `.qm` file.
 
 {{< code "sample.bb for QtQml" true >}}
 ```bash
@@ -291,21 +329,17 @@ For Qt/QML apps, the group name is "x-qml".
 ```
 {{< /code >}}
 
-Basically, you can follow the localization guidelines of Qt. For details, refer to the following link.
+Basically, you can follow the localization guidelines of Qt. For details, refer to the [Qt documentation](http://doc.qt.io/qt-5/qtquick-internationalization.html).
 
-* http://doc.qt.io/qt-5/qtquick-internationalization.html
-
-If you use the localization tool, qm files for each locale are generated in the following file name format.
+If you use the localization tool, `.qm` files for each locale are generated in the following file name format.
 
 * Format: **`sampleqml_[lang]_[script]_[region].qm`**
-* example: `sampleqml_en_GB.qm`, `sampleqml_zh_Hans_CN.qm`
+* Examples: `sampleqml_en_GB.qm`, `sampleqml_zh_Hans_CN.qm`
 
 ## Pseudo-Localization
 
 {{< note >}}
-For the definition of pseudo-localization, refer to the following link.
-
-https://en.wikipedia.org/wiki/Pseudolocalization
+For the definition of pseudo-localization, refer to the [Wikipedia page](https://en.wikipedia.org/wiki/Pseudolocalization).
 {{< /note >}}
 
 When you use the localization tool, it generates the string resources for pseudo locale by default. (You do not need to add an XLIFF file for this locale.)
