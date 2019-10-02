@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2019 LG Electronics Inc.
+ * SPDX-License-Identifier: Apache-2.0
+ */
 function controlClassOnCondition(element, className, condition) {
   if (condition)
     $(element).addClass(className);
