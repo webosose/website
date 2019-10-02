@@ -163,7 +163,7 @@ If the JS service uses methods of external services, you must add the group info
 
 The JS service must be installed along with the web app.
 
-For details on packaging the web app, see [Installing the Web App]({{< relref "developing-external-web-apps#step-5-install-the-web-app" >}}).
+For details on installing the web app, see [Installing the Web App]({{< relref "developing-external-web-apps#step-5-install-the-web-app" >}}).
 
 {{< note "About launching the JS service" >}}
 Because external JS services are installed as a dynamic service type, the service becomes active only when another application or service use the service by calling its method. If its method has been called as subscription, the service remains active without exiting. If the service is not used, it exits after 5 seconds. For more information on the 5-second timeout, see [FAQ]({{< relref "js-service-faq" >}}).
