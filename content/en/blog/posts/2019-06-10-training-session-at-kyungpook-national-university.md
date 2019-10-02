@@ -8,7 +8,7 @@ toc: false
 
 From May 18<sup>th</sup> to 19<sup>th</sup>, a webOS OSE training session was held at Kyungpook National University in Daegu, Korea. It was for college students who are to participate in LG webOS IoT Contest, a Hackathon program hosted by LG Soft India (LGSI), as part of their internship program. LG webOS IoT Contest is held from May 27 to July 14, and the winner announcement will be made on July 22 in Bangalore.
 
-{{< figure src="/images/blog/news/training-session-at-knu.jpg" caption="In full flow with webOS OSE" >}}
+{{< figure src="/images/blog/news/training-session-at-knu.jpg" alt="" caption="In full flow with webOS OSE" >}}
 
 The objectives of the students participating in the session were clear – to experience web app development on webOS OSE and find ways to make progress on their projects with it for the Hackathon! So even though it was the weekend, they were very active and passionate throughout the training.
 

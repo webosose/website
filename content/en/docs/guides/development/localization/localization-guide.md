@@ -60,7 +60,7 @@ The following shows an example of XLIFF, which represents the translation data f
 ```
 {{< /code >}}
 
-**Key elements and attributes of XLIFF**
+The following table describes the key elements and attributes of XLIFF.
 
 | Element/Attribute | Description |
 | --- | --- |

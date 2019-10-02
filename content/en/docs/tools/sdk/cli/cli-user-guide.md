@@ -116,7 +116,7 @@ $ source ~/.profile
 
 webOS OSE CLI provides features for developing web apps throughout the whole development process. The figure below shows some of CLI commands that can be used during each stage of the development process.
 
-{{< figure src="/images/docs/tools/cli/cli-workflow.png" caption="Development Workflow with CLI" width="700px" >}}
+{{< figure src="/images/docs/tools/cli/cli-workflow.png" alt="" caption="Development Workflow with CLI" width="700px" >}}
 
 {{< note >}}
 For step-by-step instructions to create web apps and JS service using CLI commands, see [Creating Web Apps]({{< relref "developing-external-web-apps#creating-web-apps" >}}) and [Creating JS Services]({{< relref "developing-external-js-services#creating-js-services" >}}).

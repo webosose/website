@@ -171,4 +171,4 @@ As the GPIO pin arrangement of the Raspberry Pi is different from that of wiring
 
 The screenshot below is the pin mapping table, where the `Physical` columns at the center show the physical pin arrangement of Raspberry Pi and the `wPi` columns on the left and right denote the mapped pin number of wiringPi.
 
-{{< figure src="/images/blog/articles/wiringpi_gpio_table.png" caption="Raspberry Pi - wiringPi GPIO pin mapping table" >}}
+{{< figure src="/images/blog/articles/wiringpi_gpio_table.png" alt="" caption="Raspberry Pi - wiringPi GPIO pin mapping table" >}}

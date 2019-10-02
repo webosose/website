@@ -15,7 +15,7 @@ webOS Open Source Edition (OSE) includes [IoTivity](http://www.iotivity.org/) an
 
 We are contributing the platform adapter for webOS OSE to IoTivity. The adapter enables IoTivity to interact with webOS connectivity components through webOS Bus system (Luna Bus). With the adapter, you can monitor connectivity status and send/receive data for non-IP transport such as BLE/BT.
 
-{{< figure src="/images/blog/articles/iot-connectivity-in-webos-ose.png" caption="IoT Connectivity in webOS OSE" >}}
+{{< figure src="/images/blog/articles/iot-connectivity-in-webos-ose.png" alt="" caption="IoT Connectivity in webOS OSE" >}}
 
 ## Using iotivity-node for JavaScript Service
 

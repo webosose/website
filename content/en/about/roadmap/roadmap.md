@@ -5,7 +5,7 @@ weight: 10
 toc: false
 ---
 
-{{< figure src="/images/about/webos-ose-roadmap-31-aug-2018.png" link="/images/about/webos-ose-roadmap-31-aug-2018.png" target="_blank" alt="webOS OSE Roadmap" width="900px" >}}
+{{< figure src="/images/about/webos-ose-roadmap-31-aug-2018.png" link="/images/about/webos-ose-roadmap-31-aug-2018.png" target="_blank" alt="webOS OSE Roadmap showing its deliverable plan" width="900px" >}}
 
 For meaning of abbreviations in the roadmap, refer to the table below.
 

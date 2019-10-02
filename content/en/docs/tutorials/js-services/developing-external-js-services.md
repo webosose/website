@@ -13,7 +13,7 @@ JS services can be created and deployed using CLI commands that are provided by 
 
 Once you generate the service, JS service directory should be configured as below.
 
-{{< figure src="/images/docs/tutorials/js-services/js-service-directory-structure.png" caption="JS service directory structure" >}}
+{{< figure src="/images/docs/tutorials/js-services/js-service-directory-structure.png" alt="" caption="JS service directory structure" >}}
 
 - **APP_DIR**: Directory of the web app.
 - **SERVICE_DIR**: Directory of the service. This directory will include sub-directories of the services that are included in the web app.
@@ -183,7 +183,7 @@ $ ares-inspect --device <TARGET_DEVICE> --service <SERVICE_ID> --open
 
 This loads the Node Inspector in your default browser as shown below:
 
-{{< figure src="/images/docs/tutorials/js-services/node-inspector-screenshot.png" caption="Node Inspector screenshot" width="700px" >}}
+{{< figure src="/images/docs/tutorials/js-services/node-inspector-screenshot.png" alt="" caption="Node Inspector screenshot" width="700px" >}}
 
 {{< note >}}
 Node Inspector works only in Blink-based web browsers such as Chrome and Opera. If another browser (e.g., Safari or Internet Explorer) is set as your default web browser, you must re-open the inspector page in a Blink-based web browser.

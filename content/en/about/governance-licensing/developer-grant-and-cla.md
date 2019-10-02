@@ -15,7 +15,7 @@ To help with understanding what's required to contribute to webOS Open Source Ed
 
   - webOS OSE has selected a Contributor License Agreement (CLA) approach. New contributors can get started and grant a license explicitly to webOS OSE.
 
-  - If you make contribution on behalf of your company or organization, you must submit Corporate CLA. For detailed procedure, see [here](#procedure-for-submitting-corporate-cla).
+  - If you make contribution on behalf of your company or organization, you must submit Corporate CLA. For detailed procedure, see [Procedure for Submitting Corporate CLA](#procedure-for-submitting-corporate-cla).
 
 ## webOS Open Source Edition Individual Contributor License Agreement
 

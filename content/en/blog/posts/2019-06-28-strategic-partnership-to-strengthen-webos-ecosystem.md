@@ -13,4 +13,4 @@ The expanded partnership includes embedding webOS OSE in future automotive, robo
 
 For more about the vision and values of the partnership, visit [LG Newsroom](http://www.lgnewsroom.com/2019/06/lg-to-expand-partnership-with-qt-on-next-generation-embedded-devices-running-webos/).  Or visit [webOS Linkedin page](https://www.linkedin.com/company/webos) for more pictures!
 
-{{< figure src="/images/blog/news/strategic-partnership-to-strengthen-webos-ecosystem.jpg" caption="MOU with The Qt Company to embed webOS OSE in future devices" >}}
+{{< figure src="/images/blog/news/strategic-partnership-to-strengthen-webos-ecosystem.jpg" alt="" caption="MOU with The Qt Company to embed webOS OSE in future devices" >}}

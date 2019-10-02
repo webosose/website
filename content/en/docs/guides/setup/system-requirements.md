@@ -42,11 +42,15 @@ We strongly recommend you NOT to use Linux virtual machine on Windows or macOS f
 
 ### Hardware
 
-| | Minimum requirements | Recommended |
-| --- | --- | --- |
-| CPU | Intel Core i5 dual-core with 4 threads | Intel Core i7 quad-core with 8 threads or higher |
-| RAM | 8 GB | 16 GB or higher |
-| Storage | HDD with 100 GB of free disk space | SSD with 100 GB of free disk space or more |
+* CPU
+    * Minimum: Intel Core i5 dual-core with 4 threads
+    * Recommended: Intel Core i7 quad-core with 8 threads or higher
+* RAM
+    * Minimum: 8 GB
+    * Recommended: 16 GB or higher
+* Storage
+    * Minimum: HDD with 100 GB of free disk space
+    * Recommended: SSD with 100 GB of free disk space or more
 
 ### Git
 

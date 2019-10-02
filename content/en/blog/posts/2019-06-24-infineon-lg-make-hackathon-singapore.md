@@ -13,4 +13,4 @@ Seasoned start-ups and student entrepreneurs participating in the hackathon deve
 
 For more details about the event or winners' projects, visit [LG Newsroom](http://www.lgnewsroom.com/2019/06/infineon-lg-make-hackathon-on-iot-debuts-in-singapore/).
 
-{{< figure src="/images/blog/news/infineon-lg-make-hackathon-singapore.jpg" caption="Infineon LG </> Make Hackathon in Singapore" >}}
+{{< figure src="/images/blog/news/infineon-lg-make-hackathon-singapore.jpg" alt="" caption="Infineon LG </> Make Hackathon in Singapore" >}}

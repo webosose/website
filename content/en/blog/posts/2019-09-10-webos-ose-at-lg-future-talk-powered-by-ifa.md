@@ -13,6 +13,6 @@ In the later part of the talk, Dr. I.P. Park, President and Chief Technology Off
 
 The talk with the renowned panels was full of insights into how the AI-powered future will look like. Try watching [the full video on YouTube](https://www.youtube.com/watch?v=2kfPOnc8MPE).  
 
-{{< figure src="/images/blog/news/lg-future-talk-powered-by-ifa.jpg" caption="LG Future Talk Powered by IFA" >}}
+{{< figure src="/images/blog/news/lg-future-talk-powered-by-ifa.jpg" alt="" caption="LG Future Talk Powered by IFA" >}}
 
 Check out for the more webOS news or upcoming events on [webOS Linkedin page](https://www.linkedin.com/company/webos) or [@webos_ose on twitter](https://twitter.com/webos_ose).

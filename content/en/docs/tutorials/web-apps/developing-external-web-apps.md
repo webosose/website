@@ -228,7 +228,7 @@ $ ares-inspect --device <TARGET_DEVICE> --app <APP_ID> --open
 
 This loads the Web Inspector in your default browser as shown in the following screenshot:
 
-{{< figure src="/images/docs/tutorials/web-apps/web-inspector-new.png" caption="Web Inspector screenshot" >}}
+{{< figure src="/images/docs/tutorials/web-apps/web-inspector-new.png" alt="" caption="Web Inspector screenshot" >}}
 
 {{< note >}}
 Web Inspector works only in Blink-based web browsers such as Chrome and Opera. If another browser (e.g., Safari or Internet Explorer) is set as your default web browser, you must re-open the inspector page in a Blink-based web browser.

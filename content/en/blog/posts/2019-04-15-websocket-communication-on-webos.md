@@ -277,7 +277,7 @@ Now try opening `index.html` with Chrome. Before doing that, make sure that the 
 
 You will see something like this.
 
-{{< figure src="/images/blog/articles/websocket-test-1.png" caption="WebSocket test screen" >}}
+{{< figure src="/images/blog/articles/websocket-test-1.png" alt="" caption="WebSocket test screen" >}}
 
 Here you can see the result outputted on the screen, which is sent from the WebSocket Server.
 
@@ -387,7 +387,7 @@ Success
 
 If the installation is successful, the screen will look like this.
 
-{{< figure src="/images/blog/articles/websocket-test-2.png" caption="Launcher showing the installed WebSocket sample app" >}}
+{{< figure src="/images/blog/articles/websocket-test-2.png" alt="" caption="Launcher showing the installed WebSocket sample app" >}}
 
 ### Launching App
 
@@ -400,7 +400,7 @@ Launched application com.sample.websocket
 
 After the launch is successfully done, you will see the screen like this.
 
-{{< figure src="/images/blog/articles/websocket-test-3.png" caption="WebSocket sample app launched" >}}
+{{< figure src="/images/blog/articles/websocket-test-3.png" alt="" caption="WebSocket sample app launched" >}}
 
 ## What's Next
 

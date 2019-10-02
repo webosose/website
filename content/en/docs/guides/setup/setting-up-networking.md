@@ -21,12 +21,12 @@ Follow the steps below to configure the network information on the target device
 
     Settings app UI will show up on the left side of the screen.
 2. Click the **Network** icon, and you will see the initial status of network setting.
-    {{< figure src="/images/docs/guides/setup/webosose-network-setup-1.png" alt="Network Setup 1" >}}
+    {{< figure src="/images/docs/guides/setup/webosose-network-setup-1.png" alt="Network Setting - The initial status of network including Wired/Wi-Fi connection" >}}
 3. Click the **Wired Connection (Ethernet)** menu. The default network information will be displayed.
-    {{< figure src="/images/docs/guides/setup/webosose-network-setup-2.png" alt="Network Setup 2" >}}
+    {{< figure src="/images/docs/guides/setup/webosose-network-setup-2.png" alt="Network Setting - Detailed information" >}}
 4. Click the **Edit** button, and the **EDIT** menu will show up.
     * To turn on the manual editing mode, uncheck **Set Automatically**.
-    {{< figure src="/images/docs/guides/setup/webosose-network-setup-3.png" alt="Network Setup 3" >}}
+    {{< figure src="/images/docs/guides/setup/webosose-network-setup-3.png" alt="Network Setting - Manual edit mode" >}}
 5. In each field, enter the IP address, subnet mask, gateway, and DNS server information in dot-decimal notation. After you finish entering the information, click the **CONNECT** button.
     * If the status shows up as "Connected to Internet", it means the connection has been set up successfully.
     * Otherwise, retry after checking the address information and the physical connection.

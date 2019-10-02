@@ -7,7 +7,7 @@ toc: true
 
 `ls-monitor` is a command-line tool accessible through a shell on a device. `ls-monitor` lets you see traffic going over the webOS service bus, similar to a network sniffer that lets you observe HTTP traffic.
 
-### Syntax
+## Syntax
 
 ``` bash
 ls-monitor [OPTIONS...]
@@ -17,7 +17,7 @@ ls-monitor [OPTIONS...]
 Pressing the **CTRL + C** key breaks out of the monitoring.
 {{< /note >}}
 
-### Options
+## Options
 
 <div class="table-container">
 <table class="table is-bordered is-fullwidth">
@@ -117,7 +117,7 @@ This option takes precedence over the debug option.
 </table>
 </div>
 
-### Parameters
+## Parameters
 
 <div class="table-container">
 <table class="table is-bordered is-fullwidth">
@@ -140,7 +140,7 @@ This option takes precedence over the debug option.
 </table>
 </div>
 
-### Examples
+## Examples
 
 List all the luna services.
 

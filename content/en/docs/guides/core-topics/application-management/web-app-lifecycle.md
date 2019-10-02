@@ -11,7 +11,7 @@ This topic describes web app lifecycle in webOS Open Source Edition (OSE).
 
 Web apps can be launched, suspended or terminated by user interactions or system events. Web apps can be in one of the following states: **Not Launched**, **Launched** (Foreground), **Suspended** (Background).
 
- {{< figure src="/images/docs/guides/core-topics/app-management/webos-ose-web-app-lifecycle-20180316.png" caption="Web app lifecycle" width="700px" >}}
+ {{< figure src="/images/docs/guides/core-topics/app-management/webos-ose-web-app-lifecycle-20180316.png" alt="" caption="Web app lifecycle" width="700px" >}}
 
   - **Not Launched**: A web app has not been launched or has been terminated.
 

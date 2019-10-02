@@ -177,7 +177,7 @@ You must first add the target device on Beanviser and then connect to that devic
 
 1.  Click the **Configuration** button **(...)** to get a list of available devices.
 
-    {{< figure src="/images/docs/tools/beanviser/beanviser-click-configuration-button.png" alt="Beanviser Click Configuration Button.png" >}}
+    {{< figure src="/images/docs/tools/beanviser/beanviser-click-configuration-button.png" alt="Beanviser Click Configuration Button" class="align-left" >}}
 
     {{< note >}}
     As the emulator is a basic device for testing, Beanviser has the emulator in its device list by default. This device is configured to access the local emulator. If required to access emulator on another device, specify the IP address of that system. In case you accidentally delete the emulator from the list, follow the steps given below to add the emulator again.
@@ -193,7 +193,7 @@ You must first add the target device on Beanviser and then connect to that devic
     <table class="table is-bordered is-fullwidth">
     <thead>
     <tr class="header">
-    <th> </th>
+    <th>Item</th>
     <th>webOS Device</th>
     <th>Emulator</th>
     </tr>
@@ -225,7 +225,7 @@ You must first add the target device on Beanviser and then connect to that devic
 
 3.  To connect to a target device, select it from the device list and click the **Connect** button.
 
-    {{< figure src="/images/docs/tools/beanviser/beanviser-connect-to-device.png" alt="Beanviser Connect to Device.png" >}}
+    {{< figure src="/images/docs/tools/beanviser/beanviser-connect-to-device.png" alt="Beanviser Connect to Device" class="align-left" >}}
 
     {{< note >}}
     If you are prompted to re-install the Beanviser service, see [Updating Beanviser Service](#updating-beanviser-service).
@@ -241,7 +241,7 @@ This section shows the typical layout of the Beanviser user interface and then e
 
 ### Screen Layout
 
-{{< figure src="/images/docs/tools/beanviser/beanviser-screen-layout.png" alt="Beanviser Screen Layout.png" >}}
+{{< figure src="/images/docs/tools/beanviser/beanviser-screen-layout.png" alt="Beanviser Screen Layout" >}}
 
 A brief overview of the different elements of the Beanviser user interface.
 
@@ -447,7 +447,7 @@ Use the navigation bar to zoom-in or zoom-out on a certain area of the chart. Th
 
 - In other words, the graph from 11:05:00 to 11:07:00 has been zoomed in.
 
-{{< figure src="/images/docs/tools/beanviser/beanviser-navigation-bar.png" alt="Beanviser Navigation Bar.png" >}}
+{{< figure src="/images/docs/tools/beanviser/beanviser-navigation-bar.png" alt="Beanviser Navigation Bar" >}}
 
 ### Background Logging
 
@@ -459,21 +459,21 @@ This feature is only available for the **System CPU** and **System Memory** view
 
 1.  To start background logging:
 
-    1.  After connecting to the device, click the **Configuration** button <img src="/images/docs/tools/beanviser/beanviser-configuration-button.jpg" alt="Configuration button.jpg"> on the top-left corner.
+    1.  After connecting to the device, click the **Configuration** button <img src="/images/docs/tools/beanviser/beanviser-configuration-button.jpg" alt="Configuration button"> on the top-left corner.
 
-    2.  From the **Main Menu** <img src="/images/docs/tools/beanviser/beanviser-mainmenu-button.jpg" alt="Mainmenu button.jpg">, click **Start Logging**.
+    2.  From the **Main Menu** <img src="/images/docs/tools/beanviser/beanviser-mainmenu-button.jpg" alt="Main menu button">, click **Start Logging**.
 
-        {{< figure src="/images/docs/tools/beanviser/beanviser-start-logging.png" alt="Beanviser Start logging.png" >}}
+        {{< figure src="/images/docs/tools/beanviser/beanviser-start-logging.png" alt="Beanviser Start logging" class="align-left" >}}
 
     3.  Enter the duration (in Seconds) for logging and click **START**.
 
 2.  To retrieve the log file from the target device and store on your local system (`[Beanviser installation path]/logs`):
 
-    1.  Click the **Configuration** button <img src="/images/docs/tools/beanviser/beanviser-configuration-button.jpg" alt="Configuration button.jpg"> on the top-left corner.
+    1.  Click the **Configuration** button <img src="/images/docs/tools/beanviser/beanviser-configuration-button.jpg" alt="Configuration button"> on the top-left corner.
 
-    2.  From the **Main Menu** <img src="/images/docs/tools/beanviser/beanviser-mainmenu-button.jpg" alt="Mainmenu button.jpg">, click **Get Log from Target**.
+    2.  From the **Main Menu** <img src="/images/docs/tools/beanviser/beanviser-mainmenu-button.jpg" alt="Main menu button">, click **Get Log from Target**.
 
-        {{< figure src="/images/docs/tools/beanviser/beanviser-get-log-from-target.png" alt="Beanviser Get log from target.png" >}}
+        {{< figure src="/images/docs/tools/beanviser/beanviser-get-log-from-target.png" alt="Beanviser Get log from target" class="align-left" >}}
 
         The info dialog will appear and show you where the log file is.
 
@@ -497,11 +497,11 @@ To update the service on the Beanviser installation:
 
 2.  Use the Beanviser tool to repackage the service.
 
-    1.  Click the **Configuration** button <img src="/images/docs/tools/beanviser/beanviser-configuration-button.jpg" alt="Configuration button.jpg"> on the top-left corner.
+    1.  Click the **Configuration** button <img src="/images/docs/tools/beanviser/beanviser-configuration-button.jpg" alt="Configuration button"> on the top-left corner.
 
-    2.  **From the Main Menu** <img src="/images/docs/tools/beanviser/beanviser-mainmenu-button.jpg" alt="Mainmenu button.jpg">, click **(Re)Package.**
+    2.  From the **Main Menu** <img src="/images/docs/tools/beanviser/beanviser-mainmenu-button.jpg" alt="Main menu button">, click **(Re)Package.**
 
-        {{< figure src="/images/docs/tools/beanviser/beanviser-repackage.png" alt="Beanviser Re-package.png" >}}
+        {{< figure src="/images/docs/tools/beanviser/beanviser-repackage.png" alt="Beanviser Re-package" class="align-left" >}}
 
         If successful, Beanviser displays a success message and updates the Beanviser service IPK file.
 
@@ -509,12 +509,12 @@ To update the service on the Beanviser installation:
 
 To remove the Beanviser service from a target device:
 
-1.  Click the **Configuration** button <img src="/images/docs/tools/beanviser/beanviser-configuration-button.jpg" alt="Configuration button.jpg"> on the top-left corner.
+1.  Click the **Configuration** button <img src="/images/docs/tools/beanviser/beanviser-configuration-button.jpg" alt="Configuration button"> on the top-left corner.
 2.  Select the device from the device list.
 3.  Disconnect the target device.
-4.  From the **Main Menu** <img src="/images/docs/tools/beanviser/beanviser-mainmenu-button.jpg" alt="Mainmenu button.jpg">, click **Uninstall**.
+4.  From the **Main Menu** <img src="/images/docs/tools/beanviser/beanviser-mainmenu-button.jpg" alt="Main menu button">, click **Uninstall**.
 
-    {{< figure src="/images/docs/tools/beanviser/beanviser-uninstall.png" alt="Beanviser Uninstall.png" >}}
+    {{< figure src="/images/docs/tools/beanviser/beanviser-uninstall.png" alt="Beanviser Uninstall" class="align-left" >}}
 
     If successful, Beanviser will display a success message.
 
@@ -524,14 +524,14 @@ You can customize the tab order within the Beanviser UI. You can also control if
 
 To customize the tabs:
 
-1.  Click the **Configuration** button <img src="/images/docs/tools/beanviser/beanviser-configuration-button.jpg" alt="Configuration button.jpg"> on the top-left corner.
-2.  From the **Main Menu** <img src="/images/docs/tools/beanviser/beanviser-mainmenu-button.jpg" alt="Mainmenu button.jpg">, click **Re-order Views**.
+1.  Click the **Configuration** button <img src="/images/docs/tools/beanviser/beanviser-configuration-button.jpg" alt="Configuration button"> on the top-left corner.
+2.  From the **Main Menu** <img src="/images/docs/tools/beanviser/beanviser-mainmenu-button.jpg" alt="Main menu button">, click **Re-order Views**.
 
-    {{< figure src="/images/docs/tools/beanviser/beanviser-reorder-views.png" alt="Beanviser Reorder views.png" >}}
+    {{< figure src="/images/docs/tools/beanviser/beanviser-reorder-views.png" alt="Beanviser Reorder views" class="align-left" >}}
 
     The customization table will be displayed as shown below.
 
-    {{< figure src="/images/docs/tools/beanviser/beanviser-customization-table.png" alt="Beanviser customization table.png" >}}
+    {{< figure src="/images/docs/tools/beanviser/beanviser-customization-table.png" alt="Beanviser customization table" class="align-left" >}}
 
 3.  To hide or show tabs on the screen, use the check boxes.
 4.  To change the order of the tabs, use the arrow buttons.
@@ -542,10 +542,10 @@ You can clear the charts in all tabs regardless of whether Beanviser is connecte
 
 To clear the charts:
 
-1.  Click the **Configuration** button <img src="/images/docs/tools/beanviser/beanviser-configuration-button.jpg" alt="Configuration button.jpg"> on the top-left corner.
-2.  From the **Main Menu** <img src="/images/docs/tools/beanviser/beanviser-mainmenu-button.jpg" alt="Mainmenu button.jpg">, click **Clear All Views**.
+1.  Click the **Configuration** button <img src="/images/docs/tools/beanviser/beanviser-configuration-button.jpg" alt="Configuration button"> on the top-left corner.
+2.  From the **Main Menu** <img src="/images/docs/tools/beanviser/beanviser-mainmenu-button.jpg" alt="Main menu button">, click **Clear All Views**.
 
-    {{< figure src="/images/docs/tools/beanviser/beanviser-clear-all-views.png" alt="Beanviser Clear all views.png" >}}
+    {{< figure src="/images/docs/tools/beanviser/beanviser-clear-all-views.png" alt="Beanviser Clear all views" class="align-left" >}}
 
     If successful, the charts on each tab will be cleared.
 

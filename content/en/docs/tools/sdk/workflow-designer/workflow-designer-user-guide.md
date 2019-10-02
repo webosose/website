@@ -73,7 +73,7 @@ Download the package from the [SDK download]({{< relref "sdk-download" >}}) page
 
 Start Workflow Designer by executing the **.cmd** or **.sh** file (depends on the operating system). The high-level steps for using Workflow Designer are explained in the following image:
 
-![ose-workflow-designer-usage-high-level-steps.gif](/images/docs/tools/workflow-designer/ose-workflow-designer-usage-high-level-steps.gif)
+{{< figure src="/images/docs/tools/workflow-designer/ose-workflow-designer-usage-high-level-steps.gif" alt="High-level Steps of Workflow Designer Usage" >}}
 
 Here are a few details about using Workflow Designer.
 

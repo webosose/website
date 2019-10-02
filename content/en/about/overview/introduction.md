@@ -9,7 +9,7 @@ webOS is a web-centric and usability-focused software platform for smart devices
 
 The open source project of webOS, called **webOS Open Source Edition (OSE)**, was announced in March 2018 under the philosophy of open platform, open partnership, and open connectivity. On top of the core architecture of webOS, webOS OSE offers additional features that allow extension to more diverse industry verticals.
 
-{{< figure src="/images/about/webos-ose-infographic.png" alt="webOS OSE Infographics" >}}
+{{< figure src="/images/about/webos-ose-infographic.png" alt="webOS OSE Infographics showing its key characteristics and partnership status" >}}
 
 We expect webOS OSE will thrive on growing partnerships and contributions to position itself as one of the dominant players among Linux-based platforms. With the participation of partners, developers, and contributors, we will further develop the platform so that it can create a unique business opportunity for you.
 

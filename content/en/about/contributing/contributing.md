@@ -71,7 +71,7 @@ Check the following information before you make a pull request.
 
 ### The Contribution Process
 
-{{< figure src="/images/about/contribution-process.png" caption="Contribution Process" width="700px" >}}
+{{< figure src="/images/about/contribution-process.png" alt="" caption="Contribution Process" width="700px" >}}
 
 #### What You Need to Do
 

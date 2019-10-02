@@ -7,13 +7,13 @@ toc: true
 
 `luna-send` is a command-line tool accessible through a shell on a device. `luna-send` is mainly used to test calls to services accessible on the system bus through the LS2 (Luna Bus).
 
-### Syntax
+## Syntax
 
 ``` bash
 luna-send [OPTIONS...] URL '{JSON object}'
 ```
 
-### Options
+## Options
 
 <div class="table-container">
 <table class="table is-bordered is-fullwidth">
@@ -100,7 +100,7 @@ e.g.: <code>-q 'returnValue' -q 'queues[0]'</code></p></td>
 </table>
 </div>
 
-### Parameters
+## Parameters
 
 <div class="table-container">
 <table class="table is-bordered is-fullwidth">
@@ -135,7 +135,7 @@ e.g.: <code>-q 'returnValue' -q 'queues[0]'</code></p></td>
 </table>
 </div>
 
-### Examples
+## Examples
 
 Get locale information by calling `getSystemSettings` method.
 

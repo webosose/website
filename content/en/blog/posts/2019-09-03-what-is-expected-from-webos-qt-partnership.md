@@ -16,7 +16,7 @@ To get some insights into what is expected from the partnership, the editor had 
 
 **A**: Qt is a native development framework for an embedded environment, in particular, specialized in GUI development, and webOS has been supporting Qt for a long time. One of the best practices is webOS TV. (Watch the [full video](https://resources.qt.io/customer-stories-all/qt-testimonial-webos-lg-electronics-joseph-park) explaining how webOS benefits from Qt.)
 
-{{< figure src="/images/blog/articles/qt-powered-webos-tv.png" caption="Qt powered webOS TV">}}
+{{< figure src="/images/blog/articles/qt-powered-webos-tv.png" alt="" caption="Qt powered webOS TV">}}
 
 Based on this long-term amicable relationship, Qt and LG decided to enter a close partnership that will help both win the battle in the future device market. Through this partnership, webOS was announced as a reference platform of Qt.
 

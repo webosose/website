@@ -220,7 +220,7 @@ According to the locale setting value, the app metadata localization shows the m
 
 To provide app information in a specific locale, you need to create locale folders under the `resources` folder, then `appinfo.json` files for each locale under correct locations as shown below:
 
-{{< figure src="/images/docs/guides/development/configuration-files/folder-structure-appinfo-json-localization.png" caption="Folder structure of appinfo.json localization" width="700px" >}}
+{{< figure src="/images/docs/guides/development/configuration-files/folder-structure-appinfo-json-localization.png" alt="" caption="Folder structure of appinfo.json localization" width="700px" >}}
 
 {{< note >}}
 The locale consists of Language, Script, and Country/Region information. (e.g. ko-KR, mn-Cy-MN)
