@@ -1,7 +1,7 @@
 ---
-title: 6th Release in 2019 (July 2019)
+title: webOS OSE 1.10.0 Release
 date: 2019-07-30
-slug: 6th-release-in-2019
+slug: webos-ose-1-10-0-release
 posttype: release
 toc: false
 ---

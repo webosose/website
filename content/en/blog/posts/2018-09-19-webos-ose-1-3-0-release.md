@@ -1,7 +1,7 @@
 ---
-title: 4th Release in 2018 (September 2018)
+title: webOS OSE 1.3.0 Release
 date: 2018-09-19
-slug: 4th-release-in-2018
+slug: webos-ose-1-3-0-release
 posttype: release
 toc: false
 ---

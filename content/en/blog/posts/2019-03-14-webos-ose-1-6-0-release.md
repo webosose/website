@@ -1,7 +1,7 @@
 ---
-title: 2nd Release in 2019 (March 2019)
+title: webOS OSE 1.6.0 Release
 date: 2019-03-14
-slug: 2nd-release-in-2019
+slug: webos-ose-1-6-0-release
 posttype: release
 toc: false
 ---
@@ -13,7 +13,7 @@ We are pleased to announce the new release of webOS Open Source Edition (OSE). T
 * [Bluetooth profile support (AVRCP)](#bluetooth-profile-support-avrcp)
 * [Localization enhancement](#localization-enhancement)
 
-Please refer to the [release notes]({{< relref "release-notes" >}}) for the list of changes for this release.
+Please refer to the [release notes]({{< relref "webos-ose-1-6-0-release-notes" >}}) for the list of changes for this release.
 
 ## Media component & API changes
 

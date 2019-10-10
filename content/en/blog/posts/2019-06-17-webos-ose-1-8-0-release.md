@@ -1,7 +1,7 @@
 ---
-title: 4th Release in 2019 (June 2019)
+title: webOS OSE 1.8.0 Release
 date: 2019-06-17
-slug: 4th-release-in-2019
+slug: webos-ose-1-8-0-release
 posttype: release
 toc: false
 ---
@@ -13,7 +13,7 @@ We are pleased to announce the new release of webOS Open Source Edition (OSE)! T
 * [Flow Manager](#flow-manager)
 * [Base components upgrade](#base-components-upgrade)
 
-Please refer to the [release notes]({{< relref "release-notes" >}}) for more details on changes for this release.
+Please refer to the [release notes]({{< relref "webos-ose-1-8-0-release-notes" >}}) for more details on changes for this release.
 
 ## Completion of ACG migration
 

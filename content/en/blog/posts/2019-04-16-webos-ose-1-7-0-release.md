@@ -1,7 +1,7 @@
 ---
-title: 3rd Release in 2019 (April 2019)
+title: webOS OSE 1.7.0 Release
 date: 2019-04-16
-slug: 3rd-release-in-2019
+slug: webos-ose-1-7-0-release
 posttype: release
 toc: false
 ---
@@ -15,7 +15,7 @@ We are delighted to announce the major feature release of webOS Open Source Edit
 * [Virtual Keyboard](#virtual-keyboard)
 * [Enhanced Enact Browser](#enhanced-enact-browser)
 
-Please refer to the [release notes]({{< relref "release-notes" >}}) for more details on changes for this release.
+Please refer to the [release notes]({{< relref "webos-ose-1-7-0-release-notes" >}}) for more details on changes for this release.
 
 {{< caution >}}
 We strongly recommend that you use [build-webos](https://github.com/webosose/build-webos) of "builds/master/65" or above, because using the releases from "builds/master/56" to "builds/master/64" can cause build failure.
@@ -109,4 +109,4 @@ In addition, word frequency based predictions and user-defined predictions are s
 
 ## Enhanced Enact Browser
 
-Several enhancements have been made to Enact browser in terms of internationalization and bookmark-related features. Also, there are more updates and bug fixes for Enact browser, so check the [release notes]({{< relref "release-notes" >}}) for more information.
+Several enhancements have been made to Enact browser in terms of internationalization and bookmark-related features. Also, there are more updates and bug fixes for Enact browser, so check the [release notes]({{< relref "webos-ose-1-7-0-release-notes" >}}) for more information.

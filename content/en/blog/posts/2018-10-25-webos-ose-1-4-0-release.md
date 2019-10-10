@@ -1,7 +1,7 @@
 ---
-title: 5th Release in 2018 (October 2018)
+title: webOS OSE 1.4.0 Release
 date: 2018-10-25
-slug: 5th-release-in-2018
+slug: webos-ose-1-4-0-release
 posttype: release
 toc: false
 ---
@@ -11,7 +11,7 @@ Key highlights of this release are as follows.
 * [zram](#zram)
 * [Enact framework update](#enact-framework-update)
 
-This release also includes other component updates and bug fixes, so refer to the [release notes]({{< relref "release-notes" >}}) for a complete listing of changes.
+This release also includes other component updates and bug fixes, so refer to the [release notes]({{< relref "webos-ose-1-4-0-release-notes" >}}) for a complete listing of changes.
 
 ## zram
 

@@ -1,7 +1,7 @@
 ---
-title: 1st Release in 2019 (January 2019)
+title: webOS OSE 1.5.0 Release
 date: 2019-01-10
-slug: 1st-release-in-2019
+slug: webos-ose-1-5-0-release
 posttype: release
 toc: false
 ---
@@ -11,7 +11,7 @@ We are delighted to announce the release of the following new features:
 * [Bluetooth profiles support (OPP, A2DP)](#bluetooth-profiles-support-opp-a2dp)
 * [Bluetooth audio support](#bluetooth-audio-support)
 
-Please refer to the [release notes]({{< relref "release-notes" >}}) for more details on changes for this release.
+Please refer to the [release notes]({{< relref "webos-ose-1-5-0-release-notes" >}}) for more details on changes for this release.
 
 ## Bluetooth Profiles Support (OPP, A2DP)
 

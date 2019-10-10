@@ -1,18 +1,18 @@
 ---
-title: 7th Release in 2019 and the Intermediate Branch
+title: webOS 1.10.1 Release and the Intermediate Branch
 date: 2019-09-23
-slug: 2019-7th-release-and-intermediate-branch
+slug: webos-ose-1-10-1-release-and-intermediate-branch
 posttype: release
 toc: true
 ---
 
-We are delighted to announce the 2019 7th release and creation of the intermediate branch.
+We are delighted to announce the release of webOS OSE 1.10.1 and creation of the intermediate branch.
 
-## 7th Release in 2019 (August 30, 2019)
+## webOS OSE 1.10.1 Release
 
 This release is a preparation to use webOS OSE with [ros/meta-ros](https://github.com/ros/meta-ros/) using the official ROS build instructions.
 
-For details, refer to the [release notes]({{< relref "release-notes" >}}).
+For details, refer to the [release notes]({{< relref "webos-ose-1-10-1-release-notes" >}}).
 
 ## Intermediate Branch
 

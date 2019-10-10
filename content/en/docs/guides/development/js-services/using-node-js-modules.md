@@ -12,7 +12,7 @@ This page shows you how to use Node.js modules inside your service.
 webOS Open Source Edition supports all the Node.js core modules provided by Node.js v8.12.0. For the list of core modules and API details, see [Node.js v8.12.0 Manual & Documentation](https://nodejs.org/docs/v8.12.0/api/).
 
 {{< note >}}
-webOS OSE releases up to 2019 3rd release support [Node.js v6.11.2](https://nodejs.org/docs/v6.11.2/api/).
+webOS OSE releases up to 1.7.0 support [Node.js v6.11.2](https://nodejs.org/docs/v6.11.2/api/).
 {{< /note >}}
 
 To use Node.js core module, add the module with the top-level identifier to your service as the following code.

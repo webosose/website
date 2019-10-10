@@ -1,7 +1,7 @@
 ---
-title: 3rd Release in 2018 (August 2018)
+title: webOS OSE 1.2.0 Release
 date: 2018-08-30
-slug: 3rd-release-in-2018
+slug: webos-ose-1-2-0-release
 posttype: release
 toc: false
 ---
@@ -13,7 +13,7 @@ Key highlights of this release are as follows.
 * [ROS bridge](#ros-bridge)
 * [IoTivity sampler](#iotivity-sampler)
 
-For a complete listing of changes, refer to the [release notes]({{< relref "release-notes" >}}).
+For a complete listing of changes, refer to the [release notes]({{< relref "webos-ose-1-2-0-release-notes" >}}).
 
 ## Bluetooth support
 

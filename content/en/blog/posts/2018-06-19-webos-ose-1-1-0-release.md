@@ -1,7 +1,7 @@
 ---
-title: 2nd Release in 2018 (June 2018)
+title: webOS OSE 1.1.0 Release
 date: 2018-06-19
-slug: 2nd-release-in-2018
+slug: webos-ose-1-1-0-release
 posttype: release
 toc: false
 ---
@@ -11,7 +11,7 @@ Key highlights of this release are as follows.
 * [Memory Manager](#memory-manager)
 * [QEMU Emulator](#qemu-emulator)
 
-For a complete listing of changes, refer to the [release notes]({{< relref "release-notes" >}}).
+For a complete listing of changes, refer to the [release notes]({{< relref "webos-ose-1-1-0-release-notes" >}}).
 
 ## Memory Manager
 

@@ -10,7 +10,7 @@ webOS Open Source Edition (OSE) provides an emulator that enables you to develop
 The emulator runs as a virtual machine on VirtualBox and supports host platforms including Ubuntu Linux, macOS, and Windows.
 
 {{< note >}}
-* The VirtualBox-based emulator is supported by webOS OSE build #87 or higher (included in the 2019 6th release).
+* The VirtualBox-based emulator is supported by webOS OSE build #87 (included in webOS OSE 1.10.0) or higher.
 * webOS OSE emulator requires VirtualBox version 6.0 or higher, which can be installed on 64-bit host platforms only.
 {{< /note >}}
 
