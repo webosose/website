@@ -22,9 +22,9 @@ Please refer to the [release notes]({{< relref "webos-ose-1-8-0-release-notes" >
 This release marks the completion of migration from the legacy model (public/private) to ACG, which means developers need to set appropriate ACG information when configuring apps or services, as follows:
 
 * **For web apps, QML apps, and native apps**
-    * If methods of the external services are used, specify the group information of the external methods in the `requiredPermission` field of `appinfo.json`.
+    * If methods of the external services are used, specify the group information of the external methods in the `requiredPermissions` field of `appinfo.json`.
 * **For external JS services**
-    * If methods of the external services are used, add the group information of the external methods to the `requiredPermission` field in `appinfo.json` of the web app used for packaging the JS service.
+    * If methods of the external services are used, add the group information of the external methods to the `requiredPermissions` field in `appinfo.json` of the web app used for packaging the JS service.
 * **For built-in JS services and native services**
     * If methods of the external services are used, specify the group information of the external methods in the client permission file.
     * Specify relevant group and permission information in the role file and API permission file.

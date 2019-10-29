@@ -1,5 +1,5 @@
 ---
-title: webOS 1.10.1 Release and the Intermediate Branch
+title: webOS OSE 1.10.1 Release and the Intermediate Branch
 date: 2019-09-23
 slug: webos-ose-1-10-1-release-and-intermediate-branch
 posttype: release
@@ -28,7 +28,7 @@ On [`build-webos`](https://github.com/webosose/build-webos), `@91.release` branc
   - ROS2
       - meta-webos-ros and meta-ros are dropped from build-webos.
 
-To use meta-ros on webOS OSE, it is recommended to use the official instructions on [ros/meta-ros wiki](https://github.com/ros/meta-ros/wiki/OpenEmbedded-Build-Instructions).
+To use meta-ros on webOS OSE, it is recommended that you use the official instructions on [ros/meta-ros wiki](https://github.com/ros/meta-ros/wiki/OpenEmbedded-Build-Instructions).
 
 ### How to Build from the Intermediate Branch
 
