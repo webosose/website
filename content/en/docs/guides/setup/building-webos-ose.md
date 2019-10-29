@@ -1,6 +1,6 @@
 ---
 title: Building webOS Open Source Edition
-date: 2019-08-29
+date: 2019-10-24
 weight: 20
 toc: true
 ---
@@ -15,7 +15,7 @@ Ensure that your system meets the [Build System Requirements]({{< relref "system
 
 To build a webOS OSE image, [`build-webos`](https://github.com/webosose/build-webos) repository is used. This repository contains the top level code that aggregates the various [OpenEmbedded](http://openembedded.org/) layers into a whole from which webOS OSE images can be built.
 
-Set up `build-webos` by cloning its Git repository, and cd into the cloned directory:
+Set up `build-webos` by cloning its Git repository, and `cd` into the cloned directory:
 
 ```bash
 $ git clone https://github.com/webosose/build-webos.git
@@ -36,7 +36,7 @@ For more details about BitBake, refer to the [BitBake Manual](https://www.yoctop
 
 ## Configuring the Build
 
-At this step, you can configure the build for Raspberry Pi 3 or the emulator using the `mcf` script.
+At this step, you can configure the build for your target device using the `mcf` script.
 
 ### Setting the Parallelism Values
 
@@ -72,21 +72,19 @@ You can increase the value slightly, but make sure that the value does not excee
 Omitting `-p` and `-b` options are equivalent to using `-p 0 -b 0`, which forces the build to use all CPU cores. This can cause an unexpected behavior or a build failure, so it is strongly discouraged.
 {{< /caution >}}
 
-### Configuring the Build for Raspberry Pi 3
+### Configuring the Build for the Target Device
 
-To configure the build for Raspberry Pi 3 and to fetch the sources, type:
-
-```bash
-$ ./mcf -p <number of physical CPU cores / 2> -b <number of physical CPU cores / 2> raspberrypi3
-```
-
-### Configuring the Build for the Emulator
-
-To configure the build for the emulator and to fetch the sources, type:
+To configure the build for the target device and to fetch the sources, type:
 
 ```bash
-$ ./mcf -p <number of physical CPU cores / 2> -b <number of physical CPU cores / 2> qemux86
+$ ./mcf -p <number of physical CPU cores / 2> -b <number of physical CPU cores / 2> <target-device-name>
 ```
+
+Currently, the available `<target-device-name>` are as follows:
+
+* `raspberrypi4` (for webOS OSE 2.0 or higher)
+* `raspberrypi3` (for webOS OSE 1.x version)
+* `qemux86` (for emulator)
 
 ## Building the Image
 
@@ -112,6 +110,19 @@ $ make webos-image
 
 This may take in the neighborhood of two hours on a multi-core workstation with a fast disk subsystem and lots of memory, or many more hours on a laptop with less memory and slower disks.
 
+{{< note >}}
+If you've built for some target device and attempt to build for another target device in the same shell, a build error might occur. To avoid such an error, do one of the following:
+
+* Open a new shell and proceed from the [Building webos-image]({{< relref "building-webos-ose/#building-webos-image" >}}).
+* Enter the following commands and proceed from the [Building webos-image]({{< relref "building-webos-ose/#building-webos-image" >}}).
+
+``` bash
+$ unset DISTRO
+$ unset MACHINE
+$ unset MACHINES
+```
+{{< /note >}}
+
 ### Building webos-image-devel
 
 To build a webOS OSE image that includes GDB and strace for debugging, enter the following:
@@ -130,6 +141,7 @@ $ bitbake webos-image-devel
 
 To see if the image has been created successfully, check the following files:
 
+* For Raspberry Pi 4, the resulting image will be created at `BUILD/deploy/images/raspberrypi4/webos-image-raspberrypi4.rootfs.wic`.
 * For Raspberry Pi 3, the resulting image will be created at `BUILD/deploy/images/raspberrypi3/webos-image-raspberrypi3.rootfs.rpi-sdimg`.
 * For the emulator, the resulting image will be created at `BUILD/deploy/images/qemux86/webos-image-qemux86-master-*-wic.vmdk`.
 
@@ -177,5 +189,5 @@ $ bitbake -c cleansstate <component-name>
 
 ## Next Steps
 
-- If you built the image for Raspberry Pi 3, it's time to flash the image to the target device. See [Flashing webOS OSE]({{< relref "flashing-webos-ose" >}}).
+- If you built the image for Raspberry Pi 4 or Raspberry Pi 3, it's time to flash the image to the target device. See [Flashing webOS OSE]({{< relref "flashing-webos-ose" >}}).
 - If you built the image for the emulator, refer to the [Emulator User Guide]({{< relref "emulator-user-guide" >}}) to set up and use the emulator.

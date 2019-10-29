@@ -53,7 +53,7 @@ In webOS OSE, except the case above, the running app is terminated when a new ap
 
 ## Launching an App
 
-A web app is launched using the Application Manager ([`com.webos.service.applicationManager`]({{< relref "com-webos-service-applicationmanager" >}})) service. The Application Manager service can be invoked by:
+A web app is launched using the Application Manager ([`com.webos.service.applicationmanager`]({{< relref "com-webos-service-applicationmanager" >}})) service. The Application Manager service can be invoked by:
 
   - The Launcher
 

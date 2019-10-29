@@ -7,7 +7,7 @@ toc: true
 
 The following figure shows the overall architecture of webOS Open Source Edition (OSE). webOS OSE consists of a set of layers: Core Applications, Application Framework, Managers & Services, Base Components, and BSP/Kernel.
 
-{{< figure src="/images/docs/guides/core-topics/architecture/webos-ose-architecture-20190409.png" link="/images/docs/guides/core-topics/architecture/webos-ose-architecture-20190409.png" target="_blank" alt="webOS OSE architecture diagram showing its layer structure" caption="webOS OSE Architecture Overview" >}}
+{{< figure src="/images/docs/guides/core-topics/architecture/webos-ose-architecture-20191029.png" link="/images/docs/guides/core-topics/architecture/webos-ose-architecture-20191029.png" target="_blank" alt="webOS OSE architecture diagram showing its layer structure" caption="webOS OSE Architecture Overview" >}}
 
 ## Core Applications
 
@@ -53,7 +53,7 @@ Activity Manager is responsible for managing and executing activities requested 
 
 ### Luna Surface Manager
 
-Luna Surface Manager (LSM) is a component that works as a graphics manager. LSM displays graphical elements on the screen, manages the composition of these elements, and performs the event handling for input devices such as keyboard and pointer. LSM is also responsible for the management of System UI, such as Home Launcher and Notification. LSM is implemented using Qt, and System UI is implemented using QML.
+Luna Surface Manager (LSM) is a component that works as a graphics and window manager. LSM displays graphical elements on the screen, manages the composition of these elements, and performs the event handling for input devices such as keyboard and pointer. LSM is also responsible for the management of System UI, such as Home Launcher and Notification. LSM is implemented using Qt, and System UI is implemented using QML.
 
 ### uMediaServer
 
@@ -87,4 +87,4 @@ The service framework based on Node.js is provided so that you can implement ser
 
 ## BSP/Kernel
 
-BSP/Kernel layer consists of several components to support Raspberry Pi 3. Typically, it provides evdev for event processing, Mesa for graphics support, and 100Base-T, wpa_supplicant, and Bluetooth for connectivity.
+BSP/Kernel layer consists of several components to support Raspberry Pi 4. Typically, it provides evdev for event processing, Mesa for graphics support, and 100Base-T, wpa_supplicant, and Bluetooth for connectivity.

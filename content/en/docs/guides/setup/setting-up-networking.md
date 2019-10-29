@@ -1,11 +1,11 @@
 ---
 title: Network Setup
-date: 2019-03-05
+date: 2019-10-24
 weight: 40
 toc: true
 ---
 
-This guide describes how to set up the networking between the host machine and the target device.
+This guide describes how to set up the network between the host machine and the target device.
 
 ## Target Device Configuration
 
@@ -17,16 +17,16 @@ The default setting of the webOS OSE is to use Dynamic Host Configuration Protoc
 
 Follow the steps below to configure the network information on the target device. Make sure that the Ethernet cable is connected beforehand.
 
-1. On the Home Launcher, click the icon of Settings app. <img src="/images/docs/guides/setup/webosose-homelauncher-settings-icon.png" alt="Settings icon">
+1. On the Home Launcher, click the icon of Settings app. <img src="/images/docs/guides/setup/webosose-2_0-homelauncher-settings-icon.png" alt="Settings icon">
 
     Settings app UI will show up on the left side of the screen.
 2. Click the **Network** icon, and you will see the initial status of network setting.
-    {{< figure src="/images/docs/guides/setup/webosose-network-setup-1.png" alt="Network Setting - The initial status of network including Wired/Wi-Fi connection" >}}
+    {{< figure src="/images/docs/guides/setup/webosose-network-setup-1.png" alt="Network Setting - The initial status of network including Wired/Wi-Fi connection"  class="align-left">}}
 3. Click the **Wired Connection (Ethernet)** menu. The default network information will be displayed.
-    {{< figure src="/images/docs/guides/setup/webosose-network-setup-2.png" alt="Network Setting - Detailed information" >}}
+    {{< figure src="/images/docs/guides/setup/webosose-network-setup-2.png" alt="Network Setting - Detailed information" class="align-left">}}
 4. Click the **Edit** button, and the **EDIT** menu will show up.
-    * To turn on the manual editing mode, uncheck **Set Automatically**.
-    {{< figure src="/images/docs/guides/setup/webosose-network-setup-3.png" alt="Network Setting - Manual edit mode" >}}
+    * By default, **Set Automatically** button is checked. To turn on the manual editing mode, uncheck the button.
+    {{< figure src="/images/docs/guides/setup/webosose-network-setup-3.png" alt="Network Setting - Manual edit mode"  class="align-left">}}
 5. In each field, enter the IP address, subnet mask, gateway, and DNS server information in dot-decimal notation. After you finish entering the information, click the **CONNECT** button.
     * If the status shows up as "Connected to Internet", it means the connection has been set up successfully.
     * Otherwise, retry after checking the address information and the physical connection.

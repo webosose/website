@@ -122,7 +122,7 @@ Here are little tips that might help you with JSON syntax:
 <td><p>The app version number. This consists of three non-negative integers: major, minor, and revision numbers.</p>
 <p>The major, minor, and revision numbers are all mandatory, e.g. "2.1.0" (not "2.1"). Otherwise, the app may not be installed. The major, minor, and revision numbers are discrete. For example, 1.5.3 is lower version than 1.15.3.</p>
 {{< note >}}
-The numbers must not contain leading zeroes.
+Each version number (major, minor, and revision) cannot exceed 9 digits and cannot contain leading zeroes.
 {{< /note >}}
 <ul>
 <li><strong>Default value</strong>: &quot;1.0.0&quot;</li>

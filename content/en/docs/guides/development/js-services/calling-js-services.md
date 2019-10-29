@@ -9,9 +9,26 @@ In this page, you can learn how to call JS services from web apps or another JS 
 
 ## Calling JS Services from Web Apps
 
-### Import the webOS Library
+Depending on the platform version, a different API or library is used in order to call JS services.
 
-To call a JS service from a web app, the webOS library is required.
+This section describes how you can call JS services by platform version.
+
+  - [webOS OSE 2.0 or higher](#webos-ose-2-0-or-higher)
+  - [webOS OSE 1.x](#webos-ose-1-x)
+
+### webOS OSE 2.0 or higher
+
+webOS OSE 2.0 or higher provides **WebOSServiceBridge**, a built-in JavaScript API for web apps to access Luna Bus.
+
+You can use the WebOSServiceBridge API to call JS services in your web app.
+
+For detailed information on how to use the API, see the [WebOSServiceBridge API reference]({{< relref "webosservicebridge-api-reference" >}}).
+
+### webOS OSE 1.x
+
+#### Import the webOS Library
+
+In webOS OSE 1.x, the webOS library is required in order to call a JS service from a web app.
 
 {{< note >}}
 If you create a web app using the "basic" template of the [Command-Line Interface (CLI)]({{< relref "cli-user-guide" >}}) tool, the web app will already contain the webOS library in its `webOSjs-0.1.0` directory and have the library included in the `index.html` file. In this case, you don't need to add additional code to import the library, so you can safely skip this step.
@@ -39,9 +56,9 @@ To include the library in a web app, follow the steps below:
 The webOS library file can be placed in any folder within your app project, but you must set the proper directory when including the library in the source code.
 {{< /note >}}
 
-### Call JS Services in the Web App Code
+#### Call JS Services in the Web App Code
 
-With the webOS library included, a web app can make webOS service calls using the `webOS.service.request` method.
+In webOS OSE 1.x, with the webOS library included, a web app can make webOS service calls using the `webOS.service.request` method.
 
 To call a service in a web app, use the `webOS.service.request` method as shown below.
 

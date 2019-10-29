@@ -1,6 +1,6 @@
 ---
 title: System Requirements
-date: 2019-08-28
+date: 2019-10-25
 weight: 10
 toc: true
 ---
@@ -13,7 +13,23 @@ webOS OSE cannot be built directly on the target device. You must use a separate
 
 ## Target Device Requirements
 
-A **target device** is a device that runs webOS OSE. webOS OSE is optimized for **Raspberry Pi 3**. To test apps and services on Raspberry Pi 3, we recommend that you prepare the following set of hardware and peripheral devices.
+A **target device** is a device that runs webOS OSE. To test apps and services on your target device, we recommend that you prepare the following set of hardware and peripheral devices.
+
+### For webOS OSE 2.0 or Higher
+
+* Raspberry Pi 4
+* microSD card (8 GB or larger) and microSD card reader device
+* HDMI-compatible touchscreen using USB interface, with 1920x1080 resolution
+* Micro HDMI to HDMI cable
+* Ethernet cable and internet connection
+* (Optional) Input devices such as a keyboard and a mouse
+
+{{< note >}}
+* webOS OSE 2.0 officially supports **[Raspberry Pi 4 Model B](https://www.raspberrypi.org/products/raspberry-pi-4-model-b/)**. To avoid insufficient memory issues, the recommended memory of Raspberry Pi 4 is 2 GB or higher.
+* webOS OSE 2.0 is designed for touch interface, so we recommend that you use a touch device as an input device for the target device. If you use a keyboard and a mouse as input devices, some functionalities might not work.
+{{< /note >}}
+
+### For webOS OSE 1.x
 
 * Raspberry Pi 3
 * microSD card (8 GB or larger) and microSD card reader device
@@ -22,7 +38,7 @@ A **target device** is a device that runs webOS OSE. webOS OSE is optimized for 
 * Ethernet cable and internet connection
 
 {{< note >}}
-webOS OSE 1.0 officially supports **[Raspberry Pi 3 Model B](https://www.raspberrypi.org/products/raspberry-pi-3-model-b/)**.
+webOS OSE 1.x officially supports **[Raspberry Pi 3 Model B](https://www.raspberrypi.org/products/raspberry-pi-3-model-b/)**.
 {{< /note >}}
 
 ## Build System Requirements
@@ -37,7 +53,7 @@ webOS OSE can be built on the 64-bit version of Ubuntu Long Term Support (LTS) r
 * Ubuntu 18.04 LTS (Bionic Beaver) 64-bit (Recommended)
 
 {{< caution >}}
-We strongly recommend you NOT to use Linux virtual machine on Windows or macOS for building webOS OSE, as it may cause unexpected issues.
+We strongly advise you NOT to use a Linux virtual machine on Windows or macOS for building webOS OSE, as it may cause unexpected issues.
 {{< /caution >}}
 
 ### Hardware
