@@ -17,12 +17,14 @@ In addition to hosting source code and issue tracking system on GitHub, the webO
 
 ## Q. How do I see webOS OSE in action?
 
-A. webOS OSE 1.0 is targeted at developers. Right now, you can build and run it on Raspberry Pi 3, the best development environment to easily access and test your code.
+A. webOS OSE is targeted at developers. Right now, you can build and run webOS OSE 1.x on Raspberry Pi 3, or webOS OSE 2.0 or higher on Raspberry Pi 4. For what to prepare and how to set up the environment, refer to [System Requirements]({{< relref "system-requirements" >}}).
+
+If you do not have a real device available, you can use an emulator which enables you to explore webOS OSE and experience development with it. See [VirtualBox Emulator User Guide]({{< relref "emulator-user-guide" >}}) to learn more about the emulator.
 
 ## Q. I am a web developer. How do I deploy my web application to the webOS OSE platform?
 
 A. webOS OSE is optimized for the [Enact](http://enactjs.com) framework. You can deploy your application in the device, or bring your application for consideration within the webOS OSE distribution.
 
-## Q. Which devices other than Raspberry Pi 3 can I port webOS OSE to?
+## Q. Which devices, other than Raspberry Pi, can I port webOS OSE to?
 
-At this point, webOS OSE can only be ported to Raspberry Pi 3. However, as webOS OSE is an open source project, it is your call to decide whether to implement webOS OSE on any other form factors.
+Officially, webOS OSE 1.x and 2.0 only supports Raspberry Pi 3 and 4, respectively. However, as webOS OSE is an open source project, it is your call to decide whether to implement webOS OSE on any other form factors.

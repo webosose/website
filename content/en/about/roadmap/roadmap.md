@@ -1,16 +1,66 @@
 ---
 title: Roadmap
-date: 2018-10-15
+date: 2019-10-24
 weight: 10
 toc: false
 ---
 
-{{< figure src="/images/about/webos-ose-roadmap-31-aug-2018.png" link="/images/about/webos-ose-roadmap-31-aug-2018.png" target="_blank" alt="webOS OSE Roadmap showing its deliverable plan" width="900px" >}}
-
-For meaning of abbreviations in the roadmap, refer to the table below.
+The following shows a roadmap of webOS Open Source Edition (OSE).
 
 <div class="table-container">
-<table class="table is-bordered is-fullwidth">
+<table class="table is-bordered is-fullwidth is-hoverable">
+<thead>
+<tr class="header">
+<th>webOS OSE 1.x</th>
+<th>webOS OSE 2.0</th>
+<th>Long Term Plan</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><ul>
+<li>Memory Manager</li>
+<li>QEMU Emulator</li>
+<li>BT Profile Support</li>
+<li>OCF Integration</li>
+<li>AI Assistant Service</li>
+<li>ROS2 Integration</li>
+<li>Enact Browser</li>
+<li>Virtual Keyboard</li>
+<li>BT Manager</li>
+<li>TTS (Text to Speech) Service</li>
+<li>Workflow Designer</li>
+<li>Camera Service</li>
+<li>CIM (Context Intent Manager)</li>
+<li>PDM (Physical Device Manager)</li>
+<li>ACG (Access Control Groups)</li>
+<li>Yocto Upgrade</li>
+</ul></td>
+<td><ul>
+<li>Qt Upgrade</li>
+<li>FOTA</li>
+<li>Dual-Display Support</li>
+<li>Smack Integration</li>
+<li>Chromium Upgrade</li>
+<li>SoftAP</li>
+</ul></td>
+<td><ul>
+<li>Multi-User Configuration</li>
+<li>App Mirroring for RSE</li>
+<li>FOTA (ability to partially update)</li>
+<li>Journald (pmlog disable)</li>
+<li>Phone Projection (mirroring)</li>
+<li>Bluetooth Audio</li>
+</ul></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+For the meaning of abbreviations in the roadmap, refer to the table below.
+
+<div class="table-container">
+<table class="table is-bordered is-fullwidth is-hoverable">
 <thead>
 <tr class="header">
 <th>Term</th>
@@ -19,64 +69,32 @@ For meaning of abbreviations in the roadmap, refer to the table below.
 </thead>
 <tbody>
 <tr class="odd">
-<td>A2DP</td>
-<td>Advanced Audio Distribution Profile</td>
-</tr>
-<tr class="even">
-<td>AVRCP</td>
-<td>Audio/Video Remote Control Profile</td>
-</tr>
-<tr class="odd">
 <td>BT</td>
 <td>Bluetooth</td>
 </tr>
 <tr class="even">
-<td>EFS</td>
-<td>Enhanced Flash Swap</td>
+<td>FOTA</td>
+<td>Firmware-Over-the-Air</td>
 </tr>
 <tr class="odd">
-<td>GATT</td>
-<td>Generic Attribute Profile</td>
-</tr>
-<tr class="even">
-<td>MSE</td>
-<td>Media Source Extensions</td>
-</tr>
-<tr class="odd">
-<td>NFC</td>
-<td>Near Field Communication</td>
-</tr>
-<tr class="even">
 <td>OCF</td>
 <td>Open Connectivity Foundation</td>
-</tr>
-<tr class="odd">
-<td>OPP</td>
-<td>Object Push Profile</td>
 </tr>
 <tr class="even">
 <td>QEMU</td>
 <td>Quick Emulator</td>
 </tr>
 <tr class="odd">
-<td>RFID</td>
-<td>Radio-Frequency Identification</td>
-</tr>
-<tr class="even">
 <td>ROS2</td>
 <td>Robot Operating System 2.0</td>
 </tr>
-<tr class="odd">
-<td>SDK</td>
-<td>Software Development Kit</td>
-</tr>
 <tr class="even">
-<td>SPP</td>
-<td>Serial Port Profile</td>
+<td>RSE</td>
+<td>Rear Seat Entertainment</td>
 </tr>
 <tr class="odd">
-<td>URI</td>
-<td>Uniform Resource Identifier</td>
+<td>Smack</td>
+<td>Simplified Mandatory Access Control Kernel</td>
 </tr>
 </tbody>
 </table>

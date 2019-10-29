@@ -1,6 +1,6 @@
 ---
 title: Introduction
-date: 2019-07-22
+date: 2019-10-25
 weight: 10
 toc: false
 ---
@@ -30,6 +30,12 @@ We expect webOS OSE will thrive on growing partnerships and contributions to pos
     webOS OSE uses Yocto Project's OpenEmbedded build system as a part of its development environment in order to enhance flexibility of code management through customization and layering.
 
     The combination of such highly scalable architecture and flexible development environment makes it more efficient to implement, test, and deploy new features on webOS OSE.
+
+* **Integration with up-to-date open source technologies**
+
+    In addition to the openness as an open community to developers, webOS OSE also pursues openness to other technologies, especially open source ones, such as Qt, Chromium, and Yocto, by working in sync with them.
+
+    To keep pace with the rapidly changing technology landscape, it is a must, not an option.
 
 * **Open platform applicable to diverse verticals**
 

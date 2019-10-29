@@ -1,5 +1,5 @@
 ---
-title: webOS 1.3.0 Release Notes
+title: webOS OSE 1.3.0 Release Notes
 date: 2018-09-20
 weight: 4
 toc: true

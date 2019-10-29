@@ -1,5 +1,5 @@
 ---
-title: webOS 1.5.0 Release Notes
+title: webOS OSE 1.5.0 Release Notes
 date: 2019-01-11
 weight: 7
 toc: true
