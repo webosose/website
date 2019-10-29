@@ -1,9 +1,9 @@
 ---
 title: com.webos.service.audio
-date: 2019-04-25
+date: 2019-10-22
 toc: true
 ---
-
+                
 <div>
   <h2>API Summary</h2>
   <p>This service controls the audio policy of a webOS system. Its role is to implement audio routing (sending audio streams to the proper destinations) and setting volumes in different scenarios.</p>
@@ -281,7 +281,15 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
-  <div class="code-bg-grey"></div>
+  <div class="code-bg-grey">
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/disableScenario &#39;{&quot;scenario&quot;:&quot;media_back_speaker&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not disable requested scenario.&quot;<br />
+      }
+    </p>
+  </div>
 </div>
 <h3>media/enableScenario</h3>
 <div>
@@ -399,26 +407,23 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example 1:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/media/enableScenario &#39;{&quot;scenario&quot;:&quot;media__default&quot;}&#39;<br />
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/media/enableScenario &#39;{&quot;scenario&quot;:&quot;media_back_speaker&quot;}&#39;<br />
       {<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
       }
     </p>
-    <p>Example 2:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/media/enableScenario &#39;{&quot;scenario&quot;:&quot;media__defaultTEST&quot;}&#39;<br />
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/media/enableScenario &#39;{&quot;scenario&quot;:&quot;media_back_speakerTest&quot;}&#39;<br />
       {<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
       &nbsp; &nbsp; &quot;errorText&quot;: &quot;Invalid &#39;scenario&#39; string parameter value or file not found.&quot;<br />
       }
     </p>
-    <p>Example 3:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/media/enableScenario &#39;{&quot;scenarioTEST&quot;:&quot;media__default&quot;}&#39;<br />
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/media/enableScenario &#39;{}&#39;<br />
       {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 2,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Missing &#39;scenario&#39; string parameter.&quot;<br />
       }
     </p>
   </div>
@@ -483,11 +488,11 @@ toc: true
     <p>Example 1:<br />
       luna-send -n 1 -f luna://com.webos.service.audio/media/getCurrentScenario &#39;{}&#39;<br />
       {<br />
-      &nbsp; &nbsp; &quot;scenario&quot;: &quot;media__default&quot;,<br />
+      &nbsp; &nbsp; &quot;scenario&quot;: &quot;media_back_speaker&quot;,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
-    <p>Example 2:<br />
+      }<br />
+      <br />
+      Example 2:<br />
       luna-send -n 1 -f luna://com.webos.service.audio/media/getCurrentScenario &#39;{&quot;TEST&quot;}&#39;<br />
       {<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
@@ -622,13 +627,27 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 luna://com.webos.service.audio/media/getLatency &#39;{}&#39;</p>
-    <p>Returns:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;:true,</p>
-    <p style="margin-left:40px">&quot;scenario&quot;:&quot;media__default&quot;,</p>
-    <p style="margin-left:40px">&quot;latency&quot;:65536</p>
-    <p>}</p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/getLatency &#39;{&quot;scenario&quot;: &quot;media_back_speaker&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;scenario&quot;: &quot;media_back_speaker&quot;,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;latency&quot;: 65536<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/getLatency &#39;{&quot;scenario&quot;: &quot;media_back_speakedddr&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;failed to get latency (invalid scenario name?)&quot;<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/getLatency &#39;{&quot;scenarioTest&quot;: &quot;media_back_speaker&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
+      }
+    </p>
   </div>
 </div>
 <h3>media/getMicGain</h3>
@@ -756,13 +775,27 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 luna://com.webos.service.audio/media/getMicGain &#39;{}&#39;</p>
-    <p>Returns:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;:true,</p>
-    <p style="margin-left:40px">&quot;scenario&quot;:&quot;media__default&quot;,</p>
-    <p style="margin-left:40px">&quot;mic_gain&quot;:-1</p>
-    <p>}</p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/getMicGain &#39;{&quot;scenario&quot;: &quot;media_back_speaker&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;mic_gain&quot;: -1,<br />
+      &nbsp; &nbsp; &quot;scenario&quot;: &quot;media_back_speaker&quot;,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/getMicGain &#39;{&quot;scenario&quot;: &quot;Test&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;failed to get parameter (invalid scenario name?)&quot;<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/getMicGain &#39;{&quot;scenarioTest&quot;: &quot;media_back_speaker&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
+      }
+    </p>
   </div>
 </div>
 <h3>media/getVolume</h3>
@@ -865,13 +898,34 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 luna://com.webos.service.audio/media/getVolume &#39;{}&#39;</p>
-    <p>Returns:</p>
-    <p>{</p>
-    <p>&nbsp; &nbsp; &quot;returnValue&quot;:true,</p>
-    <p>&nbsp; &nbsp; &quot;scenario&quot;:&quot;media_default&quot;,</p>
-    <p>&nbsp; &nbsp; &quot;volume&quot;:8,</p>
-    <p>}</p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/getVolume &#39;{}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;scenario&quot;: &quot;media_back_speaker&quot;,<br />
+      &nbsp; &nbsp; &quot;volume&quot;: 45,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/getVolume &#39;{&quot;scenario&quot;:&quot;media_back_speaker&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;scenario&quot;: &quot;media_back_speaker&quot;,<br />
+      &nbsp; &nbsp; &quot;volume&quot;: 45,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/getVolume &#39;{&quot;scenario&quot;:&quot;media&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;failed to get parameter (invalid scenario name?)&quot;<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/getVolume &#39;{&quot;scenario1&quot;:&quot;media&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
+      }
+    </p>
   </div>
 </div>
 <h3>media/listScenarios</h3>
@@ -974,65 +1028,57 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example 1:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/media/listScenarios &#39;{}&#39;<br />
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/media/listScenarios &#39;{}&#39;<br />
       {<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp; &quot;scenarios&quot;: [<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;media__default&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;media_back_speaker&quot;<br />
       &nbsp; &nbsp; ]<br />
       }
     </p>
-    <p>Example 2:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/media/listScenarios &#39;{&quot;enabled&quot;:false,&quot;disabled&quot;:false}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;scenarios&quot;: [<br />
-      &nbsp; &nbsp; ]<br />
-      }
-    </p>
-    <p>Example 3:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/media/listScenarios &#39;{&quot;enabled&quot;:false,&quot;disabled&quot;:true}&#39;<br />
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/media/listScenarios &#39;{&quot;enabled&quot;:false,&quot;disabled&quot;:false}&#39;<br />
       {<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp; &quot;scenarios&quot;: [<br />
       &nbsp; &nbsp; ]<br />
       }
     </p>
-    <p>Example 4:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/media/listScenarios &#39;{&quot;enabled&quot;:true,&quot;disabled&quot;:false}&#39;<br />
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/media/listScenarios &#39;{&quot;enabled&quot;:false,&quot;disabled&quot;:true}&#39;<br />
       {<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp; &quot;scenarios&quot;: [<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;media__default&quot;<br />
       &nbsp; &nbsp; ]<br />
       }
     </p>
-    <p>Example 5:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/media/listScenarios &#39;{&quot;enabled&quot;:true,&quot;disabled&quot;:true}&#39;<br />
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/media/listScenarios &#39;{&quot;enabled&quot;:true,&quot;disabled&quot;:false}&#39;<br />
       {<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp; &quot;scenarios&quot;: [<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;media__default&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;media_back_speaker&quot;<br />
       &nbsp; &nbsp; ]<br />
       }
     </p>
-    <p>Example 6:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/media/listScenarios &#39;{&quot;test&quot;}&#39;<br />
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/media/listScenarios &#39;{&quot;enabled&quot;:true,&quot;disabled&quot;:true}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;scenarios&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;media_back_speaker&quot;<br />
+      &nbsp; &nbsp; ]<br />
+      }
+    </p>
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/media/listScenarios &#39;{&quot;test&quot;}&#39;<br />
       {<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
       &nbsp; &nbsp; &quot;errorText&quot;: &quot;Not a valid json message&quot;<br />
       }
     </p>
-    <p>Example 7:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/media/listScenarios &#39;{&quot;enabledTEST&quot;:true,&quot;disabled&quot;:true}&#39;<br />
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/media/listScenarios &#39;{&quot;enabledTEST&quot;:true,&quot;disabled&quot;:true}&#39;<br />
       {<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
       &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
-      }<br />
-      &nbsp;
+      }
     </p>
   </div>
 </div>
@@ -1181,10 +1227,77 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/media/offsetMicGain &#39;{&quot;offset&quot;:12,&quot;unit&quot;:&quot;step&quot;}&#39;</p>
-    <p>Returns:<br />
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/offsetMicGain &#39;{}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 2,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Missing &#39;offset&#39; integer parameter.&quot;<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/offsetMicGain &#39;{&quot;offset&quot;:12}&#39;<br />
       {<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/offsetMicGain &#39;{&quot;offset&quot;:12, &quot;unit&quot;:&quot;step&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/offsetMicGain &#39;{&quot;offset&quot;:-20, &quot;unit&quot;:&quot;step&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/offsetMicGain &#39;{&quot;offset&quot;:-50, &quot;unit&quot;:&quot;step&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Invalid &#39;offset&#39; integer parameter value or file not found.&quot;<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/offsetMicGain &#39;{&quot;offset&quot;:50, &quot;unit&quot;:&quot;step&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Invalid &#39;offset&#39; integer parameter value or file not found.&quot;<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/offsetMicGain &#39;{&quot;offset&quot;:100, &quot;unit&quot;:&quot;percent&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/offsetMicGain &#39;{&quot;offset&quot;:-100, &quot;unit&quot;:&quot;percent&quot;}<br />
+      &#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/offsetMicGain &#39;{&quot;offset&quot;:10, &quot;unit&quot;:&quot;percent&quot;,&quot;scenario&quot;:&quot;media_back_speaker&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/offsetMicGain &#39;{&quot;offset&quot;:110, &quot;unit&quot;:&quot;percent&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Invalid &#39;offset&#39; integer parameter value or file not found.&quot;<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/offsetMicGain &#39;{&quot;offset&quot;:-110, &quot;unit&quot;:&quot;percent&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Invalid &#39;offset&#39; integer parameter value or file not found.&quot;<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/offsetMicGain &#39;{&quot;offset&quot;:110, &quot;unit&quot;:&quot;percent&quot;,&quot;scenario&quot;:&quot;ringtone_default&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;failed to set parameter (invalid scenario name?)&quot;<br />
       }
     </p>
   </div>
@@ -1373,10 +1486,57 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/media/offsetVolume &#39;{&quot;scenario&quot;:&quot;media_back_speaker&quot;,&quot;offset&quot;:70,&quot;unit&quot;:&quot;percent&quot;}&#39;</p>
-    <p>{</p>
-    <p>&quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/offsetVolume &#39;{&quot;scenario&quot;:&quot;media_back_speaker&quot;,&quot;offset&quot;:70,&quot;unit&quot;:&quot;percent&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/offsetVolume &#39;{&quot;scenario&quot;:&quot;media_back_speaker&quot;,&quot;unit&quot;:&quot;percent&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 2,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Missing &#39;offset&#39; integer parameter.&quot;<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/offsetVolume &#39;{&quot;scenario&quot;:&quot;media_back_speaker&quot;,&quot;offset&quot;:110,&quot;unit&quot;:&quot;percent&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Invalid &#39;offset&#39; integer parameter value or file not found.&quot;<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/offsetVolume &#39;{&quot;scenario&quot;:&quot;media_back_speaker&quot;,&quot;offset&quot;:-110,&quot;unit&quot;:&quot;percent&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Invalid &#39;offset&#39; integer parameter value or file not found.&quot;<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/offsetVolume &#39;{&quot;scenario&quot;:&quot;media_back_speaker&quot;,&quot;offset&quot;:-100,&quot;unit&quot;:&quot;percent&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/offsetVolume &#39;{&quot;scenario&quot;:&quot;media_back_speaker&quot;,&quot;offset&quot;:70,&quot;unit&quot;:&quot;percent&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/offsetVolume &#39;{&quot;scenario&quot;:&quot;media_back_speaker&quot;,&quot;offset&quot;:10}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/offsetVolume &#39;{&quot;scenario&quot;:&quot;media_back_speaker&quot;,&quot;offset&quot;:10,&quot;unit&quot;:&quot;step&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/offsetVolume &#39;{&quot;scenario&quot;:&quot;media_back_speaker&quot;,&quot;offset&quot;:-3,&quot;unit&quot;:&quot;step&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>media/setCurrentScenario</h3>
@@ -1495,30 +1655,26 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example 1:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/media/setCurrentScenario &#39;{&quot;scenario&quot;:&quot;media__default&quot;}&#39;<br />
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/media/setCurrentScenario &#39;{&quot;scenario&quot;:&quot;media_back_speaker&quot;}&#39;<br />
       {<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
       }
     </p>
-    <p>Example 2:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/media/setCurrentScenario &#39;{&quot;scenario&quot;:&quot;media__default_test&quot;}&#39;<br />
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/media/setCurrentScenario &#39;{&quot;scenario&quot;:&quot;media_back_speaker_test&quot;}&#39;<br />
       {<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
       &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not set current scenario.&quot;<br />
       }
     </p>
-    <p>Example 3:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/media/setCurrentScenario &#39;{&quot;scenarido&quot;:&quot;media__default_test&quot;}&#39;<br />
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/media/setCurrentScenario &#39;{&quot;scenarido&quot;:&quot;media_back_speaker_test&quot;}&#39;<br />
       {<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
       &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
       }
     </p>
-    <p>Example 4:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/media/setCurrentScenario &#39;{&quot;scenario&quot;:&quot;media__default&quot;,&quot;TEST&quot;}&#39;<br />
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/media/setCurrentScenario &#39;{&quot;scenario&quot;:&quot;media_back_speaker&quot;,&quot;TEST&quot;}&#39;<br />
       {<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
@@ -1658,10 +1814,37 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/media/setLatency &#39;{&quot;latency&quot;:10}&#39;</p>
-    <p>{</p>
-    <p>&quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/setLatency &#39;{&quot;latency&quot;:10}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/setLatency &#39;{}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 2,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Missing &#39;latency&#39; integer parameter.&quot;<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/setLatency &#39;{&quot;latency&quot;:10, &quot;scenario&quot;:&quot;media_back_speaker&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/setLatency &#39;{&quot;scenario&quot;:&quot;media_back_speaker&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 2,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Missing &#39;latency&#39; integer parameter.&quot;<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/setLatency &#39;{&quot;latency&quot;:10, &quot;scenario&quot;:&quot;media_back_speaker_test&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;failed to set<br />
+      }
+    </p>
   </div>
 </div>
 <h3>media/setMicGain</h3>
@@ -1795,10 +1978,37 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/media/setMicGain &#39;{&quot;mic_gain&quot;:10}&#39;</p>
-    <p>{</p>
-    <p style="margin-left:.25in">&quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/setMicGain &#39;{&quot;mic_gain&quot;:10}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/setMicGain &#39;{}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 2,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Missing &#39;mic_gain&#39; integer parameter.&quot;<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/setMicGain &#39;{&quot;mic_gain&quot;:10,&quot;scenario&quot;:&quot;media_back_speaker&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/setMicGain &#39;{&quot;mic_gain&quot;:10,&quot;scenario&quot;:&quot;media_back_speaker_test&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;failed to set parameter (invalid scenario name?)&quot;<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/setMicGain &#39;{&quot;scenario&quot;:&quot;media_back_speaker&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 2,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Missing &#39;mic_gain&#39; integer parameter.&quot;<br />
+      }
+    </p>
   </div>
 </div>
 <h3>media/setVolume</h3>
@@ -1932,10 +2142,37 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/media/setVolume &#39;{&quot;volume&quot;:10}&#39;</p>
-    <p>{</p>
-    <p style="margin-left:.25in">&quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/setVolume &#39;{&quot;volume&quot;:10}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/setVolume &#39;{}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 2,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Missing &#39;volume&#39; integer parameter.&quot;<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/setVolume &#39;{&quot;volume&quot;:10, &quot;scenario&quot;:&quot;media_back_speaker&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/setVolume &#39;{ &quot;scenario&quot;:&quot;media_back_speaker&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 2,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Missing &#39;volume&#39; integer parameter.&quot;<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/setVolume &#39;{&quot;volume&quot;:10, &quot;scenario&quot;:&quot;media_back_speakerT&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;failed to set parameter (invalid scenario name?)&quot;<br />
+      }
+    </p>
   </div>
 </div>
 <h3>media/status</h3>
@@ -2136,21 +2373,54 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -i -f luna://com.webos.service.audio/media/status &#39;{&quot;subscribe&quot; : false}&#39;</p>
-    <p>{</p>
-    <p>&nbsp;&nbsp;&nbsp; &quot;mic_gain&quot;: 10,</p>
-    <p>&nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true,</p>
-    <p>&nbsp;&nbsp;&nbsp; &quot;ringtoneWithVibration&quot;: true,</p>
-    <p>&nbsp;&nbsp;&nbsp; &quot;scenario&quot;: &quot;media_back_speaker&quot;,</p>
-    <p>&nbsp;&nbsp;&nbsp; &quot;muted&quot;: false,</p>
-    <p>&nbsp;&nbsp;&nbsp; &quot;hac&quot;: false,</p>
-    <p>&nbsp;&nbsp;&nbsp; &quot;subscribed&quot;: false,</p>
-    <p>&nbsp;&nbsp;&nbsp; &quot;volume&quot;: 10,</p>
-    <p>&nbsp;&nbsp;&nbsp; &quot;action&quot;: &quot;requested&quot;,</p>
-    <p>&nbsp;&nbsp; &nbsp;&quot;ringer switch&quot;: true,</p>
-    <p>&nbsp;&nbsp;&nbsp; &quot;slider&quot;: false,</p>
-    <p>&nbsp;&nbsp;&nbsp; &quot;active&quot;: true</p>
-    <p>}</p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/status &#39;{&quot;subscribe&quot; : false}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;mic_gain&quot;: 10,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
+      &nbsp; &nbsp; &quot;scenario&quot;: &quot;media_back_speaker&quot;,<br />
+      &nbsp; &nbsp; &quot;muted&quot;: false,<br />
+      &nbsp; &nbsp; &quot;hac&quot;: false,<br />
+      &nbsp; &nbsp; &quot;subscribed&quot;: false,<br />
+      &nbsp; &nbsp; &quot;volume&quot;: 10,<br />
+      &nbsp; &nbsp; &quot;action&quot;: &quot;requested&quot;,<br />
+      &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
+      &nbsp; &nbsp; &quot;slider&quot;: false,<br />
+      &nbsp; &nbsp; &quot;active&quot;: true<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/status &#39;{&quot;subscribe&quot; : true}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;mic_gain&quot;: 10,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
+      &nbsp; &nbsp; &quot;scenario&quot;: &quot;media_back_speaker&quot;,<br />
+      &nbsp; &nbsp; &quot;muted&quot;: false,<br />
+      &nbsp; &nbsp; &quot;hac&quot;: false,<br />
+      &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
+      &nbsp; &nbsp; &quot;volume&quot;: 10,<br />
+      &nbsp; &nbsp; &quot;action&quot;: &quot;requested&quot;,<br />
+      &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
+      &nbsp; &nbsp; &quot;slider&quot;: false,<br />
+      &nbsp; &nbsp; &quot;active&quot;: true<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/status &#39;{}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;mic_gain&quot;: 10,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
+      &nbsp; &nbsp; &quot;scenario&quot;: &quot;media_back_speaker&quot;,<br />
+      &nbsp; &nbsp; &quot;muted&quot;: false,<br />
+      &nbsp; &nbsp; &quot;hac&quot;: false,<br />
+      &nbsp; &nbsp; &quot;subscribed&quot;: false,<br />
+      &nbsp; &nbsp; &quot;volume&quot;: 10,<br />
+      &nbsp; &nbsp; &quot;action&quot;: &quot;requested&quot;,<br />
+      &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
+      &nbsp; &nbsp; &quot;slider&quot;: false,<br />
+      &nbsp; &nbsp; &quot;active&quot;: true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>nav/status</h3>
@@ -2330,102 +2600,27 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>OSE:</p>
-    <p>luna-send -i -f luna://com.webos.service.audio/nav/status &#39;{&quot;subscribe&quot; : true}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
-      &nbsp; &nbsp; &quot;scenario&quot;: &quot;nav_default&quot;,<br />
-      &nbsp; &nbsp; &quot;muted&quot;: false,<br />
-      &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
-      &nbsp; &nbsp; &quot;hac&quot;: false,<br />
-      &nbsp; &nbsp; &quot;volume&quot;: -1,<br />
-      &nbsp; &nbsp; &quot;action&quot;: &quot;requested&quot;,<br />
-      &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
-      &nbsp; &nbsp; &quot;slider&quot;: false,<br />
-      &nbsp; &nbsp; &quot;active&quot;: false<br />
-      }<br />
-      luna-send -i -f luna://com.webos.service.audio/nav/status &#39;{}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
-      &nbsp; &nbsp; &quot;scenario&quot;: &quot;nav_default&quot;,<br />
-      &nbsp; &nbsp; &quot;muted&quot;: false,<br />
-      &nbsp; &nbsp; &quot;subscribed&quot;: false,<br />
-      &nbsp; &nbsp; &quot;hac&quot;: false,<br />
-      &nbsp; &nbsp; &quot;volume&quot;: -1,<br />
-      &nbsp; &nbsp; &quot;action&quot;: &quot;requested&quot;,<br />
-      &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
-      &nbsp; &nbsp; &quot;slider&quot;: false,<br />
-      &nbsp; &nbsp; &quot;active&quot;: false<br />
-      }<br />
-      luna-send -i -f luna://com.webos.service.audio/nav/status &#39;{&quot;subscribe&quot; : false}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
-      &nbsp; &nbsp; &quot;scenario&quot;: &quot;nav_default&quot;,<br />
-      &nbsp; &nbsp; &quot;muted&quot;: false,<br />
-      &nbsp; &nbsp; &quot;subscribed&quot;: false,<br />
-      &nbsp; &nbsp; &quot;hac&quot;: false,<br />
-      &nbsp; &nbsp; &quot;volume&quot;: -1,<br />
-      &nbsp; &nbsp; &quot;action&quot;: &quot;requested&quot;,<br />
-      &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
-      &nbsp; &nbsp; &quot;slider&quot;: false,<br />
-      &nbsp; &nbsp; &quot;active&quot;: false<br />
-      }<br />
-      SIGNAGE:
-    </p>
-    <p>Example 1:</p>
+    <p>Example 1:&nbsp;</p>
     <p>luna-send -i -f luna://com.webos.service.audio/nav/status &#39;{&quot;subscribe&quot; : true}&#39;</p>
-    <p>Returns:<br />
-      {<br />
-      &nbsp; &nbsp; &quot;mic_gain&quot;: -1,<br />
+    <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;scenario&quot;: &quot;nav_default&quot;,<br />
-      &nbsp; &nbsp; &quot;muted&quot;: false,<br />
-      &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
-      &nbsp; &nbsp; &quot;volume&quot;: 50,<br />
-      &nbsp; &nbsp; &quot;action&quot;: &quot;requested&quot;,<br />
-      &nbsp; &nbsp; &quot;active&quot;: true<br />
-      }
-    </p>
-    <p>Subscription Return:<br />
-      {<br />
-      &nbsp; &nbsp; &quot;changed&quot;: [<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;,<br />
-      &nbsp; &nbsp; ],<br />
-      &nbsp; &nbsp; &quot;mic_gain&quot;: -1,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;muted&quot;: false,<br />
-      &nbsp; &nbsp; &quot;scenario&quot;: &quot;media_default&quot;,<br />
-      &nbsp; &nbsp; &quot;volume&quot;: 60,<br />
-      &nbsp; &nbsp; &quot;action&quot;: &quot;changed&quot;,<br />
-      &nbsp; &nbsp; &quot;active&quot;: true<br />
-      }
-    </p>
-    <p>Example 2:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/nav/status &#39;{&quot;subscribe&quot; : false}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;volumeMax&quot;: 100,<br />
       &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;nav_default&quot;,<br />
       &nbsp; &nbsp; &quot;muted&quot;: false,<br />
-      &nbsp; &nbsp; &quot;subscribed&quot;: false,<br />
+      &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
       &nbsp; &nbsp; &quot;hac&quot;: false,<br />
       &nbsp; &nbsp; &quot;volume&quot;: -1,<br />
       &nbsp; &nbsp; &quot;action&quot;: &quot;requested&quot;,<br />
-      &nbsp; &nbsp; &quot;supportvolume&quot;: true,<br />
       &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
       &nbsp; &nbsp; &quot;slider&quot;: false,<br />
       &nbsp; &nbsp; &quot;active&quot;: false<br />
       }
     </p>
-    <p>Example 3:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/nav/status &#39;{}&#39;<br />
-      {<br />
+    <p>&nbsp;</p>
+    <p>Example 2:&nbsp;</p>
+    <p>luna-send -i -f luna://com.webos.service.audio/nav/status &#39;{}&#39;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;volumeMax&quot;: 100,<br />
       &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;nav_default&quot;,<br />
       &nbsp; &nbsp; &quot;muted&quot;: false,<br />
@@ -2433,7 +2628,23 @@ toc: true
       &nbsp; &nbsp; &quot;hac&quot;: false,<br />
       &nbsp; &nbsp; &quot;volume&quot;: -1,<br />
       &nbsp; &nbsp; &quot;action&quot;: &quot;requested&quot;,<br />
-      &nbsp; &nbsp; &quot;supportvolume&quot;: true,<br />
+      &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
+      &nbsp; &nbsp; &quot;slider&quot;: false,<br />
+      &nbsp; &nbsp; &quot;active&quot;: false<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Example 3:&nbsp;</p>
+    <p>luna-send -i -f luna://com.webos.service.audio/nav/status &#39;{&quot;subscribe&quot; : false}&#39;</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
+      &nbsp; &nbsp; &quot;scenario&quot;: &quot;nav_default&quot;,<br />
+      &nbsp; &nbsp; &quot;muted&quot;: false,<br />
+      &nbsp; &nbsp; &quot;subscribed&quot;: false,<br />
+      &nbsp; &nbsp; &quot;hac&quot;: false,<br />
+      &nbsp; &nbsp; &quot;volume&quot;: -1,<br />
+      &nbsp; &nbsp; &quot;action&quot;: &quot;requested&quot;,<br />
       &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
       &nbsp; &nbsp; &quot;slider&quot;: false,<br />
       &nbsp; &nbsp; &quot;active&quot;: false<br />
@@ -2607,35 +2818,33 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example 1:<br />
-      luna-send -n 1 luna://com.webos.service.audio/ringtone/getVolume &#39;{&quot;scenario&quot;:&quot;ringtone_default&quot;, &quot;subscribe&quot;:true}&#39;<br />
-      {&quot;returnValue&quot;:true,&quot;volumeMax&quot;:100,&quot;ringtonewithvibration&quot;:true,&quot;scenario&quot;:&quot;ringtone_default&quot;,&quot;muted&quot;:false,&quot;hac&quot;:false,&quot;subscribed&quot;:true,&quot;volume&quot;:100,&quot;action&quot;:&quot;requested&quot;,&quot;supportvolume&quot;:true,&quot;ringer switch&quot;:true,&quot;slider&quot;:false,&quot;active&quot;:false}
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/ringtone/getVolume &#39;{}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;scenario&quot;: &quot;ringtone_default&quot;,<br />
+      &nbsp; &nbsp; &quot;volume&quot;: 50,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
     </p>
-    <p>Example 2:<br />
-      luna-send -n 1 luna://com.webos.service.audio/ringtone/getVolume &#39;{&quot;scenario&quot;:&quot;ringtone_default&quot;, &quot;subscribe&quot;:false}&#39;<br />
-      {&quot;returnValue&quot;:true,&quot;scenario&quot;:&quot;ringtone_default&quot;,&quot;volume&quot;:100,&quot;muted&quot;:false}
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/ringtone/getVolume &#39;{&quot;scenario&quot;:&quot;ringtone_default&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;scenario&quot;: &quot;ringtone_default&quot;,<br />
+      &nbsp; &nbsp; &quot;volume&quot;: 50,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
     </p>
-    <p>Example 3:<br />
-      luna-send -n 1 luna://com.webos.service.audio/ringtone/getVolume &#39;{&quot;subscribe&quot;:false}&#39;<br />
-      {&quot;returnValue&quot;:true,&quot;scenario&quot;:&quot;ringtone_default&quot;,&quot;volume&quot;:100,&quot;muted&quot;:false}
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/ringtone/getVolume &#39;{&quot;scenario&quot;:&quot;TEST&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;failed to get parameter (invalid scenario name?)&quot;<br />
+      }
     </p>
-    <p>Example 4:<br />
-      luna-send -n 1 luna://com.webos.service.audio/ringtone/getVolume &#39;{&quot;subscribe&quot;:true}&#39;<br />
-      {&quot;returnValue&quot;:true,&quot;volumeMax&quot;:100,&quot;ringtonewithvibration&quot;:true,&quot;scenario&quot;:&quot;ringtone_default&quot;,&quot;muted&quot;:false,&quot;hac&quot;:false,&quot;subscribed&quot;:true,&quot;volume&quot;:100,&quot;action&quot;:&quot;requested&quot;,&quot;supportvolume&quot;:true,&quot;ringer switch&quot;:true,&quot;slider&quot;:false,&quot;active&quot;:false}
-    </p>
-    <p>Example 5:<br />
-      luna-send -n 1 luna://com.webos.service.audio/ringtone/getVolume &#39;{}&#39;<br />
-      {&quot;returnValue&quot;:true,&quot;scenario&quot;:&quot;ringtone_default&quot;,&quot;volume&quot;:100,&quot;muted&quot;:false}
-    </p>
-    <p>Example 6:<br />
-      luna-send -n 1 luna://com.webos.service.audio/ringtone/getVolume &#39;{&quot;scenario&quot;:&quot;ringtone_defaults&quot;, &quot;subscribe&quot;:false}&#39;<br />
-      {&quot;returnValue&quot;:false,&quot;errorCode&quot;:3,&quot;errorText&quot;:&quot;failed to get parameter (invalid scenario name?)&quot;}
-    </p>
-    <p>Example 7:<br />
-      luna-send -n 1 luna://com.webos.service.audio/ringtone/getVolume &#39;{&quot;scenarios&quot;:&quot;ringtone_defaults&quot;, &quot;subscribe&quot;:false}<br />
-      &#39;<br />
-      {&quot;returnValue&quot;:false,&quot;errorCode&quot;:1, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;errorText&quot;:&quot;Could not validate json message against schema&quot;}<br />
-      &nbsp;
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/ringtone/getVolume &#39;{&quot;scenario&quot;:&quot;ringtone_default&quot;, &quot;subscribe&quot;:true}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
+      }
     </p>
   </div>
 </div>
@@ -3102,16 +3311,14 @@ toc: true
       luna-send -n 1 -f luna://com.webos.service.audio/ringtone/status &#39;{&quot;subscribe&quot; : true}&#39;<br />
       {<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;volumeMax&quot;: 100,<br />
       &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;ringtone_default&quot;,<br />
       &nbsp; &nbsp; &quot;muted&quot;: false,<br />
       &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
       &nbsp; &nbsp; &quot;hac&quot;: false,<br />
-      &nbsp; &nbsp; &quot;volume&quot;: 24,<br />
+      &nbsp; &nbsp; &quot;volume&quot;: 10,<br />
       &nbsp; &nbsp; &quot;action&quot;: &quot;requested&quot;,<br />
-      &nbsp; &nbsp; &quot;supportvolume&quot;: true,<br />
-      &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
+      &nbsp; &nbsp; &quot;ringer switch&quot;: false,<br />
       &nbsp; &nbsp; &quot;slider&quot;: false,<br />
       &nbsp; &nbsp; &quot;active&quot;: false<br />
       }
@@ -3120,16 +3327,14 @@ toc: true
       luna-send -n 1 -f luna://com.webos.service.audio/ringtone/status &#39;{&quot;subscribe&quot; : false}&#39;<br />
       {<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;volumeMax&quot;: 100,<br />
       &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;ringtone_default&quot;,<br />
       &nbsp; &nbsp; &quot;muted&quot;: false,<br />
       &nbsp; &nbsp; &quot;subscribed&quot;: false,<br />
       &nbsp; &nbsp; &quot;hac&quot;: false,<br />
-      &nbsp; &nbsp; &quot;volume&quot;: 24,<br />
+      &nbsp; &nbsp; &quot;volume&quot;: 10,<br />
       &nbsp; &nbsp; &quot;action&quot;: &quot;requested&quot;,<br />
-      &nbsp; &nbsp; &quot;supportvolume&quot;: true,<br />
-      &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
+      &nbsp; &nbsp; &quot;ringer switch&quot;: false,<br />
       &nbsp; &nbsp; &quot;slider&quot;: false,<br />
       &nbsp; &nbsp; &quot;active&quot;: false<br />
       }
@@ -3138,7 +3343,6 @@ toc: true
       luna-send -n 1 -f luna://com.webos.service.audio/ringtone/status &#39;{}&#39;<br />
       {<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;volumeMax&quot;: 100,<br />
       &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;ringtone_default&quot;,<br />
       &nbsp; &nbsp; &quot;muted&quot;: false,<br />
@@ -3146,11 +3350,487 @@ toc: true
       &nbsp; &nbsp; &quot;hac&quot;: false,<br />
       &nbsp; &nbsp; &quot;volume&quot;: 24,<br />
       &nbsp; &nbsp; &quot;action&quot;: &quot;requested&quot;,<br />
-      &nbsp; &nbsp; &quot;supportvolume&quot;: true,<br />
       &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
       &nbsp; &nbsp; &quot;slider&quot;: false,<br />
       &nbsp; &nbsp; &quot;active&quot;: false<br />
       }
+    </p>
+  </div>
+</div>
+<h3>state/pulse/suspend</h3>
+<div>
+  <h4>Description</h4>
+  <p>Get the suspend state of Pulse Audio.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>suspend</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates whether to suspend all sinks.</p>
+            <ul>
+              <li>true: Suspend&nbsp;all sinks</li>
+              <li>false: Do not suspend all sinks</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <ul>
+              <li>If the method succeeds,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>true</strong>.</li>
+              <li>If the method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false.</strong></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p><strong>errorCode</strong>&nbsp;contains the error code if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorCode</strong>&nbsp;only if it fails</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p><strong>errorText&nbsp;</strong>contains the error text if the method fails. The method will return&nbsp;<strong>errorText&nbsp;</strong>only if it fails</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Example 1:<br />
+      luna-send -n 1 -f luna://com.webos.service.audio/state/pulse/suspend &#39;{&quot;suspend&quot; : false}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>Example 2:<br />
+      luna-send -n 1 -f luna://com.webos.service.audio/state/pulse/suspend &#39;{&quot;suspend&quot; : true}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>Example 3:<br />
+      luna-send -n 1 -f luna://com.webos.service.audio/state/pulse/suspend &#39;{&quot;suspend&quot; : true, &quot;sink&quot;:&quot;ptts&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
+      }<br />
+      &nbsp;
+    </p>
+  </div>
+</div>
+<h3>state/pulse/sinkStatus</h3>
+<div>
+  <h4>Description</h4>
+  <p><span style="line-height:1.6em">List down the status of a pulseaudio sink.</span></p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>sink</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Name of sink.&nbsp;<span style="line-height:1.6em">If not specified, the status of all the sinks are listed.</span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <ul>
+              <li>If the method succeeds, <strong>returnValue</strong> will contain <strong>true</strong>.</li>
+              <li>If the method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false.</strong></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p><strong>errorCode </strong>contains the error code if the method fails. The method will return <strong>errorCode</strong> only if it fails.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p><strong>errorText </strong>contains the error text if the method fails. The method will return <strong>errorText </strong>only if it fails.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>filter</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Pulse filter status.</p>
+            <p><strong>Note: </strong>For&nbsp;webOS Open Source Edition, this parameter is for future use.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>sink</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Name of the sink.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>destination</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Physical destination.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>volume</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Current volume set for the sink.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>openStreams</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Streams opened for the sink.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>latency</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Current latency set for sink.</p>
+            <p><strong>Note: </strong>For&nbsp;webOS Open Source Edition, this parameter is for future use.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>&quot;Invalid &#39;sink&#39; string parameter value or file not found.&quot;</td>
+          <td>
+            <p>Invalid &#39;sink&#39; parameter is provided.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Example 1:<br />
+      luna-send -n 1 -f luna://com.webos.service.audio/state/pulse/sinkStatus &#39;{&quot;sink&quot; : &quot;pmedia&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
+      &nbsp; &nbsp; &quot;sink&quot;: &quot;pmedia&quot;,<br />
+      &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;,<br />
+      &nbsp; &nbsp; &quot;volume&quot;: 0,<br />
+      &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;latency&quot;: 65536<br />
+      }
+    </p>
+    <p>Example 2:<br />
+      luna-send -n 1 -f luna://com.webos.service.audio/state/pulse/sinkStatus &#39;{&quot;sink&quot; : &quot;ptts&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
+      &nbsp; &nbsp; &quot;sink&quot;: &quot;ptts&quot;,<br />
+      &nbsp; &nbsp; &quot;destination&quot;: &quot;ptts&quot;,<br />
+      &nbsp; &nbsp; &quot;volume&quot;: 0,<br />
+      &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;latency&quot;: 65536<br />
+      }
+    </p>
+    <p>Example 3:<br />
+      luna-send -n 1 -f luna://com.webos.service.audio/state/pulse/sinkStatus &#39;{&quot;sink&quot; : &quot;pttssss&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Invalid &#39;sink&#39; string parameter value or file not found.&quot;<br />
+      }
+    </p>
+    <p>Example 4:<br />
+      luna-send -n 1 -f luna://com.webos.service.audio/state/pulse/sinkStatus &#39;{}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;pdefaultapp&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;pdefaultapp&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
+      &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &quot;pmedia&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;pmedia&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
+      &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &quot;pcallertone&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;pcallertone&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
+      &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &quot;ptimer&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;ptimer&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
+      &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;pndk&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;pndk&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
+      &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &quot;palarm&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;palarm&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
+      &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &quot;pvoip&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;pvoip&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: -1,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
+      &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &quot;ptts&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;ptts&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;ptts&quot;<br />
+      &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &quot;palerts&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;palerts&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
+      &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &quot;pvoicerecognition&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;pvoicerecognition&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
+      &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &quot;pvvm&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;pvvm&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: -1,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
+      &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &quot;pcalendar&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;pcalendar&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
+      &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &quot;pnavigation&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;pnavigation&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: -1,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
+      &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &quot;pringtones&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;pringtones&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
+      &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &quot;pnetflix&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;pnetflix&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
+      &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &quot;pflash&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;pflash&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: -1,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
+      &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &quot;pnotifications&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;pnotifications&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
+      &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &quot;peffects&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;peffects&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
+      &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &quot;pfeedback&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;pfeedback&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 80,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
+      &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &quot;pvoicedial&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;pvoicedial&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
+      &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &quot;pDTMF&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;pDTMF&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 80,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
+      &nbsp; &nbsp; }<br />
+      }<br />
+      &nbsp;
     </p>
   </div>
 </div>
@@ -3612,483 +4292,6 @@ toc: true
     </p>
   </div>
 </div>
-<h3>state/pulse/sinkStatus</h3>
-<div>
-  <h4>Description</h4>
-  <p><span style="line-height:1.6em">List down the status of a pulseaudio sink.</span></p>
-  <h4>Parameters</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>sink</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Name of sink.&nbsp;<span style="line-height:1.6em">If not specified, the status of all the sinks are listed.</span></p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Call Returns</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <ul>
-              <li>If the method succeeds, <strong>returnValue</strong> will contain <strong>true</strong>.</li>
-              <li>If the method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false.</strong></li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>errorCode</td>
-          <td>Optional</td>
-          <td>Number</td>
-          <td>
-            <p><strong>errorCode </strong>contains the error code if the method fails. The method will return <strong>errorCode</strong> only if it fails.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>errorText</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p><strong>errorText </strong>contains the error text if the method fails. The method will return <strong>errorText </strong>only if it fails.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>filter</td>
-          <td>Optional</td>
-          <td>Number</td>
-          <td>
-            <p>Pulse filter status.</p>
-            <p><strong>Note: </strong>For&nbsp;webOS Open Source Edition, this parameter is for future use.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>sink</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Name of the sink.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>destination</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Physical destination.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>volume</td>
-          <td>Optional</td>
-          <td>Number</td>
-          <td>
-            <p>Current volume set for the sink.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>openStreams</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Streams opened for the sink.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>latency</td>
-          <td>Optional</td>
-          <td>Number</td>
-          <td>
-            <p>Current latency set for sink.</p>
-            <p><strong>Note: </strong>For&nbsp;webOS Open Source Edition, this parameter is for future use.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Error Codes Reference</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Error Code</p>
-          </th>
-          <th width="30%">
-            <p>Error Text</p>
-          </th>
-          <th width="55%">
-            <p>Error Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>&quot;Invalid &#39;sink&#39; string parameter value or file not found.&quot;</td>
-          <td>
-            <p>Invalid &#39;sink&#39; parameter is provided.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Example</h4>
-  <div class="code-bg-grey">
-    <p>Example 1:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/state/pulse/sinkStatus &#39;{&quot;sink&quot; : &quot;pmedia&quot;}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
-      &nbsp; &nbsp; &quot;sink&quot;: &quot;pmedia&quot;,<br />
-      &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;,<br />
-      &nbsp; &nbsp; &quot;volume&quot;: 0,<br />
-      &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;latency&quot;: 65536<br />
-      }
-    </p>
-    <p>Example 2:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/state/pulse/sinkStatus &#39;{&quot;sink&quot; : &quot;ptts&quot;}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
-      &nbsp; &nbsp; &quot;sink&quot;: &quot;ptts&quot;,<br />
-      &nbsp; &nbsp; &quot;destination&quot;: &quot;ptts&quot;,<br />
-      &nbsp; &nbsp; &quot;volume&quot;: 0,<br />
-      &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;latency&quot;: 65536<br />
-      }
-    </p>
-    <p>Example 3:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/state/pulse/sinkStatus &#39;{&quot;sink&quot; : &quot;pttssss&quot;}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Invalid &#39;sink&#39; string parameter value or file not found.&quot;<br />
-      }
-    </p>
-    <p>Example 4:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/state/pulse/sinkStatus &#39;{}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;pdefaultapp&quot;: {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;pdefaultapp&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
-      &nbsp; &nbsp; },<br />
-      &nbsp; &nbsp; &quot;pmedia&quot;: {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;pmedia&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
-      &nbsp; &nbsp; },<br />
-      &nbsp; &nbsp; &quot;pcallertone&quot;: {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;pcallertone&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
-      &nbsp; &nbsp; },<br />
-      &nbsp; &nbsp; &quot;ptimer&quot;: {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;ptimer&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
-      &nbsp; &nbsp; },<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;pndk&quot;: {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;pndk&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
-      &nbsp; &nbsp; },<br />
-      &nbsp; &nbsp; &quot;palarm&quot;: {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;palarm&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
-      &nbsp; &nbsp; },<br />
-      &nbsp; &nbsp; &quot;pvoip&quot;: {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;pvoip&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: -1,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
-      &nbsp; &nbsp; },<br />
-      &nbsp; &nbsp; &quot;ptts&quot;: {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;ptts&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;ptts&quot;<br />
-      &nbsp; &nbsp; },<br />
-      &nbsp; &nbsp; &quot;palerts&quot;: {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;palerts&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
-      &nbsp; &nbsp; },<br />
-      &nbsp; &nbsp; &quot;pvoicerecognition&quot;: {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;pvoicerecognition&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
-      &nbsp; &nbsp; },<br />
-      &nbsp; &nbsp; &quot;pvvm&quot;: {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;pvvm&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: -1,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
-      &nbsp; &nbsp; },<br />
-      &nbsp; &nbsp; &quot;pcalendar&quot;: {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;pcalendar&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
-      &nbsp; &nbsp; },<br />
-      &nbsp; &nbsp; &quot;pnavigation&quot;: {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;pnavigation&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: -1,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
-      &nbsp; &nbsp; },<br />
-      &nbsp; &nbsp; &quot;pringtones&quot;: {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;pringtones&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
-      &nbsp; &nbsp; },<br />
-      &nbsp; &nbsp; &quot;pnetflix&quot;: {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;pnetflix&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
-      &nbsp; &nbsp; },<br />
-      &nbsp; &nbsp; &quot;pflash&quot;: {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;pflash&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: -1,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
-      &nbsp; &nbsp; },<br />
-      &nbsp; &nbsp; &quot;pnotifications&quot;: {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;pnotifications&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
-      &nbsp; &nbsp; },<br />
-      &nbsp; &nbsp; &quot;peffects&quot;: {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;peffects&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
-      &nbsp; &nbsp; },<br />
-      &nbsp; &nbsp; &quot;pfeedback&quot;: {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;pfeedback&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 80,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
-      &nbsp; &nbsp; },<br />
-      &nbsp; &nbsp; &quot;pvoicedial&quot;: {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;pvoicedial&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
-      &nbsp; &nbsp; },<br />
-      &nbsp; &nbsp; &quot;pDTMF&quot;: {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;filter&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;pDTMF&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 80,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;openStreams&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;latency&quot;: 65536,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;destination&quot;: &quot;pcm_output&quot;<br />
-      &nbsp; &nbsp; }<br />
-      }<br />
-      &nbsp;
-    </p>
-  </div>
-</div>
-<h3>state/pulse/suspend</h3>
-<div>
-  <h4>Description</h4>
-  <p>Get the suspend state of Pulse Audio.</p>
-  <h4>Parameters</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>suspend</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates whether to suspend all sinks.</p>
-            <ul>
-              <li>true: Suspend&nbsp;all sinks</li>
-              <li>false: Do not suspend all sinks</li>
-            </ul>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Call Returns</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <ul>
-              <li>If the method succeeds,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>true</strong>.</li>
-              <li>If the method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false.</strong></li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>errorCode</td>
-          <td>Optional</td>
-          <td>Number</td>
-          <td>
-            <p><strong>errorCode</strong>&nbsp;contains the error code if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorCode</strong>&nbsp;only if it fails</p>
-          </td>
-        </tr>
-        <tr>
-          <td>errorText</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p><strong>errorText&nbsp;</strong>contains the error text if the method fails. The method will return&nbsp;<strong>errorText&nbsp;</strong>only if it fails</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Example</h4>
-  <div class="code-bg-grey">
-    <p>Example 1:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/state/pulse/suspend &#39;{&quot;suspend&quot; : false}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
-    <p>Example 2:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/state/pulse/suspend &#39;{&quot;suspend&quot; : true}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
-    <p>Example 3:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/state/pulse/suspend &#39;{&quot;suspend&quot; : true, &quot;sink&quot;:&quot;ptts&quot;}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
-      }<br />
-      &nbsp;
-    </p>
-  </div>
-</div>
 <h3>state/set</h3>
 <div>
   <h4>Description</h4>
@@ -4390,56 +4593,32 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example 1:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/system/getVolume &#39;{}&#39;<br />
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/system/getVolume &#39;{}&#39;<br />
       {<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;system_default&quot;,<br />
-      &nbsp; &nbsp; &quot;muted&quot;: false,<br />
-      &nbsp; &nbsp; &quot;volume&quot;: 45,<br />
+      &nbsp; &nbsp; &quot;volume&quot;: 80,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
       }
     </p>
-    <p>Example 2:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/system/getVolume &#39;{&quot;scenario&quot;:&quot;system_default&quot;}&#39;<br />
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/system/getVolume &#39;{&quot;scenario&quot;:&quot;system_default&quot;}&#39;<br />
       {<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;system_default&quot;,<br />
-      &nbsp; &nbsp; &quot;muted&quot;: false,<br />
-      &nbsp; &nbsp; &quot;volume&quot;: 45,<br />
+      &nbsp; &nbsp; &quot;volume&quot;: 80,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
       }
     </p>
-    <p>Example 3:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/system/getVolume &#39;{&quot;scenario&quot;:&quot;system_defaults&quot;}&#39;<br />
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/system/getVolume &#39;{&quot;scenario&quot;:&quot;system_defaults&quot;}&#39;<br />
       {<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
       &nbsp; &nbsp; &quot;errorText&quot;: &quot;failed to get parameter (invalid scenario name?)&quot;<br />
       }
     </p>
-    <p>Example 4:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/system/getVolume &#39;{&quot;scenarioT&quot;:&quot;system_defaults&quot;}&#39;<br />
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/system/getVolume &#39;{&quot;scenarioT&quot;:&quot;system_defaults&quot;}&#39;<br />
       {<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
       &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
-      }
-    </p>
-    <p>Example 5:</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/system/getVolume &#39;{&quot;scenario&quot;:&quot;system_default&quot;, &quot;subscribe&quot;:true}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;volumeMax&quot;: 100,<br />
-      &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
-      &nbsp; &nbsp; &quot;scenario&quot;: &quot;system_default&quot;,<br />
-      &nbsp; &nbsp; &quot;muted&quot;: false,<br />
-      &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
-      &nbsp; &nbsp; &quot;hac&quot;: false,<br />
-      &nbsp; &nbsp; &quot;volume&quot;: 45,<br />
-      &nbsp; &nbsp; &quot;action&quot;: &quot;requested&quot;,<br />
-      &nbsp; &nbsp; &quot;supportvolume&quot;: true,<br />
-      &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
-      &nbsp; &nbsp; &quot;slider&quot;: false,<br />
-      &nbsp; &nbsp; &quot;active&quot;: false<br />
       }
     </p>
   </div>
@@ -4924,11 +5103,9 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example 1:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/system/status &#39;{}&#39;<br />
+    <p>Example 1:luna-send -n 1 -f luna://com.webos.service.audio/system/status &#39;{}&#39;<br />
       {<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;volumeMax&quot;: 100,<br />
       &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;system_default&quot;,<br />
       &nbsp; &nbsp; &quot;muted&quot;: false,<br />
@@ -4936,8 +5113,7 @@ toc: true
       &nbsp; &nbsp; &quot;hac&quot;: false,<br />
       &nbsp; &nbsp; &quot;volume&quot;: 65,<br />
       &nbsp; &nbsp; &quot;action&quot;: &quot;requested&quot;,<br />
-      &nbsp; &nbsp; &quot;supportvolume&quot;: true,<br />
-      &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
+      &nbsp; &nbsp; &quot;ringer switch&quot;: false,<br />
       &nbsp; &nbsp; &quot;slider&quot;: false,<br />
       &nbsp; &nbsp; &quot;active&quot;: false<br />
       }
@@ -4946,7 +5122,6 @@ toc: true
       luna-send -n 1 -f luna://com.webos.service.audio/system/status &#39;{&quot;subscribe&quot; : true}&#39;<br />
       {<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;volumeMax&quot;: 100,<br />
       &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;system_default&quot;,<br />
       &nbsp; &nbsp; &quot;muted&quot;: false,<br />
@@ -4954,7 +5129,6 @@ toc: true
       &nbsp; &nbsp; &quot;hac&quot;: false,<br />
       &nbsp; &nbsp; &quot;volume&quot;: 65,<br />
       &nbsp; &nbsp; &quot;action&quot;: &quot;requested&quot;,<br />
-      &nbsp; &nbsp; &quot;supportvolume&quot;: true,<br />
       &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
       &nbsp; &nbsp; &quot;slider&quot;: false,<br />
       &nbsp; &nbsp; &quot;active&quot;: false<br />
@@ -4964,7 +5138,6 @@ toc: true
       luna-send -n 1 -f luna://com.webos.service.audio/system/status &#39;{&quot;subscribe&quot; : false}&#39;<br />
       {<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;volumeMax&quot;: 100,<br />
       &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;system_default&quot;,<br />
       &nbsp; &nbsp; &quot;muted&quot;: false,<br />
@@ -4972,7 +5145,6 @@ toc: true
       &nbsp; &nbsp; &quot;hac&quot;: false,<br />
       &nbsp; &nbsp; &quot;volume&quot;: 65,<br />
       &nbsp; &nbsp; &quot;action&quot;: &quot;requested&quot;,<br />
-      &nbsp; &nbsp; &quot;supportvolume&quot;: true,<br />
       &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
       &nbsp; &nbsp; &quot;slider&quot;: false,<br />
       &nbsp; &nbsp; &quot;active&quot;: false<br />
@@ -5068,15 +5240,13 @@ toc: true
   <h4>Example</h4>
   <div class="code-bg-grey">
     <p>Example 1:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/systemsounds/playFeedback &#39;{&quot;name&quot;: &quot;voicestart&quot;, &quot;sink&quot;:&quot;pfeedback&quot;,<br />
-      &nbsp;&quot;play&quot;:true}&#39;<br />
+      luna-send -n 1 -f luna://com.webos.service.audio/systemsounds/playFeedback &#39;{&quot;name&quot;: &quot;voicestart&quot;, &quot;sink&quot;:&quot;pfeedback&quot;,&nbsp;&quot;play&quot;:true}&#39;<br />
       {<br />
       &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true<br />
       }
     </p>
     <p>Example 2:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/systemsounds/playFeedback &#39;{&quot;name&quot;: &quot;voicestart&quot;, &quot;sink&quot;:&quot;pfeedback&quot;,<br />
-      &nbsp;&quot;play&quot;:false}&#39;<br />
+      luna-send -n 1 -f luna://com.webos.service.audio/systemsounds/playFeedback &#39;{&quot;name&quot;: &quot;voicestart&quot;, &quot;sink&quot;:&quot;pfeedback&quot;,&nbsp;&quot;play&quot;:false}&#39;<br />
       {<br />
       &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true<br />
       }
@@ -5230,7 +5400,10 @@ toc: true
   <h4>Example</h4>
   <div class="code-bg-grey">
     <p>luna-send -n 1 luna://com.webos.service.audio/udev/event &#39;{&quot;event&quot;:&quot;usb-mic-inserted&quot;, &quot;soundcard_no&quot;:&#39;1&#39;, &quot;device_no&quot;:&#39;0&#39;}&#39;<br />
-      &nbsp;
+      luna-send -n 1 luna://com.webos.service.audio/udev/event &#39;{&quot;event&quot;:&quot;headset-inserted&quot;}&#39;<br />
+      {&quot;returnValue&quot;:true}<br />
+      luna-send -n 1 luna://com.webos.service.audio/udev/event &#39;{&quot;event&quot;:&quot;headset-removed&quot;}&#39;<br />
+      {&quot;returnValue&quot;:true}
     </p>
   </div>
 </div>
@@ -5871,12 +6044,25 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 luna://com.webos.service.audio/UMI/connect &#39;{&quot;outputMode&quot; : &quot;alsa&quot;, &quot;audioType&quot;:&quot;umimedia&quot;, &quot;sink&quot; : &quot;ALSA&quot;, &quot;source&quot;: &quot;AMIXER&quot;, &quot;sourcePort&quot;: 0}&#39;</p>
-    <p>Result:</p>
-    <p>{<br />
-      &nbsp; &nbsp; &quot;source&quot;:&quot;AMIXER&quot;,<br />
-      &nbsp; &nbsp; &quot;sink&quot;:&quot;ALSA&quot;,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;:true<br />
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/UMI/connect &#39;{&quot;outputMode&quot; : &quot;alsa&quot;, &quot;audioType&quot;:&quot;umimedia&quot;,&nbsp;&quot;sink&quot; : &quot;ALSA&quot;, &quot;source&quot;: &quot;AMIXER&quot;, &quot;sourcePort&quot;: 0}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;source&quot;: &quot;AMIXER&quot;,<br />
+      &nbsp; &nbsp; &quot;sink&quot;: &quot;ALSA&quot;,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/UMI/connect &#39;{&quot;outputMode&quot; : &quot;alsa&quot;, &quot;audioType&quot;:&quot;umimedia&quot;,&nbsp;&quot;sink&quot; : &quot;ALSA&quot;, &quot;source&quot;: &quot;AMIXERTEST&quot;, &quot;sourcePort&quot;: 0}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 4,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Invalid parameters&quot;<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/UMI/connect &#39;{&quot;outputMode&quot; : &quot;alsa&quot;, &quot;audioType&quot;:&quot;umimedia&quot;,&nbsp;&quot;sink&quot; : &quot;ALSA&quot;, &quot;source&quot;: &quot;AMIXER&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
       }
     </p>
   </div>
@@ -6022,12 +6208,32 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 luna://com.webos.service.audio/UMI/disconnect &#39;{&quot;sink&quot; : &quot;ALSA&quot;, &quot;source&quot;: &quot;AMIXER&quot;, &quot;sourcePort&quot;: 0, &quot;audioType&quot;:&quot;umimedia&quot;}&#39;</p>
-    <p>Result:</p>
-    <p>{<br />
-      &nbsp; &nbsp;&nbsp;&quot;source&quot;:&quot;AMIXER&quot;,<br />
-      &nbsp; &nbsp;&nbsp;&quot;sink&quot;:&quot;ALSA&quot;,<br />
-      &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/UMI/disconnect &#39;{&quot;sink&quot; : &quot;ALSA&quot;, &quot;source&quot;: &quot;AMIXER&quot;, &quot;sourcePort&quot;: 0, &quot;audioType&quot;:&quot;umimedia&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;source&quot;: &quot;AMIXER&quot;,<br />
+      &nbsp; &nbsp; &quot;sink&quot;: &quot;ALSA&quot;,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/UMI/disconnect &#39;{&quot;sink&quot; : &quot;ALSA&quot;, &quot;source&quot;: &quot;AMIXER&quot;, &quot;sourcePort&quot;: 0, &quot;audioType&quot;:&quot;umimedia&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 200,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Audio not connected&quot;<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/UMI/disconnect &#39;{&quot;sink&quot; : &quot;ALSA&quot;, &quot;source&quot;: &quot;AMIXER&quot;, &quot;sourcePort&quot;: 0}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/UMI/disconnect &#39;{&quot;sink&quot; : &quot;ALSA&quot;, &quot;source&quot;: &quot;AMIXER&quot;, &quot;sourcePort&quot;: 0, &quot;audioType&quot;:&quot;umimediaTest&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 19,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Internal error&quot;<br />
       }
     </p>
   </div>
@@ -6097,19 +6303,17 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -i luna://com.webos.service.audio/UMI/getStatus &#39;{ }&#39;</p>
-    <p>Result:</p>
-    <p>{<br />
-      &nbsp; &nbsp;&nbsp;&quot;audio&quot;:<br />
-      &nbsp; &nbsp;&nbsp;[<br />
-      &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;{<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;source&quot;:&quot;AMIXER&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;sink&quot;:&quot;ALSA&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;muted&quot;:false,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;outputMode&quot;:&quot;alsa&quot;<br />
-      &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;}<br />
-      &nbsp; &nbsp;&nbsp;],<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;:true<br />
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/UMI/getStatus &#39;{}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;audio&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;source&quot;: &quot;AMIXER&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;ALSA&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;muted&quot;: false,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;outputMode&quot;: &quot;alsa&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
       }
     </p>
   </div>
@@ -6233,12 +6437,22 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/UMI/mute &#39;{&quot;sink&quot; : &quot;ALSA&quot;, &quot;source&quot;: &quot;AMIXER&quot;, &quot;sourcePort&quot;: 0, &quot;mute&quot;:true}&#39;</p>
-    <p>Result:</p>
-    <p>{<br />
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/UMI/mute &#39;{&quot;sink&quot; : &quot;ALSA&quot;, &quot;source&quot;: &quot;AMIXER&quot;, &quot;sourcePort&quot;: 0, &quot;mute&quot;:true}&#39;<br />
+      {<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }<br />
-      &nbsp;
+      }
+    </p>
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/UMI/mute &#39;{&quot;sink&quot; : &quot;ALSA&quot;, &quot;source&quot;: &quot;AMIXER&quot;, &quot;sourcePort&quot;: 0, &quot;mute&quot;:false}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/UMI/mute &#39;{&quot;sink&quot; : &quot;ALSA&quot;, &quot;source&quot;: &quot;AMIXER&quot;, &quot;sourcePort&quot;: 0, &quot;mute&quot;:1}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
+      }
     </p>
   </div>
 </div>
@@ -6436,12 +6650,25 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 luna://com.webos.service.audio/master/setVolume &#39;{&quot;soundOutput&quot;:&quot;alsa&quot;,&quot;volume&quot;:100}&#39;</p>
-    <p>Result:</p>
-    <p>{&nbsp;&nbsp;<br />
-      &nbsp;&nbsp;&nbsp;&quot;volume&quot;:100,<br />
-      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
-      &nbsp;&nbsp;&nbsp;&quot;soundOutput&quot;:&quot;alsa&quot;<br />
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/master/setVolume &#39;{&quot;soundOutput&quot;:&quot;alsa&quot;,&quot;volume&quot;:10}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;volume&quot;: 10,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;soundOutput&quot;: &quot;alsa&quot;<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/master/setVolume &#39;{&quot;soundOutput&quot;:&quot;alsaTest&quot;,&quot;volume&quot;:10}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 204,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Volume control is not supported&quot;<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/master/setVolume &#39;{&quot;soundOutput&quot;:&quot;alsa&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
       }
     </p>
   </div>
@@ -6552,12 +6779,32 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 luna://com.webos.service.audio/master/volumeUp &#39;{&quot;soundOutput&quot;:&quot;alsa&quot;}&#39;</p>
-    <p>Result:</p>
-    <p>{&nbsp;&nbsp;<br />
-      &nbsp;&nbsp;&nbsp;&quot;volume&quot;:100,<br />
-      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
-      &nbsp;&nbsp;&nbsp;&quot;soundOutput&quot;:&quot;alsa&quot;<br />
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/master/volumeUp &#39;{&quot;soundOutput&quot;:&quot;alsa&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;volume&quot;: 12,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;soundOutput&quot;: &quot;alsa&quot;<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/master/volumeUp &#39;{&quot;soundOutput&quot;:&quot;alsaTest&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 204,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Volume control is not supported&quot;<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/master/volumeUp &#39;{&quot;soundOutputTest&quot;:&quot;alsa&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/master/volumeUp &#39;{}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
       }
     </p>
   </div>
@@ -6668,12 +6915,32 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 luna://com.webos.service.audio/master/volumeDown &#39;{&quot;soundOutput&quot;:&quot;alsa&quot;}&#39;</p>
-    <p>Result:</p>
-    <p>{&nbsp;&nbsp;<br />
-      &nbsp;&nbsp;&nbsp;&quot;volume&quot;:99,<br />
-      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
-      &nbsp;&nbsp;&nbsp;&quot;soundOutput&quot;:&quot;alsa&quot;<br />
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/master/volumeDown &#39;{&quot;soundOutput&quot;:&quot;alsa&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;volume&quot;: 11,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;soundOutput&quot;: &quot;alsa&quot;<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/master/volumeDown &#39;{&quot;soundOutput&quot;:&quot;alsaTest&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 204,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Volume control is not supported&quot;<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/master/volumeDown &#39;{&quot;soundOutputTest&quot;:&quot;alsa&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/master/volumeDown &#39;{}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
       }
     </p>
   </div>
@@ -6800,12 +7067,39 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 luna://com.webos.service.audio/master/muteVolume &#39;{&quot;soundOutput&quot;:&quot;alsa&quot;,&quot;mute&quot;:true}&#39;</p>
-    <p>Result:</p>
-    <p>{&nbsp;&nbsp;<br />
-      &nbsp;&nbsp;&nbsp;&quot;mute&quot;:true,<br />
-      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
-      &nbsp;&nbsp;&nbsp;&quot;soundOutput&quot;:&quot;alsa&quot;<br />
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/master/muteVolume &#39;{&quot;soundOutput&quot;:&quot;alsa&quot;,&quot;mute&quot;:true}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;mute&quot;: true,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;soundOutput&quot;: &quot;alsa&quot;<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/master/muteVolume &#39;{&quot;soundOutput&quot;:&quot;alsa&quot;,&quot;mute&quot;:false}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;mute&quot;: false,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;soundOutput&quot;: &quot;alsa&quot;<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/master/muteVolume &#39;{&quot;soundOutput&quot;:&quot;alsaTEst&quot;,&quot;mute&quot;:false}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 204,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Volume control is not supported&quot;<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/master/muteVolume &#39;{&quot;soundOutput&quot;:&quot;alsa&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
+      }
+    </p>
+    <p>luna-send -f -n 1 luna://com.webos.service.audio/master/muteVolume &#39;{&quot;mute&quot;:false}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
       }
     </p>
   </div>
@@ -6908,11 +7202,25 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/soundSettings/setSoundOut &#39;{&quot;soundOut&quot;: &quot;alsa&quot;}&#39;</p>
-    <p>Result:</p>
-    <p>{<br />
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/soundSettings/setSoundOut &#39;{&quot;soundOut&quot;: &quot;alsa&quot;}&#39;<br />
+      {<br />
       &nbsp; &nbsp; &quot;soundOut&quot;: &quot;alsa&quot;,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p><br />
+      luna-send -n 1 -f luna://com.webos.service.audio/soundSettings/setSoundOut &#39;{&quot;soundOut&quot;: &quot;alsaTest&quot;}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 10,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Not implemented&quot;<br />
+      }
+    </p>
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/soundSettings/setSoundOut &#39;{}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
       }
     </p>
   </div>
@@ -7115,7 +7423,6 @@ toc: true
       luna-send -n 1 -f luna://com.webos.service.audio/alert/getVolume &#39;{}&#39;<br />
       {<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;alert_default&quot;,<br />
-      &nbsp; &nbsp; &quot;muted&quot;: false,<br />
       &nbsp; &nbsp; &quot;volume&quot;: 80,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
       }
@@ -7124,7 +7431,6 @@ toc: true
       luna-send -n 1 -f luna://com.webos.service.audio/alert/getVolume &#39;{&quot;scenario&quot;:&quot;alert_default&quot;}&#39;<br />
       {<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;alert_default&quot;,<br />
-      &nbsp; &nbsp; &quot;muted&quot;: false,<br />
       &nbsp; &nbsp; &quot;volume&quot;: 80,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
       }
@@ -7436,7 +7742,6 @@ toc: true
       luna-send -n 1 -f luna://com.webos.service.audio/alert/status &#39;{}&#39;<br />
       {<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;volumeMax&quot;: 100,<br />
       &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;alert_default&quot;,<br />
       &nbsp; &nbsp; &quot;muted&quot;: false,<br />
@@ -7444,7 +7749,6 @@ toc: true
       &nbsp; &nbsp; &quot;hac&quot;: false,<br />
       &nbsp; &nbsp; &quot;volume&quot;: 75,<br />
       &nbsp; &nbsp; &quot;action&quot;: &quot;requested&quot;,<br />
-      &nbsp; &nbsp; &quot;supportvolume&quot;: true,<br />
       &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
       &nbsp; &nbsp; &quot;slider&quot;: false,<br />
       &nbsp; &nbsp; &quot;active&quot;: false<br />
@@ -7454,7 +7758,6 @@ toc: true
       luna-send -n 1 -f luna://com.webos.service.audio/alert/status &#39;{&quot;subscribe&quot; : true}&#39;<br />
       {<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;volumeMax&quot;: 100,<br />
       &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;alert_default&quot;,<br />
       &nbsp; &nbsp; &quot;muted&quot;: false,<br />
@@ -7462,7 +7765,6 @@ toc: true
       &nbsp; &nbsp; &quot;hac&quot;: false,<br />
       &nbsp; &nbsp; &quot;volume&quot;: 75,<br />
       &nbsp; &nbsp; &quot;action&quot;: &quot;requested&quot;,<br />
-      &nbsp; &nbsp; &quot;supportvolume&quot;: true,<br />
       &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
       &nbsp; &nbsp; &quot;slider&quot;: false,<br />
       &nbsp; &nbsp; &quot;active&quot;: false<br />
@@ -7472,7 +7774,6 @@ toc: true
       luna-send -n 1 -f luna://com.webos.service.audio/alert/status &#39;{&quot;subscribe&quot; : false}&#39;<br />
       {<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;volumeMax&quot;: 100,<br />
       &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;alert_default&quot;,<br />
       &nbsp; &nbsp; &quot;muted&quot;: false,<br />
@@ -7480,7 +7781,6 @@ toc: true
       &nbsp; &nbsp; &quot;hac&quot;: false,<br />
       &nbsp; &nbsp; &quot;volume&quot;: 75,<br />
       &nbsp; &nbsp; &quot;action&quot;: &quot;requested&quot;,<br />
-      &nbsp; &nbsp; &quot;supportvolume&quot;: true,<br />
       &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
       &nbsp; &nbsp; &quot;slider&quot;: false,<br />
       &nbsp; &nbsp; &quot;active&quot;: false<br />
@@ -7720,6 +8020,22 @@ toc: true
       &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
       }
     </p>
+    <p>Example 5:</p>
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/alarm/setVolume &#39;{&quot;volume&quot;:500}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Invalid &#39;volume&#39; integer parameter value or file not found.&quot;<br />
+      }
+    </p>
+    <p>Example 6:</p>
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/alarm/setVolume &#39;{&quot;volume&quot;:-500}&#39;<br />
+      {<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Invalid &#39;volume&#39; integer parameter value or file not found.&quot;<br />
+      }
+    </p>
   </div>
 </div>
 <h3>alarm/status</h3>
@@ -7899,60 +8215,50 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example 1:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alarm/status &#39;{&quot;subscribe&quot; : true}&#39;<br />
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/alarm/status &#39;{&quot;subscribe&quot; : true}&#39;<br />
       {<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;volumeMax&quot;: 100,<br />
       &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;alarm_default&quot;,<br />
       &nbsp; &nbsp; &quot;muted&quot;: false,<br />
       &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
       &nbsp; &nbsp; &quot;hac&quot;: false,<br />
-      &nbsp; &nbsp; &quot;volume&quot;: 10,<br />
+      &nbsp; &nbsp; &quot;volume&quot;: 50,<br />
       &nbsp; &nbsp; &quot;action&quot;: &quot;requested&quot;,<br />
-      &nbsp; &nbsp; &quot;supportvolume&quot;: true,<br />
       &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
       &nbsp; &nbsp; &quot;slider&quot;: false,<br />
       &nbsp; &nbsp; &quot;active&quot;: false<br />
       }
     </p>
-    <p>Example 2:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alarm/status &#39;{&quot;subscribe&quot; : false}&#39;<br />
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/alarm/status &#39;{&quot;subscribe&quot; : false}&#39;<br />
       {<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;volumeMax&quot;: 100,<br />
       &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;alarm_default&quot;,<br />
       &nbsp; &nbsp; &quot;muted&quot;: false,<br />
       &nbsp; &nbsp; &quot;subscribed&quot;: false,<br />
       &nbsp; &nbsp; &quot;hac&quot;: false,<br />
-      &nbsp; &nbsp; &quot;volume&quot;: 10,<br />
+      &nbsp; &nbsp; &quot;volume&quot;: 50,<br />
       &nbsp; &nbsp; &quot;action&quot;: &quot;requested&quot;,<br />
-      &nbsp; &nbsp; &quot;supportvolume&quot;: true,<br />
       &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
       &nbsp; &nbsp; &quot;slider&quot;: false,<br />
       &nbsp; &nbsp; &quot;active&quot;: false<br />
       }
     </p>
-    <p>Example 3:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alarm/status &#39;{}&#39;<br />
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/alarm/status &#39;{}&#39;<br />
       {<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;volumeMax&quot;: 100,<br />
       &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;alarm_default&quot;,<br />
       &nbsp; &nbsp; &quot;muted&quot;: false,<br />
       &nbsp; &nbsp; &quot;subscribed&quot;: false,<br />
       &nbsp; &nbsp; &quot;hac&quot;: false,<br />
-      &nbsp; &nbsp; &quot;volume&quot;: 10,<br />
+      &nbsp; &nbsp; &quot;volume&quot;: 50,<br />
       &nbsp; &nbsp; &quot;action&quot;: &quot;requested&quot;,<br />
-      &nbsp; &nbsp; &quot;supportvolume&quot;: true,<br />
       &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
       &nbsp; &nbsp; &quot;slider&quot;: false,<br />
       &nbsp; &nbsp; &quot;active&quot;: false<br />
-      }<br />
-      &nbsp;
+      }
     </p>
   </div>
 </div>
@@ -8194,62 +8500,36 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>OSE:</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/alarm/getVolume &#39;{}&#39;<br />
-      {<br />
+    <p>Example 1:&nbsp;</p>
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/alarm/getVolume &#39;{}&#39;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;alarm_default&quot;,<br />
       &nbsp; &nbsp; &quot;volume&quot;: 10,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alarm/getVolume &#39;{&quot;scenario&quot;:&quot;alarm&quot;}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;failed to get parameter (invalid scenario name?)&quot;<br />
-      }<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alarm/getVolume &#39;{&quot;scenario&quot;:&quot;alarm_default&quot;}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;scenario&quot;: &quot;alarm_default&quot;,<br />
-      &nbsp; &nbsp; &quot;volume&quot;: 10,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alarm/getVolume &#39;{&quot;scenarioT&quot;:&quot;alarm_default&quot;}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
-      }<br />
-      Signage:
-    </p>
-    <p>Example 1:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alarm/getVolume &#39;{}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;scenario&quot;: &quot;alarm_default&quot;,<br />
-      &nbsp; &nbsp; &quot;muted&quot;: false,<br />
-      &nbsp; &nbsp; &quot;volume&quot;: 100,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
       }
     </p>
-    <p>Example 2:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alarm/getVolume &#39;{&quot;scenario&quot;:&quot;alarm&quot;}&#39;<br />
-      {<br />
+    <p>&nbsp;</p>
+    <p>Example 2:</p>
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/alarm/getVolume &#39;{&quot;scenario&quot;:&quot;alarm&quot;}&#39;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
       &nbsp; &nbsp; &quot;errorText&quot;: &quot;failed to get parameter (invalid scenario name?)&quot;<br />
       }
     </p>
-    <p>Example 3:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alarm/getVolume &#39;{&quot;scenario&quot;:&quot;alarm_default&quot;}&#39;<br />
-      {<br />
+    <p>&nbsp;</p>
+    <p>Example 3:&nbsp;</p>
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/alarm/getVolume &#39;{&quot;scenario&quot;:&quot;alarm_default&quot;}&#39;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;alarm_default&quot;,<br />
-      &nbsp; &nbsp; &quot;muted&quot;: false,<br />
-      &nbsp; &nbsp; &quot;volume&quot;: 100,<br />
+      &nbsp; &nbsp; &quot;volume&quot;: 10,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
       }
     </p>
-    <p>Example 4:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alarm/getVolume &#39;{&quot;scenarioT&quot;:&quot;alarm_default&quot;}&#39;<br />
-      {<br />
+    <p>&nbsp;</p>
+    <p>Example 4:&nbsp;</p>
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/alarm/getVolume &#39;{&quot;scenarioT&quot;:&quot;alarm_default&quot;}&#39;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
       &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
@@ -8596,10 +8876,9 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>OSE:</p>
     <p>Example 1:</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/status &#39;{&quot;subscribe&quot; : true}&#39;<br />
-      {<br />
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/status &#39;{&quot;subscribe&quot; : true}&#39;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;mic_gain&quot;: 50,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
@@ -8612,11 +8891,13 @@ toc: true
       &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
       &nbsp; &nbsp; &quot;slider&quot;: false,<br />
       &nbsp; &nbsp; &quot;active&quot;: false<br />
-      }<br />
+      }
+    </p>
+    <p><br />
       Example 2:
     </p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/status &#39;{&quot;subscribe&quot; : false}&#39;<br />
-      {<br />
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/status &#39;{&quot;subscribe&quot; : false}&#39;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;mic_gain&quot;: 50,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
@@ -8629,11 +8910,13 @@ toc: true
       &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
       &nbsp; &nbsp; &quot;slider&quot;: false,<br />
       &nbsp; &nbsp; &quot;active&quot;: false<br />
-      }<br />
+      }
+    </p>
+    <p><br />
       Example 3:
     </p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/status &#39;{}&#39;<br />
-      {<br />
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/status &#39;{}&#39;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;mic_gain&quot;: 50,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
@@ -8648,106 +8931,14 @@ toc: true
       &nbsp; &nbsp; &quot;active&quot;: false<br />
       }
     </p>
+    <p>&nbsp;</p>
     <p>Example 4:</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/status &#39;{&quot;subscribe&quot; : true, &quot;scenario&quot;:&quot;voice_command_back_speaker&quot;}&#39;<br />
-      {<br />
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/status &#39;{&quot;subscribe&quot; : true, &quot;scenario&quot;:&quot;voice_command_back_speaker&quot;}&#39;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
       &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
       }
-    </p>
-    <p>Signage:</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/status &#39;{&quot;subscribe&quot; : true}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;mic_gain&quot;: 50,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
-      &nbsp; &nbsp; &quot;scenario&quot;: &quot;voice_command_back_speaker&quot;,<br />
-      &nbsp; &nbsp; &quot;muted&quot;: false,<br />
-      &nbsp; &nbsp; &quot;hac&quot;: false,<br />
-      &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
-      &nbsp; &nbsp; &quot;volume&quot;: 90,<br />
-      &nbsp; &nbsp; &quot;action&quot;: &quot;requested&quot;,<br />
-      &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
-      &nbsp; &nbsp; &quot;slider&quot;: false,<br />
-      &nbsp; &nbsp; &quot;active&quot;: false<br />
-      }
-    </p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/status &#39;{&quot;subscribe&quot; : false}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;mic_gain&quot;: 50,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
-      &nbsp; &nbsp; &quot;scenario&quot;: &quot;voice_command_back_speaker&quot;,<br />
-      &nbsp; &nbsp; &quot;muted&quot;: false,<br />
-      &nbsp; &nbsp; &quot;hac&quot;: false,<br />
-      &nbsp; &nbsp; &quot;subscribed&quot;: false,<br />
-      &nbsp; &nbsp; &quot;volume&quot;: 90,<br />
-      &nbsp; &nbsp; &quot;action&quot;: &quot;requested&quot;,<br />
-      &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
-      &nbsp; &nbsp; &quot;slider&quot;: false,<br />
-      &nbsp; &nbsp; &quot;active&quot;: false<br />
-      }
-    </p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/status &#39;{}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;mic_gain&quot;: 50,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
-      &nbsp; &nbsp; &quot;scenario&quot;: &quot;voice_command_back_speaker&quot;,<br />
-      &nbsp; &nbsp; &quot;muted&quot;: false,<br />
-      &nbsp; &nbsp; &quot;hac&quot;: false,<br />
-      &nbsp; &nbsp; &quot;subscribed&quot;: false,<br />
-      &nbsp; &nbsp; &quot;volume&quot;: 90,<br />
-      &nbsp; &nbsp; &quot;action&quot;: &quot;requested&quot;,<br />
-      &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
-      &nbsp; &nbsp; &quot;slider&quot;: false,<br />
-      &nbsp; &nbsp; &quot;active&quot;: false<br />
-      }
-    </p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/status &#39;{&quot;subscribe&quot; : true, &quot;scenario&quot;:&quot;voice_command_back_speaker&quot;}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;mic_gain&quot;: 50,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;volumeMax&quot;: 100,<br />
-      &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
-      &nbsp; &nbsp; &quot;scenario&quot;: &quot;voice_command_back_speaker&quot;,<br />
-      &nbsp; &nbsp; &quot;muted&quot;: false,<br />
-      &nbsp; &nbsp; &quot;hac&quot;: false,<br />
-      &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
-      &nbsp; &nbsp; &quot;volume&quot;: 90,<br />
-      &nbsp; &nbsp; &quot;action&quot;: &quot;requested&quot;,<br />
-      &nbsp; &nbsp; &quot;supportvolume&quot;: true,<br />
-      &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
-      &nbsp; &nbsp; &quot;slider&quot;: false,<br />
-      &nbsp; &nbsp; &quot;active&quot;: false<br />
-      }
-    </p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/status &#39;{&quot;subscribe&quot; : true, &quot;scenario&quot;: &quot;voice_command_back_speaker&quot;}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;mic_gain&quot;: 50,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;volumeMax&quot;: 100,<br />
-      &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
-      &nbsp; &nbsp; &quot;scenario&quot;: &quot;voice_command_back_speaker&quot;,<br />
-      &nbsp; &nbsp; &quot;muted&quot;: false,<br />
-      &nbsp; &nbsp; &quot;hac&quot;: false,<br />
-      &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
-      &nbsp; &nbsp; &quot;volume&quot;: 90,<br />
-      &nbsp; &nbsp; &quot;action&quot;: &quot;requested&quot;,<br />
-      &nbsp; &nbsp; &quot;supportvolume&quot;: true,<br />
-      &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
-      &nbsp; &nbsp; &quot;slider&quot;: false,<br />
-      &nbsp; &nbsp; &quot;active&quot;: false<br />
-      }
-    </p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/status &#39;{&quot;subscribe&quot; : 1}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
-      }<br />
-      &nbsp;
     </p>
   </div>
 </div>
@@ -9084,41 +9275,48 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>OSE:</p>
-    <p>Example1:</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/setCurrentScenario &#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;}&#39;<br />
+    <p>Example 1:</p>
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/setCurrentScenario &#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;}</p>
+    <p><br />
       {<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }<br />
-      Example2:
+      }
     </p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/setCurrentScenario&#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;,&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;}&#39;<br />
-      {<br />
+    <p><br />
+      Example 2:
+    </p>
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/setCurrentScenario &#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;,&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;}&#39;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }<br />
-      Example3:
+      }
     </p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/setCurrentScenario &#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;,&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;,&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;}&#39;<br />
-      {<br />
+    <p><br />
+      Example 3:
+    </p>
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/setCurrentScenario &#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;,&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;,&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;}&#39;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }<br />
-      Example4:
+      }
     </p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/setCurrentScenario &#39;{&quot;scenario&quot;:&quot;media__default&quot;}&#39;<br />
-      {<br />
+    <p><br />
+      Example 4:
+    </p>
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/setCurrentScenario &#39;{&quot;scenario&quot;:&quot;media__default&quot;}&#39;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
       &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not set current scenario.&quot;<br />
-      }<br />
-      Example4:
+      }
     </p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/setCurrentScenario &#39;{&quot;scenario&quot;:&quot;voice_command_back_speake&quot;}&#39;<br />
-      {<br />
+    <p><br />
+      Example 5:
+    </p>
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/setCurrentScenario &#39;{&quot;scenario&quot;:&quot;voice_command_back_speake&quot;}&#39;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
       &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not set current scenario.&quot;<br />
-      }<br />
-      &nbsp;
+      }
     </p>
   </div>
 </div>
@@ -9206,23 +9404,49 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>OSE:</p>
-    <p>luna-send -n 1 luna://com.webos.service.audio/voiceCommand/getMicGain &#39;{}&#39;<br />
-      {&quot;returnValue&quot;:true,&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;,&quot;mic_gain&quot;:50}
+    <p>Example 1:&nbsp;</p>
+    <p>luna-send -n 1 luna://com.webos.service.audio/voiceCommand/getMicGain &#39;{}&#39;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;mic_gain&quot;:50<br />
+      }
     </p>
-    <p>luna-send -n 1 luna://com.webos.service.audio/voiceCommand/getMicGain &#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;}&#39;<br />
-      {&quot;returnValue&quot;:true,&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;,&quot;mic_gain&quot;:50}
+    <p>&nbsp;</p>
+    <p>Example 2:&nbsp;</p>
+    <p>luna-send -n 1 luna://com.webos.service.audio/voiceCommand/getMicGain &#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;}&#39;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;mic_gain&quot;:50<br />
+      }
     </p>
-    <p>luna-send -n 1 luna://com.webos.service.audio/voiceCommand/getMicGain &#39;{&quot;scenario&quot;:&quot;voice_command_back_speake&quot;}&#39;<br />
-      {&quot;returnValue&quot;:false,&quot;errorCode&quot;:3,&quot;errorText&quot;:&quot;failed to get parameter (invalid scenario name?)&quot;}
+    <p>&nbsp;</p>
+    <p>Example 3:&nbsp;</p>
+    <p>luna-send -n 1 luna://com.webos.service.audio/voiceCommand/getMicGain &#39;{&quot;scenario&quot;:&quot;voice_command_back_speake&quot;}&#39;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:3,<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;failed&nbsp;to&nbsp;get&nbsp;parameter&nbsp;(invalid&nbsp;scenario&nbsp;name?)&quot;<br />
+      }
     </p>
-    <p>luna-send -n 1 luna://com.webos.service.audio/voiceCommand/getMicGain &#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;,&quot;sce<br />
-      nario&quot;:&quot;voice_command_back_speaker&quot;}&#39;<br />
-      {&quot;returnValue&quot;:true,&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;,&quot;mic_gain&quot;:50}
+    <p>&nbsp;</p>
+    <p>Example 4 :</p>
+    <p>luna-send -n 1 luna://com.webos.service.audio/voiceCommand/getMicGain &#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;,&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;}&#39;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;mic_gain&quot;:50<br />
+      }
     </p>
-    <p>luna-send -n 1 luna://com.webos.service.audio/voiceCommand/getMicGain &#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;,&quot;sce<br />
-      nario&quot;:&quot;voice_command_back_speake&quot;}&#39;<br />
-      {&quot;returnValue&quot;:false,&quot;errorCode&quot;:3,&quot;errorText&quot;:&quot;failed to get parameter (invalid scenario name?)&quot;}
+    <p>&nbsp;</p>
+    <p>Example 5:</p>
+    <p>luna-send -n 1 luna://com.webos.service.audio/voiceCommand/getMicGain &#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;,&quot;scenario&quot;:&quot;voice_command_back_speake&quot;}&#39;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:3,<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;failed&nbsp;to&nbsp;get&nbsp;parameter&nbsp;(invalid&nbsp;scenario&nbsp;name?)&quot;<br />
+      }
     </p>
   </div>
 </div>
@@ -9275,14 +9499,17 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>OSE:</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/getCurrentScenario &#39;{}&#39;<br />
-      {<br />
+    <p>Example 1:</p>
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/getCurrentScenario &#39;{}&#39;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;voice_command_back_speaker&quot;,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/getCurrentScenario &#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;}&#39;<br />
-      {<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Example 2:&nbsp;</p>
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/getCurrentScenario &#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;}&#39;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
       &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
@@ -9359,32 +9586,34 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>OSE:</p>
-    <p>Example1:</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/enableScenario &#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;}&#39;<br />
-      {<br />
+    <p>Example 1:</p>
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/enableScenario &#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;}&#39;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
       }
     </p>
-    <p>Example2:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/enableScenario &#39;{}&#39;<br />
-      {<br />
+    <p>&nbsp;</p>
+    <p>Example 2:</p>
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/enableScenario &#39;{}&#39;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 2,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
       &nbsp; &nbsp; &quot;errorText&quot;: &quot;Missing &#39;scenario&#39; string parameter.&quot;<br />
       }
     </p>
-    <p>Example3:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/enableScenario &#39;{&quot;scenario&quot;:&quot;voice_command_back_speake&quot;}&#39;<br />
-      {<br />
+    <p>&nbsp;</p>
+    <p>Example 3:</p>
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/enableScenario &#39;{&quot;scenario&quot;:&quot;voice_command_back_speake&quot;}&#39;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
       &nbsp; &nbsp; &quot;errorText&quot;: &quot;Invalid &#39;scenario&#39; string parameter value or file not found.&quot;<br />
       }
     </p>
-    <p>Example4:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/enableScenario &#39;{&quot;scenario&quot;:&quot;alarm_default&quot;}&#39;<br />
-      {<br />
+    <p>&nbsp;</p>
+    <p>Example 4:</p>
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/enableScenario &#39;{&quot;scenario&quot;:&quot;alarm_default&quot;}&#39;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
       &nbsp; &nbsp; &quot;errorText&quot;: &quot;Invalid &#39;scenario&#39; string parameter value or file not found.&quot;<br />
@@ -9461,14 +9690,12 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>OSE:</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/disableScenario &#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;}&#39;<br />
-      {<br />
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/disableScenario &#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;}&#39;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
       &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not disable requested scenario.&quot;<br />
-      }<br />
-      &nbsp;
+      }
     </p>
   </div>
 </div>
@@ -9647,21 +9874,6 @@ toc: true
   <h4>Example</h4>
   <div class="code-bg-grey">
     <p>OSE:</p>
-    <p>luna-send -i -f luna://com.webos.service.audio/notification/status &#39;{&quot;subscribe&quot;:true}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
-      &nbsp; &nbsp; &quot;scenario&quot;: &quot;notification_default&quot;,<br />
-      &nbsp; &nbsp; &quot;muted&quot;: false,<br />
-      &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
-      &nbsp; &nbsp; &quot;hac&quot;: false,<br />
-      &nbsp; &nbsp; &quot;volume&quot;: 50,<br />
-      &nbsp; &nbsp; &quot;action&quot;: &quot;requested&quot;,<br />
-      &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
-      &nbsp; &nbsp; &quot;slider&quot;: false,<br />
-      &nbsp; &nbsp; &quot;active&quot;: false<br />
-      }
-    </p>
     <p>luna-send -n 1 -f luna://com.webos.service.audio/notification/status &#39;{&quot;subscribe&quot;:true}&#39;<br />
       {<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
@@ -9791,20 +10003,40 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>OSE:</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/notification/getVolume &#39;{&quot;scenario&quot; : &quot;notification_default&quot;}&#39;<br />
-      {<br />
+    <p>Example 1:&nbsp;</p>
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/notification/getVolume &#39;{&quot;scenario&quot; : &quot;notification_default&quot;}&#39;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;notification_default&quot;,<br />
       &nbsp; &nbsp; &quot;volume&quot;: 50,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/notification/getVolume &#39;{}&#39;<br />
-      {<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Example 2:&nbsp;</p>
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/notification/getVolume &#39;{}&#39;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;notification_default&quot;,<br />
       &nbsp; &nbsp; &quot;volume&quot;: 50,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }<br />
-      &nbsp;
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Example 3:&nbsp;</p>
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/notification/getVolume &#39;{&quot;scenario&quot; : &quot;notification_defaultTest&quot;}&#39;</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;failed to get parameter (invalid scenario name?)&quot;<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Example 4:&nbsp;</p>
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/notification/getVolume &#39;{&quot;scenarioTest&quot; : &quot;notification_default&quot;}&#39;</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
+      }
     </p>
   </div>
 </div>
@@ -9855,9 +10087,8 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>OSE:</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/state/getVolumeBalance &#39;{}&#39;<br />
-      {<br />
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/state/getVolumeBalance &#39;{}&#39;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;balanceVolume&quot;: 0,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
       }<br />
@@ -9929,30 +10160,61 @@ toc: true
       </tbody>
     </table>
   </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>errormessage905</td>
+          <td>errordescription905</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>OSE:</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/state/setRingerSwitch &#39;{&quot;ringer&quot;:true}&#39;<br />
-      {<br />
+    <p>Example 1:&nbsp;</p>
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/state/setRingerSwitch &#39;{&quot;ringer&quot;:true}&#39;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/state/setRingerSwitch &#39;{&quot;ringer&quot;:false}&#39;<br />
-      {<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Example 2:&nbsp;</p>
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/state/setRingerSwitch &#39;{&quot;ringer&quot;:false}&#39;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/state/setRingerSwitch &#39;{&quot;ringer&quot;:1}&#39;<br />
-      {<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Example 3:&nbsp;</p>
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/state/setRingerSwitch &#39;{&quot;ringer&quot;:1}&#39;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
       &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
-      }<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/state/setRingerSwitch &#39;{&quot;ringers&quot;:true}&#39;<br />
-      {<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Example 4:&nbsp;</p>
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/state/setRingerSwitch &#39;{&quot;ringers&quot;:true}&#39;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
       &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
-      }<br />
-      &nbsp;
+      }
     </p>
   </div>
 </div>
@@ -10003,13 +10265,11 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>OSE:</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/state/getTouchSound &#39;{}&#39;<br />
-      {<br />
+    <p>luna-send -n 1 -f luna://com.webos.service.audio/state/getTouchSound &#39;{}&#39;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;touchSound&quot;: &quot;OFF&quot;,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }<br />
-      &nbsp;
+      }
     </p>
   </div>
 </div>

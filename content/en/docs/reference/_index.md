@@ -1,13 +1,14 @@
 ---
 title: Reference
 section_main: true
-date: 2019-01-01
+date: 2019-10-11
 weight: 40
 ---
 
 You can build apps and services on webOS Open Source Edition (OSE) using the following APIs and libraries:
 
 * [LS2 API](#ls2-api)
+* [WebOSServiceBridge API](#webosservicebridge-api)
 * [luna-service2 Library](#luna-service2-library)
 * [webos-service Library](#webos-service-library)
 * [pmloglib Library](#pmloglib-library)
@@ -15,6 +16,14 @@ You can build apps and services on webOS Open Source Edition (OSE) using the fol
 ## LS2 API
 
 **LS2 API** is an interface to access system services via Luna Bus and use their functionalities. LS2 API forms the basis of webOS app and service development. See the [LS2 API index]({{< relref "ls2-api-index" >}}).
+
+## WebOSServiceBridge API
+
+**WebOSServiceBridge** is a JavaScript API for the web application to use LS2 API. See the [WebOSServiceBridge API reference]({{< relref "webosservicebridge-api-reference" >}}).
+
+{{< note >}}
+WebOSServiceBridge API is available only on webOS Open Source Edition (OSE) 2.0 or higher.
+{{< /note >}}
 
 ## luna-service2 Library
 

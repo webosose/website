@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.db
-date: 2019-04-28
+date: 2019-10-22
 toc: true
 ---
 <div>
@@ -35,7 +35,7 @@ toc: true
   <p><strong>Object revisions:</strong></p>
   <p>Object <u>revision</u> is a number, that determines &quot;Version of an object in the database&quot;. This number is required to avoid collisions when two or more services simultaneously try to update an object at the same time.</p>
   <p>For all new objects, the database will append a <strong>_rev</strong> field, that indicates the object revision. By default, the database will set object revision <strong>_rev</strong> field to Database Revision (Number, that atomically increments on any database modification).</p>
-  <p>If an object already exists in the database, the database engine will automatically increment the object revision number on each&nbsp;each successfull <u>put</u>/<u>merge</u> API for this object.</p>
+  <p>If an object already exists in the database, the database engine will automatically increment the object revision number on each&nbsp;each successful <u>put</u>/<u>merge</u> API for this object.</p>
   <p>Explanation by example: <em>com.</em>webos.service<em>.test</em> and <em>com.</em>webos.service<em>.othertest</em>&nbsp;applications have access for read/write to <strong>Kind</strong> <em>com.</em>webos.service<em>.test:1</em> . Both applications, at the same time, read an object from <em>com.</em>webos.service<em>.test:1</em> kind object with id <strong>++JZk1sXYW7lCdqU</strong> and revision <strong>777</strong>.</p>
   <p>Both applications execute a merge command like the following:</p>
   <div class="code-bg-grey">
@@ -59,7 +59,7 @@ toc: true
       &nbsp; &quot;results&quot;:[<br />
       &nbsp;&nbsp;&nbsp; {<br />
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;id&quot;:&quot;++JZk1sXYW7lCdqU&quot;,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;rev&quot;:<strong>778</strong>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <em>&lt;--- See, the database increments the revision after a successfull object update!</em><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;rev&quot;:<strong>778</strong>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <em>&lt;--- See, the database increments the revision after a successful object update!</em><br />
       &nbsp;&nbsp;&nbsp; }<br />
       ]}
     </p>
@@ -932,7 +932,7 @@ toc: true
     </div>
     <h4>Example</h4>
     <div class="code-bg-grey">
-      <p>luna-send -n 1 -f luna://com.webos.service.db/batch</p>
+      <p>luna-send -n 1 -f -a com.webos.service.test luna://com.webos.service.db/batch</p>
       <p>&#39;{</p>
       <p style="margin-left:40px">&quot;operations&quot;:[</p>
       <p style="margin-left:80px">{</p>
@@ -1271,7 +1271,7 @@ toc: true
     <p>}</p>
     <p>--</p>
     <p>Del by query:</p>
-    <p># luna-send -n 1 -f luna://com.webos.service.db/del &#39;{&quot;query&quot; : { &quot;from&quot; : &quot;com.webos.service.test:1&quot;}}&#39;</p>
+    <p># luna-send -n 1 -f -a com.webos.service.test luna://com.webos.service.db/del &#39;{&quot;query&quot; : { &quot;from&quot; : &quot;com.webos.service.test:1&quot;}}&#39;</p>
     <p>---</p>
     <p>Result of execution</p>
     <p>{</p>
@@ -1699,7 +1699,8 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -n 1 -f luna://com.webos.service.db/find &#39;{<br />
+    <p>Note:&nbsp;Should execute putKind, put APIs before calling find API. To list below results, 2 entries should be added using put API</p>
+    <p># luna-send -n 1 -f -a com.webos.service.test luna://com.webos.service.db/find &#39;{<br />
       &nbsp; &nbsp; &quot;query&quot;:{<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;from&quot;:&quot;com.webos.service.test:1&quot;,<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;where&quot;:[<br />
@@ -2867,7 +2868,8 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -n 1 -f luna://com.webos.service.db/purge &#39;{}&#39;</p>
+    <p>Note: Should execute putKind, put, del (to delete some of entries added using put) APIs before purge API</p>
+    <p># luna-send -n 1 -f&nbsp;-a com.palm.configurator luna://com.webos.service.db/purge &#39;{}&#39;</p>
     <p>Result of execution</p>
     <p>{</p>
     <p style="margin-left:40px">&quot;count&quot;: 0,</p>
@@ -2919,6 +2921,18 @@ toc: true
         </tr>
       </tbody>
     </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Note: Should execute purge API before purgeStatus, refer purge API</p>
+    <p>#luna-send -n 1 -f -a com.palm.configurator luna://com.webos.service.db/purgeStatus &#39;{}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Result:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;rev&quot;: -1,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>put</h3>
@@ -3258,7 +3272,7 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -n 1 luna://com.webos.service.db/putKind &#39;{<br />
+    <p># luna-send -n 1 -f -a com.webos.service.test luna://com.webos.service.db/putKind &#39;{<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;id&quot;: &quot;com.webos.service.test:1&quot;,<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;owner&quot;:&quot;com.webos.service.test&quot;,<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;indexes&quot;:[<br />
@@ -3439,7 +3453,7 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -n 1 -f luna://com.webos.service.db/putPermissions &#39;{<br />
+    <p># luna-send -n 1 -f -a com.webos.service.test luna://com.webos.service.db/putPermissions &#39;{<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;permissions&quot;:[<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;{<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;operations&quot;:{<br />
@@ -3597,7 +3611,7 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -n 1 -f luna://com.webos.service.db/quotaStats &#39;{}&#39;</p>
+    <p># luna-send -n 1 -f -a com.palm.configurator luna://com.webos.service.db/quotaStats &#39;{}&#39;</p>
     <p>Result of command execution</p>
     <p>{</p>
     <p style="margin-left:40px">&quot;returnValue&quot;: true,</p>
@@ -4168,7 +4182,7 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -n 1 -f luna://com.webos.service.db/search &#39;{<br />
+    <p># luna-send -n 1 -f -a com.webos.service.test luna://com.webos.service.db/search &#39;{<br />
       &nbsp; &nbsp;&quot;query&quot;:{<br />
       &nbsp; &nbsp; &nbsp;&nbsp; &quot;from&quot;:&quot;com.webos.service.test:1&quot;,<br />
       &nbsp; &nbsp; &nbsp;&nbsp; &quot;where&quot;:[<br />
@@ -4572,7 +4586,7 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>#luna-send -n 1 -f -m com.webos.service.test luna://com.webos.service.db/cancelSearch &#39;{&quot;taskId&quot;: &quot;find_sEhKeU&quot;}&#39;</p>
+    <p>#luna-send -n 1 -f&nbsp;luna://com.webos.service.db/cancelSearch &#39;{&quot;taskId&quot;: &quot;find_sEhKeU&quot;}&#39;</p>
   </div>
 </div>
 <div>

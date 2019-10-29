@@ -1,10 +1,10 @@
 ---
 title: com.webos.service.bluetooth2
-date: 2019-08-13
+date: 2019-10-23
 toc: true
 ---
 <div>
-  <H2>API Summary</h2>
+  <h2>API Summary</h2>
   <p><span style="background-color:rgb(255, 255, 255); color:rgb(51, 51, 51)">This API allows webOS to use remote Bluetooth devices.&nbsp;</span></p>
 </div>
 <h2>Overview of the API</h2>
@@ -269,7 +269,7 @@ toc: true
             <td>128</td>
             <td>Device is already connecting</td>
             <td>
-              <p>The remote Bluetooth device is already connecting to A2DP profile, so another connection cannot be opened.</p>
+              <p>The remote Bluetooth device is already connecting to the A2DP profile, so another connection cannot be opened.</p>
             </td>
           </tr>
           <tr>
@@ -298,7 +298,6 @@ toc: true
     </div>
     <h4>Example</h4>
     <div class="code-bg-grey">
-      <p>Example:</p>
       <p># luna-send -i -f luna://com.webos.service.bluetooth2/a2dp/connect &#39;{<br />
         &nbsp; &nbsp; &nbsp;&nbsp;&quot;address&quot;:&quot;00:18:6b:49:db:86&quot;,<br />
         &nbsp; &nbsp; &nbsp; &quot;subscribe&quot;:true<br />
@@ -313,19 +312,19 @@ toc: true
         }
       </p>
       <p>&nbsp;</p>
-      <p>Response for a failed call: If address is not valid</p>
-      <p>{&nbsp;&nbsp;<br />
-        &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:106,<br />
-        &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
-        &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;Device&nbsp;with&nbsp;supplied&nbsp;address&nbsp;is&nbsp;not&nbsp;available&quot;<br />
-        }
-      </p>
-      <p>&nbsp;</p>
-      <p>Subscription return: If connection is successful</p>
+      <p>Subscription return:&nbsp;</p>
       <p>{&nbsp;&nbsp;<br />
         &nbsp;&nbsp;&nbsp;&quot;subscribed&quot;:true,<br />
         &nbsp;&nbsp;&nbsp;&quot;adapterAddress&quot;:&quot;00:00:45:0e:48:9b&quot;,<br />
         &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+        }
+      </p>
+      <p>&nbsp;</p>
+      <p>Response for a failed call: If the address is not valid</p>
+      <p>{&nbsp;&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:106,<br />
+        &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
+        &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;Device&nbsp;with&nbsp;supplied&nbsp;address&nbsp;is&nbsp;not&nbsp;available&quot;<br />
         }
       </p>
     </div>
@@ -465,7 +464,6 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example:</p>
     <p># luna-send -i -f luna://com.webos.service.bluetooth2/a2dp/disconnect &#39;{&quot;address&quot;:&quot;aa:bb:cc:dd:ee:00&quot;}&#39;</p>
     <p>&nbsp;</p>
     <p>Response for a successful call:</p>
@@ -475,7 +473,7 @@ toc: true
       }
     </p>
     <p>&nbsp;</p>
-    <p>Response for a failed call: If address is not valid</p>
+    <p>Response for a failed call: If the address is not valid</p>
     <p>{&nbsp;&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:106,<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
@@ -488,7 +486,7 @@ toc: true
 <div>
   <h4>Description</h4>
   <p>Return the status of A2DP connection to a remote device.</p>
-  <p>If&nbsp;<strong>address</strong>&nbsp;input parameter is not specified, the method will return the information of the device whose&nbsp;connection or playing status has been changed.&nbsp;</p>
+  <p>If the&nbsp;<strong>address</strong>&nbsp;input parameter is not specified, the method will return the information of the device whose&nbsp;connection or playing status has been changed.&nbsp;</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -809,40 +807,45 @@ toc: true
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;subscribe&quot;:true<br />
       }&#39;
     </p>
+    <p><br />
+      Subscription return: When a&nbsp;user connects to a remote device,&nbsp;the connected&nbsp;field changes&nbsp;from false to true (if the remote device gets connected)
+    </p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;playing&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;adapterAddress&quot;:&quot;11:22:33:44:55:66&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;address&quot;:&quot;aa:bb:cc:dd:ee:00&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;connected&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;subscribed&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;connecting&quot;:true<br />
+      }
+    </p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;playing&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;adapterAddress&quot;:&quot;11:22:33:44:55:66&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;address&quot;:&quot;aa:bb:cc:dd:ee:00&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;connected&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;subscribed&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;connecting&quot;:false<br />
+      }
+    </p>
     <p>&nbsp;</p>
-    <p>Example response for a failed call: If address is not valid,</p>
-    <p>{</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;errorCode&quot;: 106,</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: false,</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;errorText&quot;: &quot;Device with supplied address is not available&quot;</p>
-    <p>}</p>
+    <p>Subscription return : If the user disconnects the connected device</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;subscribed&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;disconnectByRemote&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false<br />
+      }
+    </p>
     <p>&nbsp;</p>
-    <p>Subscription return: If user connects to remote device, connected field is changed from false to true when remote device is connected.</p>
-    <p>{</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;playing&quot;: false,</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;adapterAddress&quot;: &quot;11:22:33:44:55:66&quot;,</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;address&quot;: &quot;aa:bb:cc:dd:ee:00&quot;,</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;connected&quot;: false,</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;subscribed&quot;: true,</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true,</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;connecting&quot;: true</p>
-    <p>}</p>
-    <p>{</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;playing&quot;: false,</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;adapterAddress&quot;: &quot;11:22:33:44:55:66&quot;,</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;address&quot;: &quot;aa:bb:cc:dd:ee:00&quot;,</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;connected&quot;: true,</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;subscribed&quot;: true,</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true,</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;connecting&quot;: false</p>
-    <p>}</p>
-    <p>&nbsp;</p>
-    <p>Subscription return : If user disconnects the connected device,</p>
-    <p>{</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;subscribed&quot;: false,</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;disconnectByRemote&quot;: true,</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: false</p>
-    <p>}</p>
+    <p>Response for a failed call: If the address is not valid</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:106,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;Device&nbsp;with&nbsp;supplied&nbsp;address&nbsp;is&nbsp;not&nbsp;available&quot;<br />
+      }
+    </p>
   </div>
 </div>
 <h3>adapter/awaitPairingRequests</h3>
@@ -861,7 +864,7 @@ toc: true
       </ul>
     </li>
   </ul>
-  <p>If the client calls<strong>&nbsp;LSCallCancel()</strong>, any active incoming pairing request is cancelled the same way as if the&nbsp;<strong>adapter/cancelPairing</strong>​ method had been called.</p>
+  <p>If the client calls<strong>&nbsp;LSCallCancel()</strong>, any active incoming pairing request is canceled the same way as if the&nbsp;<strong>adapter/cancelPairing</strong>​ method had been called.</p>
   <p>A remote device can only be paired to a single adapter.</p>
   <p>NOTE: If it is ever possible to allow incoming pairing on adapters other than the default, an optional&nbsp;<strong>adapterAddress</strong>&nbsp;parameter will be added to the parameter list.</p>
   <h4>Parameters</h4>
@@ -887,7 +890,12 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Must set <strong>subscribe</strong> to&nbsp;<strong>true</strong>.&nbsp;<span style="line-height:1.6em">The caller must subscribe to this method.</span></p>
+            <p>Subscribe and get notified when there is a change in the pairing request.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes.</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed.</li>
+            </ul>
+            <p><strong>Note:</strong> Set&nbsp;<strong>subscribe</strong> to&nbsp;<strong>true</strong>.&nbsp;The caller must subscribe to this method.</p>
           </td>
         </tr>
       </tbody>
@@ -993,16 +1001,16 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p><strong>request</strong> will contain one of:</p>
+            <p><strong>request</strong> will contain one the possible values:</p>
             <ul>
-              <li><strong>incomingPairRequest </strong>- display an incoming pairing request received from the remote device.</li>
-              <li><strong>displayPinCode&nbsp;</strong>-&nbsp;display&nbsp;<strong>pinCode&nbsp;</strong>until the&nbsp;<strong>endPairing</strong>&nbsp;response is sent by the service.</li>
-              <li><strong>displayPasskey&nbsp;</strong>-&nbsp;display&nbsp;<strong>passkey</strong>&nbsp;until the&nbsp;<strong>endPairing</strong>&nbsp;response is sent by the service.</li>
-              <li><strong>confirmPasskey</strong>&nbsp;- request the user to confirm&nbsp;<strong>passkey;&nbsp;</strong>only used with devices supporting Simple Secure Pairing (SSP) and Bluetooth version 2.1 or later.​</li>
-              <li><strong>enterPinCode</strong>&nbsp;- request the user to enter a PIN code.</li>
-              <li><strong>enterPasskey</strong>&nbsp;- request the user to enter a passkey.</li>
-              <li><strong>continuePairing</strong>&nbsp;- the request to cancel pairing from&nbsp;<strong>adapter/cancelPairing</strong>&nbsp;failed.</li>
-              <li><strong>endPairing</strong>&nbsp;- the pairing process has been cancelled; <strong>returnValue&nbsp;</strong>will contain&nbsp;<strong>false</strong>;&nbsp;<strong>errorCode</strong>&nbsp;and&nbsp;<strong>errorText</strong>​ will explain the failure.</li>
+              <li><strong>incomingPairRequest </strong>- Display an incoming pairing request received from the remote device.</li>
+              <li><strong>displayPinCode&nbsp;</strong>-&nbsp;Display&nbsp;<strong>pinCode&nbsp;</strong>until the&nbsp;<strong>endPairing</strong>&nbsp;response is sent by the service.</li>
+              <li><strong>displayPasskey&nbsp;</strong>-&nbsp;Display&nbsp;<strong>passkey</strong>&nbsp;until the&nbsp;<strong>endPairing</strong>&nbsp;response is sent by the service.</li>
+              <li><strong>confirmPasskey</strong>&nbsp;- Request the user to confirm&nbsp;<strong>passkey;&nbsp;</strong>only used with devices supporting Simple Secure Pairing (SSP) and Bluetooth version 2.1 or later.​</li>
+              <li><strong>enterPinCode</strong>&nbsp;- Request the user to enter a PIN code.</li>
+              <li><strong>enterPasskey</strong>&nbsp;- Request the user to enter a passkey.</li>
+              <li><strong>continuePairing</strong>&nbsp;- The request to cancel pairing from&nbsp;<strong>adapter/cancelPairing</strong>&nbsp;failed.</li>
+              <li><strong>endPairing</strong>&nbsp;- The pairing process has been canceled; <strong>returnValue&nbsp;</strong>will contain&nbsp;<strong>false</strong>;&nbsp;<strong>errorCode</strong>&nbsp;and&nbsp;<strong>errorText</strong>​ will explain the failure.</li>
             </ul>
           </td>
         </tr>
@@ -1089,7 +1097,6 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example:</p>
     <p># luna-send -i -f luna://com.webos.service.bluetooth2/adapter/awaitPairingRequests &#39;{<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;subscribe&quot;:true<br />
       }&#39;
@@ -1102,15 +1109,7 @@ toc: true
       }
     </p>
     <p>&nbsp;</p>
-    <p>Response for a failed call: If device is not pairable</p>
-    <p>{&nbsp;&nbsp;<br />
-      &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:123,<br />
-      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
-      &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;Failed&nbsp;to&nbsp;make&nbsp;device&nbsp;pairable&quot;<br />
-      }
-    </p>
-    <p>&nbsp;</p>
-    <p>Subscription return: If remote device request pairing</p>
+    <p>Subscription return: If the remote device requests pairing</p>
     <p>{&nbsp;&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&quot;address&quot;:&quot;34:4d:f7:f9:52:f7&quot;,<br />
       &nbsp;&nbsp;&nbsp;&quot;name&quot;:&quot;XYZ&nbsp;DEVICE&quot;,<br />
@@ -1128,12 +1127,20 @@ toc: true
       &nbsp;&nbsp;&nbsp;&quot;request&quot;:&quot;confirmPasskey&quot;<br />
       }
     </p>
+    <p>&nbsp;</p>
+    <p>Response for a failed call: If the device is not pairable</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:123,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;Failed&nbsp;to&nbsp;make&nbsp;device&nbsp;pairable&quot;<br />
+      }
+    </p>
   </div>
 </div>
 <h3>adapter/cancelDiscovery</h3>
 <div>
   <h4>Description</h4>
-  <p>Cancel discovering remote Bluetooth devices. Only one adapter can be discovering at a time.</p>
+  <p>Cancel discovering remote Bluetooth devices. Only one adapter can be discovered&nbsp;at a time.</p>
   <h4>Parameters</h4>
   <p>None</p>
   <h4>Call Returns</h4>
@@ -1167,7 +1174,12 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p><strong>returnValue</strong> will&nbsp;<strong>always</strong> contain&nbsp;<strong>true</strong>&nbsp;(even if there was no active discovery scan).</p>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+            <p><strong>Note: returnValue</strong> will&nbsp;<strong>always</strong> contain&nbsp;<strong>true</strong>&nbsp;(even if there is no active discovery scan).</p>
           </td>
         </tr>
         <tr>
@@ -1175,8 +1187,7 @@ toc: true
           <td>Optional</td>
           <td>Number</td>
           <td>
-            <p><strong>errorCode</strong>&nbsp;contains the error code if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorCode</strong>&nbsp;only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
         <tr>
@@ -1184,8 +1195,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p><strong>errorText</strong>&nbsp;contains the error text if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
           </td>
         </tr>
       </tbody>
@@ -1232,7 +1242,6 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example:</p>
     <p># luna-send -n 1 -f luna://com.webos.service.bluetooth2/adapter/cancelDiscovery &#39;{ }&#39;</p>
     <p>&nbsp;</p>
     <p>Response for a successful call:</p>
@@ -1257,8 +1266,8 @@ toc: true
   <p>Cancel the pairing request with a remote device, either incoming or outgoing.&nbsp;The method sends a success response immediately.</p>
   <p>Once the SIL (Stack Interface Layer)&nbsp;calls back,</p>
   <ul>
-    <li>if the cancel succeeds, it causes a&nbsp;<strong>request:endPairing</strong>&nbsp;subscription response to <strong>adapter/pair</strong>&nbsp;or <strong>adapter/awaitPairingRequests</strong>&nbsp;with a &quot;Pairing canceled by user&quot; error.</li>
-    <li>if the cancel fails, it cause a&nbsp;<strong>request:continuePairing</strong>&nbsp;subscription response.</li>
+    <li>If the cancel succeeds, it causes a&nbsp;<strong>request:endPairing</strong>&nbsp;subscription response to <strong>adapter/pair</strong>&nbsp;or <strong>adapter/awaitPairingRequests</strong>&nbsp;with a &quot;Pairing canceled by user&quot; error.</li>
+    <li>If the cancel fails, it causes a&nbsp;<strong>request:continuePairing</strong>&nbsp;subscription response.</li>
   </ul>
   <h4>Parameters</h4>
   <div class="table-container">
@@ -1321,7 +1330,12 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p><strong>returnValue</strong>&nbsp;will&nbsp;<strong>always</strong>&nbsp;contain&nbsp;<strong>true</strong>.</p>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+            <p><strong>Note: returnValue</strong>&nbsp;will&nbsp;<strong>always</strong>&nbsp;contain&nbsp;<strong>true</strong>.</p>
           </td>
         </tr>
         <tr>
@@ -1329,9 +1343,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates if subscribed to get notifications. Possible values are:</p>
             <ul>
-              <li>To be notified of changes to the connection, set&nbsp;<strong>subscribe</strong>&nbsp;to&nbsp;<strong>true</strong>.</li>
-              <li>Otherwise, set&nbsp;<strong>subscribe</strong>&nbsp;to&nbsp;<strong>false</strong>.</li>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes.</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed.</li>
             </ul>
           </td>
         </tr>
@@ -1349,8 +1364,7 @@ toc: true
           <td>Optional</td>
           <td>Number</td>
           <td>
-            <p><strong>errorCode</strong>&nbsp;contains the error code if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorCode</strong>&nbsp;only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
         <tr>
@@ -1358,8 +1372,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p><strong>errorText</strong>&nbsp;contains the error text if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>Error Codes Reference</strong>&quot; section of this method for details.</p>
           </td>
         </tr>
       </tbody>
@@ -1392,7 +1405,6 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example:</p>
     <p># luna-send -n 1 -f luna://com.webos.service.bluetooth2/adapter/cancelPairing &#39;{<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;address&quot;: &quot;34:4d:f7:f9:52:f7&quot;<br />
       }&#39;
@@ -1442,11 +1454,12 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
+            <p>Subscribe and get notified when the adapter state changes.&nbsp;Possible values are:</p>
             <ul>
-              <li>To be informed of changes to adapter state, set <strong>subscribe</strong>&nbsp;to&nbsp;<strong>true</strong>.</li>
-              <li>Otherwise, set&nbsp;<strong>subscribe</strong>&nbsp;to&nbsp;<strong>false</strong>.</li>
-              <li>The default value of <strong>subscribe</strong> is <strong>false</strong>.</li>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes.</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed.</li>
             </ul>
+            <p>​<strong>Default value:</strong>&nbsp;false</p>
           </td>
         </tr>
       </tbody>
@@ -1475,9 +1488,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates if subscribed to get notifications. Possible values are:</p>
             <ul>
-              <li>If the method is subscribed, <strong>subscribed</strong> will contain <strong>true</strong>.</li>
-              <li>If the method is not subscribed, <strong>subscribed</strong> will contain <strong>false</strong>.&nbsp;</li>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes.</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed.</li>
             </ul>
           </td>
         </tr>
@@ -1486,7 +1500,12 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p><strong>returnValue</strong>&nbsp;will&nbsp;<strong>always</strong>&nbsp;contain&nbsp;<strong>true</strong>&nbsp;unless the request for subscription has failed.</p>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>-&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>-&nbsp;Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+            <p><strong>Note: returnValue</strong>&nbsp;will&nbsp;<strong>always</strong>&nbsp;contain&nbsp;<strong>true</strong>&nbsp;unless the request for subscription has failed.</p>
           </td>
         </tr>
         <tr>
@@ -1494,7 +1513,7 @@ toc: true
           <td>Required</td>
           <td>Object array: <a href="#bluetooth2adapterstatus"> bluetooth2AdapterStatus</a></td>
           <td>
-            <p><strong>adapters</strong> will contain&nbsp;information&nbsp;for all the Bluetooth adapters available&nbsp;in the system, not just the ones whose status has been changed.</p>
+            <p>Contains information&nbsp;for all the Bluetooth adapters available&nbsp;in the system, not just the ones whose status has been changed.</p>
             <p>If there are no available adapters, the array&nbsp;will be empty.</p>
           </td>
         </tr>
@@ -1503,8 +1522,7 @@ toc: true
           <td>Optional</td>
           <td>Number</td>
           <td>
-            <p><strong>errorCode</strong>&nbsp;contains the error code if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorCode</strong>&nbsp;only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
         <tr>
@@ -1512,8 +1530,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p><strong>errorText</strong>&nbsp;contains the error text if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>Error Codes Reference</strong>&quot; section of this method for details.</p>
           </td>
         </tr>
       </tbody>
@@ -1542,7 +1559,12 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p><strong>returnValue</strong>&nbsp;will&nbsp;<strong>always</strong>&nbsp;contain&nbsp;<strong>true</strong>&nbsp;unless the request for subscription has failed.</p>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>-&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>-&nbsp;Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+            <p><strong>Note: returnValue</strong>&nbsp;will&nbsp;<strong>always</strong>&nbsp;contain&nbsp;<strong>true</strong>&nbsp;unless the request for subscription has failed.</p>
           </td>
         </tr>
         <tr>
@@ -1550,9 +1572,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates if subscribed to get notifications. Possible values are:</p>
             <ul>
-              <li>If the method is subscribed,&nbsp;<strong>subscribed</strong>&nbsp;will contain&nbsp;<strong>true&nbsp;</strong>until the final response is sent by the service before stopping.</li>
-              <li>If the method is not subscribed,&nbsp;<strong>subscribed</strong>&nbsp;will contain&nbsp;<strong>false</strong>.&nbsp;</li>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes.</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed.</li>
             </ul>
           </td>
         </tr>
@@ -1561,7 +1584,7 @@ toc: true
           <td>Required</td>
           <td>Object array: <a href="#bluetooth2adapterstatus"> bluetooth2AdapterStatus</a></td>
           <td>
-            <p><strong>adapters</strong>&nbsp;will contain status information&nbsp;for all the Bluetooth adapters&nbsp;available&nbsp;in the system, not just the ones whose status has been changed.</p>
+            <p>Contains&nbsp;status information&nbsp;for all the Bluetooth adapters&nbsp;available&nbsp;in the system, not just the ones whose status has been changed.</p>
             <p>If there are no available adapters, the array&nbsp;will be empty.</p>
           </td>
         </tr>
@@ -1570,8 +1593,7 @@ toc: true
           <td>Optional</td>
           <td>Number</td>
           <td>
-            <p><strong>errorCode</strong>&nbsp;contains the error code if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorCode</strong>&nbsp;only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
         <tr>
@@ -1579,8 +1601,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p><strong>errorText</strong>&nbsp;contains the error text if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>Error Codes Reference</strong>&quot; section of this method for details.</p>
           </td>
         </tr>
       </tbody>
@@ -1613,7 +1634,6 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example:</p>
     <p># luna-send -i -f luna://com.webos.service.bluetooth2/adapter/getStatus &#39;{<br />
       &nbsp; &nbsp; &nbsp; &nbsp;&quot;subscribe&quot;:true<br />
       }&#39;
@@ -1640,15 +1660,7 @@ toc: true
       }
     </p>
     <p>&nbsp;</p>
-    <p>Response for a failed call: If&nbsp;Bluetooth stack is invalid</p>
-    <p>{&nbsp;&nbsp;<br />
-      &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:101,<br />
-      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
-      &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;Bluetooth&nbsp;adapter&nbsp;is&nbsp;not&nbsp;available&quot;<br />
-      }
-    </p>
-    <p>&nbsp;</p>
-    <p>Subscription return: If subscription call succeeds</p>
+    <p>Subscription return:&nbsp;</p>
     <p>{&nbsp;&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&quot;subscribed&quot;:true,<br />
       &nbsp;&nbsp;&nbsp;&quot;adapters&quot;:[&nbsp;&nbsp;<br />
@@ -1668,6 +1680,14 @@ toc: true
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
       }
     </p>
+    <p>&nbsp;</p>
+    <p>Response for a failed call: If the Bluetooth stack is invalid</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:101,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;Bluetooth&nbsp;adapter&nbsp;is&nbsp;not&nbsp;available&quot;<br />
+      }
+    </p>
   </div>
 </div>
 <h3>adapter/pair</h3>
@@ -1677,7 +1697,7 @@ toc: true
   <p>Only one pairing request, either incoming or outgoing, can be active for an adapter at a given time.</p>
   <ul>
     <li>An outgoing pairing request is active&nbsp;until the service ends the subscription to this method by sending a subscription response containing&nbsp;<strong>request:endPairing</strong>.</li>
-    <li>An incoming pairing request is active once a subscription response to&nbsp;<strong>adapter/awaitPairingRequests&nbsp;</strong>contains&nbsp;<strong>request:displayPinCode</strong>,&nbsp;<strong>request:displayPasskey</strong>,&nbsp;<strong>request:confirmPasskey</strong>, &nbsp;<strong>request:enterPinCode</strong>, or&nbsp;<strong>request:enterPinCode</strong>.</li>
+    <li>An incoming pairing request is active once a subscription response to&nbsp;<strong>adapter/awaitPairingRequests&nbsp;</strong>contains&nbsp;<strong>request:displayPinCode</strong>,&nbsp;<strong>request:displayPasskey</strong>,&nbsp;<strong>request:confirmPasskey</strong>,&nbsp;<strong>request:enterPinCode</strong>, or&nbsp;<strong>request:enterPinCode</strong>.</li>
     <li>An incoming pairing becomes inactive when a subscription response contains&nbsp;<strong>request:endPairing</strong>.&nbsp;</li>
   </ul>
   <p>If the client calls<strong>&nbsp;LSCallCancel()</strong>, the pairing is cancelled the same way as if&nbsp;<strong>adapter/cancelPairing</strong>&nbsp;had been called.</p>
@@ -1705,7 +1725,8 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>The address (bdaddr) of the remote device with which to attempt to pair.</p>
+            <p>The address (bdaddr) of the remote device with which pairing is being attempted.</p>
+            <p>&nbsp;</p>
           </td>
         </tr>
         <tr>
@@ -1713,7 +1734,12 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Must set&nbsp;<strong>subscribe</strong>&nbsp;to&nbsp;<strong>true</strong>.&nbsp;The caller must subscribe to this method.</p>
+            <p>Subscribe and get notified when there is a change in the pairing status.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes.</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed.</li>
+            </ul>
+            <p><strong>Note:</strong> Set&nbsp;<strong>subscribe</strong>&nbsp;to&nbsp;<strong>true</strong>.&nbsp;The caller MUST subscribe to this method.</p>
           </td>
         </tr>
         <tr>
@@ -1751,9 +1777,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates the status of operation. Possible values are:</p>
             <ul>
-              <li>If the method succeeds,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>true.</strong></li>
-              <li>If the method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false</strong>.</li>
+              <li><strong>true&nbsp;</strong>-&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>-&nbsp;Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
@@ -1762,8 +1789,7 @@ toc: true
           <td>Optional</td>
           <td>Number</td>
           <td>
-            <p><strong>errorCode</strong>&nbsp;contains the error code if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorCode</strong>&nbsp;only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
         <tr>
@@ -1771,8 +1797,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p><strong>errorText</strong>&nbsp;contains the error text if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>Error Codes Reference</strong>&quot; section of this method for details.</p>
           </td>
         </tr>
       </tbody>
@@ -1801,9 +1826,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates the status of operation. Possible values are:</p>
             <ul>
-              <li>If the method succeeds,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>true.</strong></li>
-              <li>If the method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false</strong>.</li>
+              <li><strong>true&nbsp;</strong>-&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>-&nbsp;Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
@@ -1812,9 +1838,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates if subscribed to get notifications. Possible values are:</p>
             <ul>
-              <li>If the subscription request succeeds,&nbsp;<strong>subscribed</strong>&nbsp;will contain&nbsp;<strong>true</strong>&nbsp;until the <strong>request:endPairing</strong>&nbsp;response is sent by the service.</li>
-              <li>If the subscription request fails,&nbsp;<strong>subscribed</strong>&nbsp;will contain&nbsp;<strong>false</strong>.</li>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes.&nbsp;<strong>subscribed</strong>&nbsp;will contain&nbsp;<strong>true</strong>&nbsp;until the <strong>request:endPairing</strong>&nbsp;response is sent by the service.</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed.</li>
             </ul>
           </td>
         </tr>
@@ -1831,15 +1858,15 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The value will be one of the followings:</p>
+            <p>Possible values are:&nbsp;</p>
             <ul>
-              <li><strong>displayPinCode&nbsp;</strong>-&nbsp;display&nbsp;<strong>pinCode&nbsp;</strong>until the&nbsp;<strong>endPairing</strong>&nbsp;response is sent by the service.</li>
-              <li><strong>displayPasskey&nbsp;</strong>-&nbsp;display&nbsp;<strong>passkey</strong>&nbsp;until the&nbsp;<strong>endPairing</strong>&nbsp;response is sent by the service.</li>
-              <li><strong>confirmPasskey</strong>&nbsp;- request the user to confirm&nbsp;<strong>passkey;</strong> only used with devices supporting Simple Secure Pairing (SSP) and Bluetooth version 2.1 or later.&nbsp;​</li>
-              <li><strong>enterPinCode</strong>&nbsp;- request the user to enter a PIN code.</li>
-              <li><strong>enterPasskey</strong>&nbsp;- request the user to enter a passkey.</li>
-              <li><strong>continuePairing</strong>&nbsp;- the request to cancel pairing from&nbsp;<strong>adapter/cancelPairing</strong>&nbsp;failed.</li>
-              <li><strong>endPairing</strong>&nbsp;- the pairing process is complete;&nbsp;<strong>subscribed</strong><em>&nbsp;</em>will contain&nbsp;<strong>false</strong>&nbsp;and&nbsp;<strong>returnValue</strong>&nbsp;indicates whether pairing succeeded;&nbsp;<strong>errorCode</strong>&nbsp;and&nbsp;<strong>errorText</strong>​ will explain the failure.</li>
+              <li><strong>displayPinCode&nbsp;</strong>- Display&nbsp;<strong>pinCode&nbsp;</strong>until the&nbsp;<strong>endPairing</strong>&nbsp;response is sent by the service.</li>
+              <li><strong>displayPasskey&nbsp;</strong>-&nbsp;Display&nbsp;<strong>passkey</strong>&nbsp;until the&nbsp;<strong>endPairing</strong>&nbsp;response is sent by the service.</li>
+              <li><strong>confirmPasskey</strong>&nbsp;- Request the user to confirm&nbsp;<strong>passkey;</strong> only used with devices supporting Simple Secure Pairing (SSP) and Bluetooth version 2.1 or later.&nbsp;​</li>
+              <li><strong>enterPinCode</strong>&nbsp;- Request the user to enter a PIN code.</li>
+              <li><strong>enterPasskey</strong>&nbsp;- Request the user to enter a passkey.</li>
+              <li><strong>continuePairing</strong>&nbsp;- The request to cancel pairing from&nbsp;<strong>adapter/cancelPairing</strong>&nbsp;failed.</li>
+              <li><strong>endPairing</strong>&nbsp;- The pairing process is complete;&nbsp;<strong>subscribed</strong><em>&nbsp;</em>will contain&nbsp;<strong>false</strong>&nbsp;and&nbsp;<strong>returnValue</strong>&nbsp;indicates whether pairing succeeded;&nbsp;<strong>errorCode</strong>&nbsp;and&nbsp;<strong>errorText</strong>​ will explain the failure.</li>
             </ul>
           </td>
         </tr>
@@ -1896,19 +1923,10 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example:</p>
     <p># luna-send -i -f luna://com.webos.service.bluetooth2/adapter/pair &#39;{<br />
       &nbsp; &nbsp; &nbsp; &quot;address&quot;: &quot;34:4d:f7:f9:52:f7&quot;,<br />
       &nbsp; &nbsp; &nbsp; &quot;subscribe&quot;:true<br />
       }&#39;
-    </p>
-    <p>&nbsp;</p>
-    <p>Response for a failed call: If device is pairing already</p>
-    <p>{&nbsp;&nbsp;<br />
-      &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:118,<br />
-      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
-      &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;Pairing&nbsp;already&nbsp;in&nbsp;progress&quot;<br />
-      }
     </p>
     <p>&nbsp;</p>
     <p>Subscription return : If remote device requests pairing</p>
@@ -1918,6 +1936,14 @@ toc: true
       &nbsp;&nbsp;&nbsp;&quot;passkey&quot;:952197,<br />
       &nbsp;&nbsp;&nbsp;&quot;address&quot;:&quot;34:4d:f7:f9:52:f7&quot;,<br />
       &nbsp;&nbsp;&nbsp;&quot;request&quot;:&quot;confirmPasskey&quot;<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Response for a failed call: If device is pairing already</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:118,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;Pairing&nbsp;already&nbsp;in&nbsp;progress&quot;<br />
       }
     </p>
   </div>
@@ -1949,11 +1975,12 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
+            <p>Subscribe and get notified when an adapter is added/removed.&nbsp;Possible values are:</p>
             <ul>
-              <li>To be informed of added/removed adapters dynamically, set&nbsp;<strong>subscribe</strong>&nbsp;to&nbsp;<strong>true</strong>.</li>
-              <li>Otherwise, set&nbsp;<strong>subscribe</strong>&nbsp;to&nbsp;<strong>false</strong>.</li>
-              <li>The default value of <strong>subscribe</strong> is <strong>false</strong>.</li>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes.</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed.</li>
             </ul>
+            <p>​<strong>Default value:</strong>&nbsp;false</p>
           </td>
         </tr>
       </tbody>
@@ -1982,9 +2009,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates if subscribed to get notifications. Possible values are:</p>
             <ul>
-              <li>If the method is subscribed,&nbsp;<strong>subscribed</strong>&nbsp;will contain&nbsp;<strong>true</strong>.</li>
-              <li>If the method is not subscribed,&nbsp;<strong>subscribed</strong>&nbsp;will contain&nbsp;<strong>false</strong>.&nbsp;</li>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes.</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed.</li>
             </ul>
           </td>
         </tr>
@@ -1993,7 +2021,12 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p><span style="display:none">&nbsp;</span><strong>returnValue</strong>&nbsp;will&nbsp;<strong>always</strong>&nbsp;contain&nbsp;<strong>true</strong>&nbsp;unless the request for subscription failed.<span style="display:none">&nbsp;</span></p>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>-&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>-&nbsp;Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+            <p><strong>Note:</strong>&nbsp;<strong>returnValue</strong>&nbsp;will&nbsp;<strong>always</strong>&nbsp;contain&nbsp;<strong>true</strong>&nbsp;unless the request for subscription fails.&nbsp;</p>
           </td>
         </tr>
         <tr>
@@ -2001,7 +2034,7 @@ toc: true
           <td>Required</td>
           <td>Object array: <a href="#bluetooth2adapter"> bluetooth2Adapter</a></td>
           <td>
-            <p>Constant information of all the adapters currently available in the system, not just the ones that have been added/removed. The information of the adapter does not change by user or by any operations.&nbsp;The information returned for an adapter does not change while it is available.&nbsp;</p>
+            <p>Contains information of all the adapters currently available in the system, not just the ones that have been added/removed. The information of the adapter does not change by user or by any operations.&nbsp;The information returned for an adapter does not change while it is available.&nbsp;</p>
             <p>If there are no available adapters, the array will be empty.</p>
           </td>
         </tr>
@@ -2010,8 +2043,7 @@ toc: true
           <td>Optional</td>
           <td>Number</td>
           <td>
-            <p><strong>errorCode</strong>&nbsp;contains the error code if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorCode</strong>&nbsp;only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
         <tr>
@@ -2019,8 +2051,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p><strong>errorText</strong>&nbsp;contains the error text if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>Error Codes Reference</strong>&quot; section of this method for details.</p>
           </td>
         </tr>
       </tbody>
@@ -2049,7 +2080,12 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p><strong>returnValue</strong>&nbsp;will&nbsp;<strong>always</strong>&nbsp;contain&nbsp;<strong>true</strong>&nbsp;unless the request for subscription failed.</p>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>-&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>-&nbsp;Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+            <p><strong>Note:</strong>&nbsp;<strong>returnValue</strong>&nbsp;will&nbsp;<strong>always</strong>&nbsp;contain&nbsp;<strong>true</strong>&nbsp;unless the request for subscription fails.&nbsp;</p>
           </td>
         </tr>
         <tr>
@@ -2057,9 +2093,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates if subscribed to get notifications. Possible values are:</p>
             <ul>
-              <li>If the method is subscribed,&nbsp;<strong>subscribed</strong>&nbsp;will contain&nbsp;<strong>true&nbsp;</strong>until the final response is sent by the service before stopping.</li>
-              <li>If the method is not subscribed,&nbsp;<strong>subscribed</strong>&nbsp;will contain&nbsp;<strong>false</strong>.&nbsp;</li>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes.&nbsp;<strong>subscribed</strong>&nbsp;will contain&nbsp;<strong>true&nbsp;</strong>until the final response is sent by the service before stopping.</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed.</li>
             </ul>
           </td>
         </tr>
@@ -2068,7 +2105,7 @@ toc: true
           <td>Required</td>
           <td>Object array: <a href="#bluetooth2adapterstatus"> bluetooth2AdapterStatus</a></td>
           <td>
-            <p>Constant information of all the adapters currently available in the system, not just the ones that have been added/removed. The information of the adapter does not change by user or by any operations.&nbsp;The information returned for an adapter does not change while it is available.&nbsp;</p>
+            <p>Contains information of all the adapters currently available in the system, not just the ones that have been added/removed. The information of the adapter does not change by user or by any operations.&nbsp;The information returned for an adapter does not change while it is available.&nbsp;</p>
             <p>If there are no available adapters, the array will be empty.</p>
           </td>
         </tr>
@@ -2077,7 +2114,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p><strong>errorCode</strong>&nbsp;contains the error code if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorCode</strong>&nbsp;only if it fails.&nbsp;<span style="line-height:1.6em">See the&nbsp;</span><strong style="line-height:1.6em">Error Codes Reference</strong><span style="line-height:1.6em">&nbsp;of this method for more details.</span></p>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
         <tr>
@@ -2085,7 +2122,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p><strong>errorText</strong>&nbsp;contains the error text if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.&nbsp;<span style="line-height:1.6em">See the&nbsp;</span><strong style="line-height:1.6em">Error Codes Reference</strong><span style="line-height:1.6em">&nbsp;of this method for more details.&nbsp;</span></p>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>Error Codes Reference</strong>&quot; section of this method for details.</p>
           </td>
         </tr>
       </tbody>
@@ -2118,7 +2155,6 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example:</p>
     <p># luna-send -i -f luna://com.webos.service.bluetooth2/adapter/queryAvailable &#39;{<br />
       &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;subscribe&quot;:true<br />
       }&#39;
@@ -2144,15 +2180,7 @@ toc: true
       }
     </p>
     <p>&nbsp;</p>
-    <p>Response for a failed call: If Bluetooth daemon is not running</p>
-    <p>{&nbsp;&nbsp;<br />
-      &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:101,<br />
-      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
-      &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;Bluetooth&nbsp;adapter&nbsp;is&nbsp;not&nbsp;available&quot;<br />
-      }
-    </p>
-    <p>&nbsp;</p>
-    <p>Subscription return: If subscription call is success</p>
+    <p>Subscription return:&nbsp;</p>
     <p>{&nbsp;&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&quot;subscribed&quot;:false,<br />
       &nbsp;&nbsp;&nbsp;&quot;adapters&quot;:[&nbsp;&nbsp;<br />
@@ -2169,6 +2197,14 @@ toc: true
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
       &nbsp;&nbsp;&nbsp;],<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Response for a failed call: If Bluetooth daemon is not running</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:101,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;Bluetooth&nbsp;adapter&nbsp;is&nbsp;not&nbsp;available&quot;<br />
       }
     </p>
   </div>
@@ -2217,9 +2253,10 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates whether to power ON or OFF the adapter radio. Possible values are:</p>
             <ul>
-              <li>To power on the adapter radio, set <strong>powered</strong> to <strong>true</strong>.</li>
-              <li>To power off the adapter radio, set&nbsp;<strong>powered</strong>&nbsp;to&nbsp;<strong>false</strong>.</li>
+              <li><strong>true</strong> - Power ON&nbsp;</li>
+              <li><strong>false</strong> - Power OFF</li>
             </ul>
           </td>
         </tr>
@@ -2230,7 +2267,7 @@ toc: true
           <td>
             <p>The discovery timeout in seconds.</p>
             <p>After <strong>discoveryTimeout</strong> seconds, the adapter&nbsp;will stop discovering remote Bluetooth devices.</p>
-            <p>A value of 0 means that the timeout is disabled and the adapter will run the discovery process until the&nbsp;<strong>adapter/cancelDiscovery</strong>​ method is called. Negative values are illegal.&nbsp;</p>
+            <p>A value of 0 means that the timeout is disabled and the adapter will run the discovery process until the&nbsp;<strong>adapter/cancelDiscovery</strong>​ method is called. Negative values are not valid.&nbsp;</p>
           </td>
         </tr>
         <tr>
@@ -2238,12 +2275,13 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates whether the adapter can be discovered by remote devices. Possible values are:</p>
             <ul>
-              <li>To allow&nbsp;the adapter can be discovered by remote devices, set <strong>discoverable</strong> to <strong>true</strong>.</li>
-              <li>Otherwise, set <strong>discoverable</strong> to <strong>false</strong>.</li>
-              <li>The default value of <strong>discoverable</strong> is <strong>false</strong>.</li>
+              <li><strong>true</strong> - Can be discovered</li>
+              <li><strong>false</strong> - Cannot be discovered</li>
             </ul>
-            <p>NOTE. If <strong>discoverableTimeout </strong>is set to a non-zero value, <strong>discoverable</strong> will be set back to <strong>false </strong>when the timer expires.</p>
+            <p><strong>Default value:&nbsp;</strong>false</p>
+            <p><strong>Note</strong>: If <strong>discoverableTimeout </strong>is set to a non-zero value, <strong>discoverable</strong> will be set back to <strong>false </strong>when the timer expires.</p>
           </td>
         </tr>
         <tr>
@@ -2252,7 +2290,7 @@ toc: true
           <td>Number</td>
           <td>
             <p>The discoverable timeout in seconds.</p>
-            <p>A value of 0 means that the timeout is disabled and the adapter will stay in discoverable mode until <strong>discoverable</strong>&nbsp;is set to false. Negative values are illegal.</p>
+            <p>A value of 0 means that the timeout is disabled and the adapter will stay in discoverable mode until <strong>discoverable</strong>&nbsp;is set to false. Negative values are not valid.</p>
           </td>
         </tr>
         <tr>
@@ -2260,11 +2298,12 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates whether to enable the adapter to be paired to a remote device. Possible values are:</p>
             <ul>
-              <li>To enable the adapter to be paired to a remote device, set <strong>pairable</strong> to <strong>true</strong>.</li>
-              <li>To disable the adapter to be paired to a remote device, set&nbsp;<strong>pairable</strong>&nbsp;to&nbsp;<strong>false</strong>.</li>
-              <li>The default value of&nbsp;<strong>pairable</strong>&nbsp;is <strong>true</strong>.</li>
+              <li><strong>true</strong> - Adapter can be paired</li>
+              <li><strong>false</strong> - Adapter cannot be paired</li>
             </ul>
+            <p><strong>Default value</strong>:&nbsp;true</p>
           </td>
         </tr>
         <tr>
@@ -2302,9 +2341,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates the status of operation. Possible values are:</p>
             <ul>
-              <li>If the state was successfully set,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>true.</strong></li>
-              <li>If the method fails, <strong>returnValue</strong> will contain&nbsp;<strong>false</strong>.</li>
+              <li><strong>true&nbsp;</strong>-&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>-&nbsp;Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
@@ -2322,8 +2362,7 @@ toc: true
           <td>Optional</td>
           <td>Number</td>
           <td>
-            <p><strong>errorCode</strong>&nbsp;contains the error code if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorCode</strong>&nbsp;only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
         <tr>
@@ -2331,8 +2370,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p><strong>errorText</strong>&nbsp;contains the error text if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>Error Codes Reference</strong>&quot; section of this method for details.</p>
           </td>
         </tr>
       </tbody>
@@ -2362,14 +2400,14 @@ toc: true
         </tr>
         <tr>
           <td>109</td>
-          <td>Invalid negative value for discoveryTimeout:</td>
+          <td>Invalid negative value for discoveryTimeout</td>
           <td>
             <p><span style="color:rgb(0, 0, 0)">The <strong>discoveryTimeout</strong> parameter value cannot be negative, hence invalid. The passed value is also mentioned in the error message.</span></p>
           </td>
         </tr>
         <tr>
           <td>110</td>
-          <td>Invalid negative value for discoverableTimeout:</td>
+          <td>Invalid negative value for discoverableTimeout</td>
           <td>
             <p><span style="color:rgb(0, 0, 0)">The <strong>discoverableTimeout</strong> parameter value cannot be negative, hence invalid. The passed value is also mentioned in the error message.</span></p>
           </td>
@@ -2400,7 +2438,6 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example:</p>
     <p># luna-send -f -n 1 luna://com.webos.service.bluetooth2/adapter/setState &#39;{&quot;powered&quot;:true}&#39;</p>
     <p>&nbsp;</p>
     <p>Response for a successful call:</p>
@@ -2422,8 +2459,8 @@ toc: true
 <h3>adapter/startDiscovery</h3>
 <div>
   <h4>Description</h4>
-  <p>Start discovering remote Bluetooth devices.&nbsp;<span style="line-height:1.6em">Discovering continues until&nbsp;</span><strong style="line-height:1.6em">adapter/cancelDiscovery</strong><span style="line-height:1.6em">​ is called or for&nbsp;</span><strong style="line-height:1.6em">bluetooth2AdapterStatus.</strong><strong style="line-height:1.6em">discoveryTimeout</strong><span style="line-height:1.6em">​ seconds (if non-zero). Only one adapter can be discovering at a time.</span></p>
-  <p>To receive which devices are found, subscribe to&nbsp;<strong>device/getStatus</strong>.</p>
+  <p>Start discovering remote Bluetooth devices.&nbsp;Discovering continues until&nbsp;<strong>adapter/cancelDiscovery</strong>​ is called or for&nbsp;<strong>bluetooth2AdapterStatus.</strong><strong>discoveryTimeout</strong>​ seconds (if non-zero). Only one adapter can be discovering at a time.</p>
+  <p>To get the list of&nbsp;devices found, subscribe to&nbsp;<strong>device/getStatus</strong>.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -2477,9 +2514,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates the status of operation. Possible values are:</p>
             <ul>
-              <li>If scanning was successfully started or was previously started by an earlier call, <strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>true.</strong></li>
-              <li>Otherwise (including another adapter is already scanning),&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false</strong>.</li>
+              <li><strong>true&nbsp;</strong>-&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>-&nbsp;Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
@@ -2489,7 +2527,7 @@ toc: true
           <td>String</td>
           <td>
             <p>The&nbsp;address&nbsp;of the adapter which executed this method.</p>
-            <p>If&nbsp;<strong>adapterAddress</strong>&nbsp;input parameter was not specified, the address of the&nbsp;default adapter will be returned.</p>
+            <p>If&nbsp;not specified, the address of the&nbsp;default adapter will be returned.</p>
           </td>
         </tr>
         <tr>
@@ -2497,8 +2535,7 @@ toc: true
           <td>Optional</td>
           <td>Number</td>
           <td>
-            <p><strong>errorCode</strong>&nbsp;contains the error code if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorCode</strong>&nbsp;only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
         <tr>
@@ -2506,8 +2543,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p><strong>errorText</strong>&nbsp;contains the error text if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>Error Codes Reference</strong>&quot; section of this method for details.</p>
           </td>
         </tr>
       </tbody>
@@ -2554,7 +2590,6 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example:</p>
     <p># luna-send -n 1 -f luna://com.webos.service.bluetooth2/adapter/startDiscovery &#39;{ }&#39;</p>
     <p>&nbsp;</p>
     <p>Response for a successful call:</p>
@@ -2564,7 +2599,7 @@ toc: true
       }
     </p>
     <p>&nbsp;</p>
-    <p>Response for a failed call: If&nbsp;failed to start discovery</p>
+    <p>Response for a failed call: If&nbsp;failed to start</p>
     <p>{&nbsp;&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:115,<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
@@ -2645,8 +2680,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p><strong>returnValue</strong> will <strong>always</strong> contain&nbsp;<strong>true</strong>.</p>
-            <p>If the <strong>passkey</strong> is incorrect,&nbsp;the&nbsp;<strong>adapter/pair</strong>&nbsp;method will send a final subscription response containing&nbsp;<strong>returnValue:false</strong>&nbsp;indicating pairing has failed.</p>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>-&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>-&nbsp;Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
           </td>
         </tr>
         <tr>
@@ -2654,8 +2692,7 @@ toc: true
           <td>Optional</td>
           <td>Number</td>
           <td>
-            <p><strong>errorCode</strong>&nbsp;contains the error code if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorCode</strong>&nbsp;only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
         <tr>
@@ -2663,8 +2700,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p><strong>errorText</strong>&nbsp;contains the error text if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>Error Codes Reference</strong>&quot; section of this method for details.</p>
           </td>
         </tr>
       </tbody>
@@ -2704,7 +2740,6 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example:</p>
     <p># luna-send -n 1 -f luna://com.webos.service.bluetooth2/adapter/supplyPasskey &#39;{<br />
       &nbsp; &nbsp; &nbsp; &nbsp;&quot;address&quot;: &quot;34:4d:f7:f9:52:f7&quot;,<br />
       &nbsp; &nbsp; &nbsp; &nbsp;&quot;passkey&quot;:842280<br />
@@ -2762,9 +2797,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates if the user has confirmed the passkey. Possible values are:&nbsp;</p>
             <ul>
-              <li>If the user confirmed the passkey, set <strong>accept </strong>to&nbsp;<strong>true</strong>.</li>
-              <li>If the user didn&#39;t confirm the passkey, set&nbsp;<strong>accept&nbsp;</strong>to <strong>false</strong>.</li>
+              <li><strong>true</strong> - User confirmed the passkey</li>
+              <li><strong>false</strong> - User didn&#39;t confirm the passkey</li>
             </ul>
           </td>
         </tr>
@@ -2802,8 +2838,12 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p><strong>returnValue</strong> will&nbsp;<strong>always&nbsp;</strong>contain&nbsp;<strong>true</strong>.</p>
-            <p>If the&nbsp;<strong>accept&nbsp;</strong>is false, the&nbsp;<strong>adapter/pair</strong>&nbsp;method will send a final subscription response containing&nbsp;<strong>returnValue:false</strong> indicating pairing has failed.</p>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>-&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>-&nbsp;Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+            <p><strong>Note</strong>: If <strong>accept&nbsp;</strong>is false, the&nbsp;<strong>adapter/pair</strong>&nbsp;method will send a final subscription response containing&nbsp;<strong>returnValue:false</strong> indicating that the pairing has failed.</p>
           </td>
         </tr>
         <tr>
@@ -2811,8 +2851,7 @@ toc: true
           <td>Optional</td>
           <td>Number</td>
           <td>
-            <p><strong>errorCode</strong>&nbsp;contains the error code if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorCode</strong>&nbsp;only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
         <tr>
@@ -2820,8 +2859,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p><strong>errorText</strong>&nbsp;contains the error text if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>Error Codes Reference</strong>&quot; section of this method for details.</p>
           </td>
         </tr>
       </tbody>
@@ -2861,7 +2899,6 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example:</p>
     <p># luna-send -n 1 -f luna://com.webos.service.bluetooth2/adapter/supplyPasskeyConfirmation &#39;{<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;address&quot;: &quot;34:4d:f7:f9:52:f7&quot;,<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;accept&quot;:true<br />
@@ -2956,8 +2993,12 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p><strong>returnValue</strong> will <strong>always</strong> contain <strong>true</strong>.</p>
-            <p>If the <strong>pin</strong> is incorrect,&nbsp;the <strong>adapter/pair</strong> method will send a final subscription response containing <strong>returnValue:false</strong>&nbsp;indicating pairing has failed.</p>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>-&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>-&nbsp;Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+            <p><strong>Note</strong>: If the <strong>pin</strong> is incorrect,&nbsp;the <strong>adapter/pair</strong> method will send a final subscription response containing <strong>returnValue:false</strong>&nbsp;indicating that the pairing has failed.</p>
           </td>
         </tr>
         <tr>
@@ -2965,8 +3006,7 @@ toc: true
           <td>Optional</td>
           <td>Number</td>
           <td>
-            <p><strong>errorCode</strong>&nbsp;contains the error code if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorCode</strong>&nbsp;only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
         <tr>
@@ -2974,8 +3014,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p><strong>errorText</strong>&nbsp;contains the error text if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>Error Codes Reference</strong>&quot; section of this method for details.</p>
           </td>
         </tr>
       </tbody>
@@ -3015,7 +3054,6 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example:</p>
     <p># luna-send -n 1 -f luna://com.webos.service.bluetooth2/adapter/supplyPinCode &#39;{<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;address&quot;: &quot;34:4d:f7:f9:52:f7&quot;,<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;pin&quot;:&quot;2345&quot;<br />
@@ -3094,9 +3132,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates the status of operation. Possible values are:</p>
             <ul>
-              <li>If the remote device was successfully unpaired, <strong>returnValue</strong> will contain <strong>true</strong>.</li>
-              <li>If the remote device was not unpaired,&nbsp;<strong>returnValue</strong>&nbsp;will contain <strong>false</strong>.&nbsp;(e.g.,&nbsp;<strong>address&nbsp;</strong>wasn&#39;t paired to start with)</li>
+              <li><strong>true&nbsp;</strong>-&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>-&nbsp;Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
@@ -3113,8 +3152,7 @@ toc: true
           <td>Optional</td>
           <td>Number</td>
           <td>
-            <p><strong>errorCode</strong>&nbsp;contains the error code if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorCode</strong>&nbsp;only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
         <tr>
@@ -3122,8 +3160,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p><strong>errorText</strong>&nbsp;contains the error text if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>Error Codes Reference</strong>&quot; section of this method for details.</p>
           </td>
         </tr>
       </tbody>
@@ -3163,7 +3200,6 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example:</p>
     <p># luna-send -n 1 -f luna://com.webos.service.bluetooth2/adapter/unpair &#39;{<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;address&quot;: &quot;34:4d:f7:f9:52:f7&quot;<br />
       }&#39;
@@ -3421,7 +3457,7 @@ toc: true
           <td>101, 103, 104, 143, 144</td>
           <td>See API Error Codes Reference</td>
           <td>
-            <p>See <strong>API Error Codes Reference</strong>.</p>
+            <p>See the <strong>API Error Codes Reference</strong>&nbsp;section.</p>
           </td>
         </tr>
         <tr>
@@ -3436,7 +3472,6 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example:</p>
     <p># luna-send -f -i luna://com.webos.service.bluetooth2/avrcp/awaitMediaMetaDataRequest&nbsp;&#39;{ &quot;subscribe&quot;:true }&#39;</p>
     <p>&nbsp;</p>
     <p>Response for a successful call:</p>
@@ -3446,22 +3481,23 @@ toc: true
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
       }
     </p>
-    <p>&nbsp;</p>
-    <p>Response for a failed call: If the subscribe parameter is not used</p>
-    <p>{&nbsp;&nbsp;<br />
-      &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:103,<br />
-      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
-      &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;Method&nbsp;needs&nbsp;to&nbsp;be&nbsp;subscribed&quot;<br />
-      }
+    <p><br />
+      Subscription return: If a remote device requests for media metadata
     </p>
-    <p>&nbsp;</p>
-    <p>Subscription return: If a remote device requests for media metadata</p>
     <p>{&nbsp;&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&quot;requestId&quot;:&quot;001&quot;,<br />
       &nbsp;&nbsp;&nbsp;&quot;adapterAddress&quot;:&quot;00:00:c5:99:f5:87&quot;,<br />
       &nbsp;&nbsp;&nbsp;&quot;subscribed&quot;:true,<br />
       &nbsp;&nbsp;&nbsp;&quot;address&quot;:&quot;34:4d:f7:f9:52:f7&quot;,<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Response for a failed call: If the subscribe parameter is not used</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:103,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;Method&nbsp;needs&nbsp;to&nbsp;be&nbsp;subscribed&quot;<br />
       }
     </p>
   </div>
@@ -3695,7 +3731,7 @@ toc: true
           <td>101, 103, 104, 143, 144</td>
           <td>See API Error Codes Reference</td>
           <td>
-            <p>See <strong>API Error Codes Reference</strong>.</p>
+            <p>See the <strong>API Error Codes Reference</strong>&nbsp;section.</p>
           </td>
         </tr>
         <tr>
@@ -3710,7 +3746,6 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example:</p>
     <p># luna-send -f -i luna://com.webos.service.bluetooth2/avrcp/awaitMediaPlayStatusRequest &#39;{ &quot;subscribe&quot;:true }&#39;</p>
     <p>&nbsp;</p>
     <p>Response for a successful call:</p>
@@ -3721,14 +3756,6 @@ toc: true
       }
     </p>
     <p>&nbsp;</p>
-    <p>Response for a failed call: If the subscribe parameter is not used</p>
-    <p>{&nbsp;&nbsp;<br />
-      &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:103,<br />
-      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
-      &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;Method&nbsp;needs&nbsp;to&nbsp;be&nbsp;subscribed&quot;<br />
-      }
-    </p>
-    <p>&nbsp;</p>
     <p>Subscription return: If a remote device requests for media playstatus</p>
     <p>{&nbsp;&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&quot;requestId&quot;:&quot;001&quot;,<br />
@@ -3736,6 +3763,14 @@ toc: true
       &nbsp;&nbsp;&nbsp;&quot;subscribed&quot;:true,<br />
       &nbsp;&nbsp;&nbsp;&quot;address&quot;:&quot;34:4d:f7:f9:52:f7&quot;,<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Response for a failed call: If the subscribe parameter is not used</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:103,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;Method&nbsp;needs&nbsp;to&nbsp;be&nbsp;subscribed&quot;<br />
       }
     </p>
   </div>
@@ -3965,7 +4000,7 @@ toc: true
           <td>102, 103, 105, 106, 127, 143, 144</td>
           <td>See API Error Codes Reference</td>
           <td>
-            <p>See&nbsp;<strong>API Error Codes Reference</strong>.</p>
+            <p>See the <strong>API Error Codes Reference</strong>&nbsp;section.</p>
           </td>
         </tr>
         <tr>
@@ -4001,7 +4036,6 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example:</p>
     <p># luna-send -i -f luna://com.webos.service.bluetooth2/avrcp/connect &#39;{<br />
       &nbsp; &nbsp; &nbsp; &quot;address&quot;:&quot;00:18:6b:49:db:86&quot;,<br />
       &nbsp; &nbsp; &nbsp; &quot;subscribe&quot;:true<br />
@@ -4016,20 +4050,20 @@ toc: true
       }
     </p>
     <p>&nbsp;</p>
-    <p>Response for a failed call: If the address is not valid</p>
-    <p>{<br />
-      &nbsp; &nbsp;&nbsp;&quot;errorCode&quot;: 106,<br />
-      &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp;&nbsp;&quot;errorText&quot;: &quot;Device with supplied address is not available&quot;<br />
-      }
-    </p>
-    <p>&nbsp;</p>
     <p>Subscription return: If connection is successful</p>
     <p>{<br />
       &nbsp; &nbsp;&nbsp;&quot;subscribed&quot;: true,<br />
       &nbsp; &nbsp;&nbsp;&quot;adapterAddress&quot;: &quot;00:00:45:0e:48:9b&quot;,<br />
       &nbsp; &nbsp; &quot;disconnectByRemote&quot;: true,<br />
       &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Response for a failed call: If the address is not valid</p>
+    <p>{<br />
+      &nbsp; &nbsp;&nbsp;&quot;errorCode&quot;: 106,<br />
+      &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp;&nbsp;&quot;errorText&quot;: &quot;Device with supplied address is not available&quot;<br />
       }
     </p>
   </div>
@@ -4153,7 +4187,7 @@ toc: true
           <td>102, 105, 106, 127, 143, 144</td>
           <td>See API Error Codes Reference</td>
           <td>
-            <p>See&nbsp;<strong>API Error Codes Reference</strong>.</p>
+            <p>See the <strong>API Error Codes Reference</strong>&nbsp;section.</p>
           </td>
         </tr>
         <tr>
@@ -4168,7 +4202,6 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example:</p>
     <p># luna-send -n 1 -f luna://com.webos.service.bluetooth2/avrcp/disconnect &#39;{<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;address&quot;:&quot;aa:bb:cc:dd:ee:00&quot;<br />
       }&#39;
@@ -4193,7 +4226,7 @@ toc: true
 <h3>avrcp/getStatus</h3>
 <div>
   <h4>Description</h4>
-  <p>Return status of an AVRCP connection to a remote Bluetooth device.</p>
+  <p>Return the status of an AVRCP connection to a remote Bluetooth device.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -4439,7 +4472,7 @@ toc: true
           <td>102, 105, 106, 127, 143, 144</td>
           <td>See API Error Codes Reference</td>
           <td>
-            <p>See&nbsp;<strong>API Error Codes Reference</strong>.</p>
+            <p>See the <strong>API Error Codes Reference</strong>&nbsp;section.</p>
           </td>
         </tr>
         <tr>
@@ -4454,22 +4487,13 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example:</p>
     <p># luna-send -i -f luna://com.webos.service.bluetooth2/avrcp/getStatus &#39;{<br />
       &nbsp; &nbsp; &nbsp; &quot;address&quot;:&quot;aa:bb:cc:dd:ee:00&quot;,<br />
       &nbsp; &nbsp; &nbsp; &quot;subscribe&quot;:true<br />
       }&#39;
     </p>
     <p>&nbsp;</p>
-    <p>Response for a failed call: If address is not valid</p>
-    <p>{&nbsp;&nbsp;<br />
-      &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:106,<br />
-      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
-      &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;Device&nbsp;with&nbsp;supplied&nbsp;address&nbsp;is&nbsp;not&nbsp;available&quot;<br />
-      }
-    </p>
-    <p>&nbsp;</p>
-    <p>Subscription return: If user connects to remote device, connected field is changed from false to true when remote device is connected.</p>
+    <p>Subscription Return: When the user connects to a remote device,&nbsp;the connected&nbsp;field changes&nbsp;from false to true (if the remote device gets connected)</p>
     <p>{&nbsp;&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&quot;adapterAddress&quot;:&quot;11:22:33:44:55:66&quot;,<br />
       &nbsp;&nbsp;&nbsp;&quot;connected&quot;:false,<br />
@@ -4484,6 +4508,14 @@ toc: true
       &nbsp;&nbsp;&nbsp;&quot;subscribed&quot;:true,<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
       &nbsp;&nbsp;&nbsp;&quot;connecting&quot;:false<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Response for a failed call: If the address is not valid</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:106,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;Device&nbsp;with&nbsp;supplied&nbsp;address&nbsp;is&nbsp;not&nbsp;available&quot;<br />
       }
     </p>
   </div>
@@ -4622,7 +4654,7 @@ toc: true
           <td>101,143,144</td>
           <td>See API Error Codes Reference</td>
           <td>
-            <p>See the &quot;<strong>API Error Codes Reference</strong>&quot; section.</p>
+            <p>See the <strong>API Error Codes Reference</strong>&nbsp;section.</p>
           </td>
         </tr>
       </tbody>
@@ -4630,7 +4662,6 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example:&nbsp;</p>
     <p># luna-send -f -n 1 luna://com.webos.service.bluetooth2/avrcp/internal/getRemoteFeatures &#39;{ &quot;address&quot;: &quot;aa:bb:cc:dd:ee:ff&quot; }&#39;</p>
   </div>
 </div>
@@ -4851,7 +4882,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>The key status. Possible values:</p>
+            <p>The key status. Possible values are:</p>
             <ul>
               <li>pressed</li>
               <li>released</li>
@@ -4896,7 +4927,7 @@ toc: true
           <td>101,143,144</td>
           <td>See API Error Codes Reference</td>
           <td>
-            <p>See the &quot;<strong>API Error Codes Reference</strong>&quot; section.</p>
+            <p>See the <strong>API Error Codes Reference</strong>&nbsp;section.</p>
           </td>
         </tr>
       </tbody>
@@ -4939,7 +4970,7 @@ toc: true
           <td>String</td>
           <td>
             <p>The unique ID of a request.</p>
-            <p>The format of&nbsp;<strong>requestId</strong>&nbsp;is &quot;nnn&quot;, 3 digit number.</p>
+            <p>The format of&nbsp;<strong>requestId</strong>&nbsp;is &quot;nnn&quot;, a three-digit number.</p>
           </td>
         </tr>
         <tr>
@@ -5007,7 +5038,7 @@ toc: true
           <td>String</td>
           <td>
             <p>The unique ID of a request.</p>
-            <p>The format of&nbsp;<strong>requestId</strong>&nbsp;is &quot;nnn&quot;, 3 digit number.</p>
+            <p>The format of&nbsp;<strong>requestId</strong>&nbsp;is &quot;nnn&quot;, a three-digit number.</p>
           </td>
         </tr>
         <tr>
@@ -5077,7 +5108,6 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example:</p>
     <p># luna-send -f -i luna://com.webos.service.bluetooth2/avrcp/supplyMediaMetaData&nbsp;&#39;{&nbsp;&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&quot;requestId&quot;:&quot;001&quot;,<br />
       &nbsp;&nbsp;&nbsp;&quot;metaData&quot;:{&nbsp;&nbsp;<br />
@@ -5136,7 +5166,7 @@ toc: true
           <td>String</td>
           <td>
             <p>The unique ID of a request.&nbsp;</p>
-            <p>The format of&nbsp;<strong>requestId</strong>&nbsp;is &quot;nnn&quot;, 3 digit number.</p>
+            <p>The format of&nbsp;<strong>requestId</strong>&nbsp;is &quot;nnn&quot;, a three-digit number.</p>
           </td>
         </tr>
         <tr>
@@ -5204,7 +5234,7 @@ toc: true
           <td>String</td>
           <td>
             <p>The unique ID of a request.&nbsp;</p>
-            <p>The format of&nbsp;<strong>requestId</strong>&nbsp;is &quot;nnn&quot;, 3 digit number.</p>
+            <p>The format of&nbsp;<strong>requestId</strong>&nbsp;is &quot;nnn&quot;, a three-digit number.</p>
           </td>
         </tr>
         <tr>
@@ -5259,7 +5289,7 @@ toc: true
           <td>187</td>
           <td>Request is currently not allowed</td>
           <td>
-            <p>The TG (Target) is not awaiting for media playstatus request.</p>
+            <p>The TG (Target) is not waiting for media playstatus request.</p>
           </td>
         </tr>
         <tr>
@@ -5274,7 +5304,6 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example:</p>
     <p># luna-send -f -n 1 luna://com.webos.service.bluetooth2/avrcp/supplyMediaPlayStatus &#39;{&nbsp;&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&quot;requestId&quot;:&quot;001&quot;,<br />
       &nbsp;&nbsp;&nbsp;&quot;playbackStatus&quot;:{&nbsp;&nbsp;<br />
@@ -5329,11 +5358,21 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
+            <p>Subscribe and get notified when the status of the remote device changes.&nbsp;Possible values are:</p>
             <ul>
-              <li>To be informed of changes to the status of remote devices, set <strong>subscribe</strong> to <strong>true</strong>.</li>
-              <li>Otherwise, set&nbsp;<strong>subscribe</strong>&nbsp;to&nbsp;<strong>false</strong>.</li>
-              <li>The default value of <strong>subscribe</strong> is <strong>false</strong>.</li>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes.</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed.</li>
             </ul>
+            <p>​<strong>Default value:</strong>&nbsp;false</p>
+          </td>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p style="margin-left:0px; margin-right:0px; text-align:left">The address of the adapter executing this method.</p>
+            <p style="margin-left:0px; margin-right:0px; text-align:left">If not specified, the default adapter will be used.</p>
           </td>
         </tr>
       </tbody>
@@ -5362,9 +5401,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates if subscribed to get notifications. Possible values are:</p>
             <ul>
-              <li>If the method is subscribed,&nbsp;<strong>subscribed</strong>&nbsp;will contain&nbsp;<strong>true</strong>.</li>
-              <li>If the method is not subscribed,&nbsp;<strong>subscribed</strong>&nbsp;will contain&nbsp;<strong>false</strong>.&nbsp;</li>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes.</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed.</li>
             </ul>
           </td>
         </tr>
@@ -5373,7 +5413,12 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p><strong>returnValue</strong>&nbsp;will&nbsp;<strong>always</strong>&nbsp;contain&nbsp;<strong>true</strong>&nbsp;unless the request for subscription failed.</p>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>-&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>-&nbsp;Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+            <p><strong>Note: returnValue</strong>&nbsp;will&nbsp;<strong>always</strong>&nbsp;contain&nbsp;<strong>true</strong>&nbsp;unless the request for subscription fails.</p>
           </td>
         </tr>
         <tr>
@@ -5381,7 +5426,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>The address of the&nbsp;default adapter will be always returned.</p>
+            <p>The address of the adapter will be always returned.</p>
           </td>
         </tr>
         <tr>
@@ -5389,7 +5434,7 @@ toc: true
           <td>Required</td>
           <td>Object array: <a href="#bluetooth2devicestatus"> bluetooth2DeviceStatus</a></td>
           <td>
-            <p><strong>devices</strong> will contain status information for all the devices known to the system, not just the ones whose status has been changed.</p>
+            <p>Contains&nbsp;status information of all the devices known to the system, and not just the ones whose status has been changed.</p>
           </td>
         </tr>
         <tr>
@@ -5397,8 +5442,7 @@ toc: true
           <td>Optional</td>
           <td>Number</td>
           <td>
-            <p><strong>errorCode</strong>&nbsp;contains the error code if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorCode</strong>&nbsp;only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
         <tr>
@@ -5406,8 +5450,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p><strong>errorText</strong>&nbsp;contains the error text if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>Error Codes Reference</strong>&quot; section of this method for details.</p>
           </td>
         </tr>
       </tbody>
@@ -5436,9 +5479,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates if subscribed to get notifications. Possible values are:</p>
             <ul>
-              <li>If it is subscribed,&nbsp;<strong>subscribed</strong>&nbsp;will contain&nbsp;<strong>true&nbsp;</strong>until the final response is sent by the service before stopping.</li>
-              <li>If it is not subscribed,&nbsp;<strong>subscribed</strong>&nbsp;will contain&nbsp;<strong>false</strong>.&nbsp;</li>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes.</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed.</li>
             </ul>
           </td>
         </tr>
@@ -5447,7 +5491,12 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p><strong>returnValue</strong>&nbsp;will&nbsp;<strong>always</strong>&nbsp;contain&nbsp;<strong>true</strong>&nbsp;unless the request for subscription failed.</p>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>-&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>-&nbsp;Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+            <p><strong>Note: returnValue</strong>&nbsp;will&nbsp;<strong>always</strong>&nbsp;contain&nbsp;<strong>true</strong>&nbsp;unless the request for subscription fails.</p>
           </td>
         </tr>
         <tr>
@@ -5455,7 +5504,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>The address of the&nbsp;default adapter will be always returned.</p>
+            <p>The address of the adapter will be always returned.</p>
           </td>
         </tr>
         <tr>
@@ -5463,7 +5512,7 @@ toc: true
           <td>Required</td>
           <td>Object array: <a href="#bluetooth2devicestatus"> bluetooth2DeviceStatus</a></td>
           <td>
-            <p><strong>devices</strong>&nbsp;will contain status information for all the devices known to the system, not just the ones whose status has been changed.</p>
+            <p>Contains the&nbsp;status information of&nbsp;all the devices known to the system, and not just the ones whose status has been changed.</p>
           </td>
         </tr>
         <tr>
@@ -5471,8 +5520,7 @@ toc: true
           <td>Optional</td>
           <td>Number</td>
           <td>
-            <p><strong>errorCode</strong>&nbsp;contains the error code if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorCode</strong>&nbsp;only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
         <tr>
@@ -5480,8 +5528,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p><strong>errorText</strong>&nbsp;contains the error text if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>Error Codes Reference</strong>&quot; section of this method for details.</p>
           </td>
         </tr>
       </tbody>
@@ -5811,11 +5858,12 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates whether to set&nbsp;a remote device as a trusted device. Possible values are:</p>
             <ul>
-              <li>To set a remote device as a trusted device, set <strong>trusted</strong>&nbsp;to <strong>true</strong>.</li>
-              <li>Otherwise, set <strong>trusted</strong> to <strong>false</strong>.</li>
-              <li>The default value of <strong>trusted</strong> is <strong>false</strong>.</li>
+              <li><strong>true </strong>- Sets it as a trusted device.&nbsp;</li>
+              <li><strong>false </strong>- Sets it as a untrusted device.&nbsp;</li>
             </ul>
+            <p><strong>Default value</strong>: false</p>
           </td>
         </tr>
         <tr>
@@ -5823,12 +5871,12 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
-            <p><strong>blocked</strong>&nbsp;is used to block (if set) or unblock (if reset) a remote device for pairing and profile connections.</p>
+            <p>Indicates whether to&nbsp;block (if set) or unblock (if reset) a remote device for pairing and profile connections. Possible values are:</p>
             <ul>
-              <li>To block incoming connections, set <strong>blocked</strong>&nbsp;to <strong>true.</strong>&nbsp;Any incoming connections from the device will be immediately rejected. Any device drivers will also be removed and no new ones will be probed as long as the device is blocked.</li>
-              <li>Otherwise, set <strong>blocked</strong> to <strong>false</strong>.</li>
-              <li>The default value of <strong>blocked</strong> is <strong>false</strong>.</li>
+              <li><strong>true </strong>- Blocks incoming connections.&nbsp;Any incoming connection&nbsp;from the device will be immediately rejected. Also, device drivers will&nbsp;be removed and no new ones will be probed as long as the device is blocked.</li>
+              <li><strong>false </strong>- Unblocks&nbsp;connections.&nbsp;</li>
             </ul>
+            <p><strong>Default value</strong>: false</p>
           </td>
         </tr>
       </tbody>
@@ -5857,9 +5905,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates the status of operation. Possible values are:</p>
             <ul>
-              <li>If the state of a remote device is successfully set,&nbsp;<strong>subscribed</strong>&nbsp;will contain&nbsp;<strong>true</strong>.</li>
-              <li>If the state of a remote device is not set,&nbsp;<strong>subscribed</strong>&nbsp;will contain&nbsp;<strong>false</strong>.</li>
+              <li><strong>true&nbsp;</strong>-&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>-&nbsp;Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
@@ -5868,8 +5917,7 @@ toc: true
           <td>Optional</td>
           <td>Number</td>
           <td>
-            <p><strong>errorCode</strong>&nbsp;contains the error code if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorCode</strong>&nbsp;only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
         <tr>
@@ -5877,8 +5925,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p><strong>errorText</strong>&nbsp;contains the error text if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>Error Codes Reference</strong>&quot; section of this method for details.</p>
           </td>
         </tr>
       </tbody>
@@ -5925,7 +5972,6 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example:</p>
     <p># luna-send -f -n 1 luna://com.webos.service.bluetooth2/device/setState&nbsp;&#39;{&quot;address&quot;:&quot;34:4d:f7:f9:52:f7&quot;,&nbsp;&quot;trusted&quot;:true}&#39;</p>
     <p>&nbsp;</p>
     <p>Response for a successful call:</p>
@@ -6015,7 +6061,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The server identifier to add the service to. If not specified, the default value of serverId is made automatically.</p>
+            <p>The server identifier to add the service to. If not specified, the default value of serverId is used automatically.</p>
           </td>
         </tr>
       </tbody>
@@ -6113,7 +6159,6 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example:&nbsp;</p>
     <p># luna-send -f -n 1 luna://com.webos.service.bluetooth2/gatt/addService &#39;{&nbsp;&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&quot;service&quot;:&quot;6161&quot;,<br />
       &nbsp;&nbsp;&nbsp;&quot;type&quot;:&quot;primary&quot;,<br />
@@ -6259,7 +6304,6 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example:</p>
     <p># luna-send -f -n 1 luna://com.webos.service.bluetooth2/gatt/closeServer &#39;{ &quot;serverId&quot;:&quot;001&quot; }&#39;</p>
     <p>&nbsp;</p>
     <p>Response:</p>
@@ -6516,7 +6560,6 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example:</p>
     <p># luna-send -f -n 1 luna://com.webos.service.bluetooth2/gatt/connect &#39;{&quot;address&quot;:&quot;f6:04:af:d2:87:32&quot;}&#39;</p>
     <p>&nbsp;</p>
     <p>Response for a successful call:</p>
@@ -6674,7 +6717,6 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example:</p>
     <p># luna-send -f -n 1 luna://com.webos.service.bluetooth2/gatt/disconnect &#39;{&quot;clientId&quot;:&quot;002&quot;}&#39;</p>
     <p>&nbsp;</p>
     <p>Response for a successful call:</p>
@@ -6741,7 +6783,7 @@ toc: true
           <td>String</td>
           <td>
             <p>The address of the remote device to discover services for.</p>
-            <p>If not specified, the method will discovery for all available remote devices connected to the <strong>adapterAddress</strong>.</p>
+            <p>If not specified, the method will discover services&nbsp;for all available remote devices connected to the <strong>adapterAddress</strong>.</p>
           </td>
         </tr>
       </tbody>
@@ -6780,7 +6822,7 @@ toc: true
           <td>String</td>
           <td>
             <p>The address of the remote device which discovers services for.</p>
-            <p>If not specified, the method will discovery for all available remote devices connected to the&nbsp;<strong>adapterAddress</strong>.</p>
+            <p>If not specified, the method will discover services&nbsp;for all available remote devices connected to the&nbsp;<strong>adapterAddress</strong>.</p>
           </td>
         </tr>
         <tr>
@@ -6841,7 +6883,6 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example:&nbsp;</p>
     <p># luna-send -f -n 1 luna://com.webos.service.bluetooth2/gatt/discoverServices &#39;{&quot;address&quot;:&quot;f6:04:af:d2:87:32&quot;}&#39;</p>
     <p>&nbsp;</p>
     <p>Response for a successful call:</p>
@@ -7126,7 +7167,6 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example:&nbsp;</p>
     <p># luna-send -f -n 1 luna://com.webos.service.bluetooth2/gatt/getServices &#39;{&quot;address&quot;:&quot;f6:04:af:d2:87:32&quot;}&#39;</p>
     <p>&nbsp;</p>
     <p>Response for a successful call:</p>
@@ -7768,7 +7808,6 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example:&nbsp;</p>
     <p># luna-send -f -n 1 luna://com.webos.service.bluetooth2/gatt/getStatus &#39;{&quot;address&quot;:&quot;f6:04:af:d2:87:32&quot;}&#39;</p>
     <p>&nbsp;</p>
     <p>Response for a successful call:</p>
@@ -8085,7 +8124,6 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example:&nbsp;</p>
     <p># luna-send -f -i luna://com.webos.service.bluetooth2/gatt/monitorCharacteristic &#39;{<br />
       &nbsp; &nbsp; &nbsp; &nbsp;&quot;clientId&quot;:&quot;007&quot;,<br />
       &nbsp; &nbsp; &nbsp; &nbsp;&quot;service&quot;:&quot;7905f431-b5ce-4e99-a40f-4b1e122d00d0&quot;,<br />
@@ -8426,24 +8464,39 @@ toc: true
       &nbsp; &nbsp; &nbsp; &nbsp; &quot;subscribe&quot;:true<br />
       }&#39;
     </p>
-    <p>Returns:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;address&quot;: &quot;79:ef:2d:a8:31:2c&quot;,</p>
-    <p style="margin-left:40px">&quot;subscribed&quot;: true,</p>
-    <p style="margin-left:40px">&quot;adapterAddress&quot;: &quot;00:00:68:64:d1:30&quot;,</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
-    <p>Subscription returns:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;changed&quot;: {</p>
-    <p style="margin-left:80px">&quot;characteristic&quot;: &quot;9fbf120d-6301-42d9-8c58-25e699a21dbd&quot;,</p>
-    <p style="margin-left:80px">&quot;value&quot;: {&quot;bytes&quot;: [0,&nbsp;21,&nbsp;0,&nbsp;1,&nbsp;0,&nbsp;0,&nbsp;0,&nbsp;0]}</p>
-    <p style="margin-left:40px">},</p>
-    <p style="margin-left:40px">&quot;address&quot;: &quot;79:ef:2d:a8:31:2c&quot;,</p>
-    <p style="margin-left:40px">&quot;subscribed&quot;: true,</p>
-    <p style="margin-left:40px">&quot;adapterAddress&quot;: &quot;00:00:68:64:d1:30&quot;,</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;address&quot;:&quot;79:ef:2d:a8:31:2c&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;subscribed&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;adapterAddress&quot;:&quot;00:00:68:64:d1:30&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Subscription Return:</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;changed&quot;:{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;characteristic&quot;:&quot;9fbf120d-6301-42d9-8c58-25e699a21dbd&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;value&quot;:{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;bytes&quot;:[&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;21,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&quot;address&quot;:&quot;79:ef:2d:a8:31:2c&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;subscribed&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;adapterAddress&quot;:&quot;00:00:68:64:d1:30&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>gatt/openServer</h3>
@@ -8520,12 +8573,14 @@ toc: true
   <h4>Example</h4>
   <div class="code-bg-grey">
     <p># luna-send -f -n 1 luna://com.webos.service.bluetooth2/gatt/openServer &#39;{}&#39;</p>
-    <p>return:</p>
-    <p>{</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&quot;adapterAddress&quot;: &quot;00:00:9a:1d:89:5d&quot;,</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&quot;serverId&quot;:&quot;001&quot;,</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;adapterAddress&quot;:&quot;00:00:9a:1d:89:5d&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;serverId&quot;:&quot;001&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>gatt/readCharacteristicValue</h3>
@@ -8734,41 +8789,62 @@ toc: true
       }&#39;
     </p>
     <p>&nbsp;</p>
-    <p>Example response for a successful call:</p>
-    <p>{</p>
-    <p style="margin-left:40.0px">&quot;adapterAddress&quot;: &quot;00:00:68:64:d1:30&quot;,</p>
-    <p style="margin-left:40.0px">&quot;address&quot;: &quot;b4:99:4c:64:be:fe&quot;,</p>
-    <p style="margin-left:40.0px">&quot;returnValue&quot;: true,</p>
-    <p style="margin-left:40.0px">&quot;service&quot;: &quot;f000aa00-0451-4000-b000-000000000000&quot;,</p>
-    <p style="margin-left:40.0px">&quot;value&quot;:</p>
-    <p style="margin-left:40px">{</p>
-    <p style="margin-left:80px">&quot;permissions&quot;: {},</p>
-    <p style="margin-left:80px">&quot;properties&quot;: {</p>
-    <p style="margin-left:120px">&quot;notify&quot;: true,</p>
-    <p style="margin-left:120px">&quot;read&quot;: true,</p>
-    <p style="margin-left:120px">&quot;writeWithoutResponse&quot;: false,</p>
-    <p style="margin-left:120px">&quot;indicate&quot;: false,</p>
-    <p style="margin-left:120px">&quot;authenticatedSignedWrites&quot;: false,</p>
-    <p style="margin-left:120px">&quot;write&quot;: false,</p>
-    <p style="margin-left:120px">&quot;broadcast&quot;: false,</p>
-    <p style="margin-left:120px">&quot;extendedProperties&quot;: false</p>
-    <p style="margin-left:80px">},</p>
-    <p style="margin-left:80px">&quot;characteristic&quot;: &quot;f000aa01-0451-4000-b000-000000000000&quot;,</p>
-    <p style="margin-left:80px">&quot;value&quot;: {&quot;bytes&quot;: [13,&nbsp;255,&nbsp;140,&nbsp;12]},</p>
-    <p style="margin-left:80px">&quot;descriptors&quot;: [</p>
-    <p style="margin-left:120px">{</p>
-    <p style="margin-left:120px">&quot;permissions&quot;: {},</p>
-    <p style="margin-left:120px">&quot;value&quot;: {&quot;bytes&quot;: []},</p>
-    <p style="margin-left:120px">&quot;descriptor&quot;: &quot;00002901-0000-1000-8000-00805f9b34fb&quot;</p>
-    <p style="margin-left:120px">},</p>
-    <p style="margin-left:120px">{</p>
-    <p style="margin-left:160px">&quot;permissions&quot;: {},</p>
-    <p style="margin-left:160px">&quot;value&quot;: {&quot;bytes&quot;: []},</p>
-    <p style="margin-left:160px">&quot;descriptor&quot;: &quot;00002902-0000-1000-8000-00805f9b34fb&quot;</p>
-    <p style="margin-left:120px">}</p>
-    <p style="margin-left:80px">]</p>
-    <p style="margin-left:40px">}</p>
-    <p>}</p>
+    <p>Response:</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;adapterAddress&quot;:&quot;00:00:68:64:d1:30&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;address&quot;:&quot;b4:99:4c:64:be:fe&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;service&quot;:&quot;f000aa00-0451-4000-b000-000000000000&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;value&quot;:{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;permissions&quot;:{&nbsp;&nbsp;<br />
+      <br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;properties&quot;:{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;notify&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;read&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;writeWithoutResponse&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;indicate&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;authenticatedSignedWrites&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;write&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;broadcast&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;extendedProperties&quot;:false<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;characteristic&quot;:&quot;f000aa01-0451-4000-b000-000000000000&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;value&quot;:{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;bytes&quot;:[&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;13,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;255,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;140,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;12<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;descriptors&quot;:[&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;permissions&quot;:{&nbsp;&nbsp;<br />
+      <br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;value&quot;:{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;bytes&quot;:[&nbsp;&nbsp;<br />
+      <br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;descriptor&quot;:&quot;00002901-0000-1000-8000-00805f9b34fb&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;permissions&quot;:{&nbsp;&nbsp;<br />
+      <br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;value&quot;:{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;bytes&quot;:[&nbsp;&nbsp;<br />
+      <br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;descriptor&quot;:&quot;00002902-0000-1000-8000-00805f9b34fb&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
+      &nbsp;&nbsp;&nbsp;}<br />
+      }
+    </p>
   </div>
 </div>
 <h3>gatt/readCharacteristicValues</h3>
@@ -10482,6 +10558,19 @@ toc: true
             <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
           </td>
         </tr>
+        <tr>
+          <td>device</td>
+          <td>Required</td>
+          <td>Object: <a href="#bluetooth2devicestatus"> bluetooth2DeviceStatus</a></td>
+          <td>
+            <p>Contains status information of&nbsp;ONLY SINGLE DEVICE detected in scan environment during the le/startScan API call.</p>
+            <p>The device is listed for following reasons:</p>
+            <ul>
+              <li>New device detected in the scan environment.</li>
+              <li>Device listed in scan environment whose property is changed.</li>
+            </ul>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -10512,54 +10601,131 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -f -n 10 luna://com.webos.service.bluetooth2/le/startScan &#39;{&quot;subscribe&quot;:true,&quot;address&quot;:&quot;87:62:17:09:05:ae&quot;}&#39;</p>
+    <p>Scan&nbsp;and list all the bluetoothLE devices with specified serviceUuid</p>
+    <p># luna-send -f -i luna://com.webos.service.bluetooth2/le/startScan &#39;{<br />
+      &nbsp; &nbsp;&nbsp;&quot;subscribe&quot;:true,<br />
+      &nbsp; &nbsp;&nbsp;&quot;serviceUuid&quot;:{&quot;uuid&quot;:&quot;aaaaffe3-aaaa-1000-8000-00805f9b34fc&quot;}<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
     <p>{<br />
-      &nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp;&nbsp;&nbsp; &quot;devices&quot;: [<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;scanRecord&quot;: [<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 23,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 255,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 196,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 83,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 67,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 68,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 32,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 49,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 55,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 46,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 49,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 44,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 66,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 65,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 32,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 51,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 53,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 44,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 119,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 101,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 98,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 79,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 83,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 9,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 9,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 76,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 71,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 69,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 32,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 77,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 82,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 49,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 56<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ],<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;address&quot;: &quot;87:62:17:09:05:ae&quot;,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;rssi&quot;: -66<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />
-      &nbsp;&nbsp;&nbsp; ]<br />
+      &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
+      &nbsp; &nbsp; &quot;adapterAddress&quot;: &quot;b8:27:eb:1b:4f:01&quot;,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>Subscription Response:&nbsp;When nRF Connect Application advertisement button turned ON (Case when new device is detected in the scan environment)</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;device&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;serviceClasses&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;trusted&quot;: false,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;connectedProfiles&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;scanRecord&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;pairing&quot;: false,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;rssi&quot;: -68,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;Moto G (4)&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;address&quot;: &quot;58:01:5f:a3:f7:f0&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;paired&quot;: false,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;typeOfDevice&quot;: &quot;ble&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;manufacturerData&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;adapterAddress&quot;: &quot;&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;classOfDevice&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;blocked&quot;: false<br />
+      &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;devices&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;serviceClasses&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;trusted&quot;: false,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;connectedProfiles&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;scanRecord&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;pairing&quot;: false,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;rssi&quot;: -68,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;Moto G (4)&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;address&quot;: &quot;58:01:5f:a3:f7:f0&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;paired&quot;: false,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;typeOfDevice&quot;: &quot;ble&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;manufacturerData&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;adapterAddress&quot;: &quot;&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;classOfDevice&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;blocked&quot;: false<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; ]<br />
+      }
+    </p>
+    <p>Subscription Response: When the device property has changed [Note: In this case, rssi strength is effected].</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;device&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;serviceClasses&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;trusted&quot;: false,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;connectedProfiles&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;scanRecord&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;pairing&quot;: false,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;rssi&quot;: -80,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;Moto G (4)&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;address&quot;: &quot;42:f9:06:f5:b3:86&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;paired&quot;: false,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;typeOfDevice&quot;: &quot;ble&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;manufacturerData&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;adapterAddress&quot;: &quot;&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;classOfDevice&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;blocked&quot;: false<br />
+      &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;devices&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;serviceClasses&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;trusted&quot;: false,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;connectedProfiles&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;scanRecord&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;pairing&quot;: false,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;rssi&quot;: -80,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;Moto G (4)&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;address&quot;: &quot;42:f9:06:f5:b3:86&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;paired&quot;: false,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;typeOfDevice&quot;: &quot;ble&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;manufacturerData&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;adapterAddress&quot;: &quot;&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;classOfDevice&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;blocked&quot;: false<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;serviceClasses&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;trusted&quot;: false,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;connectedProfiles&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;scanRecord&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;pairing&quot;: false,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;rssi&quot;: -68,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;Moto G (4)&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;address&quot;: &quot;58:01:5f:a3:f7:f0&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;paired&quot;: false,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;typeOfDevice&quot;: &quot;ble&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;manufacturerData&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;adapterAddress&quot;: &quot;&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;classOfDevice&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;blocked&quot;: false<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; ]<br />
       }
     </p>
   </div>
@@ -10629,9 +10795,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates the status of operation. Possible values are:</p>
             <ul>
-              <li>If the&nbsp;method succeeds,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>true</strong>.</li>
-              <li>If the&nbsp;method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false</strong>.</li>
+              <li><strong>true&nbsp;</strong>-&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>-&nbsp;Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
@@ -10649,8 +10816,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p><strong>errorText&nbsp;</strong>contains the error text if the method fails. The method will return&nbsp;<strong>errorText&nbsp;</strong>only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference&nbsp;</strong>of this method for more details.</p>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>Error Codes Reference</strong>&quot; section of this method for details.</p>
           </td>
         </tr>
         <tr>
@@ -10658,8 +10824,7 @@ toc: true
           <td>Optional</td>
           <td>Number</td>
           <td>
-            <p><strong>errorCode&nbsp;</strong>contains the error code if the method fails. The method will return&nbsp;<strong>errorCode&nbsp;</strong>only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference&nbsp;</strong>of this method for&nbsp;more details</p>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
       </tbody>
@@ -10727,22 +10892,15 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 -f luna://com.webos.service.bluetooth2/opp/acceptTransferRequest&nbsp;&#39;{&quot;requestId&quot;:&quot;001&quot;}&#39;<br />
-      <br />
-      Example response for a successful call: If OPP server awaits for file transfer,<br />
-      {
+    <p># luna-send -n 1 -f luna://com.webos.service.bluetooth2/opp/acceptTransferRequest&nbsp;&#39;{&quot;requestId&quot;:&quot;001&quot;}&#39;<br />
+      &nbsp;
     </p>
-    <p style="margin-left: 40px;">&quot;returnValue&quot;: true,</p>
-    <p style="margin-left: 40px;">&quot;adapterAddress&quot;: &quot;00:00:45:0e:48:9b&quot;</p>
-    <p>}<br />
-      <br />
-      Example response for a failed call: If requestId is not valid,
+    <p>Response:</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;adapterAddress&quot;:&quot;00:00:45:0e:48:9b&quot;<br />
+      }
     </p>
-    <p>{</p>
-    <p style="margin-left: 40px;">&quot;errorCode&quot;: 158,</p>
-    <p style="margin-left: 40px;">&quot;returnValue&quot;: false,</p>
-    <p style="margin-left: 40px;">&quot;errorText&quot;: &quot;The requestId does not exist&quot;</p>
-    <p>}</p>
   </div>
 </div>
 <h3>opp/awaitTransferRequest</h3>
@@ -10772,7 +10930,12 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Must set&nbsp;<strong>subscribe</strong>&nbsp;to&nbsp;<strong>true</strong>.</p>
+            <p>Subscribe and get notifications.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes.</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed.</li>
+            </ul>
+            <p><strong>Note:</strong>&nbsp;The caller MUST subscribe to this method.</p>
           </td>
         </tr>
         <tr>
@@ -10810,9 +10973,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates the status of operation. Possible values are:</p>
             <ul>
-              <li>If the&nbsp;method succeeds,&nbsp;<strong>returnValue</strong> will contain <strong>true</strong>.</li>
-              <li>If the&nbsp;method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false</strong>.&nbsp;The&nbsp;method may fail because one of the error conditions described in the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method. See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;for more information.</li>
+              <li><strong>true&nbsp;</strong>-&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>-&nbsp;Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
@@ -10830,6 +10994,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates if subscribed to get notifications. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes.</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed.</li>
+            </ul>
             <p>Since subscription ends only when the client chooses to close it,&nbsp;<strong>subscribed</strong>&nbsp;will always&nbsp;contain&nbsp;<strong>true</strong>.</p>
           </td>
         </tr>
@@ -10846,8 +11015,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p><strong>errorText&nbsp;</strong>contains the error text if the method fails. The method will return&nbsp;<strong>errorText&nbsp;</strong>only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference&nbsp;</strong>of this method for more details.</p>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>Error Codes Reference</strong>&quot; section of this method for details.</p>
           </td>
         </tr>
         <tr>
@@ -10855,8 +11023,7 @@ toc: true
           <td>Optional</td>
           <td>Number</td>
           <td>
-            <p><strong>errorCode&nbsp;</strong>contains the error code if the method fails. The method will return&nbsp;<strong>errorCode&nbsp;</strong>only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference&nbsp;</strong>of this method for&nbsp;more details</p>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
       </tbody>
@@ -10896,35 +11063,27 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -i -f luna://com.webos.service.bluetooth2/opp/awaitTransferRequest</p>
-    <p>&#39;{</p>
-    <p style="margin-left:40px">&quot;subscribe&quot;:true</p>
-    <p>}&#39;</p>
+    <p># luna-send -i -f luna://com.webos.service.bluetooth2/opp/awaitTransferRequest &#39;{ &quot;subscribe&quot;:true }&#39;</p>
     <p>&nbsp;</p>
-    <p>Example response for a successful call:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;subscribed&quot;: true,</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true,</p>
-    <p style="margin-left:40px">&quot;adapterAddress&quot;: &quot;00:00:45:0e:48:9b&quot;</p>
-    <p>}</p>
+    <p>Response:</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;subscribed&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;adapterAddress&quot;:&quot;00:00:45:0e:48:9b&quot;<br />
+      }
+    </p>
     <p>&nbsp;</p>
-    <p>Example response for a failed call: If subscribe parameter is not used,</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;errorCode&quot;: 103,</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: false,</p>
-    <p style="margin-left:40px">&quot;errorText&quot;: &quot;Method needs to be subscribed&quot;</p>
-    <p>}</p>
-    <p>&nbsp;</p>
-    <p>Subscription return: If remote device sends file to OPP server,</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;request&quot;: {</p>
-    <p style="margin-left:80px">&quot;requestId&quot;: &quot;001&quot;,</p>
-    <p style="margin-left:80px">&quot;address&quot;: &quot;34:4d:f7:f9:52:f7&quot;,</p>
-    <p style="margin-left:80px">&quot;fileSize&quot;: 3909991,</p>
-    <p style="margin-left:80px">&quot;fileName&quot;: &quot;20150411_162012.jpg&quot;,</p>
-    <p style="margin-left:80px">&quot;name&quot;: &quot;Jone Doe&#39;s G3&quot;</p>
-    <p style="margin-left:40px">}</p>
-    <p>}</p>
+    <p>Subscription return: If remote device sends file to OPP server</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;request&quot;:{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;requestId&quot;:&quot;001&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;address&quot;:&quot;34:4d:f7:f9:52:f7&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;fileSize&quot;:3909991,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;fileName&quot;:&quot;20150411_162012.jpg&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;name&quot;:&quot;Jone&nbsp;Doe&#39;s&nbsp;G3&quot;<br />
+      &nbsp;&nbsp;&nbsp;}<br />
+      }
+    </p>
   </div>
 </div>
 <h3>opp/cancelTransfer</h3>
@@ -10983,9 +11142,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates the status of operation. Possible values are:</p>
             <ul>
-              <li>If the file transfer is successfully canceled,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>true</strong>.</li>
-              <li>Otherwise,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false</strong>.</li>
+              <li><strong>true&nbsp;</strong>-&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>-&nbsp;Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
@@ -10994,8 +11154,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p><strong>errorText&nbsp;</strong>contains the error text if the method fails. The method will return&nbsp;<strong>errorText&nbsp;</strong>only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference&nbsp;</strong>of this method for more details.</p>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>Error Codes Reference</strong>&quot; section of this method for details.</p>
           </td>
         </tr>
         <tr>
@@ -11003,8 +11162,7 @@ toc: true
           <td>Optional</td>
           <td>Number</td>
           <td>
-            <p><strong>errorCode&nbsp;</strong>contains the error code if the method fails. The method will return&nbsp;<strong>errorCode&nbsp;</strong>only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference&nbsp;</strong>of this method for&nbsp;more details.</p>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
       </tbody>
@@ -11065,22 +11223,13 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 -f luna://com.webos.service.bluetooth2/opp/cancelTransfer</p>
-    <p>&#39;{</p>
-    <p style="margin-left:40px">&quot;requestId&quot;:&quot;001&quot;</p>
-    <p>}&#39;</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.bluetooth2/opp/cancelTransfer &#39;{ &quot;requestId&quot;:&quot;001&quot; }&#39;</p>
     <p>&nbsp;</p>
-    <p>Example response for a successful call: If file transfer is on going,</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
-    <p>&nbsp;</p>
-    <p>Example response for a failed call: If requestId is not valid,</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;errorCode&quot;: 158,</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: false,</p>
-    <p style="margin-left:40px">&quot;errorText&quot;: &quot;The requestId does not exist&quot;</p>
-    <p>}</p>
+    <p>Response:</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>opp/connect</h3>
@@ -11120,11 +11269,12 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
+            <p>Subscribe and get notified when connection is closed.&nbsp;Possible values are:</p>
             <ul>
-              <li>To be notified when the connection is closed, set&nbsp;<strong>subscribe</strong>&nbsp;to&nbsp;<strong>true</strong>.</li>
-              <li>Otherwise, set&nbsp;<strong>subscribe</strong>&nbsp;to&nbsp;<strong>false</strong>.</li>
-              <li>The default value of <strong>subscribe</strong> is <strong>false</strong>.</li>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes.</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed.</li>
             </ul>
+            <p>​<strong>Default value:</strong>&nbsp;false</p>
           </td>
         </tr>
       </tbody>
@@ -11153,9 +11303,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates if subscribed to get notifications. Possible values are:</p>
             <ul>
-              <li>If it is subscribed,&nbsp;<strong>subscribed</strong>&nbsp;will contain&nbsp;<strong>true</strong>.</li>
-              <li>If it is not subscribed,&nbsp;<strong>subscribed</strong>&nbsp;will contain&nbsp;<strong>false</strong>.&nbsp;</li>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes.</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed.</li>
             </ul>
           </td>
         </tr>
@@ -11164,9 +11315,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates the status of operation. Possible values are:</p>
             <ul>
-              <li>If the connection was successfully open (or initialized),&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>true</strong>.</li>
-              <li>Otherwise,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false</strong>.</li>
+              <li><strong>true&nbsp;</strong>-&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>-&nbsp;Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
@@ -11175,8 +11327,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p><strong>errorText&nbsp;</strong>contains the error text if the method fails. The method will return&nbsp;<strong>errorText&nbsp;</strong>only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference&nbsp;</strong>of this method for more details.</p>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>Error Codes Reference</strong>&quot; section of this method for details.</p>
           </td>
         </tr>
         <tr>
@@ -11184,8 +11335,7 @@ toc: true
           <td>Optional</td>
           <td>Number</td>
           <td>
-            <p><strong>errorCode&nbsp;</strong>contains the error code if the method fails. The method will return&nbsp;<strong>errorCode&nbsp;</strong>only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference&nbsp;</strong>of this method for&nbsp;more details.</p>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
       </tbody>
@@ -11214,9 +11364,10 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
+            <p>Indicates whether the remote device or local user initiated the disconnect. Possible values are:</p>
             <ul>
-              <li>If the remote device initiated the disconnect,&nbsp;<strong>disconnectByRemote</strong>&nbsp;will contain&nbsp;<strong>true</strong>.</li>
-              <li>If the local user initiated the disconnect,&nbsp;<strong>disconnectByRemote</strong>&nbsp;will contain&nbsp;<strong>false</strong>.</li>
+              <li><strong>true&nbsp;</strong>- Disconnect initiated&nbsp;by remote device.</li>
+              <li><strong>false&nbsp;</strong>- Disconnect initiated by local user.&nbsp;</li>
             </ul>
           </td>
         </tr>
@@ -11225,8 +11376,7 @@ toc: true
           <td>Optional</td>
           <td>Number</td>
           <td>
-            <p><strong>errorCode&nbsp;</strong>contains the error code if the method fails. The method will return&nbsp;<strong>errorCode&nbsp;</strong>only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference&nbsp;</strong>of this method for&nbsp;more details.</p>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
         <tr>
@@ -11234,8 +11384,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p><strong>errorText&nbsp;</strong>contains the error text if the method fails. The method will return&nbsp;<strong>errorText&nbsp;</strong>only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference&nbsp;</strong>of this method for more details.</p>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>Error Codes Reference</strong>&quot; section of this method for details.</p>
           </td>
         </tr>
         <tr>
@@ -14445,7 +14594,7 @@ toc: true
       </tbody>
     </table>
   </div>
-   <h3>bluetooth2GattServiceInfo</h3>
+  <h3>bluetooth2GattServiceInfo</h3>
   <p>Object containing the GATT service configuration.</p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">

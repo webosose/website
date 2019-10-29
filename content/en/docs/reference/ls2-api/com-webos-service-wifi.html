@@ -1,10 +1,10 @@
 ---
 title: com.webos.service.wifi
-date: 2019-04-29
+date: 2019-10-24
 toc: true
 ---
 <div>
-  <H2>API Summary</h2>
+  <h2>API Summary</h2>
   <p><span style="color:rgb(77, 78, 83)">Manages Wi-Fi connections on a webOS device. It provides an interface to find available Wi-Fi networks and handle connecting and disconnecting the device from those networks.</span></p>
 </div>
 <h2>Overview of the API</h2>
@@ -17,149 +17,154 @@ toc: true
   <p>Most of the methods under this API require that the&nbsp;<strong>connman </strong>be running and be able to communicate with the&nbsp;<strong>webos-connman-adapter&nbsp;</strong>else these methods will&nbsp;return an error.</p>
 </div>
 <h2>Methods</h2>
-<h3>changeNetwork</h3>
 <div>
-  <h4>Description</h4>
-  <p>This method allows users to change the properties of already stored Wi-Fi <strong>profiles</strong>.For non-enterprise networks,&nbsp;only the <strong>passphrase</strong> can be changed for now. In future when the support to enterprise networks will be added,&nbsp;this API will be extend to change the other properties as well.</p>
-  <h4>Parameters</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>profileId</td>
-          <td>Required</td>
-          <td>Number</td>
-          <td>
-            <p>ID of the profile that needs to be changed.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>passKey</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>The new passkey to be used for the profile.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Call Returns</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
-            <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>errorCode</td>
-          <td>Optional</td>
-          <td>Number</td>
-          <td>
-            <p>The error code for the failed operation.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>errorText</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Error Codes Reference</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Error Code</p>
-          </th>
-          <th width="30%">
-            <p>Error Text</p>
-          </th>
-          <th width="55%">
-            <p>Error Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td>Unknown error</td>
-          <td>
-            <p>Some unknown error in changing the passkey.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td>Connman service unavailable</td>
-          <td>
-            <p>Error when<strong> webos-connman-adapter</strong> is not able to talk to the <strong>connman</strong> daemon.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>5</td>
-          <td>WiFi technology unavailable</td>
-          <td>
-            <p>Error when the Wi-Fi technology is not available</p>
-            <p>This could happen either because the <strong>wpa-supplicant</strong> daemon is not running, <strong>connman</strong> is not able to communicate with <strong>wpa-supplicant</strong>&nbsp;or the device does not have Wi-Fi support<span style="background-color:rgb(244,244,244)">.</span></p>
-          </td>
-        </tr>
-        <tr>
-          <td>105</td>
-          <td>Profile not found</td>
-          <td>
-            <p>Profile with the given <strong>profileId&nbsp;</strong>was not found.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Example</h4>
-  <div class="code-bg-grey">
-    <p># luna-send -n 1 -f luna://com.webos.service.wifi/changeNetwork &#39;{&quot;profileId&quot;: 777, &quot;passKey&quot;: &quot;4321&quot; }&#39;</p>
-    <p>{</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true</p>
-    <p>}</p>
+  <h3>changeNetwork</h3>
+  <div>
+    <h4>Description</h4>
+    <p>This method allows users to change the properties of already stored Wi-Fi <strong>profiles</strong>. For non-enterprise networks,&nbsp;only the <strong>passphrase</strong> can be changed for now. In the future when the support to enterprise networks will be added,&nbsp;this API will be extended to change the other properties as well.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>profileId</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>ID of the profile that needs to be changed.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>passKey</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>The new passkey to be used for the profile.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Unknown error</td>
+            <td>
+              <p>Some unknown error in changing the passkey.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Connman service unavailable</td>
+            <td>
+              <p>Error when<strong> webos-connman-adapter</strong> is not able to talk to the <strong>connman</strong> daemon.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>WiFi technology unavailable</td>
+            <td>
+              <p>Error when the Wi-Fi technology is not available.</p>
+              <p>This could happen either because the <strong>wpa-supplicant</strong> daemon is not running, <strong>connman</strong> is not able to communicate with <strong>wpa-supplicant</strong>&nbsp;or the device does not have Wi-Fi support<span style="background-color:rgb(244,244,244)">.</span></p>
+            </td>
+          </tr>
+          <tr>
+            <td>105</td>
+            <td>Profile not found</td>
+            <td>
+              <p>Profile with the given <strong>profileId&nbsp;</strong>was not found.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.wifi/changeNetwork &#39;{&quot;profileId&quot;: 777, &quot;passKey&quot;: &quot;4321&quot; }&#39;</p>
+      <p>&nbsp;</p>
+      <p>Response:</p>
+      <p>{&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+        }
+      </p>
+    </div>
   </div>
 </div>
 <h3>connect</h3>
@@ -199,9 +204,12 @@ toc: true
           <td>Optional</td>
           <td>boolean</td>
           <td>
-            <p>To connect to a hidden network, set <strong>wasCreatedWithJoinOther</strong> to <strong>true</strong>.</p>
-            <p>To connect to a non-hidden network, set <strong>wasCreatedWithJoinOther</strong> to <strong>false</strong>.</p>
-            <p>The default value of <strong>wasCreatedWithJoinOther</strong> is <strong>false</strong>.</p>
+            <p>Indicates whether to connect to a hidden network. Possible values are:&nbsp;</p>
+            <ul>
+              <li><strong>true </strong>- Connect to a hidden network</li>
+              <li><strong>false </strong>- Connect to a non-hidden network</li>
+            </ul>
+            <p><strong>Default value</strong>: false</p>
           </td>
         </tr>
         <tr>
@@ -209,9 +217,12 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
-            <p>To store a profile for the network when it is not available(i.e out of range), set <strong>storeProfile</strong> to <strong>true</strong>.</p>
-            <p>To ignore a profile for the network when it is not available(i.e out of range), set <strong>storeProfile</strong> to <strong>false</strong>.</p>
-            <p>The default value of <strong>storeProfile</strong>&nbsp;is <strong>true</strong>.</p>
+            <p>Indicates whether to store a profile for the network when it is not available (i.e out of range). Possible values are:</p>
+            <ul>
+              <li><strong>true </strong>- Store a profile&nbsp;</li>
+              <li><strong>false </strong>- Ignore a profile&nbsp;</li>
+            </ul>
+            <p><strong>Default value:</strong>&nbsp;true</p>
           </td>
         </tr>
         <tr>
@@ -315,7 +326,7 @@ toc: true
           <td>4</td>
           <td>Connman service unavailable</td>
           <td>
-            <p>Error when <strong>webos-connman-adapter </strong>is not able to commmunicate to the <strong>connman</strong> daemon.</p>
+            <p>Error when <strong>webos-connman-adapter </strong>is not able to communicate to the <strong>connman</strong> daemon.</p>
           </td>
         </tr>
         <tr>
@@ -388,9 +399,12 @@ toc: true
   <h4>Example</h4>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.wifi/connect&nbsp;&#39;{&quot;ssid&quot;: &quot;XXX&quot;, &quot;security&quot;: {&quot;securityType&quot;: &quot;psk&quot;, &quot;simpleSecurity&quot;: {&quot;passKey&quot;: &quot;1234&quot;} } }&#39;</p>
-    <p>{</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>deleteprofile</h3>
@@ -518,15 +532,18 @@ toc: true
   <h4>Example</h4>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.wifi/deleteprofile &#39;{&quot;profileId&quot;: 777}&#39;</p>
-    <p>{</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>findnetworks</h3>
 <div>
   <h4>Description</h4>
-  <p>The <strong>findnetworks </strong>method lists&nbsp;all the available Wi-Fi access points found in the area (from a previous Wi-Fi scan) and list their details like SSID Name, available Security Types, Signal Strength and Connection Status. Callers can subscribe to this method to be notified of any changes.</p>
+  <p>The <strong>findnetworks </strong>method lists&nbsp;all the available Wi-Fi access points found in the area (from a previous Wi-Fi scan) and lists their details like SSID Name, available Security Types, Signal Strength and Connection Status. Callers can subscribe to this method to be notified of any changes.</p>
   <p>As long as there are subscribers to this method, periodic scans will be triggered.</p>
   <h4>Parameters</h4>
   <div class="table-container">
@@ -566,7 +583,7 @@ toc: true
           <td>
             <p>Interval in milliseconds which is used to trigger a scan for new networks.</p>
             <p>Only the first subscriber is allowed to specify an interval. If any other subscriber provides an interval and error is returned.</p>
-            <p>The default interval is 15000 miliseconds (15 seconds).</p>
+            <p>The default interval is 15000 milliseconds (15 seconds).</p>
           </td>
         </tr>
       </tbody>
@@ -603,10 +620,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates if&nbsp;subscribed to get notified.</p>
+            <p>Indicates if subscribed to get notifications. Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Subscribed for changes</li>
-              <li><strong>false&nbsp;</strong>- Not subscribed</li>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes.</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed.</li>
             </ul>
           </td>
         </tr>
@@ -684,8 +701,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>If the subscription was set for this method,&nbsp;<strong>subscribed</strong>&nbsp;will contain&nbsp;<strong>true</strong>.</p>
-            <p>If the subscription was not set for this method,&nbsp;<strong>subscribed</strong>&nbsp;will contain&nbsp;<strong>false</strong>.</p>
+            <p>Indicates if subscribed to get notifications. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes.</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed.</li>
+            </ul>
           </td>
         </tr>
       </tbody>
@@ -746,7 +766,7 @@ toc: true
           <td>161</td>
           <td>Not allowed to specify a scan interval</td>
           <td>
-            <p>The client isn&#39;t allowed to specifiy a scan interval.</p>
+            <p>The client isn&#39;t allowed to specify a scan interval.</p>
           </td>
         </tr>
       </tbody>
@@ -754,42 +774,44 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example response for a successful&nbsp;call:</p>
     <p># luna-send -n 1 -f luna://com.webos.service.wifi/findnetworks &#39;{&quot;interval&quot;: 15000}&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;foundNetworks&quot;: [</p>
-    <p style="margin-left:80px">{</p>
-    <p style="margin-left:120px">&quot;networkInfo&quot;: {</p>
-    <p style="margin-left:160px">&quot;available&quot;: true,</p>
-    <p style="margin-left:160px">&quot;signalLevel&quot;: 70,</p>
-    <p style="margin-left:160px">&quot;signalBars&quot;: 3,</p>
-    <p style="margin-left:160px">&quot;displayName&quot;: &quot;XXX&quot;,</p>
-    <p style="margin-left:160px">&quot;supported&quot;: true,</p>
-    <p style="margin-left:160px">&quot;ssid&quot;: &quot;xxx&quot;,</p>
-    <p style="margin-left:160px">&quot;availableSecurityTypes&quot;: [</p>
-    <p style="margin-left:200px">&quot;psk&quot;,</p>
-    <p style="margin-left:200px">&quot;wps&quot;</p>
-    <p style="margin-left:160px">]</p>
-    <p style="margin-left:120px">}</p>
-    <p style="margin-left:80px">},</p>
-    <p style="margin-left:80px">{</p>
-    <p style="margin-left:120px">&quot;networkInfo&quot;: {</p>
-    <p style="margin-left:160px">&quot;available&quot;: true,</p>
-    <p style="margin-left:160px">&quot;signalLevel&quot;: 49,</p>
-    <p style="margin-left:160px">&quot;signalBars&quot;: 1,</p>
-    <p style="margin-left:160px">&quot;displayName&quot;: &quot;XXX2&quot;,</p>
-    <p style="margin-left:160px">&quot;supported&quot;: true,</p>
-    <p style="margin-left:160px">&quot;ssid&quot;: &quot;xxx&quot;,</p>
-    <p style="margin-left:160px">&quot;availableSecurityTypes&quot;: [</p>
-    <p style="margin-left:200px">&quot;psk&quot;,</p>
-    <p style="margin-left:200px">&quot;wps&quot;</p>
-    <p style="margin-left:160px">]</p>
-    <p style="margin-left:120px">}</p>
-    <p style="margin-left:80px">}</p>
-    <p style="margin-left:40px">],</p>
-    <p style="margin-left:40px">&quot;subscribed&quot;: false,</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;foundNetworks&quot;:[&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;networkInfo&quot;:{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;available&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;signalLevel&quot;:70,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;signalBars&quot;:3,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;displayName&quot;:&quot;XXX&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;supported&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;ssid&quot;:&quot;xxx&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;availableSecurityTypes&quot;:[&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;psk&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;wps&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;networkInfo&quot;:{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;available&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;signalLevel&quot;:49,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;signalBars&quot;:1,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;displayName&quot;:&quot;XXX2&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;supported&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;ssid&quot;:&quot;xxx&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;availableSecurityTypes&quot;:[&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;psk&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;wps&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;],<br />
+      &nbsp;&nbsp;&nbsp;&quot;subscribed&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>getNetworks</h3>
@@ -889,8 +911,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>If the subscription was set for this method,&nbsp;<strong>subscribe</strong><strong>d</strong>&nbsp;will contain&nbsp;<strong>true</strong>.</p>
-            <p>If the subscription was not set for this method,&nbsp;<strong>subscribed</strong>&nbsp;will contain&nbsp;<strong>false</strong>.</p>
+            <p>Indicates if subscribed to get notifications. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes.</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed.</li>
+            </ul>
           </td>
         </tr>
       </tbody>
@@ -939,10 +964,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates if&nbsp;subscribed.</p>
+            <p>Indicates if subscribed to get notifications. Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Subscribed for changes</li>
-              <li><strong>false&nbsp;</strong>- Not subscribed</li>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes.</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed.</li>
             </ul>
           </td>
         </tr>
@@ -998,42 +1023,44 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example response for a successful call:</p>
     <p># luna-send -n 1 -f luna://com.webos.service.wifi/getNetworks &#39;{}&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;foundNetworks&quot;: [</p>
-    <p style="margin-left:80px">{</p>
-    <p style="margin-left:120px">&quot;networkInfo&quot;: {</p>
-    <p style="margin-left:160px">&quot;available&quot;: true,</p>
-    <p style="margin-left:160px">&quot;signalLevel&quot;: 70,</p>
-    <p style="margin-left:160px">&quot;signalBars&quot;: 3,</p>
-    <p style="margin-left:160px">&quot;displayName&quot;: &quot;xxx&quot;,</p>
-    <p style="margin-left:160px">&quot;supported&quot;: true,</p>
-    <p style="margin-left:160px">&quot;ssid&quot;: &quot;xxx&quot;,</p>
-    <p style="margin-left:160px">&quot;availableSecurityTypes&quot;: [</p>
-    <p style="margin-left:200px">&quot;psk&quot;,</p>
-    <p style="margin-left:200px">&quot;wps&quot;</p>
-    <p style="margin-left:160px">]</p>
-    <p style="margin-left:120px">}</p>
-    <p style="margin-left:80px">},</p>
-    <p style="margin-left:80px">{</p>
-    <p style="margin-left:120px">&quot;networkInfo&quot;: {</p>
-    <p style="margin-left:160px">&quot;available&quot;: true,</p>
-    <p style="margin-left:160px">&quot;signalLevel&quot;: 49,</p>
-    <p style="margin-left:160px">&quot;signalBars&quot;: 1,</p>
-    <p style="margin-left:160px">&quot;displayName&quot;: &quot;xxx&quot;,</p>
-    <p style="margin-left:160px">&quot;supported&quot;: true,</p>
-    <p style="margin-left:160px">&quot;ssid&quot;: &quot;xxx&quot;,</p>
-    <p style="margin-left:160px">&quot;availableSecurityTypes&quot;: [</p>
-    <p style="margin-left:200px">&quot;psk&quot;,</p>
-    <p style="margin-left:200px">&quot;wps&quot;</p>
-    <p style="margin-left:160px">]</p>
-    <p style="margin-left:120px">}</p>
-    <p style="margin-left:80px">}</p>
-    <p style="margin-left:40px">],</p>
-    <p style="margin-left:40px">&quot;subscribed&quot;: false,</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;foundNetworks&quot;:[&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;networkInfo&quot;:{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;available&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;signalLevel&quot;:70,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;signalBars&quot;:3,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;displayName&quot;:&quot;xxx&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;supported&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;ssid&quot;:&quot;xxx&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;availableSecurityTypes&quot;:[&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;psk&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;wps&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;networkInfo&quot;:{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;available&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;signalLevel&quot;:49,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;signalBars&quot;:1,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;displayName&quot;:&quot;xxx&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;supported&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;ssid&quot;:&quot;xxx&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;availableSecurityTypes&quot;:[&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;psk&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;wps&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;],<br />
+      &nbsp;&nbsp;&nbsp;&quot;subscribed&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>getprofile</h3>
@@ -1175,21 +1202,23 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example response for a successful call:</p>
     <p># luna-send -n 1 -f luna://com.webos.service.wifi/getprofile &#39;{&quot;profileId&quot;: 777}&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true,</p>
-    <p style="margin-left:40px">&quot;wifiProfile&quot;: {</p>
-    <p style="margin-left:80px">&quot;profileId&quot;: 777,</p>
-    <p style="margin-left:80px">&quot;ssid&quot;: &quot;XXX&quot;,</p>
-    <p style="margin-left:80px">&quot;security&quot;: {</p>
-    <p style="margin-left:120px">&quot;securityType&quot;: [</p>
-    <p style="margin-left:160px">&quot;psk&quot;,</p>
-    <p style="margin-left:160px">&quot;wps&quot;</p>
-    <p style="margin-left:120px">]</p>
-    <p style="margin-left:80px">}</p>
-    <p style="margin-left:40px">}</p>
-    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;wifiProfile&quot;:{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;profileId&quot;:777,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;ssid&quot;:&quot;XXX&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;security&quot;:{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;securityType&quot;:[&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;psk&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;wps&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;}<br />
+      }
+    </p>
   </div>
 </div>
 <h3>getprofilelist</h3>
@@ -1305,25 +1334,27 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example response for a successful call:</p>
     <p># luna-send -n 1 -f luna://com.webos.service.wifi/getprofilelist &#39;{}&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;profileList&quot;: [</p>
-    <p style="margin-left:80px">{</p>
-    <p style="margin-left:120px">&quot;wifiProfile&quot;: {</p>
-    <p style="margin-left:160px">&quot;profileId&quot;: 777,</p>
-    <p style="margin-left:160px">&quot;ssid&quot;: &quot;xxx&quot;,</p>
-    <p style="margin-left:160px">&quot;security&quot;: {</p>
-    <p style="margin-left:200px">&quot;securityType&quot;: [</p>
-    <p style="margin-left:240px">&quot;psk&quot;,</p>
-    <p style="margin-left:240px">&quot;wps&quot;</p>
-    <p style="margin-left:200px">]</p>
-    <p style="margin-left:160px">}</p>
-    <p style="margin-left:120px">}</p>
-    <p style="margin-left:80px">}</p>
-    <p style="margin-left:40px">],</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;profileList&quot;:[&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;wifiProfile&quot;:{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;profileId&quot;:777,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;ssid&quot;:&quot;xxx&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;security&quot;:{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;securityType&quot;:[&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;psk&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;wps&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;],<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>getstatus</h3>
@@ -1333,7 +1364,7 @@ toc: true
   <ul>
     <li>The current status of Wi-Fi connection on the system.</li>
     <li>If the system is connected to an access point, then the details of the access point.</li>
-    <li>If the service is online, then the IP related infomation like address, gateway, DNS etc.</li>
+    <li>If the service is online, then the IP related information like address, gateway, DNS etc.</li>
   </ul>
   <p>Callers can subscribe to this method to be notified of any changes in the Wi-Fi connection status. In case there is no subscription, then it will just return the current status once.</p>
   <p>&nbsp;</p>
@@ -1394,8 +1425,11 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p><span style="line-height:1.6em">If wifi is enabled,&nbsp;</span><strong style="line-height:1.6em">status</strong><span style="line-height:1.6em">&nbsp;will contain&nbsp;</span><strong style="line-height:1.6em">&quot;serviceEnabled&quot;</strong><span style="line-height:1.6em">.</span></p>
-            <p>If wifi is disabled,&nbsp;<strong>status</strong>&nbsp;will contain <strong>&quot;serviceDisabled&quot;</strong>.</p>
+            <p>Indicates the status of the Wi-Fi. Possible values are:</p>
+            <ul>
+              <li><strong>serviceEnabled -&nbsp;</strong>Wi-Fi&nbsp;is enabled</li>
+              <li><strong>serviceDisabled -&nbsp;</strong>Wi-Fi&nbsp;is disabled</li>
+            </ul>
           </td>
         </tr>
         <tr>
@@ -1403,7 +1437,7 @@ toc: true
           <td>Optional</td>
           <td>Object: <a href="#networkinfo"> networkInfo</a></td>
           <td>
-            <p>Provides information on the current Wi-Fi network. Appllicable only if the Wi-Fi is connected.</p>
+            <p>Provides information on the current Wi-Fi network. Applicable only if the Wi-Fi is connected.</p>
           </td>
         </tr>
         <tr>
@@ -1411,8 +1445,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>If the subscription was set for this method, <strong>subscribe</strong><strong>d</strong> will contain <strong>true</strong>.</p>
-            <p>If the subscription was not set for this method, <strong>subscribed</strong> will contain <strong>false</strong>.</p>
+            <p>Indicates if subscribed to get notifications. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes.</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed.</li>
+            </ul>
           </td>
         </tr>
         <tr>
@@ -1477,8 +1514,11 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>If wifi is enabled,&nbsp;<strong>status</strong>&nbsp;will contain&nbsp;<strong>&quot;serviceEnabled&quot;</strong>.</p>
-            <p>If wifi is disabled,&nbsp;<strong>status</strong>&nbsp;will contain&nbsp;<strong>&quot;serviceDisabled&quot;</strong>.</p>
+            <p>Indicates the status of the Wi-Fi. Possible values are:</p>
+            <ul>
+              <li><strong>serviceEnabled -&nbsp;</strong>Wi-Fi&nbsp;is enabled</li>
+              <li><strong>serviceDisabled -&nbsp;</strong>Wi-Fi&nbsp;is disabled</li>
+            </ul>
           </td>
         </tr>
         <tr>
@@ -1486,7 +1526,7 @@ toc: true
           <td>Optional</td>
           <td>Object: <a href="#networkinfo"> networkInfo</a></td>
           <td>
-            <p>Provides information on the current Wi-Fi network. Appllicable only if the Wi-Fi is connected.</p>
+            <p>Provides information on the current Wi-Fi network. Applicable only if the Wi-Fi is connected.</p>
           </td>
         </tr>
         <tr>
@@ -1494,10 +1534,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates if&nbsp;subscribed to get notified.</p>
+            <p>Indicates if subscribed to get notifications. Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Subscribed for changes</li>
-              <li><strong>false&nbsp;</strong>- Not subscribed</li>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes.</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed.</li>
             </ul>
           </td>
         </tr>
@@ -1546,13 +1586,15 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example response for a successful call:</p>
     <p># luna-send -n 1 -f luna://com.webos.service.wifi/getstatus {}</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;subscribed&quot;: false,</p>
-    <p style="margin-left:40px">&quot;status&quot;: &quot;serviceEnabled&quot;,</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;subscribed&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;status&quot;:&quot;serviceEnabled&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>scan</h3>
@@ -1584,11 +1626,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
             <ul>
-              <li>If the&nbsp;method succeeds,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>true</strong>.</li>
-              <li>If the&nbsp;method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false</strong>.<span style="color:black">&nbsp;</span></li>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details</li>
             </ul>
-            <p>The&nbsp;method may fail because of one the error conditions described in the&nbsp;<strong>Error Codes Reference</strong>&nbsp;table of this method. See the&nbsp;<strong>Error Code Reference</strong>&nbsp;table for more information.</p>
           </td>
         </tr>
         <tr>
@@ -1596,8 +1638,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p><strong style="line-height:1.6em">errorText</strong><span style="line-height:1.6em">&nbsp;contains the error text if the&nbsp;method fails. The&nbsp;method will return&nbsp;</span><strong style="line-height:1.6em">errorText</strong><span style="line-height:1.6em">&nbsp;only if it fails.</span></p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
           </td>
         </tr>
         <tr>
@@ -1605,8 +1646,7 @@ toc: true
           <td>Optional</td>
           <td>Number</td>
           <td>
-            <p><strong>errorCode</strong>&nbsp;contains the error code if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorCode</strong>&nbsp;only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
       </tbody>
@@ -1675,25 +1715,31 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example response for a successful call:</p>
+    <p>Example 1: Successful call</p>
     <p># luna-send -n 1 -f luna://com.webos.service.wifi/scan &#39;{}&#39;</p>
-    <p>{</p>
-    <p>&nbsp; &nbsp; &quot;returnValue&quot;: true</p>
-    <p>}</p>
     <p>&nbsp;</p>
-    <p>Example response for a failed call:</p>
+    <p>Response:</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Example 2: Failed call</p>
     <p># luna-send -n 1 -f luna://com.webos.service.wifi/scan &#39;{}&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;errorCode&quot;: 5,</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: false,</p>
-    <p style="margin-left:40px">&quot;errorText&quot;: &quot;WiFi technology unavailable&quot;</p>
-    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:5,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;WiFi&nbsp;technology&nbsp;unavailable&quot;<br />
+      }
+    </p>
   </div>
 </div>
 <h3>setstate</h3>
 <div>
   <h4>Description</h4>
-  <p>The <strong>setstate </strong>method will simply enable or disable W-iFi on the system by enabling/disabling the Wi-Fi interface.</p>
+  <p>The <strong>setstate </strong>method will simply enable or disable Wi-Fi on the system by enabling/disabling the Wi-Fi interface.</p>
   <p>&nbsp;</p>
   <h4>Parameters</h4>
   <div class="table-container">
@@ -1718,9 +1764,12 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Set it to &quot;<strong>enabled</strong>&quot; to enable Wi-Fi.</p>
-            <p>Set it to &quot;<strong>disabled</strong>&quot; to disable Wi-Fi.</p>
-            <p>Any other value will result in an error.</p>
+            <p>Indicates whether to enable Wi-Fi. Possible values are:&nbsp;</p>
+            <ul>
+              <li><strong>enabled </strong>- Enable Wi-Fi</li>
+              <li><strong>disabled </strong>- Disable Wi-Fi</li>
+            </ul>
+            <p><strong>Note:</strong> Any other value will result in an error.</p>
           </td>
         </tr>
       </tbody>
@@ -1749,11 +1798,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
             <ul>
-              <li>If the&nbsp;method succeeds,&nbsp;<strong>returnValue</strong>&nbsp;will contain <strong>true</strong>.</li>
-              <li>If the&nbsp;method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false</strong>.<span style="color:black">&nbsp;</span></li>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details</li>
             </ul>
-            <p style="margin-left:0.0in">The&nbsp;method may fail because of one the error conditions described in the&nbsp;<strong>Error Codes Reference</strong>&nbsp;table of this method. See the&nbsp;<strong>Error Code Reference</strong>&nbsp;table for more information.<span style="color:black">&nbsp;</span></p>
           </td>
         </tr>
         <tr>
@@ -1761,8 +1810,7 @@ toc: true
           <td>Optional</td>
           <td>Number</td>
           <td>
-            <p><strong>errorCode</strong> contains the error code if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorCode</strong>&nbsp;only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
         <tr>
@@ -1770,8 +1818,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p><strong>errorText</strong> contains the error text if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
           </td>
         </tr>
       </tbody>
@@ -1826,19 +1873,1064 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example response for a successful&nbsp;call:</p>
+    <p>Example 1: Successful&nbsp;call</p>
     <p># luna-send -n 1 -f luna://com.webos.service.wifi/setstate &#39;{&quot;state&quot;: &quot;disabled&quot;}&#39;</p>
-    <p>{</p>
-    <p style="margin-left: 40px;">&quot;returnValue&quot;: true</p>
-    <p>}</p>
     <p>&nbsp;</p>
-    <p>Example response for a failed call:</p>
+    <p>Response:</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Example 2: Failed call</p>
     <p># luna-send -n 1 -f luna://com.webos.service.wifi/setstate &#39;{&quot;state&quot;: &quot;disabled&quot;}&#39;</p>
-    <p>{</p>
-    <p style="margin-left: 40px;">&quot;errorCode&quot;: 5,</p>
-    <p style="margin-left: 40px;">&quot;returnValue&quot;: false,</p>
-    <p style="margin-left: 40px;">&quot;errorText&quot;: &quot;WiFi technology unavailable&quot;</p>
-    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:5,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;WiFi&nbsp;technology&nbsp;unavailable&quot;<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>tethering/getState</h3>
+<div>
+  <h4>Description</h4>
+  <p>Gets the current Wi-Fi tethering state.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Subscribe for notifications when there is a change in the list of found peers.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Get notifications</li>
+              <li><strong>false&nbsp;</strong>- Notifications are not required</li>
+            </ul>
+            <p>​<strong>Default value:</strong>&nbsp;false</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p><span style="background-color:rgb(244, 244, 244)">Returns <strong>true </strong>to indicate client was successfully subscribed.</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td>enabled</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if Wi-Fi tethering is enabled or disabled.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>ssid</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The identifier used as SSID for Wi-Fi tethering. This field cannot be set when Wi-Fi tethering is enabled.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>securityType</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The security type to use for authenticating clients. Possible values are</p>
+            <ul>
+              <li>open</li>
+              <li>psk</li>
+            </ul>
+            <p>When&nbsp;<strong>open</strong>&nbsp;is used then the passphrase is cleared. When <strong>psk </strong>is&nbsp;used a then the passphrase&nbsp;needs to be set before enabling the Wi-Fi tethering.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>timeout</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>A timeout in minutes after which the Wi-Fi tethering is disabled, when no client is connected. Default value is 5 minutes.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>channel</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Channel of the SoftAP</p>
+          </td>
+        </tr>
+        <tr>
+          <td>ipAddress</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>IP address of the SoftAP</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Subscription Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>True to indicate that the client was successful subscribed.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>enabled</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if Wi-Fi tethering is enabled or disabled.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>ssid</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The identifier used as SSID for Wi-Fi tethering. This field can&#39;t be set when Wi-Fi tethering is enabled.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>securityType</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The security type to use for authenticating clients. Possible values are</p>
+            <ul>
+              <li>open</li>
+              <li>psk</li>
+            </ul>
+            <p>When <strong>open</strong> is used, any possible set <strong>passPhrase</strong> is cleared. When <strong>psk</strong>&nbsp;is used a <strong>passPhrase</strong> needs to be set before enabling Wi-Fi tethering.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>timeout</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>A timeout in minutes after which the Wi-Fi tethering is disabled, when no client is connected. Default value is 5 minutes.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>channel</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Channel of the SoftAP</p>
+          </td>
+        </tr>
+        <tr>
+          <td>ipAddress</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>IP address of the SoftAP</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Example 1: Successful call</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.wifi/tethering/getState &#39;{}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;channel&quot;:11,<br />
+      &nbsp;&nbsp;&nbsp;&quot;ipAddress&quot;:&quot;192.168.6.4&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;subscribed&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;ssid&quot;:&quot;Connect_Me&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;enabled&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;securityType&quot;:&quot;psk&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;timeout&quot;:60<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Example 2: Failed call</p>
+    <p># luna-send -n 1 luna://com.webos.service.wifi/tethering/getState {}</p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:5,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;WiFi&nbsp;technology&nbsp;unavailable&quot;<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>tethering/setState</h3>
+<div>
+  <h4>Description</h4>
+  <p>Sets the Wi-Fi tethering state. Wi-Fi tethering can either be enabled or disabled.</p>
+  <p>At least the&nbsp;<strong>ssid</strong>&nbsp;field needs to be set before enabling tethering. This can be done either with a separate setState call or within the enable call.</p>
+  <p>The &quot;ssid&quot;, &quot;securityType&quot; and &quot;passPhrase&quot; configuration values are persisted across device reboots.</p>
+  <p><strong>Note: </strong>Although all parameters are optional, at least one parameter needs to be specified.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>enabled</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Enable or disable Wi-Fi tethering.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>ssid</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The identifier used as SSID for Wi-Fi tethering. This field cannot be set when Wi-Fi tethering is enabled.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>securityType</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The security type to use for authenticating clients. Possible values are</p>
+            <ul>
+              <li>open</li>
+              <li>psk</li>
+            </ul>
+            <p>When <strong>open</strong> is used then the passphrase is cleared. When <strong>psk</strong> is used a then the passphrase&nbsp;needs to be set before enabling the Wi-Fi tethering.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>passPhrase</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The passphrase used to authenticate the new clients when Wi-Fi tethering is enabled. This field cannot be set when Wi-Fi tethering is enabled.&nbsp;A valid passphrase should have 8 to 63 characters.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>timeout</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>A timeout in minutes after which the Wi-Fi tethering is disabled, when no client is connected. Default value is 5 minutes.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>channel</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Channel of the softap&nbsp;to be used&nbsp;for Wi-Fi tethering.</p>
+            <p>Possible values are&nbsp;1~11.</p>
+            <p><strong>Note</strong>: If value greater than 11 is set, channel is automatically set to 6.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>ipAddress</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>IP address of the SoftAP</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <ul>
+              <li>If the&nbsp;method succeeds,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>true</strong>.</li>
+              <li>If the&nbsp;method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false</strong>.<span style="color:black">&nbsp;</span></li>
+            </ul>
+            <p>The&nbsp;method may fail because of one the error conditions described in the&nbsp;<strong>Error Codes Reference</strong>&nbsp;table of this method. See the&nbsp;<strong>Error Code Reference</strong>&nbsp;table for more information.<span style="color:black">&nbsp;</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p><strong>errorCode</strong>&nbsp;contains the error code if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorCode</strong>&nbsp;only if it fails.</p>
+            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p><strong>errorText</strong>&nbsp;contains the error text if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.</p>
+            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Unknown error</td>
+          <td>
+            <p>An internal error occurred when parsing the JSON object being prepared as a response (extremely unlikely).</p>
+          </td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Connman service unavailable</td>
+          <td>
+            <p>Error when <strong>webos-connman-adapter</strong> is not able to talk to the <strong>connman</strong> daemon.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>WiFi technology unavailable</td>
+          <td>
+            <p>Error when the Wi-Fi technology is not available. This could happen either because the <strong>wpa-supplicant</strong> daemon is not running, or <strong>connman</strong> is not able to communicate with <strong>wpa-supplicant</strong>&nbsp;or the device does not have WiFi support.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>146</td>
+          <td>Failed to enable tethering mode</td>
+          <td>
+            <p>Failed to enable Wi-Fi tethering mode because of unmet requirements. Check if fields <strong>ssid</strong>, <strong>passPhrase</strong> and <strong>securityType</strong> are all set to the right values.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>147</td>
+          <td>Failed to disable tethering mode</td>
+          <td>
+            <p>Failed to disable Wi-Fi tethering mode cause for an unknown reason.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>149</td>
+          <td>Error in setting tethering passphrase</td>
+          <td>
+            <p>An error occured while processing the supplied passphrase.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>151</td>
+          <td>No passphrase set but required for security type psk</td>
+          <td>
+            <p>A passphrase must be set for Wi-Fi tethering when security type <strong>psk</strong>&nbsp;is selected.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>152</td>
+          <td>Failed to disable tethering mode through support library</td>
+          <td>
+            <p>It was not possible to enable Wi-Fi tethering through using the <strong>webOS connman adapter</strong> support library.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>153</td>
+          <td>Not allowed to change securityType while tethering is enabled</td>
+          <td>
+            <p>When Wi-Fi tethering is enabled it is not allowed to change the security type.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>154</td>
+          <td>With security typen open specifying a passphrase is not possible</td>
+          <td>
+            <p>When security type is set to <strong>open</strong> it is not possible to set a passphrase in the same call.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>155</td>
+          <td>Passphrase doesn&#39;t match the requirements</td>
+          <td>
+            <p>Passpharse does not match the requirements. Must be between 8 and 63 characters long.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>156</td>
+          <td>Failed to restore WiFi state after disbling tethering</td>
+          <td>
+            <p>When Wi-Fi tethering is disabled the previous Wi-Fi state is restored (enabled or disabled) and this error occurs when something during this process fails.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>207</td>
+          <td>Error in setting tethering Channel</td>
+          <td>
+            <p>Error occurred during processing tethering channel.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>148</td>
+          <td>Not allowed to change IP Address while tethering is enabled</td>
+          <td>
+            <p>User is not allowed to change IP address while tethering is already enabled.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Example 1:&nbsp;</p>
+    <p># luna-send -n 1 luna://com.webos.service.wifi/tethering/setState &#39;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;enabled&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;securityType&quot;:&quot;open&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;ssid&quot;:&quot;MyTestAP&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;timeout&quot;:60<br />
+      }&#39;
+    </p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Example 2:&nbsp;</p>
+    <p># luna-send -n 1 luna://com.webos.service.wifi/tethering/setState&nbsp;&#39;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;enabled&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;securityType&quot;:&quot;psk&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;passPhrase&quot;:&quot;MyTestPassphrase&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;ssid&quot;:&quot;MyTestAP&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;timeout&quot;:60<br />
+      }&#39;
+    </p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Example 3:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.wifi/tethering/setState &#39;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;enabled&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;securityType&quot;:&quot;psk&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;passPhrase&quot;:&quot;11111111&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;ssid&quot;:&quot;Connect_Me&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;timeout&quot;:60,<br />
+      &nbsp;&nbsp;&nbsp;&quot;channel&quot;:11,<br />
+      &nbsp;&nbsp;&nbsp;&quot;ipAddress&quot;:&quot;192.168.6.1&quot;<br />
+      }&#39;
+    </p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Example 4: Failed call</p>
+    <p># luna-send -n 1 luna://com.webos.service.wifi/tethering/setState &#39;{&quot;enabled&quot;:true, &quot;ssid&quot;:&quot;MyTestAP&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:5,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;WiFi&nbsp;technology&nbsp;unavailable&quot;<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>tethering/getStationCount</h3>
+<div>
+  <h4>Description</h4>
+  <p>Gets the number of devices that are connected to the signage softAP.&nbsp;</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Subscribe to this method to get notified when a device connects or disconnects from the signage softAP.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Get notifications</li>
+              <li><strong>false&nbsp;</strong>- Notifications are not required</li>
+            </ul>
+            <p><strong>Default value:</strong>&nbsp;false</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>stationCount</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Number of devices that are connected to the signage softAP.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if&nbsp;subscribed to get notified&nbsp;when a device connects or disconnects from the signage softAP.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Subscribed for changes</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>connectedStations</td>
+          <td>Required</td>
+          <td>String array</td>
+          <td>
+            <p>MAC addresses of the connected clients.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Subscription Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Returns&nbsp;<strong>true&nbsp;</strong>to indicate client was successfully subscribed to get notified&nbsp;when a device connects or disconnects from the signage softAP.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>stationCount</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Number of devices that are connected to the signage softAP.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>connectedStations</td>
+          <td>Required</td>
+          <td>String array</td>
+          <td>
+            <p>MAC addresses of the connected clients.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Unknown error</td>
+          <td>
+            <p>An internal error occurred when parsing the JSON object being prepared as a response (extremely unlikely).</p>
+          </td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Connman service unavailable</td>
+          <td>
+            <p>Indicates that <strong>webos-connman-adapter</strong>&nbsp;is unable to communicate with the <strong>connman</strong>&nbsp;daemon.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>WiFi technology unavailable</td>
+          <td>
+            <p>Indicates that Wi-Fi technology is not available. This can occur due to the following reasons:</p>
+            <ul>
+              <li>The&nbsp;<strong>wpa-supplicant</strong>&nbsp;daemon is not running&nbsp;</li>
+              <li><strong>connman</strong>&nbsp;is not able to communicate with&nbsp;<strong>wpa-supplicant</strong></li>
+              <li>The device does not have WiFi support</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -i -f luna://com.webos.service.wifi/tethering/getStationCount &#39;{&quot;subscribe&quot;:true}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;subscribed&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;connectedStations&quot;:[&nbsp;<br />
+      <br />
+      &nbsp;&nbsp;&nbsp;],<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;stationCount&quot;:0<br />
+      }
+    </p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;subscribed&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;connectedStations&quot;:[&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;8c:3a:e3:46:ab:7a&quot;<br />
+      &nbsp;&nbsp;&nbsp;],<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;stationCount&quot;:1<br />
+      }
+    </p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;subscribed&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;connectedStations&quot;:[&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;dc:0b:34:bf:c4:f8&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;8c:3a:e3:46:ab:7a&quot;<br />
+      &nbsp;&nbsp;&nbsp;],<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;stationCount&quot;:2<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>setCountryCode</h3>
+<div>
+  <h4>Description</h4>
+  <p>Sets the current&nbsp;country code of the Wi-Fi adapter.&nbsp;This affects the allowed Wi-Fi channel for&nbsp;both AP (Access Point) and&nbsp;STA (Station) modes.</p>
+  <p>Format of the country code follows the alpha-2 code of ISO-3166-1.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>countryCode</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Alpha-2 country code. For possible values, see&nbsp;<a href="https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes">List of ISO 3166 country codes​</a>.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the <strong>Error Codes Reference</strong>&nbsp;section of this method&nbsp;for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>9</td>
+          <td>Could not validate json message against schema</td>
+          <td>
+            <p>Parameters passed to this&nbsp;method are not following the schema format.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>Example 1: Successful call</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.wifi/setCountryCode&nbsp;&#39;{&quot;countryCode&quot;:&quot;US&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Example 2: Failed call</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.wifi/setCountryCode &#39;{&quot;countryCode&quot;:1}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:9,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;Could&nbsp;not&nbsp;validate&nbsp;json&nbsp;message&nbsp;against&nbsp;schema&quot;<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>getCountryCode</h3>
+<div>
+  <h4>Description</h4>
+  <p>Gets the current&nbsp;country code of the Wi-Fi adapter.</p>
+  <p>Format of the country code follows the alpha-2 code of ISO-3166-1.&nbsp;</p>
+  <h4>Parameters</h4>
+  <p>None</p>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>countryCode</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Current country code of the Wi-Fi adapter.&nbsp;For possible values, see&nbsp;<a href="https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes">List of ISO 3166 country codes</a>.&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.wifi/getCountryCode &#39;{}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;countryCode&quot;:&quot;US&quot;<br />
+      }
+    </p>
   </div>
 </div>
 <div>
@@ -2054,12 +3146,18 @@ toc: true
             <p>The following values are possible:&nbsp;<strong>&quot;notAssociated&quot;,&nbsp;&quot;associating&quot;,&nbsp;&quot;associated&quot;,&nbsp;&quot;ipConfigured&quot;,&nbsp;&quot;ipFailed&quot;.</strong></p>
           </td>
         </tr>
+        <tr>
+          <td>supported</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Displays <strong>false </strong>if found that Wi-Fi supports &quot;ieee8021x&quot; (enterprise security).</p>
+            <p>Displays <strong>true </strong>for all other Wi-Fi security types.</p>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
-
-
-
   <h3>simpleSecurity</h3>
   <p>Connection information for a simple connection.</p>
   <p>Example:</p>
@@ -2126,7 +3224,6 @@ toc: true
       </tbody>
     </table>
   </div>
-
   <h3>ipInfo</h3>
   <p>IP information for the connected network i.e. connected Wi-Fi interface returned as a response from the <strong>getstatus</strong>&nbsp;method.</p>
   <p>Example:</p>
@@ -2197,7 +3294,6 @@ toc: true
       </tbody>
     </table>
   </div>
-
   <h3>enterpriseSecurity</h3>
   <p>Different security fields for connecting to enterprise networks.</p>
   <p>Example:</p>

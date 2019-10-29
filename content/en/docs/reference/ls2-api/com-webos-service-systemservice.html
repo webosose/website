@@ -1,16 +1,17 @@
 ---
 title: com.webos.service.systemservice
-date: 2019-04-23
+date: 2019-10-22
 toc: true
 ---
-
 <div>
-  <H2>API Summary</h2>
+  <h2>API Summary</h2>
   <p>Provides access to the webOS system settings such as:</p>
   <ul>
     <li>Backup options</li>
     <li>Getting device information</li>
     <li>Getting and modifying the date and time settings</li>
+    <li>Setting ringtones</li>
+    <li>Wallpaper</li>
     <li>Local formats</li>
   </ul>
   <p><strong>Note: </strong>This service can be used by&nbsp;both: internal system services and third-party components.&nbsp;However, third-party components cannot access and modify all system-critical settings. These methods are marked as &quot;private&quot;.</p>
@@ -26,19 +27,23 @@ toc: true
     <li><strong>erase </strong>- options to erase specified partition</li>
     <li><strong>osInfo </strong>- query OS information</li>
     <li><strong>time </strong>- manage time settings</li>
+    <li><strong>ringtone </strong>- options to add or delete ringtones</li>
+    <li><strong>wallpaper </strong>- manage wallpaper settings</li>
     <li><strong>preferences </strong>- options to store and load preferences</li>
   </ul>
   <p><strong>Preferences</strong></p>
-  <p>These values represent system settings which can be queried or modified. Some of them are read-only or write-only, some values are hardware specific. A list of system preference values:</p>
+  <p>These values represent system settings which can be queried or modified. Some of them are read-only or write-only, some values are hardware specific(like ringtone). A list of system preference values:</p>
   <ul>
     <li>locale</li>
     <li>region</li>
+    <li>ringtone</li>
     <li>useNetworkTime</li>
     <li>useNetworkTimeZone</li>
     <li>timeZone</li>
     <li>timeFormat</li>
     <li>timeChangeLaunch - list of ls2 uris to launch when time is changed</li>
     <li>timeDriftPeriodHr - time refresh period</li>
+    <li>wallpaper</li>
     <li>screenSize.width</li>
     <li>screenSize.height&nbsp;</li>
   </ul>
@@ -186,7 +191,7 @@ toc: true
 <h3>backup/preBackup</h3>
 <div>
   <h4>Description</h4>
-  <p>The <strong>preBackup</strong> method creates dump files containing platform-specific environment settings. Call this method before executing the backup procedure in order to save these settings.</p>
+  <p>The <strong>preBackup</strong> method creates dump files containing platform-specific environment settings. Call this method before executing the backup procedure in order to save these settings..</p>
   <p>The dump files are saved into the directory specified by the <strong>temp_dir</strong> parameter or <strong>&#39;${localstatedir}/preferences&#39;</strong>.</p>
   <p>The list of the platform-specific settings that are saved in the dump file is specified in the <strong>sysservice-backupkeys.json</strong> file. Below is an example of this file:</p>
   <p>[<br />
@@ -195,7 +200,7 @@ toc: true
     &nbsp;&nbsp; &nbsp;&quot;timeZone&quot;,<br />
     &nbsp;&nbsp; &nbsp;&quot;timeChangeLaunch&quot;,<br />
     &nbsp;&nbsp; &nbsp;&quot;showcontactmatch&quot;,<br />
-    &nbsp;&nbsp; &nbsp;&quot;x_webos_virtualkeyboard_prefs&quot;<br />
+    &nbsp; &nbsp; &quot;x_webos_virtualkeyboard_prefs&quot;<br />
     ]
   </p>
   <p>If any of the method parameters is not specified or specified incorrectly, the method will use the default values.</p>
@@ -996,6 +1001,10 @@ toc: true
       </tbody>
     </table>
   </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.systemservice/deviceInfo/query &#39;{}&#39;</p>
+  </div>
 </div>
 <h3>erase/EraseAll</h3>
 <div>
@@ -1233,20 +1242,22 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example of a successful call:</p>
-    <p># luna-send -n 1 -f luna://com.webos.service.systemservice/getPreferences &#39;{&quot;keys&quot;: [&quot;locale&quot;]}&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;subscribed&quot;: false,</p>
-    <p style="margin-left:40px">&quot;locale&quot;: {</p>
-    <p style="margin-left:80px">&quot;languageCode&quot;: &quot;en&quot;,</p>
-    <p style="margin-left:80px">&quot;phoneRegion&quot;: {</p>
-    <p style="margin-left:120px">&quot;countryName&quot;: &quot;United States&quot;,</p>
-    <p style="margin-left:120px">&quot;countryCode&quot;: &quot;us&quot;</p>
-    <p style="margin-left:80px">},</p>
-    <p style="margin-left:80px">&quot;countryCode&quot;: &quot;us&quot;</p>
-    <p style="margin-left:40px">},</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p># luna-send&nbsp;-n 1 -f luna://com.webos.service.systemservice/getPreferences &#39;{&quot;keys&quot;: [&quot;locale&quot;]}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;subscribed&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;locale&quot;:{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;languageCode&quot;:&quot;en&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;phoneRegion&quot;:{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;countryName&quot;:&quot;United&nbsp;States&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;countryCode&quot;:&quot;us&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;countryCode&quot;:&quot;us&quot;<br />
+      &nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>getPreferenceValues</h3>
@@ -1281,6 +1292,7 @@ toc: true
             <ul>
               <li>locale</li>
               <li>region</li>
+              <li>ringtone</li>
               <li>useNetworkTime</li>
               <li>useNetworkTimeZone</li>
               <li>timeZone</li>
@@ -1288,6 +1300,7 @@ toc: true
               <li>timeChangeLaunch</li>
               <li>timeDriftPeriodHr</li>
               <li>nitzValidity</li>
+              <li>wallpaper</li>
               <li>screenSize.width</li>
               <li>screenSize.height</li>
             </ul>
@@ -1647,15 +1660,268 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -n 1 -f luna://com.webos.service.systemservice/osInfo/query &#39; {&quot;parameters&quot;:[&quot;webos_name&quot;, &quot;webos_release&quot;,&quot;webos_build_id&quot;]} &#39;</p>
+    <p># luna-send&nbsp;-n 1 -f luna://com.webos.service.systemservice/osInfo/query &#39; {&quot;parameters&quot;:[&quot;webos_name&quot;, &quot;webos_release&quot;,&quot;webos_build_id&quot;]} &#39;</p>
     <p>&nbsp;</p>
     <p>Returns:</p>
-    <p>{</p>
-    <p>&nbsp;&nbsp;&nbsp; &quot;webos_release&quot;: &quot;1.0.p&quot;,</p>
-    <p>&nbsp;&nbsp;&nbsp; &quot;webos_build_id&quot;: &quot;4&quot;,</p>
-    <p>&nbsp;&nbsp;&nbsp; &quot;webos_name&quot;: &quot;webOS OSE&quot;,</p>
-    <p>&nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;webos_release&quot;:&quot;1.0.p&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;webos_build_id&quot;:&quot;4&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;webos_name&quot;:&quot;webOS&nbsp;OSE&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>ringtone/addRingtone</h3>
+<div>
+  <h4>Description</h4>
+  <p>Adds a new ringtone on devices that use ringtones.</p>
+  <p><strong>Note: </strong>This method is public. It can be used both by the system and third-party applications.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>filePath</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Absolute path to the ringtone file.<br></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check&nbsp; &quot;errorText&quot; field&nbsp;for details</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>invalid specification for source file (please use url format)</td>
+          <td>
+            <p>File path in wrong format should be (file:://path/to/file)</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>input file specification doesn&#39;t support non-local files (use file:///path/file or /path/file format</td>
+          <td>
+            <p>input file specification does not support non-local files (use file:///path/file or /path/file format)</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>source file name missing.</td>
+          <td>
+            <p>Can not find file at current path</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>Unable to add ringtone.</td>
+          <td>
+            <p>Failed to copy ringtone to media partition.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>Source file doesn&#39;t exist</td>
+          <td>
+            <p>The file could not be found by the specified filepath.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.systemservice/ringtone/addRingtone &#39;{&quot;filePath&quot;: &quot;/usr/palm/sounds/ringtone.mp3&quot; }&#39;</p>
+  </div>
+</div>
+<h3>ringtone/deleteRingtone</h3>
+<div>
+  <h4>Description</h4>
+  <p>Deletes a ringtone.&nbsp;</p>
+  <p><strong>Note: </strong>This method is public. It can be used both by the system and third-party applications.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>filePath</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Absolute path to the ringtone file.<br></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check&nbsp; &quot;errorText&quot; field&nbsp;for details</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>file doesn&#39;t exist</td>
+          <td>
+            <p>Specified file doesn&#39;t exist</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>source file name missing.</td>
+          <td>
+            <p>specified file to path does not contain the name of file (for example &quot;foo/bar/&quot; but not &quot;foo/bar.mp3&quot;)</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>Unable to delete ringtone.</td>
+          <td>
+            <p>Unable to delete ringtone.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.systemservice/ringtone/deleteRingtone &#39;{&quot;filePath&quot;: &quot;/media/internal/ringtones/ringtone.mp3&quot; }&#39;</p>
   </div>
 </div>
 <h3>setPreferences</h3>
@@ -1691,6 +1957,7 @@ toc: true
             <ul>
               <li>locale</li>
               <li>region</li>
+              <li>ringtone</li>
               <li>useNetworkTime</li>
               <li>useNetworkTimeZone</li>
               <li>timeZone</li>
@@ -1698,6 +1965,7 @@ toc: true
               <li>timeChangeLaunch</li>
               <li>timeDriftPeriodHr</li>
               <li>nitzValidity</li>
+              <li>wallpaper</li>
               <li>screenSize.width</li>
               <li>screenSize.height</li>
             </ul>
@@ -1945,7 +2213,7 @@ toc: true
 <h3>time/getBroadcastTime</h3>
 <div>
   <h4>Description</h4>
-  <p>The <strong>getBroadcastTime</strong> method returns the broadcast time, which is broadcasted by the TV signal provider.</p>
+  <p>The <strong>getBroadcastTime</strong> method returns the broadcast time.</p>
   <h4>Parameters</h4>
   <p>None</p>
   <h4>Call Returns</h4>
@@ -2081,7 +2349,7 @@ toc: true
 <h3>time/getEffectiveBroadcastTime</h3>
 <div>
   <h4>Description</h4>
-  <p>The <strong>getEffectiveBroadcastTime</strong> method&nbsp;returns the <strong>effective</strong>&nbsp;broadcast time (the time broadcasted by the TV signal provider). If no broadcast time info update has been received since boot, the&nbsp;Linux system-wide time is returned.</p>
+  <p>The <strong>getEffectiveBroadcastTime</strong> method&nbsp;returns the <strong>effective</strong>&nbsp;broadcast time. If no broadcast time info update has been received since boot, the&nbsp;Linux system-wide time is returned.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -2239,27 +2507,29 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example of a successful call:</p>
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/time/getEffectiveBroadcastTime &#39;{}&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;timestamp&quot;: {</p>
-    <p style="margin-left:80px">&quot;source&quot;: &quot;monotonic&quot;,</p>
-    <p style="margin-left:80px">&quot;sec&quot;: 94707,</p>
-    <p style="margin-left:80px">&quot;nsec&quot;: 141357576</p>
-    <p style="margin-left:40px">},</p>
-    <p style="margin-left:40px">&quot;localtime&quot;: {</p>
-    <p style="margin-left:80px">&quot;month&quot;: 11,</p>
-    <p style="margin-left:80px">&quot;day&quot;: 26,</p>
-    <p style="margin-left:80px">&quot;hour&quot;: 8,</p>
-    <p style="margin-left:80px">&quot;minute&quot;: 56,</p>
-    <p style="margin-left:80px">&quot;year&quot;: 2015,</p>
-    <p style="margin-left:80px">&quot;second&quot;: 49</p>
-    <p style="margin-left:40px">},</p>
-    <p style="margin-left:40px">&quot;adjustedUtc&quot;: 1448557009,</p>
-    <p style="margin-left:40px">&quot;local&quot;: 1448528209,</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true,</p>
-    <p style="margin-left:40px">&quot;systemTimeSource&quot;: &quot;sdp&quot;</p>
-    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;timestamp&quot;:{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;source&quot;:&quot;monotonic&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;sec&quot;:94707,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;nsec&quot;:141357576<br />
+      &nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&quot;localtime&quot;:{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;month&quot;:11,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;day&quot;:26,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;hour&quot;:8,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;minute&quot;:56,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;year&quot;:2015,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;second&quot;:49<br />
+      &nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&quot;adjustedUtc&quot;:1448557009,<br />
+      &nbsp;&nbsp;&nbsp;&quot;local&quot;:1448528209,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;systemTimeSource&quot;:&quot;sdp&quot;<br />
+      }
+    </p>
   </div>
 </div>
 <h3>time/getNTPTime</h3>
@@ -2647,31 +2917,33 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example of a successful call:</p>
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/time/getSystemTime &#39;{}&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;timezone&quot;: &quot;America/Los_Angeles&quot;,</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true,</p>
-    <p style="margin-left:40px">&quot;utc&quot;: 1448556823,</p>
-    <p style="margin-left:40px">&quot;localtime&quot;: {</p>
-    <p style="margin-left:80px">&quot;month&quot;: 11,</p>
-    <p style="margin-left:80px">&quot;day&quot;: 26,</p>
-    <p style="margin-left:80px">&quot;hour&quot;: 8,</p>
-    <p style="margin-left:80px">&quot;minute&quot;: 53,</p>
-    <p style="margin-left:80px">&quot;year&quot;: 2015,</p>
-    <p style="margin-left:80px">&quot;second&quot;: 43</p>
-    <p style="margin-left:40px">},</p>
-    <p style="margin-left:40px">&quot;TZ&quot;: &quot;PST&quot;,</p>
-    <p style="margin-left:40px">&quot;systemTimeSource&quot;: &quot;sdp&quot;,</p>
-    <p style="margin-left:40px">&quot;timestamp&quot;: {</p>
-    <p style="margin-left:80px">&quot;source&quot;: &quot;monotonic&quot;,</p>
-    <p style="margin-left:80px">&quot;sec&quot;: 94520,</p>
-    <p style="margin-left:80px">&quot;nsec&quot;: 767897750</p>
-    <p style="margin-left:40px">},</p>
-    <p style="margin-left:40px">&quot;timeZoneFile&quot;: &quot;/var/luna/preferences/localtime&quot;,</p>
-    <p style="margin-left:40px">&quot;offset&quot;: -480,</p>
-    <p style="margin-left:40px">&quot;isDST&quot;: true</p>
-    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;timezone&quot;:&quot;America/Los_Angeles&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;utc&quot;:1448556823,<br />
+      &nbsp;&nbsp;&nbsp;&quot;localtime&quot;:{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;month&quot;:11,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;day&quot;:26,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;hour&quot;:8,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;minute&quot;:53,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;year&quot;:2015,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;second&quot;:43<br />
+      &nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&quot;TZ&quot;:&quot;PST&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;systemTimeSource&quot;:&quot;sdp&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;timestamp&quot;:{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;source&quot;:&quot;monotonic&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;sec&quot;:94520,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;nsec&quot;:767897750<br />
+      &nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&quot;timeZoneFile&quot;:&quot;/var/luna/preferences/localtime&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;offset&quot;:-480,<br />
+      &nbsp;&nbsp;&nbsp;&quot;isDST&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>time/getSystemTimezoneFile</h3>
@@ -2721,10 +2993,13 @@ toc: true
   <h4>Example</h4>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/time/getSystemTimezoneFile &#39;{}&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;subscribed&quot;: false,</p>
-    <p style="margin-left:40px">&quot;timeZoneFile&quot;: &quot;/var/luna/preferences/localtime&quot;</p>
-    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;subscribed&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;timeZoneFile&quot;:&quot;/var/luna/preferences/localtime&quot;<br />
+      }
+    </p>
   </div>
 </div>
 <h3>time/getSystemUptime</h3>
@@ -2873,7 +3148,9 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p><strong>returnValue</strong> will always contain <strong>true.</strong></p>
+            <p><strong>returnValue</strong> will always contain <strong>true.</strong><br />
+              &nbsp;
+            </p>
           </td>
         </tr>
       </tbody>
@@ -2881,12 +3158,14 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example of a successful call:</p>
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/time/launchTimeChangeApps &#39;{}&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;subscribed&quot;: false,</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;subscribed&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>time/setBroadcastTime</h3>
@@ -3028,7 +3307,7 @@ toc: true
 <div>
   <h4>Description</h4>
   <p>The <strong>setSystemNetworkTime</strong> method is&nbsp;used to send a NITZ messages to Luna System Service. A NITZ message contains the&nbsp;local time and date, time zone and DST offset, as well as network provider identity.&nbsp;NITZ can be used to update the system clock of network devices.</p>
-  <p>This method ic called by the service, which receives the time data from the service provider (on cell phones - from GSM provider, for TV sets - from the signal broadcaster).</p>
+  <p>This method is&nbsp;called by the service, which receives the time data from the service provider.</p>
   <ul>
     <li>While Airplanmode is off, if Device&#39;s timezone setting is off and user manually select the timezone, then when NITZ message arrives, it will use the timezone specified by the device to calculate for times. Time is always the unix time in seconds.</li>
     <li>If Airplane mode is off and both device&#39;s Networktimezone &amp; NetworkTime are off, then NITZ message is ignored.</li>
@@ -4094,6 +4373,863 @@ toc: true
       </tbody>
     </table>
   </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.systemservice/timezone/createTimeZoneFromEasData &#39;{<br />
+      &nbsp; &nbsp; &nbsp; &quot;standardDate&quot;:<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;month&quot;: 10,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;dayOfWeek&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;week&quot;: 3,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;hour&quot;: 2<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;},<br />
+      &nbsp; &nbsp; &nbsp;&quot;daylightDate&quot;:<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;month&quot;: 7,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;dayOfWeek&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;week&quot;: 1,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;hour&quot;: 0<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}<br />
+      }&#39;
+    </p>
+  </div>
+</div>
+<h3>wallpaper/convert</h3>
+<div>
+  <h4>Description</h4>
+  <p>The <strong>convert</strong> method converts an image. The type, scaling and centering of the image may be changed. If the resulting image is smaller than the original, black is added to the edges so that the resulting image is the same size as the original. If the resulting image would be bigger than the original, the image is cropped.</p>
+  <p>JPG, PNG and BMP files are supported.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>source</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p><span data-cke-bookmark="1" style="display: none; ">&nbsp;</span>Path to the source file.<br></p>
+          </td>
+        </tr>
+        <tr>
+          <td>destType</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Type for the destination file. Can be <strong>jpg</strong>, <strong>png</strong> or <strong>bmp</strong>.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>dest</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Path for the destination file.<br></p>
+          </td>
+        </tr>
+        <tr>
+          <td>focusX</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The horizontal coordinate of the new center of the image, from 0.0 (left edge) to 1.0 (right edge). A value of 0.5 preserves the current horizontal center of the image.<br></p>
+          </td>
+        </tr>
+        <tr>
+          <td>focusY</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The vertical coordinate of the new center of the image, from 0.0 (top edge) to 1.0 (bottom edge). A value of 0.5 preserves the current vertical center of the image.<br></p>
+          </td>
+        </tr>
+        <tr>
+          <td>scale</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Scale factor for the image, must be greater than zero.<br></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>conversionResult</td>
+          <td>Required</td>
+          <td>Object: <a href="#imageconversionresult"> ImageConversionResult</a></td>
+          <td>
+            <p>Object containing information of the converted image.<br></p>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorText&quot; field&nbsp;for details</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>no destination file specified and couldn&#39;t create temp file</td>
+          <td>
+            <p>Destination file is missing</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>Can&#39;t create destination folder</td>
+          <td>
+            <p>Can not create destination folder</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>invalid specification for input file (please use url format)</td>
+          <td>
+            <p>Invalid path for input file</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>input file specification doesn&#39;t support non-local files (use file:///path/file or /path/file format)</td>
+          <td>
+            <p>input file specification doesn&#39;t support non-local files (use file:///path/file or /path/file format)</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>invalid specification for output file (please use url format)</td>
+          <td>
+            <p>Invalid specification for output file</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>output file specification doesn&#39;t support non-local files (use file:///path/file or /path/file format</td>
+          <td>
+            <p>output file specification doesn&#39;t support non-local files (use file:///path/file or /path/file format)</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>One of the standard Linux error messages</td>
+          <td>
+            <p>System errors related to memory allocation or file operations such as &quot;Resource temporary unavailable&quot; or &quot;Cannot allocate memory&quot;. See errno(3) and strerror(3) for details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>couldn&#39;t parse json</td>
+          <td>
+            <p>The request data is invalid.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>lunabus handler error; luna didn&#39;t pass a valid instance var to handler</td>
+          <td>
+            <p>Internal luna bus error.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.systemservice/wallpaper/convert &#39;{<br />
+      &nbsp; &nbsp; &nbsp;&nbsp;&quot;source&quot;: &quot;/mnt/lg/tvservice/res/lgres/bootani/light_open.png&quot;,<br />
+      &nbsp; &nbsp; &nbsp;&nbsp;&quot;dest&quot;:&quot;/tmp/test.jpg&quot;,<br />
+      &nbsp; &nbsp; &nbsp;&nbsp;&quot;destType&quot; : &quot;jpg&quot;<br />
+      }&#39;
+    </p>
+    <p>&nbsp;</p>
+    <p>{</p>
+    <p style="margin-left:40px">&quot;returnValue&quot;: true,</p>
+    <p style="margin-left:40px">&quot;conversionResult&quot;: {</p>
+    <p style="margin-left:80px">&quot;dest&quot;: &quot;//tmp/test.jpg&quot;,</p>
+    <p style="margin-left:80px">&quot;source&quot;: &quot;//mnt/lg/tvservice/res/lgres/bootani/light_open.png&quot;,</p>
+    <p style="margin-left:80px">&quot;destType&quot;: &quot;jpg&quot;</p>
+    <p style="margin-left:40px">}</p>
+    <p>}</p>
+  </div>
+</div>
+<h3>wallpaper/deleteWallpaper</h3>
+<div>
+  <h4>Description</h4>
+  <p>The <strong>deleteWallpaper</strong> method deletes the specified wallpaper from the list of available wallpapers on the device.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>wallpaperName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The <strong>wallpaperName</strong> attribute of the <strong>wallpaper</strong> object to delete.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>wallpaper</td>
+          <td>Required</td>
+          <td>Object: <a href="#wallpaper"> Wallpaper</a></td>
+          <td>
+            <p>A wallpaper object corresponding with the deleted wallpaper</p>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>Invalid wallpaper name specified.</td>
+          <td>
+            <p>Invalid wallpaper name specified&nbsp;(perhaps it doesn&#39;t exist in the wallpaper directory).</p>
+          </td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>&quot;Could not validate json message against schema</td>
+          <td>
+            <p>The request data is invalid.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>lunabus handler error; luna didn&#39;t pass a valid instance var to handler</td>
+          <td>
+            <p>Internal luna bus error.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>must specify wallpaperName</td>
+          <td>
+            <p>The wallpaper filename is not specified in the request.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Could not validate json message against schema</td>
+          <td>
+            <p>The request data is invalid.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.systemservice/wallpaper/deleteWallpaper &#39;{ &quot;wallpaperName&quot;: &quot;record-large.png&quot; }&#39;</p>
+    <p>{</p>
+    <p style="margin-left:40px">&quot;returnValue&quot;: true,</p>
+    <p style="margin-left:40px">&quot;wallpaper&quot;: {</p>
+    <p style="margin-left:80px">&quot;wallpaperName&quot;: &quot;record-large.png&quot;</p>
+    <p style="margin-left:40px">}</p>
+    <p>}</p>
+  </div>
+</div>
+<h3>wallpaper/importWallpaper</h3>
+<div>
+  <h4>Description</h4>
+  <p>The <strong>importWallpaper</strong>&nbsp;method is used to convert the specified image into a device&nbsp;wallpaper. To convert into a wallpaper the image is either re-centered and cropped, or scaled.&nbsp;Once the image has been converted, the wallpaper is stored in the internal list of wallpapers on the device, and is available until deleted using&nbsp;<strong>deleteWallpaper&nbsp;</strong>method.</p>
+  <table align="left" border="" cellpadding="0" cellspacing="1">
+    <thead>
+      <tr>
+        <th style="width:112px">
+          <p><strong>Focus Parameter</strong></p>
+        </th>
+        <th style="width:113px">
+          <p><strong>Scale&nbsp;Parameter</strong></p>
+        </th>
+        <th style="width:371px">
+          <p><strong>Conversion Method</strong></p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="width:112px">
+          <p>Yes</p>
+        </td>
+        <td style="width:113px">
+          <p>No</p>
+        </td>
+        <td style="width:371px">
+          <p>The image is re-centered at the point specified by the focus parameters and cropped. Gaps are filled with Black color if the image does not reach the edge of the screen.</p>
+        </td>
+      </tr>
+      <tr>
+        <td style="width:112px">
+          <p>No</p>
+        </td>
+        <td style="width:113px">
+          <p>Yes</p>
+        </td>
+        <td style="width:371px">
+          <p>The image is scaled and then cropped</p>
+        </td>
+      </tr>
+      <tr>
+        <td style="width:112px">
+          <p>Yes</p>
+        </td>
+        <td style="width:113px">
+          <p>Yes</p>
+        </td>
+        <td style="width:371px">
+          <p>The image is first scaled and then re-centered and cropped</p>
+        </td>
+      </tr>
+      <tr>
+        <td style="width:112px">
+          <p>No</p>
+        </td>
+        <td style="width:113px">
+          <p>No</p>
+        </td>
+        <td style="width:371px">
+          <p>Scales the image to fill the screen</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>target</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Path to the image file.<br></p>
+          </td>
+        </tr>
+        <tr>
+          <td>focusX</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Represents the horizontal&nbsp;coordinates of the new center of the image from 0.0 (left edge) to 1.0 (right edge). A value of 0.5 preserves the current horizontal center of the image.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>focusY</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The vertical coordinate of the new center of the image, from 0.0 (top edge) to 1.0 (bottom edge). A value of 0.5 preserves the current vertical center of the image.<br></p>
+          </td>
+        </tr>
+        <tr>
+          <td>scale</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Scale parameter determines the new size of the image,&nbsp;must be greater than zero.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>wallpaper</td>
+          <td>Required</td>
+          <td>Object: <a href="#wallpaper"> Wallpaper</a></td>
+          <td>
+            <p>A wallpaper object. This object can be passed to setPreferences to set the wallpaper key.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the &quot;errorText&quot; field&nbsp;for details</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>empty input file path specified</td>
+          <td>
+            <p>Input file path should not be empty.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>invalid specification for input file (please use url format)</td>
+          <td>
+            <p>Invalid specification for input file.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>input file specification doesn&#39;t support non-local files (use file:///path/file or /path/file format</td>
+          <td>
+            <p>Input file specification does not support the non-local files.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>lunabus handler error; luna didn&#39;t pass a valid instance var to handler</td>
+          <td>
+            <p>Internal luna bus error.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>no input file specified</td>
+          <td>
+            <p>The input file is not specified in the request.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>Path is missing</td>
+          <td>
+            <p>The path is not specified in the request.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>Both path and file name are missing</td>
+          <td>
+            <p>The path and the filename are not specified in the request.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>filename is missing</td>
+          <td>
+            <p>The name of the wallpaper file is not specified in the request.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>couldn&#39;t create thumbnail</td>
+          <td>
+            <p>Failed to create a&nbsp;thumbnail from the wallpaper image.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>File not found</td>
+          <td>
+            <p>The wallpaper image file is not found.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.systemservice/wallpaper/importWallpaper &#39;{ &quot;target&quot;: &quot;/media/internal/.wallpapers/flowers.png&quot; }&#39;</p>
+    <p>{</p>
+    <p style="margin-left:40px">&quot;returnValue&quot;: true,</p>
+    <p style="margin-left:40px">&quot;wallpaper&quot;: {</p>
+    <p style="margin-left:80px">&quot;wallpaperName&quot;: &quot;flowers.png&quot;,</p>
+    <p style="margin-left:80px">&quot;wallpaperFile&quot;: &quot;\/media\/internal\/.wallpapers\/flowers.png&quot;,</p>
+    <p style="margin-left:80px">&quot;wallpaperThumbFile&quot;: &quot;\/media\/internal\/.wallpapers\/thumbs\/flowers.png&quot;</p>
+    <p style="margin-left:40px">}</p>
+    <p>}</p>
+  </div>
+</div>
+<h3>wallpaper/info</h3>
+<div>
+  <h4>Description</h4>
+  <p>The <strong>info</strong> method retrieves a wallpaper object using either the <strong>wallpaperName </strong>or <strong>wallpaperFile</strong> parameter.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>wallpaperName</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Wallpaper name. Either this, or <strong>wallpaperFile</strong>&nbsp;is required.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>wallpaperFile</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Wallpaper&#39;s full path including the file name. Either this, or <strong>wallpaperName</strong>&nbsp;is required.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>wallpaper</td>
+          <td>Required</td>
+          <td>Object: <a href="#wallpaper"> Wallpaper</a></td>
+          <td>
+            <p>A wallpaper object. This object can be passed to <strong>setPreferences</strong> to set the wallpaper key.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the &quot;errorText&quot; field&nbsp;for details</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>invalid wallpaper name specified (perhaps it doesn&#39;t exist in the wallpaper dir; was it imported?)</td>
+          <td>
+            <p>Invalid wallpaper name specified.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>Must specify either the &quot;wallpaperName&quot; or the &quot;wallpaperFile&quot;.</td>
+          <td>
+            <p>Must specify either the <strong>wallpaperName</strong>&nbsp;or the <strong>wallpaperFile</strong>.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>lunabus handler error; luna didn&#39;t pass a valid instance var to handler</td>
+          <td>
+            <p>Internal luna bus error.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>invalid wallpaper file specified (perhaps it doesn&#39;t exist in the wallpaper dir; was it imported?)</td>
+          <td>
+            <p>Invalid wallpaper name specified.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.systemservice/wallpaper/info &#39;{ &quot;wallpaperFile&quot;: &quot;/media/internal/.wallpapers/flowers.png&quot; }&#39;</p>
+    <p>{</p>
+    <p style="margin-left:40px">&quot;returnValue&quot;: true,</p>
+    <p style="margin-left:40px">&quot;wallpaper&quot;: {</p>
+    <p style="margin-left:80px">&quot;wallpaperName&quot;: &quot;flowers.png&quot;,</p>
+    <p style="margin-left:80px">&quot;wallpaperFile&quot;: &quot;\/media\/internal\/.wallpapers\/flowers.png&quot;,</p>
+    <p style="margin-left:80px">&quot;wallpaperThumbFile&quot;: &quot;\/media\/internal\/.wallpapers\/thumbs\/flowers.png&quot;</p>
+    <p style="margin-left:40px">}</p>
+    <p>}</p>
+  </div>
+</div>
+<h3>wallpaper/refresh</h3>
+<div>
+  <h4>Description</h4>
+  <p>The <strong>refresh</strong> method refreshes the internal list of available wallpapers. Under normal circumstances, there is no need to call refresh directly.</p>
+  <p><strong>Note:</strong> This method call always succeeds.</p>
+  <h4>Parameters</h4>
+  <p>None</p>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p><strong>returnValue</strong>&nbsp;will always contain&nbsp;<strong>true</strong>.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.systemservice/wallpaper/refresh &#39;{}&#39;</p>
+  </div>
 </div>
 <h3>time/getCurrentTimeZoneByLocale</h3>
 <div>
@@ -4577,6 +5713,58 @@ toc: true
           <td>String</td>
           <td>
             <p>Type of the output file:&nbsp;<strong>jpg</strong>, <strong>png</strong>&nbsp;or <strong>bmp</strong>.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>Wallpaper</h3>
+  <p>Contains wallpaper details.</p>
+  <p>Example:</p>
+  <p>&quot;wallpaper&quot;: {</p>
+  <p style="margin-left: 40px;">&quot;wallpaperName&quot;: &quot;flowers.png&quot;,</p>
+  <p style="margin-left: 40px;">&quot;wallpaperFile&quot;: &quot;\/media\/internal\/.wallpapers\/flowers.png&quot;,</p>
+  <p style="margin-left: 40px;">&quot;wallpaperThumbFile&quot;: &quot;\/media\/internal\/.wallpapers\/thumbs\/flowers.png&quot;</p>
+  <p>}</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>wallpaperName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The wallpaperName that was passed to the wallpaper managing methods.<br></p>
+          </td>
+        </tr>
+        <tr>
+          <td>wallpaperFile</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Path to&nbsp;file with&nbsp;wallpaper image.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>wallpaperThumbFile</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Path to file with wallpaper thumbnail.</p>
           </td>
         </tr>
       </tbody>

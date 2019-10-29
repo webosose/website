@@ -1,11 +1,10 @@
 ---
 title: com.webos.service.contextintentmgr
-date: 2019-04-23
+date: 2019-10-22
 toc: true
 ---
-
 <div>
-  <H2>API Summary</h2>
+  <h2>API Summary</h2>
   <p>CIM is a service that adds AI logic to your web app, without actually modifying its source code.&nbsp;This makes your web app context-aware and therefore provide a better experience to your customers.</p>
   <p>How does it work:</p>
   <ol>
@@ -30,7 +29,16 @@ toc: true
 </div>
 <h2>Overview of the API</h2>
 <div>
-  <p>NA</p>
+  <p>Before using the service, you must:&nbsp;&nbsp;&nbsp;</p>
+  <ul>
+    <li>Include the&nbsp;<strong>webOS.js</strong> file in the app</li>
+    <li>
+      Add necessary permissions (<strong>cim.release)</strong>&nbsp;in the&nbsp;<strong>appinfo.json</strong> file (see below)
+      <ul>
+        <li>&quot;requiredPermissions&quot;:[&quot;cim.release&quot;]</li>
+      </ul>
+    </li>
+  </ul>
 </div>
 <h2>Methods</h2>
 <div>
@@ -134,7 +142,28 @@ toc: true
       </table>
     </div>
     <h4>Example</h4>
-    <div class="code-bg-grey"></div>
+    <div class="code-bg-grey">
+      <p>// This API must be called within an app. Below is a sample app code snippet. Do not try to run the code directly from the terminal as it will fail.</p>
+      <p>var request = webOS.service.request(&quot;luna://com.webos.service.contextintentmgr/&quot;, {<br />
+        &nbsp; method: &quot;injectDataToWorkflow&quot;,<br />
+        &nbsp; parameters: {<br />
+        &nbsp; &nbsp; key: &quot;6bb6c4ab.00e67c_128e776f.c57939&quot;, //&nbsp;Key&nbsp;generated&nbsp;in&nbsp;the&nbsp;data-inject&nbsp;node&nbsp;<br />
+        &nbsp; &nbsp; data: &lt;&gt;<br />
+        &nbsp; },<br />
+        &nbsp; onSuccess: function (inResponse) {<br />
+        &nbsp; &nbsp; console.log(inResponse);<br />
+        &nbsp; },<br />
+        &nbsp; onFailure: function (inError) {<br />
+        &nbsp; &nbsp; console.log(inError);<br />
+        &nbsp; },<br />
+        &nbsp; onComplete: function (inResponse) {<br />
+        &nbsp; &nbsp; console.log(inResponse);<br />
+        &nbsp; },<br />
+        &nbsp; subscribe: false,<br />
+        &nbsp; resubscribe: false<br />
+        });
+      </p>
+    </div>
   </div>
 </div>
 <h3>getDataFromWorkflow</h3>
@@ -295,7 +324,27 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
-  <div class="code-bg-grey"></div>
+  <div class="code-bg-grey">
+    <p>// This API must be called within an app. Below is a sample app code snippet. Do not try to run the code directly from the terminal as it will fail.</p>
+    <p>var request = webOS.service.request(&quot;luna://com.webos.service.contextintentmgr/&quot;, {<br />
+      &nbsp; method: &quot;getDataFromWorkflow&quot;,<br />
+      &nbsp; parameters: {<br />
+      &nbsp; &nbsp; key: &quot;6bb6c4ab.00e67c_d89eafda.fe87f&quot; //&nbsp;Key&nbsp;generated&nbsp;in&nbsp;the&nbsp;data-publish&nbsp;node<br />
+      &nbsp; },<br />
+      &nbsp; onSuccess: function (inResponse) {<br />
+      &nbsp; &nbsp; console.log(inResponse);<br />
+      &nbsp; },<br />
+      &nbsp; onFailure: function (inError) {<br />
+      &nbsp; &nbsp; console.log(inError);<br />
+      &nbsp; },<br />
+      &nbsp; onComplete: function (inResponse) {<br />
+      &nbsp; &nbsp; console.log(inResponse);<br />
+      &nbsp; },<br />
+      &nbsp; subscribe: true, //subscription&nbsp;should&nbsp;be&nbsp;set&nbsp;to&nbsp;true&nbsp;<br />
+      &nbsp; resubscribe: true<br />
+      });
+    </p>
+  </div>
 </div>
 <div>
   <h2>Objects</h2>

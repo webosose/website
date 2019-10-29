@@ -1,11 +1,10 @@
 ---
 title: com.webos.service.settings
-date: 2019-04-23
+date: 2019-10-22
 toc: true
 ---
-
 <div>
-  <H2>API Summary</h2>
+  <h2>API Summary</h2>
   <p>Settings Service manages the settings used in webOS and provides the setting information (descriptions) such as Set, Get functions to setting values, the valid range of data that can be set, and whether UI is exposed or not. Subscription option is supported for all settings.</p>
   <p>Settings Service manages different values according to dimension, such as country and external input, under the same setting. When the dimension has changed, it sends a necessary subscription message.</p>
 </div>
@@ -1076,7 +1075,7 @@ toc: true
           <td>Required</td>
           <td>boolean</td>
           <td>
-            <p>Indicates whether to initialize with the factory default value when resetting the system.</p>
+            <p>Indicates whether to initialize with the factory default value when resetting the system (device is rebooted).</p>
             <ul>
               <li>true: Initialized with the factory default value</li>
               <li>false: Not initialized with the factory default value</li>
@@ -1223,7 +1222,7 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates whether to initialize with the factory default value when resetting the system.</p>
+            <p>Indicates whether to initialize with the factory default value when resetting the system (device is rebooted).</p>
             <ul>
               <li>true: Initialized with the factory default value</li>
               <li>false: Not initialized with the factory default value</li>
@@ -1924,48 +1923,47 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example response for a successful call:</p>
-    <p># luna-send -f -n 1 luna://com.webos.service.settings/getSystemSettings &#39;{&quot;category&quot;:&quot;option&quot;, &quot;keys&quot;:[&quot;country&quot;, &quot;smartServiceCountryCode2&quot;]}&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;category&quot;: &quot;option&quot;,</p>
-    <p style="margin-left:40px">&quot;method&quot;: &quot;getSystemSettings&quot;,</p>
-    <p style="margin-left:40px">&quot;settings&quot;: {</p>
-    <p style="margin-left:80px">&quot;smartServiceCountryCode2&quot;: &quot;GB&quot;,</p>
-    <p style="margin-left:80px">&quot;country&quot;: &quot;FRA&quot;</p>
-    <p style="margin-left:40px">},</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>Example 1:</p>
+    <p># luna-send -f -n 1 luna://com.webos.service.settings/getSystemSettings &#39;{<br />
+      &nbsp; &nbsp;&nbsp;&quot;category&quot;:&quot;option&quot;,<br />
+      &nbsp; &nbsp;&nbsp;&quot;keys&quot;:[&quot;country&quot;, &quot;smartServiceCountryCode2&quot;]<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&nbsp;&quot;category&quot;: &quot;option&quot;,<br />
+      &nbsp; &nbsp;&nbsp;&quot;method&quot;: &quot;getSystemSettings&quot;,<br />
+      &nbsp; &nbsp;&nbsp;&quot;settings&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;smartServiceCountryCode2&quot;: &quot;GB&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;country&quot;: &quot;FRA&quot;<br />
+      &nbsp; &nbsp;&nbsp;},<br />
+      &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: true<br />
+      }
+    </p>
     <p>&nbsp;</p>
-    <p>Example response for a successful call:</p>
+    <p>Example 2:</p>
     <p># luna-send -f -n 1 luna://com.webos.service.settings/getSystemSettings &#39;{&quot;keys&quot;:[&quot;localeInfo&quot;]}&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;method&quot;: &quot;getSystemSettings&quot;,</p>
-    <p style="margin-left:40px">&quot;settings&quot;: {</p>
-    <p style="margin-left:80px">&quot;localeInfo&quot;: {</p>
-    <p style="margin-left:120px">&quot;locales&quot;: {</p>
-    <p style="margin-left:160px">&quot;UI&quot;: &quot;en-GB&quot;,</p>
-    <p style="margin-left:160px">&quot;FMT&quot;: &quot;en-GB&quot;,</p>
-    <p style="margin-left:160px">&quot;NLP&quot;: &quot;en-GB&quot;,</p>
-    <p style="margin-left:160px">&quot;STT&quot;: &quot;fr-FR&quot;,</p>
-    <p style="margin-left:160px">&quot;AUD&quot;: &quot;fr-FR&quot;,</p>
-    <p style="margin-left:160px">&quot;AUD2&quot;: &quot;en-GB&quot;</p>
-    <p style="margin-left:120px">},</p>
-    <p style="margin-left:120px">&quot;clock&quot;: &quot;locale&quot;,</p>
-    <p style="margin-left:120px">&quot;keyboards&quot;: [</p>
-    <p style="margin-left:160px">&quot;en&quot;</p>
-    <p style="margin-left:120px">],</p>
-    <p style="margin-left:120px">&quot;timezone&quot;: &quot;&quot;</p>
-    <p style="margin-left:80px">}</p>
-    <p style="margin-left:40px">},</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
-    <p>&nbsp;</p>
-    <p>Example response for a failed call:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;method&quot;: &quot;getSystemSettings&quot;,</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: false,</p>
-    <p style="margin-left:40px">&quot;errorText&quot;: &quot;There is no matched result from DB&quot;</p>
-    <p>}</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&nbsp;&quot;method&quot;: &quot;getSystemSettings&quot;,<br />
+      &nbsp; &nbsp;&nbsp;&quot;settings&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;localeInfo&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;locales&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;UI&quot;: &quot;en-GB&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;TV&quot;: &quot;en-GB&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;FMT&quot;: &quot;en-GB&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;NLP&quot;: &quot;en-GB&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;STT&quot;: &quot;fr-FR&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;AUD2&quot;: &quot;en-GB&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;},<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;clock&quot;: &quot;locale&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;keyboards&quot;: [&quot;en&quot;],<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;timezone&quot;: &quot;&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;}<br />
+      &nbsp; &nbsp;&nbsp;},<br />
+      &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>getSystemSettingValues</h3>
@@ -3497,7 +3495,7 @@ toc: true
 <h3>setSystemSettings</h3>
 <div>
   <h4>Description</h4>
-  <p>Changes settings. It is available only for the keys open to public when called through Public Luna Bus. The permission setting is as follow.</p>
+  <p>Changes settings. It is available only for the keys open to public when called through Public Luna bus. The permission setting is as follow.</p>
   <table border="1" cellpadding="1" cellspacing="0" style="height:60px; width:642px">
     <thead>
       <tr>
@@ -3939,7 +3937,6 @@ toc: true
   <h2>Objects</h2>
   <h3>dimension</h3>
   <p>Settings Service can set many different values under the same setting according to dimension.</p>
-
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
