@@ -1,6 +1,6 @@
 ---
 title: "SDK Download"
-date: 2019-06-28
+date: 2019-10-24
 weight: 5
 file_download: true
 toc: true
@@ -14,13 +14,13 @@ Emulator is created as a virtual machine image when you build webOS OSE platform
 
 ## Command-Line Interface
 
-* Version: v1.9.4
+* Version: v1.10.1
 
 |	Platform	|	CLI Package	|	Size	|
 |-----------------------|-------------------|-----------|
-|	Linux	|	<a href="javascript:" onclick="file_dn('CLI', 'Linux', 'ares-webos-cli-ose_sdk-linux.tgz','https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.9.4/ares-webos-cli-ose_sdk-linux.tgz');">ares-webos-cli-ose_sdk-linux.tgz</a>	|	39.5 MB	|
-|	macOS	|	<a href="javascript:" onclick="file_dn('CLI', 'macOS', 'ares-webos-cli-ose_sdk-mac.tgz', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.9.4/ares-webos-cli-ose_sdk-mac.tgz');">ares-webos-cli-ose_sdk-mac.tgz</a>	|	28.1 MB	|
-|	Windows	|	<a href="javascript:" onclick="file_dn('CLI', 'Windows', 'ares-webos-cli-ose_sdk-win.zip', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.9.4/ares-webos-cli-ose_sdk-win.zip');"> ares-webos-cli-ose_sdk-win.zip</a>	|	36.5 MB	|
+|	Linux	|	<a href="javascript:" onclick="file_dn('CLI', 'Linux', 'ares-webos-cli-linux-1.10.1.tgz','https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.10.1/ares-webos-cli-linux-1.10.1.tgz');">ares-webos-cli-linux-1.10.1.tgz</a>	|	34.1 MB	|
+|	macOS	|	<a href="javascript:" onclick="file_dn('CLI', 'macOS', 'ares-webos-cli-mac-1.10.1.tgz', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.10.1/ares-webos-cli-mac-1.10.1.tgz');">ares-webos-cli-mac-1.10.1.tgz</a>	|	22.7 MB	|
+|	Windows	|	<a href="javascript:" onclick="file_dn('CLI', 'Windows', 'ares-webos-cli-win-1.10.1.zip', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.10.1/ares-webos-cli-win-1.10.1.zip');"> ares-webos-cli-win-1.10.1.zip</a>	|	27.1 MB	|
 
 See the [CLI release notes]({{< relref "cli-release-notes" >}}).
 

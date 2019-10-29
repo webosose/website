@@ -1,6 +1,6 @@
 ---
 title: VirtualBox Emulator User Guide
-date: 2019-07-30
+date: 2019-10-29
 weight: 30
 toc: true
 ---
@@ -10,7 +10,7 @@ webOS Open Source Edition (OSE) provides an emulator that enables you to develop
 The emulator runs as a virtual machine on VirtualBox and supports host platforms including Ubuntu Linux, macOS, and Windows.
 
 {{< note >}}
-* The VirtualBox-based emulator is supported by webOS OSE build #87 (included in webOS OSE 1.10.0) or higher.
+* The VirtualBox-based emulator is supported by webOS OSE 1.10.0 or higher.
 * webOS OSE emulator requires VirtualBox version 6.0 or higher, which can be installed on 64-bit host platforms only.
 {{< /note >}}
 
@@ -19,13 +19,14 @@ The emulator runs as a virtual machine on VirtualBox and supports host platforms
 Key characteristics of the emulator are as follows:
 
 * VirtualBox-based emulator
-* Emulates major features of webOS OSE platform on PC without Raspberry Pi 3 target device
+* Emulates major features of webOS OSE platform on PC without Raspberry Pi target device
 * Provides graphics functionality with host PC’s GPU H/W acceleration
 * Supports webOS OSE CLI tool for application and service development
 
 ### Known Issues
 
-* Audio output is not working.
+* Dual-display is not supported.
+* Touch input is not supported.
 
 ## System Requirements
 
@@ -33,6 +34,8 @@ The emulator requires the following environments.
 
 * VirtualBox v6.0 or higher
     * For requirements to install and run VirtualBox, see its [end-user documentation](https://www.virtualbox.org/wiki/End-user_documentation) page.
+* System memory
+    * 4 GB or higher
 * Operating system
     * Ubuntu Linux
         * 16.04 (64-bit)
@@ -85,11 +88,17 @@ setx PATH "C:\Program Files\Oracle\VirtualBox;%PATH%"
 
 To make the changes take effect, you must restart the command shell.
 
+## Installing VirtualBox Extension Pack
+
+To [configure USB devices](#configuring-usb-devices), Oracle VM VirtualBox Extension Pack is required.
+
+Download the Extension Pack from the [download page](https://www.virtualbox.org/wiki/Downloads), and install the Extension Pack.
+
 ## Preparing a webOS OSE Emulator Virtual Machine Image
 
 Build the webOS OSE image for the emulator in [Building webOS OSE]({{< relref "building-webos-ose" >}}).
 
-* Make sure you set up the build for the emulator at the [configuration step]({{< relref "building-webos-ose#configuring-the-build-for-the-emulator" >}}).
+* Make sure you set up the build for the emulator at the [configuration step]({{< relref "building-webos-ose#configuring-the-build-for-the-target-device" >}}).
 * After the build is completed, check that the resulting image (`webos-image-qemux86-master-*.wic.vmdk`) has been created properly.
 
 ## Setting Up the Virtual Machine in VirtualBox
@@ -99,7 +108,7 @@ You can create and set up a VirtualBox virtual machine from the GUI or from the 
 ### Using the GUI
 
 {{< note >}}
-The screenshots below have been captured from Oracle VM VirtualBox v6.0.10 for Windows. If you are using a different version of the program or on a different host operating system, you might notice minor differences in the position or name of GUI elements.
+The screenshots below have been captured from Oracle VM VirtualBox v6.0.14 for Windows. If you are using a different version of the program or on a different host operating system, you might notice minor differences in the position or name of GUI elements.
 {{< /note >}}
 
 1.  Start the Oracle VM VirtualBox application. You can launch the program from the application menu or by typing `virtualbox` in a command shell.
@@ -122,7 +131,7 @@ The screenshots below have been captured from Oracle VM VirtualBox v6.0.10 for W
 
 4.  In the **Memory size** section, set the amount of memory you wish to allocate to the webos-image virtual machine.
 
-    You must allocate at least 512 MB of memory. It is recommended, however, that you allocate 1024 MB, provided your computer has the capacity.
+    We recommend that you allocate at least 2 GB (2048 MB) of memory for stable performance. It is also recommended that the memory configured for the virtual machine should be less than 50% of the system memory.
 
     {{< figure src="/images/docs/tools/emulator/vbox_emulator_img03.png" alt="Configuring the memory size" class="align-left" >}}
 
@@ -173,9 +182,22 @@ The screenshots below have been captured from Oracle VM VirtualBox v6.0.10 for W
     1. In **Video Memory**, set the amount of video memory you wish to allocate to the webos-image virtual machine. You can allocate up to 128 MB of memory.
     2. From the **Graphics Controller** list, select **VMSVGA**.
     3. In **Acceleration**, ensure that **Enable 3D Acceleration** option is selected.
-    4. On the navigation bar, click **Network**.
+    4. On the navigation bar, click **Audio**.
 
-10. The **Network** section will be displayed. Ensure that the **Adapter 1** tab is selected.
+10. The **Audio** section will be displayed.
+
+    {{< figure src="/images/docs/tools/emulator/vbox_emulator_img_audio.png" alt="Configuring the audio" class="align-left" >}}
+
+    1. Ensure that **Enable Audio** is selected.
+    2. Configure **Host Audio Driver** as follows, depending on your operating system:
+        - On Ubuntu Linux, select **PulseAudio**.
+        - On macOS, select **CoreAudio**.
+        - On Windows, select **Windows DirectSound**.
+    3. From the **Audio Controller** list, select **ICH AC97**.
+    4. In **Extended Features**, select **Enable Audio Output** and **Enable Audio Input**.
+    5. On the navigation bar, click **Network**.
+
+11. The **Network** section will be displayed. Ensure that the **Adapter 1** tab is selected.
 
     From the **Adapter 1** tab, click **Advanced**. You will see advanced network settings.
 
@@ -185,7 +207,7 @@ The screenshots below have been captured from Oracle VM VirtualBox v6.0.10 for W
 
     Next, click **Port Forwarding**.
 
-11. The **Port Forwarding Rules** dialog box will show up.
+12. The **Port Forwarding Rules** dialog box will show up.
 
     You need to set up port forwarding rules to connect through SSH and Web Inspector. To add port forwarding rules, click <img src="/images/docs/tools/emulator/vbox_emulator_icon02.jpg" alt="Port forwarding icon">.
 
@@ -207,7 +229,7 @@ The screenshots below have been captured from Oracle VM VirtualBox v6.0.10 for W
 
     Click **OK**. You will return to the **Adapter 1** section. On the navigation bar, click **Serial Ports**.
 
-12. The **Serial Port** section will be displayed. Ensure that the **Port1** tab is selected.
+13. The **Serial Port** section will be displayed. Ensure that the **Port1** tab is selected.
 
     {{< figure src="/images/docs/tools/emulator/vbox_emulator_img14.png" alt="Configuring the serial port" class="align-left" >}}
 
@@ -216,13 +238,13 @@ The screenshots below have been captured from Oracle VM VirtualBox v6.0.10 for W
     3. In the **Path/Address** box, type **/dev/null** (on Ubuntu/macOS) or **null** (on Windows).
     4. Click **OK**.
 
-13. Oracle VM VirtualBox Manager will return to the main screen and display the details of the virtual machine with updated information.
+14. Oracle VM VirtualBox Manager will return to the main screen and display the details of the virtual machine with updated information.
 
     Your virtual machine is ready for use. To start the virtual machine, ensure that the virtual machine you wish to run is selected. On the icon toolbar, click **Start**.
 
     {{< figure src="/images/docs/tools/emulator/vbox_emulator_img15.png" alt="Starting the virtual machine" class="align-left" >}}
 
-14. Oracle VM VirtualBox Manager will display the webos-image virtual machine window.
+15. Oracle VM VirtualBox Manager will display the webos-image virtual machine window.
 
     It will display the **VirtualBox - Information** dialog box. Click **OK**.
 
@@ -255,9 +277,10 @@ The following example shows commands used to create and set up a webos-image vir
 {{< code "A command-line example to create a virtual machine on Ubuntu Linux" true >}}
 ```shell
 vboxmanage createvm --ostype Linux --register --name webos-image
-vboxmanage modifyvm webos-image --memory 1024 --vram 128 --ioapic on --cpus 2
+vboxmanage modifyvm webos-image --memory 2048 --vram 128 --ioapic on --cpus 2
 vboxmanage modifyvm webos-image --graphicscontroller vmsvga
 vboxmanage modifyvm webos-image --accelerate3d on
+vboxmanage modifyvm webos-image --audio pulse --audioout on --audioin on
 vboxmanage modifyvm webos-image --nic1 nat --nictype1 82540EM --natpf1 ssh,tcp,,6622,,22
 vboxmanage modifyvm webos-image --natpf1 web-inspector,tcp,,9998,,9998
 vboxmanage modifyvm webos-image --mouse usbtablet
@@ -267,6 +290,9 @@ vboxmanage storagectl webos-image --add ide --name webos-image
 {{< /code >}}
 
 {{< note >}}
+* For audio setup on other host operating systems, use the following commands:
+    - macOS: `vboxmanage modifyvm webos-image --audio coreaudio --audioout on --audioin on`
+    - Windows: `vboxmanage modifyvm webos-image --audio dsound --audioout on --audioin on`
 * For Windows, make sure you pass `null` instead of `/dev/null` to the serial port setup.
     * Windows: `vboxmanage modifyvm webos-image --uart1 0x3f8 4 --uartmode1 file null`
 * For more details on `vboxmanage` command of VirtualBox, refer to the [VBoxManage reference](https://www.virtualbox.org/manual/ch08.html).
@@ -283,6 +309,30 @@ To launch the virtual machine, type the following in a command shell:
 ```shell
 vboxmanage startvm webos-image
 ```
+
+## Configuring USB Devices
+
+To use USB devices with the emulator, first add the required USB device on VirtualBox and then launch the virtual machine.
+
+{{< note >}}
+Currently, the emulator supports Bluetooth dongle, USB storage device, USB Webcam, and in-built Webcam and Bluetooth.
+{{< /note >}}
+
+To add the device, before launching the virtual machine on VirtualBox, do the following:
+
+{{< figure src="/images/docs/tools/emulator/vbox_emulator_image_usb.jpg" alt="Configuring USB on VirtualBox Emulator" >}}
+
+1.	Select the virtual machine (from the left-hand side).
+2.	Click the settings icon to display the settings dialog.
+3.	Click **USB**.
+4.	Select the **Enable USB Controller** checkbox.
+5.	Select the **USB 3.0 (xHCI) Controller** option.
+6.	Click the + icon (on the right-hand side) to get a list of USB devices.
+7.	Select the required device (Bluetooth dongle, USB storage device, or USB webcam).
+8.	The device is added to the **USB Device Filters** field.
+9.	Click **OK**.
+
+Now, launch the virtual machine and after it starts, from the **Devices** menu, select the required USB device(s).
 
 ## Updating the Image on the Virtual Machine
 

@@ -156,7 +156,7 @@ $ luna-send -n 1 luna://com.webos.settingsservice/setSystemSettings '{"category"
 List all of the registered applications by calling `listApps` method.
 
 ```bash
-$ luna-send -n 1 -f luna://com.webos.service.applicationManager/listApps '{}'
+$ luna-send -n 1 -f luna://com.webos.service.applicationmanager/listApps '{}'
 
 {
     "subscribed": false,
@@ -188,7 +188,7 @@ $ luna-send -n 1 -f luna://com.webos.service.applicationManager/listApps '{}'
 Launch an app which has ID of "com.webos.app.enactbrowser" by calling `launch` method.
 
 ```bash
-$ luna-send -n 1 -f luna://com.webos.service.applicationManager/launch '{"id":"com.webos.app.enactbrowser"}'
+$ luna-send -n 1 -f luna://com.webos.service.applicationmanager/launch '{"id":"com.webos.app.enactbrowser"}'
 
 {
     "returnValue": true

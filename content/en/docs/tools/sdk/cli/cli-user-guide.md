@@ -1,6 +1,6 @@
 ---
 title: Command-Line Interface User Guide
-date: 2018-10-15
+date: 2018-10-23
 weight: 10
 toc: true
 ---
@@ -27,23 +27,18 @@ CLI provides the following key features:
     - Provides a list of apps installed on the target device
     - Removes selected apps from the target device
   - **Web app launching/closing**
-    - Runs selected apps
+    - Launches selected apps
     - Closes apps that are running
     - Provides the list of apps running on the target device
   - **Web app debugging**
-    - Provides Web Inspector for debugging web apps
-    - Provides Node Inspector for debugging JavaScript services
+    - Enables Web Inspector for debugging web apps
+    - Enables Node's Inspector for debugging JavaScript services
     - Provides web app information
     - Provides JavaScript service information
 
 ## Installing CLI
 
 This section describes how to install CLI on your host machine.
-
-{{< note >}}
-Starting from CLI v1.8.1, you must accept our SDK end-user license agreement (EULA) to use CLI.
-The EULA will appear when you execute any of the CLI commands. Once you accept the EULA for the CLI version, you can proceed with using CLI. Otherwise, you will be prompted to accept the EULA for each command input.
-{{< /note >}}
 
 ### Download the Package
 
@@ -160,11 +155,11 @@ The following table shows the available CLI commands.
 </tr>
 <tr class="even">
 <td><p><a href="#ares-launch">ares-launch</a></p></td>
-<td><p>Runs or terminates the web app.</p></td>
+<td><p>Launches or terminates the web app.</p></td>
 </tr>
 <tr class="odd">
 <td><p><a href="#ares-inspect">ares-inspect</a></p></td>
-<td><p>Runs the Web Inspector or Node Inspector for debugging web app or JS service.</p></td>
+<td><p>Enables Web Inspector or Node's Inspector for debugging web app or JS service.</p></td>
 </tr>
 <tr class="even">
 <td><p><a href="#ares-server">ares-server</a></p></td>
@@ -516,6 +511,10 @@ ares-package sampleApp sampleService
 
 This command displays a list of registered target devices. You can also add, modify, or remove them from the list. This command is mainly used to modify target host address which is running on a remote host. If you execute the command without any options, the command runs in interactive mode.
 
+{{< note >}}
+The emulator is set as the default device. Therefore, a command that needs to connect to a device (e.g. ares-install) will request a connection to the emulator unless the `--device` option is specified.
+{{< /note >}}
+
 #### Usages
 
 ```shell
@@ -856,7 +855,8 @@ ares-install --help|-h
 <tr class="odd">
 <td><p>-d, --device</p></td>
 <td><p>TARGET_DEVICE</p></td>
-<td><p>Specifies the target device on which the application should be installed.</p></td>
+<td><p>Specifies the target device. Unless specified, it will be set to the emulator.</p>
+</td>
 </tr>
 <tr class="even">
 <td><p>-l, --list</p></td>
@@ -955,7 +955,7 @@ ares-install --device target --remove com.example.sampleapp
 
 ### ares-launch
 
-This command runs or terminates the application installed on the target device. This command can also display the list of applications running on the target device.
+This command launches or terminates the application installed on the target device. This command can also display the list of applications running on the target device.
 
 #### Usages
 
@@ -990,7 +990,8 @@ ares-launch --help|-h
 <tr class="odd">
 <td><p>-d, --device</p></td>
 <td><p>TARGET_DEVICE</p></td>
-<td><p>Specifies the target device where the web application is installed.</p></td>
+<td><p>Specifies the target device. Unless specified, it will be set to the emulator.</p>
+</td>
 </tr>
 <tr class="even">
 <td><p>--close</p></td>
@@ -1000,7 +1001,7 @@ ares-launch --help|-h
 <tr class="odd">
 <td><p>-r, --running</p></td>
 <td><p>None</p></td>
-<td><p>Lists applications which are running on the target device.</p></td>
+<td><p>Lists applications that are running on the target device.</p></td>
 </tr>
 <tr class="even">
 <td><p>-p, --params</p></td>
@@ -1041,7 +1042,7 @@ ares-launch --help|-h
 <tbody>
 <tr class="odd">
 <td><p>APP_ID</p></td>
-<td><p>ID of the application to run or terminate.</p></td>
+<td><p>ID of the application to launch or terminate.</p></td>
 </tr>
 <tr class="even">
 <td><p>APP_DIR</p></td>
@@ -1062,13 +1063,13 @@ ares-launch --help|-h
 
 Here are some examples of the different uses:
 
-**Running the application installed on the target device**
+**Launching the application installed on the target device**
 
 ```shell
 ares-launch --device target com.example.sampleapp
 ```
 
-**Running the application with url parameter**
+**Launching the application with url parameter**
 
 ```shell
 ares-launch --device target com.example.sampleapp --params "{'url':'webosose.org'}"
@@ -1092,7 +1093,7 @@ ares-launch --device target --close com.example.sampleapp
 
 ### ares-inspect
 
-This command provides Web Inspector and Node Inspector. Web Inspector and Node Inspector run in a web browser on the host machine. Each inspector displays the run-time information of the web application and JS services, respectively.
+This command enables Web Inspector or Node's Inspector. Each inspector displays the run-time information of a web application or a JS service, respectively.
 
 #### Usages
 
@@ -1125,24 +1126,27 @@ ares-inspect --help|-h
 <tr class="odd">
 <td><p>-d, --device</p></td>
 <td><p>TARGET_DEVICE</p></td>
-<td><p>Specifies the target device where the application is installed.</p></td>
+<td><p>Specifies the target device. Unless specified, it will be set to the emulator.</p>
+</td>
 </tr>
 <tr class="even">
 <td><p>-a, --app</p></td>
 <td><p>APP_ID</p></td>
-<td><p>Specifies the application to run with Web Inspector.</p></td>
+<td><p>Specifies the application to debug with Web Inspector.</p></td>
 </tr>
 <tr class="odd">
 <td><p>-s, --service</p></td>
 <td><p>SERVICE_ID</p></td>
-<td><p>Specifies the JS service to run with Node Inspector.</p></td>
+<td><p>Specifies the JS service to debug with Node's Inspector.</p></td>
 </tr>
 <tr class="even">
 <td><p>-o, --open</p></td>
 <td><p>None</p></td>
 <td><p>Opens the default browser of the host machine.</p>
 {{< note >}}
-<p>Web Inspector and Node Inspector work in the Blink-based web browsers (e.g. Chrome or Opera) only. You have to re-open the inspector page in one of those browsers if another browser is your default web browser (e.g. Safari or Internet Explorer).</p>
+<p>This option is only available for Web Inspector, thus can be used with <code>--app|-a</code> option only.<p>
+<p>Web Inspector works in the Blink-based web browsers (e.g. Chrome or Opera) only. You have to re-open the inspector page in one of those browsers if another browser is your default web browser (e.g. Safari or Internet Explorer).</p>
+<p>To connect to Node's Inspector, you need to use one of the Node's Inspector clients, such as Chrome DevTools and Visual Studio Code. For more information, see <a href="https://nodejs.org/en/docs/guides/debugging-getting-started/#inspector-clients">Inspector Clients</a>.</p>
 {{< /note >}}
 </td>
 </tr>
@@ -1184,7 +1188,7 @@ ares-inspect --help|-h
 </tr>
 <tr class="even">
 <td><p>SERVICE_ID</p></td>
-<td><p>ID of the JS Service whose information is to be viewed using the Node Inspector.</p></td>
+<td><p>ID of the JS Service whose information is to be viewed using the Node's Inspector.</p></td>
 </tr>
 <tr class="odd">
 <td><p>TARGET_DEVICE</p></td>
@@ -1203,7 +1207,7 @@ Here are some examples of the different uses:
 ares-inspect --device target --app com.example.sampleapp
 ```
 
-**Running the Node Inspector for a JS service**
+**Running the Node's Inspector for a JS service**
 
 ```shell
 ares-inspect --device target --service com.example.sampleapp.sampleservice
@@ -1336,7 +1340,8 @@ ares-shell --help|-h
 <tr class="odd">
 <td><p>-d, --device</p></td>
 <td><p>TARGET_DEVICE</p></td>
-<td><p>Specifies the target device.</p></td>
+<td><p>Specifies the target device. Unless specified, it will be set to the emulator.</p>
+</td>
 </tr>
 <tr class="even">
 <td><p>-r, --run</p></td>
@@ -1441,7 +1446,9 @@ ares-push --help|-h
 <tr class="odd">
 <td><p>-d, --device</p></td>
 <td><p>TARGET_DEVICE</p></td>
-<td><p>Specifies the target device that you want to copy the file(s) to.</p></td>
+<td><p>Specifies the target device that you want to copy the file(s) to.</p>
+<p>Unless specified, it will be set to the emulator.</p>
+</td>
 </tr>
 <tr class="even">
 <td><p>-D, --device-list</p></td>
@@ -1456,7 +1463,7 @@ ares-push --help|-h
 <tr class="even">
 <td><p>-V, --version</p></td>
 <td><p>None</p></td>
-<td><p>Displays the version of the <strong><strong>ares</strong>-push</strong> command.</p></td>
+<td><p>Displays the version of the <strong>ares-push</strong> command.</p></td>
 </tr>
 <tr class="odd">
 <td><p>-h, --help</p></td>
@@ -1557,7 +1564,9 @@ ares-pull --help|-h
 <tr class="odd">
 <td><p>-d, --device</p></td>
 <td><p>TARGET_DEVICE</p></td>
-<td><p>Specifies the target device that you want to copy the file(s) from.</p></td>
+<td><p>Specifies the target device that you want to copy the file(s) from.</p>
+<p>Unless specified, it will be set to the emulator.</p>
+</td>
 </tr>
 <tr class="even">
 <td><p>-D, --device-list</p></td>
