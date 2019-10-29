@@ -202,10 +202,10 @@ To register and execute a service through LS2, it is necessary to create a Servi
 
 This file contains description of the service type and launch command.
 
-- **Create and update the file:** `<js-service-name>.service.in`
-- **Directory:** `<js-service-name>/files/sysbus`
+- **Create and update the file:** `<js service name>.service.in`
+- **Directory:** `<js service name>/files/sysbus`
 
-where `<js-service-name>` is the name of the JS service. For the sample JS service, `<js-service-name>` is to be replaced by 'com.example.service.js'.
+where `<js service name>` is the name of the JS service. For the sample JS service, `<js service name>` is to be replaced by 'com.example.service.js'.
 
 {{< highlight bash "linenos=table" >}}
 [D-BUS Service]
@@ -224,10 +224,10 @@ A brief explanation of the above file:
 
 This file contains allowed service names for each component and individual security settings for each service name.
 
-- **Create and update the file:** `<js-service-name>.role.json.in`
-- **Directory:** `<js-service-name>/files/sysbus`
+- **Create and update the file:** `<js service name>.role.json.in`
+- **Directory:** `<js service name>/files/sysbus`
 
-where `<js-service-name>` is the name of the JS service. For the sample JS service, `<js-service-name>` is to be replaced by 'com.example.service.js'.
+where `<js service name>` is the name of the JS service. For the sample JS service, `<js service name>` is to be replaced by 'com.example.service.js'.
 
 {{< highlight json "linenos=table" >}}
 {
@@ -257,10 +257,10 @@ A brief explanation of the above file:
 
 This file defines what groups are required for this component to function properly.
 
-- **Create and update the file:** `<js-service-name>.perm.json.in`
-- **Directory:** `<js-service-name>/files/sysbus`
+- **Create and update the file:** `<js service name>.perm.json.in`
+- **Directory:** `<js service name>/files/sysbus`
 
-where `<js-service-name>` is the name of the JS service. For the sample JS service, `<js-service-name>` is to be replaced by 'com.example.service.js'.​
+where `<js service name>` is the name of the JS service. For the sample JS service, `<js service name>` is to be replaced by 'com.example.service.js'.​
 
 {{< highlight json "linenos=table" >}}
 {
@@ -278,10 +278,10 @@ A brief explanation of the above file:
 
 This file defines what methods are included into security groups this component provides.
 
-- **Create and update the file:** `<js-service-name>.api.json.in`
-- **Directory:** `<js-service-name>/files/sysbus`
+- **Create and update the file:** `<js service name>.api.json.in`
+- **Directory:** `<js service name>/files/sysbus`
 
-where `<js-service-name>` is the name of the JS service. For the sample JS service, `<js-service-name>` is to be replaced by 'com.example.service.js'.​​
+where `<js service name>` is the name of the JS service. For the sample JS service, `<js service name>` is to be replaced by 'com.example.service.js'.​​
 
 {{< highlight json "linenos=table" >}}
 {
@@ -356,11 +356,11 @@ After implementing and configuring the JS service, you must build the service.
 
 webOS OSE uses OpenEmbedded of Yocto Project to build its components. You must write a recipe that configures the build environment. For more details about the recipe, see [Yocto Project Reference Manual](http://www.yoctoproject.org/docs/current/ref-manual/ref-manual.html).
 
-- **Create and update the file:** `<js-service-name>.bb`
+- **Create and update the file:** `<js service name>.bb`
 
-- **Directory:** `build-webos/meta-webosose/meta-webos/recipes-webos/<js-service-name>`
+- **Directory:** `build-webos/meta-webosose/meta-webos/recipes-webos/<js service name>`
 
-where `<js-service-name>` is the name of the JS service. For the sample JS service, `<js-service-name>` must be replaced by 'com.example.service.js'.
+where `<js service name>` is the name of the JS service. For the sample JS service, `<js service name>` must be replaced by 'com.example.service.js'.
 
 {{< highlight bash "linenos=table" >}}
 SUMMARY = "JS Service Sample"
@@ -417,9 +417,9 @@ A brief explanation of the above file:
 
 - Line(1) : Inherit `externalsrc` bbclass file.
 
-- Line(2) : The local source directory. The syntax of the property is `EXTERNALSRC_pn-<component>`.
+- Line(2) : The local source directory. The syntax of the property is `EXTERNALSRC_pn-<component>`. For the value, input `"<full path of the project directory>"`
 
-- Line(3) : The local build directory. The syntax of the property is `EXTERNALSRC_BUILD_pn-<component>`.
+- Line(3) : The local build directory. The syntax of the property is `EXTERNALSRC_BUILD_pn-<component>`. For the value, input `"<full path of the project directory>/build/"`
 
 - Line(4) : The appended revision version (PR) for building local source files. The syntax of the property is `PR_append_pn-<component>`. This property is optional.
 
@@ -456,31 +456,31 @@ After building the service, you must verify its functionality.
     │       └── com.example.service.js.service.in
     ├── com_example_service_js.js
     ├── package.json
-    ├── oe-logs -> /home/username/build/build-webos/BUILD/work/raspberrypi3-webos-linux/com.example.service.js/0.0.1-r0.local0/temp
-    ├── oe-workdir -> /home/username/build/build-webos/BUILD/work/raspberrypi3-webos-linux/com.example.service.js/0.0.1-r0.local0
+    ├── oe-logs -> /home/username/build/build-webos/BUILD/work/raspberrypi4-webos-linux/com.example.service.js/0.0.1-r0.local0/temp
+    ├── oe-workdir -> /home/username/build/build-webos/BUILD/work/raspberrypi4-webos-linux/com.example.service.js/0.0.1-r0.local0
     ```
 
-    If you go to `oe-workdir/deploy-ipks/raspberrypi3`, you can see `com.example.service.js_0.0.1-r0.local0_raspberrypi3.ipk` file.
+    If you go to `oe-workdir/deploy-ipks/raspberrypi4`, you can see `com.example.service.js_0.0.1-r0.local0_raspberrypi4.ipk` file.
 
     ``` bash
-    com.example.service.js/oe-workdir/deploy-ipks/raspberrypi3
-    └── com.example.service.js_0.0.1-r0.local0_raspberrypi3.ipk
+    com.example.service.js/oe-workdir/deploy-ipks/raspberrypi4
+    └── com.example.service.js_0.0.1-r0.local0_raspberrypi4.ipk
     ```
 
     Copy the IPK file to the target device using the `scp` command.
 
     ``` bash
-    com.example.service.js/oe-workdir/deploy-ipks/raspberrypi3$ scp com.example.service.js_0.0.1-r0.local0_raspberrypi3.ipk root@192.168.0.12:/media/internal/downloads
+    com.example.service.js/oe-workdir/deploy-ipks/raspberrypi4$ scp com.example.service.js_0.0.1-r0.local0_raspberrypi4.ipk root@<target IP address>:/media/internal/downloads
     ```
 
 2.  **Install the service on the target.**
 
-    Connect to the target using the `ssh` command and install `com.example.service.js_0.0.1-r0.local0_raspberrypi3.ipk`.
+    Connect to the target using the `ssh` command and install `com.example.service.js_0.0.1-r0.local0_raspberrypi4.ipk`.
 
     ``` bash
-    $ ssh root@192.168.0.12
-    root@raspberrypi3:~# cd /media/internal/downloads/
-    root@raspberrypi3:/media/internal/downloads# opkg install com.example.service.js_0.0.1-r0.local0_raspberrypi3.ipk
+    $ ssh root@<target IP address>
+    root@raspberrypi4:/sysroot/home/root# cd /media/internal/downloads/
+    root@raspberrypi4:/media/internal/downloads# opkg install com.example.service.js_0.0.1-r0.local0_raspberrypi4.ipk
 
     Installing com.example.service.js (0.0.1) on root.
     Configuring com.example.service.js.
@@ -491,7 +491,7 @@ After building the service, you must verify its functionality.
     To make LS2 daemon scan the LS2 configuration files of the service, use the `ls-control` command as follows.
 
     ``` bash
-    root@raspberrypi3:/media/internal/downloads# ls-control scan-services
+    root@raspberrypi4:/media/internal/downloads# ls-control scan-services
 
     telling hub to reload setting and rescan all directories
     ```
@@ -507,7 +507,7 @@ After building the service, you must verify its functionality.
     Calling the **`hello`** method:
 
     ``` bash
-    root@raspberrypi3:/# luna-send -n 1 -f luna://com.example.service.js/hello '{}'
+    root@raspberrypi4:/# luna-send -n 1 -f luna://com.example.service.js/hello '{}'
     {
         "answer": "Hello, JS Service!!",
         "returnValue": true
@@ -517,7 +517,7 @@ After building the service, you must verify its functionality.
     Calling the **`locale`** method:
 
     ``` bash
-    root@raspberrypi3:/# luna-send -n 1 -f luna://com.example.service.js/locale '{}'
+    root@raspberrypi4:/# luna-send -n 1 -f luna://com.example.service.js/locale '{}'
     {
         "message": "You appear to have your locale set to: en-US",
         "returnValue": true
@@ -529,14 +529,14 @@ After building the service, you must verify its functionality.
     If you check the result of `ls-monitor` immediately after calling the **`com.example.service.js/hello`** method, you can see that the service is executed dynamically.
 
     ``` bash
-    root@raspberrypi3:/# ls-monitor -l | grep example
+    root@raspberrypi4:/# ls-monitor -l | grep example
     868           com.example.service.js            /usr/bin/node                          dynamic                 K4Nuvsrx
     ```
 
     If the service is not used for 5 seconds, it is terminated. Run the `ls-monitor` command again after about 5 seconds, and you will see that the service has been terminated.
 
     ``` bash
-    root@raspberrypi3:/# ls-monitor -l | grep example
+    root@raspberrypi4:/# ls-monitor -l | grep example
     ```
 
 ## Step 5: Deploy the JS Service
@@ -579,20 +579,22 @@ build-webos$ bitbake webos-image
 
 Flash the updated webOS image to the SD card.
 
-**Path of webOS image :** `build-webos/BUILD/deploy/images/raspberrypi3/webos-image-raspberrypi3-master-yyyymmddhhmmss.rpi-sdimg`
+**Path of webOS image :** `build-webos/BUILD/deploy/images/raspberrypi4/webos-image-raspberrypi4-master-yyyymmddhhmmss.wic`
 
 ``` bash
-build-webos/BUILD/deploy/images/raspberrypi3$ sudo dd bs=4M if=webos-image-raspberrypi3-master-yyyymmddhhmmss.rpi-sdimg of=/dev/sdc
+build-webos/BUILD/deploy/images/raspberrypi4$ sudo dd bs=4M if=webos-image-raspberrypi4-master-yyyymmddhhmmss.wic of=/dev/sdc
 ```
+
+For more details, see the [Flashing webOS OSE]({{< relref "flashing-webos-ose#linux" >}}) page.
 
 After booting the target device, connect to target with SSH and call `com.example.service.js` and check `ls-monitor`. You will see that the service is executed as a dynamic type.
 
 ``` bash
-root@raspberrypi3:/# luna-send -n 1 -f luna://com.example.service.js/hello '{}'
+root@raspberrypi4:/# luna-send -n 1 -f luna://com.example.service.js/hello '{}'
 {
     "answer": "Hello, JS Service!!",
     "returnValue": true
 }
-root@raspberrypi3:/# ls-monitor -l | grep example
+root@raspberrypi4:/# ls-monitor -l | grep example
 931           com.example.service.js            /usr/bin/node                          dynamic                 MUe02Jj1
 ```

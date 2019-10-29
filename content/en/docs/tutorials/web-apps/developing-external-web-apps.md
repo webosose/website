@@ -1,6 +1,6 @@
 ---
 title: Developing External Web Apps
-date: 2018-11-26
+date: 2019-10-11
 weight: 10
 toc: true
 ---
@@ -55,44 +55,42 @@ The web app directory (`sampleApp`) has the following directory and files:
 </thead>
 <tbody>
 <tr class="odd">
-<td><p>webOSjs-0.1.0</p></td>
-<td><p>webOS library directory to call LS2 API.</p></td>
-</tr>
-<tr class="even">
 <td><p>appinfo.json</p></td>
 <td><p>Configuration file that includes metadata for the web app.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><p>icon.png</p></td>
 <td><p>The icon image file. Can be replaced with a relevant icon.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><p>largeIcon.png</p></td>
 <td><p>The large icon image file. Can be replaced with a relevant icon.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><p>index.html</p></td>
-<td><p>Web application main page. This page only shows "Hello World" text on the screen.</p></td>
+<td><p>Web application main page. This page only shows "Hello, Web Application!!" text on the screen.</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 
 {{< note >}}
-If you already have an existing web app that you want to deploy on a webOS OSE device, you must add the `appinfo.json` file to the app root directory. To create this file, enter the following CLI command:
+* If you already have an existing web app that you want to deploy on a webOS OSE device, you must add the `appinfo.json` file to the app root directory. To create this file, enter the following CLI command:
 
-``` bash
-$ ares-generate -t webappinfo webApp
-```
+    ``` bash
+    $ ares-generate -t webappinfo webApp
+    ```
 
-See Step 3 below for more information on the `appinfo.json` file.
+    See Step 3 below for more information on the `appinfo.json` file.
+
+* To use LS2 API on webOS OSE 1.x, the webOS library must exist within the project directory. For more information, see the [built-in web app tutorial]({{< relref "developing-built-in-web-apps#webos-ose-1-x" >}}).
 {{< /note >}}
 
 ### Step 2: Implement the Web App
 
 Design and implement the source code for the web app.
 
-By default, the basic web app template includes some basic code that prints a "Hello World" message. Therefore, if you want to create a demo web app to test this process, you can skip this step and proceed.
+By default, the basic web app template includes some basic code that prints a "Hello, Web Application!!" message. Therefore, if you want to create a demo web app to test this process, you can skip this step and proceed.
 
 {{< note >}}
 If you want to use a webOS service in the web app, check the information and sample code provided in the [Implement the Web App]({{< relref "developing-built-in-web-apps#step-1-implement-the-web-app" >}}) section in "[Developing Built-in Web Apps]({{< relref "developing-built-in-web-apps" >}})".
@@ -119,7 +117,7 @@ CLI provides the `appinfo.json` file template as below.
 ```
 
 {{< note >}}
-If you are packaging a JS service within the web app and the JS service uses methods of external services, you must add the group information of the external methods used by the JS service to the `requiredPermission` field in `appinfo.json`.
+If you are packaging a JS service within the web app and the JS service uses methods of external services, you must add the group information of the external methods used by the JS service to the `requiredPermissions` field in `appinfo.json`.
 {{< /note >}}
 
 ### Step 4: Package the Web App
@@ -228,7 +226,7 @@ $ ares-inspect --device <TARGET_DEVICE> --app <APP_ID> --open
 
 This loads the Web Inspector in your default browser as shown in the following screenshot:
 
-{{< figure src="/images/docs/tutorials/web-apps/web-inspector-new.png" alt="" caption="Web Inspector screenshot" >}}
+{{< figure src="/images/docs/tutorials/web-apps/web-inspector-new.png" link="/images/docs/tutorials/web-apps/web-inspector-new.png" target="_blank" alt="" caption="Web Inspector screenshot" >}}
 
 {{< note >}}
 Web Inspector works only in Blink-based web browsers such as Chrome and Opera. If another browser (e.g., Safari or Internet Explorer) is set as your default web browser, you must re-open the inspector page in a Blink-based web browser.

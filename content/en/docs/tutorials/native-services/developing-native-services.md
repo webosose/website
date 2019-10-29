@@ -299,10 +299,10 @@ To register and execute a service through LS2, it is necessary to create a Servi
 
 This file contains description of the service type and launch command.
 
-- **Create and update the file:** `<native-service-name>.service.in`
-- **Directory:** `<native-service-name>/files/sysbus`
+- **Create and update the file:** `<native service name>.service.in`
+- **Directory:** `<native service name>/files/sysbus`
 
-where `<native-service-name>` is the name of the native service. For the sample native service, `<native-service-name>` is to be replaced by 'com.example.service.native'.
+where `<native service name>` is the name of the native service. For the sample native service, `<native service name>` is to be replaced by 'com.example.service.native'.
 
 {{< highlight bash "linenos=table" >}}
 [D-BUS Service]
@@ -325,10 +325,10 @@ A brief explanation of the above file:
 
 This file contains allowed service names for each component and individual security settings for each service name.
 
-- **Create and update the file:** `<native-service-name>.role.json.in`
-- **Directory:** `<native-service-name>/files/sysbus`
+- **Create and update the file:** `<native service name>.role.json.in`
+- **Directory:** `<native service name>/files/sysbus`
 
-where `<native-service-name>` is the name of the native service. For the sample native service, `<native-service-name>` is to be replaced by 'com.example.service.native'.
+where `<native service name>` is the name of the native service. For the sample native service, `<native service name>` is to be replaced by 'com.example.service.native'.
 
 {{< highlight json "linenos=table" >}}
 {
@@ -360,10 +360,10 @@ A brief explanation of the above file:
 
 This file defines what groups are required for this component to function properly.
 
-- **Create and update the file:** `<native-service-name>.perm.json.in`
-- **Directory:** `<native-service-name>/files/sysbus`
+- **Create and update the file:** `<native service name>.perm.json.in`
+- **Directory:** `<native service name>/files/sysbus`
 
-where `<native-service-name>` is the name of the native service. For the sample native service, `<native-service-name>` is to be replaced by 'com.example.service.native'.
+where `<native service name>` is the name of the native service. For the sample native service, `<native service name>` is to be replaced by 'com.example.service.native'.
 
 {{< highlight json "linenos=table" >}}
 {
@@ -381,10 +381,10 @@ A brief explanation of the above file:
 
 This file defines what methods are included into security groups this component provides.
 
-- **Create and update the file:** `<native-service-name>.api.json.in`
-- **Directory:** `<native-service-name>/files/sysbus`
+- **Create and update the file:** `<native service name>.api.json.in`
+- **Directory:** `<native service name>/files/sysbus`
 
-where `<native-service-name>` is the name of the native service. For the sample native service, `<native-service-name>` is to be replaced by 'com.example.service.native'.
+where `<native service name>` is the name of the native service. For the sample native service, `<native service name>` is to be replaced by 'com.example.service.native'.
 
 {{< highlight json "linenos=table" >}}
 {
@@ -402,10 +402,10 @@ A brief explanation of the above file:
 
 This file is required to run the services provided by systemd.
 
-- **Create and update the file:** `<native-service-name>.service.in`
-- **Directory:** `<native-service-name>/files/systemd`
+- **Create and update the file:** `<native service name>.service.in`
+- **Directory:** `<native service name>/files/systemd`
 
-where `<native-service-name>` is the name of the native service. For the sample native service, `<native-service-name>` is to be replaced by 'com.example.service.native'.
+where `<native service name>` is the name of the native service. For the sample native service, `<native service name>` is to be replaced by 'com.example.service.native'.
 
 This file will be installed to the target as **`com.example.service.native.service`**.
 
@@ -513,10 +513,10 @@ After implementing and configuring the Native service, you must build the servic
 
 webOS OSE uses OpenEmbedded of Yocto Project to build its components. You must write a recipe that configures the build environment. For more details about the recipe, see [Yocto Project Reference Manual](http://www.yoctoproject.org/docs/current/ref-manual/ref-manual.html).
 
-- **Create and update the file:** `<native-service-name>.bb`
-- **Directory:** `build-webos/meta-webosose/meta-webos/recipes-webos/<native-service-name>`
+- **Create and update the file:** `<native service name>.bb`
+- **Directory:** `build-webos/meta-webosose/meta-webos/recipes-webos/<native service name>`
 
-where `<native-service-name>` is the name of the native service. For the sample native service, `<native-service-name>` must be replaced by 'com.example.service.native'.
+where `<native service name>` is the name of the native service. For the sample native service, `<native service name>` must be replaced by 'com.example.service.native'.
 
 {{< highlight bash "linenos=table" >}}
 SUMMARY = "Native service sample"
@@ -573,9 +573,9 @@ A brief explanation of the above file:
 
 - Line(1) : Inherit "externalsrc" bbclass file.
 
-- Line(2) : The local source directory. The syntax of the property is `EXTERNALSRC_pn-<component>`.
+- Line(2) : The local source directory. The syntax of the property is `EXTERNALSRC_pn-<component>`. For the value, input `"<full path of the project directory>"`
 
-- Line(3) : The local build directory. The syntax of the property is `EXTERNALSRC_BUILD_pn-<component>`.
+- Line(3) : The local build directory. The syntax of the property is `EXTERNALSRC_BUILD_pn-<component>`. For the value, input `"<full path of the project directory>/build/"`
 
 - Line(4) : The appended revision version (PR) for building local source files. The syntax of the property is `PR_append_pn-<component>`. This property is optional.
 
@@ -613,31 +613,31 @@ After building the service, you must verify its functionality.
     │   └── systemd
     │       └── com.example.service.native.service.in
     ├── main.cpp
-    ├── oe-logs -> /home/username/build/build-webos/BUILD/work/raspberrypi3-webos-linux/com.example.service.native/0.0.1-r0.local0/temp
-    ├── oe-workdir -> /home/username/build/build-webos/BUILD/work/raspberrypi3-webos-linux/com.example.service.native/0.0.1-r0.local0
+    ├── oe-logs -> /home/username/build/build-webos/BUILD/work/raspberrypi4-webos-linux/com.example.service.native/0.0.1-r0.local0/temp
+    ├── oe-workdir -> /home/username/build/build-webos/BUILD/work/raspberrypi4-webos-linux/com.example.service.native/0.0.1-r0.local0
     ```
 
-    If you go to `oe-workdir/deploy-ipks/raspberrypi3`, you can see `com.example.service.native_0.0.1-r0.local0_raspberrypi3.ipk` file.
+    If you go to `oe-workdir/deploy-ipks/raspberrypi4`, you can see `com.example.service.native_0.0.1-r0.local0_raspberrypi4.ipk` file.
 
     ``` bash
-    com.example.service.native/oe-workdir/deploy-ipks/raspberrypi3
-    └── com.example.service.native_0.0.1-r0.local0_raspberrypi3.ipk
+    com.example.service.native/oe-workdir/deploy-ipks/raspberrypi4
+    └── com.example.service.native_0.0.1-r0.local0_raspberrypi4.ipk
     ```
 
     Copy the IPK file to the target device using the `scp` command.
 
     ``` bash
-    com.example.service.native/oe-workdir/deploy-ipks/raspberrypi3$ scp com.example.service.native_0.0.1-r0.local0_raspberrypi3.ipk root@192.168.0.12:/media/internal/downloads
+    com.example.service.native/oe-workdir/deploy-ipks/raspberrypi4$ scp com.example.service.native_0.0.1-r0.local0_raspberrypi4.ipk root@<target IP address>:/media/internal/downloads
     ```
 
 2.  **Install the service on the target.**
 
-    Connect to the target using the `ssh` command and install `com.example.service.native_0.0.1-r0.local0_raspberrypi3.ipk`.
+    Connect to the target using the `ssh` command and install `com.example.service.native_0.0.1-r0.local0_raspberrypi4.ipk`.
 
     ``` bash
-    $ ssh root@192.168.0.12
-    root@raspberrypi3:~# cd /media/internal/downloads/
-    root@raspberrypi3:/media/internal/downloads# opkg install com.example.service.native_0.0.1-r0.local0_raspberrypi3.ipk
+    $ ssh root@<target IP address>
+    root@raspberrypi4:/sysroot/home/root# cd /media/internal/downloads/
+    root@raspberrypi4:/media/internal/downloads# opkg install com.example.service.native_0.0.1-r0.local0_raspberrypi4.ipk
 
     Installing com.example.service.native (0.0.1) on root.
     Configuring com.example.service.native.
@@ -648,7 +648,7 @@ After building the service, you must verify its functionality.
     To make LS2 daemon scan the LS2 configuration files of the service, use the `ls-control` command as follows.
 
     ``` bash
-    root@raspberrypi3:/media/internal/downloads# ls-control scan-services
+    root@raspberrypi4:/media/internal/downloads# ls-control scan-services
 
     telling hub to reload setting and rescan all directories
     ```
@@ -658,7 +658,7 @@ After building the service, you must verify its functionality.
     You can run the **`com.example.service.native`** using the `systemctl` command.
 
     ``` bash
-    root@raspberrypi3:~# systemctl start com.example.service.native
+    root@raspberrypi4:/# systemctl start com.example.service.native
     ```
 
 5.  **Verify the execution of the service.**
@@ -681,7 +681,7 @@ After building the service, you must verify its functionality.
         You can use `ls-monitor` to check whether the service is successfully registered. It also shows the methods available in the service. For more detail about ls-monitor, see [ls-monitor]({{< relref "ls-monitor" >}}).
 
         ``` bash
-        root@raspberrypi3:/#ls-monitor -i com.example.service.native
+        root@raspberrypi4:/#ls-monitor -i com.example.service.native
 
           "/":
               "hello": {"provides":["all","com.example.service.native.group"]}
@@ -702,7 +702,7 @@ After building the service, you must verify its functionality.
     Verify the output of the `hello` Method. You can call a method by using the `luna-send` command:
 
     ``` bash
-    root@raspberrypi3:/# luna-send -n 1 -f luna://com.example.service.native/hello '{}'
+    root@raspberrypi4:/# luna-send -n 1 -f luna://com.example.service.native/hello '{}'
     {
         "answer": "Hello, Native Service!!",
         "returnValue": true
@@ -715,7 +715,7 @@ After building the service, you must verify its functionality.
     If `com.example.service.native` is not registered successfully, you will see a return message as below.
 
     ``` bash
-    root@raspberrypi3:~# luna-send -n 1 -f luna://com.example.service.native/hello '{}'
+    root@raspberrypi4:/# luna-send -n 1 -f luna://com.example.service.native/hello '{}'
     {
         "errorCode": -1,
         "returnValue": false,
@@ -837,15 +837,17 @@ Modify the **`webos-initscripts`** component which is responsible for systemd co
 2.  Flash the generated webos-image to SD card.
 
     ``` bash
-    build-webos/BUILD/deploy/images/raspberrypi3$ sudo dd bs=4M if=webos-image-raspberrypi3-master-yyyymmddhhmmss.rpi-sdimg of=/dev/sdc
+    build-webos/BUILD/deploy/images/raspberrypi4$ sudo dd bs=4M if=webos-image-raspberrypi4-master-yyyymmddhhmmss.wic of=/dev/sdc
     ```
+
+    For more details, see the [Flashing webOS OSE]({{< relref "flashing-webos-ose#linux" >}}) page.
 
 3.  After booting, connect to the target with SSH.
 
     If you check the service list with `ls-monitor`, you can see `com.example.service.native` is executed as static type.
 
     ``` bash
-    $ ssh root@192.168.0.12
-    root@raspberrypi3:~# ls-monitor -l | grep example
+    $ ssh root@<target IP address>
+    root@raspberrypi4:/sysroot/home/root# ls-monitor -l | grep example
     542           com.example.service.native        /usr/sbin/com.example.service.native    static                  4dTPKKQI
     ```

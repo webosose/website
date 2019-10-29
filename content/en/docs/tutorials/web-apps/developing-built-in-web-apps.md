@@ -1,9 +1,13 @@
 ---
 title: Developing Built-in Web Apps
-date: 2018-10-28
+date: 2019-10-11
 weight: 20
 toc: true
 ---
+
+{{< note >}}
+The content of this page is based on webOS OSE 2.0. If you are developing on webOS OSE 1.x, you might notice differences in the project directory structure, log messages, etc. Notes indicating such differences are provided where necessary.
+{{< /note >}}
 
 To create a built-in web app, you must write the source code and prepare the required configuration files.
 
@@ -17,10 +21,7 @@ com.example.app.web
 ├── README.md
 ├── appinfo.json
 ├── icon.png
-├── index.html
-└── webOSjs-0.1.0
-    ├── LICENSE-2.0.txt
-    └── webOS.js
+└── index.html
 ```
 
 Developing a built-in web app requires the following steps:
@@ -47,15 +48,92 @@ Developing a built-in web app requires the following steps:
 
 ### Source Code
 
-You can develop a web app using standard web technologies.
+You can develop a web app using standard web technologies. Web apps built for webOS devices can also provide enhanced functionality by leveraging LS2 API. Depending on the webOS OSE platform version, however, there's a difference in the way to use LS2 API.
 
-Web apps built for webOS devices can also provide enhanced functionality by leveraging the APIs provided by webOS services. Let us understand this with a sample code that prints a hello message and also prints the current time on the log.
+The following sections present code examples by platform version.
 
-{{< note "Prerequisite (when calling LS2 API in the web app)" >}}
-Download the webOS library file from [webOSjs-0.1.0.zip](https://webosose.s3.ap-northeast-2.amazonaws.com/tools/webOSjs-0.1.0.zip) and decompress it to the project root directory. This library is required to call [LS2 API]({{< relref "ls2-api-index" >}}).
-{{< /note >}}
+* [webOS OSE 2.0 or higher](#webos-ose-2-0-or-higher)
+* [webOS OSE 1.x](#webos-ose-1-x)
+
+#### webOS OSE 2.0 or higher
 
 For the sample web app (`com.example.app.web`), create the `index.html` file in the project root directory.
+
+The following shows sample code that prints a hello message and also prints the current time on the log. To call [LS2 API]({{< relref "ls2-api-index" >}}), webOS OSE 2.0 or higher uses [WebOSServiceBridge]({{< relref "webosservicebridge-api-reference" >}}), a JavaScript API for web apps to access Luna Bus.
+
+{{< highlight html "linenos=table" >}}
+<!DOCTYPE html>
+<html>
+<head>
+<title>Example Web App</title>
+<style type="text/css">
+    body {
+        width: 100%;
+        height: 100%;
+        background-color:#202020;
+    }
+    div {
+        position:absolute;
+        height:100%;
+        width:100%;
+        display: table;
+    }
+    h1 {
+        display: table-cell;
+        vertical-align: middle;
+        text-align:center;
+        color:#FFFFFF;
+    }
+</style>
+<script type="text/javascript">
+    var bridge = new WebOSServiceBridge();
+    var url = 'luna://com.webos.service.systemservice/clock/getTime';
+    var params = '{}';
+
+    function callback(msg){
+        var arg = JSON.parse(msg);
+        if (arg.returnValue) {
+            console.log("[APP_NAME: example web app] GETTIME_SUCCESS UTC : " + arg.utc);
+        }
+        else {
+            console.error("[APP_NAME: example web app] GETTIME_FAILED errorText : " + arg.errorText);
+        }
+    }
+
+    bridge.onservicecallback = callback;
+    bridge.call(url, params);
+</script>
+</head>
+<body>
+    <div>
+        <h1>Hello, Web Application!!</h1>
+    </div>
+</body>
+</html>
+{{< /highlight >}}
+
+A brief explanation of the above file:
+
+  - Line(25) : Create a WebOSServiceBridge object.
+
+  - Line(26~27) : Set the URL of the method to call and the parameters in JSON string format
+
+      - `url`: URL of the LS2 API method
+      - `params`: parameter for the method to invoke
+
+  - Line(29~37) : Define a callback function that can handle the response. If the response is successful, print "UTC" to the log file (`/var/log/messages`). To print console.log/info level messages, you need to set pmlog level of Web App Manager (WAM) by executing the `PmLogCtl set wam.log debug` command on the target before running the app.
+
+  - Line(39~40) : Set the callback to the WebOSServiceBridge object, and invoke the method with Luna call.
+
+#### webOS OSE 1.x
+
+For the sample web app (`com.example.app.web`), create the `index.html` file in the project root directory.
+
+The following shows sample code that prints a hello message and also prints the current time on the log. To call [LS2 API]({{< relref "ls2-api-index" >}}), webOS OSE 1.x uses the webOS library.
+
+{{< note "Prerequisite for webOS OSE 1.x only (when calling LS2 API in the web app)" >}}
+Download the webOS library file from [webOSjs-0.1.0.zip](https://webosose.s3.ap-northeast-2.amazonaws.com/tools/webOSjs-0.1.0.zip) and decompress it to the project root directory.
+{{< /note >}}
 
 {{< highlight html "linenos=table" >}}
 <!DOCTYPE html>
@@ -106,9 +184,9 @@ var lunaReq= webOS.service.request("luna://com.webos.service.systemservice",
 
 A brief explanation of the above file:
 
-- Line(23) : Include the webOs library.
+- Line(23) : Include the webOS library.
 
-- Line(25~36) : Call `systemserivce/clock/getTime` method. If the response is successful, print "UTC" to log file. (`/var/log/messages`). For details, refer to [Using PmLog in JavaScript]({{< relref "using-pmlog-in-javascript" >}}).
+- Line(25~36) : Call `systemserivce/clock/getTime` method. If the response is successful, print "UTC" to the log file (`/var/log/messages`). For details, refer to [Using PmLog in JavaScript]({{< relref "using-pmlog-in-javascript" >}}).
 
 ### README.md
 
@@ -189,14 +267,14 @@ Apps are required to have metadata before they can be packaged. This metadata is
 
 {{< highlight json "linenos=table" >}}
 {
-  "id": "com.example.app.web",
-  "version": "0.0.1",
-  "vendor": "My Company",
-  "type": "web",
-  "main": "index.html",
-  "title": "Web app sample",
-  "icon": "icon.png",
-  "requiredPermissions": ["time"]
+    "id": "com.example.app.web",
+    "version": "0.0.1",
+    "vendor": "My Company",
+    "type": "web",
+    "main": "index.html",
+    "title": "Web app sample",
+    "icon": "icon.png",
+    "requiredPermissions": ["time"]
 }
 {{< /highlight >}}
 
@@ -260,10 +338,10 @@ After implementing and configuring the web app, you must build the app.
 
 webOS OSE uses OpenEmbedded of Yocto Project to build its components. You must write a recipe that configures the build environment. For more details about the recipe, see [Yocto Project Reference Manual](https://www.yoctoproject.org/docs/current/ref-manual/ref-manual.html).
 
-- **Create and update the file:** `<web-app-name>.bb`
-- **Directory:** `build-webos/meta-webosose/meta-webos/recipes-webos/<web-app-name>`
+- **Create and update the file:** `<web app name>.bb`
+- **Directory:** `build-webos/meta-webosose/meta-webos/recipes-webos/<web app name>`
 
-where `<web-app-name>` is the name of the web app. For the sample web app, `<web-app-name>` must be replaced by "com.example.app.web".
+where `<web app name>` is the name of the web app. For the sample web app, `<web app name>` must be replaced by "com.example.app.web".
 
 {{< highlight bash "linenos=table" >}}
 SECTION = "webos/apps"
@@ -322,9 +400,9 @@ A brief explanation of the above file:
 
 - Line(1) : Inherit "externalsrc" bbclass file.
 
-- Line(2) : The local source directory. The syntax of the property is `EXTERNALSRC_pn-<component>`.
+- Line(2) : The local source directory. The syntax of the property is `EXTERNALSRC_pn-<component>`. For the value, input `"<full path of the project directory>"`
 
-- Line(3) : The local build directory. The syntax of the property is `EXTERNALSRC_BUILD_pn-<component>`.
+- Line(3) : The local build directory. The syntax of the property is `EXTERNALSRC_BUILD_pn-<component>`. For the value, input `"<full path of the project directory>/build/"`
 
 - Line(4) : The appended revision version (PR) for building local source files. The syntax of the property is `PR_append_pn-<component>`. This property is optional.
 
@@ -358,10 +436,7 @@ After building the app, you must verify its functionality.
     ├── icon.png
     ├── index.html
     ├── oe-logs -> /home/username/build/build-webos/BUILD/work/all-webos-linux/com.example.app.web/1.0.0-r0.local0/temp
-    ├── oe-workdir -> /home/username/build/build-webos/BUILD/work/all-webos-linux/com.example.app.web/1.0.0-r0.local0
-    └── webOSjs-0.1.0
-        ├── LICENSE-2.0.txt
-        └── webOS.js
+    └── oe-workdir -> /home/username/build/build-webos/BUILD/work/all-webos-linux/com.example.app.web/1.0.0-r0.local0
     ```
 
     If you go to `oe-workdir/deploy-ipks/all`, you can see `com.example.app.web_1.0.0-r0.local0_all.ipk` file.
@@ -374,7 +449,7 @@ After building the app, you must verify its functionality.
     Copy the IPK file to the target device using the `scp` command.
 
     ``` bash
-    com.example.app.web/oe-workdir/deploy-ipks/all$ scp com.example.app.web_1.0.0-r0.local0_all.ipk root@192.168.0.12:/media/internal/downloads/
+    com.example.app.web/oe-workdir/deploy-ipks/all$ scp com.example.app.web_1.0.0-r0.local0_all.ipk root@<target IP address>:/media/internal/downloads/
     ```
 
 2.  **Install the app on the target.**
@@ -382,9 +457,9 @@ After building the app, you must verify its functionality.
     Connect to the target using the `ssh` command and install `com.example.app.web_1.0.0-r0.local0_all.ipk`.
 
     ``` bash
-    $ ssh root@192.168.0.12
-    root@raspberrypi3:~# cd /media/internal/downloads/
-    root@raspberrypi3:/media/internal/downloads# opkg install com.example.app.web_1.0.0-r0.local0_all.ipk
+    $ ssh root@<target IP address>
+    root@raspberrypi4:/sysroot/home/root# cd /media/internal/downloads/
+    root@raspberrypi4:/media/internal/downloads# opkg install com.example.app.web_1.0.0-r0.local0_all.ipk
 
     Installing com.example.app.web (1.0.0) on root.
     Configuring com.example.app.web.
@@ -396,7 +471,7 @@ After building the app, you must verify its functionality.
     To make LS2 daemon scan the LS2 configuration files of the app, use the `ls-control` command as follows.
 
     ``` bash
-    root@raspberrypi3:/media/internal/downloads# ls-control scan-services
+    root@raspberrypi4:/media/internal/downloads# ls-control scan-services
 
     telling hub to reload setting and rescan all directories
     ```
@@ -410,7 +485,7 @@ After building the app, you must verify its functionality.
     To make System and Application Manager (SAM) scan the app, restart SAM using the `systemctl` command. This step is required so that the app can be added to the app list, which in turn makes the app appear on the Home Launcher.
 
     ``` bash
-    root@raspberrypi3:/# systemctl restart sam
+    root@raspberrypi4:/# systemctl restart sam
     ```
 
     {{< note >}}
@@ -419,7 +494,17 @@ After building the app, you must verify its functionality.
 
 5.  **Run the web app.**
 
-    Use the Windows key on keyboard to display the Home Launcher. Click the app icon and you should see the window titled "Web app sample" with the following page:
+    {{< note >}}
+    To verify the app's execution using the log file, set pmlog level of Web App Manager (WAM) by executing the `PmLogCtl set wam.log debug` command on the target before running the app.
+    {{< /note >}}
+
+    To display the Home Launcher, drag the mouse cursor upward from the bottom of the screen (or swipe up from the bottom of the screen if you're using a touch display).
+
+    {{< note >}}
+    On webOS OSE 1.x, press the Windows key on your keyboard to display the Home Launcher.
+    {{< /note >}}
+
+    Click the app icon and you should see the window titled "Web app sample" with the following page:
 
     {{< figure src="/images/docs/tutorials/web-apps/web-app-screen.png" alt="web app screen" width="80%" height="80%" >}}
 
@@ -430,7 +515,7 @@ After building the app, you must verify its functionality.
         You can check whether the app is running by using SAM. For more SAM methods, see [com.webos.service.applicationmanager]({{< relref "com-webos-service-applicationmanager" >}}).
 
         ``` bash
-        root@raspberrypi3:/# luna-send -i -f luna://com.webos.service.applicationmanager/running '{"subscribe":true}'
+        root@raspberrypi4:/# luna-send -i -f luna://com.webos.service.applicationmanager/running '{"subscribe":true}'
         {
             "subscribed": true,
             "running": [
@@ -451,7 +536,7 @@ After building the app, you must verify its functionality.
         You can check the app's log in `/var/log/messages` file on the target. Open the file and find "UTC" keyword.
 
         ``` bash
-        2019-05-16T02:29:15.322750Z [1517.986582763] user.info WebAppMgr [] com.example.app.web GETTIME_SUCCESS {"APP_NAME":"example web app"} UTC : 1557973755
+        2019-10-01T00:33:06.742150Z [964.036288485] user.debug WebAppMgr [] wam.log DBGMSG {} 0[CONSOLE:32] "\"[APP_NAME: example web app] GETTIME_SUCCESS UTC : 1569889986\", source: file:///usr/palm/applications/com.example.app.web/index.html (32)\n"
         ```
 
 ## Step 5: Deploy the Web App
@@ -492,10 +577,12 @@ Perform the following steps:
 
 3.  Flash the generated webOS image to the SD card.
 
-    **Path to image:** `build-webos/BUILD/deploy/images/raspberrypi3/webos-image-raspberrypi3-master-yyyymmddhhmmss.rpi-sdimg`
+    **Path to image:** `build-webos/BUILD/deploy/images/raspberrypi4/webos-image-raspberrypi4-master-yyyymmddhhmmss.wic`
 
     ``` bash
-    build-webos/BUILD/deploy/images/raspberrypi3$ sudo dd bs=4M if=webos-image-raspberrypi3-master-yyyymmddhhmmss.rpi-sdimg of=/dev/sdc
+    build-webos/BUILD/deploy/images/raspberrypi4$ sudo dd bs=4M if=webos-image-raspberrypi4-master-yyyymmddhhmmss.wic of=/dev/sdc
     ```
+
+    For more details, see the [Flashing webOS OSE]({{< relref "flashing-webos-ose#linux" >}}) page.
 
 After rebooting, the web app becomes available on the Home Launcher.

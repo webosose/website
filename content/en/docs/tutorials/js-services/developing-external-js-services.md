@@ -32,7 +32,7 @@ Start by creating a project using the available JS service template.
 
 To create a basic JS service, execute the following command:
 
-``` bash
+``` shell
 $ ares-generate -t js_service sampleService
 ```
 
@@ -73,7 +73,7 @@ The JS service directory (`sampleService`) has the following files:
 </tr>
 <tr class="odd">
 <td><p>package.json</p></td>
-<td><p>Configuration file of NPM. For details, see <a href="https://docs.npmjs.com/getting-started/using-a-package.json" target="_blank">https://docs.npmjs.com/getting-started/using-a-package.json</a>.</p></td>
+<td><p>Configuration file of NPM. For details, see <a href="https://docs.npmjs.com/getting-started/using-a-package.json" target="_blank">Creating a package.json file</a> in the npm documentation.</p></td>
 </tr>
 <tr class="even">
 <td><p>services.json</p></td>
@@ -130,7 +130,7 @@ A brief explanation of the above file:
 
 - `main` - Specify the name of the main service JavaScript file.
 
-There are quite a few other values one can set in the `package.json` file. For the complete specification of the `package.json`, see [https://docs.npmjs.com/files/package.json](https://docs.npmjs.com/files/package.json).
+There are quite a few other values one can set in the `package.json` file. For the complete specification of the `package.json`, see the [npm documentation](https://docs.npmjs.com/files/package.json).
 
 #### services.json
 
@@ -156,7 +156,7 @@ The JS service must be packaged along with the web app.
 For details on packaging the web app, see [Packaging the Web App]({{< relref "developing-external-web-apps#step-4-package-the-web-app" >}}).
 
 {{< note >}}
-If the JS service uses methods of external services, you must add the group information of the external methods to the `requiredPermission` field in `appinfo.json` of the web app used for packaging the JS service. See [Configuring the Web App]({{< relref "developing-external-web-apps#step-3-configure-the-web-app" >}}) for details.
+If the JS service uses methods of external services, you must add the group information of the external methods to the `requiredPermissions` field in `appinfo.json` of the web app used for packaging the JS service. See [Configuring the Web App]({{< relref "developing-external-web-apps#step-3-configure-the-web-app" >}}) for details.
 {{< /note >}}
 
 ### Step 5: Install the JS Service
@@ -171,20 +171,20 @@ Because external JS services are installed as a dynamic service type, the servic
 
 ## Debugging JS Services
 
-You can use the Node Inspector to debug JS services by monitoring the run-time status of a JS service that is running on a target device. The Node Inspector allows you to observe the values of variables and to control JavaScript execution. For more information about Node Inspector, refer to the [GitHub of Node Inspector](https://github.com/node-inspector/node-inspector).
+To debug a JS service, Node's Inspector is used. (Not to be confused with the legacy _node-inspector_, which has been deprecated as of Node 7.7.0. See [Legacy Debugger](https://nodejs.org/en/docs/guides/debugging-getting-started/#legacy-debugger) for details.)
 
-To launch the Node inspector on a webOS OSE device, you must execute the `ares-inspect` command while the JS service is running. For detailed information on the command, see [ares-inspect]({{< relref "cli-user-guide#ares-inspect" >}}).
+By communicating with the Inspector clients on the host machine, Node's Inspector lets you observe the values of variables and control the JavaScript execution. For more information on Node.js debugging using the Inspector, refer to the [Node.js Debugging Guide](https://nodejs.org/en/docs/guides/debugging-getting-started/).
 
- **General Usage**:
+To enable the Inspector on a webOS OSE device, use the `ares-inspect` command. For detailed usage of the command, see [ares-inspect](https://www.webosose.org/docs/tools/sdk/cli/cli-user-guide/#ares-inspect).
 
-``` bash
-$ ares-inspect --device <TARGET_DEVICE> --service <SERVICE_ID> --open
+**General Usage:**
+
+``` shell
+$ ares-inspect --device <TARGET_DEVICE> --service <SERVICE_ID>
 ```
 
-This loads the Node Inspector in your default browser as shown below:
+To start debugging the JS service, open a client tool, such as Chrome DevTools and Visual Studio Code, and connect to the Inspector. For a list of tools that can connect to Node's Inspector, see [Inspector Clients](https://nodejs.org/en/docs/guides/debugging-getting-started/#inspector-clients).
 
-{{< figure src="/images/docs/tutorials/js-services/node-inspector-screenshot.png" alt="" caption="Node Inspector screenshot" width="700px" >}}
+The following shows an example screenshot of debugging with Chrome DevTools and Node's Inspector.
 
-{{< note >}}
-Node Inspector works only in Blink-based web browsers such as Chrome and Opera. If another browser (e.g., Safari or Internet Explorer) is set as your default web browser, you must re-open the inspector page in a Blink-based web browser.
-{{< /note >}}
+{{< figure src="/images/docs/tutorials/js-services/node-inspector-new.png"  link="/images/docs/tutorials/js-services/node-inspector-new.png" target="_blank" alt="" caption="Using Node's Inspector with Chrome DevTools" >}}

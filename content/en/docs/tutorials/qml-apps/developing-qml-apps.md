@@ -290,10 +290,10 @@ After implementing and configuring the QML app, you must build the app.
 
 webOS OSE uses OpenEmbedded of Yocto Project to build its components. You must write a recipe that configures the build environment. For more details about the recipe, see [Yocto Project Reference Manual](https://www.yoctoproject.org/docs/current/ref-manual/ref-manual.html).
 
-- **Create and update the file:** `<qml-app-name>.bb`
-- **Directory:** `build-webos/meta-webosose/meta-webos/recipes-webos/<qml-app-name>`
+- **Create and update the file:** `<qml app name>.bb`
+- **Directory:** `build-webos/meta-webosose/meta-webos/recipes-webos/<qml app name>`
 
-where `<qml-app-name>` is the name of the qml app. For the sample qml app, `<qml-app-name>` must be replaced by "com.example.app.qml".
+where `<qml app name>` is the name of the qml app. For the sample qml app, `<qml app name>` must be replaced by "com.example.app.qml".
 
 {{< highlight bash "linenos=table" >}}
 SUMMARY = "QML App"
@@ -354,9 +354,9 @@ A brief explanation of the above file:
 
 - Line(1) : Inherit `externalsrc` bbclass file.
 
-- Line(2) : The local source directory. The syntax of the property is `EXTERNALSRC_pn-<component>`.
+- Line(2) : The local source directory. The syntax of the property is `EXTERNALSRC_pn-<component>`. For the value, input `"<full path of the project directory>"`
 
-- Line(3) : The local build directory. The syntax of the property is `EXTERNALSRC_BUILD_pn-<component>`.
+- Line(3) : The local build directory. The syntax of the property is `EXTERNALSRC_BUILD_pn-<component>`. For the value, input `"<full path of the project directory>/build/"`
 
 - Line(4) : The appended revision version (PR) for building local source files. The syntax of the property is `PR_append_pn-<component>`. This property is optional.
 
@@ -389,31 +389,31 @@ After building the app, you must verify its functionality.
     ├── com.example.app.qml.pro
     ├── icon.png
     ├── main.qml
-    ├── oe-logs -> /home/username/build/build-webos/BUILD/work/raspberrypi3-webos-linux-gnueabi/com.example.app.qml/1.0.0-r0.local0/temp
-    └── oe-workdir -> /home/username/build/build-webos/BUILD/work/raspberrypi3-webos-linux-gnueabi/com.example.app.qml/1.0.0-r0.local0
+    ├── oe-logs -> /home/username/build/build-webos/BUILD/work/raspberrypi4-webos-linux-gnueabi/com.example.app.qml/1.0.0-r0.local0/temp
+    └── oe-workdir -> /home/username/build/build-webos/BUILD/work/raspberrypi4-webos-linux-gnueabi/com.example.app.qml/1.0.0-r0.local0
     ```
 
-    If you go to `oe-workdir/deploy-ipks/raspberrypi3`, you can see `com.example.app.qml_1.0.0-r0.local0_raspberrypi3.ipk` file.
+    If you go to `oe-workdir/deploy-ipks/raspberrypi4`, you can see `com.example.app.qml_1.0.0-r0.local0_raspberrypi4.ipk` file.
 
     ``` bash
-    com.example.app.qml/oe-workdir/deploy-ipks/raspberrypi3$
-    └── com.example.app.qml_1.0.0-r0.local0_raspberrypi3.ipk
+    com.example.app.qml/oe-workdir/deploy-ipks/raspberrypi4$
+    └── com.example.app.qml_1.0.0-r0.local0_raspberrypi4.ipk
     ```
 
     Copy the IPK file to the target device using the `scp` command.
 
     ``` bash
-    ~/project/com.example.app.qml/oe-workdir/deploy-ipks/raspberrypi3$ scp com.example.app.qml_1.0.0-r0.local0_raspberrypi3.ipk root@192.168.0.5:/media/internal/downloads/
+    ~/project/com.example.app.qml/oe-workdir/deploy-ipks/raspberrypi4$ scp com.example.app.qml_1.0.0-r0.local0_raspberrypi4.ipk root@<target IP address>:/media/internal/downloads/
     ```
 
 2.  **Install the app on the target.**
 
-    Connect to the target using the `ssh` command and install `com.example.app.qml_1.0.0-r0.local0_raspberrypi3.ipk`.
+    Connect to the target using the `ssh` command and install `com.example.app.qml_1.0.0-r0.local0_raspberrypi4.ipk`.
 
     ``` bash
-    $ ssh root@192.168.0.5
-    root@raspberrypi3:~# cd /media/internal/downloads/
-    root@raspberrypi3:/media/internal/downloads# opkg install com.example.app.qml_1.0.0-r0.local0_raspberrypi3.ipk
+    $ ssh root@<target IP address>
+    root@raspberrypi4:/sysroot/home/root# cd /media/internal/downloads/
+    root@raspberrypi4:/media/internal/downloads# opkg install com.example.app.qml_1.0.0-r0.local0_raspberrypi4.ipk
     Installing com.example.app.qml (1.0.0) on root.
     Configuring com.example.app.qml.
     ```
@@ -423,7 +423,7 @@ After building the app, you must verify its functionality.
     To make LS2 daemon scan the LS2 configuration files of the app, use the `ls-control` command as follows.
 
     ``` bash
-    root@raspberrypi3:/media/internal/downloads# ls-control scan-services
+    root@raspberrypi4:/media/internal/downloads# ls-control scan-services
       telling hub to reload setting and rescan all directories
     ```
 
@@ -436,7 +436,7 @@ After building the app, you must verify its functionality.
     To make System and Application Manager (SAM) scan the app, restart SAM using the `systemctl` command. This step is required so that the app can be added to the app list, which in turn makes the app appear on the Home Launcher.
 
     ``` bash
-    root@raspberrypi3:/# systemctl restart sam
+    root@raspberrypi4:/# systemctl restart sam
     ```
 
     {{< note >}}
@@ -445,7 +445,13 @@ After building the app, you must verify its functionality.
 
 5.  **Run the QML app.**
 
-    Use the Windows key on your keyboard to display the Home Launcher. Click the app icon to see the window titled "QML app" with the following page:
+    To display the Home Launcher, drag the mouse cursor upward from the bottom of the screen (or swipe up from the bottom of the screen if you're using a touch display).
+
+    {{< note >}}
+    On webOS OSE 1.x, press the Windows key on your keyboard to display the Home Launcher.
+    {{< /note >}}
+
+    Click the app icon to see the window titled "QML app" with the following page:
 
     {{< figure src="/images/docs/tutorials/qml-apps/qml-app-screen.jpg" alt="QML app screen" width="50%" height="50%" >}}
 
@@ -456,7 +462,7 @@ After building the app, you must verify its functionality.
         You can check whether the app is running by using SAM. For more SAM methods, see [com.webos.service.applicationmanager]({{< relref "com-webos-service-applicationmanager" >}}).
 
         ``` bash
-        root@raspberrypi3:/# luna-send -i -f luna://com.webos.service.applicationmanager/running '{"subscribe":true}'
+        root@raspberrypi4:/# luna-send -i -f luna://com.webos.service.applicationmanager/running '{"subscribe":true}'
         {
             "subscribed": true,
             "running": [
@@ -502,7 +508,7 @@ After building the app, you must verify its functionality.
             Specify the `params` parameter to pass specific values to the app via SAM, as follows:
 
             ``` bash
-            root@raspberrypi3:~# luna-send -n 1 luna://com.webos.service.applicationmanager/launch '{"id":"com.example.app.qml", "params" : {"test":"key1"}}'
+            root@raspberrypi4:/# luna-send -n 1 luna://com.webos.service.applicationmanager/launch '{"id":"com.example.app.qml", "params" : {"test":"key1"}}'
             ```
 
             See the log.
@@ -548,10 +554,12 @@ Perform the following steps:
 
 3.  Flash the generated webOS image to the SD card.
 
-    - **Path to image:** `build-webos/BUILD/deploy/images/raspberrypi3/webos-image-raspberrypi3-master-yyyymmddhhmmss.rpi-sdimg`
+    - **Path to image:** `build-webos/BUILD/deploy/images/raspberrypi4/webos-image-raspberrypi4-master-yyyymmddhhmmss.wic`
 
     ``` bash
-    build-webos/BUILD/deploy/images/raspberrypi3$ sudo dd bs=4M if=webos-image-raspberrypi3-master-yyyymmddhhmmss.rpi-sdimg of=/dev/sdc
+    build-webos/BUILD/deploy/images/raspberrypi4$ sudo dd bs=4M if=webos-image-raspberrypi4-master-yyyymmddhhmmss.wic of=/dev/sdc
     ```
+
+    For more details, see the [Flashing webOS OSE]({{< relref "flashing-webos-ose#linux" >}}) page.
 
 After rebooting, the QML app becomes available on the Home Launcher.
