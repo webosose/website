@@ -31,7 +31,7 @@ As the reference hardware of webOS OSE has changed to Raspberry Pi 4, developers
 
 * Enhanced graphics processing thanks to GPU upgrade
 
-* Support for both USE 2.0 and USB 3.0
+* Support for both USB 2.0 and USB 3.0
 
 ## Keeping Up with Latest Open Source Technologies
 
