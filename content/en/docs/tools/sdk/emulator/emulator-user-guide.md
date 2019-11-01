@@ -1,6 +1,6 @@
 ---
 title: VirtualBox Emulator User Guide
-date: 2019-10-29
+date: 2019-10-31
 weight: 30
 toc: true
 ---
@@ -48,15 +48,15 @@ The emulator requires the following environments.
 
 ## Installing VirtualBox
 
-If you do not have the **Oracle VM VirtualBox** already installed on your computer, you need to install it.
+If you don't have **Oracle VM VirtualBox** already installed on your computer, you need to install it.
 
 ### Ubuntu Linux
 
-You can either download a package (`.deb`) file and install it, or use the `apt-get` command to install it from an online package repository (recommended).
+You can either download a package (`.deb`) file and install the package, or use the `apt-get` command to install Oracle VM VirtualBox from an online package repository (recommended).
 
 #### Installing a Package
 
-Download the appropriate package from [VirtualBox for Linux](https://www.virtualbox.org/wiki/Linux_Downloads) page and install it.
+Download the appropriate package from [VirtualBox for Linux](https://www.virtualbox.org/wiki/Linux_Downloads) page and install the package.
 
 #### Installing from an Online Package Repository
 
@@ -92,7 +92,7 @@ To make the changes take effect, you must restart the command shell.
 
 To [configure USB devices](#configuring-usb-devices), Oracle VM VirtualBox Extension Pack is required.
 
-Download the Extension Pack from the [download page](https://www.virtualbox.org/wiki/Downloads), and install the Extension Pack.
+Download the same version of Extension Pack as your installed version of VirtualBox from the [download page](https://www.virtualbox.org/wiki/Downloads), and install the Extension Pack.
 
 ## Preparing a webOS OSE Emulator Virtual Machine Image
 
@@ -108,7 +108,7 @@ You can create and set up a VirtualBox virtual machine from the GUI or from the 
 ### Using the GUI
 
 {{< note >}}
-The screenshots below have been captured from Oracle VM VirtualBox v6.0.14 for Windows. If you are using a different version of the program or on a different host operating system, you might notice minor differences in the position or name of GUI elements.
+The screenshots below have been captured from Oracle VM VirtualBox v6.0.14 on Windows 10. If you are using a different version of the program or on a different host operating system, you might notice minor differences in the position or name of GUI elements.
 {{< /note >}}
 
 1.  Start the Oracle VM VirtualBox application. You can launch the program from the application menu or by typing `virtualbox` in a command shell.
@@ -255,7 +255,7 @@ The screenshots below have been captured from Oracle VM VirtualBox v6.0.14 for W
     {{< figure src="/images/docs/tools/emulator/vbox_emulator_img16.png" alt="Virtual machine window" class="align-left" >}}
 
 {{< note >}}
-The display resolution of webos-image defaults to 1920x1080. If it is too big to be displayed on the host monitor, you can adjust the scale with the following command.
+The display resolution of webos-image defaults to 1920x1080. If it is too big to be displayed on the monitor, you can adjust the scale with the following command.
 
 ```shell
 vboxmanage setextradata <vm_name> GUI/ScaleFactor <scale_factor>
@@ -318,6 +318,10 @@ To use USB devices with the emulator, first add the required USB device on Virtu
 Currently, the emulator supports Bluetooth dongle, USB storage device, USB Webcam, and in-built Webcam and Bluetooth.
 {{< /note >}}
 
+{{< note "Prerequisite" >}}
+The VirtualBox Extension Pack must be installed. See [Installing VirtualBox Extension Pack](#installing-virtualbox-extension-pack) for more information.
+{{< /note >}}
+
 To add the device, before launching the virtual machine on VirtualBox, do the following:
 
 {{< figure src="/images/docs/tools/emulator/vbox_emulator_image_usb.jpg" alt="Configuring USB on VirtualBox Emulator" >}}
@@ -326,7 +330,10 @@ To add the device, before launching the virtual machine on VirtualBox, do the fo
 2.	Click the settings icon to display the settings dialog.
 3.	Click **USB**.
 4.	Select the **Enable USB Controller** checkbox.
-5.	Select the **USB 3.0 (xHCI) Controller** option.
+5.	Select the **USB 2.0 (EHCI) Controller** or **USB 3.0 (xHCI) Controller** option.
+    {{< note >}}
+    If you encounter the "Invalid settings detected" message when you select USB 2.0/3.0, make sure that you installed the Extension Pack according to [Installing VirtualBox Extension Pack](#installing-virtualbox-extension-pack).
+    {{< /note >}}
 6.	Click the + icon (on the right-hand side) to get a list of USB devices.
 7.	Select the required device (Bluetooth dongle, USB storage device, or USB webcam).
 8.	The device is added to the **USB Device Filters** field.
@@ -340,7 +347,7 @@ The following describes the steps to update the emulator image on the previously
 
 1.  Prepare a new emulator image by building webOS OSE for emulator.
 
-2.  Start the Oracle VM VirtualBox on your computer. From the virtual machine list, select the virtual machine whose image you wish to update. From the icon toolbar, click **Settings**.
+2.  Start Oracle VM VirtualBox on your computer. From the virtual machine list, select the virtual machine whose image you wish to update. From the icon toolbar, click **Settings**.
 
     {{< figure src="/images/docs/tools/emulator/vbox_emulator_img07.png" alt="From the main screen to the settings" class="align-left" >}}
 
