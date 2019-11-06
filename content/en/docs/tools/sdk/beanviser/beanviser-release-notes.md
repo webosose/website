@@ -1,11 +1,17 @@
 ---
 title: Beanviser Release Notes
-date: 2019-02-15
+date: 2019-11-06
 weight: 20
 toc: true
 ---
 
 This page provides the summary of each Beanviser release for webOS Open Source Edition (OSE).
+
+## v2.0.2 (October 17, 2019)
+
+### Changed features
+
+  - Supports webOS Open Source Edition v2.0.0 and CLI v1.10.1
 
 ## v2.0.1 (June 17, 2019)
 
