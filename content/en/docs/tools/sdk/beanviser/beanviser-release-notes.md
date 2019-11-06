@@ -7,7 +7,7 @@ toc: true
 
 This page provides the summary of each Beanviser release for webOS Open Source Edition (OSE).
 
-## v2.0.2 (October 17, 2019)
+## v2.0.2 (October 31, 2019)
 
 ### Changed features
 
