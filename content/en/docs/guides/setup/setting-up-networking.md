@@ -1,6 +1,6 @@
 ---
 title: Network Setup
-date: 2019-10-24
+date: 2019-11-07
 weight: 40
 toc: true
 ---
@@ -41,6 +41,6 @@ The default account information is as follows. (ID: root, password: *none*)
 
 Here are several methods that you can use for host-target communication:
 
-* To connect to the target device, use the `ssh` command on Linux or macOS shell. On Windows, use a SSH client (for example, Putty).
-* To send files to the target device, use the `scp` (secure copy) command on Linux or macOS shell. On Windows, use a SSH client that supports secure file transfer (for example, WinSCP).
+* To connect to the target device, use the `ssh` command on Linux or macOS shell. On Windows, use an SSH client (for example, Putty).
+* To send files to the target device, use the `scp` (secure copy) command on Linux or macOS shell. On Windows, use an SSH client that supports secure file transfer (for example, WinSCP).
 * In addition, you can use [ares-push]({{< relref "cli-user-guide#ares-push" >}}) or [ares-pull]({{< relref "cli-user-guide#ares-pull" >}}) command of [Command-Line Interface (CLI)]({{< relref "cli-user-guide" >}}) to transfer files between the host machine and the target device.

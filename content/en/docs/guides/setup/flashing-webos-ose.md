@@ -1,6 +1,6 @@
 ---
 title: Flashing webOS Open Source Edition
-date: 2019-10-25
+date: 2019-11-07
 weight: 30
 toc: true
 ---
@@ -105,7 +105,7 @@ After you finish flashing the webOS OSE image to the microSD card, you can check
 1. First, eject the microSD card from the reader device and insert it in the target device.
 2. Connect the target device with peripheral devices.
     * **For webOS OSE 2.0**
-        * Connect the target device with a touchsreen through Micro HDMI to HDMI cable.
+        * Connect the target device with a touchscreen through Micro HDMI to HDMI cable.
         * Connect Ethernet cable to the target device.
         * (Optional) Plug a keyboard and a mouse into the USB ports of the target device.
     * **For webOS OSE 1.x**

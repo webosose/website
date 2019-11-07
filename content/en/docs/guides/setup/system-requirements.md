@@ -1,6 +1,6 @@
 ---
 title: System Requirements
-date: 2019-10-25
+date: 2019-11-07
 weight: 10
 toc: true
 ---
@@ -28,6 +28,10 @@ A **target device** is a device that runs webOS OSE. To test apps and services o
 * webOS OSE 2.0 officially supports **[Raspberry Pi 4 Model B](https://www.raspberrypi.org/products/raspberry-pi-4-model-b/)**. To avoid insufficient memory issues, the recommended memory of Raspberry Pi 4 is 2 GB or higher.
 * webOS OSE 2.0 is designed for touch interface, so we recommend that you use a touch device as an input device for the target device. If you use a keyboard and a mouse as input devices, some functionalities might not work.
 {{< /note >}}
+
+{{< caution >}}
+We do not provide official support for issues caused by running webOS OSE 2.0 on Raspberry Pi 3.
+{{< /caution >}}
 
 ### For webOS OSE 1.x
 
