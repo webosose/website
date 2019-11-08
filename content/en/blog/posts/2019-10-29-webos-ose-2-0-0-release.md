@@ -67,7 +67,11 @@ For enhanced security, [Smack](https://en.wikipedia.org/wiki/Smack_(software)) h
 
 ## Upgrade to Qt 5.12 and Chromium 72
 
-Last but not least, the major open source components of webOS OSE, Qt and Chromium, have been upgraded to more up-to-date version.
+Last but certainly not least, the major open source components of webOS OSE --- Qt and Chromium --- have been upgraded to more up-to-date version.
 
 * Qt has been upgraded from 5.6 to 5.12 to improve graphics performance and stability.
 * The default web engine has been upgraded to Chromium 72. With this upgrade, webOS OSE offers performance enhancement for web functionality along with improvement in web compatibility.
+
+{{< note >}}
+For more information on Qt 5.12 upgrade, check the [follow-up article]({{< relref "2019-11-07-qt-5-12-upgrade" >}}).
+{{< /note >}}
