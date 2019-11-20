@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 $(document).ready(function () {
-
+  // Determine the number of blog posts to display on a single page, depending on the resolution (device type)
   var pageOffset = 9;
   if (window.innerWidth > 1185) { //PC
     pageOffset = 9;
@@ -13,6 +13,7 @@ $(document).ready(function () {
     pageOffset = 6;
   }
 
+  // Handle filtering operation on blog posts
   var options = {
     valueNames: ["tag"],
     page: pageOffset,
@@ -22,7 +23,7 @@ $(document).ready(function () {
   var searchList = new List("search-results", options);
   var activeFilters = [];
 
-  //blog button selected
+  // onClick handler for category filter buttons
   $('.blog-filter-box .btn-wrap button').on('click', function () {
     $(this).toggleClass('selected');
     var $dataFilter = $(this).attr('data-filter');
@@ -40,6 +41,7 @@ $(document).ready(function () {
     });
   });
 
+  // Handle pagination
   $(".pagination-next").click(function () {
     $(".pagination .active").next().trigger("click");
   });
@@ -50,7 +52,6 @@ $(document).ready(function () {
     searchList.show(1, pageOffset)
   });
   $('.pagination-last').on('click', function () {
-
     var iData = searchList.matchingItems.length;
     var iOffsetData = searchList.matchingItems.length % pageOffset;
     var iStartData;
@@ -65,7 +66,6 @@ $(document).ready(function () {
     }
 
     searchList.show(iStartData, pageOffset);
-
   });
 
 });

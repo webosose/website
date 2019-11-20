@@ -2,19 +2,12 @@
  * Copyright (c) 2019 LG Electronics Inc.
  * SPDX-License-Identifier: Apache-2.0
  */
-function controlClassOnCondition(element, className, condition) {
-  if (condition)
-    $(element).addClass(className);
-  else
-    $(element).removeClass(className);
-}
-
 $(document).ready(function () {
   // navbar flip
   navbar = $('.navbar');
 
   function updateView() {
-    controlClassOnCondition(navbar, 'is-flipped', window.pageYOffset > 0);
+    navbar.toggleClass('is-flipped', window.pageYOffset > 0);
   }
 
   updateView();
@@ -45,7 +38,6 @@ $(document).ready(function () {
       $('.btn-top').removeClass('show');
     }
 
-
     if (document.body.clientHeight < document.body.scrollHeight - windowScrollTop) {
       var isFixedTopHeight = $('.is-fixed-top').height();
       var isSmallHeight = $('.is-small').height();
@@ -70,9 +62,7 @@ $(document).ready(function () {
       }
       iScrollPos = windowScrollTop;
     }
-
   });
-
 
   //Cookie
   function getCookie(cname) {

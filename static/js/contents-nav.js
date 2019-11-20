@@ -3,9 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 $(window).on('load', function () {
-
-  if (window.innerWidth > 769) {
-    // Fix with sticky sidebar only in Desktop
+  // Fix the sidebar menu with sticky sidebar only in desktop resolution
+  if ($(".sidebar-main").length > 0 && window.innerWidth > 769) {
     var sidebar = new StickySidebar('.sidebar-main', {
       containerSelector: '.sidebar-container',
       innerWrapperSelector: '.sidebar-inner',
@@ -30,15 +29,47 @@ $(document).ready(function () {
         easing: 'swing'
       }
     });
+  }
 
+  // handle sidebar scroll positioning relative to the current active item
+  var sidebar_scroll = $('.sidebar .scrollbar-outer');
+
+  if (sidebar_scroll.length > 0) {
+    sidebar_scroll.scrollbar();
+
+    var active_li = $('.sidebar-menu ul li.active');
+    var scroll_wrapper = $('.sidebar .scroll-wrapper');
+    if (active_li.length !== 0) {
+      if (active_li.position().top > (scroll_wrapper.height() / 2)) {
+        sidebar_scroll.scrollTop(active_li.position().top - scroll_wrapper.position().top);
+      }
+    }
+  }
+
+  // handle TOC scroll positioning relative to the current active item
+  var toc_scroll = $('.toc-main .scrollbar-outer');
+
+  if (toc_scroll.length > 0) {
+    toc_scroll.scrollbar();
+
+    $(window).scroll(function () {
+      var toc_active_li = $('.toc-menu ul li.is-active-li');
+      var toc_scroll_wrapper = $('.toc-main .scroll-wrapper');
+      if (toc_active_li.length !== 0) {
+        if (toc_active_li.position().top > (toc_scroll_wrapper.height() / 2)) {
+          toc_scroll.scrollTop(toc_active_li.position().top - (toc_scroll_wrapper.height() / 2) - toc_scroll_wrapper.position().top);
+        }
+      }
+    });
   }
 
   // add "target=_blank" to external links
   var links = $(".content-main").find("a");
 
-  for (var i = 0, linksLength = links.length; i < linksLength; i++) {
+  for (var i = 0, linkCount = links.length; i < linkCount; i++) {
     if ($.trim(links[i].href) != 'javascript:' && links[i].hostname != window.location.hostname) {
-      links[i].target = '_blank';
+      links[i].target = '_blank'
+      links[i].rel = 'noopener'; // added to improve security (prevent reverse tabnabbing attack)
     }
   }
 
@@ -47,20 +78,4 @@ $(document).ready(function () {
     $(this).toggleClass('on');
     $('.custom-side').toggleClass('show');
   })
-
-  // handle sidebar scroll positioning relative to the current item
-  /* ========================================================================
-   * component: scroll
-   * scrollbar.js: https://gromo.github.io/jquery.scrollbar/demo/basic.html
-   * ======================================================================== */
-  $('.scrollbar-outer').scrollbar();
-
-  var $li = $('.sidebar-menu ul li.active');
-  var $div = $('.scroll-wrapper');
-  if ($li.length !== 0) {
-    if ($li.position().top > ($div.height() / 2)) {
-      $('.scrollbar-outer').scrollTop($li.position().top - $div.offset().top);
-    }
-  }
-
 });
