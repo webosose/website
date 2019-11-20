@@ -7,6 +7,22 @@ toc: true
 
 This page provides the summary of each Command-Line Interface (CLI) release for webOS Open Source Edition (OSE).
 
+## v1.10.2 (November 2019)
+
+This version is compatible with **webOS OSE 2.1.0**. See below for the new and changed features in this release.
+
+### New features
+
+* Added a QML app template 
+
+### Changed features
+
+* Changed template names, `basic` and `webappicon` to `webapp` and `icon`
+
+### Known issues
+
+* When you install an app using `ares-install`, the icon of the app is not displayed on Home Launcher.
+
 ## v1.10.1 (October 2019)
 
 This version is compatible with **webOS OSE 2.0.0**. See below for the new, changed, and removed features along with fixed issues and known issues in this release.
@@ -36,8 +52,8 @@ This version is compatible with **webOS OSE 2.0.0**. See below for the new, chan
 
 ### Known issues
 
-* When you install or uninstall an app using `ares-install`, a running Home Launcher disappears from the screen. To make the app listed on Home Launcher, you must reboot the target.
-    - After rebooting the target, the external app is listed on Home Launcher, but the icon of the app is not displayed.
+* When you install or uninstall an app using `ares-install`, a running Home Launcher disappears from the screen. To make the app listed on Home Launcher, you must reboot the target device.
+    - After rebooting the target device, the external app is listed on Home Launcher, but the icon of the app is not displayed.
 
 ## v1.9.4 (June 2019)
 

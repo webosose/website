@@ -238,12 +238,12 @@ ares-generate --help|-h
 </thead>
 <tbody>
 <tr class="odd">
-<td><p>basic</p></td>
-<td><p>(default) Basic web app template.</p></td>
+<td><p>webapp</p></td>
+<td><p>(default) web app template for webOS</p></td>
 </tr>
 <tr class="even">
 <td><p>hosted_webapp</p></td>
-<td><p>Hosted web app template.</p></td>
+<td><p>Hosted web app template for webOS</p></td>
 </tr>
 <tr class="odd">
 <td><p>webappinfo</p></td>
@@ -251,15 +251,23 @@ ares-generate --help|-h
 </tr>
 <tr class="even">
 <td><p>js_service</p></td>
-<td><p>JS service template.</p></td>
+<td><p>JS service template for webOS</p></td>
 </tr>
 <tr class="odd">
 <td><p>jsserviceinfo</p></td>
 <td><p>Creates a 'services.json' and 'package.json' file for JS services.</p></td>
 </tr>
 <tr class="even">
-<td><p>webicon</p></td>
-<td><p>Icon files for web apps [80x80, 130x130].</p></td>
+<td><p>icon</p></td>
+<td><p>app icon files [80x80, 130x130]</p></td>
+</tr>
+<tr class="odd">
+<td><p>qmlapp</p></td>
+<td><p>	QML app for webOS</p></td>
+</tr>
+<tr class="even">
+<td><p>qmlappinfo</p></td>
+<td><p>appinfo.json for QML app</p></td>
 </tr>
 </tbody>
 </table></div></td>
@@ -501,10 +509,26 @@ ares-package -o output sampleApp
 ares-package -e "testCode1" -e "README.md" -e "*.txt" samplePrj
 ```
 
-**Creating a package file with external JS service directory**
+**Creating a package file with external JS service**
 
 ```shell
 ares-package sampleApp sampleService
+```
+
+**Creating a package file with multiple external JS services**
+
+```shell
+ares-package sampleApp sampleServiceA sampleServiceB
+```
+
+**Creating a package file with external JS service (using absolute path)**
+
+```shell
+# Windows
+ares-package c:\samples\sampleApp c:\samples\sampleService
+
+#Linux/MacOS
+ares-package ~/samples/sampleApp ~/samples/sampleService
 ```
 
 ### ares-setup-device
