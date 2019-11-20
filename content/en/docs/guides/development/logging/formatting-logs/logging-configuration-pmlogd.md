@@ -1,11 +1,15 @@
 ---
-title: "Logging Configuration"
-date: 2019-03-15
+title: "Logging Configuration for pmlogd"
+date: 2019-11-14
 weight: 70
 toc: true
 ---
 
-PmLog provides logging configuration methods to set the log level and log file by each context.
+{{< caution >}}
+The content in this page is only applicable to the environment where pmlogd is enabled. To find out how to enable pmlogd, see [Enabling and Disabling pmlogd]({{< relref "enabling-disabling-pmlogd" >}}).
+{{< /caution >}}
+
+pmlogd provides logging configuration methods to set the log level and log file by each context.
 
 A configuration file is used to create context(s) for your component and configure the context settings as needed. It must be added to the component’s `files/conf/pmlog/<filename>.conf` and installed in `(WEBOS_INSTALL_SYSCONFDIR)/pmlog.d`.
 
@@ -37,10 +41,10 @@ The format and content of the configuration file must be as follows:
 ```
 
 {{< note >}}
-Please note that it is not mandated to configure your context. You can just call `PmLogGetContext()` to create a new context, whose settings will take the default values.
+Please note that it is not mandatory to configure your context. You can just call `PmLogGetContext()` to create a new context, whose settings will take the default values.
 {{< /note >}}
 
-## The Contexts Section
+## Contexts Section
 
 Here you can specify logging context names and what the default level should be for them. Changes to the Contexts section will only be read at boot time. If you change this section, device has to be rebooted or use PmLogCtl app to see real time changes without rebooting.
 
@@ -92,7 +96,7 @@ The `<default>` context is specially defined, otherwise client context names sho
 <td><p>A filter format is as follows:</p>
 <code>&lt;facility&gt;[.&lt;level&gt;[.&lt;program&gt;]]</code>
 <ul>
-<li>facility: One of the standard syslog facilities or use an asterisk ("*") to indicate all - <a href="http://en.wikipedia.org/wiki/Syslog#Facility_Levels">http://en.wikipedia.org/wiki/Syslog#Facility_Levels</a></li>
+<li>facility: One of the standard syslog facilities or use an asterisk ("*") to indicate all. See the <a href="http://en.wikipedia.org/wiki/Syslog#Facility">Wikipedia page</a> for details.</li>
 <li>level: One of the standard syslog levels or use an asterisk ("*") to indicate all. When specifying a level, it implicitly matches that level or higher. The level may be prefixed with '!' to match only lower levels.</li>
 <li>program: Specify an exact program name or use an asterisk ("*") to indicate all.</li>
 </ul></td>
@@ -105,7 +109,7 @@ The `<default>` context is specially defined, otherwise client context names sho
 </table>
 </div>
 
-## The Outputs Section
+## Outputs Section
 
 Each output defines settings for a particular log file.
 
@@ -150,7 +154,7 @@ The maximum number of rotations before rotating files out the oldest files.
 </table>
 </div>
 
-All context logs are routed to `/var/log/messages` by default. However, if you want to route context logs to a particular file, you should create a configuration file as above format in `/etc/pmlog.d/` directory and set the `contextLogging` parameter to <span class="TED_New_Term">true</span> as shown in line 23 below in `/etc/pmlog.d/default.conf`. Then, each component logs are written in an individual file separately.
+All context logs are routed to `/var/log/messages` by default. However, if you want to route context logs to a particular file, you should create a configuration file as above format in `/etc/pmlog.d/` directory and set the `contextLogging` parameter to `true` as shown in line 23 below in `/etc/pmlog.d/default.conf`. Then, each component logs are written in an individual file separately.
 
 The `/etc/pmlog.d/default.conf` has the following default format:
 

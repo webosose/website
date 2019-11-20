@@ -42,7 +42,7 @@ This unit explains how you can build apps and services for webOS OSE.
 * [Native Services]({{< relref "native-service-overview" >}})
 * [Configuration Files]({{< relref "appinfo-json" >}})
 * [Localization Guide]({{< relref "localization-guide" >}})
-* [Using Diagnostics]({{< relref "diagnostics-overview" >}})
+* [Logging Guide]({{< relref "logging-overview" >}})
 
 ## Core Topics
 
