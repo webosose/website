@@ -43,13 +43,20 @@
                   <a href="#">{{ .title }}</a>
                   <ul>
                     {{ range .subsections }}
-                      {{ if isset . "externalurl" }}
-                      <li>
-                        <a href="{{ .externalurl }}" target="_blank">{{ .title }} <i class="fas fa-external-link-alt"></i></a>
-                      </li>
-                      {{ else }}
+                      {{ if .url }}
                       <li {{ if eq $.Page.RelPermalink .url }} class="active" {{ end }}>
                         <a href="{{ .url }}">{{ .title }}</a>
+                      </li>
+                      {{ else }}
+                      <li class="subsections_d2">
+                        <a href="#">{{ .title }}</a>
+                        <ul>
+                        {{ range .subsections_d2 }}
+                        <li {{ if eq $.Page.RelPermalink .url }} class="active" {{ end }}>
+                            <a href="{{ .url }}">{{ .title }}</a>
+                        </li>
+                        {{ end }}
+                        </ul>
                       </li>
                       {{ end }}
                     {{ end }}
