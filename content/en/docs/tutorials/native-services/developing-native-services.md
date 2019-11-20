@@ -1,6 +1,6 @@
 ---
 title: Developing Native Services
-date: 2019-02-19
+date: 2019-11-14
 weight: 10
 toc: true
 ---
@@ -208,7 +208,7 @@ int main(int argc, char* argv[])
 A brief explanation of the above file:
 
 * Line(3~5) : Include header files to use LS2, PmLog, and pbnjson.
-* Line(7~15) : A function that calls `PmLogGetContext()` in PmLog library to print logs on `/var/log/messages`. For more details about PmLog, see [Using PmLog in C/C++]({{< relref "using-pmlog-in-c-cpp" >}}).
+* Line(7~15) : A function that calls `PmLogGetContext()` in PmLog library to print logs. For more details, see [Using PmLogLib in C/C++]({{< relref "using-pmloglib-in-c-cpp" >}}).
 * Line(17~32) : Create pbnjson utility functions, which convert String to Json and Json to String based on pbnjson library. pbnjson is a JSON engine, implemented as a pair of libraries with APIs for easier C and C++ abstraction.
 * Line(34~56) : Implement the `onHello()` callback function that is invoked when `com.example.service.native/hello` is called. The third argument of `LSMessageReply()` should be in JSON format.
 * Line(58~74) : Implement the `cbGetTime()` callback function for systemservice's `getTime` method call. When the UTC time is received in response, this function prints the time on the log.
@@ -689,12 +689,14 @@ After building the service, you must verify its functionality.
 
     - Using the log file
 
-        You can use "tail -f /var/log/messages | grep NativeService" commands on the target for debugging the native service.
+        You can use the `journalctl` command on the target for debugging the native service. For details on how to use the command, see [Viewing Logs]({{< relref "viewing-logs-journald#using-journalctl-to-view-logs" >}}).
 
         ``` bash
-        user.info com.example.service.native [] NativeService SERVICE_MAIN {} start com.example.service.native
-        user.info com.example.service.native [] NativeService GETTIME_CALLBACK {"payload":{"source":"system","offset":{"source":"system","value":0},"timestamp":{"source":"monotonic","sec":328334,"nsec":126779594},"utc":1558923578,"returnValue":true,"systemTimeSource":"ntp"}}
-        user.info com.example.service.native [] NativeService GETTIME_CALLBACK {"UTC : ":1558923578}
+        root@raspberrypi4:/# journalctl -f | grep NativeService
+
+        Nov 13 23:26:28 raspberrypi4 com.example.service.native[1306]: [] [pmlog] NativeService SERVICE_MAIN {} start com.example.service.native
+        Nov 13 23:26:28 raspberrypi4 com.example.service.native[1306]: [] [pmlog] NativeService GETTIME_CALLBACK {"payload":{"source":"system","offset":{"source":"system","value":0},"timestamp":{"source":"monotonic","sec":394,"nsec":730441134},"utc":1573716388,"returnValue":true,"systemTimeSource":"ntp"}}
+        Nov 13 23:26:28 raspberrypi4 com.example.service.native[1306]: [] [pmlog] NativeService GETTIME_CALLBACK {"UTC : ":1573716388}
         ```
 
 6.  **Verify the Output.**

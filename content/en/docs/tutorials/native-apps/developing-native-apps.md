@@ -1,6 +1,6 @@
 ---
 title: Developing Native Apps
-date: 2018-10-17
+date: 2018-11-14
 weight: 10
 toc: true
 ---
@@ -9,9 +9,9 @@ To create a native app, you must write the source code and prepare the required 
 
 For easier understanding, the process to create a native app is explained using the example of an app named **`com.example.app.nativeqt`** that has the following features:
 
-- Displays a "Hello, Native Qt Application" message on screen.
+- Displays a "Hello, Native Qt Application!!" message on screen.
 - Calls **`com.webos.service.applicationmanager/registerApp`** method.
-- Prints logs on `/var/log/messages` file when it is first launched.
+- Prints logs when it is first launched.
 - Prints logs with the updated parameter and status whenever the app is relaunched.
 
 The directory structure of `com.example.app.nativeqt` must be as follows:
@@ -19,6 +19,8 @@ The directory structure of `com.example.app.nativeqt` must be as follows:
 ``` bash
 com.example.app.nativeqt
 ├── main.cpp
+├── MyOpenGLWindow.h
+├── MyOpenGLWindow.cpp
 ├── ServiceRequest.h
 ├── ServiceRequest.cpp
 ├── appinfo.json
@@ -51,6 +53,113 @@ Developing a native app requires the following steps:
 ### Source Code
 
 First, define the functionality of the native app on the source code.
+
+#### MyOpenGLWindow.h
+
+Define `MyOpenGLWindow` class. See [Appendix](#appendix-license-notice) for license information.
+
+- **Create and update the file:** `MyOpenGLWindow.h`
+- **Directory:** `com.example.app.nativeqt`
+
+{{< highlight cpp "linenos=table" >}}
+#ifndef MYOPENGLWINDOW_H
+#define MYOPENGLWINDOW_H
+
+#include <QtGui/QWindow>
+#include <QtGui/QOpenGLFunctions>
+
+QT_BEGIN_NAMESPACE
+class QPainter;
+class QOpenGLContext;
+class QOpenGLPaintDevice;
+QT_END_NAMESPACE
+
+class MyOpenGLWindow : public QWindow, protected QOpenGLFunctions
+{
+    Q_OBJECT
+public:
+    explicit MyOpenGLWindow(QWindow *parent = 0);
+    ~MyOpenGLWindow();
+
+    virtual void render();
+
+protected:
+    void exposeEvent(QExposeEvent *event) override;
+
+    QOpenGLContext *m_context;
+    QOpenGLPaintDevice *m_device;
+};
+#endif
+{{< /highlight >}}
+
+#### MyOpenGLWindow.cpp
+
+Define `MyOpenGLWindow` class member functions. See [Appendix](#appendix-license-notice) for license information.
+
+- **Create and update the file:** `MyOpenGLWindow.cpp`
+- **Directory:** `com.example.app.nativeqt`
+
+{{< highlight cpp "linenos=table" >}}
+#include "MyOpenGLWindow.h"
+#include <QtGui/QOpenGLContext>
+#include <QtGui/QOpenGLPaintDevice>
+#include <QtGui/QPainter>
+
+MyOpenGLWindow::MyOpenGLWindow(QWindow *parent)
+    : QWindow(parent)
+{
+    setSurfaceType(QWindow::OpenGLSurface);
+    create();
+
+    m_context = new QOpenGLContext(this);
+    m_context->create();
+
+    m_context->makeCurrent(this);
+    initializeOpenGLFunctions();
+}
+
+MyOpenGLWindow::~MyOpenGLWindow()
+{
+    delete m_device;
+}
+
+void MyOpenGLWindow::render()
+{
+    m_context->makeCurrent(this);
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+    m_device = new QOpenGLPaintDevice;
+    m_device->setSize(size() * devicePixelRatio());
+    m_device->setDevicePixelRatio(devicePixelRatio());
+
+    QRect rect = geometry();
+    QPainter painter(m_device);
+
+    QFont font = painter.font();
+    font.setPointSize(50);
+    font.setStyleHint(QFont::Helvetica, QFont::PreferAntialias);
+
+    painter.setFont(font);
+    painter.setRenderHint(QPainter::HighQualityAntialiasing);
+    painter.setPen(Qt::yellow);
+    painter.drawText(rect, Qt::AlignCenter, "Hello, Native Qt Application!!");
+
+    m_context->swapBuffers(this);
+}
+
+void MyOpenGLWindow::exposeEvent(QExposeEvent *event)
+{
+    Q_UNUSED(event);
+    if (isExposed()){
+        render();
+    }
+}
+{{< /highlight >}}
+
+A brief explanation of the above file:
+
+* Line(9) : Set the surface type of `MyOpenGLWindow` to `OpenGLSurface`. The type can be `OpenGLSurface` or `RasterGLSurface`.
 
 #### ServiceRequest.h
 
@@ -103,11 +212,11 @@ private:
 
 A brief explanation of the above file:
 
-* Line(10~18) : A function that calls `PmLogGetContext()` in PmLog library to print logs on `/var/log/messages`. For more details, see [Using PmLog in C/C++]({{< relref "using-pmlog-in-c-cpp" >}}).
+* Line(10~18) : A function that calls `PmLogGetContext()` in PmLog library to print logs. For more details, see [Using PmLogLib in C/C++]({{< relref "using-pmloglib-in-c-cpp" >}}).
 
 #### ServiceRequest.cpp
 
-Define `SeviceRequest` class methods. In addition, add methods related to PmLog and PbnJson to use conveniently.
+Define `SeviceRequest` class member functions. In addition, add helper functions related to PbnJson to use the library conveniently.
 
 - **Create and update the file:** `ServiceRequest.cpp`
 - **Directory:** `com.example.app.nativeqt`
@@ -249,7 +358,7 @@ void ServiceRequest::registerApp()
 A brief explanation of the above file:
 
 - Line(3~18) : Create pbnjson utility functions, which convert String to Json and Json to String based on pbnjson library. pbnjson is a JSON engine, implemented as a pair of libraries with APIs for easier C and C++ abstraction.
-- Line(20~37) : Define constructor and destructor of ServiceRequest Class.
+- Line(20~37) : Define constructor and destructor of `ServiceRequest` class.
 - Line(39~68) : Define functions to register and unregister `com.example.app.nativeqt` to and from luna-service. For more details about luna-service functions, see the [luna-service2 Library API Reference]({{< relref "luna-service2-library-api-reference" >}}).
 - Line(70~106) : Implement the callback function of `registerApp`.
     - Line(81~84) : When the app first calls the method, the value of event in response is "registered".
@@ -267,37 +376,28 @@ For the sample native app (`com.example.app.nativeqt`), you must:
 <!-- end list -->
 
 {{< highlight cpp "linenos=table" >}}
+#include "MyOpenGLWindow.h"
 #include "ServiceRequest.h"
-#include <QApplication>
-#include <QLabel>
-#include <QDesktopWidget>
-#include <QWindow>
+#include <QtGui/QGuiApplication>
+#include <QtGui/QWindow>
+#include <QtGui/QScreen>
 #include <qpa/qplatformnativeinterface.h>
 
-int main(int argc, char* argv[])
+int main(int argc, char **argv)
 {
-    PmLogInfo(getPmLogContext(), "MAIN_ARGV", 1, PMLOGJSON("argv[1]", argv[1]),  " ");
+    QGuiApplication app(argc, argv);
+    PmLogInfo(getPmLogContext(), "MAIN_ARGV1", 1, PMLOGKFV("argv", "%s", argv[1]),  " ");
 
-    QApplication app(argc, argv);
-    QRect rec = QApplication::desktop()->screenGeometry();
-
-    QLabel *label = new QLabel("Hello, Native Qt Application!!");
-    label->setFixedSize(rec.width(), rec.height());
-    label->setStyleSheet("background-color:yellow;");
-    label->setAlignment(Qt::AlignCenter);
-
-    QFont font = label->font();
-    font.setPointSize(50);
-    label->setFont(font);
-    label->show();
+    QScreen *screen = QGuiApplication::primaryScreen();
+    QRect screenGeometry = screen->geometry();
+    MyOpenGLWindow window;
+    window.resize(screenGeometry.width(), screenGeometry.height());
+    window.show();
 
     ServiceRequest s_request("com.example.app.nativeqt");
     s_request.registerApp();
 
-    QWidget *widget = label->window();
-    QWindow *window = widget->windowHandle();
-
-    QApplication::platformNativeInterface()->setWindowProperty(window->handle(), QStringLiteral("appId"), QStringLiteral("com.example.app.nativeqt"));
+    QGuiApplication::platformNativeInterface()->setWindowProperty(window.handle(), QStringLiteral("appId"), QStringLiteral("com.example.app.nativeqt"));
 
     return app.exec();
 }
@@ -305,15 +405,16 @@ int main(int argc, char* argv[])
 
 A brief explanation of the above file:
 
-- Line(1) : Include "ServiceRequest.h" header file which has methods that can call services based on luna-service2.
-- Line(2~6) : Include Qt header files.
-- Line(10) : `argv[1]` holds the value that SAM gives to the native app when the app is first launched. The value passed as "params" in SAM's `launch` method call can be received as "parameters", and the lifecycle "event" of the native app comes up as "launch".
-- Line(12~23) : Create QApplication and QLabel. Set label's position, font-size and style. After that, display the label.
-- Line(25~26) : Declare a ServiceRequest object and call the `registerApp()` function.
-- Line(29~31) : Use `QWindow::Handle()` to get QPlatformWindow from QLabel. Set "appId" to the window.
-- Line(33) : Enters the main event loop and waits until `exit()` is called, then returns the value that was set to `exit(): 0` if `exit()` is called via `quit()`.
+- Line(1) : Include `MyOpenGLWindow.h` header file which has `OpenGLSurface` type window class.
+- Line(2) : Include `ServiceRequest.h` header file which has member functions that can call services based on luna-service2.
+- Line(3~6) : Include Qt header files.
+- Line(11) : `argv[1]` holds the value that SAM gives to the native app when the app is first launched. The value passed as "params" in SAM's `launch` method call can be received as "parameters", and the lifecycle "event" of the native app comes up as "launch".
+- Line(13~17) : Create a MyOpenGLWindow object. Set the window's size and display the text on the screen.
+- Line(19~20) : Create a ServiceRequest object and call the `registerApp()` function.
+- Line(22) : Use `QWindow::Handle()` to get QPlatformWindow from MyOpenGLWindow. Set "appId" to the window.
+- Line(24) : Enters the main event loop and waits until `exit()` is called, then returns the value that was set to `exit(): 0` if `exit()` is called via `quit()`.
 
-For detailed information on Qt, see [Qt Documentation](http://doc.qt.io/).
+For detailed information on Qt, see [Qt documentation](http://doc.qt.io/).
 
 ### README.md
 
@@ -427,13 +528,13 @@ This file specifies the application name and the qmake template to be used for g
 TARGET = nativeqt
 
 CONFIG += qt
-QT += widgets gui-private
+QT += core gui-private
 
 CONFIG += link_pkgconfig
 PKGCONFIG += luna-service2 glib-2.0 pbnjson_cpp PmLogLib
 
-SOURCES += ServiceRequest.cpp main.cpp
-HEADERS += ServiceRequest.h
+SOURCES += ServiceRequest.cpp MyOpenGLWindow.cpp main.cpp
+HEADERS += ServiceRequest.h MyOpenGLWindow.h
 
 INSTALL_APPDIR = $${WEBOS_INSTALL_WEBOS_APPLICATIONSDIR}/com.example.app.nativeqt
 
@@ -454,7 +555,7 @@ A brief explanation of the above file:
 
 - Line(3) : The `CONFIG` variable is a special variable that 'qmake' uses when generating a Makefile. qt is added to the list of existing values contained in `CONFIG`.
 
-- Line(4) : Link against the Qt Widgets Module. Add '`gui-private`' to use private GUI include directories.
+- Line(4) : Link against the QtCore Module. Add '`gui-private`' to use private GUI include directories.
 
 - Line(6~7) : 'qmake' can configure the build process to make use of external libraries that are supported by [pkg-config](https://www.freedesktop.org/wiki/Software/pkg-config/), such as the luna-service2, glib, pbnjson, and PmLog libraries.
 
@@ -572,16 +673,18 @@ After building the app, you must verify its functionality.
 
     ``` bash
     ~/project/com.example.app.nativeqt
-    ├── README.md
-    ├── ServiceRequest.cpp
-    ├── ServiceRequest.h
     ├── appinfo.json
+    ├── build
     ├── com.example.app.nativeqt.pro
     ├── icon.png
     ├── main.cpp
-    ├── build
+    ├── MyOpenGLWindow.cpp
+    ├── MyOpenGLWindow.h
     ├── oe-logs -> /home/username/build/build-webos/BUILD/work/raspberrypi4-webos-linux-gnueabi/com.example.app.nativeqt/1.0.0-r0.local0/temp
-    └── oe-workdir -> /home/username/build/build-webos/BUILD/work/raspberrypi4-webos-linux-gnueabi/com.example.app.nativeqt/1.0.0-r0.local0
+    ├── oe-workdir -> /home/username/build/build-webos/BUILD/work/raspberrypi4-webos-linux-gnueabi/com.example.app.nativeqt/1.0.0-r0.local0
+    ├── README.md
+    ├── ServiceRequest.cpp
+    └── ServiceRequest.h
     ```
 
     If you go to `oe-workdir/deploy-ipks/raspberrypi4`, you can see `com.example.app.nativeqt_1.0.0-r0.local0_raspberrypi4.ipk` file.
@@ -645,7 +748,7 @@ After building the app, you must verify its functionality.
 
     Click the app icon to see the window titled "Native qt app" with the following page:
 
-    {{< figure src="/images/docs/tutorials/native-apps/native-app-screen.jpg" alt="native app screen" width="50%" height="50%" >}}
+    {{< figure src="/images/docs/tutorials/native-apps/native-app-screen.png" alt="native app screen" width="60%" height="60%" >}}
 
 6.  **Verify the execution of the native app.**
 
@@ -672,11 +775,11 @@ After building the app, you must verify its functionality.
 
     - Using the log file
 
-        You can use "tail -f /var/log/messages | grep NativeQtApp" commands on the target for debugging the native app.
+        You can use the `journalctl` command on the target for debugging the native app.
 
         - When the app is first launched
 
-            When the app is first launched by SAM's `launch` method with "params", arguments passed from SAM is printed on `messages` file.
+            When the app is first launched by SAM's `launch` method with "params", arguments passed from SAM is printed on the logging file.
 
             ``` bash
             root@raspberrypi4:/# luna-send -n 1 -f luna://com.webos.service.applicationmanager/launch '{"id":"com.example.app.nativeqt", "params":{"test":"key1"}}'
@@ -685,19 +788,19 @@ After building the app, you must verify its functionality.
             See the log file.
 
             ``` bash
-            user.info com.example.app.nativeqt [] NativeQtApp MAIN_ARGV {"argv[1]":{"event":"launch","reason":"","appId":"com.example.app.nativeqt","interfaceVersion":2,"parameters":{"test":"key1"},"interfaceMethod":"registerApp","@system_native_app":true}}
+            Nov 18 21:05:47 raspberrypi4 nativeqt[1791]: [] [pmlog] NativeQtApp MAIN_ARGV1 {"argv":{"event":"launch","reason":"","appId":"com.example.app.nativeqt","interfaceVersion":2,"parameters":{"test":"key1"},"interfaceMethod":"registerApp","@system_native_app":true}}
             ```
 
-        - When the app is registered by SAM successfully, it gets a "registered" event in response from SAM.
+        - When the app is registered by SAM successfully, it gets the "registered" event in response from SAM.
 
             See the log file.
 
             ``` bash
-            user.info com.example.app.nativeqt [] NativeQtApp REGISTER_CALLBACK {"payload":{"event":"registered","subscribed":true,"returnValue":true}}
-            user.info com.example.app.nativeqt [] NativeQtApp REGISTER_CALLBACK {"event":"registered"}
+            Nov 18 21:05:47 raspberrypi4 nativeqt[1791]: [] [pmlog] NativeQtApp REGISTER_CALLBACK {"payload":{"event":"registered","returnValue":true}}
+            Nov 18 21:05:47 raspberrypi4 nativeqt[1791]: [] [pmlog] NativeQtApp REGISTER_CALLBACK {"event":"registered"}
             ```
 
-        - Launch the app when the app is in the foreground. Use the "params" parameter to pass specific values to the app via SAM.
+        - Launch the app when the app is in the foreground, and the "relaunch" event is received.
 
             ``` bash
             root@raspberrypi4:/# luna-send -n 1 -f luna://com.webos.service.applicationmanager/launch '{"id":"com.example.app.nativeqt", "params":{"test":"key2"}}
@@ -706,12 +809,12 @@ After building the app, you must verify its functionality.
             See the log file.
 
             ``` bash
-            user.info com.example.app.nativeqt [] NativeQtApp REGISTER_CALLBACK {"payload":{"event":"relaunch","reason":"","appId":"com.example.app.nativeqt","parameters":{"test":"key2"},"returnValue":true}}
-            user.info com.example.app.nativeqt [] NativeQtApp REGISTER_CALLBACK {"event":"relaunch"}
-            user.info com.example.app.nativeqt [] NativeQtApp REGISTER_CALLBACK {"parameters":{"test":"key2"}}
+            Nov 18 21:07:40 raspberrypi4 nativeqt[1791]: [] [pmlog] NativeQtApp REGISTER_CALLBACK {"payload":{"event":"relaunch","reason":"","appId":"com.example.app.nativeqt","parameters":{"test":"key2"},"returnValue":true}}
+            Nov 18 21:07:40 raspberrypi4 nativeqt[1791]: [] [pmlog] NativeQtApp REGISTER_CALLBACK {"event":"relaunch"}
+            Nov 18 21:07:40 raspberrypi4 nativeqt[1791]: [] [pmlog] NativeQtApp REGISTER_CALLBACK {"parameters":{"test":"key2"}}
             ```
 
-        - Close the app via SAM's `closeByAppId` method, and "close" event is received.
+        - Close the app via SAM's `closeByAppId` method, and the "close" event is received.
 
             ``` bash
             root@raspberrypi4:/# luna-send -n 1 -f luna://com.webos.service.applicationmanager/closeByAppId '{"id":"com.example.app.nativeqt"}'
@@ -720,8 +823,8 @@ After building the app, you must verify its functionality.
             See the log file.
 
             ``` bash
-            user.info com.example.app.nativeqt [] NativeQtApp REGISTER_CALLBACK {"payload":{"event":"close","reason":"undefined","returnValue":true}}
-            user.info com.example.app.nativeqt [] NativeQtApp REGISTER_CALLBACK {"event":"close"}
+            Nov 18 21:08:48 raspberrypi4 nativeqt[1791]: [] [pmlog] NativeQtApp REGISTER_CALLBACK {"payload":{"event":"close","reason":"undefined","returnValue":true}}
+            Nov 18 21:08:48 raspberrypi4 nativeqt[1791]: [] [pmlog] NativeQtApp REGISTER_CALLBACK {"event":"close"}
             ```
 
 ## Step 5: Deploy the Native App
@@ -766,4 +869,60 @@ Perform the following steps:
 
     For more details, see the [Flashing webOS OSE]({{< relref "flashing-webos-ose#linux" >}}) page.
 
-After rebooting, the native app becomes available on the Launcher.
+After rebooting, the native app becomes available on the Home Launcher.
+
+## Appendix: License Notice
+
+The sample code of [MyOpenGLWindow.h](#myopenglwindow-h) and [MyOpenGLWindow.cpp](#myopenglwindow-cpp) includes modification of code licensed under the following:
+
+``` plaintext
+/****************************************************************************
+**
+** Copyright (C) 2016 The Qt Company Ltd.
+** Contact: https://www.qt.io/licensing/
+**
+** This file is part of the documentation of the Qt Toolkit.
+**
+** $QT_BEGIN_LICENSE:BSD$
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see https://www.qt.io/terms-conditions. For further
+** information use the contact form at https://www.qt.io/contact-us.
+**
+** BSD License Usage
+** Alternatively, you may use this file under the terms of the BSD license
+** as follows:
+**
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of The Qt Company Ltd nor the names of its
+**     contributors may be used to endorse or promote products derived
+**     from this software without specific prior written permission.
+**
+**
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+**
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+```

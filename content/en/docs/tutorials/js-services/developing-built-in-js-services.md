@@ -1,6 +1,6 @@
 ---
 title: Developing Built-in JS Services
-date: 2019-02-19
+date: 2019-11-14
 weight: 20
 toc: true
 ---
@@ -97,7 +97,7 @@ A brief explanation of the above file:
 
 - Line(1) : Load the webos-service module. For more details about webos-service, see [webos-service Library API Reference.]({{< relref "webos-service-library-api-reference" >}})
 
-- Line(2~3) : Load the pmloglib module. For more details about pmloglib, see [Using PmLog in Node.js]({{< relref "using-pmlog-in-nodejs" >}}).
+- Line(2~3) : Load the pmloglib module. For more details about pmloglib, see [Using PmLogLib in Node.js]({{< relref "using-pmloglib-in-nodejs" >}}).
 
 - Line(6) : Register the JS Service.
 
@@ -525,6 +525,14 @@ After building the service, you must verify its functionality.
     ```
 
 5.  **Verify the execution of the service.**
+
+    You can use the `journalctl` command on the target for debugging the js service. For details on how to use the command, see [Viewing Logs]({{< relref "viewing-logs-journald#using-journalctl-to-view-logs" >}}).
+
+    ``` bash
+    root@raspberrypi4:/# journalctl | grep exampleJSService
+
+    Nov 13 21:05:59 raspberrypi4 le.service.js[1300]: [] [pmlog] exampleJSService LOCALE_CALLBACK {"SERVICE_NAME":"exampleJSService"} get locale response
+    ```
 
     If you check the result of `ls-monitor` immediately after calling the **`com.example.service.js/hello`** method, you can see that the service is executed dynamically.
 

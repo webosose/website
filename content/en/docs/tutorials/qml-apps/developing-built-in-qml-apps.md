@@ -1,17 +1,17 @@
 ---
-title: Developing QML Apps
-date: 2018-10-17
+title: Developing Built-in QML Apps
+date: 2018-11-14
 weight: 10
 toc: true
 ---
 
-To create a QML app, you must write the source code and prepare the required configuration files.
+To create a built-in QML app, you must write the source code and prepare the required configuration files.
 
-For easier understanding, the process to create a QML app is explained using the example of an app named **`com.example.app.qml`** that has the following features:
+For easier understanding, the process to create a built-in QML app is explained using the example of an app named **`com.example.app.qml`** that has the following features:
 
-- When the app is launched, it displays a "Hello, QML Application" message on the screen.
+- When the app is launched, it displays a "Hello, QML Application!!" message on the screen.
 - When the user clicks on the screen, it calls the `com.webos.service.systemservice/clock/getTime` method. "UTC" time on the response is printed on the screen.
-- Prints logs on the `/var/log/messages` file in the following conditions:
+- Prints logs in the following conditions:
     - When it is first launched and relaunched, outputting the `params` value which is passed on the `launch` method of System and Application Manager (SAM)
     - When `windowState` changed.
 
@@ -26,7 +26,7 @@ com.example.app.qml
 └── README.md
 ```
 
-Developing a qml app requires the following steps:
+Developing a built-in QML app requires the following steps:
 
 * [Prerequisites](#before-you-begin)
 * [Step 1: Implementation](#step-1-implement-the-qml-app)
@@ -132,13 +132,13 @@ A brief explanation of the above file:
 - Line(6~61) :  Declare a WebOSWindow object with child objects.
     - Line(7~13) : Set WebOSWindow properties and size and color.
     - Line(15~21) : Declare a Text object and string.
-    - Line(23~26) : A QML app (with the type "qml" on `appinfo.json`) is launched and registered to SAM by qml-runner. Through this process, the QML app can receive the parameters passed with the `launch` method call as `params`. With each `launch` method call, `onLaunchParamsChanged` is called even if the value of `params` does not change from that of the previous call. For details of PmLog usage, refer to [Using PmLog in QML]({{< relref "using-pmlog-in-qml" >}}).
+    - Line(23~26) : A QML app (with the type "qml" on `appinfo.json`) is launched and registered to SAM by qml-runner. Through this process, the QML app can receive the parameters passed with the `launch` method call as `params`. With each `launch` method call, `onLaunchParamsChanged` is called even if the value of `params` does not change from that of the previous call. For details of PmLogLib usage, refer to [Using PmLogLib in QML]({{< relref "using-pmloglib-in-qml" >}}).
     - Line(28~46) : Declare a Service object to call systemservice's `getTime` method. If the object receives the response, the app prints the UTC time on the screen.
     - Line(48~51) : When the user clicks on the screen, systemservice's `getTime` method is called.
-    - Line(53~55) : `windowState` is a value that the WebOSWindow QML component sends to the app. Whenever the `windowState` value changes, `onWindowStateChanged` is called. Its value is 1 when the app is in the background and 4 when the app is in the foreground, following the definition of `Qt::WindowState`. For details, see https://doc.qt.io/qt-5/qt.html#WindowState-enum.
+    - Line(53~55) : `windowState` is a value that the WebOSWindow QML component sends to the app. Whenever the `windowState` value changes, `onWindowStateChanged` is called. Its value is 1 when the app is in the background and 4 when the app is in the foreground, following the definition of `Qt::WindowState`. For details, see [Qt::WindowState](https://doc.qt.io/qt-5/qt.html#WindowState-enum) on Qt documentation.
     - Line(57~60) : Declare a `PmLog` object.
 
-For detailed information for Qt, see [Qt Documentation](http://doc.qt.io/).
+For detailed information for Qt, see [Qt documentation](http://doc.qt.io/).
 
 ### README.md
 
@@ -486,21 +486,21 @@ After building the app, you must verify its functionality.
 
     - Using the log file
 
-        You can use "tail -f /var/log/messages | grep QMLApp" commands on the target for debugging the QML app.
+        You can use the `journalctl` command on the target for debugging the QML app. For details on how to use the command, see [Viewing Logs]({{< relref "viewing-logs-journald#using-journalctl-to-view-logs" >}}).
 
         - When the app is first launched on launcher
 
             The app is launched and registered to SAM by qml-runner. The app gets the `params` value from qml-runner. As the app is in the foreground, windowState value is "4".
 
             ``` plaintext
-            user.info qml-runner [] QMLApp LAUNCH_PARAMS {     "params": {     } }
-            user.info qml-runner [] QMLApp WINDOW_CHANGED {     "status": 4 }
+            Nov 13 21:44:56 raspberrypi4 qml-runner[1406]: [] [pmlog] QMLApp LAUNCH_PARAMS {"params": {}}
+            Nov 13 21:44:56 raspberrypi4 qml-runner[1406]: [] [pmlog] QMLApp WINDOW_CHANGED {"status": 4}
             ```
 
         - When the app goes to the background by launching another app, windowState is changed to "1".
 
             ``` plaintext
-            user.info qml-runner [] QMLApp WINDOW_CHANGED {     "status": 1 }
+            Nov 13 21:49:24 raspberrypi4 qml-runner[1406]: [] [pmlog] QMLApp WINDOW_CHANGED {"status": 1}
             ```
 
         - When relaunching the app while the app is in the foreground and running
@@ -514,8 +514,8 @@ After building the app, you must verify its functionality.
             See the log.
 
             ``` plaintext
-            user.info qml-runner [] QMLApp LAUNCH_PARAMS {     "params": {         "test": "key1"     } }
-            user.info qml-runner [] QMLApp WINDOW_CHANGED {     "status": 4 }
+            Nov 13 21:54:06 raspberrypi4 qml-runner[1406]: [] [pmlog] QMLApp LAUNCH_PARAMS {"params": {"test": "key1"}}
+            Nov 13 21:54:06 raspberrypi4 qml-runner[1406]: [] [pmlog] QMLApp WINDOW_CHANGED {"status": 4}
             ```
 
 ## Step 5: Deploy the QML App

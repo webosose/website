@@ -1,6 +1,6 @@
 ---
 title: Developing Built-in Web Apps
-date: 2019-10-11
+date: 2019-11-14
 weight: 20
 toc: true
 ---
@@ -93,10 +93,10 @@ The following shows sample code that prints a hello message and also prints the 
     function callback(msg){
         var arg = JSON.parse(msg);
         if (arg.returnValue) {
-            console.log("[APP_NAME: example web app] GETTIME_SUCCESS UTC : " + arg.utc);
+            webOSSystem.PmLogString(6, "GETTIME_SUCCESS", '{"APP_NAME": "example web app"}', "UTC : " + arg.utc);
         }
         else {
-            console.error("[APP_NAME: example web app] GETTIME_FAILED errorText : " + arg.errorText);
+            webOSSystem.PmLogString(3, "GETTIME_FAILED", '{"APP_NAME": "example web app"}', "errorText : " + arg.errorText);
         }
     }
 
@@ -121,7 +121,7 @@ A brief explanation of the above file:
       - `url`: URL of the LS2 API method
       - `params`: parameter for the method to invoke
 
-  - Line(29~37) : Define a callback function that can handle the response. If the response is successful, print "UTC" to the log file (`/var/log/messages`). To print console.log/info level messages, you need to set pmlog level of Web App Manager (WAM) by executing the `PmLogCtl set wam.log debug` command on the target before running the app.
+  - Line(29~37) : Define a callback function that can handle the response. If the response is successful, "UTC" value is printed on the logging file. For details on logging, refer to [Using PmLogLib in JavaScript]({{< relref "using-pmloglib-in-javascript" >}}).
 
   - Line(39~40) : Set the callback to the WebOSServiceBridge object, and invoke the method with Luna call.
 
@@ -186,7 +186,12 @@ A brief explanation of the above file:
 
 - Line(23) : Include the webOS library.
 
-- Line(25~36) : Call `systemserivce/clock/getTime` method. If the response is successful, print "UTC" to the log file (`/var/log/messages`). For details, refer to [Using PmLog in JavaScript]({{< relref "using-pmlog-in-javascript" >}}).
+- Line(25~36) : Call `com.webos.service.systemservice/clock/getTime` method. If the response is successful, "UTC" value is printed on the logging file. To print log messages when using the webOS library, you can use the following methods provided by the webOS library (in descending order of importance):
+    - `webOS.critical(String msgid, Object keyvalue_pairs, String msg)`
+    - `webOS.error(String msgid, Object keyvalue_pairs, String msg)`
+    - `webOS.warning(String msgid, Object keyvalue_pairs, String msg)`
+    - `webOS.info(String msgid, Object keyvalue_pairs, String msg)`
+    - `webOS.debug(String msg)`
 
 ### README.md
 
@@ -494,10 +499,6 @@ After building the app, you must verify its functionality.
 
 5.  **Run the web app.**
 
-    {{< note >}}
-    To verify the app's execution using the log file, set pmlog level of Web App Manager (WAM) by executing the `PmLogCtl set wam.log debug` command on the target before running the app.
-    {{< /note >}}
-
     To display the Home Launcher, drag the mouse cursor upward from the bottom of the screen (or swipe up from the bottom of the screen if you're using a touch display).
 
     {{< note >}}
@@ -533,10 +534,12 @@ After building the app, you must verify its functionality.
 
     - Using the log file
 
-        You can check the app's log in `/var/log/messages` file on the target. Open the file and find "UTC" keyword.
+        You can use the `journalctl` command on the target for debugging the app. For details on how to use the command, see [Viewing Logs]({{< relref "viewing-logs-journald#using-journalctl-to-view-logs" >}}).
 
         ``` bash
-        2019-10-01T00:33:06.742150Z [964.036288485] user.debug WebAppMgr [] wam.log DBGMSG {} 0[CONSOLE:32] "\"[APP_NAME: example web app] GETTIME_SUCCESS UTC : 1569889986\", source: file:///usr/palm/applications/com.example.app.web/index.html (32)\n"
+        root@raspberrypi4:/# journalctl | grep UTC
+
+        Nov 18 17:02:25 raspberrypi4 WebAppMgr[383]: [] [pmlog] com.example.app.web GETTIME_SUCCESS {"APP_NAME": "example web app"} UTC : 1574125345
         ```
 
 ## Step 5: Deploy the Web App

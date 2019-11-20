@@ -7,7 +7,17 @@ toc: false
 
 This page outlines the steps to develop QML apps for webOS Open Source Edition (OSE).
 
-Developing a QML app requires the following steps:
+## External QML Apps
+
+To develop an external QML app, the Command-Line Interface (CLI) tool is used.
+
+In general, the steps described in [CLI Workflow]({{< relref "cli-user-guide#cli-workflow" >}}) are applied.
+
+For a step-by-step tutorial, see [Developing External QML Apps]({{< relref "developing-external-qml-apps" >}}).
+
+## Built-in QML Apps
+
+Developing a built-in QML app requires the following steps:
 
 1. Implement
 
@@ -36,4 +46,4 @@ Developing a QML app requires the following steps:
     - Building the webOS OSE image
     - Flashing the image to the target
 
-For a step-by-step tutorial with detailed instructions, see [Developing QML Apps]({{< relref "developing-qml-apps" >}}).
+For a step-by-step tutorial with detailed instructions, see [Developing Built-in QML Apps]({{< relref "developing-built-in-qml-apps" >}}).

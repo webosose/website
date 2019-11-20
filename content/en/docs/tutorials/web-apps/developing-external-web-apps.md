@@ -17,12 +17,12 @@ If you want to add a JS service to your web app, see [Creating JS Services]({{< 
 
 Developing an external web app requires the following steps:
 
-* [Step 1: Project creation](#step-1-create-a-web-app-project)
-* [Step 2: Implementation](#step-2-implement-the-web-app)
-* [Step 3: Configuration](#step-3-configure-the-web-app)
-* [Step 4: Packaging](#step-4-package-the-web-app)
-* [Step 5: Installation](#step-5-install-the-web-app)
-* [Step 6: Launch](#step-6-launch-the-web-app)
+* [Step 1: Create a Web App Project](#step-1-create-a-web-app-project)
+* [Step 2: Implement the Web App](#step-2-implement-the-web-app)
+* [Step 3: Configure the Web App](#step-3-configure-the-web-app)
+* [Step 4: Package the Web App](#step-4-package-the-web-app)
+* [Step 5: Install the Web App](#step-5-install-the-web-app)
+* [Step 6: Launch the Web App](#step-6-launch-the-web-app)
 
 ### Step 1: Create a Web App Project
 
@@ -31,12 +31,12 @@ Start by creating a project using one of the available web app templates. These 
 To create a basic web app, execute the following command:
 
 ``` bash
-$ ares-generate -t basic sampleApp
+$ ares-generate -t webapp sampleApp
 ```
 
 In the above command:
 
-- `basic` is the name of template that creates a basic web app.
+- `webapp` is the name of template that creates a basic web app.
 - `sampleApp` is the web app directory which is created in the current directory.
 
 The web app directory (`sampleApp`) has the following directory and files:
@@ -74,27 +74,27 @@ The web app directory (`sampleApp`) has the following directory and files:
 </table>
 </div>
 
+If you already have an existing web app that you want to deploy on a webOS OSE device, you must add the `appinfo.json` file to the app root directory. To create this file, enter the following CLI command:
+
+``` bash
+$ ares-generate -t webappinfo webApp
+```
+
 {{< note >}}
-* If you already have an existing web app that you want to deploy on a webOS OSE device, you must add the `appinfo.json` file to the app root directory. To create this file, enter the following CLI command:
 
-    ``` bash
-    $ ares-generate -t webappinfo webApp
-    ```
+To use LS2 API on webOS OSE 1.x, the webOS library must exist within the project directory. For more information, see the [built-in web app tutorial]({{< relref "developing-built-in-web-apps#webos-ose-1-x" >}}).
 
-    See Step 3 below for more information on the `appinfo.json` file.
-
-* To use LS2 API on webOS OSE 1.x, the webOS library must exist within the project directory. For more information, see the [built-in web app tutorial]({{< relref "developing-built-in-web-apps#webos-ose-1-x" >}}).
 {{< /note >}}
+
 
 ### Step 2: Implement the Web App
 
 Design and implement the source code for the web app.
 
-By default, the basic web app template includes some basic code that prints a "Hello, Web Application!!" message. Therefore, if you want to create a demo web app to test this process, you can skip this step and proceed.
+By default, the webapp web app template includes some basic code that prints a "Hello, Web Application!!" message. Therefore, if you want to create a demo web app to test this process, you can skip this step and proceed.
 
-{{< note >}}
 If you want to use a webOS service in the web app, check the information and sample code provided in the [Implement the Web App]({{< relref "developing-built-in-web-apps#step-1-implement-the-web-app" >}}) section in "[Developing Built-in Web Apps]({{< relref "developing-built-in-web-apps" >}})".
-{{< /note >}}
+
 
 ### Step 3: Configure the Web App
 
@@ -132,22 +132,14 @@ To package the web app, use the `ares-package` command. The IPK file is generate
 $ ares-package <APP_DIR> [<SERVICE_DIR>]
 ```
 
-In the above command, `<APP_DIR>` and `<SERVICE_DIR>` mean app and service directories respectively. You can use an absolute or relative path for both `<APP_DIR>` and `<SERVICE_DIR>`.
+In the above command, `<APP_DIR>` and `<SERVICE_DIR>` mean app and service directories respectively. You can use an absolute or relative path for both `<APP_DIR>` and `<SERVICE_DIR>`. For details on using `ares-package`, see [ares-package] ({{< relref "cli-user-guide#ares-package" >}}).
 
 **Sample usage:**
 
 - Packaging web app only (relative path):
     - Windows: `ares-package sampleApp`
     - Linux/macOS: `ares-package ./sampleApp`
-- Packaging web app with one JS service (relative path):
-    - Windows: `ares-package sampleApp sampleService`
-    - Linux/macOS: `ares-package ./sampleApp ./sampleService`
-- Packaging web app with multiple JS services (relative path):
-    - Windows: `ares-package sampleApp sampleService sampleServiceNew`
-    - Linux/macOS: `ares-package ./sampleApp ./sampleService ./sampleServiceNew`
-- Packaging web app with JS service (absolute path)
-    - Windows: `ares-package c:\samples\sampleApp c:\samples\sampleService`
-    - Linux/macOS: `ares-package ~/samples/sampleApp ~/samples/sampleService`
+
 
 ### Step 5: Install the Web App
 
@@ -177,13 +169,12 @@ To verify the installation, check if the web app ID (in this case, `com.domain.a
 $ ares-install --device <TARGET_DEVICE> --list
 ```
 
-{{< note >}}
 To remove the app from the device, use the `ares-install` command as follows:
 
 ``` bash
 $ ares-install --device <TARGET_DEVICE> --remove com.domain.app
 ```
-{{< /note >}}
+
 
 ### Step 6: Launch the Web App
 
@@ -200,13 +191,12 @@ In the above command:
 
 After executing the above command, check the target device to see if the app is running.
 
-{{< note >}}
 To close the app, use the `ares-launch` command as follows:
 
 ``` bash
 $ ares-launch --device <TARGET_DEVICE> --close com.domain.app
 ```
-{{< /note >}}
+
 
 ## Debugging Web Apps
 

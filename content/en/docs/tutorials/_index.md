@@ -20,7 +20,8 @@ This section provides end-to-end, step-by-step tutorials for developers to achie
 
 ## QML Apps
 
-* [Developing QML Apps]({{< relref "developing-qml-apps" >}})
+* [Developing External QML Apps]({{< relref "developing-external-qml-apps" >}})
+* [Developing Built-in QML Apps]({{< relref "developing-built-in-qml-apps" >}})
 
 ## Native Apps
 

@@ -4,31 +4,25 @@ date: 2018-10-15
 weight: 10
 toc: true
 ---
+External JS services are 3rd party JS services that must be installed on the webOS target device. External JS services can be created and deployed using the Command-Line Interface (CLI) tool that are provided by the webOS Open Source Edition (OSE) SDK.
 
 External JS services must be packaged in a web app. Therefore, before creating a JS service, make sure you have a web app to package with the external JS service. If such a web app is not available, create a web app as described in [Creating Web Apps]({{< relref "developing-external-web-apps#creating-web-apps" >}}).
 
+This page describes the steps to develop an external JS service using CLI. For detailed information on the commands used in this tutorial, see [CLI commands] ({{< relref "cli-user-guide#cli-commands" >}}).
+
 ## Creating JS Services
-
-JS services can be created and deployed using CLI commands that are provided by webOS OSE SDK. This topic describes the steps to create an external JS service. For detailed information on the commands, see [Command-Line Interface]({{< relref "cli-user-guide" >}}).
-
-Once you generate the service, JS service directory should be configured as below.
-
-{{< figure src="/images/docs/tutorials/js-services/js-service-directory-structure.png" alt="" caption="JS service directory structure" >}}
-
-- **APP_DIR**: Directory of the web app.
-- **SERVICE_DIR**: Directory of the service. This directory will include sub-directories of the services that are included in the web app.
 
 Developing an external JS service requires the following steps:
 
-* [Step 1: Project creation](#step-1-create-a-js-service-project)
-* [Step 2: Implementation](#step-2-implement-the-js-service)
-* [Step 3: Configuration](#step-3-configure-the-js-service)
-* [Step 4: Packaging](#step-4-package-the-js-service)
-* [Step 5: Installation](#step-5-install-the-js-service)
+* [Step 1: Create a JS Service](#step-1-create-a-js-service)
+* [Step 2: Implement the JS Service](#step-2-implement-the-js-service)
+* [Step 3: Configure the JS Service](#step-3-configure-the-js-service)
+* [Step 4: Package the JS Service](#step-4-package-the-js-service)
+* [Step 5: Install the JS Service](#step-5-install-the-js-service)
 
-### Step 1: Create a JS Service Project
+### Step 1: Create a JS Service
 
-Start by creating a project using the available JS service template.
+Start by creating a JS service using the available JS service template.
 
 To create a basic JS service, execute the following command:
 
@@ -41,12 +35,16 @@ In the above command:
   - `js_service` is the name of the template that creates a basic JS service.
   - `sampleService` is the JS service directory which is created in the current directory.
 
-{{< note >}}
-When prompted to enter the service name, make sure the service name begins with the app ID. If you do not follow this naming rule, the service packaging does not work normally. So, for example:
+The following shows an example directory structure of JS services packaged in a web app.
 
-* If web app ID is `com.domain.app`
-* Then, service name must be `com.domain.app.myservice`
-{{< /note >}}
+``` bash
+sampleService
+├── helloclient.js
+├── helloworld_webos_service.js
+├── package.json
+└── services.json
+```
+
 
 The JS service directory (`sampleService`) has the following files:
 
@@ -82,6 +80,13 @@ The JS service directory (`sampleService`) has the following files:
 </tbody>
 </table>
 </div>
+
+{{< note >}}
+When prompted to enter the service name, make sure the service name begins with the app ID. If you do not follow this naming rule, the service packaging does not work normally. So, for example:
+
+* If web app ID is `com.domain.app`
+* Then, service name must be `com.domain.app.myservice`
+{{< /note >}}
 
 ### Step 2: Implement the JS Service
 
