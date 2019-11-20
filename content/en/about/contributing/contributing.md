@@ -69,7 +69,7 @@ Check the following information before you make a pull request.
 
   - I have followed the [commit guidelines](https://git-scm.com/book/en/v2/Distributed-Git-Contributing-to-a-Project#Commit-Guidelines).
 
-### The Contribution Process
+### Contribution Process
 
 {{< figure src="/images/about/contribution-process.png" alt="" caption="Contribution Process" width="700px" >}}
 

@@ -42,7 +42,7 @@ For example, suppose you connect two touchscreens and the USB ports of the touch
 
 {{< figure src="/images/docs/guides/setup/usb-hub-for-dual-display.png" alt="" caption="USB Hub with fixed port numbers">}}
 
-This rule also applies in case you use USB touchscreens with a USB hub. A touchscreen connected to a lower port number of your USB hub will take precedence. (see the picture above.) Some USB hub shows port numbers as shown in the above picture. In case there is no port number printed in your USB hub, then try to figure out the order by doing some tests.
+This rule also applies in case you use USB touchscreens with a USB hub. A touchscreen connected to a lower port number of your USB hub will take precedence. (see the picture above.) Some USB hub shows port numbers as shown in the above picture. In case there is no port number printed in your USB hub, then try to figure out the order by doing some tests.
 
 ## Setting Up Dual Displays
 

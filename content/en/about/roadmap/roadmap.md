@@ -48,7 +48,7 @@ The following shows a roadmap of webOS Open Source Edition (OSE).
 <li>Multi-User Configuration</li>
 <li>App Mirroring for RSE</li>
 <li>FOTA (ability to partially update)</li>
-<li>Journald (pmlog disable)</li>
+<li>journald (pmlogd disabled)</li>
 <li>Phone Projection (mirroring)</li>
 <li>Bluetooth Audio</li>
 </ul></td>
