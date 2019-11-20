@@ -25,7 +25,6 @@ Key characteristics of the emulator are as follows:
 
 ### Known Issues
 
-* Dual-display is not supported.
 * Touch input is not supported.
 
 ## System Requirements
@@ -180,9 +179,10 @@ The screenshots below have been captured from Oracle VM VirtualBox v6.0.14 on Wi
     {{< figure src="/images/docs/tools/emulator/vbox_emulator_img10.png" alt="Configuring the display" class="align-left" >}}
 
     1. In **Video Memory**, set the amount of video memory you wish to allocate to the webos-image virtual machine. You can allocate up to 128 MB of memory.
-    2. From the **Graphics Controller** list, select **VMSVGA**.
-    3. In **Acceleration**, ensure that **Enable 3D Acceleration** option is selected.
-    4. On the navigation bar, click **Audio**.
+    2. In **Monitor Count**, set the count of monitor to 1 or 2. webOS OSE supports up to two monitors.
+    3. From the **Graphics Controller** list, select **VMSVGA**.
+    4. In **Acceleration**, ensure that **Enable 3D Acceleration** option is selected.
+    5. On the navigation bar, click **Audio**.
 
 10. The **Audio** section will be displayed.
 
@@ -286,6 +286,9 @@ vboxmanage modifyvm webos-image --natpf1 web-inspector,tcp,,9998,,9998
 vboxmanage modifyvm webos-image --mouse usbtablet
 vboxmanage modifyvm webos-image --uart1 0x3f8 4 --uartmode1 file /dev/null
 vboxmanage storagectl webos-image --add ide --name webos-image
+
+# Only when you want to set 2 monitors, default is 1
+vboxmanage modifyvm webos-image --monitorcount 2
 ```
 {{< /code >}}
 
