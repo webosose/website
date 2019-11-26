@@ -1,11 +1,11 @@
 ---
 title: com.webos.service.db
-date: 2019-10-22
+date: 2019-11-26
 toc: true
 ---
 <div>
-  <H2>API Summary</h2>
-  <p>Enables apps to store persistent data.&nbsp;</p>
+  <h2>API Summary</h2>
+  <p>Enables apps to store persistent data.</p>
 </div>
 <h2>Overview of the API</h2>
 <div>
@@ -35,7 +35,7 @@ toc: true
   <p><strong>Object revisions:</strong></p>
   <p>Object <u>revision</u> is a number, that determines &quot;Version of an object in the database&quot;. This number is required to avoid collisions when two or more services simultaneously try to update an object at the same time.</p>
   <p>For all new objects, the database will append a <strong>_rev</strong> field, that indicates the object revision. By default, the database will set object revision <strong>_rev</strong> field to Database Revision (Number, that atomically increments on any database modification).</p>
-  <p>If an object already exists in the database, the database engine will automatically increment the object revision number on each&nbsp;each successful <u>put</u>/<u>merge</u> API for this object.</p>
+  <p>If an object already exists in the database, the database engine will automatically increment the object revision number on each successful <u>put</u>/<u>merge</u> API for this object.</p>
   <p>Explanation by example: <em>com.</em>webos.service<em>.test</em> and <em>com.</em>webos.service<em>.othertest</em>&nbsp;applications have access for read/write to <strong>Kind</strong> <em>com.</em>webos.service<em>.test:1</em> . Both applications, at the same time, read an object from <em>com.</em>webos.service<em>.test:1</em> kind object with id <strong>++JZk1sXYW7lCdqU</strong> and revision <strong>777</strong>.</p>
   <p>Both applications execute a merge command like the following:</p>
   <div class="code-bg-grey">
@@ -59,7 +59,7 @@ toc: true
       &nbsp; &quot;results&quot;:[<br />
       &nbsp;&nbsp;&nbsp; {<br />
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;id&quot;:&quot;++JZk1sXYW7lCdqU&quot;,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;rev&quot;:<strong>778</strong>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <em>&lt;--- See, the database increments the revision after a successful object update!</em><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;rev&quot;:<strong>778</strong>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <em>&lt;--- See, the database increments the revision after a successful object update!</em><br />
       &nbsp;&nbsp;&nbsp; }<br />
       ]}
     </p>
@@ -585,7 +585,7 @@ toc: true
   <p>
     If no object exists with the field <u>processed</u>=false for Kind <em>com.</em>webos.service<em>.test:1</em>, the client will be blocked in the&nbsp;<u>watch</u> API call. The&nbsp;<u>watch</u> will be unblocked, when an object that satisfies a query will appear in a database. In the example above, the database will have object for <em>com.</em>webos.service<em>.test:1</em> with field <em>processed</em>=false (if someone will insert object or modify field for existing object).
   </p>
-  <p>Note about blocking: for a blocking <u>watch</u> API call, the caller cannot do anything until the <u>watch</u> API call returns. It is very similar to system calls blocks. For more information about blocking calls, see the luna-service2 Library API documentation.<br />
+  <p>Note about blocking: for a blocking <u>watch</u> API call, the caller cannot do anything until the <u>watch</u> API call returns. It is very similar to system calls blocks. For more information about blocking calls, see the luna-service2 API documentation.<br />
     <br />
     Example of <em>watch</em> response, when it is unblocked:
   </p>
@@ -628,7 +628,7 @@ toc: true
   <p>Information is displayed in sorted order to enable users to easily find the items they are looking for. However, users of different languages might have very different expectations of what a &quot;sorted&quot; list should look like. Not only does the alphabetical order vary from one language to another, but it also can vary from document to document within the same language. For example, phonebook ordering might be different than dictionary ordering. String comparison is one of the basic functions most applications require, and yet implementations often do not match local conventions. Collation provides string comparison capability with support for appropriate sort orderings for each of the locales needed by a client.</p>
   <p>Collation rule:</p>
   <p><span style="background-color:transparent">A RuleBasedCollator is built from a rule string which changes the</span><span style="background-color:transparent">&nbsp;sort order of some characters and strings relative to the default order. An empty string (or one with only white space and comments) results in a collator that behaves like the root collator.</span></p>
-  <p>Customization is specified via a string containing a set of rules.&nbsp;<span style="background-color:transparent">ICU implements the (CLDR)&nbsp;</span>For more details see <a href="http://www.unicode.org/reports/tr35/tr35-collation.html#Rules" style="background-color:transparent;font-size:10pt">LDML collation rule syntax</a><span style="background-color:transparent">.&nbsp;</span></p>
+  <p>Customization is specified via a string containing a set of rules.&nbsp;<span style="background-color:transparent">ICU implements the (CLDR)&nbsp;</span>For more details see <a href="http://www.unicode.org/reports/tr35/tr35-collation.html#Rules"">LDML collation rule syntax</a>.</p>
   <p><span style="background-color:transparent">Each rule contains a string of ordered characters that starts with an </span><strong>anchor point </strong><span style="background-color:transparent">or a </span><strong>reset value</strong><span style="background-color:transparent">.</span><span style="background-color:transparent">&nbsp;For example, &quot;&amp;a &lt; g&quot;, places &quot;g&quot; after &quot;a&quot; and before &quot;b&quot;, and the &quot;a&quot; does not change place. This rule has the following sorting consequences:</span></p>
   <table class="table is-bordered is-fullwidth">
     <thead>
@@ -664,6 +664,7 @@ toc: true
       </tr>
     </tbody>
   </table>
+
   <p><strong>Note:&nbsp;</strong>Only the word that starts with &quot;g&quot; has changed place. All the words sorted after &quot;a&quot; and &quot;A&quot; are sorted after &quot;g&quot;.</p>
   <p>This is a non-complex example of a custom rule. Custom rules consist of zero or more rules and zero or more options. There must be at least one rule or at least one option. The rule syntax is discussed in more detail in the following sections.</p>
   <p><strong>Note:</strong> The custom rules override the UCA ordering. In addition, if a character is reordered, it automatically reorders any other equivalent characters. For example, if the rule &quot;&amp;e&lt;a&quot; is used to reorder &quot;a&quot; in the list, &quot;&aacute;&quot; is also greater than &quot;&eacute;&quot;.</p>
@@ -732,11 +733,11 @@ toc: true
   <p>Internally, DB8 process strings via ICU. All ICU documentation about strings somewhat applies to db8 string processing.</p>
   <p><strong>Permissions:</strong></p>
   <p>DB8 are central storage for applications. Every application can not only store/retrieve data by itself, it can share and interact with other applications.</p>
-  <p>Application can share kind and grand permissions for any CRUD operator. For more information, see <u><em>putPermissions</em></u> API call documentation.</p>
+  <p>Application can share kind and grand permissions for any CRUD operator. For more information, see <a href="#putpermissions">putPermissions</a> API call documentation.</p>
   <p><strong>Quotas:</strong></p>
   <p>The function of quotas is to allocate limited disk space in a reasonable way for target device. Those limits are set by product developers via db8 configuration files.</p>
   <p>In other words, quotas limit the amount of disk space that can be used by s certain application.<br />
-    Every process can see its quota usage by using the&nbsp;<u>quotaStats</u> api call.
+    Every process can see its quota usage by using the&nbsp;<a href="#quotastats">quotaStats</a> api call.
   </p>
   <p><strong>Encoding:</strong></p>
   <p>When the DB8 daemon starts, it uses UTF8 en_US.en_US encoding which is it&#39;s default encoding.</p>
@@ -932,62 +933,63 @@ toc: true
     </div>
     <h4>Example</h4>
     <div class="code-bg-grey">
-      <p>luna-send -n 1 -f -a com.webos.service.test luna://com.webos.service.db/batch</p>
-      <p>&#39;{</p>
-      <p style="margin-left:40px">&quot;operations&quot;:[</p>
-      <p style="margin-left:80px">{</p>
-      <p style="margin-left:120px">&quot;method&quot;:&quot;put&quot;,</p>
-      <p style="margin-left:120px">&quot;params&quot;:{</p>
-      <p style="margin-left:160px">&quot;objects&quot;:[</p>
-      <p style="margin-left:200px">{</p>
-      <p style="margin-left:240px">&quot;_kind&quot;:&quot;com.webos.service.test:1&quot;,</p>
-      <p style="margin-left:240px">&quot;sample&quot;:&quot;sample1&quot;,</p>
-      <p style="margin-left:240px">&quot;test&quot;:&quot;test1&quot;</p>
-      <p style="margin-left:200px">}</p>
-      <p style="margin-left:160px">]</p>
-      <p style="margin-left:120px">}</p>
-      <p style="margin-left:80px">},</p>
-      <p style="margin-left:80px">{</p>
-      <p style="margin-left:120px">&quot;method&quot;:&quot;merge&quot;,</p>
-      <p style="margin-left:120px">&quot;params&quot;:{</p>
-      <p style="margin-left:160px">&quot;query&quot;:{</p>
-      <p style="margin-left:200px">&quot;from&quot;:&quot;com.webos.service.test:1&quot;,</p>
-      <p style="margin-left:200px">&quot;where&quot;:[</p>
-      <p style="margin-left:240px">{</p>
-      <p style="margin-left:280px">&quot;prop&quot;:&quot;sample&quot;,</p>
-      <p style="margin-left:280px">&quot;op&quot;:&quot;=&quot;,</p>
-      <p style="margin-left:280px">&quot;val&quot;:&quot;sample1&quot;</p>
-      <p style="margin-left:240px">}</p>
-      <p style="margin-left:200px">]</p>
-      <p style="margin-left:160px">},</p>
-      <p style="margin-left:160px">&quot;props&quot;:{</p>
-      <p style="margin-left:200px">&quot;sample&quot;:&quot;sample2&quot;,</p>
-      <p style="margin-left:200px">&quot;test&quot;: &quot;test2&quot;</p>
-      <p style="margin-left:160px">}</p>
-      <p style="margin-left:120px">}</p>
-      <p style="margin-left:80px">}</p>
-      <p style="margin-left:40px">]</p>
-      <p>}&#39;</p>
+      <p># luna-send -n 1 -f -a com.webos.service.test luna://com.webos.service.db/batch &#39;{<br />
+        &nbsp;&nbsp;&nbsp;&quot;operations&quot;:[&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;method&quot;:&quot;put&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;params&quot;:{&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;objects&quot;:[&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;_kind&quot;:&quot;com.webos.service.test:1&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;sample&quot;:&quot;sample1&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;test&quot;:&quot;test1&quot;<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;method&quot;:&quot;merge&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;params&quot;:{&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;query&quot;:{&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;from&quot;:&quot;com.webos.service.test:1&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;where&quot;:[&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;prop&quot;:&quot;sample&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;op&quot;:&quot;=&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;val&quot;:&quot;sample1&quot;<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;props&quot;:{&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;sample&quot;:&quot;sample2&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;test&quot;:&quot;test2&quot;<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+        &nbsp;&nbsp;&nbsp;]<br />
+        }&#39;
+      </p>
       <p>&nbsp;</p>
-      <p>Result of exec of command:</p>
-      <p>{</p>
-      <p style="margin-left:40px">&quot;responses&quot;: [</p>
-      <p style="margin-left:80px">{</p>
-      <p style="margin-left:120px">&quot;returnValue&quot;: true,</p>
-      <p style="margin-left:120px">&quot;results&quot;: [</p>
-      <p style="margin-left:160px">{</p>
-      <p style="margin-left:200px">&quot;id&quot;: &quot;J8qx+EwdBs7&quot;,</p>
-      <p style="margin-left:200px">&quot;rev&quot;: 2</p>
-      <p style="margin-left:160px">}</p>
-      <p style="margin-left:120px">]</p>
-      <p style="margin-left:80px">},</p>
-      <p style="margin-left:80px">{</p>
-      <p style="margin-left:120px">&quot;count&quot;: 1,</p>
-      <p style="margin-left:120px">&quot;returnValue&quot;: true</p>
-      <p style="margin-left:80px">}</p>
-      <p style="margin-left:40px">],</p>
-      <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-      <p>}</p>
+      <p>Response:&nbsp;</p>
+      <p>{&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&quot;responses&quot;:[&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;results&quot;:[&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;id&quot;:&quot;J8qx+EwdBs7&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;rev&quot;:2<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;count&quot;:1,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+        &nbsp;&nbsp;&nbsp;],<br />
+        &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+        }
+      </p>
     </div>
   </div>
 </div>
@@ -1083,10 +1085,11 @@ toc: true
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.db/compact &#39;{}&#39;</p>
     <p>&nbsp;</p>
-    <p>Result of exec of command:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>Response:&nbsp;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>del</h3>
@@ -1123,9 +1126,7 @@ toc: true
           <td>Optional</td>
           <td>String array</td>
           <td>
-            <p style="text-align:left"><br />
-              The <strong>ids</strong> parameter contains an array of JSON object ids that you wish to delete. If you do not wish to specify JSON object ids, you must specify a query in the <strong>query</strong> parameter.
-            </p>
+            <p style="text-align:left">The <strong>ids</strong> parameter contains an array of JSON object ids that you wish to delete. If you do not wish to specify JSON object ids, you must specify a query in the <strong>query</strong> parameter.</p>
           </td>
         </tr>
         <tr>
@@ -1133,7 +1134,7 @@ toc: true
           <td>Optional</td>
           <td>Object: <a href="#query"> Query</a></td>
           <td>
-            <p style="text-align: left;"><br>The <strong>query </strong>parameter contains a query for a set of objects to be deleted. If you do not wish to specify a query, you must specify a list of JSON object ids in the <strong>ids </strong>parameter.</p>
+            <p style="text-align:left">The <strong>query </strong>parameter contains a query for a set of objects to be deleted. If you do not wish to specify a query, you must specify a list of JSON object ids in the <strong>ids </strong>parameter.</p>
           </td>
         </tr>
         <tr>
@@ -1172,7 +1173,7 @@ toc: true
         <tr>
           <td>results</td>
           <td>Optional</td>
-          <td>Object array: <a href="#putresponse"> PutResponse</a></td>
+          <td>Object array: <a href="#results">Results</a></td>
           <td>
             <p>When the <strong>del </strong>method succeeds, and the objects to be deleted were specified as a list of JSON object ids, the <strong>del </strong>method will return a list of deleted ids.</p>
           </td>
@@ -1257,27 +1258,29 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Del by ids</p>
+    <p>Example 1: Using ID</p>
     <p># luna-send -n 1 -f luna://com.webos.service.db/del &#39;{&quot;ids&quot; :[&quot;J8rBI6u7uh+&quot;]}&#39;</p>
-    <p>---</p>
-    <p>Result of execution</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true,</p>
-    <p style="margin-left:40px">&quot;results&quot;: [</p>
-    <p style="margin-left:80px">{</p>
-    <p style="margin-left:120px">&quot;id&quot;: &quot;J8rBI6u7uh+&quot;</p>
-    <p style="margin-left:80px">}</p>
-    <p style="margin-left:40px">]</p>
-    <p>}</p>
-    <p>--</p>
-    <p>Del by query:</p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;results&quot;:[&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;id&quot;:&quot;J8rBI6u7uh+&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;]<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Example 2: Using query</p>
     <p># luna-send -n 1 -f -a com.webos.service.test luna://com.webos.service.db/del &#39;{&quot;query&quot; : { &quot;from&quot; : &quot;com.webos.service.test:1&quot;}}&#39;</p>
-    <p>---</p>
-    <p>Result of execution</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;count&quot;: 11,</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;count&quot;:11,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>delKind</h3>
@@ -1397,10 +1400,12 @@ toc: true
   <h4>Example</h4>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f -a com.webos.service.configurator luna://com.webos.service.db/delKind &#39;{&quot;id&quot; : &quot;com.webos.service.test:1&quot;}&#39;</p>
-    <p>Result of execution</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>dump</h3>
@@ -1521,11 +1526,13 @@ toc: true
   <h4>Example</h4>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f -a com.webos.service.configurator luna://com.webos.service.db/dump &#39;{&quot;path&quot;:&quot;/tmp/dump.json&quot;}&#39;</p>
-    <p>Result of execution:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;count&quot;: 0,</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;count&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>find</h3>
@@ -1605,19 +1612,35 @@ toc: true
           </th>
         </tr>
         <tr>
-          <td>SuccessResponse1</td>
-          <td>Optional</td>
-          <td>Object: <a href="#findresponse"> FindResponse</a></td>
+          <td>results</td>
+          <td>Required</td>
+          <td>Object array</td>
           <td>
-            <p style="text-align:left">If the&nbsp;<strong>find</strong>&nbsp;method succeeds, the&nbsp;<strong>find</strong>&nbsp;method will return the&nbsp;<strong>SuccessResponse1</strong>​ object.</p>
+            <p>Array of db8 kind data objects. What is returned depends on the query and what is stored.</p>
           </td>
         </tr>
         <tr>
-          <td>SuccessResponse2</td>
+          <td>count</td>
           <td>Optional</td>
-          <td>Object: <a href="#notificationresponse"> NotificationResponse</a></td>
+          <td>Number</td>
           <td>
-            <p style="text-align: left;">If the&nbsp;<strong>watch</strong>&nbsp;parameter was set to <strong>true</strong><strong></strong>&nbsp;by the app, the <strong>find </strong>method will return the <strong>SuccessResponse2&nbsp;</strong>object.<br></p>
+            <p>Number of results that would have been returned if a limit had not been specified.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>next</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Key to pass as query&#39;s &quot;page&quot; property when retrieving next page of results.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>fired</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Change notification flag. Returned only if the&nbsp;<strong>watch</strong>&nbsp;parameter is set to&nbsp;<strong>true</strong>&nbsp;by the app.</p>
           </td>
         </tr>
         <tr>
@@ -1699,41 +1722,42 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Note:&nbsp;Should execute putKind, put APIs before calling find API. To list below results, 2 entries should be added using put API</p>
-    <p># luna-send -n 1 -f -a com.webos.service.test luna://com.webos.service.db/find &#39;{<br />
-      &nbsp; &nbsp; &quot;query&quot;:{<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;from&quot;:&quot;com.webos.service.test:1&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;where&quot;:[<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;{<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;prop&quot;:&quot;sample&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;op&quot;:&quot;=&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;val&quot;:&quot;sample1&quot;<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;]<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}<br />
+    <p>Note:&nbsp;Should execute putKind, put APIs before calling find API. To get the below result, 2 entries should be added using put API.</p>
+    <p># luna-send -n 1 -f -a com.webos.service.test luna://com.webos.service.db/find &#39;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;query&quot;:{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;from&quot;:&quot;com.webos.service.test:1&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;where&quot;:[&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;prop&quot;:&quot;sample&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;op&quot;:&quot;=&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;val&quot;:&quot;sample1&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
+      &nbsp;&nbsp;&nbsp;}<br />
       }&#39;
     </p>
-    <p>---</p>
-    <p>Result:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true,</p>
-    <p style="margin-left:40px">&quot;results&quot;: [</p>
-    <p style="margin-left:80px">{</p>
-    <p style="margin-left:120px">&quot;_rev&quot;: 19,</p>
-    <p style="margin-left:120px">&quot;sample&quot;: &quot;sample1&quot;,</p>
-    <p style="margin-left:120px">&quot;test&quot;: &quot;test1&quot;,</p>
-    <p style="margin-left:120px">&quot;_id&quot;: &quot;J8rKQDOvxdF&quot;,</p>
-    <p style="margin-left:120px">&quot;_kind&quot;: &quot;com.webos.service.test:1&quot;</p>
-    <p style="margin-left:80px">},</p>
-    <p style="margin-left:80px">{</p>
-    <p style="margin-left:120px">&quot;_rev&quot;: 21,</p>
-    <p style="margin-left:120px">&quot;sample&quot;: &quot;sample1&quot;,</p>
-    <p style="margin-left:120px">&quot;test&quot;: &quot;test1&quot;,</p>
-    <p style="margin-left:120px">&quot;_id&quot;: &quot;J8rKTaBClIo&quot;,</p>
-    <p style="margin-left:120px">&quot;_kind&quot;: &quot;com.webos.service.test:1&quot;</p>
-    <p style="margin-left:80px">}</p>
-    <p style="margin-left:40px">]</p>
-    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;results&quot;:[&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;_rev&quot;:19,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;sample&quot;:&quot;sample1&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;test&quot;:&quot;test1&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;_id&quot;:&quot;J8rKQDOvxdF&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;_kind&quot;:&quot;com.webos.service.test:1&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;_rev&quot;:21,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;sample&quot;:&quot;sample1&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;test&quot;:&quot;test1&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;_id&quot;:&quot;J8rKTaBClIo&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;_kind&quot;:&quot;com.webos.service.test:1&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;]<br />
+      }
+    </p>
   </div>
 </div>
 <h3>get</h3>
@@ -1792,7 +1816,7 @@ toc: true
           <td>Required</td>
           <td>Object array</td>
           <td>
-            <p style="text-align:left">If the&nbsp;<strong>get</strong>&nbsp;method succeeds, it will return the array of objects.</p>
+            <p style="text-align:left">Returns an array of stored db8 data objects.</p>
           </td>
         </tr>
         <tr>
@@ -1861,19 +1885,21 @@ toc: true
   <h4>Example</h4>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.db/get &#39;{&quot;ids&quot; : [&quot;J8rKTaBClIo&quot;]}&#39;</p>
-    <p>Result of execution:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true,</p>
-    <p style="margin-left:40px">&quot;results&quot;: [</p>
-    <p style="margin-left:80px">{</p>
-    <p style="margin-left:120px">&quot;_rev&quot;: 21,</p>
-    <p style="margin-left:120px">&quot;sample&quot;: &quot;sample1&quot;,</p>
-    <p style="margin-left:120px">&quot;test&quot;: &quot;test1&quot;,</p>
-    <p style="margin-left:120px">&quot;_id&quot;: &quot;J8rKTaBClIo&quot;,</p>
-    <p style="margin-left:120px">&quot;_kind&quot;: &quot;com.webos.service.test:1&quot;</p>
-    <p style="margin-left:80px">}</p>
-    <p style="margin-left:40px">]</p>
-    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;results&quot;:[&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;_rev&quot;:21,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;sample&quot;:&quot;sample1&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;test&quot;:&quot;test1&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;_id&quot;:&quot;J8rKTaBClIo&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;_kind&quot;:&quot;com.webos.service.test:1&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;]<br />
+      }
+    </p>
   </div>
 </div>
 <h3>getProfile</h3>
@@ -1953,9 +1979,9 @@ toc: true
           </td>
         </tr>
         <tr>
-          <td>SuccessResponse1</td>
+          <td>results</td>
           <td>Optional</td>
-          <td>String</td>
+          <td>Object array</td>
           <td>
             <p>If the&nbsp;method succeeds, the relevant details are returned in the response.</p>
           </td>
@@ -2043,6 +2069,8 @@ toc: true
   <div class="code-bg-grey">
     <p>Example 1:&nbsp;Get profile data for application &quot;com.webos.service.test:3&quot;</p>
     <p># luna-send -n 1 -a com.webos.service.test:3 luna://com.webos.service.db/getProfile &#39;{ }&#39; -f</p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp; &quot;results&quot;: [<br />
@@ -2058,7 +2086,7 @@ toc: true
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;_kind&quot;: &quot;com.webos.service.test:3.profile:1&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;_id&quot;: &quot;+++11eN6jck&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;_id&quot;: &quot;++&plus;11eN6jck&quot;,<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;time&quot;: &quot;0.083334&quot;<br />
       &nbsp; &nbsp; &nbsp; &nbsp; },<br />
       &nbsp; &nbsp; &nbsp; &nbsp; {<br />
@@ -2078,14 +2106,14 @@ toc: true
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;_kind&quot;: &quot;com.webos.service.test:3.profile:1&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;_id&quot;: &quot;+++19DpixTc&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;_id&quot;: &quot;&plus;&plus;&plus;19DpixTc&quot;,<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;time&quot;: &quot;0.066458&quot;<br />
       &nbsp; &nbsp; &nbsp; &nbsp; },<br />
       &nbsp; &nbsp; &nbsp; &nbsp; {<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;_rev&quot;: 5370,<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;sample&quot;: &quot;sample1&quot;,<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;test&quot;: &quot;test1&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;_id&quot;: &quot;+++1BZDmwCg&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;_id&quot;: &quot;&plus;&plus;&plus;1BZDmwCg&quot;,<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;_kind&quot;: &quot;com.webos.service.test:3.profile:1&quot;<br />
       &nbsp; &nbsp; &nbsp; &nbsp; },<br />
       &nbsp; &nbsp; &nbsp; &nbsp; {<br />
@@ -2105,16 +2133,29 @@ toc: true
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;_kind&quot;: &quot;com.webos.service.test:3.profile:1&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;_id&quot;: &quot;+++1BZHnhrV&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;_id&quot;: &quot;&plus;&plus;&plus;1BZHnhrV&quot;,<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;time&quot;: &quot;0.321958&quot;<br />
       &nbsp; &nbsp; &nbsp; &nbsp; }<br />
       &nbsp; &nbsp; ]<br />
       }
     </p>
+    <p>&nbsp;</p>
     <p>Example 2:&nbsp;Get profile data for an application for only get commands.</p>
-    <p>luna-send -n 1 -a com.webos.service.test:3 &nbsp;luna://com.webos.service.db/getProfile &#39;{&quot;application&quot;:&quot;com.webos.service.test:3&quot;,&quot;query&quot;:{&quot;where&quot;:[{&quot;prop&quot;:&quot;method&quot;,&quot;op&quot;:&quot;=&quot;,&quot;val&quot;:&quot;get&quot;}]}}&#39;<br />
-      &nbsp;-f
+    <p># luna-send -n 1 -a com.webos.service.test:3 &nbsp;luna://com.webos.service.db/getProfile &#39;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;application&quot;:&quot;com.webos.service.test:3&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;query&quot;:{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;where&quot;:[&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;prop&quot;:&quot;method&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;op&quot;:&quot;=&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;val&quot;:&quot;get&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
+      &nbsp;&nbsp;&nbsp;}<br />
+      }&#39;&nbsp;&nbsp;-f
     </p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp; &quot;results&quot;: [<br />
@@ -2130,7 +2171,7 @@ toc: true
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;_kind&quot;: &quot;com.webos.service.test:3.profile:1&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;_id&quot;: &quot;+++11eN6jck&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;_id&quot;: &quot;&plus;&plus;&plus;11eN6jck&quot;,<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;time&quot;: &quot;0.083334&quot;<br />
       &nbsp; &nbsp; &nbsp; &nbsp; }<br />
       &nbsp; &nbsp; ]<br />
@@ -2263,11 +2304,13 @@ toc: true
   <h4>Example</h4>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.db/load &#39;{&quot;path&quot;: &quot;/tmp/dump.json&quot;}&#39;</p>
-    <p>Result of execution</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;count&quot;: 0,</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;count&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>merge</h3>
@@ -2346,7 +2389,7 @@ toc: true
         <tr>
           <td>results</td>
           <td>Optional</td>
-          <td>Object array: <a href="#putresult"> PutResult</a></td>
+          <td>Object array: <a href="#results">Results</a></td>
           <td>
             <p style="text-align:left">If the objects parameter was specified, and the <strong>merge</strong>&nbsp;method succeeds, <strong>merge </strong>will return the ids and revisions of the updated object.</p>
           </td>
@@ -2431,7 +2474,7 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example, how to update similar object</p>
+    <p>Example 1: How to update similar objects</p>
     <p># luna-send -n 1 -f -a com.webos.service.configurator luna://com.webos.service.db/merge &#39;{<br />
       &nbsp; &nbsp; &nbsp; &nbsp;&quot;objects&quot;:[<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{<br />
@@ -2442,18 +2485,20 @@ toc: true
       &nbsp; &nbsp; &nbsp; &nbsp;]<br />
       }&#39;
     </p>
-    <p>Result of execution:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true,</p>
-    <p style="margin-left:40px">&quot;results&quot;: [</p>
-    <p style="margin-left:80px">{</p>
-    <p style="margin-left:120px">&quot;id&quot;: &quot;J8rKTaBClIo&quot;,</p>
-    <p style="margin-left:120px">&quot;rev&quot;: 23</p>
-    <p style="margin-left:80px">}</p>
-    <p style="margin-left:40px">]</p>
-    <p>}</p>
-    <p>-------------</p>
-    <p>Example, how to update in all object with filed &quot;sample&quot; and value &quot;sample1&quot; to value &quot;sample_updated_value&quot;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;results&quot;:[&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;id&quot;:&quot;J8rKTaBClIo&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;rev&quot;:23<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;]<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Example 2:&nbsp;How to update in all object with filed &quot;sample&quot; and value &quot;sample1&quot; to value &quot;sample_updated_value&quot;</p>
     <p># luna-send -n 1 -f -a com.webos.service.configurator luna://com.webos.service.db/merge &#39;{<br />
       &nbsp; &nbsp; &nbsp;&quot;query&quot;:{<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;from&quot;:&quot;com.webos.service.test:1&quot;,<br />
@@ -2470,11 +2515,13 @@ toc: true
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;}<br />
       &nbsp;}&#39;
     </p>
-    <p>Result of execution:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;count&quot;: 2,</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;count&quot;:2,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>mergePut</h3>
@@ -2554,7 +2601,7 @@ toc: true
         <tr>
           <td>results</td>
           <td>Optional</td>
-          <td>Object: <a href="#putresult"> PutResult</a></td>
+          <td>Object array: <a href="#results"> Results</a></td>
           <td>
             <p>If the objects parameter was specified, and the <strong>merge</strong>&nbsp;method succeeds, <strong>merge </strong>will return the ids and revisions of the updated object.</p>
           </td>
@@ -2639,7 +2686,7 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example, how to insert object, if it doesn&#39;t exists in database</p>
+    <p>Example 1: How to an insert object, if it doesn&#39;t exist&nbsp;in the database</p>
     <p># luna-send -n 1 -f -a com.webos.service.configurator luna://com.webos.service.db/mergePut &#39;{<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;objects&quot;:[<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;{<br />
@@ -2650,16 +2697,18 @@ toc: true
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;]<br />
       &nbsp;}&#39;
     </p>
-    <p>Result of execution:</p>
-    <p>{</p>
-    <p style="margin-left:40.0px">&quot;returnValue&quot;: true,</p>
-    <p style="margin-left:40.0px">&quot;results&quot;: [</p>
-    <p style="margin-left:80.0px">{</p>
-    <p style="margin-left:120.0px">&quot;id&quot;: &quot;J8rKTaBClIo&quot;,</p>
-    <p style="margin-left:120.0px">&quot;rev&quot;: 23</p>
-    <p style="margin-left:80.0px">}</p>
-    <p style="margin-left:40.0px">]</p>
-    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;results&quot;:[&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;id&quot;:&quot;J8rKTaBClIo&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;rev&quot;:23<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;]<br />
+      }
+    </p>
   </div>
 </div>
 <h3>profile</h3>
@@ -2868,13 +2917,15 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Note: Should execute putKind, put, del (to delete some of entries added using put) APIs before purge API</p>
+    <p>Note: Should execute putKind, put, del (to delete some of entries added using put) APIs before calling purge API</p>
     <p># luna-send -n 1 -f&nbsp;-a com.palm.configurator luna://com.webos.service.db/purge &#39;{}&#39;</p>
-    <p>Result of execution</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;count&quot;: 0,</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;count&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>purgeStatus</h3>
@@ -2927,7 +2978,7 @@ toc: true
     <p>Note: Should execute purge API before purgeStatus, refer purge API</p>
     <p>#luna-send -n 1 -f -a com.palm.configurator luna://com.webos.service.db/purgeStatus &#39;{}&#39;</p>
     <p>&nbsp;</p>
-    <p>Result:</p>
+    <p>Response:&nbsp;</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;rev&quot;: -1,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
@@ -2993,7 +3044,7 @@ toc: true
         <tr>
           <td>results</td>
           <td>Required</td>
-          <td>Object array: <a href="#putresponse"> PutResponse</a></td>
+          <td>Object array: <a href="#results">Results</a></td>
           <td>
             <p>If the object was inserted, <strong>results</strong> will contain <u><strong>id</strong></u> and <u><strong>revision</strong></u> of the inserted object</p>
           </td>
@@ -3080,16 +3131,18 @@ toc: true
       &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
       }&#39;
     </p>
-    <p>Result of command execution:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true,</p>
-    <p style="margin-left:40px">&quot;results&quot;: [</p>
-    <p style="margin-left:80px">{</p>
-    <p style="margin-left:120px">&quot;id&quot;: &quot;J8rTIa65u++&quot;,</p>
-    <p style="margin-left:120px">&quot;rev&quot;: 27</p>
-    <p style="margin-left:80px">}</p>
-    <p style="margin-left:40px">]</p>
-    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;results&quot;:[&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;id&quot;:&quot;J8rTIa65u++&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;rev&quot;:27<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;]<br />
+      }
+    </p>
   </div>
 </div>
 <h3>putKind</h3>
@@ -3282,10 +3335,11 @@ toc: true
       }&#39;
     </p>
     <p>&nbsp;</p>
-    <p>Result of command execution:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>Response:&nbsp;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>putPermissions</h3>
@@ -3453,26 +3507,29 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -n 1 -f -a com.webos.service.test luna://com.webos.service.db/putPermissions &#39;{<br />
-      &nbsp; &nbsp; &nbsp;&nbsp;&quot;permissions&quot;:[<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;{<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;operations&quot;:{<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;read&quot;:&quot;allow&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;create&quot;:&quot;allow&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;update&quot;:&quot;allow&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;delete&quot;:&quot;allow&quot;<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;},<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;object&quot;:&quot;com.webos.service.test:1&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;type&quot;:&quot;db.kind&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;caller&quot;:&quot;com.webos.service.testapp&quot;<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}<br />
-      &nbsp; &nbsp; &nbsp;]<br />
+    <p># luna-send -n 1 -f -a com.webos.service.test luna://com.webos.service.db/putPermissions &#39;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;permissions&quot;:[&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;operations&quot;:{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;read&quot;:&quot;allow&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;create&quot;:&quot;allow&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;update&quot;:&quot;allow&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;delete&quot;:&quot;allow&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;object&quot;:&quot;com.webos.service.test:1&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;type&quot;:&quot;db.kind&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;caller&quot;:&quot;com.webos.service.testapp&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;]<br />
       }&#39;
     </p>
-    <p>Result of command execution:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>putQuotas</h3>
@@ -3545,21 +3602,36 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -f -n 1 -a com.webos.service.configurator luna://com.webos.service.db/putQuotas &#39;{ &quot;quotas&quot; : [ {&quot;owner&quot; : &quot;com.test&quot;, &quot;size&quot; : 1000000 } ] }&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p># luna-send -f -n 1 -a com.webos.service.configurator luna://com.webos.service.db/putQuotas &#39;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;quotas&quot;:[&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;owner&quot;:&quot;com.test&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;size&quot;:1000000<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;]<br />
+      }&#39;
+    </p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+    <p>&nbsp;</p>
     <p>And after executing of this command, quotas will be:</p>
     <p># luna-send -f -n 1 -a com.webos.service.configurator luna://com.webos.service.db/quotaStats &#39;{}&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true,</p>
-    <p style="margin-left:40px">&quot;results&quot;: {</p>
-    <p style="margin-left:80px">&quot;com.test&quot;: {</p>
-    <p style="margin-left:120px">&quot;size&quot;: 1000000,</p>
-    <p style="margin-left:120px">&quot;used&quot;: 0</p>
-    <p style="margin-left:80px">}</p>
-    <p style="margin-left:40px">}</p>
-    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;results&quot;:{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;com.test&quot;:{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;size&quot;:1000000,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;used&quot;:0<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;}<br />
+      }
+    </p>
   </div>
 </div>
 <h3>quotaStats</h3>
@@ -3612,24 +3684,26 @@ toc: true
   <h4>Example</h4>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f -a com.palm.configurator luna://com.webos.service.db/quotaStats &#39;{}&#39;</p>
-    <p>Result of command execution</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true,</p>
-    <p style="margin-left:40px">&quot;results&quot;: {</p>
-    <p style="margin-left:80px">&quot;*&quot;: {</p>
-    <p style="margin-left:120px">&quot;size&quot;: 10485760,</p>
-    <p style="margin-left:120px">&quot;used&quot;: 1371</p>
-    <p style="margin-left:80px">},</p>
-    <p style="margin-left:80px">&quot;com.webos.*&quot;: {</p>
-    <p style="margin-left:120px">&quot;size&quot;: 10485760,</p>
-    <p style="margin-left:120px">&quot;used&quot;: 0</p>
-    <p style="margin-left:80px">},</p>
-    <p style="margin-left:80px">&quot;com.webos.testapp&quot;: {</p>
-    <p style="margin-left:120px">&quot;size&quot;: 52428800,</p>
-    <p style="margin-left:120px">&quot;used&quot;: 0</p>
-    <p style="margin-left:80px">}</p>
-    <p style="margin-left:40px">}</p>
-    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;results&quot;:{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;*&quot;:{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;size&quot;:10485760,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;used&quot;:1371<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;com.webos.*&quot;:{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;size&quot;:10485760,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;used&quot;:0<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;com.webos.testapp&quot;:{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;size&quot;:52428800,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;used&quot;:0<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;}<br />
+      }
+    </p>
   </div>
 </div>
 <h3>removeAppData</h3>
@@ -3742,9 +3816,12 @@ toc: true
   <h4>Example</h4>
   <div class="code-bg-grey">
     <p># luna-send -n 1 luna://com.webos.service.db/removeAppData &#39;{&quot;owners&quot; : [ &quot;com.webos.service.test:1&quot; ]}&#39;</p>
-    <p>{</p>
-    <p>&nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>reserveIds</h3>
@@ -3802,8 +3879,7 @@ toc: true
           <td>Required</td>
           <td>String array</td>
           <td>
-            <p style="text-align:left">If the&nbsp;<strong>reserveIds</strong>&nbsp;method succeeds it will return list of reserverd ids.</p>
-            <p style="text-align:left">If the&nbsp;<strong>reserveIds</strong>&nbsp;method fails, <strong>errorCode</strong> will contain reason for its failure.</p>
+            <p style="text-align:left">Array of reserved db8 IDs.</p>
           </td>
         </tr>
         <tr>
@@ -3873,15 +3949,16 @@ toc: true
   <div class="code-bg-grey">
     <p># luna-send -i -f luna://com.webos.service.db/reserveIds &#39;{ &quot;count&quot; : 3 }&#39;</p>
     <p>&nbsp;</p>
-    <p>Result of call:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;ids&quot;: [</p>
-    <p style="margin-left:80px">&quot;J9FJ12j0Usk&quot;,</p>
-    <p style="margin-left:80px">&quot;J9FJ12j18hJ&quot;,</p>
-    <p style="margin-left:80px">&quot;J9FJ12j1Mic&quot;</p>
-    <p style="margin-left:40px">],</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>Response:&nbsp;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;ids&quot;:[&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;J9FJ12j0Usk&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;J9FJ12j18hJ&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;J9FJ12j1Mic&quot;<br />
+      &nbsp;&nbsp;&nbsp;],<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>search</h3>
@@ -4182,6 +4259,7 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
+    <p>Example 1:&nbsp;</p>
     <p># luna-send -n 1 -f -a com.webos.service.test luna://com.webos.service.db/search &#39;{<br />
       &nbsp; &nbsp;&quot;query&quot;:{<br />
       &nbsp; &nbsp; &nbsp;&nbsp; &quot;from&quot;:&quot;com.webos.service.test:1&quot;,<br />
@@ -4195,42 +4273,45 @@ toc: true
       &nbsp; &nbsp; }<br />
       }&#39;
     </p>
+    <p>&nbsp;</p>
     <p>Response:&nbsp;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;count&quot;: 4,</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true,</p>
-    <p style="margin-left:40px">&quot;results&quot;: [</p>
-    <p style="margin-left:80px">{</p>
-    <p style="margin-left:120px">&quot;_rev&quot;: 22,</p>
-    <p style="margin-left:120px">&quot;sample&quot;: &quot;sample_updated_value&quot;,</p>
-    <p style="margin-left:120px">&quot;test&quot;: &quot;test1&quot;,</p>
-    <p style="margin-left:120px">&quot;_id&quot;: &quot;J8rKQDOvxdF&quot;,</p>
-    <p style="margin-left:120px">&quot;_kind&quot;: &quot;com.webos.service.test:1&quot;</p>
-    <p style="margin-left:80px">},</p>
-    <p style="margin-left:80px">{</p>
-    <p style="margin-left:120px">&quot;_rev&quot;: 23,</p>
-    <p style="margin-left:120px">&quot;sample&quot;: &quot;sample_updated_value&quot;,</p>
-    <p style="margin-left:120px">&quot;test&quot;: &quot;test1&quot;,</p>
-    <p style="margin-left:120px">&quot;_id&quot;: &quot;J8rKTaBClIo&quot;,</p>
-    <p style="margin-left:120px">&quot;_kind&quot;: &quot;com.webos.service.test:1&quot;</p>
-    <p style="margin-left:80px">},</p>
-    <p style="margin-left:80px">{</p>
-    <p style="margin-left:120px">&quot;_rev&quot;: 26,</p>
-    <p style="margin-left:120px">&quot;sample&quot;: &quot;sample1&quot;,</p>
-    <p style="margin-left:120px">&quot;test&quot;: &quot;test1&quot;,</p>
-    <p style="margin-left:120px">&quot;_id&quot;: &quot;J8rTH76hfcB&quot;,</p>
-    <p style="margin-left:120px">&quot;_kind&quot;: &quot;com.webos.service.test:1&quot;</p>
-    <p style="margin-left:80px">},</p>
-    <p style="margin-left:80px">{</p>
-    <p style="margin-left:120px">&quot;_rev&quot;: 27,</p>
-    <p style="margin-left:120px">&quot;sample&quot;: &quot;sample1&quot;,</p>
-    <p style="margin-left:120px">&quot;test&quot;: &quot;test1&quot;,</p>
-    <p style="margin-left:120px">&quot;_id&quot;: &quot;J8rTIa65u++&quot;,</p>
-    <p style="margin-left:120px">&quot;_kind&quot;: &quot;com.webos.service.test:1&quot;</p>
-    <p style="margin-left:80px">}</p>
-    <p style="margin-left:40px">]</p>
-    <p>}</p>
-    <p>Search method call with &#39;cancelable&#39; property:</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;count&quot;:4,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;results&quot;:[&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;_rev&quot;:22,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;sample&quot;:&quot;sample_updated_value&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;test&quot;:&quot;test1&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;_id&quot;:&quot;J8rKQDOvxdF&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;_kind&quot;:&quot;com.webos.service.test:1&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;_rev&quot;:23,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;sample&quot;:&quot;sample_updated_value&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;test&quot;:&quot;test1&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;_id&quot;:&quot;J8rKTaBClIo&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;_kind&quot;:&quot;com.webos.service.test:1&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;_rev&quot;:26,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;sample&quot;:&quot;sample1&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;test&quot;:&quot;test1&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;_id&quot;:&quot;J8rTH76hfcB&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;_kind&quot;:&quot;com.webos.service.test:1&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;_rev&quot;:27,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;sample&quot;:&quot;sample1&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;test&quot;:&quot;test1&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;_id&quot;:&quot;J8rTIa65u++&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;_kind&quot;:&quot;com.webos.service.test:1&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;]<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Example 2: Using &#39;cancelable&#39; property</p>
     <p>#luna-send -n 1 -f -m com.webos.service.test luna://com.webos.service.db/search &#39;{<br />
       &quot;query&quot;:{<br />
       &nbsp;&nbsp;&nbsp; &quot;from&quot;:&quot;com.webos.service.test:1&quot;,<br />
@@ -4246,11 +4327,13 @@ toc: true
       &nbsp; &nbsp; &quot;subscribe&quot;:true<br />
       }&#39;
     </p>
+    <p>&nbsp;</p>
     <p>Response:&nbsp;</p>
-    <p>{</p>
-    <p>&quot;taskId&quot;: &quot;find_sEhKeU&quot;,</p>
-    <p>&quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;taskId&quot;:&quot;find_sEhKeU&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>stats</h3>
@@ -4304,35 +4387,36 @@ toc: true
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.db/stats &#39;{}&#39;</p>
     <p>&nbsp;</p>
-    <p>Result of command exec:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;:true,</p>
-    <p style="margin-left:40px">&quot;results&quot;:{</p>
-    <p style="margin-left:80px">&quot;com.webos.service.test:1&quot;:{</p>
-    <p style="margin-left:120px">&quot;indexes&quot;:{</p>
-    <p style="margin-left:160px">&quot;barfoo&quot;:{</p>
-    <p style="margin-left:200px">&quot;size&quot;:0,</p>
-    <p style="margin-left:200px">&quot;delmisses&quot;:0,</p>
-    <p style="margin-left:200px">&quot;count&quot;:0</p>
-    <p style="margin-left:160px">},</p>
-    <p style="margin-left:160px">&quot;foo&quot;:{</p>
-    <p style="margin-left:200px">&quot;size&quot;:0,</p>
-    <p style="margin-left:200px">&quot;delmisses&quot;:0,</p>
-    <p style="margin-left:200px">&quot;count&quot;:0</p>
-    <p style="margin-left:160px">},</p>
-    <p style="margin-left:160px">&quot;_id&quot;:{</p>
-    <p style="margin-left:200px">&quot;size&quot;:0,</p>
-    <p style="margin-left:200px">&quot;delmisses&quot;:0,</p>
-    <p style="margin-left:200px">&quot;count&quot;:0</p>
-    <p style="margin-left:160px">}</p>
-    <p style="margin-left:120px">},</p>
-    <p style="margin-left:120px">&quot;objects&quot;:{</p>
-    <p style="margin-left:160px">&quot;size&quot;:0,</p>
-    <p style="margin-left:160px">&quot;count&quot;:0</p>
-    <p style="margin-left:120px">}</p>
-    <p style="margin-left:80px">}</p>
-    <p style="margin-left:40px">}</p>
-    <p>}</p>
+    <p>Response:&nbsp;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;results&quot;:{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;com.webos.service.test:1&quot;:{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;indexes&quot;:{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;barfoo&quot;:{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;size&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;delmisses&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;count&quot;:0<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;foo&quot;:{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;size&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;delmisses&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;count&quot;:0<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;_id&quot;:{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;size&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;delmisses&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;count&quot;:0<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;objects&quot;:{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;size&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;count&quot;:0<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;}<br />
+      }
+    </p>
   </div>
 </div>
 <h3>watch</h3>
@@ -4453,25 +4537,26 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -i -f -a com.webos.service.configurator luna://com.webos.service.db/watch &#39;{<br />
-      &nbsp; &nbsp; &nbsp;&nbsp;&quot;query&quot;:{<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;from&quot;:&quot;com.webos.service.test:1&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;where&quot;:[<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;{<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;prop&quot;:&quot;sample&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;op&quot;:&quot;=&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;val&quot;:&quot;sample1&quot;<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;}<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;]<br />
-      &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;}
+    <p># luna-send -i -f -a com.webos.service.configurator luna://com.webos.service.db/watch &#39;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;query&quot;:{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;from&quot;:&quot;com.webos.service.test:1&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;where&quot;:[&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;prop&quot;:&quot;sample&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;op&quot;:&quot;=&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;val&quot;:&quot;sample1&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
+      &nbsp;&nbsp;&nbsp;}<br />
+      }&#39;
     </p>
-    <p>}&#39;</p>
     <p>&nbsp;</p>
-    <p>When object will found with such criteria, will be returned:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true,</p>
-    <p style="margin-left:40px">&quot;fired&quot;: true</p>
-    <p>}</p>
+    <p>Response: When object is found with such criteria</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;fired&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>cancelSearch</h3>
@@ -4592,7 +4677,7 @@ toc: true
 <div>
   <h2>Objects</h2>
   <h3>BatchOperation</h3>
-  Method and params for batch operation.
+  <p>Method and params for batch operation.</p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
@@ -4638,7 +4723,7 @@ toc: true
     </table>
   </div>
   <h3>BatchResponse</h3>
-  Response to batch operation.
+  <p>Response to batch operation.</p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
@@ -4698,7 +4783,7 @@ toc: true
     </table>
   </div>
   <h3>Query</h3>
-  Defines a db8 query.
+  <p>Defines a db8 query.</p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
@@ -4792,150 +4877,8 @@ toc: true
       </tbody>
     </table>
   </div>
-  <h3>PutResponse</h3>
-  Indicates success of operation and returns id and rev fields for each object.
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <ul>
-              <li>If the&nbsp;method succeeds,&nbsp;<strong>returnValue</strong>&nbsp;will contain <strong>true</strong>.</li>
-              <li>If the&nbsp;method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false</strong>.&nbsp;</li>
-            </ul>
-            <p style="margin-left:0.0in">The&nbsp;method may fail because of one the error conditions described in the&nbsp;<strong>Error Codes Reference</strong>&nbsp;table of this method. See the&nbsp;<strong>Error Code Reference</strong>&nbsp;table for more information.&nbsp;</p>
-          </td>
-        </tr>
-        <tr>
-          <td>results</td>
-          <td>Required</td>
-          <td>Object array: <a href="#putresult"> PutResult</a></td>
-          <td>
-            <p style="text-align: left;">Array of objects containing the id and rev of each object that was put.<br></p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h3>FindResponse</h3>
-  Response to a find objects operation.
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>results</td>
-          <td>Required</td>
-          <td>Any</td>
-          <td>Array of db8 kind data objects. What is returned depends on the query and what is stored.</td>
-        </tr>
-        <tr>
-          <td>count</td>
-          <td>Optional</td>
-          <td>Number</td>
-          <td>Number of results that would have been returned if a limit had not been specified.</td>
-        </tr>
-        <tr>
-          <td>next</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>Key to pass as query's "page" property when retrieving next page of results.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h3>NotificationResponse</h3>
-  Notifies caller of change in query results returned from a "find" call.
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>fired</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p style="text-align: left;">Change notification flag.<br></p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h3>GetResponse</h3>
-  Parameters for get objects operation response.
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>results</td>
-          <td>Required</td>
-          <td>Object array</td>
-          <td>
-            <p style="text-align: left;">Returns array of stored db8 data objects.<br></p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
   <h3>IndexClause</h3>
-  <p style="text-align: left;">Used in the putKind call for creating kind object indexes. Note that indexes determine the type of queries your app can make. See Queries and Indexing for more information. Set the <strong>incDel</strong>&nbsp;flag to true if you want future queries to return marked as deleted objects. Objects are not completely deleted until an administrative purge operation takes place.<br></p>
+  <p>Used in the putKind call for creating kind object indexes. Note that indexes determine the type of queries your app can make. See Queries and Indexing for more information. Set the <strong>incDel</strong>&nbsp;flag to true if you want future queries to return marked as deleted objects. Objects are not completely deleted until an administrative purge operation takes place.</p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
@@ -4983,7 +4926,7 @@ toc: true
     </table>
   </div>
   <h3>RevSetClause</h3>
-  Defines a revision set—subset of an object's properties that your app can be notified about when one of the properties is modified.
+  <p>Defines a revision set—subset of an object's properties that your app can be notified about when one of the properties is modified.</p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
@@ -5130,38 +5073,8 @@ toc: true
       </tbody>
     </table>
   </div>
-  <h3>ReserveIdsResponse</h3>
-  Contains operation success or failure flag and array of reserved db8 IDs returned from "reserveIds" call.
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>ids</td>
-          <td>Optional</td>
-          <td>String array</td>
-          <td>
-            <p style="text-align: left;">Array of reserved IDs.<br></p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
   <h3>statsKindResult</h3>
-  <p>Information about kind usage.<br></p>
+  <p>Information about kind usage.</p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
@@ -5207,7 +5120,7 @@ toc: true
     </table>
   </div>
   <h3>WhereClause</h3>
-  Defines a SQL-like JSON where clause for a db8 Query.
+  <p>Defines a SQL-like JSON where clause for a db8 Query.</p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
@@ -5258,7 +5171,7 @@ toc: true
     </table>
   </div>
   <h3>FilterClause</h3>
-  Definition of the Filter clause that is part of the Query object.
+  <p>Definition of the Filter clause that is part of the Query object.</p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
@@ -5312,8 +5225,8 @@ toc: true
       </tbody>
     </table>
   </div>
-  <h3>PutResult</h3>
-  Contains "id" and "rev" fields in PutResponse for JSON data object.
+  <h3>Results</h3>
+  <p>Contains &quot;id&quot; and &quot;rev&quot; fields for the JSON data object.</p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
@@ -5335,7 +5248,9 @@ toc: true
           <td>id</td>
           <td>Required</td>
           <td>Any</td>
-          <td>ID of the object that was put.</td>
+          <td>
+            <p>ID of the object.</p>
+          </td>
         </tr>
         <tr>
           <td>rev</td>
@@ -5347,7 +5262,7 @@ toc: true
     </table>
   </div>
   <h3>IndexPropClause</h3>
-  Defines index property for IndexClause
+  <p>Defines index property for IndexClause.</p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
@@ -5414,7 +5329,7 @@ toc: true
     </table>
   </div>
   <h3>RevSetPropClause</h3>
-  A property in a RevSetClause.
+  <p>A property in a RevSetClause.</p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
@@ -5437,90 +5352,6 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>Name of property to include in revision set.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h3>listActiveMedia</h3>
-  <p>List of media devices, registered by db8</p>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>deviceId</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>UUID of device</p>
-          </td>
-        </tr>
-        <tr>
-          <td>deviceUri</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>The physical device path. For example:&nbsp;/tmp/usb/sda/sda1</p>
-          </td>
-        </tr>
-        <tr>
-          <td>mountPath</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Path to device pount point</p>
-          </td>
-        </tr>
-        <tr>
-          <td>shardId</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Base64 encoded Id of shard</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h3>activity</h3>
-  <p>Information about registered Activity in ActivityManager for calling DB8 <u>internal/scheduledPurge</u> API call</p>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>activityId</td>
-          <td>Required</td>
-          <td>Number</td>
-          <td>
-            <p><strong>ID</strong> of <u>Activity</u>, that registered in <u>ActivityManager</u></p>
-          </td>
         </tr>
       </tbody>
     </table>
