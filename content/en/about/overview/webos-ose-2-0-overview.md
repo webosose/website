@@ -15,7 +15,7 @@ webOS OSE 2.0 has taken a great step forward, opening chances of entering into t
 
 * Dual-display support, a preliminary step for multi-display support which is essential for a rear seat entertainment (RSE) system
 
-* Firmware-Over-the Air (FOTA) and integration of [Smack](https://en.wikipedia.org/wiki/Smack_(software)) for enhanced security
+* Firmware-Over-the-Air (FOTA) and integration of [Smack](https://en.wikipedia.org/wiki/Smack_(software)) for enhanced security
 
 * New concept of UI/UX, such as Home Launcher above, which is passenger-friendly and optimized for touch input
 
