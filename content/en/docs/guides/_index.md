@@ -30,6 +30,7 @@ This unit describes steps to set up the webOS OSE development environment.
 * [Dual-Display Setup]({{< relref "setting-up-dual-displays" >}})
 * [Firmware-Over-the-Air Setup]({{< relref "setting-up-fota" >}})
 * [GDB Debugging Setup]({{< relref "setting-up-debugging" >}})
+* [Native Development Kit Setup]({{< relref "native-development-kit-setup" >}})
 
 ## Development
 
