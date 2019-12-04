@@ -1,6 +1,6 @@
 ---
 title: Flashing webOS Open Source Edition
-date: 2019-11-07
+date: 2019-12-04
 weight: 30
 toc: true
 ---
@@ -40,16 +40,23 @@ $ sudo fdisk -l
 To flash the image to the microSD card, run the following commands.
 
 ```shell
-$ sudo umount /dev/<sdXn>
-$ sudo dd bs=4M if=./<webOS OSE image> of=/dev/<sdX>
-$ sudo umount /dev/<sdXn>
+$ sudo umount /dev/sd<xN>
+$ sudo dd bs=4M if=./<webOS OSE image> of=/dev/sd<x>
+$ sudo umount /dev/sd<xN>
 ```
 
-* `<sdXn>` denotes the device name of the microSD card, where `n` is a number suffix.
-* For `dd` command, you must pass `<sdX>` (without the suffix number) to the `of` operand. `<sdX>` indicates the mass storage device, not the partition.
+* `sd<xN>` denotes the device name of the microSD card, where `N` is a number suffix.
+* For `dd` command, you must pass `sd<x>` (without the suffix number) to the `of` operand. `sd<x>` indicates the mass storage device, not the partition.
 
 {{< note >}}
-After you run the `dd` command, the shell prompt will not display any message until the job is finished. Even if there is no message, you need to wait until the copying process is complete. For more information on `dd` command, see the [Wikipedia page on dd](https://en.wikipedia.org/wiki/Dd_(Unix)).
+If CoreUtils 8.24 or higher is installed on your system, you can use the `status=progress` option to the `dd` command to see the copying process.
+
+```shell
+$ sudo dd bs=4M if=./<webOS OSE image> of=/dev/sd<x> status=progress
+```
+
+Otherwise, the shell prompt will not display any message, so you need to wait until the copying process is complete. For more information on `dd` command, see the [Wikipedia page on dd](https://en.wikipedia.org/wiki/Dd_(Unix)).
+
 {{< /note >}}
 
 #### Flashing Command Example for Linux
@@ -77,17 +84,24 @@ $ diskutil list
 To flash the image to the microSD card, run the following commands.
 
 ```shell
-$ sudo diskutil umountDisk /dev/<diskn>
-$ sudo dd bs=4m if=./<webOS OSE image> of=/dev/<rdiskn>
-$ sudo diskutil umountDisk /dev/<diskn>
+$ sudo diskutil umountDisk /dev/disk<N>
+$ sudo dd bs=4m if=./<webOS OSE image> of=/dev/rdisk<N>
+$ sudo diskutil umountDisk /dev/disk<N>
 ```
 
-* `<diskn>` denotes the device name of the microSD card, where `n` is a number suffix.
-* For `dd` command, you must pass `<rdiskn>` to the `of` operand to speed up the copying process.
+* `disk<N>` denotes the device name of the microSD card, where `N` is a number suffix.
+* For `dd` command, you must pass `rdisk<N>` to the `of` operand to speed up the copying process.
 
 {{< note >}}
 * If you receive the error "*dd: bs: illegal numeric value*" while running the `dd` command, make sure that the value of the `bs` operand is 4m (with lowercase "m").
-* After you run the `dd` command, the shell prompt will not display any message until the job is finished. Even if there is no message, you need to wait until the copying process is complete. For more information on `dd` command, see the [Wikipedia page on dd](https://en.wikipedia.org/wiki/Dd_(Unix)).
+* If CoreUtils 8.24 or higher is installed on your system, you can use the `status=progress` option to the `dd` command to see the copying process.
+
+    ```shell
+    $ sudo dd bs=4m if=./<webOS OSE image> of=/dev/rdisk<N> status=progress
+    ```
+
+    Otherwise, the shell prompt will not display any message, so you need to wait until the copying process is complete. For more information on `dd` command, see the [Wikipedia page on dd](https://en.wikipedia.org/wiki/Dd_(Unix)).
+
 {{< /note >}}
 
 #### Flashing Command Example for macOS
@@ -119,11 +133,11 @@ After you finish flashing the webOS OSE image to the microSD card, you can check
 
         After starting up the target device, you will see the Home Launcher UI popping up from the bottom side of the screen. Home Launcher should contain a list of pre-installed apps and icons for quick access menu, as shown in the figure below.
 
-        {{< figure src="/images/docs/guides/setup/webosose-2_0-bootup-launcher.png" alt="webOS OSE 2.0 Bootup Screen" class="align-left" >}}
+        {{< figure src="/images/docs/guides/setup/webosose-2_0-bootup-launcher.jpg" alt="webOS OSE 2.0 Bootup Screen" class="align-left" >}}
 
         The names of quick access menu icons are as shown below. Currently, only the icon for System Settings app is working. The others will be implemented in a future release.
 
-        {{< figure src="/images/docs/guides/setup/webosose-2_0-quick-access-menu.png" alt="webOS OSE 2.0 quick access menu" class="align-left" >}}
+        {{< figure src="/images/docs/guides/setup/webosose-2_0-quick-access-menu.jpg" alt="webOS OSE 2.0 quick access menu" class="align-left" >}}
 
         If you want to close the Home Launcher, tap the outside of the Home Launcher. Swiping up from the bottom of the screen will show the Home Launcher again.
 
@@ -135,4 +149,4 @@ After you finish flashing the webOS OSE image to the microSD card, you can check
 
         Press the Windows key (Linux, Windows) or the right command key (macOS) on your keyboard, and you will see the Home Launcher UI popping up from the right side of the screen. Home Launcher should contain a list of pre-installed apps and an icon for Settings app, as shown in the figure below.
 
-        {{< figure src="/images/docs/guides/setup/webosose-bootup-launcher.png" alt="webOS OSE Bootup Screen" class="align-left" >}}
+        {{< figure src="/images/docs/guides/setup/webosose-bootup-launcher.jpg" alt="webOS OSE Bootup Screen" class="align-left" >}}
