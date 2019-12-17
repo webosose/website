@@ -11,12 +11,14 @@ toc: true
 
 ``` json
 {
-    "id": string,
-    "description": string,
-    "services":   [{
-        "name"          : string,
-        "description"   : string
-    }]
+    "id"                    : string,
+    "description"           : string,
+    "services": [           : object array,
+        {
+            "name"          : string,
+            "description"   : string
+        }
+    ]
 }
 ```
 
@@ -89,13 +91,13 @@ Typically, the value will be the name of the first service in <code>services</co
 
 ``` json
 {
-   "id": "com.test.testacct.test.service",
-   "description": "Test Service",
-   "services":[
-      {
-         "name":"com.test.testacct.test.service",
-         "description":"Test Contact"
-      }
-   ]
+    "id": "com.test.testacct.test.service",
+    "description": "Test Service",
+    "services": [
+        {
+            "name": "com.test.testacct.test.service",
+            "description": "Test Contact"
+        }
+    ]
 }
 ```

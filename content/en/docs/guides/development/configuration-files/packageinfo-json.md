@@ -94,12 +94,12 @@ toc: true
 
 ``` json
 {
-  "app": "com.webos.app.testapp",
-  "id": "com.webos.testapp",
-  "loc_name": "webOS Open Source Edition Demo",
-  "package_format_version": 2,
-  "vendor": "My Company",
-  "version": "1.0.0",
-  "services": ["com.webos.testapp.service"]
+    "app": "com.webos.app.testapp",
+    "id": "com.webos.testapp",
+    "loc_name": "webOS Open Source Edition Demo",
+    "package_format_version": 2,
+    "vendor": "My Company",
+    "version": "1.0.0",
+    "services": ["com.webos.testapp.service"]
 }
 ```

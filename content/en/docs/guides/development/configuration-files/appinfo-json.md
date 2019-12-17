@@ -13,28 +13,28 @@ webOS device uses `appinfo.json` to identify the app, its icon, and other inform
 Here are little tips that might help you with JSON syntax:
 
   - Do not include any comments (/* or //) in JSON files.
-  - Use double quotes around the properties--no single quotes.
+  - Use double quotes around the properties---no single quotes.
 {{< /note >}}
 
 ## Schema
 
 ``` json
 {
-    "id"               : string,
-    "title"            : string,
-    "main"             : string,
-    "icon"             : string,
-    "largeIcon"        : string,
-    "type"             : string,
-    "vendor"           : string,
-    "version"          : string,
-    "appDescription"   : string,
-    "resolution"       : string,
-    "iconColor"        : string,
-    "splashBackground" : string,
-    "transparent"      : boolean,
-    "requiredMemory"   : number,
-    "requiredPermissions" : array
+    "id"                  : string,
+    "title"               : string,
+    "main"                : string,
+    "icon"                : string,
+    "type"                : string,
+    "largeIcon"           : string,
+    "vendor"              : string,
+    "version"             : string,
+    "appDescription"      : string,
+    "resolution"          : string,
+    "iconColor"           : string,
+    "splashBackground"    : string,
+    "transparent"         : boolean,
+    "requiredMemory"      : number,
+    "requiredPermissions" : string array
 }
 ```
 
@@ -92,12 +92,6 @@ Here are little tips that might help you with JSON syntax:
 </ul></td>
 </tr>
 <tr class="odd">
-<td><p>largeIcon</p></td>
-<td><p>Required</p></td>
-<td><p>string</p></td>
-<td><p>Large app icon. The icon should be in PNG format. </p></td>
-</tr>
-<tr class="even">
 <td><p>type</p></td>
 <td><p>Required</p></td>
 <td><p>string</p></td>
@@ -109,15 +103,21 @@ Here are little tips that might help you with JSON syntax:
 </ul>
 </td>
 </tr>
+<tr class="even">
+<td><p>largeIcon</p></td>
+<td><p>Optional</p></td>
+<td><p>string</p></td>
+<td><p>Large app icon. The icon should be in PNG format. </p></td>
+</tr>
 <tr class="odd">
 <td><p>vendor</p></td>
-<td><p>Required</p></td>
+<td><p>Optional</p></td>
 <td><p>string</p></td>
 <td><p>Provides the information of the app owner. This is used in Home Launcher and deviceinfo dialogs.</p></td>
 </tr>
 <tr class="even">
 <td><p>version</p></td>
-<td><p>Required</p></td>
+<td><p>Optional<sup>*</sup></p></td>
 <td><p>string</p></td>
 <td><p>The app version number. This consists of three non-negative integers: major, minor, and revision numbers.</p>
 <p>The major, minor, and revision numbers are all mandatory, e.g. "2.1.0" (not "2.1"). Otherwise, the app may not be installed. The major, minor, and revision numbers are discrete. For example, 1.5.3 is lower version than 1.15.3.</p>
@@ -159,7 +159,7 @@ webOS OSE does not support UHD resolution for web apps.
 </tr>
 <tr class="even">
 <td><p>splashBackground</p></td>
-<td><p>Required</p></td>
+<td><p>Optional</p></td>
 <td><p>string</p></td>
 <td><p>Path for a background image to be shown while the app is loading. The file path must be relative to the project root directory. The file should be in PNG format and the image size should be 1920 x 1080.</p></td>
 </tr>
@@ -183,23 +183,65 @@ webOS OSE does not support UHD resolution for web apps.
 <tr class="odd">
 <td><p>requiredPermissions</p></td>
 <td><p>Optional</p></td>
-<td><p>array</p></td>
+<td><p>string array</p></td>
 <td><p>Specifies the security groups required to run the application.</p></td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td colspan="4"><p>* For external apps packaged via CLI, it is required to specify the <code>version</code> property in <code>appinfo.json</code>.</p></td>
+</tr>
+</tfoot>
 </table>
 </div>
 
 ## Example
 
+{{< code "appinfo.json (web app)" true >}}
+``` json
+{
+    "id": "com.myco.app.web",
+    "title": "Web App",
+    "main": "index.html",
+    "icon": "icon.png",
+    "type": "web"
+}
+```
+{{< /code >}}
+
+{{< code "appinfo.json (QML app)" true >}}
+``` json
+{
+    "id": "com.myco.app.qml",
+    "title": "QML App",
+    "main": "main.qml",
+    "icon": "icon.png",
+    "type": "qml"
+}
+```
+{{< /code >}}
+
+{{< code "appinfo.json (native app)" true >}}
+``` json
+{
+    "id": "com.myco.app.native",
+    "title": "Native App",
+    "main": "native",
+    "icon": "icon.png",
+    "type": "native"
+}
+```
+{{< /code >}}
+
+{{< code "appinfo.json (web app, with optional properties)" true >}}
 ``` json
 {
     "id": "com.myco.app.appname",
     "title": "AppName",
     "main": "index.html",
     "icon": "AppName_80x80.png",
-    "largeIcon": "AppName_130x130.png",
     "type": "web",
+    "largeIcon": "AppName_130x130.png",
     "vendor": "My Company",
     "version": "1.0.0",
     "appDescription": "This is an app tagline",
@@ -211,6 +253,7 @@ webOS OSE does not support UHD resolution for web apps.
     "requiredPermissions": ["time", "media"]
 }
 ```
+{{< /code >}}
 
 ## Localizing App Metadata
 
@@ -230,8 +273,8 @@ With additional `appinfo.json` files, `title` and `appDescription` can be provid
 
 ``` json
 {
-    "title": "Translated app title",
-    "appDescription": "Translated app description",
+    "title": "<Translated app title>",
+    "appDescription": "<Translated app description>",
 }
 ```
 
