@@ -1,17 +1,17 @@
 ---
 title: Native Development Kit Setup
-date: 2019-12-02
+date: 2019-12-11
 weight: 80
 toc: true
 ---
 
-This guide describes how to set up a Native Development Kit (NDK) for 3rd party native apps and services.
+Native Development Kit (NDK) is a set of tools that include toolchains, libraries, and header files. To build 3rd party native apps and services for the pre-built webOS target device, you need to set up the NDK on your host machine.
 
-NDK is a set of tools that include toolchains, libraries, and header files. To build 3rd party native apps and services for the pre-built webOS target device, you need to set up the NDK on your host machine.
+This guide describes how to set up the NDK for 3rd party native apps and services.
 
 ## Build the NDK Installer
 
-To use the NDK installer, you must build it first. Go to your `build-webos` directory and enter the following commands on the shell.
+To set up the NDK, you must build an NDK installer first. Go to your `build-webos` directory and enter the following commands on the shell.
 
 ``` bash
 build-webos$ ./mcf -p <number of physical CPU cores / 2> -b <number of physical CPU cores / 2> raspberrypi4
@@ -21,7 +21,7 @@ build-webos$ bitbake -c populate_sdk webos-image
 
 {{< note >}}
   - `build-webos` directory and  `mcf` command are explained in [Building webOS OSE]({{< relref "building-webos-ose">}}).
-  - OpenEmbedded commands are used to build NDK installer. For more details about using the commands and OpenEmbedded, see [Yocto Project SDK Manual](https://www.yoctoproject.org/docs/2.6/sdk-manual/sdk-manual.html#sdk-building-an-sdk-installer).
+  - OpenEmbedded commands are used to build the NDK installer. For more details about using the commands and OpenEmbedded, see [Yocto Project SDK Manual](https://www.yoctoproject.org/docs/2.6/sdk-manual/sdk-manual.html#sdk-building-an-sdk-installer).
 {{< /note >}}
 
 If the build succeeds, the NDK installer (`.sh` file) is created in `build-webos/BUILD/deploy/sdk/`.
@@ -56,14 +56,14 @@ sysroots
 version-cortexa7t2hf-neon-vfpv4-webos-linux-gnueabi
 ```
 
-## Set up the Build Environment
+## Run the Environment Setup Script
 
-To set up the build environment, enter the following command on the shell.
+The final step to use the installed NDK is running the environment setup script, enter the following command on the shell.
+
+{{< caution >}}
+You need to enter the following command every time you start a new shell session.
+{{< /caution >}}
 
 ``` bash
 $ source /opt/webos-sdk-x86_64/1.0.g/environment-setup-cortexa7t2hf-neon-vfpv4-webos-linux-gnueabi
 ```
-
-{{< caution >}}
-You need to enter `source` command every time you start a new shell session.
-{{< /caution >}}
