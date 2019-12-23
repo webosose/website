@@ -1,6 +1,6 @@
 ---
 title: webOS OSE 1.10.1 Release Notes
-date: 2018-08-30
+date: 2019-08-30
 weight: 13
 toc: true
 layout: release-notes
