@@ -1,13 +1,19 @@
 ---
 title: Workflow Designer Release Notes
-date: 2019-12-20
+date: 2019-12-23
 weight: 20
 toc: true
 ---
 
 This page provides the summary of each Workflow Designer release for webOS Open Source Edition (OSE).
 
-## v1.0.2 (December 20, 2019)
+## v1.0.3 (December 23, 2019)
+
+### Changed Features
+
+* Supports CLI v1.10.1.
+
+## v1.0.2 (September 18, 2019)
 
 ### Changed Features
 
