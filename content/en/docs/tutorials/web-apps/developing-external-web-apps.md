@@ -1,6 +1,6 @@
 ---
 title: Developing External Web Apps
-date: 2019-10-11
+date: 2020-01-07
 weight: 10
 toc: true
 ---
@@ -39,7 +39,7 @@ In the above command:
 - `webapp` is the name of template that creates a basic web app.
 - `sampleApp` is the web app directory which is created in the current directory.
 
-The web app directory (`sampleApp`) has the following directory and files:
+The web app directory (`sampleApp`) has the following files:
 
 <div class="table-container">
 <table class="table is-bordered is-fullwidth">
@@ -49,7 +49,7 @@ The web app directory (`sampleApp`) has the following directory and files:
 </colgroup>
 <thead>
 <tr class="header">
-<th><p><strong>Directory / File</strong></p></th>
+<th><p><strong>File</strong></p></th>
 <th><p><strong>Description</strong></p></th>
 </tr>
 </thead>
@@ -143,14 +143,10 @@ In the above command, `<APP_DIR>` and `<SERVICE_DIR>` mean app and service direc
 
 ### Step 5: Install the Web App
 
-Before installing the app, you need to add the webOS OSE target device to the list of registered devices using the `ares-setup-device` command. For more information, see [ares-setup-device]({{< relref "cli-user-guide#ares-setup-device" >}}). Skip this step if the target device is already present in the list.
-
-- To get a list of target devices only, use the command: `ares-setup-device -list`
-- To get a list of target device with all properties, use the command: `ares-setup-device -listfull`
-
-{{< caution >}}
-Make sure the webOS OSE target device is running during the installation.
-{{< /caution >}}
+{{< note >}}
+* Before installing the app, ensure that the webOS OSE target device is registered on the CLI using the `ares-setup-device` command. For details, see [ares-setup-device] ({{< relref "cli-user-guide#ares-setup-device" >}}).
+* Make sure that the target device is running during the installation.
+{{< /note >}}
 
 To install the web app on the target device, execute the following command:
 
@@ -162,6 +158,8 @@ In the above command:
 
 - `<TARGET_DEVICE>` is the name of the target device.
 - `./com.domain.app_0.0.1_all.ipk` is the name of the IPK file that is generated after packaging the app in the previous step.
+
+If the installation is successful, a `Success` message will appear.
 
 To verify the installation, check if the web app ID (in this case, `com.domain.app`) is available in the output of the following command:
 

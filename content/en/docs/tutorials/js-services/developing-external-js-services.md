@@ -1,6 +1,6 @@
 ---
 title: Developing External JS Services
-date: 2018-10-15
+date: 2020-01-06
 weight: 10
 toc: true
 ---
@@ -19,6 +19,7 @@ Developing an external JS service requires the following steps:
 * [Step 3: Configure the JS Service](#step-3-configure-the-js-service)
 * [Step 4: Package the JS Service](#step-4-package-the-js-service)
 * [Step 5: Install the JS Service](#step-5-install-the-js-service)
+* [Step 6: Run the JS Service](#step-6-run-the-js-service)
 
 ### Step 1: Create a JS Service
 
@@ -26,7 +27,7 @@ Start by creating a JS service using the available JS service template.
 
 To create a basic JS service, execute the following command:
 
-``` shell
+``` bash
 $ ares-generate -t js_service sampleService
 ```
 
@@ -75,7 +76,7 @@ The JS service directory (`sampleService`) has the following files:
 </tr>
 <tr class="even">
 <td><p>services.json</p></td>
-<td><p>Configuration file that defines what commands the service provides on the webOS bus.</p></td>
+<td><p>Configuration file that defines what commands the service provides on the webOS bus. See <a href="{{< relref "services-json" >}}">services.json</a> for details.</p></td>
 </tr>
 </tbody>
 </table>
@@ -100,7 +101,7 @@ This loads the `webos-service` module.
 var Service = require('webos-service');
 ```
 
-The following JavaScript example registers a service (`luna://com.domain.app.myservice/hello`) which responds to a request with a "Hello, World!" message.
+The following JavaScript example registers a service which responds to a request with a "Hello, World!" message.
 
 ``` javascript
 var service = new Service("com.domain.app.myservice");
@@ -118,7 +119,7 @@ For more details about `webos-service` module, see [webos-service Library API Re
 
 #### package.json
 
-A 'package.json' file configures the service metadata and points to the main service file. This file is needed for packaging (related with Node.js).
+A `package.json` file configures the service metadata and points to the main service file. This file is needed for packaging (related with Node.js).
 
 A minimal `package.json` looks like this:
 
@@ -139,7 +140,7 @@ There are quite a few other values one can set in the `package.json` file. For t
 
 #### services.json
 
-A 'services.json' file defines the services that must be registered on the Luna Bus. The methods of these services can be called from other apps and services. For more information, see [services.json]({{< relref "services-json" >}}).
+A `services.json` file defines the services that must be registered on the Luna Bus. The methods of these services can be called from other apps and services. For more information, see [services.json]({{< relref "services-json" >}}).
 
 A `services.json` file looks like this:
 
@@ -170,9 +171,30 @@ The JS service must be installed along with the web app.
 
 For details on installing the web app, see [Installing the Web App]({{< relref "developing-external-web-apps#step-5-install-the-web-app" >}}).
 
-{{< note "About launching the JS service" >}}
-Because external JS services are installed as a dynamic service type, the service becomes active only when another application or service use the service by calling its method. If its method has been called as subscription, the service remains active without exiting. If the service is not used, it exits after 5 seconds. For more information on the 5-second timeout, see [FAQ]({{< relref "js-service-faq" >}}).
-{{< /note >}}
+
+### Step 6: Run the JS Service
+
+If the JS service is successfully installed, you can try running the JS service on the target device.
+
+To call the JS service, use the following command:
+
+``` bash
+root@raspberrypi4:/# luna-send -n 1 -f luna://com.domain.app.myservice/Hello '{"name":"webOS"}'
+```
+
+The response will be:
+
+``` bash
+{
+    "Response": "Hello, World webOS",
+    "returnValue": true
+}
+```
+
+When `Hello` method of `com.domain.app.myservice` is called, the service adds `name`, the delivered parameter, at the end and returns the text.
+
+Since this JS service is a dynamic service, it is run when called and terminated after a certain period of inactivity (5 seconds). For more information about dynamic service, see [Static and Dynamic Services]({{< relref "native-service-overview#static-and-dynamic-services" >}}).
+
 
 ## Debugging JS Services
 
@@ -184,7 +206,7 @@ To enable the Inspector on a webOS OSE device, use the `ares-inspect` command. F
 
 **General Usage:**
 
-``` shell
+``` bash
 $ ares-inspect --device <TARGET_DEVICE> --service <SERVICE_ID>
 ```
 
