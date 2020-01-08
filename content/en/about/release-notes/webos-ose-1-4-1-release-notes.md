@@ -13,25 +13,25 @@ This version corresponds to the [GitHub releases](https://github.com/webosose/bu
 ### Core Applications
 
 * Enact Browser
-    * Added a notification message which is displayed after a job is done
-    * Refactored message sending code to send different messages to the guest page
-    * Enabled a newtab option for launch param
-    * Wrapped all strings with $L to make iLib work
-    * Fixed the issue where the browser did not return to full-screen mode
-    * Implemented wrapper for `<webview>` 'dialog' event
-    * Added Dialog UI for alert, confirm, and prompt
-    * Added json files for enact browser Access Control Groups (ACG) prior to applying Chromium patch
+    * Added a notification message which is displayed after a job is done.
+    * Refactored message sending code to send different messages to the guest page.
+    * Enabled a newtab option for launch param.
+    * Wrapped all strings with $L to make iLib work.
+    * Fixed the issue where the browser did not return to full-screen mode.
+    * Implemented wrapper for `<webview>` 'dialog' event.
+    * Added Dialog UI for alert, confirm, and prompt.
+    * Added json files for enact browser Access Control Groups (ACG) prior to applying Chromium patch.
 
 ### Managers & Services
 
 * Web App Manager (WAM)
-    * Fixed wam and app-shell ACG for umediaclient
+    * Fixed wam and app-shell ACG for umediaclient.
 * mojoservicelauncher
-    * Applied a fix for starting services with a "run" method
+    * Applied a fix for starting services with a "run" method.
 
 ### Base Components
 
 * Maliit framework
-    * Removed qtdeclarative-plugins
+    * Removed qtdeclarative-plugins.
 * pmtrace
-    * Inactivated journald
+    * Inactivated journald.

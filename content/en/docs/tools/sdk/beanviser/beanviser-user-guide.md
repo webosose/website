@@ -1,6 +1,6 @@
 ---
 title: Beanviser User Guide
-date: 2019-02-15
+date: 2020-01-08
 weight: 10
 toc: true
 ---
@@ -46,7 +46,9 @@ With Beanviser you can evaluate how your app performs in a live environment and 
 
 ### Beanviser Explainer Video
 
-**Note:** This video is based on an initial Beanviser release. You might notice minor variations in the user interface.
+{{< note >}}
+This video is based on an initial Beanviser release. You might notice minor variations in the user interface.
+{{< /note >}}
 
 {{< youtube B8o01s3bYDE >}}
 

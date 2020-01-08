@@ -13,21 +13,21 @@ This version corresponds to the [GitHub releases](https://github.com/webosose/bu
 ### Managers & Services
 
 * Bluetooth Manager
-    * Added support for Bluetooth profiles (OPP, A2DP)
+    * Added support for Bluetooth profiles (OPP, A2DP).
 * audiod
-    * Added support for Bluetooth audio
+    * Added support for Bluetooth audio.
 
 ### Base Components
 
 * BlueZ
-    * Added support for Bluetooth profiles (OPP, A2DP)
+    * Added support for Bluetooth profiles (OPP, A2DP).
 * PulseAudio
-    * Added support for Bluetooth audio
+    * Added support for Bluetooth audio.
 
 ### BSP
 
 * Bluetooth
-    * Added support for Bluetooth profiles (OPP, A2DP)
+    * Added support for Bluetooth profiles (OPP, A2DP).
 
 ## Fixed Issues
 
