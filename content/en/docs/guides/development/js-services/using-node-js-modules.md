@@ -18,22 +18,22 @@ webOS OSE releases up to 1.7.0 support [Node.js v6.11.2](https://nodejs.org/docs
 To use Node.js core module, add the module with the top-level identifier to your service as the following code.
 
 ``` javascript
-var Service = require(‘webos-service’);
-var fs = require(‘fs’);
+var Service = require('webos-service');
+var fs = require('fs');
 
 var service = new Service("com.mycom.service.helloworld");
 
-service.register(“writeFile", function(message) {
+service.register("writeFile", function(message) {
   fs.writeFileSync('/media/internal/foobar.txt', 'sample text', "utf8");
   message.respond({
-    reply: “write complete"
+    reply: "write complete"
   });
 });
 
-service.register(“readFile", function(message) {
+service.register("readFile", function(message) {
   fs.readFileSync('/media/internal/foobar.txt', "utf8");
   message.respond({
-    reply: “read complete"
+    reply: "read complete"
   });
 });
 ```
