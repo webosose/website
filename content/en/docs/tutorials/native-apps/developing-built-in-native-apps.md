@@ -1,13 +1,13 @@
 ---
-title: Developing Native Apps
-date: 2018-11-14
-weight: 10
+title: Developing Built-in Native Apps
+date: 2020-01-13
+weight: 20
 toc: true
 ---
 
-To create a native app, you must write the source code and prepare the required configuration files.
+To create a built-in native app, you must write the source code and prepare the required configuration files.
 
-For easier understanding, the process to create a native app is explained using the example of an app named **`com.example.app.nativeqt`** that has the following features:
+For easier understanding, the process to create a built-in native app is explained using the example of an app named **`com.example.app.nativeqt`** that has the following features:
 
 - Displays a "Hello, Native Qt Application!!" message on screen.
 - Calls **`com.webos.service.applicationmanager/registerApp`** method.
@@ -29,7 +29,7 @@ com.example.app.nativeqt
 └── README.md
 ```
 
-Developing a native app requires the following steps:
+Developing a built-in native app requires the following steps:
 
 * [Prerequisites](#before-you-begin)
 * [Step 1: Implementation](#step-1-implement-the-native-app)

@@ -1,7 +1,7 @@
 ---
 title: Tutorials
 section_main: true
-date: 2019-01-01
+date: 2020-01-13
 weight: 30
 ---
 
@@ -25,7 +25,8 @@ This section provides end-to-end, step-by-step tutorials for developers to achie
 
 ## Native Apps
 
-* [Developing Native Apps]({{< relref "developing-native-apps" >}})
+* [Developing External Native Apps]({{< relref "developing-external-native-apps" >}})
+* [Developing Built-in Native Apps]({{< relref "developing-built-in-native-apps" >}})
 
 ## JS Services
 

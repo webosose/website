@@ -1,13 +1,43 @@
 ---
 title: Native App Development Workflow
-date: 2018-05-12
+date: 2020-01-17
 weight: 20
-toc: false
+toc: true
 ---
 
 This page outlines the steps to develop native apps for webOS Open Source Edition (OSE).
 
-Developing a native app requires the following steps:
+## External Native Apps
+
+Developing an external native app requires the following steps:
+
+1. Implement
+
+    - Writing the native app code
+
+2. Configure
+
+    - Configuring the app metadata file (`appinfo.json`)
+    - Configuring the CMake build script (`CMakeLists.txt`)
+
+3. Build
+
+    - Running the CMake build script and the Makefile
+
+4. Package
+
+    - Packaging the built binary file using the CLI
+
+5. Install and launch
+
+    - Installing the app on the target using the CLI
+    - Launching the app
+
+For a step-by-step tutorial with detailed instructions, see [Developing External Native Apps]({{< relref "developing-external-native-apps" >}}).
+
+## Built-in Native Apps
+
+Developing a built-in native app requires the following steps:
 
 1. Implement
 
@@ -36,4 +66,4 @@ Developing a native app requires the following steps:
     - Building the webOS OSE image
     - Flashing the image to the target
 
-For a step-by-step tutorial with detailed instructions, see [Developing Native Apps]({{< relref "developing-native-apps" >}}).
+For a step-by-step tutorial with detailed instructions, see [Developing Built-in Native Apps]({{< relref "developing-built-in-native-apps" >}}).

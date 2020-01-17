@@ -1,6 +1,6 @@
 ---
 title: Native Development Kit Setup
-date: 2019-12-11
+date: 2020-01-14
 weight: 80
 toc: true
 ---
@@ -36,7 +36,7 @@ webos-sdk-x86_64-cortexa7t2hf-neon-vfpv4-toolchain-1.0.g.testdata.json
 
 ## Run the NDK Installer
 
-After building the NDK installer, you must run the installer. Go to your `build-webos/BUILD/deploy/sdk` directory and enter the following commands on the shell.
+After building the NDK installer, you must run the installer. Go to your `build-webos/BUILD/deploy/sdk/` directory and enter the following commands on the shell.
 
 ``` bash
 build-webos/BUILD/deploy/sdk$ ./webos-sdk-x86_64-cortexa7t2hf-neon-vfpv4-toolchain-1.0.g.sh
@@ -67,3 +67,7 @@ You need to enter the following command every time you start a new shell session
 ``` bash
 $ source /opt/webos-sdk-x86_64/1.0.g/environment-setup-cortexa7t2hf-neon-vfpv4-webos-linux-gnueabi
 ```
+
+## Next Steps
+
+If you want to develop external native apps, see [Developing External Native Apps]({{< relref "developing-external-native-apps">}}).

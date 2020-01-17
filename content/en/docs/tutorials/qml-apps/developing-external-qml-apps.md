@@ -1,6 +1,6 @@
 ---
 title: Developing External QML Apps
-date: 2020-01-07
+date: 2020-01-14
 weight: 10
 toc: true
 ---
@@ -8,8 +8,6 @@ toc: true
 External QML apps are 3rd party QML apps that must be installed on the webOS target device. External QML apps can be created and deployed using the Command-Line Interface (CLI) tool that are provided by the webOS Open Source Edition (OSE) SDK.
 
 This page describes the steps to develop an external QML app using CLI. For detailed information on the commands used in this tutorial, see [CLI commands]({{< relref "cli-user-guide#cli-commands" >}}).
-
-## Creating QML Apps
 
 Developing an external QML app requires the following steps:
 
@@ -20,7 +18,7 @@ Developing an external QML app requires the following steps:
   - [Step 5: Install the QML App](#step-5-install-the-qml-app)
   - [Step 6: Launch the QML App](#step-6-launch-the-qml-app)
 
-### Step 1: Create a QML App
+## Step 1: Create a QML App
 
 Start by creating a QML app using one of the available QML app templates. These templates provide a starting point for developing the QML app.
 
@@ -76,7 +74,7 @@ If you already have an existing QML app that you want to deploy on a webOS OSE d
 $ ares-generate -t qmlappinfo sampleApp
 ```
 
-### Step 2: Implement the QML App
+## Step 2: Implement the QML App
 
 Design and implement the source code for the QML app.
 
@@ -84,7 +82,7 @@ By default, the basic QML app template includes some basic code that prints a "H
 
 If you want to use a webOS service in the QML app, check the information and sample code provided in the [Implement the QML App] ({{< relref "developing-built-in-qml-apps#step-1-implement-the-qml-app" >}}) section in [Developing Built-in QML Apps]({{< relref "developing-built-in-qml-apps" >}}).
 
-### Step 3: Configure the QML App
+## Step 3: Configure the QML App
 
 The details or metadata of the QML app must be specified in the `appinfo.json` file. This file is automatically created when you create a QML app on CLI using a template. For details, see [appinfo.json] ({{< relref "appinfo-json" >}}).
 
@@ -108,7 +106,7 @@ CLI provides the `appinfo.json` file template as below.
 If you are packaging a JS service within the QML app and the JS service uses methods of external services, you must add the group information of the external methods used by the JS service to the `requiredPermissions` field in `appinfo.json`.
 {{< /note >}}
 
-### Step 4: Package the QML App
+## Step 4: Package the QML App
 
 After implementing and configuring the QML app, it must be packaged as an IPK file. Make sure the `appinfo.json` file is available, because it is required when packaging a QML app for webOS OSE.
 
@@ -120,7 +118,7 @@ $ ares-package sampleApp
 
 In the above command, `sampleApp` is the QML app directory. You can use an absolute or relative path. Also you can package the app with a service. For more details on using `ares-package`, see [ares-package] ({{< relref "cli-user-guide#ares-package" >}}).
 
-### Step 5: Install the QML App
+## Step 5: Install the QML App
 
 {{< note >}}
 * Before installing the app, ensure that the webOS OSE target device is registered on the CLI using the `ares-setup-device` command. For details, see [ares-setup-device] ({{< relref "cli-user-guide#ares-setup-device" >}}).
@@ -152,7 +150,7 @@ To remove the app from the device, use the `ares-install` command as follows:
 $ ares-install --device <TARGET_DEVICE> --remove com.domain.app
 ```
 
-### Step 6: Launch the QML App
+## Step 6: Launch the QML App
 
 To launch the QML app on the target device, execute the following command:
 

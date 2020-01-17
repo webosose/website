@@ -1,8 +1,8 @@
 ---
 title: QML App Development Workflow
-date: 2018-05-12
+date: 2020-01-16
 weight: 20
-toc: false
+toc: true
 ---
 
 This page outlines the steps to develop QML apps for webOS Open Source Edition (OSE).
