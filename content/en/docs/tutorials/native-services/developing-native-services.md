@@ -60,9 +60,7 @@ For the sample native service (`com.example.service.native`), you must:
 - **Create and update the file:** `main.cpp`
 - **Directory:** `com.example.service.native`
 
-<!-- end list -->
-
-{{< highlight cpp "linenos=table" >}}
+``` cpp {linenos=table}
 #include <glib.h>
 #include <string>
 #include <luna-service2/lunaservice.h>
@@ -203,7 +201,7 @@ int main(int argc, char* argv[])
 
     return 0;
 }
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -304,12 +302,12 @@ This file contains description of the service type and launch command.
 
 where `<native service name>` is the name of the native service. For the sample native service, `<native service name>` is to be replaced by 'com.example.service.native'.
 
-{{< highlight bash "linenos=table" >}}
+``` bash {linenos=table}
 [D-BUS Service]
 Name=com.example.service.native
 Exec=@WEBOS_INSTALL_SBINDIR@/com.example.service.native
 Type=static
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -330,7 +328,7 @@ This file contains allowed service names for each component and individual secur
 
 where `<native service name>` is the name of the native service. For the sample native service, `<native service name>` is to be replaced by 'com.example.service.native'.
 
-{{< highlight json "linenos=table" >}}
+``` json {linenos=table}
 {
     "exeName":"@WEBOS_INSTALL_SBINDIR@/com.example.service.native",
     "type": "regular",
@@ -346,7 +344,7 @@ where `<native service name>` is the name of the native service. For the sample 
         }
     ]
 }
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -365,13 +363,13 @@ This file defines what groups are required for this component to function proper
 
 where `<native service name>` is the name of the native service. For the sample native service, `<native service name>` is to be replaced by 'com.example.service.native'.
 
-{{< highlight json "linenos=table" >}}
+``` json {linenos=table}
 {
     "com.example.service.native": [
         "time"
     ]
 }
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -386,13 +384,13 @@ This file defines what methods are included into security groups this component 
 
 where `<native service name>` is the name of the native service. For the sample native service, `<native service name>` is to be replaced by 'com.example.service.native'.
 
-{{< highlight json "linenos=table" >}}
+``` json {linenos=table}
 {
     "com.example.service.native.group": [
         "com.example.service.native/hello"
     ]
 }
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -413,7 +411,7 @@ This file will be installed to the target as **`com.example.service.native.servi
 Normally, this config file is in `webos-initscripts`. However, for ease-of-use we have defined it in the local source directory.
 {{< /note >}}
 
-{{< highlight bash "linenos=table" >}}
+``` bash {linenos=table}
 [Unit]
 Description=webos - "%n"
 Requires=ls-hubd.service
@@ -426,7 +424,7 @@ EnvironmentFile=-/var/systemd/system/env/com.example.service.native.env
 Environment=CHARSET=UTF-8
 ExecStart=/usr/sbin/com.example.service.native
 Restart=on-failure
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -445,9 +443,7 @@ For the sample native service (`com.example.service.native`), you must:
 - **Create and update the file:** `CMakeLists.txt`
 - **Directory:** `com.example.service.native`
 
-<!-- end list -->
-
-{{< highlight cmake "linenos=table" >}}
+``` cmake {linenos=table}
 cmake_minimum_required(VERSION 2.8.7)
 project(com.example.service.native CXX)
 set(CMAKE_BUILD_TYPE Debug)
@@ -492,7 +488,7 @@ install(TARGETS ${PROJECT_NAME} DESTINATION ${WEBOS_INSTALL_SBINDIR})
 
 webos_build_system_bus_files()
 webos_build_configured_file(files/systemd/com.example.service.native.service SYSCONFDIR systemd/system)
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -518,7 +514,7 @@ webOS OSE uses OpenEmbedded of Yocto Project to build its components. You must w
 
 where `<native service name>` is the name of the native service. For the sample native service, `<native service name>` must be replaced by 'com.example.service.native'.
 
-{{< highlight bash "linenos=table" >}}
+``` bash {linenos=table}
 SUMMARY = "Native service sample"
 AUTHOR = "Author's name <Author's e-mail>"
 LICENSE = "Apache-2.0"
@@ -533,7 +529,7 @@ inherit webos_component
 inherit webos_submissions
 inherit webos_cmake
 inherit webos_system_bus
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -562,12 +558,12 @@ To build a component that is located on the local system, you must specify the d
 
 For the sample native service (`com.example.service.native`), you must provide the local path where the source exists.
 
-{{< highlight bash "linenos=table" >}}
+``` bash {linenos=table}
 INHERIT += "externalsrc"
 EXTERNALSRC_pn-com.example.service.native = "/home/username/project/com.example.service.native/"
 EXTERNALSRC_BUILD_pn-com.example.service.native = "/home/username/project/com.example.service.native/build/"
 PR_append_pn-com.example.service.native =".local0"
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -756,8 +752,6 @@ Add the service to the package recipe file.
 - **Directory:** `build-webos/meta-webosose/meta-webos/recipes-core/packagegroups`
 
 - **Updates to be made:** Add the service name to **`RDEPENDS _ $ {PN} =`**
-
-<!-- end list -->
 
 ``` bash
 ...

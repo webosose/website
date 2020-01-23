@@ -58,7 +58,7 @@ About the requirements for a build environment, refer to [System Requirements]({
     ```
     Add `wiringpi` in `RDEPENDS_${PN} =`
 
-    {{< highlight shell "hl_lines=11" >}}
+    ``` shell {hl_lines=[11]}
     ...
     RDEPENDS_${PN} = " \
     activitymanager \
@@ -71,7 +71,7 @@ About the requirements for a build environment, refer to [System Requirements]({
     webos-fontconfig-files \
     wiringpi \
     ...
-    {{< /highlight >}}
+    ```
 
 4.  Start build.
 

@@ -158,7 +158,7 @@ All context logs are routed to `/var/log/messages` by default. However, if you w
 
 The `/etc/pmlog.d/default.conf` has the following default format:
 
-{{< highlight html "linenos=table, hl_lines=23">}}
+``` html {linenos=table,hl_lines=[23]}
 {
      "contexts" : [
           {
@@ -183,6 +183,6 @@ The `/etc/pmlog.d/default.conf` has the following default format:
      ],
      "contextLogging" : false
 }
-{{< /highlight >}}
+```
 
 After changing the value of `contextLogging` parameter, device needs to be rebooted.

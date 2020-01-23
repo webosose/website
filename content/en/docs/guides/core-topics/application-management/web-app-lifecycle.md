@@ -93,7 +93,7 @@ Whenever a web app is re-launched, webOS OSE will fire a `webOSRelaunch` event. 
 
 Web apps can add an event listener to handle the `webOSLaunch` or `webOSRelaunch` event. When a specified event occurs, the function will receive a notification and handle the event. And the added event listener receives event parameter which holds launch parameters.
 
-{{< highlight javascript >}}
+``` javascript
 // webOSLaunch event
 document.addEventListener('webOSLaunch', function(inData) {
     // Check the received parameters
@@ -111,7 +111,7 @@ document.addEventListener('webOSRelaunch', function(inData) {
     // Do something in the foreground
     ...
 }, true);
-{{< /highlight >}}
+```
 
 {{< note >}}
 In case of the suspended app, the current instance of the app is killed, and a new instance is launched with the new parameters.
@@ -131,14 +131,14 @@ The `visibilitychange` event will be fired when a web app changes from visible t
 
 The sample code below shows how to add an event listener in webOS OSE.
 
-{{< highlight javascript >}}
+``` javascript
 document.addEventListener ('visibilitychange', function() {
     if (document.hidden)
        doHiddenCleanup();
     else
         doShowingTasks();
 }, true);
-{{< /highlight >}}
+```
 
 ## Terminating an App
 

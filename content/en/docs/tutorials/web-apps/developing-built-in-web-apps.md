@@ -61,7 +61,7 @@ For the sample web app (`com.example.app.web`), create the `index.html` file in 
 
 The following shows sample code that prints a hello message and also prints the current time on the log. To call [LS2 API]({{< relref "ls2-api-index" >}}), webOS OSE 2.0 or higher uses [WebOSServiceBridge]({{< relref "webosservicebridge-api-reference" >}}), a JavaScript API for web apps to access Luna Bus.
 
-{{< highlight html "linenos=table" >}}
+``` html {linenos=table}
 <!DOCTYPE html>
 <html>
 <head>
@@ -110,7 +110,7 @@ The following shows sample code that prints a hello message and also prints the 
     </div>
 </body>
 </html>
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -135,7 +135,7 @@ The following shows sample code that prints a hello message and also prints the 
 Download the webOS library file from [webOSjs-0.1.0.zip](https://webosose.s3.ap-northeast-2.amazonaws.com/tools/webOSjs-0.1.0.zip) and decompress it to the project root directory.
 {{< /note >}}
 
-{{< highlight html "linenos=table" >}}
+``` html {linenos=table}
 <!DOCTYPE html>
 <html>
 <head>
@@ -180,7 +180,7 @@ var lunaReq= webOS.service.request("luna://com.webos.service.systemservice",
     </div>
 </body>
 </html>
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -268,9 +268,7 @@ Apps are required to have metadata before they can be packaged. This metadata is
 - **Create and update the file:** `appinfo.json`
 - **Directory:** `com.example.app.web`
 
-<!-- end list -->
-
-{{< highlight json "linenos=table" >}}
+``` json {linenos=table}
 {
     "id": "com.example.app.web",
     "version": "0.0.1",
@@ -281,7 +279,7 @@ Apps are required to have metadata before they can be packaged. This metadata is
     "icon": "icon.png",
     "requiredPermissions": ["time"]
 }
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -304,9 +302,7 @@ This file is required to generate the standard build files. For the sample web a
 - **Create and update the file:** `CMakeLists.txt`
 - **Directory:** `com.example.app.web`
 
-<!-- end list -->
-
-{{< highlight cmake "linenos=table" >}}
+``` cmake {linenos=table}
 cmake_minimum_required(VERSION 2.8.7)
 project(com.example.app.web NONE)
 include(webOS/webOS)
@@ -321,7 +317,7 @@ install(DIRECTORY . DESTINATION ${INSTALL_DIR}
         PATTERN "README.md" EXCLUDE
         PATTERN "oe-*" EXCLUDE
         PATTERN "*.lock" EXCLUDE)
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -348,7 +344,7 @@ webOS OSE uses OpenEmbedded of Yocto Project to build its components. You must w
 
 where `<web app name>` is the name of the web app. For the sample web app, `<web app name>` must be replaced by "com.example.app.web".
 
-{{< highlight bash "linenos=table" >}}
+``` bash {linenos=table}
 SECTION = "webos/apps"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/Apache-2.0;md5=89aea4e17d99a7cacdbeed46a0096b10"
@@ -363,7 +359,7 @@ inherit webos_app
 inherit webos_arch_indep
 
 FILES_${PN} += "${webos_applicationsdir}"
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -394,12 +390,12 @@ To build a component that is located on the local system, you must specify the d
 
 For the sample web app (`com.example.app.web`), you must provide the local path where the source exists.
 
-{{< highlight bash "linenos=table" >}}
+``` bash {linenos=table}
 INHERIT += "externalsrc"
 EXTERNALSRC_pn-com.example.app.web = "/home/username/project/com.example.app.web/"
 EXTERNALSRC_BUILD_pn-com.example.app.web = "/home/username/project/com.example.app.web/build/"
 PR_append_pn-com.example.app.web =".local0"
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -558,7 +554,7 @@ Perform the following steps:
 
     <!-- end list -->
 
-    {{< highlight bash "hl_lines=6" >}}
+    ``` bash {hl_lines=[6]}
     ...
     RDEPENDS_${PN} = " \
         activitymanager \
@@ -567,7 +563,7 @@ Perform the following steps:
         com.example.app.web \
         ${VIRTUAL-RUNTIME_appinstalld} \
         ...
-    {{< /highlight >}}
+    ```
 
     For more details, see [Yocto Project Reference Manual](https://www.yoctoproject.org/docs/current/ref-manual/ref-manual.html).
 

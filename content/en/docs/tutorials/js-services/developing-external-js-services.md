@@ -8,7 +8,7 @@ External JS services are 3rd party JS services that must be installed on the web
 
 External JS services must be packaged in a web app. Therefore, before creating a JS service, make sure you have a web app to package with the external JS service. If such a web app is not available, create a web app as described in [Creating Web Apps]({{< relref "developing-external-web-apps#creating-web-apps" >}}).
 
-This page describes the steps to develop an external JS service using CLI. For detailed information on the commands used in this tutorial, see [CLI commands] ({{< relref "cli-user-guide#cli-commands" >}}).
+This page describes the steps to develop an external JS service using CLI. For detailed information on the commands used in this tutorial, see [CLI commands]({{< relref "cli-user-guide#cli-commands" >}}).
 
 ## Creating JS Services
 

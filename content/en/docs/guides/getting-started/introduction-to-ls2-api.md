@@ -113,7 +113,7 @@ In most cases, subscription is only supported on methods that accept the `subscr
 
 The following shows an example of subscribing to the `time/getSystemTime` method, using the `luna-send` command. To test subscription with the `luna-send` command, use `-i` option for interactive mode.
 
-{{< highlight bash "hl_lines=16" >}}
+``` bash {hl_lines=[16]}
 $ luna-send -i -f luna://com.webos.service.systemservice/time/getSystemTime '{"subscribe": true}'
 
 Call response:
@@ -134,7 +134,7 @@ Call response:
     "systemTimeSource": "ntp",
     ...
 }
-{{< /highlight >}}
+```
 
 By setting the `subscribe` parameter to `true`, the client subscribes to the `time/getSystemTime` method in order to get notifications in the following situations:
 
@@ -144,7 +144,7 @@ By setting the `subscribe` parameter to `true`, the client subscribes to the `ti
 If you make one of the above changes in the Settings app, subscription responses will be received as follows:
 
 {{< code "System time changed" >}}
-{{< highlight bash "hl_lines=9-10" >}}
+``` bash {hl_lines=["9-10"]}
 Subscription response:
 {
     "timezone": "Asia/Seoul",
@@ -162,12 +162,12 @@ Subscription response:
     "systemTimeSource": "manual",
     ...
 }
-{{< /highlight >}}
+```
 {{< /code >}}
 
 
 {{< code "Time zone changed" >}}
-{{< highlight bash "hl_lines=3" >}}
+``` bash {hl_lines=[3]}
 Subscription response:
 {
     "timezone": "Asia/Dubai",
@@ -185,7 +185,7 @@ Subscription response:
     "systemTimeSource": "ntp",
     ...
 }
-{{< /highlight >}}
+```
 {{< /code >}}
 
 {{< note >}}

@@ -49,7 +49,7 @@ Define the functionality of the native app on the source code. The following sou
 - **Create and update the file:** `wayland_egl.c`
 - **Directory:** `com.sample.waylandegl/src`
 
-{{< highlight c "linenos=table" >}}
+``` c {linenos=table}
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -272,7 +272,7 @@ int main(int argc, char **argv)
     finalize();
     exit(0);
 }
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -294,7 +294,7 @@ Apps are required to have metadata before they can be packaged. This metadata is
 - **Create and update the file:** `appinfo.json`
 - **Directory:** `com.sample.waylandegl`
 
-{{< highlight json "linenos=table" >}}
+``` json {linenos=table}
 {
     "id": "com.sample.waylandegl",
     "version": "0.0.1",
@@ -304,7 +304,7 @@ Apps are required to have metadata before they can be packaged. This metadata is
     "title": "wayland_egl",
     "icon": "icon.png"
 }
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -327,7 +327,7 @@ For more details, see [appinfo.json]({{< relref "appinfo-json" >}}).
 In this tutorial, we use the CMake to build the project. But you can use any other tools for the build.
 {{< /note >}}
 
-{{< highlight cmake "linenos=table" >}}
+``` cmake {linenos=table}
 cmake_minimum_required(VERSION 2.8.7)
 project(wayland_egl C CXX)
 
@@ -379,7 +379,7 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/icon.png")
 else()
     MESSAGE( "'icon.png' file was not found !!")
 endif()
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 

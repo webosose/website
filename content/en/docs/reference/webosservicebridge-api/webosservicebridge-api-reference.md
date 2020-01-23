@@ -74,7 +74,7 @@ bridge.cancel();
 The following shows an example of JavaScript code that uses WebOSServiceBridge API.
 
 {{< code "servicetest.js" true >}}
-{{< highlight js "linenos=table" >}}
+``` js {linenos=table}
 function quickServiceTest(){
     var bridge = new WebOSServiceBridge();
     var url = 'luna://com.webos.service.applicationmanager/running';
@@ -89,7 +89,7 @@ function quickServiceTest(){
     var params = '{}';
     bridge.call(url, params);
 }
-{{< /highlight >}}
+```
 {{< /code >}}
 
 - Line (2): Create the WebOSServiceBridge object

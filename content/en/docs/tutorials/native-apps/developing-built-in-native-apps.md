@@ -61,7 +61,7 @@ Define `MyOpenGLWindow` class. See [Appendix](#appendix-license-notice) for lice
 - **Create and update the file:** `MyOpenGLWindow.h`
 - **Directory:** `com.example.app.nativeqt`
 
-{{< highlight cpp "linenos=table" >}}
+``` cpp {linenos=table}
 #ifndef MYOPENGLWINDOW_H
 #define MYOPENGLWINDOW_H
 
@@ -90,7 +90,7 @@ protected:
     QOpenGLPaintDevice *m_device;
 };
 #endif
-{{< /highlight >}}
+```
 
 #### MyOpenGLWindow.cpp
 
@@ -99,7 +99,7 @@ Define `MyOpenGLWindow` class member functions. See [Appendix](#appendix-license
 - **Create and update the file:** `MyOpenGLWindow.cpp`
 - **Directory:** `com.example.app.nativeqt`
 
-{{< highlight cpp "linenos=table" >}}
+``` cpp {linenos=table}
 #include "MyOpenGLWindow.h"
 #include <QtGui/QOpenGLContext>
 #include <QtGui/QOpenGLPaintDevice>
@@ -155,7 +155,7 @@ void MyOpenGLWindow::exposeEvent(QExposeEvent *event)
         render();
     }
 }
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -168,9 +168,7 @@ Define a class that can register to luna-service2 and call `registerApp` method 
 - **Create and update the file:** `ServiceRequest.h`
 - **Directory:** `com.example.app.nativeqt`
 
-<!-- end list -->
-
-{{< highlight cpp "linenos=table" >}}
+``` cpp {linenos=table}
 #ifndef SERVICEREQUEST_H
 #define SERVICEREQUEST_H
 
@@ -208,7 +206,7 @@ private:
     std::string m_appId;
 };
 #endif
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -221,9 +219,7 @@ Define `SeviceRequest` class member functions. In addition, add helper functions
 - **Create and update the file:** `ServiceRequest.cpp`
 - **Directory:** `com.example.app.nativeqt`
 
-<!-- end list -->
-
-{{< highlight cpp "linenos=table" >}}
+``` cpp {linenos=table}
 #include "ServiceRequest.h"
 
 static pbnjson::JValue convertStringToJson(const char *rawData)
@@ -353,7 +349,7 @@ void ServiceRequest::registerApp()
         LSErrorPrint(&lserror, stderr);
     }
 }
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -373,9 +369,7 @@ For the sample native app (`com.example.app.nativeqt`), you must:
 - **Create and update the file:** `main.cpp`
 - **Directory:** `com.example.app.nativeqt`
 
-<!-- end list -->
-
-{{< highlight cpp "linenos=table" >}}
+``` cpp {linenos=table}
 #include "MyOpenGLWindow.h"
 #include "ServiceRequest.h"
 #include <QtGui/QGuiApplication>
@@ -401,7 +395,7 @@ int main(int argc, char **argv)
 
     return app.exec();
 }
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -487,9 +481,7 @@ Apps are required to have metadata before they can be packaged. This metadata is
 - **Create and update the file:** `appinfo.json`
 - **Directory:** `com.example.app.nativeqt`
 
-<!-- end list -->
-
-{{< highlight json "linenos=table" >}}
+``` json {linenos=table}
 {
     "id": "com.example.app.nativeqt",
     "version": "0.1.0",
@@ -501,7 +493,7 @@ Apps are required to have metadata before they can be packaged. This metadata is
     "requiredPermissions" : ["applications"],
     "nativeLifeCycleInterfaceVersion": 2
 }
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -522,9 +514,7 @@ This file specifies the application name and the qmake template to be used for g
 - **Create and update the file:** `com.example.app.nativeqt.pro`
 - **Directory:** `com.example.app.nativeqt`
 
-<!-- end list -->
-
-{{< highlight bash "linenos=table" >}}
+``` bash {linenos=table}
 TARGET = nativeqt
 
 CONFIG += qt
@@ -547,7 +537,7 @@ appinfo.path = $${INSTALL_APPDIR}
 appinfo.files = appinfo.json
 
 INSTALLS += target icon appinfo
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -584,7 +574,7 @@ webOS OSE uses OpenEmbedded of Yocto Project to build its components. You must w
 
 where `<native app name>` is the name of the native app. For the sample native app, `<native app name>` must be replaced by 'com.example.app.nativeqt'.
 
-{{< highlight bash "linenos=table" >}}
+``` bash {linenos=table}
 SUMMARY = "Native Qt App"
 SECTION = "webos/apps"
 LICENSE = "Apache-2.0"
@@ -602,7 +592,7 @@ inherit webos_app
 OE_QMAKE_PATH_HEADERS = "${OE_QMAKE_PATH_QT_HEADERS}"
 
 FILES_${PN} += "${webos_applicationsdir}"
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -633,12 +623,12 @@ To build a component that is located on the local system, you must specify the d
 
 For the sample native app (`com.example.app.nativqt`), you must provide the local path where the source exists.
 
-{{< highlight bash "linenos=table" >}}
+``` bash {linenos=table}
 INHERIT += "externalsrc"
 EXTERNALSRC_pn-com.example.app.nativeqt = "/home/username/project/com.example.app.nativeqt/"
 EXTERNALSRC_BUILD_pn-com.example.app.nativeqt = "/home/username/project/com.example.app.nativeqt/build/"
 PR_append_pn-com.example.app.nativeqt =".local0"
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -839,7 +829,7 @@ Perform the following steps:
     - **Directory:** `build-webos/meta-webosose/meta-webos/recipes-core/packagegroups`
     - **Updates to be made:** Add the native app name to **`RDEPENDS _ $ {PN} =`**
 
-    {{< highlight bash "hl_lines=6" >}}
+    ``` bash {hl_lines=[6]}
     ...
     RDEPENDS_${PN} = " \
         activitymanager \
@@ -848,7 +838,7 @@ Perform the following steps:
         com.example.app.nativeqt \
         ${VIRTUAL-RUNTIME_appinstalld}
         ...
-    {{< /highlight >}}
+    ```
 
     For more details, see [Yocto Project Reference Manual](https://www.yoctoproject.org/docs/current/ref-manual/ref-manual.html).
 

@@ -39,7 +39,7 @@ You will need:
     ```
 
     {{< code "echo_server.py" >}}
-    {{< highlight python "linenos=table" >}}
+    ``` python {linenos=table}
     from SimpleWebSocketServer import SimpleWebSocketServer, WebSocket
     import json
 
@@ -58,7 +58,7 @@ You will need:
 
     server = SimpleWebSocketServer('',9999, SimpleEcho)
     server.serveforever()
-    {{< /highlight >}}
+    ```
     {{< /code >}}
 
       - Line 5-6: When a message is received from a WebSocket client, the `self` object of the `handleMessage` function receives the data.
@@ -124,7 +124,7 @@ For information on how to download and install CLI in a host PC, see the [CLI us
 3. Add the following lines of code in `index.html` and save.
 
     {{< code "index.html" >}}
-    {{< highlight html "linenos=table" >}}
+    ``` html {linenos=table}
     <!DOCTYPE html>
     <meta charset="utf-8" />
     <title>WebSocket Test</title>
@@ -135,7 +135,7 @@ For information on how to download and install CLI in a host PC, see the [CLI us
     <h2>WebSocket Test</h2>
 
     <div id="output"></div>
-    {{< /highlight >}}
+    ```
     {{< /code >}}
 
       - Line 4: Link the stylesheet for your app
@@ -150,7 +150,7 @@ For information on how to download and install CLI in a host PC, see the [CLI us
     ```
 
     {{< code "websocket.css" >}}
-    {{< highlight css >}}
+    ``` css
     body {
         width: 100%;
         height: 100%;
@@ -174,7 +174,7 @@ For information on how to download and install CLI in a host PC, see the [CLI us
     p {
         color: #FFFFFF;
     }
-    {{< /highlight >}}
+    ```
     {{< /code >}}
 
     The background color will be very dark gray, mostly black, and the text color will be white.
@@ -186,7 +186,7 @@ For information on how to download and install CLI in a host PC, see the [CLI us
     ```
 
     {{< code "websocket.js" >}}
-    {{< highlight javascript "linenos=table" >}}
+    ``` javascript {linenos=table}
     // need to change to websocket server's address
     var wsUri = "ws://<websocket server's address>:9999";
     var output;
@@ -253,7 +253,7 @@ For information on how to download and install CLI in a host PC, see the [CLI us
     // Notification code will be put here
 
     window.addEventListener("load", init, false);
-    {{< /highlight >}}
+    ```
     {{< /code >}}
 
       - Line 2: Specify the IP address of the WebSocket server
@@ -292,7 +292,7 @@ We checked the result on the web browser. Now, let's try displaying notification
     ```
 
     {{< code "websocket.js" >}}
-    {{< highlight javascript "linenos=table" >}}
+    ``` javascript {linenos=table}
     ...
     function onMessage(evt)
     {
@@ -328,7 +328,7 @@ We checked the result on the web browser. Now, let's try displaying notification
           });
     }
     ...
-    {{< /highlight >}}
+    ```
     {{< /code >}}
 
       - Line 6: When a message is received, output the result to the screen and call the `showNotification` function for notification

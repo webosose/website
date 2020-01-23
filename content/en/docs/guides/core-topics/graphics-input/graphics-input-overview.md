@@ -221,7 +221,7 @@ The following set of code is the snippets of LSM implementation. LSM is basicall
 Let's look at the example of Fullscreen window model. This model has a filter function which checks the `fullscreen` property of a surface item. If `surfaceItem.fullscreen` is true, the surface is appended to this model. The data appended to this model is displayed as `FullscreenView`. When a surface is appended to this model, `onSurfaceAdded` handler is called and related operations are performed.
 
 {{< code "[FullscreenWindowModel.qml](https://github.com/webosose/luna-surfacemanager/blob/master/base/qml/WebOSCompositorBase/models/FullscreenWindowModel.qml)" >}}
-{{< highlight cpp >}}
+``` cpp
 import QtQuick 2.4
 import WebOSCoreCompositor 1.0
 
@@ -233,13 +233,13 @@ WindowModel {
         return surfaceItem.fullscreen;
     }
 }
-{{< /highlight >}}
+```
 {{< /code >}}
 
 The following shows a part of the code for `FullscreenView`.
 
 {{< code "[FullscreenView.qml](https://github.com/webosose/luna-surfacemanager/blob/master/base/qml/WebOSCompositorBase/views/FullscreenView.qml)" >}}
-{{< highlight cpp >}}
+``` cpp
 SurfaceView {
     id: root
     layerNumber: 1
@@ -275,7 +275,7 @@ SurfaceView {
 
     ...
 }
-{{< /highlight >}}
+```
 {{< /code >}}
 
 ### Window Types

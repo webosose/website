@@ -132,7 +132,7 @@ To package the web app, use the `ares-package` command. The IPK file is generate
 $ ares-package <APP_DIR> [<SERVICE_DIR>]
 ```
 
-In the above command, `<APP_DIR>` and `<SERVICE_DIR>` mean app and service directories respectively. You can use an absolute or relative path for both `<APP_DIR>` and `<SERVICE_DIR>`. For details on using `ares-package`, see [ares-package] ({{< relref "cli-user-guide#ares-package" >}}).
+In the above command, `<APP_DIR>` and `<SERVICE_DIR>` mean app and service directories respectively. You can use an absolute or relative path for both `<APP_DIR>` and `<SERVICE_DIR>`. For details on using `ares-package`, see [ares-package]({{< relref "cli-user-guide#ares-package" >}}).
 
 **Sample usage:**
 
@@ -144,7 +144,7 @@ In the above command, `<APP_DIR>` and `<SERVICE_DIR>` mean app and service direc
 ### Step 5: Install the Web App
 
 {{< note >}}
-* Before installing the app, ensure that the webOS OSE target device is registered on the CLI using the `ares-setup-device` command. For details, see [ares-setup-device] ({{< relref "cli-user-guide#ares-setup-device" >}}).
+* Before installing the app, ensure that the webOS OSE target device is registered on the CLI using the `ares-setup-device` command. For details, see [ares-setup-device]({{< relref "cli-user-guide#ares-setup-device" >}}).
 * Make sure that the target device is running during the installation.
 {{< /note >}}
 

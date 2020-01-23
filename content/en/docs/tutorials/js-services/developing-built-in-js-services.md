@@ -64,9 +64,7 @@ For the sample JS service (`com.example.service.js`), you must:
 - **Create and update the file:** `com_example_service_js.js`
 - **Directory:** `com.example.service.js`
 
-<!-- end list -->
-
-{{< highlight javascript "linenos=table" >}}
+``` javascript {linenos=table}
 var Service = require('webos-service');
 var pmloglib = require('pmloglib');
 var context = new pmloglib.Context("exampleJSService");
@@ -91,7 +89,7 @@ service.register("locale", function(message) {
         });
     });
 });
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -178,8 +176,6 @@ For the sample JS service (`com.example.service.js`), you must:
 - **Create and update the file:** `package.json`
 - **Directory:** `com.example.service.js`
 
-<!-- end list -->
-
 ``` json
 {
   "name": "com.example.service.js",
@@ -207,12 +203,12 @@ This file contains description of the service type and launch command.
 
 where `<js service name>` is the name of the JS service. For the sample JS service, `<js service name>` is to be replaced by 'com.example.service.js'.
 
-{{< highlight bash "linenos=table" >}}
+``` bash {linenos=table}
 [D-BUS Service]
 Name=com.example.service.js
 Exec=@WEBOS_INSTALL_BINDIR@/run-js-service -n @WEBOS_INSTALL_WEBOS_SERVICESDIR@/com.example.service.js
 Type=dynamic
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -229,7 +225,7 @@ This file contains allowed service names for each component and individual secur
 
 where `<js service name>` is the name of the JS service. For the sample JS service, `<js service name>` is to be replaced by 'com.example.service.js'.
 
-{{< highlight json "linenos=table" >}}
+``` json {linenos=table}
 {
     "appId":"com.example.service.js",
     "type": "regular",
@@ -245,7 +241,7 @@ where `<js service name>` is the name of the JS service. For the sample JS servi
         }
     ]
 }
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -262,13 +258,13 @@ This file defines what groups are required for this component to function proper
 
 where `<js service name>` is the name of the JS service. For the sample JS service, `<js service name>` is to be replaced by 'com.example.service.js'.​
 
-{{< highlight json "linenos=table" >}}
+``` json {linenos=table}
 {
     "com.example.service.js": [
         "settings.read", "activities.manage"
     ]
 }
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -283,13 +279,13 @@ This file defines what methods are included into security groups this component 
 
 where `<js service name>` is the name of the JS service. For the sample JS service, `<js service name>` is to be replaced by 'com.example.service.js'.​​
 
-{{< highlight json "linenos=table" >}}
+``` json {linenos=table}
 {
     "com.example.service.js.group": [
         "com.example.service.js/*"
     ]
 }
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -304,9 +300,7 @@ For the sample JS service (`com.example.service.js`), you must:
 - **Create and update the file:** `CMakeLists.txt`
 - **Directory:** `com.example.service.js`
 
-<!-- end list -->
-
-{{< highlight cmake "linenos=table" >}}
+``` cmake {linenos=table}
 cmake_minimum_required(VERSION 2.8.7)
 project(com.example.service.js NONE)
 set(CMAKE_BUILD_TYPE Debug)
@@ -330,7 +324,7 @@ install(DIRECTORY . DESTINATION ${INSTALL_DIR}
         PATTERN "README.md" EXCLUDE)
 
 webos_build_system_bus_files()
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -362,7 +356,7 @@ webOS OSE uses OpenEmbedded of Yocto Project to build its components. You must w
 
 where `<js service name>` is the name of the JS service. For the sample JS service, `<js service name>` must be replaced by 'com.example.service.js'.
 
-{{< highlight bash "linenos=table" >}}
+``` bash {linenos=table}
 SUMMARY = "JS Service Sample"
 AUTHOR = "Author's name <Author's e-mail>"
 LICENSE = "Apache-2.0"
@@ -377,7 +371,7 @@ inherit webos_cmake
 inherit webos_system_bus
 
 FILES_${PN} += "${webos_servicesdir}/${PN}/*"
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -406,12 +400,12 @@ To build a component that is located on the local system, you must specify the d
 
 For the sample JS service (`com.example.service.js`), you must provide the local path where the source exists.
 
-{{< highlight bash "linenos=table" >}}
+``` bash {linenos=table}
 INHERIT += "externalsrc"
 EXTERNALSRC_pn-com.example.service.js = "/home/username/project/com.example.service.js/"
 EXTERNALSRC_BUILD_pn-com.example.service.js = "/home/username/project/com.example.service.js/build/"
 PR_append_pn-com.example.service.js =".local0"
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -559,9 +553,7 @@ Add the JS service to the packagegroup recipe file.
 - **Directory:** `build-webos/meta-webosose/meta-webos/recipes-core/packagegroups`
 - **Updates to be made:** Add the JS service name to **`RDEPENDS _ $ {PN} =`**
 
-<!-- end list -->
-
-{{< highlight bash "hl_lines=6" >}}
+``` bash {hl_lines=[6]}
 ...
 RDEPENDS_${PN} = " \
     activitymanager \
@@ -570,7 +562,7 @@ RDEPENDS_${PN} = " \
     com.example.service.js \
     ${VIRTUAL-RUNTIME_appinstalld} \
     ...
-{{< /highlight >}}
+```
 
 For more details, see [Yocto Project Reference Manual](https://www.yoctoproject.org/docs/current/ref-manual/ref-manual.html).
 

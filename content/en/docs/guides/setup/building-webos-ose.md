@@ -53,10 +53,10 @@ The recommended value for `-p` and `-b` option is (number of physical CPU cores 
 
 2. Get the number of cores per physical CPU.
 
-	```bash
-  	$ cat /proc/cpuinfo | grep "cpu cores" | uniq
-	cpu cores    : 4
-	```
+    ```bash
+    $ cat /proc/cpuinfo | grep "cpu cores" | uniq
+    cpu cores    : 4
+    ```
 
 3. Multiply the above two values.
 

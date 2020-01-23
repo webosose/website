@@ -155,37 +155,37 @@ PmLogMsg (my_context, Info, "APPLAUNCH", 3, PMLOGKFV("ID", "%d", app_info->id), 
 
 The following is the sample code for how components written in C/C++ can log information.
 
-{{< highlight cpp "linenos=inline">}}
+``` cpp {linenos=table}
 PmLogContext my_context; // Context declaration
 PmLogGetContext(“context_name”, &my_context); // Context creation
 PmLogInfo(my_context, "APPDEL", 3, PMLOGKS("APP_NAME","Solitaire"), PMLOGKFV("APP_ID","%d",app_id), PMLOGKS("APP_STATUS","deleted"), " "); // Level setting to the context
-{{< /highlight >}}
+```
 
 More examples:
 
-{{< highlight cpp "linenos=inline, linenostart=3">}}
+``` cpp {linenos=table,linenostart=3}
 PmLogInfo(my_context, "APPSWITCH", 1, PMLOGJSON("JSON", "{\"key\":{\"sub_key\":\"sub_value\"}}"), " ");
-{{< /highlight >}}
+```
 
-{{< highlight cpp "linenos=inline, linenostart=3">}}
+``` cpp {linenos=table,linenostart=3}
 PmLogInfo(my_context, "APPSWITCH", 4, PMLOGKS("FROM_APP", "source_app_name"), PMLOGKS("TO_APP", "dest_app_name"), PMLOGKFV("TIME", "%d", 150), PMLOGKS("UNIT", "ms"), " ");
-{{< /highlight >}}
+```
 
-{{< highlight cpp "linenos=inline, linenostart=3">}}
+``` cpp {linenos=table,linenostart=3}
 PmLogError(my_context, "BRWSRERR", 2, PMLOGKFV("LAUNCH_POINT", "%d", browser_info->source), PMLOGKFV("ERROR_CODE", "%d", errcode), "Browser did not launch properly in %s", __func__);
-{{< /highlight >}}
+```
 
-{{< highlight cpp "linenos=inline, linenostart=3">}}
+``` cpp {linenos=table,linenostart=3}
 PmLogMsg(my_context, Info, "APPLAUNCH", 4, PMLOGKFV("APP_ID", "%d", app_info->id), PMLOGKS("APP_NAME", app_info->name), PMLOGKFV("APP_INSTANCE_ID","%d",app_info->instance_id), PMLOGKS("APP_STATUS", "launched"), “App launched successfully” ) ;
-{{< /highlight >}}
+```
 
-{{< highlight cpp "linenos=inline, linenostart=3">}}
+``` cpp {linenos=table,linenostart=3}
 PmLogError(my_context, "APPCRASH", 2, PMLOGKS("APP_NAME", app_info->name), PMLOGKS("APP_ID", app_info->id.c_str), " " );
-{{< /highlight >}}
+```
 
-{{< highlight cpp "linenos=inline, linenostart=3">}}
+``` cpp {linenos=table,linenostart=3}
 PmLogDebug(my_context, "%s function returned %d", __func__, retval);
-{{< /highlight >}}
+```
 
 {{< note >}}
 If there are some special characters such as '\\b', '\\f', '\\n', '\\r', '\\t', '\\', and '"' on key or value, for example, `PMLOGKS("KEY", g_strescape("my \"quoted\" string value"))`, you must escape that string. If you do not follow this rule, the following error message, for example, is written to the log file.

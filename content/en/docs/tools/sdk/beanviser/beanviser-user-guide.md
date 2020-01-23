@@ -333,8 +333,6 @@ The above information is displayed in the following graphical views:
 - System memory
 - Swap memory (displays only total, used, and free memory)
 
-<!-- end list -->
-
 **How to...**
 
 - **General Usage:** Start the operation > View the data > Stop the operation
@@ -347,8 +345,6 @@ Provides CPU utilized by different processes, which includes:
 - Native services
 - The app you installed
 - System processes (processes that do not belong to the other groups).
-
-<!-- end list -->
 
 **How to...**
 

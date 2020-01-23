@@ -196,12 +196,12 @@ The [Appendix](#appendix-how-to-rollback-before-upgrade) describes how to go bac
 
     1.  Check the deployments available to be booted into: `ostree admin status`
 
-        {{< highlight shell >}}
+        ``` shell
         root@raspberrypi4:# ostree admin status
         * webos c4c72bce3d9bbf145dee7aa914224d4ae071e51b9f156466bddfe98476d2e568.0
             Unlocked: hotfix
             origin refspec: c4c72bce3d9bbf145dee7aa914224d4ae071e51b9f156466bddfe98476d2e568
-        {{< /highlight >}}
+        ```
 
     2.  Deploy the desired deployment with refspec and reboot.
 
@@ -224,14 +224,14 @@ So this appendix explains how to manually rollback to the previous deployment.
 
 1.  Check deployments and their order. (In the example below, there are 2 deployments.)
 
-    {{< highlight shell >}}
+    ``` shell
     root@raspberrypi4:/# ostree admin status
     * webos 36b78bbacc3209aa0373483d57288bd4f50249af8c46917cda55fe6740a3f755.4                 # 1st deployment (asterisk means current booted deployment)
         origin refspec: 36b78bbacc3209aa0373483d57288bd4f50249af8c46917cda55fe6740a3f755
       webos 6d32e91a9d2251c74f81088db729522d53c0e9271dbf9d604f74bcd1a7f8de71.2 (rollback)      # 2nd deployment
         Unlocked: hotfix
         origin refspec: 6d32e91a9d2251c74f81088db729522d53c0e9271dbf9d604f74bcd1a7f8de71
-    {{< /highlight >}}
+    ```
 
 2.  Swap the boot configuration of the current booted deployment with the desired deployment to rollback.
 

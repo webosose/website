@@ -80,11 +80,11 @@ Design and implement the source code for the QML app.
 
 By default, the basic QML app template includes some basic code that prints a "Hello, QML Application!!" message. Therefore, if you want to create a demo QML app to test this process, you can skip this step and proceed.
 
-If you want to use a webOS service in the QML app, check the information and sample code provided in the [Implement the QML App] ({{< relref "developing-built-in-qml-apps#step-1-implement-the-qml-app" >}}) section in [Developing Built-in QML Apps]({{< relref "developing-built-in-qml-apps" >}}).
+If you want to use a webOS service in the QML app, check the information and sample code provided in the [Implement the QML App]({{< relref "developing-built-in-qml-apps#step-1-implement-the-qml-app" >}}) section in [Developing Built-in QML Apps]({{< relref "developing-built-in-qml-apps" >}}).
 
 ## Step 3: Configure the QML App
 
-The details or metadata of the QML app must be specified in the `appinfo.json` file. This file is automatically created when you create a QML app on CLI using a template. For details, see [appinfo.json] ({{< relref "appinfo-json" >}}).
+The details or metadata of the QML app must be specified in the `appinfo.json` file. This file is automatically created when you create a QML app on CLI using a template. For details, see [appinfo.json]({{< relref "appinfo-json" >}}).
 
 CLI provides the `appinfo.json` file template as below.
 
@@ -116,12 +116,12 @@ To package the QML app, use the `ares-package` command. The packaged file is gen
 $ ares-package sampleApp
 ```
 
-In the above command, `sampleApp` is the QML app directory. You can use an absolute or relative path. Also you can package the app with a service. For more details on using `ares-package`, see [ares-package] ({{< relref "cli-user-guide#ares-package" >}}).
+In the above command, `sampleApp` is the QML app directory. You can use an absolute or relative path. Also you can package the app with a service. For more details on using `ares-package`, see [ares-package]({{< relref "cli-user-guide#ares-package" >}}).
 
 ## Step 5: Install the QML App
 
 {{< note >}}
-* Before installing the app, ensure that the webOS OSE target device is registered on the CLI using the `ares-setup-device` command. For details, see [ares-setup-device] ({{< relref "cli-user-guide#ares-setup-device" >}}).
+* Before installing the app, ensure that the webOS OSE target device is registered on the CLI using the `ares-setup-device` command. For details, see [ares-setup-device]({{< relref "cli-user-guide#ares-setup-device" >}}).
 * Make sure that the target device is running during the installation.
 {{< /note >}}
 

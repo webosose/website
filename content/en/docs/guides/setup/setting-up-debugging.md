@@ -70,11 +70,11 @@ In this guide, we will use a process called `event-monitor` as an example. The t
 
 2. Once attached, you can look up the thread in use and print out the call stack.
 
-    {{< highlight bash >}}
+    ``` bash
     (gdb) info threads
     Id Target Id Frame
     * 1  Thread 0xb6f62ea0 (LWP 1404) "event-monitor" __libc_do_syscall () at libc-do-syscall.S:48
-    {{< /highlight >}}
+    ```
 
     ```bash
     (gdb) bt

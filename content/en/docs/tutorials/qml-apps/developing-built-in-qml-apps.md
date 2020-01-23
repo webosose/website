@@ -57,9 +57,7 @@ For the sample QML app (`com.example.app.qml`), you must:
 - **Create and update the file:** `main.qml`
 - **Directory:** `com.example.app.qml`
 
-<!-- end list -->
-
-{{< highlight javascript "linenos=table" >}}
+``` javascript {linenos=table}
 import QtQuick 2.4
 import WebOSServices 1.0
 import Eos.Window 0.1
@@ -121,7 +119,7 @@ WebOSWindow {
         context: "QMLApp"
     }
 }
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -211,9 +209,7 @@ Apps are required to have metadata before they can be packaged. This metadata is
 - **Create and update the file:** `appinfo.json`
 - **Directory:** `com.example.app.qml`
 
-<!-- end list -->
-
-{{< highlight json "linenos=table" >}}
+``` json {linenos=table}
 {
     "id": "com.example.app.qml",
     "version": "1.0.0",
@@ -224,7 +220,7 @@ Apps are required to have metadata before they can be packaged. This metadata is
     "icon": "icon.png",
     "requiredPermissions" : ["time"]
 }
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -244,9 +240,7 @@ This file specifies the application name and the qmake template to be used for g
 - **Create and update the file:** `com.example.app.qml.pro`
 - **Directory:** `com.example.app.qml`
 
-<!-- end list -->
-
-{{< highlight bash "linenos=table" >}}
+``` bash {linenos=table}
 TEMPLATE = aux
 !load(webos-variables):error("Cannot load webos-variables.prf")
 
@@ -266,7 +260,7 @@ defined(WEBOS_INSTALL_WEBOS_APPLICATIONSDIR, var) {
 
     INSTALLS += target appinfo base icon
 }
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -295,7 +289,7 @@ webOS OSE uses OpenEmbedded of Yocto Project to build its components. You must w
 
 where `<qml app name>` is the name of the qml app. For the sample qml app, `<qml app name>` must be replaced by "com.example.app.qml".
 
-{{< highlight bash "linenos=table" >}}
+``` bash {linenos=table}
 SUMMARY = "QML App"
 SECTION = "webos/apps"
 LICENSE = "Apache-2.0"
@@ -312,7 +306,7 @@ inherit webos_submissions
 inherit webos_app
 
 FILES_${PN} += "${webos_applicationsdir}"
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -343,12 +337,12 @@ To build a component that is located on the local system, you must specify the d
 
 For the sample QML app (`com.example.app.qml`), you must provide the local path where the source exists.
 
-{{< highlight bash "linenos=table" >}}
+``` bash {linenos=table}
 INHERIT += "externalsrc"
 EXTERNALSRC_pn-com.example.app.qml = "/home/username/project/com.example.app.qml/"
 EXTERNALSRC_BUILD_pn-com.example.app.qml = "/home/username/project/com.example.app.qml/build/"
 PR_append_pn-com.example.app.qml =".local0"
-{{< /highlight >}}
+```
 
 A brief explanation of the above file:
 
@@ -532,7 +526,7 @@ Perform the following steps:
 
     - **Updates to be made:** Add the QML app name to **`RDEPENDS _ $ {PN} =`**
 
-    {{< highlight bash "hl_lines=6" >}}
+    ``` bash {hl_lines=[6]}
     ...
     RDEPENDS_${PN} = " \
         activitymanager \
@@ -541,7 +535,7 @@ Perform the following steps:
         com.example.app.qml \
         ${VIRTUAL-RUNTIME_appinstalld} \
         ...
-    {{< /highlight >}}
+    ```
 
     For more details, see [Yocto Project Reference Manual](http://www.yoctoproject.org/docs/current/ref-manual/ref-manual.html).
 
