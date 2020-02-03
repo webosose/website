@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.sleep
-date: 2019-10-22
+date: 2020-02-02
 toc: true
 ---
 <div>
@@ -12,8 +12,8 @@ toc: true
   <p><u><strong>Shutdown Process:</strong></u></p>
   <p>The sleep daemon (sleepd) also transitions the system (and ultimately the device) from &quot;On&quot; to &quot;Off&quot;. Clients that wish to be notified of this transition and optionally defer or prevent it must first register with sleepd using the &quot;<strong>shutdown/shutdownApplicationsRegister</strong>&quot; or &quot;<strong>shutdown/ShutdownServicesRegister</strong>&quot; method.</p>
   <p>When sleepd receives a &quot;<strong>shutdown/initiate</strong>&quot; request, it will transition to the &quot;ShutdownApplications&quot; state.</p>
-  <p>In the &quot;ShutdownApplications&quot; state, sleepd will broadcast the &quot;<strong>ShutdownApplications</strong>&quot; signal to all clients which have registered for this signal using the &quot;<strong>shutdown/shutdownApplicationsRegister</strong>&quot; method, and will wait a maximum of 15 seconds for all responses.&nbsp;Each registered client should respond back&nbsp;with an ACK using the &quot;<strong>shutdown/shutdownApplicationsAck</strong>&quot; method.&nbsp;As soon as all clients respond back with an ACK, or the &quot;ShutdownApplications&quot; timeout expires, sleepd will transition to the&nbsp;&quot;ShutdownServices&quot; state.</p>
-  <p>In the &quot;ShutdownServices&quot; state, sleepd will broadcast the &quot;<strong>ShutdownServices</strong>&quot; signal to all clients which have registered for this signal using the &quot;<strong>shutdown/shutdownServicesRegister</strong>&quot; method, and will wait a maximum of 15 seconds for all responses.&nbsp;Each registered client should respond back&nbsp;with an ACK using the &quot;<strong>shutdown/shutdownServicesAck</strong>&quot; method.&nbsp;As soon as all clients respond back with an ACK, or the &quot;ShutdownServices&quot; timeout expires, sleepd will reply to the caller of the &quot;<strong>shutdown/initiate</strong>&quot; request.</p>
+  <p>In the &quot;ShutdownApplications&quot; state, sleepd will broadcast the &quot;<strong>ShutdownApplications</strong>&quot; signal to all clients which have registered for this signal using the &quot;<strong>shutdown/shutdownApplicationsRegister</strong>&quot; method, and will wait a maximum of 15 seconds for all responses.&nbsp;Each registered client should respond with an acknowledgement (ACK) using the &quot;<strong>shutdown/shutdownApplicationsAck</strong>&quot; method.&nbsp;As soon as all clients respond with an ACK, or the &quot;ShutdownApplications&quot; timeout expires, sleepd will transition to the&nbsp;&quot;ShutdownServices&quot; state.</p>
+  <p>In the &quot;ShutdownServices&quot; state, sleepd will broadcast the &quot;<strong>ShutdownServices</strong>&quot; signal to all clients which have registered for this signal using the &quot;<strong>shutdown/shutdownServicesRegister</strong>&quot; method, and will wait a maximum of 15 seconds for all responses.&nbsp;Each registered client should respond with an ACK using the &quot;<strong>shutdown/shutdownServicesAck</strong>&quot; method.&nbsp;As soon as all clients respond with an ACK,&nbsp;or the &quot;ShutdownServices&quot; timeout expires, sleepd will reply to the caller of the &quot;<strong>shutdown/initiate</strong>&quot; request.</p>
   <p>After receiving the reply to the &quot;<strong>shutdown/initiate</strong>&quot; request, the&nbsp;caller&nbsp;should then call &quot;<strong>shutdown/machineOff</strong>&quot; or &quot;<strong>shutdown/machineReboot</strong>&quot; to forcefully shut down or reboot the device, respectively.</p>
 </div>
 <h2>Methods</h2>
@@ -21,8 +21,9 @@ toc: true
   <h3>shutdown/initiate</h3>
   <div>
     <h4>Description</h4>
-    <p>The initiate method starts the shutdown process - sending the shutdownApplications and shutdownServices signals to all the registered apps/services. Once the shutdown process completes and the system decides it can shutdown, this call returns.</p>
-    <p>Please note: This call does not do the actual shutdown , for that you need to call machineOff method.</p>
+    <p>Starts the shutdown process. It sends&nbsp;the <strong>shutdownApplications</strong> and <strong>shutdownServices</strong> signals to all the registered apps/services.</p>
+    <p>Returns &quot;true&quot; once the shutdown process is complete&nbsp;and the system decides that it can shutdown.</p>
+    <p><strong>Note</strong>: This call does not do the actual shutdown; instead&nbsp;use the&nbsp;<strong>machineOff&nbsp;</strong>method.&nbsp;</p>
     <h4>Parameters</h4>
     <p>None</p>
     <h4>Call Returns</h4>
@@ -57,15 +58,19 @@ toc: true
     <h4>Example</h4>
     <div class="code-bg-grey">
       <p># luna-send -n 1 luna://com.webos.service.sleep/shutdown/initiate &#39;{}&#39;</p>
+      <p>&nbsp;</p>
       <p>Response:</p>
-      <p>{ &quot;success&quot;:true }</p>
+      <p>{&nbsp;<br />
+        &nbsp;&nbsp;&quot;success&quot;:true<br />
+        }
+      </p>
     </div>
   </div>
 </div>
 <h3>shutdown/machineOff</h3>
 <div>
   <h4>Description</h4>
-  Shuts down the machine forcefully
+  <p>Shuts down the machine forcefully.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -160,7 +165,7 @@ toc: true
           <td>-1</td>
           <td>Invalid parameters</td>
           <td>
-            <p>The&nbsp;<strong>reason</strong>&nbsp;parameter was not provided</p>
+            <p>The&nbsp;<strong>reason</strong>&nbsp;parameter was not provided.</p>
           </td>
         </tr>
       </tbody>
@@ -168,15 +173,19 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -n 1 luna://com.webos.service.sleep/shutdown/machineOff &#39;{&quot;reason&quot;:&quot;power off&quot;}&#39;</p>
+    <p># luna-send -n 1 luna://com.webos.service.sleep/shutdown/machineOff &#39;{&quot;reason&quot;:&quot;remoteKey&quot;}&#39;</p>
+    <p>&nbsp;</p>
     <p>Response:</p>
-    <p>{ &quot;returnValue&quot;:true }</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>shutdown/machineReboot</h3>
 <div>
   <h4>Description</h4>
-  Reboot the machine forcefully by calling "reboot"
+  <p>Reboots the machine forcefully by calling &quot;reboot&quot;.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -279,15 +288,19 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -n 1 luna://com.webos.service.sleep/shutdown/machineReboot &#39;{&quot;reason&quot;:&quot;none&quot;}&#39;</p>
+    <p># luna-send -n 1 luna://com.webos.service.sleep/shutdown/machineReboot &#39;{&quot;reason&quot;:&quot;reset&quot;}&#39;</p>
+    <p>&nbsp;</p>
     <p>Response:</p>
-    <p>{ &quot;returnValue&quot;:true }</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>shutdown/shutdownApplicationsAck</h3>
 <div>
   <h4>Description</h4>
-  This method will set the client's response as ACK for the "shutdownApplications" signal and trigger the dispatcher for the shutdown state machine, so that if the total client ACK count exceeds total number of clients, it can proceed to the next state.
+  <p>Sets the client&#39;s response as ACK for the &quot;shutdownApplications&quot; signal and trigger the dispatcher for the shutdown state machine, so that if the total client ACK count exceeds total number of clients, it can proceed to the next state.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -386,12 +399,18 @@ toc: true
   <h4>Example</h4>
   <div class="code-bg-grey">
     <p># luna-send -n 1 luna://com.webos.service.sleep/shutdown/shutdownApplicationsAck &#39;{&quot;clientId&quot;:&quot;/var/run/ls2/T4fb64.4&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>shutdown/shutdownApplicationsRegister</h3>
 <div>
   <h4>Description</h4>
-  Register an application for the "shutdownApplications" signal. Send the client id of the client.
+  <p>Registers an application for the &quot;shutdownApplications&quot; signal. Returns the client ID&nbsp;of the client.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -415,7 +434,7 @@ toc: true
           <td>Required</td>
           <td>string</td>
           <td>
-            <p>A unique name which the caller decides for the application</p>
+            <p>A unique name which the caller decides for the application.</p>
           </td>
         </tr>
       </tbody>
@@ -456,7 +475,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>This is a unique token generated for this client by this method, which should be used by the caller for acking the shutdownApplications signal later.</p>
+            <p>This is a unique token generated for this client by this method, which should be used by the caller for acknowledging the shutdownApplications signal later.</p>
           </td>
         </tr>
         <tr>
@@ -498,14 +517,19 @@ toc: true
   <h4>Example</h4>
   <div class="code-bg-grey">
     <p># luna-send -n 1 luna://com.webos.service.sleep/shutdown/shutdownApplicationsRegister &#39;{&quot;clientName&quot;:&quot;facebook app&quot;}&#39;</p>
+    <p>&nbsp;</p>
     <p>Response:</p>
-    <p>{ &quot;returnValue&quot;:true, &quot;clientId&quot;:&quot;/var/run/ls2/T4fb64.4&quot; }</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&quot;clientId&quot;:&quot;/var/run/ls2/T4fb64.4&quot;<br />
+      }
+    </p>
   </div>
 </div>
 <h3>shutdown/shutdownServicesAck</h3>
 <div>
   <h4>Description</h4>
-  This method will set the client's response as ACK for the "shutdownServices" signal and trigger the dispatcher for the shutdown state machine, so that if the total client ACK count exceeds total number of clients, it can proceed to the next state.
+  <p>Sets the client&#39;s response as ACK for the &quot;shutdownServices&quot; signal and trigger the dispatcher for the shutdown state machine, so that if the total client ACK count exceeds total number of clients, it can proceed to the next state.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -525,7 +549,7 @@ toc: true
           </th>
         </tr>
         <tr>
-          <td>clientID</td>
+          <td>clientId</td>
           <td>Required</td>
           <td>string</td>
           <td>
@@ -604,14 +628,18 @@ toc: true
   <h4>Example</h4>
   <div class="code-bg-grey">
     <p># luna-send -n 1 luna://com.webos.service.sleep/shutdown/shutdownServicesAck &#39;{&quot;clientId&quot;:&quot;/var/run/ls2/T4fb64.5&quot;}&#39;</p>
+    <p>&nbsp;</p>
     <p>Response:</p>
-    <p>{ &quot;returnValue&quot;:true }</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>shutdown/shutdownServicesRegister</h3>
 <div>
   <h4>Description</h4>
-  Register an application for the "shutdownApplications" signal. Send the client id of the client added.
+  <p>Registers an application for the &quot;shutdownApplications&quot; signal. Returns the client ID&nbsp;of the client added.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -676,7 +704,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>This is a unique token generated for this client by this method, which should be used by the caller for acking the shutdownApplications signal later.</p>
+            <p>This is a unique token generated for this client by this method, which should be used by the caller for acknowledging&nbsp;the shutdownApplications signal later.</p>
           </td>
         </tr>
         <tr>
@@ -718,14 +746,19 @@ toc: true
   <h4>Example</h4>
   <div class="code-bg-grey">
     <p># luna-send -n 1 luna://com.webos.service.sleep/shutdown/shutdownServicesRegister &#39;{&quot;clientName&quot;:&quot;facebook service&quot;}&#39;</p>
+    <p>&nbsp;</p>
     <p>Response:</p>
-    <p>{ &quot;returnValue&quot;:true, &quot;clientId&quot;:&quot;/var/run/ls2/T4fb64.5&quot; }</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&quot;clientId&quot;:&quot;/var/run/ls2/T4fb64.5&quot;<br />
+      }
+    </p>
   </div>
 </div>
 <h3>timeout/clear</h3>
 <div>
   <h4>Description</h4>
-  Handle a timeout/clear message and delete a timeout by its key.
+  <p>Handles a timeout/clear message and deletes a timeout by its key.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -793,6 +826,46 @@ toc: true
             <p>Unique identifier for the alarm</p>
           </td>
         </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>-1</td>
+          <td>Malformed JSON object</td>
+          <td>
+            <p>Invalid JSON data</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-1</td>
+          <td>Invalid parameters</td>
+          <td>
+            <p>Invalid parameters data received</p>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -802,17 +875,19 @@ toc: true
       &nbsp; &nbsp; &nbsp; &nbsp;&quot;key&quot;:&quot;com.webos.service.activitymanager.wakeup&quot;<br />
       }&#39;
     </p>
+    <p>&nbsp;</p>
     <p>Response:</p>
-    <p>{</p>
-    <p>&nbsp; &nbsp; &quot;returnValue&quot;:true,</p>
-    <p>&nbsp; &nbsp; &quot;key&quot;:&quot;com.webos.service.activitymanager.wakeup&quot;</p>
-    <p>}</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;:true,<br />
+      &nbsp; &nbsp; &quot;key&quot;:&quot;com.webos.service.activitymanager.wakeup&quot;<br />
+      }
+    </p>
   </div>
 </div>
 <h3>timeout/set</h3>
 <div>
   <h4>Description</h4>
-  Handle a timeout/set message and add a new power timeout. Relative timeouts can be set by passing the "in" parameter. Absolute timeouts can be set by passing the "at" parameter.
+  <p>Handles a timeout/set message and adds a new power timeout. Relative timeouts can be set by passing the &quot;in&quot; parameter. Absolute timeouts can be set by passing the &quot;at&quot; parameter.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -834,56 +909,74 @@ toc: true
         <tr>
           <td>key</td>
           <td>Required</td>
-          <td>string</td>
-          <td>unique key to identify individual alarms</td>
+          <td>String</td>
+          <td>
+            <p>Unique key to identify individual alarms</p>
+          </td>
         </tr>
         <tr>
           <td>at</td>
           <td>Required</td>
-          <td>string</td>
-          <td>Absolute time for the alarm to be set to. Either this or the "in" parameter must be passed.</td>
+          <td>String</td>
+          <td>
+            <p>Absolute time for the alarm to be set to. Either this or the &quot;in&quot; parameter must be passed.</p>
+          </td>
         </tr>
         <tr>
           <td>in</td>
           <td>Required</td>
-          <td>string</td>
-          <td>Relative time for the alarm to be set to.  Either this or the "at" parameter must be passed.</td>
+          <td>String</td>
+          <td>
+            <p>Relative time for the alarm to be set to. Either this or the &quot;at&quot; parameter must be passed.</p>
+          </td>
         </tr>
         <tr>
           <td>uri</td>
           <td>Required</td>
-          <td>string</td>
-          <td>Uri to be passed to the alarm</td>
+          <td>String</td>
+          <td>
+            <p>URI to be passed to the alarm</p>
+          </td>
         </tr>
         <tr>
           <td>params</td>
           <td>Required</td>
-          <td>string</td>
-          <td>parameters for the uri</td>
+          <td>String</td>
+          <td>
+            <p>Parameters for the URI.</p>
+          </td>
         </tr>
         <tr>
           <td>wakeup</td>
-          <td>Required</td>
-          <td>boolean</td>
-          <td>if a wakeup alarm needs to be set.</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>If a wakeup alarm needs to be set.</p>
+          </td>
         </tr>
         <tr>
           <td>activity_id</td>
           <td>Optional</td>
-          <td>string</td>
-          <td>Activity ID</td>
+          <td>String</td>
+          <td>
+            <p>Activity ID</p>
+          </td>
         </tr>
         <tr>
           <td>activity_duration_ms</td>
           <td>Optional</td>
-          <td>number</td>
-          <td>Description here</td>
+          <td>Number</td>
+          <td>
+            <p>Duration in milliseconds&nbsp;to keep the device ON. Needs to be provided only if activity_id is provided.</p>
+          </td>
         </tr>
         <tr>
           <td>keep_existing</td>
           <td>Optional</td>
-          <td>boolean</td>
-          <td>set to true to keep existing alarms with the same key</td>
+          <td>Boolean</td>
+          <td>
+            <p>Set to true to keep existing alarms with the same key</p>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -926,6 +1019,47 @@ toc: true
             <p>Unique key used to identify the alarm</p>
           </td>
         </tr>
+        <tr>
+          <td>kept_existing</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>If the existing alarms have been kept</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>-1</td>
+          <td>Malformed JSON object</td>
+          <td>
+            <p>Invalid JSON data</p>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -939,463 +1073,13 @@ toc: true
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;wakeup&quot;:true<br />
       }&#39;
     </p>
+    <p>&nbsp;</p>
     <p>Response:</p>
-    <p>{</p>
-    <p>&nbsp; &nbsp; &quot;returnValue&quot;:true,</p>
-    <p>&nbsp; &nbsp; &quot;key&quot;:&quot;com.webos.service.activitymanager.wakeup&quot;</p>
-    <p>}</p>
-  </div>
-</div>
-<div>
-  <h2>Objects</h2>
-  <h3>CallReturn</h3>
-  Default object returned by methods.
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p style="text-align: left;">If the&nbsp;method succeeds&nbsp;<strong>returnValue</strong>&nbsp;will contain <strong>true</strong>.</p>
-            <p style="text-align: left;">If the&nbsp;method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain <strong>false</strong>​ and an error code and error message in the <strong>errorCode </strong>and <strong>errorText </strong>fields respectively.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>errorCode</td>
-          <td>Optional</td>
-          <td>Number</td>
-          <td>
-            <p style="text-align: left;">If the method fails, it will return an error code number in <strong>errorCode</strong>.&nbsp;<br></p>
-          </td>
-        </tr>
-        <tr>
-          <td>errorText</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p style="text-align: left;">If the&nbsp;method fails, it will return an error message describing the reason for failure in&nbsp;<strong>errorText</strong>.&nbsp;<br></p>
-          </td>
-        </tr>
-        <tr>
-          <td>Id</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Pipeline Id</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h3>identifyReturn</h3>
-  Object returned by the identify method.
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>clientId</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>id of the client</td>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Optional</td>
-          <td>Boolean</td>
-          <td>return true if success</td>
-        </tr>
-        <tr>
-          <td>errorText</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>error message if call fails</td>
-        </tr>
-        <tr>
-          <td>subscribed</td>
-          <td>Optional</td>
-          <td>Boolean</td>
-          <td>true if subscribed</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h3>shutdownApplicationsRegisterReturn</h3>
-  Object returned by shutdownApplicationsRegister.
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>clientId</td>
-          <td>Required</td>
-          <td>Number</td>
-          <td>Client ID.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h3>shutdownServicesRegisterReturn</h3>
-  Object returned by shutdownServicesRegister
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>clientId</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>Client ID.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h3>alarmAddReturn</h3>
-  Object returned by alarmAdd.
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>subscribed</td>
-          <td>Optional</td>
-          <td>Boolean</td>
-          <td>if subscription is successful</td>
-        </tr>
-        <tr>
-          <td>alarmId</td>
-          <td>Optional</td>
-          <td>Number</td>
-          <td>alarmId if the alarm was successfully added</td>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>true if the call was successful</td>
-        </tr>
-        <tr>
-          <td>errorText</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>Error message on failure</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h3>alarmAddSubscriptionReturn</h3>
-  Object returned when alarmAdd is called with subscribe set as true.
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>alarmId</td>
-          <td>Required</td>
-          <td>Number</td>
-          <td>id of the alarm that was added</td>
-        </tr>
-        <tr>
-          <td>fired</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>true if the alarm has fired</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h3>alarmAddCalendarReturn</h3>
-  Object returned by alarmAddCalendar.
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>subscribed</td>
-          <td>Optional</td>
-          <td>Boolean</td>
-          <td>if subscription has been successful</td>
-        </tr>
-        <tr>
-          <td>alarmId</td>
-          <td>Optional</td>
-          <td>Number</td>
-          <td>id of the alarm when successfully created</td>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>if the call was successful</td>
-        </tr>
-        <tr>
-          <td>errorText</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>error message when the call fails</td>
-        </tr>
-        <tr>
-          <td>serviceName</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>Name of the service for which add alarm failed.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h3>alarmAddCalendarSubscriptionReturn</h3>
-  Object returned by the alarmAddCalendar method when subscribed.
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>alarmId</td>
-          <td>Required</td>
-          <td>Number</td>
-          <td>id of the alarm</td>
-        </tr>
-        <tr>
-          <td>fired</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>if the alarm has been fired</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h3>alarmQueryReturn</h3>
-  Object returned by the alarmQuery method.
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>alarms</td>
-          <td>Optional</td>
-          <td>Object array</td>
-          <td>[alarm]</td>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>true if call is successful</td>
-        </tr>
-        <tr>
-          <td>errorText</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>Error message if call fails</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h3>clearReturn</h3>
-  Object returned by the clear method.
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>true if successful</td>
-        </tr>
-        <tr>
-          <td>errorText</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>returned if failure</td>
-        </tr>
-        <tr>
-          <td>key</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>key of the alarm that was cleared, returned if successful</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h3>setReturn</h3>
-  Object returned by the set method.
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>true if success</td>
-        </tr>
-        <tr>
-          <td>key</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>Description here</td>
-        </tr>
-        <tr>
-          <td>kept_existing</td>
-          <td>Optional</td>
-          <td>Boolean</td>
-          <td>If the existing alarms have been kept</td>
-        </tr>
-        <tr>
-          <td>errorText</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>Will be sent only when there is an error.</td>
-        </tr>
-      </tbody>
-    </table>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;:true,<br />
+      &nbsp; &nbsp; &quot;key&quot;:&quot;com.webos.service.activitymanager.wakeup&quot;<br />
+      }
+    </p>
   </div>
 </div>
 <div>

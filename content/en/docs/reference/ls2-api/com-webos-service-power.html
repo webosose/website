@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.power
-date: 2019-10-22
+date: 2020-02-02
 toc: true
 ---
 <div>
@@ -10,26 +10,27 @@ toc: true
 <h2>Overview of the API</h2>
 <div>
   <p><u><strong>Sleep/Wake Process:</strong></u></p>
-  <p>The sleep daemon&nbsp;(sleepd) transitions the system (and ultimately the device) from &quot;On&quot; to &quot;Sleep&quot; (and back). &nbsp;Clients that wish to be notified of these transitions and optionally defer or prevent them must first register with sleepd using the &quot;<strong>suspend/identify</strong>&quot; method. &nbsp;Clients may unregister using the &quot;<strong>suspend/clientCancelByName</strong>&quot; method.</p>
-  <p>When sleepd determines that the device is idle and could be suspended, it will transition to the &quot;<strong>suspendRequest</strong>&quot; state.</p>
-  <p>In the &quot;<strong>suspendRequest</strong>&quot;&nbsp;state, sleepd will broadcast the &quot;<strong>suspendRequest</strong>&quot; signal to all clients which have registered for this signal using the &quot;<strong>suspend/suspendRequestRegister</strong>&quot; method and will wait a maximum of 30 seconds for all responses. Each registered client should respond back with an <strong>ACK</strong> or <strong>NACK</strong> using the &quot;<strong>suspend/suspendRequestAck</strong>&quot; method. If any client responds with a <strong>NACK</strong>, sleepd will simply return to the &quot;On&quot; state.&nbsp;However, if all clients respond back with an ACK, or the &quot;SuspendRequest&quot; timeout expires, sleepd will transition to the &quot;PrepareSuspend&quot; state.</p>
-  <p>In the &quot;<strong>prepareSuspend</strong>&quot; state, sleepd will broadcast the &quot;<strong>prepareSuspend</strong>&quot; signal&nbsp;to all clients which have registered for this signal using the &quot;<strong>suspend/prepareSuspendRegister</strong>&quot; method&nbsp;and will wait a maximum of five seconds for all responses. Each registered client should respond back with an ACK or NACK using the &quot;<strong>suspend/prepareSuspendAck</strong>&quot; method.&nbsp;If any client responds with a NACK, sleepd will broadcast the &quot;<strong>Resume</strong>&quot; signal and return to the &quot;On&quot; state.&nbsp;However, if&nbsp;all clients respond back with an ACK, or the &quot;prepareSuspend&quot; timeout expires, sleepd will&nbsp;transition to the &quot;Sleep&quot; state.</p>
-  <p>In the &quot;Sleep&quot; state,&nbsp;sleepd will broadcast the &quot;<strong>Suspended</strong>&quot; signal to all clients and then check for activities which have been registered using the &quot;<strong>suspend/activityStart</strong>&quot; method.&nbsp;If sleepd finds a registered activity that is active, it will broadcast the &quot;<strong>Resume</strong>&quot; signal and return to the &quot;On&quot; state. &nbsp;Otherwise, it will let the device go to sleep. &nbsp;After the device wakes from sleep, sleepd will broadcast the &quot;<strong>Resume</strong>&quot; signal and return to the &quot;On&quot; state.</p>
-  <p>Clients may cancel a previously registered activity using the &quot;<strong>suspend/activityEnd</strong>&quot; method.</p>
+  <p>The sleep daemon&nbsp;(sleepd) transitions the system (and ultimately the device) from &quot;On&quot; to &quot;Sleep&quot; (and back). &nbsp;Clients that wish to be notified of these transitions and optionally defer or prevent them must first register with sleepd using the <strong>suspend/identify</strong>&nbsp;method. Clients may unregister using the <strong>suspend/clientCancelByName</strong>&nbsp;method.</p>
+  <p>When sleepd determines that the device is idle and could be suspended, it will transition to the <strong>suspendRequest&nbsp;</strong>state.</p>
+  <p>In the <strong>suspendRequest</strong>&nbsp;state, sleepd will broadcast the <strong>suspendRequest</strong>&nbsp;signal to all clients which have registered for this signal using the <strong>suspend/suspendRequestRegister</strong>&nbsp;method and will wait a maximum of 30 seconds for all responses. Each registered client should respond back with an <strong>acknowledgement (ACK)</strong> or <strong>negative acknowledgement (NACK)</strong> using the <strong>suspend/suspendRequestAck</strong>&nbsp;method. If any client responds with a <strong>NACK</strong>, sleepd will simply return to the &quot;On&quot; state.&nbsp;However, if all clients respond back with an ACK, or the <strong>SuspendRequest</strong>&nbsp;timeout expires, sleepd will transition to the <strong>PrepareSuspend</strong>&nbsp;state.</p>
+  <p>In the <strong>prepareSuspend</strong>&nbsp;state, sleepd will broadcast the <strong>prepareSuspend</strong>&nbsp;signal&nbsp;to all clients which have registered for this signal using the <strong>suspend/prepareSuspendRegister</strong>&nbsp;method&nbsp;and will wait a maximum of five seconds for all responses. Each registered client should respond back with an ACK or NACK using the <strong>suspend/prepareSuspendAck</strong>&nbsp;method.&nbsp;If any client responds with a NACK, sleepd will broadcast the <strong>Resume</strong>&nbsp;signal and return to the &quot;On&quot; state.&nbsp;However, if&nbsp;all clients respond back with an ACK, or the <strong>prepareSuspend</strong>&nbsp;timeout expires, sleepd will&nbsp;transition to the &quot;Sleep&quot; state.</p>
+  <p>In the &quot;Sleep&quot; state,&nbsp;sleepd will broadcast the <strong>Suspended</strong>&nbsp;signal to all clients and then check for activities which have been registered using the <strong>suspend/activityStart</strong>&nbsp;method.&nbsp;If sleepd finds a registered activity that is active, it will broadcast the <strong>Resume</strong>&nbsp;signal and return to the &quot;On&quot; state. &nbsp;Otherwise, it will let the device go to sleep. After the device wakes from sleep, sleepd will broadcast the <strong>Resume</strong>&nbsp;signal and return to the &quot;On&quot; state.</p>
+  <p>Clients may cancel a previously registered activity using the <strong>suspend/activityEnd</strong>&nbsp;method.</p>
   <p><u><strong>Shutdown Process:</strong></u></p>
-  <p>The sleep daemon (sleepd) also transitions the system (and ultimately the device) from &quot;On&quot; to &quot;Off&quot;. Clients that wish to be notified of this transition and optionally defer or prevent it must first register with sleepd using the &quot;<strong>shutdown/shutdownApplicationsRegister</strong>&quot; or &quot;<strong>shutdown/ShutdownServicesRegister</strong>&quot; method.</p>
-  <p>When sleepd receives a &quot;<strong>shutdown/initiate</strong>&quot; request, it will transition to the &quot;ShutdownApplications&quot; state.</p>
-  <p>In the &quot;ShutdownApplications&quot; state, sleepd will broadcast the &quot;<strong>ShutdownApplications</strong>&quot; signal to all clients which have registered for this signal using the &quot;<strong>shutdown/shutdownApplicationsRegister</strong>&quot; method, and will wait a maximum of 15 seconds for all responses.&nbsp;Each registered client should respond back&nbsp;with an ACK using the &quot;<strong>shutdown/shutdownApplicationsAck</strong>&quot; method.&nbsp;As soon as all clients respond back with an ACK, or the &quot;ShutdownApplications&quot; timeout expires, sleepd will transition to the&nbsp;&quot;ShutdownServices&quot; state.</p>
-  <p>In the &quot;ShutdownServices&quot; state, sleepd will broadcast the &quot;<strong>ShutdownServices</strong>&quot; signal to all clients which have registered for this signal using the &quot;<strong>shutdown/shutdownServicesRegister</strong>&quot; method, and will wait a maximum of 15 seconds for all responses.&nbsp;Each registered client should respond back&nbsp;with an ACK using the &quot;<strong>shutdown/shutdownServicesAck</strong>&quot; method.&nbsp;As soon as all clients respond back with an ACK, or the &quot;ShutdownServices&quot; timeout expires, sleepd will reply to the caller of the &quot;<strong>shutdown/initiate</strong>&quot; request.</p>
-  <p>After receiving the reply to the &quot;<strong>shutdown/initiate</strong>&quot; request, the&nbsp;caller&nbsp;should then call &quot;<strong>shutdown/machineOff</strong>&quot; or &quot;<strong>shutdown/machineReboot</strong>&quot; to forcefully shut down or reboot the device, respectively.</p>
+  <p>The sleep daemon (sleepd) also transitions the system (and ultimately the device) from &quot;On&quot; to &quot;Off&quot;. Clients that wish to be notified of this transition and optionally defer or prevent it must first register with sleepd using the <strong>shutdown/shutdownApplicationsRegister</strong>&nbsp;or <strong>shutdown/ShutdownServicesRegister</strong>&nbsp;method.</p>
+  <p>When sleepd receives a <strong>shutdown/initiate</strong>&nbsp;request, it will transition to the &quot;ShutdownApplications&quot; state.</p>
+  <p>In the &quot;ShutdownApplications&quot; state, sleepd will broadcast the <strong>ShutdownApplications</strong>&nbsp;signal to all clients which have registered for this signal using the <strong>shutdown/shutdownApplicationsRegister</strong>&nbsp;method, and will wait a maximum of 15 seconds for all responses.&nbsp;Each registered client should respond back&nbsp;with an ACK using the <strong>shutdown/shutdownApplicationsAck</strong>&nbsp;method.&nbsp;As soon as all clients respond back with an ACK, or the &quot;ShutdownApplications&quot; timeout expires, sleepd will transition to the&nbsp;&quot;ShutdownServices&quot; state.</p>
+  <p>In the &quot;ShutdownServices&quot; state, sleepd will broadcast the <strong>ShutdownServices</strong>&nbsp;signal to all clients which have registered for this signal using the <strong>shutdown/shutdownServicesRegister</strong>&nbsp;method, and will wait a maximum of 15 seconds for all responses.&nbsp;Each registered client should respond back&nbsp;with an ACK using the <strong>shutdown/shutdownServicesAck</strong>&nbsp;method.&nbsp;As soon as all clients respond back with an ACK, or the &quot;ShutdownServices&quot; timeout expires, sleepd will reply to the caller of the <strong>shutdown/initiate</strong>&nbsp;request.</p>
+  <p>After receiving the reply to the <strong>shutdown/initiate</strong>&nbsp;request, the&nbsp;caller&nbsp;should then call <strong>shutdown/machineOff</strong>&nbsp;or <strong>shutdown/machineReboot</strong>&nbsp;to forcefully shut down or reboot the device, respectively.</p>
 </div>
 <h2>Methods</h2>
 <div>
   <h3>shutdown/initiate</h3>
   <div>
     <h4>Description</h4>
-    <p>Starts the shutdown process - sending the shutdownApplications and shutdownServices signals to all the registered apps/services. Once the shutdown process completes and the system decides it can shutdown, this call returns.</p>
-    <p><strong>Note</strong>: This call does not do the actual shutdown , for that you need to call <strong>machineOff </strong>method.</p>
+    <p>Starts the shutdown process by sending the <strong>shutdownApplications</strong>&nbsp;and <strong>shutdownServices</strong>&nbsp;signals to all the registered apps/services.</p>
+    <p>Returns &quot;true&quot; once the shutdown process is complete&nbsp;and the system decides that it can shutdown.</p>
+    <p><strong>Note</strong>: This call does not do the actual shutdown; instead&nbsp;use the&nbsp;<strong>machineOff </strong>method.&nbsp;</p>
     <h4>Parameters</h4>
     <p>None</p>
     <h4>Call Returns</h4>
@@ -64,10 +65,11 @@ toc: true
     <h4>Example</h4>
     <div class="code-bg-grey">
       <p># luna-send -n 1 luna://com.webos.service.power/shutdown/initiate &#39;{}&#39;</p>
+      <p>&nbsp;</p>
       <p>Response:</p>
-      <p>{ &quot;success&quot;:true }<br />
-        <br />
-        &nbsp;
+      <p>{&nbsp;<br />
+        &nbsp;&nbsp;&quot;success&quot;:true<br />
+        }
       </p>
     </div>
   </div>
@@ -75,7 +77,7 @@ toc: true
 <h3>shutdown/machineOff</h3>
 <div>
   <h4>Description</h4>
-  <p>Shuts down the system forcefully</p>
+  <p>Shuts down the system forcefully.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -179,11 +181,14 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -n 1 luna://com.webos.service.power/shutdown/machineOff &#39;{&quot;reason&quot;:&quot;power off&quot;}&#39;<br />
-      <br />
-      Response:
+    <p># luna-send -n 1 luna://com.webos.service.power/shutdown/machineOff &#39;{&quot;reason&quot;:&quot;localKey&quot;}&#39;<br />
+      &nbsp;
     </p>
-    <p>{ &quot;returnValue&quot;:true }</p>
+    <p>Response:</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>shutdown/machineReboot</h3>
@@ -293,11 +298,14 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -n 1 luna://com.webos.service.power/shutdown/machineReboot &#39;{&quot;reason&quot;:&quot;none&quot;}&#39;<br />
-      <br />
-      Response:
+    <p># luna-send -n 1 luna://com.webos.service.power/shutdown/machineReboot &#39;{&quot;reason&quot;:&quot;ota&quot;}&#39;<br />
+      &nbsp;
     </p>
-    <p>{ &quot;returnValue&quot;:true }</p>
+    <p>Response:</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>shutdown/shutdownApplicationsRegister</h3>
@@ -356,7 +364,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>This is a unique token generated for this client by this method, which should be used by the caller for acking the shutdownApplications signal later.</p>
+            <p>This is a unique token generated for this client by this method, which should be used by the caller for acknowledging the shutdownApplications signal later.</p>
           </td>
         </tr>
         <tr>
@@ -413,7 +421,11 @@ toc: true
       &nbsp;
     </p>
     <p>Response:</p>
-    <p>{ &quot;returnValue&quot;:true, &quot;clientId&quot;:&quot;/var/run/ls2/T4fb64.4&quot; }</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&quot;clientId&quot;:&quot;/var/run/ls2/T4fb64.4&quot;<br />
+      }
+    </p>
   </div>
 </div>
 <h3>shutdown/shutdownApplicationsAck</h3>
@@ -518,6 +530,12 @@ toc: true
   <h4>Example</h4>
   <div class="code-bg-grey">
     <p># luna-send -n 1 luna://com.webos.service.power/shutdown/shutdownApplicationsAck &#39;{&quot;clientId&quot;:&quot;/var/run/ls2/T4fb64.4&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>shutdown/shutdownServicesRegister</h3>
@@ -576,7 +594,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>This is a unique token generated for this client by this method, which should be used by the caller for acking the shutdownApplications signal later.</p>
+            <p>This is a unique token generated for this client by this method, which should be used by the caller for acknowledging the shutdownApplications signal later.</p>
           </td>
         </tr>
         <tr>
@@ -630,8 +648,13 @@ toc: true
   <h4>Example</h4>
   <div class="code-bg-grey">
     <p># luna-send -n 1 luna://com.webos.service.power/shutdown/shutdownServicesRegister &#39;{&quot;clientName&quot;:&quot;facebook service&quot;}&#39;</p>
+    <p>&nbsp;</p>
     <p>Response:</p>
-    <p>{ &quot;returnValue&quot;:true, &quot;clientId&quot;:&quot;/var/run/ls2/T4fb64.5&quot; }</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&quot;clientId&quot;:&quot;/var/run/ls2/T4fb64.5&quot;<br />
+      }
+    </p>
   </div>
 </div>
 <h3>shutdown/shutdownServicesAck</h3>
@@ -735,19 +758,59 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 luna://com.webos.service.power/shutdown/shutdownServicesAck &#39;{&quot;clientId&quot;:&quot;/var/run/ls2/T4fb64.5&quot;}&#39;</p>
+    <p># luna-send -n 1 luna://com.webos.service.power/shutdown/shutdownServicesAck &#39;{&quot;clientId&quot;:&quot;/var/run/ls2/T4fb64.5&quot;}&#39;</p>
+    <p>&nbsp;</p>
     <p>Response:</p>
-    <p>{ &quot;returnValue&quot;:true }</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <div>
   <h2>Signals/Events</h2>
   <h3>suspend/suspendRequest</h3>
-  <p>Inform registered clients that the system thinks its the right time to suspend, and wants to get the client response. Client should respond via the suspendRequestAck whether it is ready for a suspend at this moment.</p>
+  <p>Informs registered clients that the system thinks it is the right time to suspend, and wants to get the client response.&nbsp;Client should respond via the suspendRequestAck whether it is ready for a suspend at this moment.</p>
   <h3>suspend/prepareSuspend</h3>
-  <p>Informs registered clients that the system is about to suspend so its the last chance for them to stop it.&nbsp; Client should respond via the prepareSuspendAck method indicating whether or not it is able to suspend at this moment.</p>
+  <p>Informs registered clients that the system is about to suspend so it is&nbsp;the last chance for them to stop it.&nbsp;Client should respond via the prepareSuspendAck method indicating whether or not it is able to suspend at this moment.</p>
   <h3>suspend/resume</h3>
-  <p>Informs clients that the system has resumed operation from a previous suspend. The signal is sent if any client nacks to the prepareSuspend signal, indicating the suspend has been aborted.</p>
+  <p>Informs clients that the system has resumed operation from a previous suspend. The signal is sent if any client NACKs to the prepareSuspend signal, indicating the suspend has been aborted.</p>
+  <div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>resumetype</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>The reason for resume can be following types:</p>
+              <ul>
+                <li><strong>0</strong> - System woke up from sleep normally</li>
+                <li><strong>1 </strong>- System did not really sleep but had to prevent the sleep because an activity was active</li>
+                <li><strong>2 </strong>- System did not suspend but had to prevent the suspend because one or more client(s) responded with NACK for prepareSuspend signal sent from sleepd</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
   <h3>suspend/suspended</h3>
   <p>Informs clients that the system is just making the kernel call to suspend the system.</p>
   <h3>shutdown/shutdownApplications</h3>
