@@ -50,6 +50,10 @@ This version corresponds to the [GitHub releases](https://github.com/webosose/bu
   - YouTube app
       - Fixed an issue where the settings pop-up menu flickers when the progress bar is hovered over or some setting value is changed.
 
+  - LSM (Luna Surface Manager)
+      - Fixed an issue where a subscription to LSM is canceled unexpectedly.
+      - Fixed an issue where, when an app is relaunched, the initial screen of the app is not displayed.
+
 ## Known Issues
 
   - While booting, a light-purple background is displayed briefly before Home Launcher shows up.
