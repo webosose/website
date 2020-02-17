@@ -1,6 +1,6 @@
 ---
 title: Native Development Kit Setup
-date: 2020-01-14
+date: 2020-02-13
 weight: 80
 toc: true
 ---
@@ -14,13 +14,14 @@ This guide describes how to set up the NDK for 3rd party native apps and service
 To set up the NDK, you must build an NDK installer first. Go to your `build-webos` directory and enter the following commands on the shell.
 
 ``` bash
+build-webos$ sudo scripts/prerequisites.sh
 build-webos$ ./mcf -p <number of physical CPU cores / 2> -b <number of physical CPU cores / 2> raspberrypi4
 build-webos$ source oe-init-build-env
 build-webos$ bitbake -c populate_sdk webos-image
 ```
 
 {{< note >}}
-  - `build-webos` directory and  `mcf` command are explained in [Building webOS OSE]({{< relref "building-webos-ose">}}).
+  - `build-webos` directory, `prerequisites.sh`, and `mcf` command are explained in [Building webOS OSE]({{< relref "building-webos-ose">}}).
   - OpenEmbedded commands are used to build the NDK installer. For more details about using the commands and OpenEmbedded, see [Yocto Project SDK Manual](https://www.yoctoproject.org/docs/2.6/sdk-manual/sdk-manual.html#sdk-building-an-sdk-installer).
 {{< /note >}}
 
