@@ -1,11 +1,15 @@
 ---
 title: luna-send Usage Guide
-date: 2018-10-15
+date: 2020-02-28
 weight: 10
 toc: true
 ---
 
 `luna-send` is a command-line tool accessible through a shell on a device. `luna-send` is mainly used to test calls to services accessible on the system bus through the LS2 (Luna Bus).
+
+{{< note >}}
+To access the device shell, you must connect to the device using the Secure Shell (SSH) protocol. For more details, see [Network Setup]({{< relref "setting-up-networking" >}}).
+{{< /note >}}
 
 ## Syntax
 

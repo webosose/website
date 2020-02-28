@@ -1,6 +1,6 @@
 ---
 title: Launching Web Apps for Dual Display
-date: 2019-10-25
+date: 2020-02-28
 weight: 40
 toc: true
 ---
@@ -18,7 +18,7 @@ To launch a web app on the secondary display, the following LS2 API and paramete
 
 ## Usage Example
 
-The following shows an example command to launch YouTube app on the secondary display.
+The following shows an example of launching YouTube app on the secondary display using the [luna-send]({{< relref "luna-send" >}}) tool.
 
 {{< code "Example" true >}}
 ``` shell
