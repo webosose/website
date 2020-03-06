@@ -1,7 +1,7 @@
 ---
 title: GDB Debugging Setup
-date: 2019-10-25
-weight: 60
+date: 2020-03-06
+weight: 80
 toc: true
 ---
 
