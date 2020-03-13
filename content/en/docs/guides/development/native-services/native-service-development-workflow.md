@@ -1,17 +1,48 @@
 ---
 title: Native Service Development Workflow
-date: 2018-05-12
+date: 2020-03-13
 weight: 20
-toc: false
+toc: true
 ---
 
 This page outlines the steps to develop native services for webOS Open Source Edition (OSE).
 
-Developing a native service requires the following steps:
+## External Native Services
+
+Developing an external native service requires the following steps:
 
 1. Implement
 
-    - Writing the native service code (including `main.c` or `main.cpp`)
+    - Writing the native service code
+    - Preparing a dummy app to package with the service
+
+2. Configure
+
+    - Configuring the service metadata file (`services.json`)
+    - Configuring the CMake build script (`CMakeLists.txt`)
+
+3. Build
+
+    - Running the CMake build script and the Makefile
+
+4. Package
+
+    - Packaging the built binary file with the dummy app using the CLI
+
+5. Install and Run
+
+    - Installing the service on the target using the CLI
+    - Launching the dummy app or entering commands using a terminal
+
+For a step-by-step tutorial with detailed instructions, see [Developing External Native Services]({{< relref "developing-external-native-services" >}}).
+
+## Built-in Native Services
+
+Developing a built-in native service requires the following steps:
+
+1. Implement
+
+    - Writing the native service code
     - Preparing `README.md` that describes the project
 
 2. Configure
@@ -39,4 +70,4 @@ Developing a native service requires the following steps:
     - Building the webOS OSE image
     - Flashing the image to the target
 
-For a step-by-step tutorial with detailed instructions, see [Developing Native Services]({{< relref "developing-native-services" >}}).
+For a step-by-step tutorial with detailed instructions, see [Developing Built-in Native Services]({{< relref "developing-built-in-native-services" >}}).

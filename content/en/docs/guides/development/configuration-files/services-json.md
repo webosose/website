@@ -1,6 +1,6 @@
 ---
 title: services.json
-date: 2018-10-15
+date: 2020-03-05
 weight: 30
 toc: true
 ---
@@ -13,6 +13,8 @@ toc: true
 {
     "id"                    : string,
     "description"           : string,
+    "engine"                : string,
+    "executable"            : string,
     "services": [           : object array,
         {
             "name"          : string,
@@ -58,6 +60,18 @@ Typically, the value will be the name of the first service in <code>services</co
 <td><p>Description of the service array.</p></td>
 </tr>
 <tr class="odd">
+<td><p>engine</p></td>
+<td><p>Optional</p></td>
+<td><p>string</p></td>
+<td><p>Service type. This property is required when you develop an external native service.</p></td>
+</tr>
+<tr class="even">
+<td><p>executable</p></td>
+<td><p>Optional</p></td>
+<td><p>string</p></td>
+<td><p>Name of an executable file. This property is required when you develop an external native service.</p></td>
+</tr>
+<tr class="odd">
 <td><p>services</p></td>
 <td><p>Required</p></td>
 <td><p>object array</p></td>
@@ -93,6 +107,8 @@ Typically, the value will be the name of the first service in <code>services</co
 {
     "id": "com.test.testacct.test.service",
     "description": "Test Service",
+    "engine": "native",
+    "executable": "test_service",
     "services": [
         {
             "name": "com.test.testacct.test.service",

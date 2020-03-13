@@ -1,13 +1,13 @@
 ---
-title: Developing Native Services
-date: 2019-11-14
-weight: 10
+title: Developing Built-in Native Services
+date: 2020-02-14
+weight: 20
 toc: true
 ---
 
-To create a native service, you must write the source code and prepare the required configuration files.
+To create a built-in native service, you must write the source code and prepare the required configuration files.
 
-For easier understanding, the process to create a native service is explained using the example of a service named **`com.example.service.native`** that has the following features:
+For easier understanding, the process to create a built-in native service is explained using the example of a service named **`com.example.service.native`** that has the following features:
 
 * Has a method named **`hello`** that responds with the string "Hello, Native Service!!".
 * Calls `com.webos.service.systemservice/clock/getTime` method and prints the UTC time on the log.
@@ -29,7 +29,7 @@ com.example.service.native
 ├── main.cpp
 ```
 
-Developing a native service requires the following steps:
+Developing a built-in native service requires the following steps:
 
 * [Prerequisites](#before-you-begin)
 * [Step 1: Implementation](#step-1-implement-the-native-service)
