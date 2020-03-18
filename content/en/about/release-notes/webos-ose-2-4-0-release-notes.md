@@ -21,7 +21,7 @@ This version corresponds to the [GitHub releases](https://github.com/webosose/bu
 
 #### Display
 
-  - Qt has been upgraded to 5.12.4.
+  - QtWayland has been upgraded to 5.12.4.
 
 #### Web Engine
 

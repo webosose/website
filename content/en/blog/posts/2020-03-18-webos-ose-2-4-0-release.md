@@ -11,7 +11,7 @@ We're pleased to announce the release of webOS Open Source Edition (OSE) 2.4.0.
 The highlights of this release are as follows:
 
   - [IoT profile support](#iot-profile-support)
-  - [Chromium and Qt upgrade](#chromium-and-qt-upgrade)
+  - [Chromium and QtWayland upgrade](#chromium-and-qtwayland-upgrade)
   - [Other enhancements](#other-enhancements)
 
 For more details on this release, see the [release notes]({{< relref "webos-ose-2-4-0-release-notes" >}}).
@@ -24,12 +24,12 @@ In this version, webOS IoT supports execution of JS services written in Node.js.
 
 For more information, visit the [IoT Profile section](/docs/iot) in the documentation.
 
-## Chromium and Qt upgrade
+## Chromium and QtWayland upgrade
 
-The major components of webOS OSE, Chromium and Qt, have been upgraded to more up-to-date versions.
+The major components of webOS OSE, Chromium and QtWayland, have been upgraded to more up-to-date versions.
 
   - Chromium, the default web engine, has been upgraded from 72 to 79 for enhancement in web functionality and compatibility.
-  - Qt has been upgraded from 5.12.3 to 5.12.4 to improve graphics performance and stability.
+  - QtWayland has been upgraded to 5.12.4 in order to improve graphics performance and stability.
 
 ## Other enhancements
 
