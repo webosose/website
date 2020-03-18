@@ -1,6 +1,6 @@
 ---
 title: Command-Line Interface User Guide
-date: 2020-02-17
+date: 2020-03-10
 weight: 10
 toc: true
 ---
@@ -258,7 +258,7 @@ ares-generate --help|-h
 </tr>
 <tr class="even">
 <td><p>icon</p></td>
-<td><p>Creates app icon files. [80x80, 130x130]</p></td>
+<td><p>Creates an app icon file. [80x80]</p></td>
 </tr>
 <tr class="odd">
 <td><p>qmlapp</p></td>
@@ -1025,24 +1025,29 @@ ares-launch --help|-h
 <tr class="even">
 <td><p>-p, --params</p></td>
 <td><p>PARAMS</p></td>
-<td><p>Launches a web application with specified parameters.</p></td>
+<td><p>Launches an application with specified parameters.</p></td>
 </tr>
 <tr class="odd">
+<td><p>-dp, --display</p></td>
+<td><p>DISPLAY_ID</p></td>
+<td><p>Launches a web app on a specified display.</p></td>
+</tr>
+<tr class="even">
 <td><p>-D, --device-list</p></td>
 <td><p>None</p></td>
 <td><p>Lists all the available devices.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><p>-v</p></td>
 <td><p>None</p></td>
 <td><p>Displays the execution log.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><p>-V, --version</p></td>
 <td><p>None</p></td>
 <td><p>Displays the version of the CLI.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><p>-h, --help</p></td>
 <td><p>None</p></td>
 <td><p>Displays the help of the <code>ares-launch</code> command.</p></td>
@@ -1069,10 +1074,14 @@ ares-launch --help|-h
 <td><p>ID of the application to launch or terminate.</p></td>
 </tr>
 <tr class="even">
+<td><p>DISPLAY_ID</p></td>
+<td><p>ID of the display to launch a web app. It should be an integer type. (Use <code>0</code> for primary display and <code>1</code> for secondary display.)</p></td>
+</tr>
+<tr class="odd">
 <td><p>TARGET_DEVICE</p></td>
 <td><p>Specifies the target device on which the application is installed.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><p>PARAMS</p></td>
 <td><p>Specifies the parameters which are used on application launching. It is entered using JSON-type strings in the format <code>"{'param1':'value1', 'param2':'value2 which contains spaces', ...}"</code>.</p></td>
 </tr>
@@ -1098,6 +1107,12 @@ Here are some examples of the different uses:
     {{< note >}}
     When you use a parameter, the web app will receive the parameter with the `webOSLaunch` event. For more detailed information on the `webOSLaunch` event, see [Web App Lifecycle]({{< relref "web-app-lifecycle" >}}).
     {{< /note >}}
+
+* Launching the application on the primary display
+
+    ``` shell
+    ares-launch --device target com.example.sampleapp --display 0
+    ```
 
 * Listing applications running on the target device
 

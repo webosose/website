@@ -1,11 +1,44 @@
 ---
 title: Command-Line Interface Release Notes
-date: 2020-01-08
+date: 2020-03-11
 weight: 20
 toc: true
 ---
 
 This page provides the summary of each Command-Line Interface (CLI) release for webOS Open Source Edition (OSE).
+
+## v1.11.0 (March 2020)
+
+This version is compatible with webOS OSE 2.4.0. See below for the new and changed features in this release.
+
+### New features
+
+* Supports web app launch on dual displays.
+
+### Changed features
+
+* Changed web app and JS service templates.
+* Changed `version` property in `appinfo.json` to optional.
+* Changed a default value of `title` property to `new app` in `appinfo.json` template.
+* Updated dependent npm.
+
+### Removed features
+
+* Deleted a file and properties related to `largeIcon` in the template.
+
+### Fixed issues
+
+* Fixed a bug related to `-v` option.
+* Fixed correct machine architecture in packaging file.
+
+### Known issues
+
+* webOS OSE cannot launch the same web app on different displays at the same time.
+    * For example, if you launch a web app on display 0 and then launch the same app on display 1, it just re-launch the app on display 0. (Nothing happened on display 1.)
+
+      {{< note >}}
+      In this example, the message ('_Launched application com.sample.app on display 1_') might be returned on terminal, but this message can be ignored.
+      {{< /note >}}
 
 ## v1.10.2 (November 2019)
 
@@ -30,7 +63,7 @@ This version is compatible with **webOS OSE 2.0.0**. See below for the new, chan
 ### New features
 
 * Added a web app template that uses the WebOSSerivceBridge API.
-* Added a feature to check the validity of the version in `appinfo.json` when packaging an app, which checks whether each version number is 9 digits or less.
+* Added a feature to check the validity of `version` in `appinfo.json` when packaging an app, which checks whether each version number is 9 digits or less.
 * Added a guide text regarding the default target device to the CLI help.
 
 ### Changed features
@@ -53,7 +86,7 @@ This version is compatible with **webOS OSE 2.0.0**. See below for the new, chan
 ### Known issues
 
 * When you install or uninstall an app using `ares-install`, a running Home Launcher disappears from the screen. To make the app listed on Home Launcher, you must reboot the target device.
-    - After rebooting the target device, the external app is listed on Home Launcher, but the icon of the app is not displayed.
+    * After rebooting the target device, the external app is listed on Home Launcher, but the icon of the app is not displayed.
 
 ## v1.9.4 (June 2019)
 
@@ -62,7 +95,7 @@ See below for the new and changed features, bug fixes, and known issues in this 
 ### New features
 
 * Added a feature to check the version rule of your app when you package your app.
-* Added a feature to check if the app ID and app version exist in the `appinfo.json` file of your app when you package your app.
+* Added a feature to check if `id` and `version` exist in the `appinfo.json` file of your app when you package your app.
 * Added a feature to add read permission to all files of your app when you package your app.
 
 ### Changed features

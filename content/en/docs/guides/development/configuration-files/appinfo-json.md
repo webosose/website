@@ -1,6 +1,6 @@
 ---
 title: appinfo.json
-date: 2018-10-15
+date: 2020-03-06
 weight: 10
 toc: true
 ---
@@ -117,7 +117,7 @@ Here are little tips that might help you with JSON syntax:
 </tr>
 <tr class="even">
 <td><p>version</p></td>
-<td><p>Optional<sup>*</sup></p></td>
+<td><p>Optional</p></td>
 <td><p>string</p></td>
 <td><p>The app version number. This consists of three non-negative integers: major, minor, and revision numbers.</p>
 <p>The major, minor, and revision numbers are all mandatory, e.g. "2.1.0" (not "2.1"). Otherwise, the app may not be installed. The major, minor, and revision numbers are discrete. For example, 1.5.3 is lower version than 1.15.3.</p>
@@ -187,11 +187,6 @@ webOS OSE does not support UHD resolution for web apps.
 <td><p>Specifies the security groups required to run the application.</p></td>
 </tr>
 </tbody>
-<tfoot>
-<tr>
-<td colspan="4"><p>* For external apps packaged via CLI, it is required to specify the <code>version</code> property in <code>appinfo.json</code>.</p></td>
-</tr>
-</tfoot>
 </table>
 </div>
 
