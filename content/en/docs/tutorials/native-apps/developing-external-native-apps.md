@@ -1,6 +1,6 @@
 ---
 title: Developing External Native Apps
-date: 2020-01-16
+date: 2020-03-13
 weight: 10
 toc: true
 ---
@@ -185,8 +185,9 @@ static void getWaylandServer()
         exit(1);
     }
     wl_webos_shell_surface_add_listener(g_pstWebosShellSurface, &s_pstWebosShellListener, g_pstDisplay);
+    wl_webos_shell_surface_set_property(g_pstWebosShellSurface, "appId", (getenv("APP_ID") ? getenv("APP_ID") : "com.sample.waylandegl"));
     // for secondary display, set the last parameter as 1
-    wl_webos_shell_surface_set_property(g_pstWebosShellSurface, "displayAffinity", "0");
+    wl_webos_shell_surface_set_property(g_pstWebosShellSurface, "displayAffinity", (getenv("DISPLAY_ID") ? getenv("DISPLAY_ID") : "0"));
 }
 
 static void createWindow()
@@ -278,8 +279,8 @@ A brief explanation of the above file:
 
 - Line(7) : Include `wayland-webos-shell-client-protocol.h` header file which has `wl_webos_shell` and `wl_webos_shell_surface` structure.
 - Line(16~17) : Declare `wl_webos_shell` and `wl_webos_shell_surface` structure which are the webOS specific extension of `wl_shell` and `wl_shell_surface`.
-- Line(128~135) : Create a webOS shell surface for an existing surface and add the listener to receive events.
-- Line(137) : Set the property related to display. If you set the last parameter to `1`, the sample app will be displayed on a secondary display. To set up the secondary display, see [Dual-Display Setup]({{< relref "setting-up-dual-displays" >}}).
+- Line(128~136) : Create a webOS shell surface for an existing surface and add the listener to receive events.
+- Line(138) : Set the property related to display. If you set the last parameter to `1`, the sample app will be displayed on a secondary display. To set up the secondary display, see [Dual-Display Setup]({{< relref "setting-up-dual-displays" >}}).
 
 For detailed information on the webOS-specific protocol extension, visit [webOS OSE GitHub](https://github.com/webosose/webos-wayland-extensions).
 
