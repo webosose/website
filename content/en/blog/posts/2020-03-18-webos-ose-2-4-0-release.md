@@ -33,4 +33,4 @@ The major components of webOS OSE, Chromium and Qt, have been upgraded to more u
 
 ## Other enhancements
 
-This release also includes upgrade of linux-raspberrypi to 4.19.93 as well as fixes for known issues. Check the [release notes]({{< relref "webos-ose-2-3-0-release-notes" >}}) to find out more about the changes.
+This release also includes upgrade of linux-raspberrypi to 4.19.93 as well as fixes for known issues. Check the [release notes]({{< relref "webos-ose-2-4-0-release-notes" >}}) to find out more about the changes.
