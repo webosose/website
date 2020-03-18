@@ -1,9 +1,9 @@
 ---
 title: com.webos.service.webappmanager
-date: 2019-04-23
+date: 2020-03-16
 toc: true
 ---
-                
+
 <div>
   <h2>API Summary</h2>
   <p>Internal system service for handling web-based (HTML) applications.</p>
@@ -64,7 +64,7 @@ toc: true
     </div>
     <h4>Example</h4>
     <div class="code-bg-grey">
-      <p># luna-send -n 1 luna://com.webos.service.webappmanager/closeAllApps &quot;{}&quot;</p>
+      <p># luna-send -n 1 luna://com.webos.service.webappmanager/closeAllApps &#39;{}&#39;</p>
     </div>
   </div>
 </div>
@@ -93,7 +93,7 @@ toc: true
         <tr>
           <td>processId</td>
           <td>Required</td>
-          <td>number</td>
+          <td>String</td>
           <td>
             <p>The id of process to close.</p>
           </td>
@@ -142,7 +142,7 @@ toc: true
         <tr>
           <td>processId</td>
           <td>Optional</td>
-          <td>number</td>
+          <td>String</td>
           <td>
             <p>The id of closed process.</p>
           </td>
@@ -160,13 +160,15 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -n 1 luna://com.webos.service.webappmanager/closeByProcessId &quot;{\&quot;processId\&quot;:\&quot;1008\&quot;}&quot;</p>
+    <p># luna-send -n 1 luna://com.webos.service.webappmanager/closeByProcessId &#39;{&quot;processId&quot;:&quot;1008&quot;}&#39;</p>
+    <p>&nbsp;</p>
     <p>Returns:</p>
-    <p>{</p>
-    <p>&nbsp; &nbsp; &quot;appId&quot;: &quot;accuweather&quot;,</p>
-    <p>&nbsp; &nbsp; &quot;processId&quot;: &quot;1008&quot;,</p>
-    <p>&nbsp; &nbsp; &quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;appId&quot;:&quot;bareapp&quot;,<br />
+      &nbsp; &nbsp;&quot;processId&quot;:&quot;1008&quot;,<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>getWebProcessSize</h3>
@@ -194,33 +196,9 @@ toc: true
           </th>
         </tr>
         <tr>
-          <td>pid</td>
+          <td>WebProcesses</td>
           <td>Required</td>
-          <td>Number</td>
-          <td>
-            <p>The id of process.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>webProcessSize</td>
-          <td>Required</td>
-          <td>Number</td>
-          <td>
-            <p>The size of the process in KB.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>tileSize</td>
-          <td>Required</td>
-          <td>Number</td>
-          <td>
-            <p>The size of the tile in KB.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>runningApps</td>
-          <td>Required</td>
-          <td>String array</td>
+          <td>Object array: <a href="#webprocesses"> WebProcesses</a></td>
           <td>
             <p>List of apps which the process is running.</p>
           </td>
@@ -238,43 +216,24 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -n 1 luna://com.webos.service.webappmanager/getWebProcessSize &quot;{}&quot;</p>
+    <p># luna-send -n 1 luna://com.webos.service.webappmanager/getWebProcessSize &#39;{}&#39;</p>
+    <p>&nbsp;</p>
     <p>Returns:</p>
-    <p>{</p>
-    <p>&nbsp; &nbsp; &quot;WebProcesses&quot;: [</p>
-    <p>&nbsp; &nbsp; {</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;pid&quot;: &quot;4252&quot;,</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;runningApps&quot;: [</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; {</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;id&quot;: &quot;com.webos.app.guide&quot;</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; }</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; ],</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;tileSize&quot;: 0,</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;webProcessSize&quot;: &quot;83924 kB&quot;</p>
-    <p>&nbsp; &nbsp; },</p>
-    <p>&nbsp; &nbsp; {</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;pid&quot;: &quot;4294&quot;,</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;runningApps&quot;: [</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; {</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;id&quot;: &quot;accuweather&quot;</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; }</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; ],</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;tileSize&quot;: 0,</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;webProcessSize&quot;: &quot;65832 kB&quot;</p>
-    <p>&nbsp; &nbsp; },</p>
-    <p>&nbsp; &nbsp; {</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;pid&quot;: &quot;4280&quot;,</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;runningApps&quot;: [</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; {</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;id&quot;: &quot;com.webos.app.container&quot;</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; }</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; ],</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;tileSize&quot;: 0,</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;webProcessSize&quot;: &quot;67444 kB&quot;</p>
-    <p>&nbsp; &nbsp; }</p>
-    <p>&nbsp; &nbsp; ],</p>
-    <p>&nbsp; &nbsp; &quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;WebProcesses&quot;:[&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;pid&quot;:&quot;4252&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;runningApps&quot;:[&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;id&quot;:&quot;bareapp&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;tileSize&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;webProcessSize&quot;:&quot;77632 kB&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>killApp</h3>
@@ -304,7 +263,7 @@ toc: true
           <td>Required</td>
           <td>string</td>
           <td>
-            <p>The id of app to kill.</p>
+            <p>The ID of app to kill.</p>
           </td>
         </tr>
       </tbody>
@@ -345,7 +304,7 @@ toc: true
           <td>Optional</td>
           <td>string</td>
           <td>
-            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+            <p>Indicates the reason for the failure of the operation.&nbsp;</p>
           </td>
         </tr>
         <tr>
@@ -353,7 +312,7 @@ toc: true
           <td>Optional</td>
           <td>string</td>
           <td>
-            <p>The id of killed app.</p>
+            <p>The ID of the killed app.</p>
           </td>
         </tr>
       </tbody>
@@ -361,18 +320,20 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>#&nbsp;luna-send -n 1 luna://com.webos.service.webappmanager/killApp &quot;{\&quot;appId\&quot;:\&quot;com.lge.app.viewster\&quot;}&quot;</p>
+    <p>#&nbsp;luna-send -n 1 luna://com.webos.service.webappmanager/killApp &#39;{&quot;appId&quot;:&quot;bareapp&quot;}&#39;</p>
+    <p>&nbsp;</p>
     <p>Returns:</p>
-    <p>{</p>
-    <p>&nbsp; &nbsp; &quot;appId&quot;: &quot;com.lge.app.viewster&quot;,</p>
-    <p>&nbsp; &nbsp; &quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;appId&quot;:&quot;bareapp&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>launchApp</h3>
 <div>
   <h4>Description</h4>
-  <p>Launch an application by app id. This is the major function used by SAM to request launching an application.</p>
+  <p>Launch an application by app ID. This is the major function used by SAM to request launching an application.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -412,7 +373,7 @@ toc: true
           <td>Optional</td>
           <td>string</td>
           <td>
-            <p>The id of launching app.</p>
+            <p>The ID of the launching app.</p>
           </td>
         </tr>
         <tr>
@@ -420,7 +381,7 @@ toc: true
           <td>Optional</td>
           <td>number</td>
           <td>
-            <p>The id of process launching the app.</p>
+            <p>The ID of the process launching the app.</p>
           </td>
         </tr>
       </tbody>
@@ -449,7 +410,7 @@ toc: true
           <td>Required</td>
           <td>string</td>
           <td>
-            <p>The id of the launched app. The app is launched according to the properties specified in the&nbsp;<strong>appDesc</strong> parameter.</p>
+            <p>The ID of the launched app. The app is launched according to the properties specified in the&nbsp;<strong>appDesc</strong> parameter.</p>
           </td>
         </tr>
         <tr>
@@ -457,7 +418,7 @@ toc: true
           <td>Required</td>
           <td>number</td>
           <td>
-            <p>The id of process assigned to this launch.</p>
+            <p>The ID of the process assigned to this launch.</p>
           </td>
         </tr>
         <tr>
@@ -465,12 +426,12 @@ toc: true
           <td>Optional</td>
           <td>string</td>
           <td>
-            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+            <p>Indicates the reason for the failure of the operation.</p>
           </td>
         </tr>
         <tr>
           <td>returnValue</td>
-          <td>Optional</td>
+          <td>Required</td>
           <td>Boolean</td>
           <td>
             <p>Indicates the status of operation.&nbsp;Possible values are:</p>
@@ -483,11 +444,76 @@ toc: true
       </tbody>
     </table>
   </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 luna://com.webos.service.webappmanager/launchApp &#39;{<br />
+      &nbsp; &nbsp;&quot;launchingAppId&quot;:&quot;com.webos.app.home&quot;,<br />
+      &nbsp; &nbsp;&quot;appDesc&quot;:{<br />
+      &nbsp; &nbsp; &nbsp; &quot;defaultWindowType&quot;:&quot;card&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;uiRevision&quot;:&quot;2&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;systemApp&quot;:true,<br />
+      &nbsp; &nbsp; &nbsp; &quot;version&quot;:&quot;1.0.1&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;vendor&quot;:&quot;LG Electronics, Inc.&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;miniicon&quot;:&quot;icon.png&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;hasPromotion&quot;:false,<br />
+      &nbsp; &nbsp; &nbsp; &quot;tileSize&quot;:&quot;normal&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;icons&quot;:[
+    </p>
+    <p>&nbsp; &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &nbsp; &quot;launchPointId&quot;:&quot;bareapp_default&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;largeIcon&quot;:&quot;/usr/palm/applications/bareapp/icon.png&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;lockable&quot;:true,<br />
+      &nbsp; &nbsp; &nbsp; &quot;transparent&quot;:false,<br />
+      &nbsp; &nbsp; &nbsp; &quot;icon&quot;:&quot;/usr/palm/applications/bareapp/icon.png&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;checkUpdateOnLaunch&quot;:true,<br />
+      &nbsp; &nbsp; &nbsp; &quot;imageForRecents&quot;:&quot;&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;spinnerOnLaunch&quot;:true,<br />
+      &nbsp; &nbsp; &nbsp; &quot;handlesRelaunch&quot;:false,<br />
+      &nbsp; &nbsp; &nbsp; &quot;unmovable&quot;:false,<br />
+      &nbsp; &nbsp; &nbsp; &quot;id&quot;:&quot;bareapp&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;inspectable&quot;:false,<br />
+      &nbsp; &nbsp; &nbsp; &quot;noSplashOnLaunch&quot;:false,<br />
+      &nbsp; &nbsp; &nbsp; &quot;privilegedJail&quot;:false,<br />
+      &nbsp; &nbsp; &nbsp; &quot;trustLevel&quot;:&quot;default&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;title&quot;:&quot;Bare App&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;deeplinkingParams&quot;:&quot;&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;lptype&quot;:&quot;default&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;inAppSetting&quot;:false,<br />
+      &nbsp; &nbsp; &nbsp; &quot;favicon&quot;:&quot;&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;visible&quot;:true,<br />
+      &nbsp; &nbsp; &nbsp; &quot;accessibility&quot;:{<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;supportsAudioGuidance&quot;:false<br />
+      &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &quot;folderPath&quot;:&quot;/usr/palm/applications/bareapp&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;main&quot;:&quot;index.html&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;removable&quot;:true,<br />
+      &nbsp; &nbsp; &nbsp; &quot;type&quot;:&quot;web&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;disableBackHistoryAPI&quot;:false,<br />
+      &nbsp; &nbsp; &nbsp; &quot;bgImage&quot;:&quot;&quot;<br />
+      &nbsp; &nbsp;},<br />
+      &nbsp; &nbsp;&quot;appId&quot;:&quot;bareapp&quot;,<br />
+      &nbsp; &nbsp;&quot;parameters&quot;:{<br />
+      &nbsp; &nbsp; &nbsp; &quot;displayAffinity&quot;:0<br />
+      &nbsp; &nbsp;},<br />
+      &nbsp; &nbsp;&quot;reason&quot;:&quot;com.webos.app.home&quot;,<br />
+      &nbsp; &nbsp;&quot;launchingProcId&quot;:&quot;&quot;,<br />
+      &nbsp; &nbsp;&quot;instanceId&quot;:&quot;c395796b-03fa-4d63-9bd8-891da54305490&quot;<br />
+      }&#39;
+    </p>
+    <p>&nbsp;</p>
+    <p>Returns:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;appId&quot;: &quot;bareapp&quot;,<br />
+      &nbsp; &nbsp; &quot;procId&quot;: &quot;1004&quot;,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
 </div>
 <h3>listRunningApps</h3>
 <div>
   <h4>Description</h4>
-  <p>Return a list of applications that Web App Manager is running. This method can be subscribed.</p>
+  <p>Return a list of applications that W<span style="line-height:1.6em">eb App Manager is running. This method can be subscribed.</span></p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -558,7 +584,7 @@ toc: true
           <td>Required</td>
           <td>String array</td>
           <td>
-            <p>Array of all running apps. Each app will be returned in the form of {&quot;id&quot;: appId, &quot;processId&quot;: processId, &quot;webprocessid&quot;: weprocessid}.</p>
+            <p>Array of all running apps. Each app will be returned in the form of {&quot;id&quot;: appId,<strong> &quot;processId&quot;: processId</strong>, &quot;webprocessid&quot;: weprocessid}.</p>
           </td>
         </tr>
         <tr>
@@ -595,7 +621,7 @@ toc: true
           <td>Required</td>
           <td>String array</td>
           <td>
-            <p>Array of all running apps. Each app will be returned in the form of {&quot;id&quot;: appId, &quot;processId&quot;: processId, &quot;webprocessid&quot;: weprocessid}.</p>
+            <p>Array of all running apps. Each app will be returned in the form of {&quot;id&quot;: appId, <strong>&quot;processId&quot;: processId</strong>, &quot;webprocessid&quot;: weprocessid}.&nbsp;&nbsp;&nbsp;</p>
           </td>
         </tr>
         <tr>
@@ -624,57 +650,53 @@ toc: true
   <h4>Example</h4>
   <div class="code-bg-grey">
     <p>Example 1:</p>
-    <p># luna-send -n 1 luna://com.webos.service.webappmanager/listRunningApps &quot;{}&quot;</p>
+    <p># luna-send -n 1 luna://com.webos.service.webappmanager/listRunningApps &#39;{}&#39;</p>
+    <p>&nbsp;</p>
     <p>Returns:</p>
-    <p>{</p>
-    <p>&nbsp; &nbsp; &quot;returnValue&quot;: true,</p>
-    <p>&nbsp; &nbsp; &quot;running&quot;: [</p>
-    <p>&nbsp; &nbsp; {</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;id&quot;: &quot;com.webos.app.guide&quot;,</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;processid&quot;: &quot;1006&quot;,</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;webprocessid&quot;: &quot;4252&quot;</p>
-    <p>&nbsp; &nbsp; },</p>
-    <p>&nbsp; &nbsp; {</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;id&quot;: &quot;accuweather&quot;,</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;processid&quot;: &quot;1008&quot;,</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;webprocessid&quot;: &quot;4294&quot;</p>
-    <p>&nbsp; &nbsp; }</p>
-    <p>&nbsp; &nbsp; ]</p>
-    <p>}</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;running&quot;:[&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;id&quot;:&quot;bareapp&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;processid&quot;:&quot;1008&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;webprocessid&quot;:&quot;4294&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;]<br />
+      }
+    </p>
     <p>&nbsp;</p>
     <p>Example 2:</p>
-    <p># luna-send -n 1 luna://com.webos.service.webappmanager/listRunningApps &quot;{\&quot;includeSysApps\&quot;:true}&quot;</p>
+    <p># luna-send -n 1 luna://com.webos.service.webappmanager/listRunningApps &#39;{&quot;includeSysApps&quot;:true}&#39;</p>
+    <p>&nbsp;</p>
     <p>Returns:</p>
-    <p>{</p>
-    <p>&nbsp; &nbsp; &quot;returnValue&quot;: true,</p>
-    <p>&nbsp; &nbsp; &quot;running&quot;: [</p>
-    <p>&nbsp; &nbsp; {</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;id&quot;: &quot;com.webos.app.guide&quot;,</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;processid&quot;: &quot;1006&quot;,</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;webprocessid&quot;: &quot;4252&quot;</p>
-    <p>&nbsp; &nbsp; },</p>
-    <p>&nbsp; &nbsp; {</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;id&quot;: &quot;accuweather&quot;,</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;processid&quot;: &quot;1008&quot;,</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;webprocessid&quot;: &quot;4294&quot;</p>
-    <p>&nbsp; &nbsp; }</p>
-    <p>&nbsp; &nbsp; ]</p>
-    <p>}</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;running&quot;:[&nbsp;<br />
+      &nbsp; &nbsp; &nbsp; {&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;id&quot;:&quot;bareapp&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;processid&quot;:&quot;1008&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;webprocessid&quot;:&quot;4294&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;]<br />
+      }
+    </p>
     <p>&nbsp;</p>
     <p>Example 3:</p>
-    <p># luna-send -n 1 luna://com.webos.service.webappmanager/listRunningApps &quot;{\&quot;subscribe\&quot;:true}&quot;</p>
+    <p># luna-send -n 1 luna://com.webos.service.webappmanager/listRunningApps &#39;{&quot;subscribe&quot;:true}&#39;</p>
+    <p>&nbsp;</p>
     <p>Returns:</p>
-    <p>{</p>
-    <p>&nbsp; &nbsp; &quot;returnValue&quot;: true,</p>
-    <p>&nbsp; &nbsp; &quot;running&quot;: [</p>
-    <p>&nbsp; &nbsp; {</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;id&quot;: &quot;youtube.leanback.v4&quot;,</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;processid&quot;: &quot;1002&quot;,</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &quot;webprocessid&quot;: &quot;2618&quot;</p>
-    <p>&nbsp; &nbsp; }</p>
-    <p>&nbsp; &nbsp; ],</p>
-    <p>&nbsp; &nbsp; &quot;subscribed&quot;: true</p>
-    <p>}</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;running&quot;:[&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;id&quot;:&quot;bareapp&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;processid&quot;:&quot;1002&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;webprocessid&quot;:&quot;2618&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;],<br />
+      &nbsp;&nbsp;&nbsp;&quot;subscribed&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>logControl</h3>
@@ -701,19 +723,20 @@ toc: true
         </tr>
         <tr>
           <td>keys</td>
-          <td>Optional</td>
+          <td>Required</td>
           <td>String</td>
           <td>
-            <p>Keys to determine which log to enable.</p>
+            <p>Keys to determine which log to enable. This parameter will be ignored if it doesn&#39;t match with existing keys.</p>
           </td>
         </tr>
         <tr>
           <td>value</td>
-          <td>Optional</td>
+          <td>Required</td>
           <td>String</td>
           <td>
             <p>To show log of specified key, set <strong>value</strong> to <strong>&quot;on&quot;</strong>.</p>
             <p>To hide log of specified key, set <strong>value</strong> to <strong>&quot;off&quot;</strong>.</p>
+            <p>The value will be ignored when it is not &quot;on&quot; or &quot;off&quot;.</p>
           </td>
         </tr>
       </tbody>
@@ -790,19 +813,21 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -n 1 luna://com.webos.service.webappmanager/logControl &quot;{\&quot;keys\&quot;:\&quot;event\&quot;,\&quot;value\&quot;:\&quot;on\&quot;}&quot;</p>
+    <p># luna-send -n 1 luna://com.webos.service.webappmanager/logControl &#39;{&quot;keys&quot;:&quot;event&quot;,&quot;value&quot;:&quot;on&quot;}&#39;</p>
+    <p>&nbsp;</p>
     <p>Returns:</p>
-    <p>{</p>
-    <p>&nbsp; &nbsp; &quot;bundleMessage&quot;: false,</p>
-    <p>&nbsp; &nbsp; &quot;event&quot;: true,</p>
-    <p>&nbsp; &nbsp; &quot;mouseMove&quot;: false</p>
-    <p>}</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;bundleMessage&quot;:false,<br />
+      &nbsp; &nbsp;&quot;event&quot;:true,<br />
+      &nbsp; &nbsp;&quot;mouseMove&quot;:false<br />
+      }
+    </p>
   </div>
 </div>
 <h3>webProcessCreated</h3>
 <div>
   <h4>Description</h4>
-  <p>Return the process id of launched application. This method can be subscribed.</p>
+  <p>Return the process ID of the launched application. This method can be subscribed.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -826,7 +851,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>The id of the launched application.</p>
+            <p>The ID of the launched application.</p>
           </td>
         </tr>
         <tr>
@@ -868,7 +893,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The id of the launched application.</p>
+            <p>The ID of the launched application.</p>
           </td>
         </tr>
         <tr>
@@ -881,7 +906,7 @@ toc: true
         </tr>
         <tr>
           <td>returnValue</td>
-          <td>Optional</td>
+          <td>Required</td>
           <td>Boolean</td>
           <td>
             <p>Indicates the status of operation.&nbsp;Possible values are:</p>
@@ -896,7 +921,7 @@ toc: true
           <td>Optional</td>
           <td>Number</td>
           <td>
-            <p>The process id of the launched application.</p>
+            <p>The process ID of the launched application.</p>
           </td>
         </tr>
       </tbody>
@@ -919,6 +944,14 @@ toc: true
           <th>
             <p>Description</p>
           </th>
+        </tr>
+        <tr>
+          <td>id</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The ID of the launched application.</p>
+          </td>
         </tr>
         <tr>
           <td>returnValue</td>
@@ -949,13 +982,15 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -n 1 luna://com.webos.service.webappmanager/webProcessCreated &quot;{\&quot;appId\&quot;:\&quot;accuweather\&quot;}&quot;</p>
+    <p># luna-send -n 1 luna://com.webos.service.webappmanager/webProcessCreated &#39;{&quot;appId&quot;:&quot;bareapp&quot;}&#39;</p>
+    <p>&nbsp;</p>
     <p>Returns:</p>
-    <p>{</p>
-    <p>&nbsp; &nbsp; &quot;id&quot;: &quot;accuweather&quot;,</p>
-    <p>&nbsp; &nbsp; &quot;returnValue&quot;: true,</p>
-    <p>&nbsp; &nbsp; &quot;webprocessid&quot;: 4865</p>
-    <p>}</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;id&quot;:&quot;bareapp&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;webprocessid&quot;:4865<br />
+      }
+    </p>
   </div>
 </div>
 <h3>clearBrowsingData</h3>
@@ -999,7 +1034,7 @@ toc: true
               <li><strong>cacheStorage</strong></li>
               <li><strong>webSQL</strong></li>
             </ul>
-            <p><strong>Note: </strong>If no&nbsp;value is provided, by default, the method deletes&nbsp;all&nbsp;browsing data.</p>
+            <p><span style="color:#FF0000"><strong>Note: </strong></span>If no&nbsp;value is provided, by default, the method deletes&nbsp;all&nbsp;browsing data.</p>
           </td>
         </tr>
       </tbody>
@@ -1095,18 +1130,182 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example 1:&nbsp;Clear all browsing data</p>
-    <p style="margin-left:40px">- Using the &quot;all&quot; value for the &quot;types&quot; parameter</p>
-    <p style="margin-left:40px"># luna-send -n 1 luna://com.webos.service.webappmanager/clearBrowsingData &#39;{&quot;types&quot;:[&quot;all&quot;]}&#39;</p>
-    <p style="margin-left:40px">&nbsp;</p>
-    <p style="margin-left:40px">- Without specifying the &quot;types&quot; parameter</p>
-    <p style="margin-left:40px"># luna-send -n 1 luna://com.webos.service.webappmanager/clearBrowsingData &#39;{}&#39;</p>
+    <p>- Using the &quot;all&quot; value for the &quot;types&quot; parameter</p>
+    <p># luna-send -n 1 luna://com.webos.service.webappmanager/clearBrowsingData &#39;{&quot;types&quot;:[&quot;all&quot;]}&#39;</p>
     <p>&nbsp;</p>
-    <p>Example 2:&nbsp;Clear specific browsing data</p>
-    <p style="margin-left:40px">- Clears localstorage type browsing data</p>
-    <p style="margin-left:40px"># luna-send -n 1 luna://com.webos.service.webappmanager/clearBrowsingData &#39;{&quot;types&quot;:[&quot;localStorage&quot;]}&#39;</p>
-    <p style="margin-left:40px">&nbsp;</p>
-    <p style="margin-left:40px">- Clears localstorage and cache types of browsing data</p>
-    <p style="margin-left:40px"># luna-send -n 1 luna://com.webos.service.webappmanager/clearBrowsingData &#39;{&quot;types&quot;:[&quot;cache&quot;,&nbsp;&quot;localStorage&quot;]}&#39;</p>
+    <p>- Without specifying the &quot;types&quot; parameter</p>
+    <p># luna-send -n 1 luna://com.webos.service.webappmanager/clearBrowsingData &#39;{}&#39;</p>
+  </div>
+  <div class="code-bg-grey">
+    <p>- Clears localstorage type browsing data</p>
+    <p># luna-send -n 1 luna://com.webos.service.webappmanager/clearBrowsingData &#39;{&quot;types&quot;:[&quot;localStorage&quot;]}&#39;</p>
+    <p>&nbsp;</p>
+    <p>- Clears localstorage and cache types of browsing data</p>
+    <p># luna-send -n 1 luna://com.webos.service.webappmanager/clearBrowsingData &#39;{&quot;types&quot;:[&quot;cache&quot;,&nbsp;&quot;localStorage&quot;]}&#39;</p>
+  </div>
+</div>
+<h3>pauseApp</h3>
+
+{{< note >}}
+This method is available since webOS OSE 2.4.0.
+{{< /note >}}
+
+<div>
+  <h4>Description</h4>
+  <p>Pauses a web application.</p>
+  <p>This method can be used by SAM to move a specified web application from foreground to background (currently, SAM uses the keep-alive feature instead of WAM).</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>appId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The ID of the app to be paused.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>appId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The ID of the app that is paused.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 luna://com.webos.service.webappmanager/pauseApp &#39;{&quot;appId&quot;:&quot;bareapp&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Returns:</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;bareapp&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+  </div>
+</div>
+<div>
+  <h2>Objects</h2>
+  <h3>WebProcesses</h3>
+  <p>Contains the size of current running WebProcess.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>pid</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The ID of the process.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>webProcessSize</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The size of the process in KB.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>tileSize</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The size of the tile in KB.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>runningApps</td>
+          <td>Optional</td>
+          <td>String array</td>
+          <td>
+            <p>List of apps which the process is running.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
