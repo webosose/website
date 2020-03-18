@@ -11,7 +11,7 @@ The `webos-service` module for Node.js provides an interface to the system bus, 
 
 ### webos-service Example
 
-This example registers a service (`luna://com.example.helloworld/hello`) on the system bus of webOS Open Source Edition, which responds to a request with a "Hello, World!" message.
+This example registers a service (`luna://com.example.helloworld/hello`) on the system bus, which responds to a request with a "Hello, World!" message.
 
 ``` javascript
 //helloworld.js
@@ -58,9 +58,7 @@ var Service = require("webos-service");
 <li><p><strong>busId</strong>: A string containing the bus address of the service, e.g. "<em>com.example.helloworld</em>"</p></li>
 </ul>
 <p>For example,</p>
-``` javascript
-var service = new Service(busID)
-```
+<pre>var service = new Service(busID)</pre>
 </td>
 </tr>
 <tr class="even">
@@ -88,9 +86,7 @@ var service = new Service(busID)
 <p>[function cancel(message){...}]) </p></td>
 <td><p>Registers a method for the service. When a request is made for that method, the callback function will be called. The callback gets one argument, which is a <a href="#message-object">Message object</a>. </p>
 <p><code>methodName</code> is the name of the method to register. You can group methods in categories by putting a category at the front of the methodName, separated by "/" characters, for example,</p>
-``` javascript
-service.register("/config/setup", function callback(message)\{...});
-```
+<pre>service.register("/config/setup", function callback(message)\{...});</pre>
 <p>This function returns a <a href="#method-object">Method object</a>, which emits the <code>request</code> and <code>cancel</code> events. If the request and cancel arguments are provided, they're bound to the <code>request</code> and <code>cancel</code> events, respectively.</p></td>
 </tr>
 <tr class="even">
@@ -178,9 +174,7 @@ Message objects are used to represent messages coming in from other services or 
 <p>cancelCallback])</p></td>
 <td><p>Creates a Method object, which is an EventEmitter that emits the request and cancel methods.</p>
 <p>For example,</p>
-``` javascript
-var method = service.register(methodName[, requestCallback][, cancelCallback])
-```
+<pre>var method = service.register(methodName[, requestCallback][, cancelCallback])</pre>
 </td>
 </tr>
 <tr class="even">
@@ -255,9 +249,7 @@ var method = service.register(methodName[, requestCallback][, cancelCallback])
 <td><p>service.activityManager</p></td>
 <td><p>This object represents a proxy to the ActivityManager System Bus service (<em>com.webos.service.activitymanager</em>) and also provides a timer that's used to control a service's lifetime.</p>
 <p>Example</p>
-``` javascript
-var activityManager = service.activityManager;
-```
+<pre>var activityManager = service.activityManager;</pre>
 </td>
 </tr>
 <tr class="even">

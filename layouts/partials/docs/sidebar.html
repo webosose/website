@@ -2,15 +2,15 @@
 {{ $p := . }}
 {{ $docs := .Site.GetPage "/docs" }}
 {{ $menuSections := (where $docs.Sections ".Params.section_main" true) }}
-{{ $.Scratch.Set "sectionName" "overview" }}
+{{ $.Scratch.Set "sectionName" "Overview" }}
 {{ range $menuSections }}
   {{ $isDescendant := $p.IsDescendant . }}
   {{ if $isDescendant }}
-    {{ $.Scratch.Set "sectionName" (.LinkTitle | lower) }}
+    {{ $.Scratch.Set "sectionName" .LinkTitle }}
   {{ end }}
 {{ end }}
 
-{{ $sidebar := (index .Site.Data.sidebars.docs  ($.Scratch.Get "sectionName") ) }}
+{{ $sidebar := (index .Site.Data.sidebars.docs  ( ($.Scratch.Get "sectionName") | lower ) ) }}
 {{ $entries := index $sidebar "entries" }}
 
 <!-- build menu tree (as UL list) to implement sidebar menu based on Navgoco (https://plugins.jquery.com/navgoco/) -->
@@ -23,7 +23,7 @@
     <div class="sidebar-main sidebar">
       <div class="sidebar-inner">
         <p class="sidebar-title dis-hidden-mobile">
-          {{ ($.Scratch.Get "sectionName") | humanize }}
+          {{ $.Scratch.Get "sectionName" }}
         </p>
         <ul class="sidebar-menu nav scrollbar-outer">
           {{ range $entries }}
