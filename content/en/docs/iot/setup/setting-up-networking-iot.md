@@ -92,7 +92,7 @@ Follow the steps below to set up a serial terminal. Make sure that the target de
     - Serial line: /dev/ttyUSB`<X>`
     - Speed: 115200
 
-    {{< figure src=/images/docs/iot/setup/configure-putty.png alt="" caption="PuTTY Configuration for Serial Connection" class="align-left" >}}
+    {{< figure src="/images/docs/iot/setup/configure-putty.png" alt="" caption="PuTTY Configuration for Serial Connection" class="align-left" >}}
 
 5. Click **Open**. An empty PuTTY terminal will be opened.
 

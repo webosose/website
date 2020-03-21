@@ -34,7 +34,7 @@ This unit describes how to set up the webOS IoT development environment.
 
 ## Development
 
-This unit explains how to develop services for webOS IoT. In addition, uses cases of webOS IoT are provided.
+This unit explains how to develop services for webOS IoT. In addition, use cases of webOS IoT are provided.
 
 * [JS Services]({{< relref "js-service-overview-iot" >}})
 * [Use Cases]({{< relref "using-iotivity" >}})
