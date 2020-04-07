@@ -104,9 +104,9 @@ inherit webos_qt_localization
 ```
 {{< /code >}}
 
-If necessary, you can change the location of XLIFF folder or XLIFF basename by redefining the values below.
+If necessary, you can change the location of XLIFF directory or XLIFF basename by redefining the values below.
 
-{{< code "default WEBOS_LOCALIZATION_DATA_PATH and WEBOS_LOCALIZATION_XLIFF_BASENAME" true >}}
+{{< code "Default WEBOS_LOCALIZATION_DATA_PATH and WEBOS_LOCALIZATION_XLIFF_BASENAME" true >}}
 ```bash
 WEBOS_LOCALIZATION_DATA_PATH ?= "${S}"
 
@@ -116,6 +116,14 @@ WEBOS_LOCALIZATION_XLIFF_BASENAME ?= "${@ '${BPN}'.split('.')[-1] }"
 {{< /code >}}
 
 For example, if the package name of an application is "com.webos.app.sample", the basename is "sample". This value must match the value of `original` attribute and the name of the directory where XLIFF files are located.
+
+{{< code "Example of modified recipe" true >}}
+```bash
+WEBOS_LOCALIZATION_DATA_PATH = "${S}"
+
+WEBOS_LOCALIZATION_XLIFF_BASENAME = "sample"
+```
+{{< /code >}}
 
 ## JavaScript
 
