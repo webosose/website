@@ -1,5 +1,6 @@
 ---
-title: Building webOS Open Source Edition
+title: Building webOS OSE
+display_title: Building webOS Open Source Edition
 date: 2019-10-24
 weight: 20
 toc: true

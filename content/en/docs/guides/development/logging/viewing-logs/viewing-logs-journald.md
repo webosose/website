@@ -191,5 +191,5 @@ root@raspberrypi4:/# journalctl -u sam.service -f
 To read logs on one or more journald log files with a specific naming pattern, use the `--file` option with `GLOB` as an argument. If specified, `journalctl` will operate on the journal files matching *`GLOB`* instead of the default runtime and system journal paths.
 
 ``` shell
-root@raspberrypi4:/# journalctl --file /file/path/system.journal
+root@raspberrypi4:/# journalctl --file /path/to/file/system.journal
 ```

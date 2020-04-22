@@ -1,5 +1,6 @@
 ---
-title: Command-Line Interface Release Notes
+title: Release Notes
+display_title: Command-Line Interface Release Notes
 date: 2020-03-11
 weight: 20
 toc: true

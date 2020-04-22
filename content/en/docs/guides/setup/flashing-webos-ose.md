@@ -1,5 +1,6 @@
 ---
-title: Flashing webOS Open Source Edition
+title: Flashing webOS OSE
+display_title: Flashing webOS Open Source Edition
 date: 2019-12-04
 weight: 30
 toc: true

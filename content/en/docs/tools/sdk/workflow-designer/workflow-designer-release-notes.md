@@ -1,5 +1,6 @@
 ---
-title: Workflow Designer Release Notes
+title: Release Notes
+display_title: Workflow Designer Release Notes
 date: 2019-12-23
 weight: 20
 toc: true

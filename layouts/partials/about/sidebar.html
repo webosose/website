@@ -9,22 +9,7 @@
       <div class="sidebar-inner">
         <p class="sidebar-title dis-hidden-mobile">About</p>
         <ul class="sidebar-menu nav scrollbar-outer">
-          {{ range $.Site.Data.sidebars.about.about.entries }}
-          <li {{ if eq $.Page.RelPermalink .url }} class="active" {{ end }}>
-            {{ if .url }}
-            <a href="{{ .url }}"><strong>{{ .title }}</strong></a>
-            {{ else }}
-            <a href="#"><strong>{{ .title }}</strong></a>
-            <ul>
-              {{ range .sections }}
-              <li {{ if eq $.Page.RelPermalink .url }} class="active" {{ end }}>
-                <a href="{{ .url }}">{{ .title }}</a>
-              </li>
-              {{ end }}
-            </ul>
-            {{ end }}
-          </li>
-          {{ end }}
+        {{ partialCached "page-tree.html" .FirstSection .FirstSection.RelPermalink }}
         </ul>
       </div>
     </div>

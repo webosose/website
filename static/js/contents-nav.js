@@ -15,6 +15,16 @@ $(window).on('load', function () {
 });
 
 $(document).ready(function () {
+  // set the current page in the page tree
+  var menu_items = $('.sidebar-menu ul li a');
+  for (var i = 0, item_count = menu_items.length; i < item_count; i++) {
+    if (menu_items[i].href == document.location.href.split('#')[0]) {
+      $(menu_items[i]).parent('li').addClass('active');
+      $(menu_items[i]).parent('li').parents('li').addClass('open');
+      break;
+    }
+  }
+
   // initialize navgoco sidebar
   if ($(".sidebar-menu").length > 0) {
 

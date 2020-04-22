@@ -550,7 +550,7 @@ Perform the following steps:
 
     - **Directory:** `build-webos/meta-webosose/meta-webos/recipes-core/packagegroups`
 
-    - **Updates to be made:** Add the web app name to **`RDEPENDS _ $ {PN} =`**
+    - **Updates to be made:** Add the web app name to **`RDEPENDS_${PN} =`**
 
     <!-- end list -->
 

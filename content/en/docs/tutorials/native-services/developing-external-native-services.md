@@ -21,7 +21,7 @@ Developing an external native service requires the following steps:
 
 ## Before you begin
 
-- Make sure you have completed the steps in [Native Development Kit Setup]({{< relref "native-development-kit-setup" >}}).
+- Make sure you have completed the steps in [Native Development Kit Setup]({{< relref "setting-up-native-development-kit" >}}).
 - Create a directory (`com.sample.echo`) for a dummy app. This app will be packaged with a sample native service.
 
     ``` bash

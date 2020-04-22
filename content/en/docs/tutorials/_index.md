@@ -8,15 +8,20 @@ weight: 30
 This section provides end-to-end, step-by-step tutorials for developers to achieve specific development goals. It is categorized by app and service types supported by webOS Open Source Edition (OSE), including:
 
 * [Web Apps](#web-apps)
+* [JS Services](#js-services)
 * [QML Apps](#qml-apps)
 * [Native Apps](#native-apps)
-* [JS Services](#js-services)
 * [Native Services](#native-services)
 
 ## Web Apps
 
 * [Developing External Web Apps]({{< relref "developing-external-web-apps" >}})
 * [Developing Built-in Web Apps]({{< relref "developing-built-in-web-apps" >}})
+
+## JS Services
+
+* [Developing External JS Services]({{< relref "developing-external-js-services" >}})
+* [Developing Built-in JS Services]({{< relref "developing-built-in-js-services" >}})
 
 ## QML Apps
 
@@ -27,11 +32,6 @@ This section provides end-to-end, step-by-step tutorials for developers to achie
 
 * [Developing External Native Apps]({{< relref "developing-external-native-apps" >}})
 * [Developing Built-in Native Apps]({{< relref "developing-built-in-native-apps" >}})
-
-## JS Services
-
-* [Developing External JS Services]({{< relref "developing-external-js-services" >}})
-* [Developing Built-in JS Services]({{< relref "developing-built-in-js-services" >}})
 
 ## Native Services
 

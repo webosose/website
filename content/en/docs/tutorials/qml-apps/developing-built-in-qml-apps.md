@@ -1,7 +1,7 @@
 ---
 title: Developing Built-in QML Apps
-date: 2018-11-14
-weight: 10
+date: 2020-04-09
+weight: 20
 toc: true
 ---
 
@@ -524,7 +524,7 @@ Perform the following steps:
 
     - **Directory:** `build-webos/meta-webosose/meta-webos/recipes-core/packagegroups`
 
-    - **Updates to be made:** Add the QML app name to **`RDEPENDS _ $ {PN} =`**
+    - **Updates to be made:** Add the QML app name to **`RDEPENDS_${PN} =`**
 
     ``` bash {hl_lines=[6]}
     ...

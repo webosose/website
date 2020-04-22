@@ -41,7 +41,7 @@ Developing a built-in native app requires the following steps:
 
 1. Implement
 
-    - Writing the native app code (including `main.c` or `main.cpp`)
+    - Writing the native app code
     - Preparing `README.md` that describes the project
 
 2. Configure

@@ -21,7 +21,7 @@ Developing an external native app requires the following steps:
 
 ## Before you begin
 
-- Make sure you have completed the steps in [Native Development Kit Setup]({{< relref "native-development-kit-setup" >}}).
+- Make sure you have completed the steps in [Native Development Kit Setup]({{< relref "setting-up-native-development-kit" >}}).
 - Create a project directory (com.sample.waylandegl) for the sample native app, and move into the directory.
 
    ``` bash

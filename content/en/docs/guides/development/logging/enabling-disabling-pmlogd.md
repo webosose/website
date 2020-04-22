@@ -1,7 +1,7 @@
 ---
 title: Enabling and Disabling pmlogd
 date: 2019-11-20
-weight: 20
+weight: 40
 toc: true
 ---
 

@@ -1,7 +1,8 @@
 ---
-title: QEMUx86 Emulator for Linux User Guide
+title: User Guide
+display_title: QEMUx86 Emulator for Linux User Guide
 date: 2019-03-05
-weight: 10
+weight: 20
 toc: true
 ---
 

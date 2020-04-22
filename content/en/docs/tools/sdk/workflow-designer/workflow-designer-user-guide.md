@@ -1,5 +1,6 @@
 ---
-title: Workflow Designer User Guide
+title: User Guide
+display_title: Workflow Designer User Guide
 date: 2020-03-06
 weight: 10
 toc: true

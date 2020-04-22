@@ -2,16 +2,17 @@
 {{ $p := . }}
 {{ $docs := .Site.GetPage "/docs" }}
 {{ $menuSections := (where $docs.Sections ".Params.section_main" true) }}
-{{ $.Scratch.Set "sectionName" "Overview" }}
+{{ .Scratch.Set "section" .CurrentSection }}
+{{ .Scratch.Set "sectionName" "Overview" }}
 {{ range $menuSections }}
   {{ $isDescendant := $p.IsDescendant . }}
   {{ if $isDescendant }}
+    {{ $.Scratch.Set "section" . }}
     {{ $.Scratch.Set "sectionName" .LinkTitle }}
   {{ end }}
 {{ end }}
 
-{{ $sidebar := (index .Site.Data.sidebars.docs  ( ($.Scratch.Get "sectionName") | lower ) ) }}
-{{ $entries := index $sidebar "entries" }}
+{{ $section := (.Scratch.Get "section") }}
 
 <!-- build menu tree (as UL list) to implement sidebar menu based on Navgoco (https://plugins.jquery.com/navgoco/) -->
 <div class="sidebar-container column is-one-fifth no-print">
@@ -26,48 +27,7 @@
           {{ $.Scratch.Get "sectionName" }}
         </p>
         <ul class="sidebar-menu nav scrollbar-outer">
-          {{ range $entries }}
-          <li {{ if eq $.Page.RelPermalink .url }} class="active" {{ end }}>
-            {{ if .url }}
-            <a href="{{ .url }}"><strong>{{ .title }}</strong></a>
-            {{ else }}
-            <a href="#"><strong>{{ .title }}</strong></a>
-            <ul>
-              {{ range .sections }}
-                {{ if .url }}
-                <li {{ if eq $.Page.RelPermalink .url }} class="active" {{ end }} class="subsections">
-                  <a href="{{ .url }}">{{ .title }}</a>
-                </li>
-                {{ else }}
-                <li class="subsections">
-                  <a href="#">{{ .title }}</a>
-                  <ul>
-                    {{ range .subsections }}
-                      {{ if .url }}
-                      <li {{ if eq $.Page.RelPermalink .url }} class="active" {{ end }}>
-                        <a href="{{ .url }}">{{ .title }}</a>
-                      </li>
-                      {{ else }}
-                      <li class="subsections_d2">
-                        <a href="#">{{ .title }}</a>
-                        <ul>
-                        {{ range .subsections_d2 }}
-                        <li {{ if eq $.Page.RelPermalink .url }} class="active" {{ end }}>
-                            <a href="{{ .url }}">{{ .title }}</a>
-                        </li>
-                        {{ end }}
-                        </ul>
-                      </li>
-                      {{ end }}
-                    {{ end }}
-                  </ul>
-                </li>
-                {{ end }}
-              {{ end }}
-            </ul>
-            {{ end }}
-          </li>
-          {{ end }}
+        {{ partialCached "page-tree.html" $section $section.RelPermalink }}
         </ul>
       </div>
     </div>

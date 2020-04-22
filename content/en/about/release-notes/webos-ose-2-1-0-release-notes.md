@@ -1,5 +1,6 @@
 ---
-title: webOS OSE 2.1.0 Release Notes
+title: webOS OSE 2.1.0
+display_title: webOS OSE 2.1.0 Release Notes
 date: 2019-11-20
 weight: 15
 toc: true

@@ -1,7 +1,8 @@
 ---
-title: QEMUx86 Emulator for Linux Release Notes
+title: Release Notes
+display_title: QEMUx86 Emulator for Linux Release Notes
 date: 2018-08-20
-weight: 20
+weight: 30
 toc: true
 ---
 
