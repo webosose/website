@@ -1,5 +1,6 @@
 ---
-title: webOS OSE 1.4.0 Release Notes
+title: webOS OSE 1.4.0
+display_title: webOS OSE 1.4.0 Release Notes
 date: 2018-10-31
 weight: 5
 toc: true

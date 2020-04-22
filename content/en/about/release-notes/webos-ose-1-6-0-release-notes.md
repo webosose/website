@@ -1,5 +1,6 @@
 ---
-title: webOS OSE 1.6.0 Release Notes
+title: webOS OSE 1.6.0
+display_title: webOS OSE 1.6.0 Release Notes
 date: 2019-03-11
 weight: 8
 toc: true

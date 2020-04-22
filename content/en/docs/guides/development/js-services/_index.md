@@ -1,4 +1,4 @@
 ---
 title: JS Services
-weight: 30
+weight: 15
 ---

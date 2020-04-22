@@ -1,5 +1,6 @@
 ---
-title: Command-Line Interface User Guide
+title: User Guide
+display_title: Command-Line Interface User Guide
 date: 2020-03-10
 weight: 10
 toc: true

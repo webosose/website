@@ -1,5 +1,6 @@
 ---
-title: Beanviser User Guide
+title: User Guide
+display_title: Beanviser User Guide
 date: 2020-01-08
 weight: 10
 toc: true

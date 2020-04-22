@@ -751,7 +751,7 @@ Add the service to the package recipe file.
 
 - **Directory:** `build-webos/meta-webosose/meta-webos/recipes-core/packagegroups`
 
-- **Updates to be made:** Add the service name to **`RDEPENDS _ $ {PN} =`**
+- **Updates to be made:** Add the service name to **`RDEPENDS_${PN} =`**
 
 ``` bash
 ...

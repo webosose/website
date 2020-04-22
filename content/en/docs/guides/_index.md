@@ -31,16 +31,16 @@ This unit describes steps to set up the webOS OSE development environment.
 * [Google Assistant Setup]({{< relref "setting-up-google-assistant" >}})
 * [Firmware-Over-the-Air Setup]({{< relref "setting-up-fota" >}})
 * [GDB Debugging Setup]({{< relref "setting-up-debugging" >}})
-* [Native Development Kit Setup]({{< relref "native-development-kit-setup" >}})
+* [Native Development Kit Setup]({{< relref "setting-up-native-development-kit" >}})
 
 ## Development
 
 This unit explains how you can build apps and services for webOS OSE.
 
 * [Web Apps]({{< relref "web-app-overview" >}})
+* [JS Services]({{< relref "js-service-overview" >}})
 * [QML Apps]({{< relref "qml-app-overview" >}})
 * [Native Apps]({{< relref "native-app-overview" >}})
-* [JS Services]({{< relref "js-service-overview" >}})
 * [Native Services]({{< relref "native-service-overview" >}})
 * [Configuration Files]({{< relref "appinfo-json" >}})
 * [Localization Guide]({{< relref "localization-guide" >}})

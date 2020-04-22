@@ -662,7 +662,7 @@ After building the app, you must verify its functionality.
     When the build is successful, oe-related directories are created under the project root directory. These directories are linked to the directory where the build output is generated from the actual **`build-webos`** sub-directory.
 
     ``` bash
-    ~/project/com.example.app.nativeqt
+    com.example.app.nativeqt
     ├── appinfo.json
     ├── build
     ├── com.example.app.nativeqt.pro
@@ -680,14 +680,14 @@ After building the app, you must verify its functionality.
     If you go to `oe-workdir/deploy-ipks/raspberrypi4`, you can see `com.example.app.nativeqt_1.0.0-r0.local0_raspberrypi4.ipk` file.
 
     ``` bash
-    ~/project/com.example.app.nativeqt/oe-workdir/deploy-ipks/raspberrypi4$
+    com.example.app.nativeqt/oe-workdir/deploy-ipks/raspberrypi4$
     └── com.example.app.nativeqt_1.0.0-r0.local0_raspberrypi4.ipk
     ```
 
     Copy the IPK file to the target device using the `scp` command.
 
     ``` bash
-    ~/project/com.example.app.nativeqt/oe-workdir/deploy-ipks/raspberrypi4$ scp com.example.app.nativeqt_1.0.0-r0.local0_raspberrypi4.ipk root@<target IP address>:/media/internal/downloads/
+    com.example.app.nativeqt/oe-workdir/deploy-ipks/raspberrypi4$ scp com.example.app.nativeqt_1.0.0-r0.local0_raspberrypi4.ipk root@<target IP address>:/media/internal/downloads/
     ```
 
 2.  **Install the app on the target.**
@@ -827,7 +827,7 @@ Perform the following steps:
 
     - **Filename:** `packagegroup-webos-extended.bb`
     - **Directory:** `build-webos/meta-webosose/meta-webos/recipes-core/packagegroups`
-    - **Updates to be made:** Add the native app name to **`RDEPENDS _ $ {PN} =`**
+    - **Updates to be made:** Add the native app name to **`RDEPENDS_${PN} =`**
 
     ``` bash {hl_lines=[6]}
     ...

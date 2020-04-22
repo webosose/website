@@ -551,7 +551,7 @@ Add the JS service to the packagegroup recipe file.
 
 - **Update the file:** `packagegroup-webos-extended.bb`
 - **Directory:** `build-webos/meta-webosose/meta-webos/recipes-core/packagegroups`
-- **Updates to be made:** Add the JS service name to **`RDEPENDS _ $ {PN} =`**
+- **Updates to be made:** Add the JS service name to **`RDEPENDS_${PN} =`**
 
 ``` bash {hl_lines=[6]}
 ...

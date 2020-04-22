@@ -1,5 +1,6 @@
 ---
-title: webOS OSE 2.3.0 Release Notes
+title: webOS OSE 2.3.0
+display_title: webOS OSE 2.3.0 Release Notes
 date: 2020-01-23
 weight: 17
 toc: true

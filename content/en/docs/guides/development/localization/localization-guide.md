@@ -28,7 +28,7 @@ For more information about BCP 47 and the language tag, refer to the following:
 
 ## Localization Tool
 
-The localization tool parses source code along with XLIFF files, and generates string resources in formats required by each programming language. Therefore, you must provide a translation data in XLIFF format to use the localization tool.
+The localization tool parses source code along with XLIFF files, and generates string resources in formats required by each programming language. Therefore, you must provide translation data in XLIFF format to use the localization tool.
 
 ### XLIFF
 

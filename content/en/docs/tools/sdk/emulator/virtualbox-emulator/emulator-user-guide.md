@@ -1,7 +1,8 @@
 ---
-title: VirtualBox Emulator User Guide
-date: 2019-10-31
-weight: 30
+title: User Guide
+display_title: VirtualBox Emulator User Guide
+date: 2020-04-20
+weight: 10
 toc: true
 ---
 
@@ -289,6 +290,9 @@ vboxmanage storagectl webos-image --add ide --name webos-image
 
 # Only when you want to set 2 monitors, default is 1
 vboxmanage modifyvm webos-image --monitorcount 2
+
+# To adjust the scale of display resolution
+vboxmanage setextradata webos-auto-image GUI/ScaleFactor <scale_factor>
 ```
 {{< /code >}}
 
@@ -373,16 +377,16 @@ On the host machine, you can connect to the emulator from the shell or from the 
 
 #### Ubuntu Linux/macOS
 
-The best way to get a shell into the emulator is with SSH. On the command shell, type the following command with the host port number configured for ssh (for example, 6622) in the port forwarding rules during the setup process:
+The best way to get a shell into the emulator is with SSH. On the command shell, type the following command with the host port number (6622) configured for ssh in the port forwarding rules during the setup process:
 
 ```shell
-ssh -p <PortNumber> root@localhost
+ssh -p 6622 root@localhost
 ```
 
 To avoid error messages about the host changing every time you change emulator images, you can add the following flags to ssh (or create an alias in your `.bashrc` to do this for you):
 
 ```shell
-ssh -p <PortNumber> -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@localhost
+ssh -p 6622 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@localhost
 ```
 
 #### Windows

@@ -1,0 +1,28 @@
+{{ template "section-tree-nav" (dict "ctx" . "section" .) }}
+{{ define "section-tree-nav" }}
+  {{ $pages :=  (union .section.Pages .section.Sections) }}
+  {{ $sections := $pages.ByWeight }}
+  {{ if and (isset .section.Params "sort_by") (eq .section.Params.sort_by "reverse date") }}
+  {{ $sections = $pages.ByDate.Reverse }}
+  {{ end }}
+	{{ range $sections }}
+		{{ if .IsPage }}
+			{{ template "section-tree-nav-page"  (dict "ctx" $.ctx "page" .) }}
+		{{ else }}
+			{{ template "section-tree-nav-section" (dict "ctx" $.ctx "section" .) }}
+		{{ end }}
+	{{ end }}
+{{ end }}
+{{ define "section-tree-nav-section" }}
+	<li {{ if eq .RelPermalink .section.RelPermalink }} class="active" {{ end }} class="is-section">
+    <a href="#">{{ .section.LinkTitle }}</a>
+    <ul>
+    {{ template "section-tree-nav" . }}
+    </ul>
+	</li>
+{{ end }}
+{{ define "section-tree-nav-page" }}
+<li {{ if eq $.Permalink .page.RelPermalink }} class="active" {{ end }} class="is-page">
+  <a href="{{ .page.RelPermalink }}">{{ .page.LinkTitle }}</a>
+</li>
+{{ end }}

@@ -1,5 +1,6 @@
 ---
-title: Beanviser Release Notes
+title: Release Notes
+display_title: Beanviser Release Notes
 date: 2020-01-08
 weight: 20
 toc: true

@@ -202,7 +202,7 @@ To debug a JS service, Node's Inspector is used. (Not to be confused with the le
 
 By communicating with the Inspector clients on the host machine, Node's Inspector lets you observe the values of variables and control the JavaScript execution. For more information on Node.js debugging using the Inspector, refer to the [Node.js Debugging Guide](https://nodejs.org/en/docs/guides/debugging-getting-started/).
 
-To enable the Inspector on a webOS OSE device, use the `ares-inspect` command. For detailed usage of the command, see [ares-inspect](https://www.webosose.org/docs/tools/sdk/cli/cli-user-guide/#ares-inspect).
+To enable the Inspector on a webOS OSE device, use the `ares-inspect` command. For detailed usage of the command, see [ares-inspect]({{< relref "cli-user-guide#ares-inspect" >}}).
 
 **General Usage:**
 

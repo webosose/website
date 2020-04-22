@@ -1,5 +1,6 @@
 ---
-title: Contributing to webOS Open Source Edition
+title: Contributing
+display_title: Contributing to webOS Open Source Edition
 date: 2019-04-12
 weight: 10
 toc: true

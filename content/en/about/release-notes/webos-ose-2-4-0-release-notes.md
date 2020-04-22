@@ -1,5 +1,6 @@
 ---
-title: webOS OSE 2.4.0 Release Notes
+title: webOS OSE 2.4.0
+display_title: webOS OSE 2.4.0 Release Notes
 date: 2020-03-18
 weight: 18
 toc: true
