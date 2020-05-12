@@ -1,10 +1,9 @@
 ---
 title: com.webos.service.audio
-date: 2020-04-01
+date: 2020-05-11
 weight: 100
 toc: true
 ---
-
 <div>
   <h2>API Summary</h2>
   <p>This service controls the audio policy of a webOS system. Its role is to implement audio routing (sending audio streams to the proper destinations) and setting volumes in different scenarios.</p>
@@ -25,138 +24,140 @@ toc: true
   <p>NA</p>
 </div>
 <h2>Methods</h2>
-<h3>media/broadcastEvent</h3>
 <div>
-  <h4>Description</h4>
-  <p>Announce an event to audiod.</p>
-  <h4>Parameters</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>event</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>The event to be passed to audiod by the application.&nbsp;It can be simple string agreed between audiod and application.</p>
-            <p>For example, if audiod requires an event when call is received by caller (i.e., application),&nbsp;it will ask the caller to send an event using this method and the <strong>event</strong> will be &quot;callreceived&quot;.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Call Returns</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
-            <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>errorCode</td>
-          <td>Optional</td>
-          <td>Number</td>
-          <td>
-            <p>The error code for the failed operation.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>errorText</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Error Codes Reference</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Error Code</p>
-          </th>
-          <th width="30%">
-            <p>Error Text</p>
-          </th>
-          <th width="55%">
-            <p>Error Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>Missing event string parameter.</td>
-          <td>
-            <p>Mandatory parameter <strong>event</strong>&nbsp;is missing from input arguments.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Example</h4>
-  <div class="code-bg-grey">
-    <p>Example 1:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/media/broadcastEvent &#39;{&quot;event&quot;:&quot;test&quot;}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
-    <p>Example 2:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/media/broadcastEvent &#39;{&quot;event&quot;:&quot;test&quot;,&quot;event2&quot;:&quot;test2&quot;}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
-      }
-    </p>
-    <p>Example 3:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/media/broadcastEvent &#39;{}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 2,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Missing &#39;event&#39; string parameter.&quot;<br />
-      }
-    </p>
+  <h3>media/broadcastEvent</h3>
+  <div>
+    <h4>Description</h4>
+    <p>Announce an event to audiod.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>event</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>The event to be passed to audiod by the application.&nbsp;It can be simple string agreed between audiod and application.</p>
+              <p>For example, if audiod requires an event when call is received by caller (i.e., application),&nbsp;it will ask the caller to send an event using this method and the <strong>event</strong> will be &quot;callreceived&quot;.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Missing event string parameter.</td>
+            <td>
+              <p>Mandatory parameter <strong>event</strong>&nbsp;is missing from input arguments.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div class="code-bg-grey">
+      <p>Example 1:<br />
+        luna-send -n 1 -f luna://com.webos.service.audio/media/broadcastEvent &#39;{&quot;event&quot;:&quot;test&quot;}&#39;<br />
+        {<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+        }
+      </p>
+      <p>Example 2:<br />
+        luna-send -n 1 -f luna://com.webos.service.audio/media/broadcastEvent &#39;{&quot;event&quot;:&quot;test&quot;,&quot;event2&quot;:&quot;test2&quot;}&#39;<br />
+        {<br />
+        &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+        &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
+        }
+      </p>
+      <p>Example 3:<br />
+        luna-send -n 1 -f luna://com.webos.service.audio/media/broadcastEvent &#39;{}&#39;<br />
+        {<br />
+        &nbsp; &nbsp; &quot;errorCode&quot;: 2,<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+        &nbsp; &nbsp; &quot;errorText&quot;: &quot;Missing &#39;event&#39; string parameter.&quot;<br />
+        }
+      </p>
+    </div>
   </div>
 </div>
 <h3>media/disableScenario</h3>
@@ -2050,6 +2051,15 @@ toc: true
             <p>Scenario for which the volume is to be set.</p>
           </td>
         </tr>
+        <tr>
+          <td>sessionId</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Denotes the display/session to which the operation is applicable. Possible values are: 0, 1.</p>
+            <p><strong>Note:&nbsp;</strong>If not provided, the operation is applied to session 0.</p>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -2118,6 +2128,13 @@ toc: true
           </th>
         </tr>
         <tr>
+          <td>1</td>
+          <td>Not a valid json message</td>
+          <td>
+            <p>Wrong JSON message format</p>
+          </td>
+        </tr>
+        <tr>
           <td>2</td>
           <td>&quot;Missing &#39;volume&#39; integer parameter.&quot;</td>
           <td>
@@ -2143,35 +2160,31 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/setVolume &#39;{&quot;volume&quot;:10}&#39;<br />
-      {<br />
+    <p># luna-send -f -n 1 luna://com.webos.service.audio/media/setVolume &#39;{&quot;volume&quot;:10}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
       }
     </p>
-    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/setVolume &#39;{}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 2,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Missing &#39;volume&#39; integer parameter.&quot;<br />
+    <p>For display 1</p>
+    <p># luna-send -f -n 1 luna://com.webos.service.audio/media/setVolume &#39;{&quot;volume&quot;:50, &quot;sessionId&quot;:0}&#39;</p>
+    <p>Response:</p>
+    <p>{ &nbsp;&nbsp;<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
       }
     </p>
-    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/setVolume &#39;{&quot;volume&quot;:10, &quot;scenario&quot;:&quot;media_back_speaker&quot;}&#39;<br />
-      {<br />
+    <p>&nbsp;</p>
+    <p>For display 2</p>
+    <p># luna-send -f -n 1 luna://com.webos.service.audio/media/setVolume &#39;{&quot;volume&quot;:50, &quot;sessionId&quot;:1}&#39;</p>
+    <p>Response:</p>
+    <p>{ &nbsp;&nbsp;<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p># luna-send -f -n 1 luna://com.webos.service.audio/media/setVolume &#39;{&quot;volume&quot;:10, &quot;scenario&quot;:&quot;media_back_speaker&quot;}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
-    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/setVolume &#39;{ &quot;scenario&quot;:&quot;media_back_speaker&quot;}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 2,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Missing &#39;volume&#39; integer parameter.&quot;<br />
-      }
-    </p>
-    <p>luna-send -f -n 1 luna://com.webos.service.audio/media/setVolume &#39;{&quot;volume&quot;:10, &quot;scenario&quot;:&quot;media_back_speakerT&quot;}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;failed to set parameter (invalid scenario name?)&quot;<br />
       }
     </p>
   </div>
@@ -2601,9 +2614,8 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example 1:&nbsp;</p>
-    <p>luna-send -i -f luna://com.webos.service.audio/nav/status &#39;{&quot;subscribe&quot; : true}&#39;</p>
-    <p>{<br />
+    <p>luna-send -i -f luna://com.webos.service.audio/nav/status &#39;{&quot;subscribe&quot; : true}&#39;<br />
+      {<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;nav_default&quot;,<br />
@@ -2615,12 +2627,9 @@ toc: true
       &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
       &nbsp; &nbsp; &quot;slider&quot;: false,<br />
       &nbsp; &nbsp; &quot;active&quot;: false<br />
-      }
-    </p>
-    <p>&nbsp;</p>
-    <p>Example 2:&nbsp;</p>
-    <p>luna-send -i -f luna://com.webos.service.audio/nav/status &#39;{}&#39;</p>
-    <p>{<br />
+      }<br />
+      luna-send -i -f luna://com.webos.service.audio/nav/status &#39;{}&#39;<br />
+      {<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;nav_default&quot;,<br />
@@ -2632,12 +2641,9 @@ toc: true
       &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
       &nbsp; &nbsp; &quot;slider&quot;: false,<br />
       &nbsp; &nbsp; &quot;active&quot;: false<br />
-      }
-    </p>
-    <p>&nbsp;</p>
-    <p>Example 3:&nbsp;</p>
-    <p>luna-send -i -f luna://com.webos.service.audio/nav/status &#39;{&quot;subscribe&quot; : false}&#39;</p>
-    <p>{<br />
+      }<br />
+      luna-send -i -f luna://com.webos.service.audio/nav/status &#39;{&quot;subscribe&quot; : false}&#39;<br />
+      {<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;nav_default&quot;,<br />
@@ -3267,11 +3273,12 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates whether to subscribe for related events.</p>
+            <p>Subscribe to get notified&nbsp;when the&nbsp;status changes. Possible values are:</p>
             <ul>
-              <li>true: Subscribe</li>
-              <li>false: Do not subscribe</li>
+              <li><strong>true&nbsp;</strong>-&nbsp;Subscribe for changes.</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed.</li>
             </ul>
+            <p><strong>Default value</strong>: false</p>
           </td>
         </tr>
       </tbody>
@@ -3385,10 +3392,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates whether to suspend all sinks.</p>
+            <p>Indicates whether to suspend all sinks. Possible values are:&nbsp;</p>
             <ul>
-              <li>true: Suspend&nbsp;all sinks</li>
-              <li>false: Do not suspend all sinks</li>
+              <li><strong>true </strong>-&nbsp;Suspend&nbsp;all sinks</li>
+              <li><strong>false </strong>-&nbsp;Do not suspend all sinks</li>
             </ul>
           </td>
         </tr>
@@ -3418,9 +3425,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
             <ul>
-              <li>If the method succeeds,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>true</strong>.</li>
-              <li>If the method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false.</strong></li>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.&nbsp;Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
@@ -3429,7 +3437,7 @@ toc: true
           <td>Optional</td>
           <td>Number</td>
           <td>
-            <p><strong>errorCode</strong>&nbsp;contains the error code if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorCode</strong>&nbsp;only if it fails</p>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
         <tr>
@@ -3437,7 +3445,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p><strong>errorText&nbsp;</strong>contains the error text if the method fails. The method will return&nbsp;<strong>errorText&nbsp;</strong>only if it fails</p>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
           </td>
         </tr>
       </tbody>
@@ -4083,7 +4091,7 @@ toc: true
 <h3>state/getPreference</h3>
 <div>
   <h4>Description</h4>
-  <p>Get the value of the preferences.</p>
+  <p>Gets the value of the preferences.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -4107,7 +4115,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Preference name</p>
+            <p>Name of the preference.&nbsp;</p>
           </td>
         </tr>
         <tr>
@@ -4115,7 +4123,7 @@ toc: true
           <td>Optional</td>
           <td>String array</td>
           <td>
-            <p>Preference names in an array</p>
+            <p>Array of preferences.</p>
           </td>
         </tr>
       </tbody>
@@ -4144,9 +4152,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
             <ul>
-              <li>If the method succeeds,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>true</strong>.</li>
-              <li>If the method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false</strong>.</li>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.&nbsp;Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
@@ -4155,10 +4164,10 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates whether device can vibrate when ringer switch is on</p>
+            <p>Indicates whether the device can vibrate when the ringer switch is ON. Possible values are:</p>
             <ul>
-              <li>true: device can vibrate</li>
-              <li>false: device cannot vibrate</li>
+              <li><strong>true </strong>-<strong>&nbsp;</strong>Device can vibrate</li>
+              <li><strong>false </strong>-&nbsp;Device cannot vibrate</li>
             </ul>
           </td>
         </tr>
@@ -4167,10 +4176,10 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates whether device can vibrate when ringer switch is off</p>
+            <p>Indicates whether the device can vibrate when the ringer switch is OFF. Possible values are:&nbsp;</p>
             <ul>
-              <li>true: device can vibrate</li>
-              <li>false: device cannot vibrate</li>
+              <li><strong>true </strong>- Device can vibrate</li>
+              <li><strong>false</strong> - Device cannot vibrate</li>
             </ul>
           </td>
         </tr>
@@ -4179,10 +4188,10 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Indicates whether voice command is supported&nbsp;when&nbsp;device is locked</p>
+            <p>Indicates whether voice command is supported&nbsp;when the device is locked. Possible values are:&nbsp;</p>
             <ul>
-              <li>on:&nbsp;voice command is supported</li>
-              <li>off: voice command is not supported</li>
+              <li><strong>on </strong>- Supported</li>
+              <li><strong>off </strong>- Not supported</li>
             </ul>
           </td>
         </tr>
@@ -4191,12 +4200,12 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Indicates whether systemsounds should be played along with haptic feedback</p>
+            <p>Indicates whether system sounds should be played along with haptic feedback. Possible values are:</p>
             <ul>
-              <li>auto: systemsounds will be played if ringer switch is on. Haptic feedback is provided</li>
-              <li>hapticOnly: Only haptic feedback is provided</li>
-              <li>disabled: Both systemsounds playback and haptic feddback will be disabled</li>
-              <li>soundOnly: Haptic feedback is disabled. Systemsounds are allowed to play</li>
+              <li><strong>auto </strong>-&nbsp;System sounds will be played if ringer switch is ON. Haptic feedback is provided.&nbsp;</li>
+              <li><strong>hapticOnly </strong>-&nbsp;Only haptic feedback is provided.</li>
+              <li><strong>disabled </strong>-&nbsp;Both system sounds playback and haptic feedback will be disabled.</li>
+              <li><strong>soundOnly </strong>- Haptic feedback is disabled. System sounds are allowed to play.</li>
             </ul>
           </td>
         </tr>
@@ -4205,10 +4214,10 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates whether beats for headphones is enabled or disabled</p>
+            <p>Indicates whether beats for headphones is enabled or disabled. Possible values are:</p>
             <ul>
-              <li>true: beats is enabled for headphones</li>
-              <li>false: beats is disabled for headphones</li>
+              <li><strong>true</strong> -&nbsp;Beats enabled&nbsp;</li>
+              <li><strong>false</strong> -&nbsp;Beats disabled</li>
             </ul>
           </td>
         </tr>
@@ -4217,10 +4226,10 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates whether beats for speaker is enabled or disabled</p>
+            <p>Indicates whether beats for speaker is enabled or disabled. Possible values are:</p>
             <ul>
-              <li>true: beats is enabled for speaker</li>
-              <li>false: beats is disabled for speaker</li>
+              <li><strong>true </strong>-&nbsp; Beats enabled&nbsp;</li>
+              <li><strong>false </strong>- Beats disabled</li>
             </ul>
           </td>
         </tr>
@@ -4229,7 +4238,7 @@ toc: true
           <td>Optional</td>
           <td>Number</td>
           <td>
-            <p><strong>errorCode</strong>&nbsp;contains the error code if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorCode</strong>&nbsp;only if it fails.</p>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
         <tr>
@@ -4237,7 +4246,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p><strong>errorText</strong>&nbsp;contains the error text if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails</p>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
           </td>
         </tr>
       </tbody>
@@ -4245,50 +4254,36 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example 1:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/state/getPreference &#39;{&quot;name&quot; : &quot;VibrateWhenRingerOn&quot;}&#39;<br />
-      {<br />
+    <p>Example 1:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/state/getPreference &#39;{&quot;name&quot; : &quot;VibrateWhenRingerOn&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;VibrateWhenRingerOn&quot;: false,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
       }
     </p>
-    <p>Example 2:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/state/getPreference &#39;{&quot;names&quot; : &quot;VibrateWhenRingerOn&quot;}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
-      }
-    </p>
-    <p>Example 3:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/state/getPreference &#39;{&quot;name&quot; : &quot;all&quot;}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 2,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;no setting found&quot;<br />
-      }
-    </p>
-    <p>Example 4:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/state/getPreference &#39;{&quot;name&quot; : &quot;VibrateWhenRingerOff&quot;}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;VibrateWhenRingerOff&quot;: true<br />
-      }
-    </p>
-    <p>Example 5:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/state/getPreference &#39;{&quot;name&quot; : &quot;RingerOn&quot;}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;RingerOn&quot;: true,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
-    <p>Example 6:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/state/getPreference &#39;{&quot;names&quot; : [&quot;RingerOn&quot;, &quot;VibrateWhenRingerOn&quot;, &quot;BeatsOnForHeadphones&quot;]}&#39;<br />
-      {<br />
+    <p>&nbsp;</p>
+    <p>Example 2:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/state/getPreference &#39;{&quot;names&quot; : [&quot;RingerOn&quot;, &quot;VibrateWhenRingerOn&quot;, &quot;BeatsOnForHeadphones&quot;]}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;VibrateWhenRingerOn&quot;: false,<br />
       &nbsp; &nbsp; &quot;RingerOn&quot;: true,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp; &quot;BeatsOnForHeadphones&quot;: true<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Example 3:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/state/getPreference &#39;{&quot;name&quot; : &quot;all&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 2,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;no setting found&quot;<br />
       }
     </p>
   </div>
@@ -6522,17 +6517,17 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 luna://com.webos.service.audio/master/getVolume &#39;{}&#39;</p>
-    <p>Result:</p>
-    <p>{&nbsp;&nbsp;<br />
-      &nbsp;&nbsp;&nbsp;&quot;volumeStatus&quot;:[&nbsp;&nbsp;<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;muted&quot;:false,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;volume&quot;:99,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;soundOutput&quot;:&quot;alsa&quot;<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
-      &nbsp;&nbsp;&nbsp;],<br />
-      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+    <p># luna-send -n 1 luna://com.webos.service.audio/master/getVolume &#39;{}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;volumeStatus&quot;:[<br />
+      &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;muted&quot;:false,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;volume&quot;:99,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;soundOutput&quot;:&quot;alsa&quot;<br />
+      &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp;],<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
       }
     </p>
   </div>
@@ -6651,25 +6646,12 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -f -n 1 luna://com.webos.service.audio/master/setVolume &#39;{&quot;soundOutput&quot;:&quot;alsa&quot;,&quot;volume&quot;:10}&#39;<br />
-      {<br />
+    <p># luna-send -f -n 1 luna://com.webos.service.audio/master/setVolume &#39;{&quot;soundOutput&quot;:&quot;alsa&quot;,&quot;volume&quot;:10}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;volume&quot;: 10,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp; &quot;soundOutput&quot;: &quot;alsa&quot;<br />
-      }
-    </p>
-    <p>luna-send -f -n 1 luna://com.webos.service.audio/master/setVolume &#39;{&quot;soundOutput&quot;:&quot;alsaTest&quot;,&quot;volume&quot;:10}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 204,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Volume control is not supported&quot;<br />
-      }
-    </p>
-    <p>luna-send -f -n 1 luna://com.webos.service.audio/master/setVolume &#39;{&quot;soundOutput&quot;:&quot;alsa&quot;}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
       }
     </p>
   </div>
@@ -6780,32 +6762,12 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -f -n 1 luna://com.webos.service.audio/master/volumeUp &#39;{&quot;soundOutput&quot;:&quot;alsa&quot;}&#39;<br />
-      {<br />
+    <p># luna-send -f -n 1 luna://com.webos.service.audio/master/volumeUp &#39;{&quot;soundOutput&quot;:&quot;alsa&quot;}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;volume&quot;: 12,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp; &quot;soundOutput&quot;: &quot;alsa&quot;<br />
-      }
-    </p>
-    <p>luna-send -f -n 1 luna://com.webos.service.audio/master/volumeUp &#39;{&quot;soundOutput&quot;:&quot;alsaTest&quot;}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 204,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Volume control is not supported&quot;<br />
-      }
-    </p>
-    <p>luna-send -f -n 1 luna://com.webos.service.audio/master/volumeUp &#39;{&quot;soundOutputTest&quot;:&quot;alsa&quot;}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
-      }
-    </p>
-    <p>luna-send -f -n 1 luna://com.webos.service.audio/master/volumeUp &#39;{}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
       }
     </p>
   </div>
@@ -6916,32 +6878,12 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -f -n 1 luna://com.webos.service.audio/master/volumeDown &#39;{&quot;soundOutput&quot;:&quot;alsa&quot;}&#39;<br />
-      {<br />
+    <p># luna-send -f -n 1 luna://com.webos.service.audio/master/volumeDown &#39;{&quot;soundOutput&quot;:&quot;alsa&quot;}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;volume&quot;: 11,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp; &quot;soundOutput&quot;: &quot;alsa&quot;<br />
-      }
-    </p>
-    <p>luna-send -f -n 1 luna://com.webos.service.audio/master/volumeDown &#39;{&quot;soundOutput&quot;:&quot;alsaTest&quot;}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 204,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Volume control is not supported&quot;<br />
-      }
-    </p>
-    <p>luna-send -f -n 1 luna://com.webos.service.audio/master/volumeDown &#39;{&quot;soundOutputTest&quot;:&quot;alsa&quot;}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
-      }
-    </p>
-    <p>luna-send -f -n 1 luna://com.webos.service.audio/master/volumeDown &#39;{}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
       }
     </p>
   </div>
@@ -7068,39 +7010,21 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -f -n 1 luna://com.webos.service.audio/master/muteVolume &#39;{&quot;soundOutput&quot;:&quot;alsa&quot;,&quot;mute&quot;:true}&#39;<br />
-      {<br />
+    <p># luna-send -f -n 1 luna://com.webos.service.audio/master/muteVolume &#39;{&quot;soundOutput&quot;:&quot;alsa&quot;,&quot;mute&quot;:true}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;mute&quot;: true,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp; &quot;soundOutput&quot;: &quot;alsa&quot;<br />
       }
     </p>
-    <p>luna-send -f -n 1 luna://com.webos.service.audio/master/muteVolume &#39;{&quot;soundOutput&quot;:&quot;alsa&quot;,&quot;mute&quot;:false}&#39;<br />
-      {<br />
+    <p>&nbsp;</p>
+    <p># luna-send -f -n 1 luna://com.webos.service.audio/master/muteVolume &#39;{&quot;soundOutput&quot;:&quot;alsa&quot;,&quot;mute&quot;:false}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;mute&quot;: false,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp; &quot;soundOutput&quot;: &quot;alsa&quot;<br />
-      }
-    </p>
-    <p>luna-send -f -n 1 luna://com.webos.service.audio/master/muteVolume &#39;{&quot;soundOutput&quot;:&quot;alsaTEst&quot;,&quot;mute&quot;:false}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 204,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Volume control is not supported&quot;<br />
-      }
-    </p>
-    <p>luna-send -f -n 1 luna://com.webos.service.audio/master/muteVolume &#39;{&quot;soundOutput&quot;:&quot;alsa&quot;}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
-      }
-    </p>
-    <p>luna-send -f -n 1 luna://com.webos.service.audio/master/muteVolume &#39;{&quot;mute&quot;:false}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
       }
     </p>
   </div>
@@ -7203,25 +7127,24 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/soundSettings/setSoundOut &#39;{&quot;soundOut&quot;: &quot;alsa&quot;}&#39;<br />
-      {<br />
+    <p>Example:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/soundSettings/setSoundOut &#39;{&quot;soundOut&quot;: &quot;alsa&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;soundOut&quot;: &quot;alsa&quot;,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
       }
     </p>
-    <p><br />
-      luna-send -n 1 -f luna://com.webos.service.audio/soundSettings/setSoundOut &#39;{&quot;soundOut&quot;: &quot;alsaTest&quot;}&#39;<br />
-      {<br />
+    <p>&nbsp;</p>
+    <p>Example:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/soundSettings/setSoundOut &#39;{&quot;soundOut&quot;: &quot;alsaTest&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 10,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
       &nbsp; &nbsp; &quot;errorText&quot;: &quot;Not implemented&quot;<br />
-      }
-    </p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/soundSettings/setSoundOut &#39;{}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
       }
     </p>
   </div>
@@ -7229,7 +7152,7 @@ toc: true
 <h3>alert/setVolume</h3>
 <div>
   <h4>Description</h4>
-  <p>Set the volume level of the current or specified scenario.</p>
+  <p>Sets the volume level of the current or specified scenario.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -7298,40 +7221,21 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example 1:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alert/setVolume &#39;{&quot;volume&quot;:75}&#39;<br />
-      {<br />
+    <p>Example 1:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/alert/setVolume &#39;{&quot;volume&quot;:75}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
       }
     </p>
-    <p>Example 2:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alert/setVolume &#39;{&quot;volume&quot;:75, &quot;scenario&quot;:&quot;alert&quot;}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;failed to set parameter (invalid scenario name?)&quot;<br />
-      }
-    </p>
-    <p>Example 3:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alert/setVolume &#39;{&quot;volume&quot;:75, &quot;scenario&quot;:&quot;alert_scenario&quot;}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;failed to set parameter (invalid scenario name?)&quot;<br />
-      }
-    </p>
-    <p>Example 4:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alert/setVolume &#39;{&quot;volume&quot;:75, &quot;scenario&quot;:&quot;alert_default&quot;}&#39;<br />
-      {<br />
+    <p>&nbsp;</p>
+    <p>Example 2:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/alert/setVolume &#39;{&quot;volume&quot;:75, &quot;scenario&quot;:&quot;alert_default&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
-    <p>Example 5:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alert/setVolume &#39;{&quot;volume&quot;:75, &quot;scenarioT&quot;:&quot;alert_default&quot;}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
       }
     </p>
   </div>
@@ -7339,7 +7243,7 @@ toc: true
 <h3>alert/getVolume</h3>
 <div>
   <h4>Description</h4>
-  <p>Get the volume level of the current or specified audio scenario</p>
+  <p>Gets the volume level of the current or specified audio scenario.&nbsp;</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -7420,45 +7324,33 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example 1:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alert/getVolume &#39;{}&#39;<br />
-      {<br />
+    <p>Example 1:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/alert/getVolume &#39;{}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;alert_default&quot;,<br />
       &nbsp; &nbsp; &quot;volume&quot;: 80,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
       }
     </p>
-    <p>Example 2:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alert/getVolume &#39;{&quot;scenario&quot;:&quot;alert_default&quot;}&#39;<br />
-      {<br />
+    <p>&nbsp;</p>
+    <p>Example 2:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/alert/getVolume &#39;{&quot;scenario&quot;:&quot;alert_default&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;alert_default&quot;,<br />
       &nbsp; &nbsp; &quot;volume&quot;: 80,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
       }
-    </p>
-    <p>Example 3:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alert/getVolume &#39;{&quot;scenario&quot;:&quot;alert_defaults&quot;}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;failed to get parameter (invalid scenario name?)&quot;<br />
-      }
-    </p>
-    <p>Example 4:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alert/getVolume &#39;{&quot;scenarioT&quot;:&quot;alert_defaults&quot;}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
-      }<br />
-      &nbsp;
     </p>
   </div>
 </div>
 <h3>alert/setMuted</h3>
 <div>
   <h4>Description</h4>
-  <p>Mute or unmute the alert volume</p>
+  <p>Mutes or unmutes the alert volume.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -7522,32 +7414,32 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example 1:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alert/setMuted &#39;{&quot;muted&quot;:true}&#39;<br />
-      {<br />
+    <p>Example 1:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/alert/setMuted &#39;{&quot;muted&quot;:true}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
       }
     </p>
-    <p>Example 2:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alert/setMuted &#39;{&quot;muted&quot;:false}&#39;<br />
-      {<br />
+    <p>&nbsp;</p>
+    <p>Example 2:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/alert/setMuted &#39;{&quot;muted&quot;:false}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
       }
     </p>
-    <p>Example 3:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alert/setMuted &#39;{&quot;mutedd&quot;:false}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
-      }
-    </p>
-    <p>Example 4:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alert/setMuted &#39;{}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 2,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Missing &#39;muted&#39; boolean parameter.&quot;<br />
+    <p>&nbsp;</p>
+    <p>Example 3:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/alert/setMuted &#39;{}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:2,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;Missing&nbsp;&#39;muted&#39;&nbsp;boolean&nbsp;parameter.&quot;<br />
       }
     </p>
   </div>
@@ -7555,7 +7447,7 @@ toc: true
 <h3>alert/status</h3>
 <div>
   <h4>Description</h4>
-  <p>Get the current status of alert module</p>
+  <p>Gets the current status of alert module.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -7579,11 +7471,12 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates whether to subscribe for related events.</p>
+            <p>Subscribe to get notified&nbsp;when the status&nbsp;changes. Possible values are:</p>
             <ul>
-              <li>true: Subscribe</li>
-              <li>false: Do not subscribe</li>
+              <li><strong>true&nbsp;</strong>-&nbsp;Subscribe for changes.</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed.</li>
             </ul>
+            <p><strong>Default value:</strong>&nbsp;false</p>
           </td>
         </tr>
       </tbody>
@@ -7632,7 +7525,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>The currently selected scenario.</p>
+            <p>Scenario that is currently selected.&nbsp;</p>
           </td>
         </tr>
         <tr>
@@ -7640,9 +7533,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates if the current module is muted. Possible values are:</p>
             <ul>
-              <li>If current module is muted,&nbsp;<strong>muted&nbsp;</strong>will contain&nbsp;<strong>true</strong>.</li>
-              <li>If current module is not muted,&nbsp;<strong>muted&nbsp;</strong>will contain&nbsp;<strong>false</strong>.&nbsp;</li>
+              <li><strong>true&nbsp;</strong>- Muted</li>
+              <li><strong>false&nbsp;</strong>- Not muted</li>
             </ul>
           </td>
         </tr>
@@ -7663,21 +7557,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <table>
-              <tbody>
-                <tr>
-                  <td>
-                    <p>Indicates hac status. Possible values are:</p>
-                    <ul>
-                      <li><strong>true:</strong>&nbsp;hac is enabled</li>
-                      <li><strong>false:</strong>&nbsp;hac is disabled</li>
-                    </ul>
-                  </td>
-                </tr>
-                <tr>
-                </tr>
-              </tbody>
-            </table>
+            <p>Indicates hac status. Possible values are:</p>
+            <ul>
+              <li><strong>true:</strong>&nbsp;hac is enabled</li>
+              <li><strong>false:</strong>&nbsp;hac is disabled</li>
+            </ul>
           </td>
         </tr>
         <tr>
@@ -7685,7 +7569,7 @@ toc: true
           <td>Required</td>
           <td>Number</td>
           <td>
-            <p>Current volume [0, 100].</p>
+            <p>Current volume set. Valid range: 0 - 100</p>
           </td>
         </tr>
         <tr>
@@ -7707,7 +7591,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Ringer switch state. True for on (should ring).</p>
+            <p>Indicates the state of the ringer switch. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Ringer is ON&nbsp;</li>
+              <li><strong>false</strong>&nbsp;- Ringer is OFF</li>
+            </ul>
           </td>
         </tr>
         <tr>
@@ -7715,10 +7603,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates state of the slider.</p>
+            <p>Indicates the state of the slider. Possible values are:&nbsp;</p>
             <ul>
-              <li><strong>true:</strong>&nbsp;slider is open</li>
-              <li><strong>false:</strong>&nbsp;slider is closed</li>
+              <li><strong>true:</strong>&nbsp;Slider is open</li>
+              <li><strong>false:</strong>&nbsp;Slider is closed</li>
             </ul>
           </td>
         </tr>
@@ -7727,11 +7615,27 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates if current module is actively used. Possible values are:</p>
+            <p>Indicates if the current module is actively used. Possible values are:</p>
             <ul>
-              <li><strong>true:</strong>&nbsp;Actively used.</li>
-              <li><strong>false:&nbsp;</strong>Not actively used.</li>
+              <li><strong>true:</strong>&nbsp;Actively used</li>
+              <li><strong>false:&nbsp;</strong>Not actively used</li>
             </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
           </td>
         </tr>
       </tbody>
@@ -7739,9 +7643,11 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example 1:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alert/status &#39;{}&#39;<br />
-      {<br />
+    <p>Example 1:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/alert/status &#39;{}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;alert_default&quot;,<br />
@@ -7755,9 +7661,12 @@ toc: true
       &nbsp; &nbsp; &quot;active&quot;: false<br />
       }
     </p>
-    <p>Example 2:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alert/status &#39;{&quot;subscribe&quot; : true}&#39;<br />
-      {<br />
+    <p>&nbsp;</p>
+    <p>Example 2:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/alert/status &#39;{&quot;subscribe&quot; : true}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;alert_default&quot;,<br />
@@ -7771,28 +7680,13 @@ toc: true
       &nbsp; &nbsp; &quot;active&quot;: false<br />
       }
     </p>
-    <p>Example 3:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alert/status &#39;{&quot;subscribe&quot; : false}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
-      &nbsp; &nbsp; &quot;scenario&quot;: &quot;alert_default&quot;,<br />
-      &nbsp; &nbsp; &quot;muted&quot;: false,<br />
-      &nbsp; &nbsp; &quot;subscribed&quot;: false,<br />
-      &nbsp; &nbsp; &quot;hac&quot;: false,<br />
-      &nbsp; &nbsp; &quot;volume&quot;: 75,<br />
-      &nbsp; &nbsp; &quot;action&quot;: &quot;requested&quot;,<br />
-      &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
-      &nbsp; &nbsp; &quot;slider&quot;: false,<br />
-      &nbsp; &nbsp; &quot;active&quot;: false<br />
-      }
-    </p>
   </div>
 </div>
 <h3>alert/offsetVolume</h3>
 <div>
   <h4>Description</h4>
-  <p>Increase&nbsp;or decrease&nbsp;the volume of the current or specified scenario, in steps or percent.&nbsp;To increase the volume, pass a positive value. To decrease&nbsp;the value, pass a negative value.</p>
+  <p>Increases or decreases the volume of the current or specified scenario, in steps or percent.&nbsp;</p>
+  <p>To increase the volume, pass a positive value. To decrease&nbsp;the value, pass a negative value.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -7924,7 +7818,7 @@ toc: true
 <h3>alarm/setVolume</h3>
 <div>
   <h4>Description</h4>
-  <p>Set the volume level of the current or specified scenario.</p>
+  <p>Sets the volume level of the current or specified scenario.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -7985,7 +7879,27 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Details of the method success/failure</p>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.&nbsp;Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
           </td>
         </tr>
       </tbody>
@@ -7993,45 +7907,62 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example 1:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alarm/setVolume &#39;{&quot;volume&quot;:50}&#39;<br />
-      {<br />
+    <p>Example 1:&nbsp;</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/alarm/setVolume &#39;{&quot;volume&quot;:50}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Example 2:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/alarm/setVolume &#39;{&quot;volume&quot;:10, &quot;scenario&quot;:&quot;alarm_default&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
       }
     </p>
-    <p>Example 2:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alarm/setVolume &#39;{&quot;volume&quot;:10, &quot;scenario&quot;:&quot;alarm_default&quot;}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
-    <p>Example 3:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alarm/setVolume &#39;{}&#39;<br />
-      {<br />
+    <p>&nbsp;</p>
+    <p>Example 3:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/alarm/setVolume &#39;{}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 2,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
       &nbsp; &nbsp; &quot;errorText&quot;: &quot;Missing &#39;volume&#39; integer parameter.&quot;<br />
       }
     </p>
-    <p>Example 4:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alarm/setVolume &#39;{&quot;volume&quot;:10, &quot;scenarioa&quot;:&quot;alarm_default&quot;}&#39;<br />
-      {<br />
+    <p>&nbsp;</p>
+    <p>Example 4:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/alarm/setVolume &#39;{&quot;volume&quot;:10, &quot;scenarioa&quot;:&quot;alarm_default&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
       &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
       }
     </p>
+    <p>&nbsp;</p>
     <p>Example 5:</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/alarm/setVolume &#39;{&quot;volume&quot;:500}&#39;<br />
-      {<br />
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/alarm/setVolume &#39;{&quot;volume&quot;:500}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
       &nbsp; &nbsp; &quot;errorText&quot;: &quot;Invalid &#39;volume&#39; integer parameter value or file not found.&quot;<br />
       }
     </p>
+    <p>&nbsp;</p>
     <p>Example 6:</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/alarm/setVolume &#39;{&quot;volume&quot;:-500}&#39;<br />
-      {<br />
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/alarm/setVolume &#39;{&quot;volume&quot;:-500}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
       &nbsp; &nbsp; &quot;errorText&quot;: &quot;Invalid &#39;volume&#39; integer parameter value or file not found.&quot;<br />
@@ -8042,7 +7973,7 @@ toc: true
 <h3>alarm/status</h3>
 <div>
   <h4>Description</h4>
-  <p>Get the current status of alarm module</p>
+  <p>Gets&nbsp;the current status of the alarm module.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -8066,11 +7997,12 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates whether to subscribe for related events.</p>
+            <p>Subscribe to get notified&nbsp;when the status&nbsp;changes. Possible values are:</p>
             <ul>
-              <li>true: Subscribe</li>
-              <li>false: Do not subscribe</li>
+              <li><strong>true&nbsp;</strong>-&nbsp;Subscribe for changes.</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed.</li>
             </ul>
+            <p><strong>Default value:</strong>&nbsp;false</p>
           </td>
         </tr>
       </tbody>
@@ -8111,7 +8043,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Vibrates along with Ringtone.</p>
+            <p>Indicates if the device vibrates along with the ringtone. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Vibration enabled</li>
+              <li><strong>false</strong>&nbsp;- Vibration disabled</li>
+            </ul>
           </td>
         </tr>
         <tr>
@@ -8119,7 +8055,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>The currently selected scenario.</p>
+            <p>Scenario that is currently selected.&nbsp;</p>
           </td>
         </tr>
         <tr>
@@ -8127,9 +8063,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates if the current module is muted. Possible values are:</p>
             <ul>
-              <li>If current module is muted,&nbsp;<strong>muted&nbsp;</strong>will contain&nbsp;<strong>true</strong>.</li>
-              <li>If current module is not muted,&nbsp;<strong>muted&nbsp;</strong>will contain&nbsp;<strong>false</strong>.&nbsp;</li>
+              <li><strong>true </strong>- Muted</li>
+              <li><strong>false </strong>- Not muted</li>
             </ul>
           </td>
         </tr>
@@ -8138,7 +8075,7 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates if&nbsp;subscribed to get notified&nbsp;when a connection is closed.</p>
+            <p>Indicates if&nbsp;subscribed to get notified&nbsp;when&nbsp;status changes.</p>
             <ul>
               <li><strong>true&nbsp;</strong>- Subscribed for changes</li>
               <li><strong>false&nbsp;</strong>- Not subscribed</li>
@@ -8150,10 +8087,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates hac status. Possible values are:</p>
+            <p>Indicates HAC status. Possible values are:</p>
             <ul>
-              <li><strong>true:</strong>&nbsp;hac is enabled</li>
-              <li><strong>false:</strong>&nbsp;hac is disabled</li>
+              <li><strong>true:</strong>&nbsp;HAC&nbsp;enabled</li>
+              <li><strong>false:</strong>&nbsp;HAC&nbsp;disabled</li>
             </ul>
           </td>
         </tr>
@@ -8162,7 +8099,7 @@ toc: true
           <td>Required</td>
           <td>Number</td>
           <td>
-            <p>Current volume [0, 100].</p>
+            <p>Current volume set. Valid range: 0 - 100</p>
           </td>
         </tr>
         <tr>
@@ -8170,7 +8107,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Update information.&nbsp;The value will be one of the following:</p>
+            <p>Indicates the type of action. Possible values are:</p>
             <ul>
               <li>changed</li>
               <li>enabled</li>
@@ -8184,7 +8121,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Ringer switch state. True for on (should ring).</p>
+            <p>Indicates the state of the ringer switch. Possible values are:</p>
+            <ul>
+              <li><strong>true </strong>- Ringer is ON&nbsp;</li>
+              <li><strong>false</strong> - Ringer is OFF</li>
+            </ul>
           </td>
         </tr>
         <tr>
@@ -8192,10 +8133,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates state of the slider.</p>
+            <p>Indicates the state of the slider. Possible values are:&nbsp;</p>
             <ul>
-              <li><strong>true:</strong>&nbsp;slider is open</li>
-              <li><strong>false:</strong>&nbsp;slider is closed</li>
+              <li><strong>true:</strong>&nbsp;Slider is open</li>
+              <li><strong>false:</strong>&nbsp;Slider is closed</li>
             </ul>
           </td>
         </tr>
@@ -8204,11 +8145,27 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates if current module is actively used. Possible values are:</p>
+            <p>Indicates if the current module is actively used. Possible values are:</p>
             <ul>
-              <li><strong>true:</strong>&nbsp;Actively used.</li>
-              <li><strong>false:&nbsp;</strong>Not actively used.</li>
+              <li><strong>true:</strong>&nbsp;Actively used</li>
+              <li><strong>false:&nbsp;</strong>Not actively used</li>
             </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
           </td>
         </tr>
       </tbody>
@@ -8216,8 +8173,11 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/alarm/status &#39;{&quot;subscribe&quot; : true}&#39;<br />
-      {<br />
+    <p>Example 1: When subscribe is set to true</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/alarm/status &#39;{&quot;subscribe&quot; : true}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;alarm_default&quot;,<br />
@@ -8231,8 +8191,12 @@ toc: true
       &nbsp; &nbsp; &quot;active&quot;: false<br />
       }
     </p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/alarm/status &#39;{&quot;subscribe&quot; : false}&#39;<br />
-      {<br />
+    <p>&nbsp;</p>
+    <p>Example 2:&nbsp;When subscribe is set to false</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/alarm/status &#39;{&quot;subscribe&quot; : false}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;alarm_default&quot;,<br />
@@ -8246,19 +8210,23 @@ toc: true
       &nbsp; &nbsp; &quot;active&quot;: false<br />
       }
     </p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/alarm/status &#39;{}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
-      &nbsp; &nbsp; &quot;scenario&quot;: &quot;alarm_default&quot;,<br />
-      &nbsp; &nbsp; &quot;muted&quot;: false,<br />
-      &nbsp; &nbsp; &quot;subscribed&quot;: false,<br />
-      &nbsp; &nbsp; &quot;hac&quot;: false,<br />
-      &nbsp; &nbsp; &quot;volume&quot;: 50,<br />
-      &nbsp; &nbsp; &quot;action&quot;: &quot;requested&quot;,<br />
-      &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
-      &nbsp; &nbsp; &quot;slider&quot;: false,<br />
-      &nbsp; &nbsp; &quot;active&quot;: false<br />
+    <p>&nbsp;</p>
+    <p>Example 3: Using the default value</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/alarm/status &#39;{}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;ringtonewithvibration&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;scenario&quot;:&quot;alarm_default&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;muted&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;subscribed&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;hac&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;volume&quot;:50,<br />
+      &nbsp;&nbsp;&nbsp;&quot;action&quot;:&quot;requested&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;ringer&nbsp;switch&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;slider&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;active&quot;:false<br />
       }
     </p>
   </div>
@@ -8266,7 +8234,8 @@ toc: true
 <h3>alarm/offsetVolume</h3>
 <div>
   <h4>Description</h4>
-  <p>Increase&nbsp;or decrease&nbsp;the volume of the current or specified scenario, in steps or percent.&nbsp;To increase the volume, pass a positive value. To decrease&nbsp;the value, pass a negative value.</p>
+  <p>Increases or decreases the volume of the current or specified scenario, in steps or percentage.&nbsp;</p>
+  <p>To increase the volume, pass a positive value. To decrease&nbsp;the value, pass a negative value.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -8294,28 +8263,28 @@ toc: true
           </td>
         </tr>
         <tr>
-          <td>offset</td>
-          <td>Required</td>
-          <td>Number</td>
-          <td>
-            <p>Offset value to be set to increase or decrease the volume.</p>
-            <ul>
-              <li>If&nbsp;<strong>unit</strong>&nbsp;is&nbsp;<strong>percent</strong>, set&nbsp;<strong>offset</strong>&nbsp;in the range [-100, 100].</li>
-              <li>If&nbsp;<strong>unit&nbsp;</strong>is&nbsp;<strong>step&nbsp;</strong>or not&nbsp;specified, set&nbsp;<strong>offset</strong>&nbsp;in the range&nbsp;[-20, 20].&nbsp;</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
           <td>unit</td>
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>This is used to interpret the offset argument. The value will be one of the followings:</p>
+            <p>Used to interpret the offset argument. Possible values are:</p>
             <ul>
               <li>step</li>
               <li>percent</li>
             </ul>
-            <p>The default value of&nbsp;<strong>unit&nbsp;</strong>is&nbsp;<strong>step</strong>.</p>
+            <p><strong>Default value</strong>: step</p>
+          </td>
+        </tr>
+        <tr>
+          <td>offset</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Offset value to&nbsp;increase or decrease the volume.</p>
+            <ul>
+              <li>If&nbsp;<strong>unit</strong>&nbsp;is&nbsp;<strong>percent</strong>, set&nbsp;<strong>offset</strong>&nbsp;in the range [-100, 100].</li>
+              <li>If&nbsp;<strong>unit&nbsp;</strong>is&nbsp;<strong>step&nbsp;</strong>or not&nbsp;specified, set&nbsp;<strong>offset</strong>&nbsp;in the range&nbsp;[-20, 20].&nbsp;</li>
+            </ul>
           </td>
         </tr>
       </tbody>
@@ -8344,7 +8313,27 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Details of the method success/failure</p>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
           </td>
         </tr>
       </tbody>
@@ -8352,75 +8341,49 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example 1:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alarm/offsetVolume &#39;{&quot;scenario&quot;:&quot;alarm_default&quot;,&quot;offset&quot;:10,&quot;unit&quot;:&quot;step&quot;}&#39;<br />
-      {<br />
+    <p>Example 1:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/alarm/offsetVolume &#39;{&quot;scenario&quot;:&quot;alarm_default&quot;,&quot;offset&quot;:10,&quot;unit&quot;:&quot;step&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
       }
     </p>
-    <p>Example 2:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alarm/offsetVolume &#39;{&quot;scenario&quot;:&quot;alarm_default&quot;,&quot;offset&quot;:15}&#39;<br />
-      {<br />
+    <p>&nbsp;</p>
+    <p>Example 2:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/alarm/offsetVolume &#39;{&quot;scenario&quot;:&quot;alarm_default&quot;,&quot;offset&quot;:-5}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
       }
     </p>
-    <p>Example 3:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alarm/offsetVolume &#39;{&quot;scenario&quot;:&quot;alarm_default&quot;,&quot;offset&quot;:-5}&#39;<br />
-      {<br />
+    <p>&nbsp;</p>
+    <p>Example 3:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/alarm/offsetVolume &#39;{&quot;scenario&quot;:&quot;alarm_default&quot;,&quot;offset&quot;:10,&quot;unit&quot;:&quot;percent&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
       }
     </p>
-    <p>Example 4:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alarm/offsetVolume &#39;{&quot;scenario&quot;:&quot;alarm_default&quot;,&quot;offset&quot;:-50}&#39;<br />
-      {<br />
+    <p>&nbsp;</p>
+    <p>Example 4:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/alarm/offsetVolume &#39;{&quot;scenario&quot;:&quot;alarm_default&quot;,&quot;offset&quot;:-50}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
       &nbsp; &nbsp; &quot;errorText&quot;: &quot;Invalid &#39;offset&#39; integer parameter value or file not found.&quot;<br />
       }
-    </p>
-    <p>Example 5:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alarm/offsetVolume &#39;{&quot;scenario&quot;:&quot;alarm_default&quot;,&quot;offset&quot;:50}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Invalid &#39;offset&#39; integer parameter value or file not found.&quot;<br />
-      }
-    </p>
-    <p>Example 6:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alarm/offsetVolume &#39;{&quot;scenario&quot;:&quot;alarm_default&quot;,&quot;offset&quot;:10,&quot;unit&quot;:&quot;percent&quot;}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
-    <p>Example 7:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alarm/offsetVolume &#39;{&quot;scenario&quot;:&quot;alarm_default&quot;,&quot;offset&quot;:-100,&quot;unit&quot;:&quot;percent&quot;}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
-    <p>Example 8:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alarm/offsetVolume &#39;{&quot;scenario&quot;:&quot;alarm_default&quot;,&quot;offset&quot;:-105,&quot;unit&quot;:&quot;percent&quot;}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Invalid &#39;offset&#39; integer parameter value or file not found.&quot;<br />
-      }
-    </p>
-    <p>Example 9:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alarm/offsetVolume &#39;{&quot;scenario&quot;:&quot;alarm_default&quot;,&quot;offset&quot;:105,&quot;unit&quot;:&quot;percent&quot;}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Invalid &#39;offset&#39; integer parameter value or file not found.&quot;<br />
-      }<br />
-      &nbsp;
     </p>
   </div>
 </div>
 <h3>alarm/getVolume</h3>
 <div>
   <h4>Description</h4>
-  <p>Get the volume level of the current or specified audio scenario</p>
+  <p>Gets the volume level of the current or specified audio scenario.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -8473,7 +8436,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Array containg scenarios whose volume has been changed.</p>
+            <p>Scenario whose volume has been changed.</p>
           </td>
         </tr>
         <tr>
@@ -8496,13 +8459,31 @@ toc: true
             </ul>
           </td>
         </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example 1:&nbsp;</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/alarm/getVolume &#39;{}&#39;</p>
+    <p>Example 1: When the scenario is not specified</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/alarm/getVolume &#39;{}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;alarm_default&quot;,<br />
       &nbsp; &nbsp; &quot;volume&quot;: 10,<br />
@@ -8510,30 +8491,25 @@ toc: true
       }
     </p>
     <p>&nbsp;</p>
-    <p>Example 2:</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/alarm/getVolume &#39;{&quot;scenario&quot;:&quot;alarm&quot;}&#39;</p>
+    <p>Example 2: When a scenario is specified</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/alarm/getVolume &#39;{&quot;scenario&quot;:&quot;alarm_default&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;scenario&quot;: &quot;alarm_default&quot;,<br />
+      &nbsp; &nbsp; &quot;volume&quot;: 10,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Example 3:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/alarm/getVolume &#39;{&quot;scenario&quot;:&quot;alarm&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
       &nbsp; &nbsp; &quot;errorText&quot;: &quot;failed to get parameter (invalid scenario name?)&quot;<br />
-      }
-    </p>
-    <p>&nbsp;</p>
-    <p>Example 3:&nbsp;</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/alarm/getVolume &#39;{&quot;scenario&quot;:&quot;alarm_default&quot;}&#39;</p>
-    <p>{<br />
-      &nbsp; &nbsp; &quot;scenario&quot;: &quot;alarm_default&quot;,<br />
-      &nbsp; &nbsp; &quot;volume&quot;: 10,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
-    <p>&nbsp;</p>
-    <p>Example 4:&nbsp;</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/alarm/getVolume &#39;{&quot;scenarioT&quot;:&quot;alarm_default&quot;}&#39;</p>
-    <p>{<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
       }
     </p>
   </div>
@@ -8541,7 +8517,7 @@ toc: true
 <h3>alarm/setMuted</h3>
 <div>
   <h4>Description</h4>
-  <p>Mute or unmute the alarm volume</p>
+  <p>Mute or unmute the alarm volume.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -8597,7 +8573,27 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Details of the method success/failure.</p>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
           </td>
         </tr>
       </tbody>
@@ -8605,29 +8601,29 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example 1:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alarm/setMuted &#39;{&quot;muted&quot;:true}&#39;<br />
-      {<br />
+    <p>Example 1:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/alarm/setMuted &#39;{&quot;muted&quot;:true}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
       }
     </p>
-    <p>Example 2:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alarm/setMuted &#39;{&quot;muted&quot;:false}&#39;<br />
-      {<br />
+    <p>&nbsp;</p>
+    <p>Example 2:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/alarm/setMuted &#39;{&quot;muted&quot;:false}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
       }
     </p>
-    <p>Example 3:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alarm/setMuted &#39;{&quot;mutedd&quot;:false}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
-      }
-    </p>
-    <p>Example 4:<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/alarm/setMuted &#39;{}&#39;<br />
-      {<br />
+    <p>&nbsp;</p>
+    <p>Example 3:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/alarm/setMuted &#39;{}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 2,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
       &nbsp; &nbsp; &quot;errorText&quot;: &quot;Missing &#39;muted&#39; boolean parameter.&quot;<br />
@@ -8638,7 +8634,7 @@ toc: true
 <h3>alarm/getAlarmOn</h3>
 <div>
   <h4>Description</h4>
-  <p>Returns the value set by the&nbsp;<strong>alarm</strong></p>
+  <p>Returns the value set by the alarm.</p>
   <h4>Parameters</h4>
   <p>None</p>
   <h4>Call Returns</h4>
@@ -8664,8 +8660,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>true: Indicates alarm sound will be heard in silent or vibrate case</p>
-            <p>false: Indicates alarm sound will be not heard in silent case or vibrate case</p>
+            <p>Indicates whether alarm sound is ON or OFF in silent or vibration&nbsp;modes. Possible values are:</p>
+            <ul>
+              <li><strong>true</strong> - Alarm sound is ON</li>
+              <li><strong>false</strong> - Alarm sound is OFF</li>
+            </ul>
           </td>
         </tr>
         <tr>
@@ -8673,9 +8672,27 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates whether the execution succeeded.</p>
-            <p>- true: Success</p>
-            <p>- false: Failure</p>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
           </td>
         </tr>
       </tbody>
@@ -8683,8 +8700,10 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/alarm/getAlarmOn &#39;{}&#39;</p>
-    <p>Result:</p>
+    <p>Example:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/alarm/getAlarmOn &#39;{}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;AlarmOn&quot;: true,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
@@ -8695,7 +8714,7 @@ toc: true
 <h3>voiceCommand/status</h3>
 <div>
   <h4>Description</h4>
-  <p>Get a current scenario of voiceCommand state</p>
+  <p>Get a current scenario of voiceCommand state.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -8719,11 +8738,12 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates whether to subscribe for related events.</p>
+            <p>Subscribe to get notified&nbsp;when the&nbsp;status changes. Possible values are:</p>
             <ul>
-              <li>true: Subscribe</li>
-              <li>false: Do not subscribe</li>
+              <li><strong>true&nbsp;</strong>-&nbsp;Subscribe for changes.</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed.</li>
             </ul>
+            <p><strong>Default value</strong>: false</p>
           </td>
         </tr>
       </tbody>
@@ -8752,7 +8772,8 @@ toc: true
           <td>Required</td>
           <td>Number</td>
           <td>
-            <p>Mic gain [0 -100] of current or specified scenario.</p>
+            <p>Mic gain of current or specified scenario.</p>
+            <p>Valid range:&nbsp;0 -100.&nbsp;</p>
           </td>
         </tr>
         <tr>
@@ -8772,7 +8793,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Vibrates along with Ringtone.</p>
+            <p>Indicates if the device vibrates along with the ringtone. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Vibration enabled</li>
+              <li><strong>false</strong>&nbsp;- Vibration disabled</li>
+            </ul>
           </td>
         </tr>
         <tr>
@@ -8780,7 +8805,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>The currently selected scenario.</p>
+            <p>Scenario that is currently selected.</p>
           </td>
         </tr>
         <tr>
@@ -8788,9 +8813,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates if the current module is muted. Possible values are:</p>
             <ul>
-              <li>If current module is muted,&nbsp;<strong>muted&nbsp;</strong>will contain&nbsp;<strong>true</strong>.</li>
-              <li>If current module is not muted,&nbsp;<strong>muted&nbsp;</strong>will contain&nbsp;<strong>false</strong>.&nbsp;</li>
+              <li><strong>true </strong>- Muted&nbsp;</li>
+              <li><strong>false </strong>- Not muted</li>
             </ul>
           </td>
         </tr>
@@ -8799,10 +8825,10 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Indicates hac status. Possible values are:</p>
+            <p>Indicates HAC status. Possible values are:</p>
             <ul>
-              <li><strong>true:</strong>&nbsp;hac is enabled</li>
-              <li><strong>false:</strong>&nbsp;hac is disabled</li>
+              <li><strong>true:</strong>&nbsp;HAC&nbsp;enabled</li>
+              <li><strong>false:</strong>&nbsp;HAC&nbsp;disabled</li>
             </ul>
           </td>
         </tr>
@@ -8811,7 +8837,7 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates if&nbsp;subscribed to get notified&nbsp;when a connection is closed.</p>
+            <p>Indicates if&nbsp;subscribed to get notified&nbsp;when&nbsp;status changes.</p>
             <ul>
               <li><strong>true&nbsp;</strong>- Subscribed for changes</li>
               <li><strong>false&nbsp;</strong>- Not subscribed</li>
@@ -8831,7 +8857,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Update information.&nbsp;The value will be one of the following:</p>
+            <p>Indicates the type of action. Possible values are:</p>
             <ul>
               <li>changed</li>
               <li>enabled</li>
@@ -8845,7 +8871,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Ringer switch state. True for on (should ring).</p>
+            <p>Indicates the state of the ringer switch. Possible values are:&nbsp;</p>
+            <ul>
+              <li><strong>true </strong>- Ringer is ON</li>
+              <li><strong>false </strong>- Ringer is OFF</li>
+            </ul>
           </td>
         </tr>
         <tr>
@@ -8853,10 +8883,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates state of the slider.</p>
+            <p>Indicates the state of the slider. Possible values are:</p>
             <ul>
-              <li><strong>true:</strong>&nbsp;slider is open</li>
-              <li><strong>false:</strong>&nbsp;slider is closed</li>
+              <li><strong>true:</strong>&nbsp;Slider is open</li>
+              <li><strong>false:</strong>&nbsp;Slider is closed</li>
             </ul>
           </td>
         </tr>
@@ -8865,10 +8895,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates if current module is actively used. Possible values are:</p>
+            <p>Indicates if the current module is actively used. Possible values are:</p>
             <ul>
-              <li><strong>true:</strong>&nbsp;Actively used.</li>
-              <li><strong>false:&nbsp;</strong>Not actively used.</li>
+              <li><strong>true:</strong>&nbsp;Actively used</li>
+              <li><strong>false:&nbsp;</strong>Not actively used</li>
             </ul>
           </td>
         </tr>
@@ -8878,7 +8908,9 @@ toc: true
   <h4>Example</h4>
   <div class="code-bg-grey">
     <p>Example 1:</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/status &#39;{&quot;subscribe&quot; : true}&#39;</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/status &#39;{&quot;subscribe&quot; : true}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;mic_gain&quot;: 50,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
@@ -8894,29 +8926,11 @@ toc: true
       &nbsp; &nbsp; &quot;active&quot;: false<br />
       }
     </p>
-    <p><br />
-      Example 2:
-    </p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/status &#39;{&quot;subscribe&quot; : false}&#39;</p>
-    <p>{<br />
-      &nbsp; &nbsp; &quot;mic_gain&quot;: 50,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
-      &nbsp; &nbsp; &quot;scenario&quot;: &quot;voice_command_back_speaker&quot;,<br />
-      &nbsp; &nbsp; &quot;muted&quot;: false,<br />
-      &nbsp; &nbsp; &quot;hac&quot;: false,<br />
-      &nbsp; &nbsp; &quot;subscribed&quot;: false,<br />
-      &nbsp; &nbsp; &quot;volume&quot;: 90,<br />
-      &nbsp; &nbsp; &quot;action&quot;: &quot;requested&quot;,<br />
-      &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
-      &nbsp; &nbsp; &quot;slider&quot;: false,<br />
-      &nbsp; &nbsp; &quot;active&quot;: false<br />
-      }
-    </p>
-    <p><br />
-      Example 3:
-    </p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/status &#39;{}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Example 2:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/status &#39;{&quot;subscribe&quot; : false}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;mic_gain&quot;: 50,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
@@ -8933,12 +8947,23 @@ toc: true
       }
     </p>
     <p>&nbsp;</p>
-    <p>Example 4:</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/status &#39;{&quot;subscribe&quot; : true, &quot;scenario&quot;:&quot;voice_command_back_speaker&quot;}&#39;</p>
+    <p>Example 3:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/status &#39;{}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
     <p>{<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
+      &nbsp; &nbsp; &quot;mic_gain&quot;: 50,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
+      &nbsp; &nbsp; &quot;scenario&quot;: &quot;voice_command_back_speaker&quot;,<br />
+      &nbsp; &nbsp; &quot;muted&quot;: false,<br />
+      &nbsp; &nbsp; &quot;hac&quot;: false,<br />
+      &nbsp; &nbsp; &quot;subscribed&quot;: false,<br />
+      &nbsp; &nbsp; &quot;volume&quot;: 90,<br />
+      &nbsp; &nbsp; &quot;action&quot;: &quot;requested&quot;,<br />
+      &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
+      &nbsp; &nbsp; &quot;slider&quot;: false,<br />
+      &nbsp; &nbsp; &quot;active&quot;: false<br />
       }
     </p>
   </div>
@@ -8970,7 +8995,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Scenario for which to get the volume</p>
+            <p>Scenario for which the volume is to be obtained.</p>
           </td>
         </tr>
       </tbody>
@@ -8999,9 +9024,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates the status of operation. Possible values are:</p>
             <ul>
-              <li>If the&nbsp;method succeeds,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>true</strong>.</li>
-              <li>If the&nbsp;method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false</strong>.&nbsp;</li>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
@@ -9010,7 +9036,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>scenario&nbsp;whose volume has been changed.</p>
+            <p>Scenario&nbsp;whose volume has been changed.</p>
           </td>
         </tr>
         <tr>
@@ -9021,43 +9047,47 @@ toc: true
             <p>Current&nbsp;volume ranges between [0, 100].</p>
           </td>
         </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
     <p>Example 1:</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/getVolume &#39;{}&#39;</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/getVolume &#39;{}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;voice_command_back_speaker&quot;,<br />
       &nbsp; &nbsp; &quot;volume&quot;: 90,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }<br />
-      Example 2:
+      }
     </p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/getVolume &#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;}&#39;<br />
-      {<br />
+    <p>&nbsp;</p>
+    <p>Example 2:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/getVolume &#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;voice_command_back_speaker&quot;,<br />
       &nbsp; &nbsp; &quot;volume&quot;: 90,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }<br />
-      Example 3:
-    </p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/getVolume &#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;,&quot;subscribe&quot;:true}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
-      }<br />
-      Example 4:
-    </p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/getVolume &#39;{&quot;subscribe&quot;:true}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
-      }<br />
-      &nbsp;
+      }
     </p>
   </div>
 </div>
@@ -9088,11 +9118,12 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates whether to list or hide scenarios that are enabled for voice commands. Possible values are:</p>
             <ul>
-              <li>To list enabled scenarios, set&nbsp;<strong>enabled</strong>&nbsp;to&nbsp;<strong>true</strong>.</li>
-              <li>To hide enabled scenarios, set&nbsp;<strong>enabled</strong>&nbsp;to&nbsp;<strong>false</strong>.</li>
-              <li>The default value of&nbsp;<strong>enabled</strong>&nbsp;is&nbsp;<strong>true</strong>.</li>
+              <li><strong>true </strong>- Lists enabled scenarios</li>
+              <li><strong>false</strong> - Hides enabled scenarios</li>
             </ul>
+            <p><strong>Default value</strong>: true</p>
           </td>
         </tr>
         <tr>
@@ -9100,11 +9131,12 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates whether to list or hide scenarios that are disabled for voice commands. Possible values are:</p>
             <ul>
-              <li>To list disabled scenarios, set&nbsp;<strong>disabled</strong>&nbsp;to&nbsp;<strong>true</strong>.</li>
-              <li>To hide disabled scenarios, set&nbsp;<strong>disabled</strong>&nbsp;to&nbsp;<strong>false</strong>.</li>
-              <li>The default value of&nbsp;<strong>disabled</strong>&nbsp;is&nbsp;<strong>false</strong>.</li>
+              <li><strong>true&nbsp;</strong>- Lists disabled scenarios</li>
+              <li><strong>false</strong>&nbsp;- Hides disabled scenarios</li>
             </ul>
+            <p><strong>Default value</strong>: false</p>
           </td>
         </tr>
       </tbody>
@@ -9133,10 +9165,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <p>Indicates the status of operation. Possible values are:</p>
             <ul>
               <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
@@ -9148,63 +9180,51 @@ toc: true
             <p>An array of scenarios.</p>
           </td>
         </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
     <p>Example 1:</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/listScenarios &#39;{}&#39;<br />
-      {<br />
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/listScenarios &#39;{}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp; &quot;scenarios&quot;: [<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &quot;voice_command_back_speaker&quot;<br />
       &nbsp; &nbsp; ]<br />
-      }<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p><br />
       Example 2:
     </p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/listScenarios &#39;{&quot;enabled&quot;:true,&quot;disabled&quot;:true}&#39;<br />
-      {<br />
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/listScenarios &#39;{&quot;enabled&quot;:true,&quot;disabled&quot;:true}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp; &quot;scenarios&quot;: [<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &quot;voice_command_back_speaker&quot;<br />
       &nbsp; &nbsp; ]<br />
-      }<br />
-      Example 3:
-    </p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/listScenarios &#39;{&quot;enabled&quot;:true,&quot;disabled&quot;:false}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;scenarios&quot;: [<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;voice_command_back_speaker&quot;<br />
-      &nbsp; &nbsp; ]<br />
-      }<br />
-      Example 4:
-    </p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/listScenarios &#39;{&quot;enabled&quot;:false,&quot;disabled&quot;:false}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;scenarios&quot;: [<br />
-      &nbsp; &nbsp; ]<br />
-      }<br />
-      Example 5:
-    </p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/listScenarios &#39;{&quot;enabled&quot;:false,&quot;disabled&quot;:true}&#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;scenarios&quot;: [<br />
-      &nbsp; &nbsp; ]<br />
-      }<br />
-      Example 6:
-    </p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/listScenarios &#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;}<br />
-      &#39;<br />
-      {<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
-      }<br />
-      &nbsp;
+      }
     </p>
   </div>
 </div>
@@ -9271,48 +9291,51 @@ toc: true
             </ul>
           </td>
         </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
     <p>Example 1:</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/setCurrentScenario &#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;}</p>
-    <p><br />
-      {<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
-    <p><br />
-      Example 2:
-    </p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/setCurrentScenario &#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;,&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;}&#39;</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/setCurrentScenario &#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
       }
     </p>
-    <p><br />
-      Example 3:
-    </p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/setCurrentScenario &#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;,&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;,&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;}&#39;</p>
-    <p>{<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
-    <p><br />
-      Example 4:
-    </p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/setCurrentScenario &#39;{&quot;scenario&quot;:&quot;media__default&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Example 2:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/setCurrentScenario &#39;{&quot;scenario&quot;:&quot;media__default&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
       &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not set current scenario.&quot;<br />
       }
     </p>
-    <p><br />
-      Example 5:
-    </p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/setCurrentScenario &#39;{&quot;scenario&quot;:&quot;voice_command_back_speake&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Example 3:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/setCurrentScenario &#39;{&quot;scenario&quot;:&quot;voice_command_back_speake&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
@@ -9389,7 +9412,8 @@ toc: true
           <td>Required</td>
           <td>Number</td>
           <td>
-            <p>Mic gain [0 -100] of current or specified scenario.</p>
+            <p>Mic gain of current or specified scenario.</p>
+            <p>Valid range: 0 - 100&nbsp;</p>
           </td>
         </tr>
         <tr>
@@ -9405,9 +9429,11 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example 1:&nbsp;</p>
-    <p>luna-send -n 1 luna://com.webos.service.audio/voiceCommand/getMicGain &#39;{}&#39;</p>
-    <p>{&nbsp;<br />
+    <p>Example 1:</p>
+    <p># luna-send -n 1 luna://com.webos.service.audio/voiceCommand/getMicGain &#39;{}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
       &nbsp;&nbsp;&nbsp;&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;,<br />
       &nbsp;&nbsp;&nbsp;&quot;mic_gain&quot;:50<br />
@@ -9415,8 +9441,10 @@ toc: true
     </p>
     <p>&nbsp;</p>
     <p>Example 2:&nbsp;</p>
-    <p>luna-send -n 1 luna://com.webos.service.audio/voiceCommand/getMicGain &#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;}&#39;</p>
-    <p>{&nbsp;<br />
+    <p># luna-send -n 1 luna://com.webos.service.audio/voiceCommand/getMicGain &#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
       &nbsp;&nbsp;&nbsp;&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;,<br />
       &nbsp;&nbsp;&nbsp;&quot;mic_gain&quot;:50<br />
@@ -9424,26 +9452,10 @@ toc: true
     </p>
     <p>&nbsp;</p>
     <p>Example 3:&nbsp;</p>
-    <p>luna-send -n 1 luna://com.webos.service.audio/voiceCommand/getMicGain &#39;{&quot;scenario&quot;:&quot;voice_command_back_speake&quot;}&#39;</p>
-    <p>{&nbsp;<br />
-      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
-      &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:3,<br />
-      &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;failed&nbsp;to&nbsp;get&nbsp;parameter&nbsp;(invalid&nbsp;scenario&nbsp;name?)&quot;<br />
-      }
-    </p>
+    <p># luna-send -n 1 luna://com.webos.service.audio/voiceCommand/getMicGain &#39;{&quot;scenario&quot;:&quot;voice_command_back_speake&quot;}&#39;</p>
     <p>&nbsp;</p>
-    <p>Example 4 :</p>
-    <p>luna-send -n 1 luna://com.webos.service.audio/voiceCommand/getMicGain &#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;,&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;}&#39;</p>
-    <p>{&nbsp;<br />
-      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
-      &nbsp;&nbsp;&nbsp;&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;,<br />
-      &nbsp;&nbsp;&nbsp;&quot;mic_gain&quot;:50<br />
-      }
-    </p>
-    <p>&nbsp;</p>
-    <p>Example 5:</p>
-    <p>luna-send -n 1 luna://com.webos.service.audio/voiceCommand/getMicGain &#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;,&quot;scenario&quot;:&quot;voice_command_back_speake&quot;}&#39;</p>
-    <p>{&nbsp;<br />
+    <p>Response:</p>
+    <p>{&nbsp;&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
       &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:3,<br />
       &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;failed&nbsp;to&nbsp;get&nbsp;parameter&nbsp;(invalid&nbsp;scenario&nbsp;name?)&quot;<br />
@@ -9454,7 +9466,7 @@ toc: true
 <h3>voiceCommand/getCurrentScenario</h3>
 <div>
   <h4>Description</h4>
-  <p>Get a current scenario.</p>
+  <p>Gets the&nbsp;current scenario.</p>
   <h4>Parameters</h4>
   <p>None</p>
   <h4>Call Returns</h4>
@@ -9495,34 +9507,42 @@ toc: true
             </ul>
           </td>
         </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example 1:</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/getCurrentScenario &#39;{}&#39;</p>
+    <p>Example:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/getCurrentScenario &#39;{}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;voice_command_back_speaker&quot;,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
       }
-    </p>
-    <p>&nbsp;</p>
-    <p>Example 2:&nbsp;</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/getCurrentScenario &#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;}&#39;</p>
-    <p>{<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
-      }<br />
-      &nbsp;
     </p>
   </div>
 </div>
 <h3>voiceCommand/enableScenario</h3>
 <div>
   <h4>Description</h4>
-  <p>Enable the specified scenario.</p>
+  <p>Enables a specified scenario.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -9582,20 +9602,40 @@ toc: true
             </ul>
           </td>
         </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
     <p>Example 1:</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/enableScenario &#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;}&#39;</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/enableScenario &#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
       }
     </p>
     <p>&nbsp;</p>
     <p>Example 2:</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/enableScenario &#39;{}&#39;</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/enableScenario &#39;{}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 2,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
@@ -9604,7 +9644,9 @@ toc: true
     </p>
     <p>&nbsp;</p>
     <p>Example 3:</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/enableScenario &#39;{&quot;scenario&quot;:&quot;voice_command_back_speake&quot;}&#39;</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/enableScenario &#39;{&quot;scenario&quot;:&quot;voice_command_back_speake&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
@@ -9613,20 +9655,21 @@ toc: true
     </p>
     <p>&nbsp;</p>
     <p>Example 4:</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/enableScenario &#39;{&quot;scenario&quot;:&quot;alarm_default&quot;}&#39;</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/enableScenario &#39;{&quot;scenario&quot;:&quot;alarm_default&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
       &nbsp; &nbsp; &quot;errorText&quot;: &quot;Invalid &#39;scenario&#39; string parameter value or file not found.&quot;<br />
-      }<br />
-      &nbsp;
+      }
     </p>
   </div>
 </div>
 <h3>voiceCommand/disableScenario</h3>
 <div>
   <h4>Description</h4>
-  <p>Disable the specified scenario.</p>
+  <p>Disables the specified scenario.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -9686,12 +9729,31 @@ toc: true
             </ul>
           </td>
         </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/disableScenario &#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;}&#39;</p>
+    <p>Example:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/voiceCommand/disableScenario &#39;{&quot;scenario&quot;:&quot;voice_command_back_speaker&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
@@ -9703,7 +9765,7 @@ toc: true
 <h3>notification/status</h3>
 <div>
   <h4>Description</h4>
-  <p>Get a current state of audiod</p>
+  <p>Gets the current state of audiod.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -9727,10 +9789,10 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates whether to subscribe for related events.</p>
+            <p>Subscribe to get notified&nbsp;when the status changes. Possible values are:</p>
             <ul>
-              <li>true: Subscribe</li>
-              <li>false: Do not subscribe</li>
+              <li><strong>true&nbsp;</strong>-&nbsp;Subscribe for changes.</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed.</li>
             </ul>
           </td>
         </tr>
@@ -9772,7 +9834,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Vibrates along with Ringtone.</p>
+            <p>Indicates if the device vibrates along with the ringtone. Possible values are:</p>
+            <ul>
+              <li><strong>true </strong>- Vibration enabled</li>
+              <li><strong>false</strong> - Vibration disabled</li>
+            </ul>
           </td>
         </tr>
         <tr>
@@ -9780,7 +9846,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>The currently selected scenario.</p>
+            <p>Scenario that is currently selected.&nbsp;</p>
           </td>
         </tr>
         <tr>
@@ -9788,7 +9854,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates whether current module is muted.</p>
+            <p>Indicates if the current module is muted. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Muted</li>
+              <li><strong>false&nbsp;</strong>- Not muted</li>
+            </ul>
           </td>
         </tr>
         <tr>
@@ -9796,7 +9866,7 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates if&nbsp;subscribed to get notified&nbsp;when a connection is closed.</p>
+            <p>Indicates if&nbsp;subscribed to get notified&nbsp;when&nbsp;status changes.</p>
             <ul>
               <li><strong>true&nbsp;</strong>- Subscribed for changes</li>
               <li><strong>false&nbsp;</strong>- Not subscribed</li>
@@ -9808,10 +9878,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates hac status. Possible values are:</p>
+            <p>Indicates HAC status. Possible values are:</p>
             <ul>
-              <li><strong>true:</strong>&nbsp;hac is enabled</li>
-              <li><strong>false:</strong>&nbsp;hac is disabled</li>
+              <li><strong>true:</strong>&nbsp;HAC&nbsp;enabled</li>
+              <li><strong>false:</strong>&nbsp;HAC&nbsp;disabled</li>
             </ul>
           </td>
         </tr>
@@ -9828,7 +9898,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Update information.&nbsp;The value will be one of the following:</p>
+            <p>Indicates the type of action. Possible values are:</p>
             <ul>
               <li>changed</li>
               <li>enabled</li>
@@ -9842,7 +9912,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Ringer switch state</p>
+            <p>Indicates the state of the ringer switch. Possible values are:</p>
+            <ul>
+              <li><strong>true</strong> - Ringer is ON</li>
+              <li><strong>false</strong> - Ringer is OFF</li>
+            </ul>
           </td>
         </tr>
         <tr>
@@ -9850,10 +9924,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates state of the slider.</p>
+            <p>Indicates the state of the slider. Possible values are:</p>
             <ul>
-              <li><strong>true:</strong>&nbsp;slider is open</li>
-              <li><strong>false:</strong>&nbsp;slider is closed</li>
+              <li><strong>true:</strong>&nbsp;Slider is open</li>
+              <li><strong>false:</strong>&nbsp;Slider is closed</li>
             </ul>
           </td>
         </tr>
@@ -9862,10 +9936,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates if current module is actively used. Possible values are:</p>
+            <p>Indicates if the current module is actively used. Possible values are:</p>
             <ul>
-              <li><strong>true:</strong>&nbsp;Actively used.</li>
-              <li><strong>false:&nbsp;</strong>Not actively used.</li>
+              <li><strong>true:</strong>&nbsp;Actively used</li>
+              <li><strong>false:&nbsp;</strong>Not actively used</li>
             </ul>
           </td>
         </tr>
@@ -9874,9 +9948,11 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>OSE:</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/notification/status &#39;{&quot;subscribe&quot;:true}&#39;<br />
-      {<br />
+    <p>Example 1:&nbsp;</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/notification/status &#39;{&quot;subscribe&quot;:true}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;notification_default&quot;,<br />
@@ -9888,9 +9964,14 @@ toc: true
       &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
       &nbsp; &nbsp; &quot;slider&quot;: false,<br />
       &nbsp; &nbsp; &quot;active&quot;: false<br />
-      }<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/notification/status &#39;{&quot;subscribe&quot;:false}&#39;<br />
-      {<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Example 2:&nbsp;</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/notification/status &#39;{&quot;subscribe&quot;:false}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;notification_default&quot;,<br />
@@ -9902,9 +9983,14 @@ toc: true
       &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
       &nbsp; &nbsp; &quot;slider&quot;: false,<br />
       &nbsp; &nbsp; &quot;active&quot;: false<br />
-      }<br />
-      luna-send -n 1 -f luna://com.webos.service.audio/notification/status &#39;{}&#39;<br />
-      {<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Example 3:&nbsp;</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/notification/status &#39;{}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp; &quot;ringtonewithvibration&quot;: true,<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;notification_default&quot;,<br />
@@ -9916,15 +10002,14 @@ toc: true
       &nbsp; &nbsp; &quot;ringer switch&quot;: true,<br />
       &nbsp; &nbsp; &quot;slider&quot;: false,<br />
       &nbsp; &nbsp; &quot;active&quot;: false<br />
-      }<br />
-      &nbsp;
+      }
     </p>
   </div>
 </div>
 <h3>notification/getVolume</h3>
 <div>
   <h4>Description</h4>
-  <p>Get the volume level of the current or specified scenario.</p>
+  <p>Gets the volume level of the current or specified scenario.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -9948,7 +10033,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Scenario for which to get the volume. If not specified, the volume is retrieved from currently selected scenario</p>
+            <p>Scenario for which to get the volume. If not specified, the volume is retrieved from currently selected scenario.</p>
           </td>
         </tr>
       </tbody>
@@ -9993,10 +10078,27 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates the status of operation. Possible values are:</p>
             <ul>
-              <li>If the&nbsp;method succeeds,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>true</strong>.</li>
-              <li>If the&nbsp;method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false</strong>.</li>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
           </td>
         </tr>
       </tbody>
@@ -10004,8 +10106,10 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example 1:&nbsp;</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/notification/getVolume &#39;{&quot;scenario&quot; : &quot;notification_default&quot;}&#39;</p>
+    <p>Example 1:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/notification/getVolume &#39;{&quot;scenario&quot; : &quot;notification_default&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;notification_default&quot;,<br />
       &nbsp; &nbsp; &quot;volume&quot;: 50,<br />
@@ -10013,8 +10117,10 @@ toc: true
       }
     </p>
     <p>&nbsp;</p>
-    <p>Example 2:&nbsp;</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/notification/getVolume &#39;{}&#39;</p>
+    <p>Example 2:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/notification/getVolume &#39;{}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;scenario&quot;: &quot;notification_default&quot;,<br />
       &nbsp; &nbsp; &quot;volume&quot;: 50,<br />
@@ -10022,8 +10128,10 @@ toc: true
       }
     </p>
     <p>&nbsp;</p>
-    <p>Example 3:&nbsp;</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/notification/getVolume &#39;{&quot;scenario&quot; : &quot;notification_defaultTest&quot;}&#39;</p>
+    <p>Example 3:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/notification/getVolume &#39;{&quot;scenario&quot; : &quot;notification_defaultTest&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 3,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
@@ -10031,8 +10139,10 @@ toc: true
       }
     </p>
     <p>&nbsp;</p>
-    <p>Example 4:&nbsp;</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/notification/getVolume &#39;{&quot;scenarioTest&quot; : &quot;notification_default&quot;}&#39;</p>
+    <p>Example 4:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/notification/getVolume &#39;{&quot;scenarioTest&quot; : &quot;notification_default&quot;}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
@@ -10044,7 +10154,7 @@ toc: true
 <h3>state/getVolumeBalance</h3>
 <div>
   <h4>Description</h4>
-  <p>API gives the current sound balance value(default sound balance is set &nbsp;zero).</p>
+  <p>Gives the current sound balance value (default sound balance is set to zero).</p>
   <h4>Parameters</h4>
   <p>None</p>
   <h4>Call Returns</h4>
@@ -10070,9 +10180,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates status of API execution</p>
-            <p>true: Success</p>
-            <p>false: Failure</p>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
           </td>
         </tr>
         <tr>
@@ -10080,7 +10192,7 @@ toc: true
           <td>Required</td>
           <td>Number</td>
           <td>
-            <p>This gives the balance volume range(-10 to +10)</p>
+            <p>Audio balance volume. Valid range: -10 to +10</p>
           </td>
         </tr>
       </tbody>
@@ -10088,19 +10200,21 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/state/getVolumeBalance &#39;{}&#39;</p>
+    <p>Example:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/state/getVolumeBalance &#39;{}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;balanceVolume&quot;: 0,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }<br />
-      &nbsp;
+      }
     </p>
   </div>
 </div>
 <h3>state/setRingerSwitch</h3>
 <div>
   <h4>Description</h4>
-  <p>API to set ringer switch OFF/ON.</p>
+  <p>Sets ringer switch OFF/ON.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -10124,7 +10238,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Enables/disables ringer switch</p>
+            <p>Indicates whether the ringer switch is ON or OFF. Possible values are:</p>
+            <ul>
+              <li><strong>true</strong> - Ringer switch ON</li>
+              <li><strong>false</strong> - Ringer switch OFF</li>
+            </ul>
           </td>
         </tr>
       </tbody>
@@ -10153,68 +10271,40 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates status of the execution</p>
-            <p>- true: Success</p>
-            <p>- false: Failure</p>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
           </td>
         </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Error Codes Reference</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
         <tr>
-          <th width="15%">
-            <p>Error Code</p>
-          </th>
-          <th width="30%">
-            <p>Error Text</p>
-          </th>
-          <th width="55%">
-            <p>Error Description</p>
-          </th>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
         </tr>
         <tr>
-          <td>None</td>
-          <td>errormessage905</td>
-          <td>errordescription905</td>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example 1:&nbsp;</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/state/setRingerSwitch &#39;{&quot;ringer&quot;:true}&#39;</p>
+    <p>Example:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/state/setRingerSwitch &#39;{&quot;ringer&quot;:true}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
-    <p>&nbsp;</p>
-    <p>Example 2:&nbsp;</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/state/setRingerSwitch &#39;{&quot;ringer&quot;:false}&#39;</p>
-    <p>{<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
-    <p>&nbsp;</p>
-    <p>Example 3:&nbsp;</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/state/setRingerSwitch &#39;{&quot;ringer&quot;:1}&#39;</p>
-    <p>{<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
-      }
-    </p>
-    <p>&nbsp;</p>
-    <p>Example 4:&nbsp;</p>
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/state/setRingerSwitch &#39;{&quot;ringers&quot;:true}&#39;</p>
-    <p>{<br />
-      &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
       }
     </p>
   </div>
@@ -10222,7 +10312,7 @@ toc: true
 <h3>state/getTouchSound</h3>
 <div>
   <h4>Description</h4>
-  <p>API gives the touch sound status(feedback sound&nbsp;status)</p>
+  <p>Gets the touch sound status (feedback sound&nbsp;status).</p>
   <h4>Parameters</h4>
   <p>None</p>
   <h4>Call Returns</h4>
@@ -10248,8 +10338,11 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>&quot;ON&quot; : means touch sound is enabled</p>
-            <p>&quot;OFF&quot; means touch sound is disabled</p>
+            <p>Indicates the status of touch sound. Possible values are:&nbsp;</p>
+            <ul>
+              <li><strong>ON </strong>-&nbsp;Touch sound is enabled</li>
+              <li><strong>OFF </strong>- Touch sound is disabled</li>
+            </ul>
           </td>
         </tr>
         <tr>
@@ -10257,8 +10350,27 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>true: indicates the success of execution</p>
-            <p>false: indicates failure</p>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
           </td>
         </tr>
       </tbody>
@@ -10266,7 +10378,10 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 -f luna://com.webos.service.audio/state/getTouchSound &#39;{}&#39;</p>
+    <p>Example:</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/state/getTouchSound &#39;{}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;touchSound&quot;: &quot;OFF&quot;,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
@@ -10274,8 +10389,8 @@ toc: true
     </p>
   </div>
 </div>
+<h2>Objects</h2>
 <div>
-  <h2>Objects</h2>
   <h3>CallReturn</h3>
   Default object returned by methods.
   <div class="table-container">
@@ -10430,7 +10545,6 @@ toc: true
   </div>
   <h3>audio</h3>
   <p>Object returned by <strong>UMI/getStatus.</strong></p>
-  <p>&nbsp;</p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
@@ -10675,6 +10789,20 @@ toc: true
         <td>Invalid schema</td>
         <td>
           <p>AUDIOD_ERRORCODE_INVALID_SCHEMA</p>
+        </td>
+      </tr>
+      <tr>
+        <td>200</td>
+        <td>Audio not connected</td>
+        <td>
+          <p>Audio not connected</p>
+        </td>
+      </tr>
+      <tr>
+        <td>204</td>
+        <td>Volume control is not supported</td>
+        <td>
+          <p>Volume control is not supported</p>
         </td>
       </tr>
     </tbody>

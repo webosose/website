@@ -1,6 +1,6 @@
 ---
 title: Developing External Web Apps
-date: 2020-01-07
+date: 2020-04-29
 weight: 10
 toc: true
 ---
@@ -10,23 +10,23 @@ External web apps are 3rd party web apps that must be installed on the webOS tar
 This page describes the steps to develop an external web app using CLI. For detailed information on the commands used in this tutorial, see [CLI commands]({{< relref "cli-user-guide#cli-commands" >}}).
 
 {{< note >}}
-If you want to add a JS service to your web app, see [Creating JS Services]({{< relref "developing-external-js-services#creating-js-services" >}}).
+If you want to add a service to your web app, see [Developing External JS Services]({{< relref "developing-external-js-services" >}}) or [Developing External Native Services]({{< relref "developing-external-native-services" >}}).
 {{< /note >}}
 
 ## Creating Web Apps
 
 Developing an external web app requires the following steps:
 
-* [Step 1: Create a Web App Project](#step-1-create-a-web-app-project)
+* [Step 1: Create a Web App](#step-1-create-a-web-app)
 * [Step 2: Implement the Web App](#step-2-implement-the-web-app)
 * [Step 3: Configure the Web App](#step-3-configure-the-web-app)
 * [Step 4: Package the Web App](#step-4-package-the-web-app)
 * [Step 5: Install the Web App](#step-5-install-the-web-app)
 * [Step 6: Launch the Web App](#step-6-launch-the-web-app)
 
-### Step 1: Create a Web App Project
+### Step 1: Create a Web App
 
-Start by creating a project using one of the available web app templates. These templates provide a starting point for developing the web app.
+Start by creating a web app using one of the available web app templates. These templates provide a starting point for developing the web app.
 
 To create a basic web app, execute the following command:
 
@@ -63,10 +63,6 @@ The web app directory (`sampleApp`) has the following files:
 <td><p>The icon image file. Can be replaced with a relevant icon.</p></td>
 </tr>
 <tr class="odd">
-<td><p>largeIcon.png</p></td>
-<td><p>The large icon image file. Can be replaced with a relevant icon.</p></td>
-</tr>
-<tr class="even">
 <td><p>index.html</p></td>
 <td><p>Web application main page. This page only shows "Hello, Web Application!!" text on the screen.</p></td>
 </tr>
@@ -98,20 +94,19 @@ If you want to use a webOS service in the web app, check the information and sam
 
 ### Step 3: Configure the Web App
 
-The details or metadata of the web app must be specified in the `appinfo.json` file. This file is automatically created when you create a web app project. For details, see [appinfo.json]({{< relref "appinfo-json" >}}).
+The details or metadata of the web app must be specified in the `appinfo.json` file. This file is automatically created when you create a web app. For details, see [appinfo.json]({{< relref "appinfo-json" >}}).
 
 CLI provides the `appinfo.json` file template as below.
 
 ``` json
 {
     "id": "com.domain.app",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "vendor": "My Company",
     "type": "web",
     "main": "index.html",
     "title": "new app",
     "icon": "icon.png",
-    "largeIcon": "largeIcon.png",
     "requiredPermissions": ["time", "settings.read", "activities.manage"]
 }
 ```
@@ -151,13 +146,13 @@ In the above command, `<APP_DIR>` and `<SERVICE_DIR>` mean app and service direc
 To install the web app on the target device, execute the following command:
 
 ``` bash
-$ ares-install --device <TARGET_DEVICE> ./com.domain.app_0.0.1_all.ipk
+$ ares-install --device <TARGET_DEVICE> ./com.domain.app_1.0.0_all.ipk
 ```
 
 In the above command:
 
 - `<TARGET_DEVICE>` is the name of the target device.
-- `./com.domain.app_0.0.1_all.ipk` is the name of the IPK file that is generated after packaging the app in the previous step.
+- `./com.domain.app_1.0.0_all.ipk` is the name of the IPK file that is generated after packaging the app in the previous step.
 
 If the installation is successful, a `Success` message will appear.
 
@@ -214,7 +209,7 @@ $ ares-inspect --device <TARGET_DEVICE> --app <APP_ID> --open
 
 This loads the Web Inspector in your default browser as shown in the following screenshot:
 
-{{< figure src="/images/docs/tutorials/web-apps/web-inspector-new.png" link="/images/docs/tutorials/web-apps/web-inspector-new.png" target="_blank" alt="" caption="Web Inspector screenshot" >}}
+{{< figure src="/images/docs/tutorials/web-apps/web-inspector.png" link="/images/docs/tutorials/web-apps/web-inspector.png" target="_blank" alt="" caption="Web Inspector screenshot" >}}
 
 {{< note >}}
 Web Inspector works only in Blink-based web browsers such as Chrome and Opera. If another browser (e.g., Safari or Internet Explorer) is set as your default web browser, you must re-open the inspector page in a Blink-based web browser.

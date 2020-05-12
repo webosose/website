@@ -1,6 +1,6 @@
 ---
 title: Developing External QML Apps
-date: 2020-03-06
+date: 2020-04-29
 weight: 10
 toc: true
 ---
@@ -57,10 +57,6 @@ The QML app directory (`sampleApp`) has the following files:
 <td><p>The icon image file. Can be replaced with a relevant icon.</p></td>
 </tr>
 <tr class="odd">
-<td><p>largeIcon.png</p></td>
-<td><p>The large icon image file. Can be replaced with a relevant icon.</p></td>
-</tr>
-<tr class="even">
 <td><p>main.qml</p></td>
 <td><p>QML application main page. This page only shows "Hello, QML Application!!" text on the screen.</p></td>
 </tr>
@@ -97,8 +93,10 @@ CLI provides the `appinfo.json` file template as below.
     "main": "main.qml",
     "title": "new app",
     "icon": "icon.png",
-    "largeIcon": "largeIcon.png",
-    "requiredPermissions" : ["time"]
+    "requiredPermissions" : [
+        "time",
+        "applications"
+    ]
 }
 ```
 
@@ -128,13 +126,13 @@ In the above command, `sampleApp` is the QML app directory. You can use an absol
 To install the QML app on the target device, execute the following command:
 
 ``` bash
-$ ares-install --device <TARGET_DEVICE> ./com.domain.app_0.0.1_all.ipk
+$ ares-install --device <TARGET_DEVICE> ./com.domain.app_1.0.0_all.ipk
 ```
 
 In the above command:
 
   - `<TARGET_DEVICE>` is the name of the target device.
-  - `./com.domain.app_0.0.1_all.ipk` is the name of the IPK file that is generated after packaging the app in the previous step.
+  - `./com.domain.app_1.0.0_all.ipk` is the name of the IPK file that is generated after packaging the app in the previous step.
 
 If the installation is successful, a `Success` message will appear.
 

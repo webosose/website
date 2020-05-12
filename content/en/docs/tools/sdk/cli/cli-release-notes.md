@@ -1,16 +1,30 @@
 ---
 title: Release Notes
 display_title: Command-Line Interface Release Notes
-date: 2020-03-11
+date: 2020-05-12
 weight: 20
 toc: true
 ---
 
 This page provides the summary of each Command-Line Interface (CLI) release for webOS Open Source Edition (OSE).
 
+## v1.11.1 (May 2020)
+
+This version is compatible with **webOS OSE 2.5.0**. See below for the new and changed features in this release.
+
+### Changed features
+
+* Updated QML template
+    * Added `applications` group to the permission of QML app.
+    * Set `displayAffinity` in QML template.
+
+### Fixed issues
+
+* Corrected typos in QML template.
+
 ## v1.11.0 (March 2020)
 
-This version is compatible with webOS OSE 2.4.0. See below for the new and changed features in this release.
+This version is compatible with **webOS OSE 2.4.0**. See below for the new and changed features in this release.
 
 ### New features
 

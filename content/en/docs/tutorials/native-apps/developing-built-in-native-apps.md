@@ -1,6 +1,6 @@
 ---
 title: Developing Built-in Native Apps
-date: 2020-01-13
+date: 2020-05-07
 weight: 20
 toc: true
 ---
@@ -86,6 +86,7 @@ public:
 protected:
     void exposeEvent(QExposeEvent *event) override;
 
+private:
     QOpenGLContext *m_context;
     QOpenGLPaintDevice *m_device;
 };
@@ -107,6 +108,7 @@ Define `MyOpenGLWindow` class member functions. See [Appendix](#appendix-license
 
 MyOpenGLWindow::MyOpenGLWindow(QWindow *parent)
     : QWindow(parent)
+    , m_device(nullptr)
 {
     setSurfaceType(QWindow::OpenGLSurface);
     create();
@@ -159,7 +161,7 @@ void MyOpenGLWindow::exposeEvent(QExposeEvent *event)
 
 A brief explanation of the above file:
 
-* Line(9) : Set the surface type of `MyOpenGLWindow` to `OpenGLSurface`. The type can be `OpenGLSurface` or `RasterGLSurface`.
+* Line(10) : Set the surface type of `MyOpenGLWindow` to `OpenGLSurface`. The type can be `OpenGLSurface` or `RasterGLSurface`.
 
 #### ServiceRequest.h
 
@@ -214,7 +216,7 @@ A brief explanation of the above file:
 
 #### ServiceRequest.cpp
 
-Define `SeviceRequest` class member functions. In addition, add helper functions related to PbnJson to use the library conveniently.
+Define `ServiceRequest` class member functions. In addition, add helper functions related to PbnJson to use the library conveniently.
 
 - **Create and update the file:** `ServiceRequest.cpp`
 - **Directory:** `com.example.app.nativeqt`
@@ -382,6 +384,9 @@ int main(int argc, char **argv)
     QGuiApplication app(argc, argv);
     PmLogInfo(getPmLogContext(), "MAIN_ARGV1", 1, PMLOGKFV("argv", "%s", argv[1]),  " ");
 
+    QString displayId = (getenv("DISPLAY_ID") ? getenv("DISPLAY_ID") : "0");
+    PmLogInfo(getPmLogContext(), "DISPLAY", 1, PMLOGKFV("Id", "%s", displayId.toStdString().c_str()),  " ");
+
     QScreen *screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
     MyOpenGLWindow window;
@@ -391,7 +396,8 @@ int main(int argc, char **argv)
     ServiceRequest s_request("com.example.app.nativeqt");
     s_request.registerApp();
 
-    QGuiApplication::platformNativeInterface()->setWindowProperty(window.handle(), QStringLiteral("appId"), QStringLiteral("com.example.app.nativeqt"));
+    QGuiApplication::platformNativeInterface()->setWindowProperty(window.handle(), "appId", "com.example.app.nativeqt");
+    QGuiApplication::platformNativeInterface()->setWindowProperty(window.handle(), "displayAffinity", displayId);
 
     return app.exec();
 }
@@ -403,10 +409,11 @@ A brief explanation of the above file:
 - Line(2) : Include `ServiceRequest.h` header file which has member functions that can call services based on luna-service2.
 - Line(3~6) : Include Qt header files.
 - Line(11) : `argv[1]` holds the value that SAM gives to the native app when the app is first launched. The value passed as "params" in SAM's `launch` method call can be received as "parameters", and the lifecycle "event" of the native app comes up as "launch".
-- Line(13~17) : Create a MyOpenGLWindow object. Set the window's size and display the text on the screen.
-- Line(19~20) : Create a ServiceRequest object and call the `registerApp()` function.
-- Line(22) : Use `QWindow::Handle()` to get QPlatformWindow from MyOpenGLWindow. Set "appId" to the window.
-- Line(24) : Enters the main event loop and waits until `exit()` is called, then returns the value that was set to `exit(): 0` if `exit()` is called via `quit()`.
+- Line(13~14) : Get the `DISPLAY_ID` property from the environment variable so that the app can be launched on the display corresponding to the `displayAffinity` value passed as a launch parameter.
+- Line(16~20) : Create a MyOpenGLWindow object. Set the window's size and display the text on the screen.
+- Line(22~23) : Create a ServiceRequest object and call the `registerApp()` function.
+- Line(25~26) : Use `QWindow::Handle()` to get QPlatformWindow from MyOpenGLWindow. Set "appId" and "displayAffinity" to the window.
+- Line(28) : Enters the main event loop and waits until `exit()` is called, then returns the value that was set to `exit(): 0` if `exit()` is called via `quit()`.
 
 For detailed information on Qt, see [Qt documentation](http://doc.qt.io/).
 
@@ -453,7 +460,7 @@ Copyright and License Information
 Unless otherwise specified, all content, including all source code files and
 documentation files in this repository are:
 
-Copyright (c) 2018 LG Electronics, Inc.
+Copyright (c) 2020 LG Electronics, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

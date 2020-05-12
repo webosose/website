@@ -1,6 +1,6 @@
 ---
 title: Developing Built-in QML Apps
-date: 2020-04-09
+date: 2020-05-07
 weight: 20
 toc: true
 ---
@@ -71,13 +71,14 @@ WebOSWindow {
     appId: "com.example.app.qml"
     title: "QML app"
     color: "lightblue"
+    displayAffinity: params["displayAffinity"]
 
     Text {
         id: mainText
         anchors.centerIn: parent
         font.family: "Helvetica"
         font.pointSize: 50
-        text: "Hello, QML Appplication!!"
+        text: "Hello, QML Application!!"
     }
 
     property var launchParams: params
@@ -127,14 +128,19 @@ A brief explanation of the above file:
 - Line(2) : Import WebOSServices to call system services via luna-service.
 - Line(3) : Import Eos.Window to use WebOSWindow QML component.
 - Line(4) : Import PmLog to print logs.
-- Line(6~61) :  Declare a WebOSWindow object with child objects.
+- Line(6~62) :  Declare a WebOSWindow object with child objects.
     - Line(7~13) : Set WebOSWindow properties and size and color.
-    - Line(15~21) : Declare a Text object and string.
-    - Line(23~26) : A QML app (with the type "qml" on `appinfo.json`) is launched and registered to SAM by qml-runner. Through this process, the QML app can receive the parameters passed with the `launch` method call as `params`. With each `launch` method call, `onLaunchParamsChanged` is called even if the value of `params` does not change from that of the previous call. For details of PmLogLib usage, refer to [Using PmLogLib in QML]({{< relref "using-pmloglib-in-qml" >}}).
-    - Line(28~46) : Declare a Service object to call systemservice's `getTime` method. If the object receives the response, the app prints the UTC time on the screen.
-    - Line(48~51) : When the user clicks on the screen, systemservice's `getTime` method is called.
-    - Line(53~55) : `windowState` is a value that the WebOSWindow QML component sends to the app. Whenever the `windowState` value changes, `onWindowStateChanged` is called. Its value is 1 when the app is in the background and 4 when the app is in the foreground, following the definition of `Qt::WindowState`. For details, see [Qt::WindowState](https://doc.qt.io/qt-5/qt.html#WindowState-enum) on Qt documentation.
-    - Line(57~60) : Declare a `PmLog` object.
+    - Line(14): Set the `displayAffinity` property so that the app can be launched on the display corresponding to the `displayAffinity` value passed as a launch parameter.
+    - Line(16~22) : Declare a Text object and string.
+    - Line(24~27) : A QML app (with the type "qml" on `appinfo.json`) is launched and registered to SAM by qml-runner. Through this process, the QML app can receive the parameters passed with the `launch` method call as `params`. With each `launch` method call, `onLaunchParamsChanged` is called even if the value of `params` does not change from that of the previous call. For details of PmLogLib usage, refer to [Using PmLogLib in QML]({{< relref "using-pmloglib-in-qml" >}}).
+    - Line(29~47) : Declare a Service object to call systemservice's `getTime` method. If the object receives the response, the app prints the UTC time on the screen.
+    - Line(49~52) : When the user clicks on the screen, systemservice's `getTime` method is called.
+    - Line(54~56) : `windowState` is a value that the WebOSWindow QML component sends to the app. Whenever the `windowState` value changes, `onWindowStateChanged` is called. Its value is 1 when the app is in the background and 4 when the app is in the foreground, following the definition of `Qt::WindowState`. For details, see [Qt::WindowState](https://doc.qt.io/qt-5/qt.html#WindowState-enum) on Qt documentation.
+    - Line(58~61) : Declare a `PmLog` object.
+
+{{< note >}}
+webOS OSE supports use of `QtQuick` module up to version 2.12, because webOS OSE supports Qt 5.12 LTS since 2.0.0 release. However, using lower version of `QtQuick` module can be helpful for keeping backward compatibility with other environments using a lower version of Qt. For details, refer to [Qt documentation](https://doc.qt.io/qt-5.12/qtquick-qmlmodule.html).
+{{< /note >}}
 
 For detailed information for Qt, see [Qt documentation](http://doc.qt.io/).
 
@@ -181,7 +187,7 @@ Copyright and License Information
 Unless otherwise specified, all content, including all source code files and
 documentation files in this repository are:
 
-Copyright (c) 2018 LG Electronics, Inc.
+Copyright (c) 2020 LG Electronics, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -218,7 +224,7 @@ Apps are required to have metadata before they can be packaged. This metadata is
     "main": "main.qml",
     "title": "QML App",
     "icon": "icon.png",
-    "requiredPermissions" : ["time"]
+    "requiredPermissions" : ["time", "applications"]
 }
 ```
 
@@ -229,7 +235,10 @@ A brief explanation of the above file:
 - Line(6) : The executable file name.
 - Line(7) : The title to be shown on the Home Launcher app.
 - Line(8) : The icon to be shown on the Home Launcher app. Make sure the icon file is available in the project root directory. You can use your own icon.png (80*80) file or attached [icon.png](/images/docs/tutorials/icon.png).
-- Line(9) : Specify the group to which the external service's method called by the app belongs. Because systemservice's `getTime` method belongs to "time" group, put "time" in this property. To check the group of each method, use [`ls-monitor`]({{< relref "ls-monitor" >}}) command with "-i" option.
+- Line(9) : Specify the group to which the external service's method called by the app belongs.
+    - Because systemservice's `getTime` method belongs to "time" group, put "time" in this property.
+    - When qml-runner launches QML app, qml-runner calls the method to register the app to SAM. To enable qml-runner to call this method, put "applications" group.
+    - To check the group of each method, use [`ls-monitor`]({{< relref "ls-monitor" >}}) command with "-i" option.
 
 For more details, see [appinfo.json]({{< relref "appinfo-json" >}}).
 

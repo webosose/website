@@ -1,6 +1,6 @@
 ---
 title: Developing Built-in Native Services
-date: 2020-02-14
+date: 2020-05-07
 weight: 20
 toc: true
 ---
@@ -129,8 +129,8 @@ static bool cbGetTime(LSHandle *sh, LSMessage *msg, void *user_data)
     bool successCallback = response["returnValue"].asBool();
     if (successCallback)
     {
-        uint64_t utc= response["utc"].asNumber<int64_t>();
-        PmLogInfo(getPmLogContext(), "GETTIME_CALLBACK", 1, PMLOGKFV("UTC : ", "%d", utc),  " ");
+        int64_t utc= response["utc"].asNumber<int64_t>();
+        PmLogInfo(getPmLogContext(), "GETTIME_CALLBACK", 1, PMLOGKFV("UTC", "%lld", utc),  " ");
     }
 
     return true;
@@ -268,7 +268,7 @@ Copyright and License Information
 Unless otherwise specified, all content, including all source code files and
 documentation files in this repository are:
 
-Copyright (c) 2018 LG Electronics, Inc.
+Copyright (c) 2020 LG Electronics, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

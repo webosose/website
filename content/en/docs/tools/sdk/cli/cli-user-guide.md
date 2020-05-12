@@ -1,7 +1,7 @@
 ---
 title: User Guide
 display_title: Command-Line Interface User Guide
-date: 2020-03-10
+date: 2020-05-07
 weight: 10
 toc: true
 ---
@@ -1031,7 +1031,7 @@ ares-launch --help|-h
 <tr class="odd">
 <td><p>-dp, --display</p></td>
 <td><p>DISPLAY_ID</p></td>
-<td><p>Launches a web app on a specified display.</p></td>
+<td><p>Launches an application on a specified display.</p></td>
 </tr>
 <tr class="even">
 <td><p>-D, --device-list</p></td>
@@ -1076,7 +1076,7 @@ ares-launch --help|-h
 </tr>
 <tr class="even">
 <td><p>DISPLAY_ID</p></td>
-<td><p>ID of the display to launch a web app. It should be an integer type. (Use <code>0</code> for primary display and <code>1</code> for secondary display.)</p></td>
+<td><p>ID of the display to launch an app. It should be an integer type. (Use <code>0</code> for primary display and <code>1</code> for secondary display.)</p></td>
 </tr>
 <tr class="odd">
 <td><p>TARGET_DEVICE</p></td>
