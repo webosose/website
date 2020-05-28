@@ -1,7 +1,7 @@
 ---
 title: User Guide
 display_title: Command-Line Interface User Guide
-date: 2020-05-07
+date: 2020-05-26
 weight: 10
 toc: true
 ---
@@ -1130,6 +1130,15 @@ Here are some examples of the different uses:
 ### ares-inspect
 
 This command enables Web Inspector or Node's Inspector. Each inspector displays the run-time information of a web application or a JS service, respectively.
+
+{{< caution >}}
+We highly recommend you to use the same version as Chrome/Chromium of webOS OSE. Using other versions might cause unexpected errors.
+
+- To check the Chromium version of your target device, do one of the following:
+    - Execute the `Web Browser` app and go to http://useragentstring.com.
+    - Visit the [Chromium repository](https://github.com/webosose?q=chromium&type=&language=) on webOS OSE GitHub and see `src/chrome/VERSION` file.
+- To download old builds of Chrome/Chromium, visit the [Chromium Project website](https://www.chromium.org/getting-involved/download-chromium).
+{{< /caution >}}
 
 #### Usages
 

@@ -1,14 +1,14 @@
 ---
 title: Tools
 section_main: true
-date: 2019-01-01
+date: 2020-05-22
 weight: 50
 ---
 
 This section provides resources required to use the tools for webOS Open Source Edition (OSE) development, including:
 
 * [SDK](#sdk)
-    * [Download](#download)
+    * [Download]({{< relref "sdk-download" >}})
     * [Command-Line Interface](#command-line-interface)
     * [Emulator](#emulator)
     * [Beanviser](#beanviser)
