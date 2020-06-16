@@ -8,7 +8,7 @@ weight: 60
 This section provides documentation for **webOS IoT**, the IoT profile of webOS Open Source Edition (OSE).
 
 {{< note >}}
-webOS IoT is supported by webOS OSE 2.4.0 or higher.
+webOS IoT is supported by webOS OSE 2.4.0.
 {{< /note >}}
 
 * [Overview](#overview)
