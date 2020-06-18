@@ -1,6 +1,6 @@
 ---
 title: Roadmap
-date: 2019-10-24
+date: 2020-06-17
 weight: 10
 toc: false
 ---
@@ -12,7 +12,7 @@ The following shows a roadmap of webOS Open Source Edition (OSE).
 <thead>
 <tr class="header">
 <th>webOS OSE 1.x</th>
-<th>webOS OSE 2.0</th>
+<th>webOS OSE 2.x</th>
 <th>Long Term Plan</th>
 </tr>
 </thead>
@@ -37,20 +37,28 @@ The following shows a roadmap of webOS Open Source Edition (OSE).
 <li>Yocto Upgrade</li>
 </ul></td>
 <td><ul>
-<li>Qt Upgrade</li>
+<li>Qt Upgrade to 5.12</li>
 <li>FOTA</li>
 <li>Dual-Display Support</li>
 <li>Smack Integration</li>
-<li>Chromium Upgrade</li>
 <li>SoftAP</li>
+<li>Chromium Upgrade to 72</li>
+<li>Chromium Upgrade to 79</li>
+<li>journald</li>
+<li>IoT profile support</li>
+<li>Nyx GPS Module</li>
+<li>Hardware Acceleration (Graphics)</li>
+<li>Enable dual audio output</li>
 </ul></td>
 <td><ul>
-<li>Multi-User Configuration</li>
-<li>App Mirroring for RSE</li>
-<li>FOTA (ability to partially update)</li>
-<li>journald (pmlogd disabled)</li>
-<li>Phone Projection (mirroring)</li>
-<li>Bluetooth Audio</li>
+<li>Bluetooth Audio (Multi)</li>
+<li>Improve Enact Browser</li>
+<li>Intent Manager</li>
+<li>Media Index Service</li>
+<li>Improve reference UI/UX</li>
+<li>Chromium Upgrade</li>
+<li>Yocto Upgrade</li>
+<li>Qt Upgrade</li>
 </ul></td>
 </tr>
 </tbody>
@@ -95,6 +103,14 @@ For the meaning of abbreviations in the roadmap, refer to the table below.
 <tr class="odd">
 <td>Smack</td>
 <td>Simplified Mandatory Access Control Kernel</td>
+</tr>
+<tr class="even">
+<td>IoT</td>
+<td>Internet of Things</td>
+</tr>
+<tr class="odd">
+<td>GPS</td>
+<td>Global Positioning System</td>
 </tr>
 </tbody>
 </table>
