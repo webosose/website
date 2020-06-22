@@ -165,6 +165,8 @@ The loctool will recursively search the given directory (current dir by default)
 
 If want to learn more in detail, Please visit [loctool](https://github.com/iLib-js/loctool/blob/development/README.md#configuration) project site.
 Here's an example for webOS application
+
+
 {{< code "project.json" true >}}
 ```json
 {
@@ -192,6 +194,9 @@ Here's an example for webOS application
 }
 ```
 {{< /code >}}
+
+###### notes
+`id` property's value in `project.json` have to same with xliff's directory name.
 
 ###### plugins
 The loctool is driven by plugins that know how to parse various types of files, and write out the appropriate localized output.
