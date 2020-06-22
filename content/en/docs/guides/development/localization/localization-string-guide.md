@@ -100,27 +100,6 @@ resBundle_getLocString(resBundle, "String 1");
 ```
 {{< /code >}}
 
-When writing an XLIFF file, the value of `original` attribute must match the basename. In addition, the value of `name` attribute in `group` must match the type of programming language used for developing the apps or services, as follows:
-
-{{< code "en-US.xliff (cpp)" true >}}
-```cpp
-<?xml version="1.0"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en-KR" trgLang="en-US">
- <file id="samplecpp_f1" original="samplecpp">
-  <group id="samplecpp_g1" name="cpp">
-...
-```
-{{< /code >}}
-
-{{< code "en-US.xliff \(c)" true >}}
-```c
-<?xml version="1.0"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en-KR" trgLang="en-US">
- <file id="samplec_f1" original="samplec">
-  <group id="samplec_g1" name="c">
-...
-```
-{{< /code >}}
 
 To prepare string resources without using the localization tool and XLIFF, write them in JSON format just like in JavaScript. The format and directory structure are basically the same as what's described above.
 
