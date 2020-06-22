@@ -149,7 +149,7 @@ webOS OSE's localization tool is named [loctool](https://github.com/iLib-js/loct
 In order to install the loctool, you will need to make sure you have nodejs installed on your machine and in your path, as this is used to run the code. (Use 7.0 or later)
 Once nodejs is installed, you can install the loctool itself. 
 
-If you check out `ilib-loctool-webos-dist` repository you can download all related plugins including loctool at once.
+If you check out [ilib-loctool-webos-dist](https://github.com/iLib-js/ilib-loctool-webos-dist) repository, you can download all related plugins including loctool at once.
 {{< code "Installation" true >}}
 ```js
  git clone https://github.com/iLib-js/ilib-loctool-webos-dist
@@ -197,13 +197,13 @@ Here's an example for webOS application
 The loctool is driven by plugins that know how to parse various types of files, and write out the appropriate localized output.
 Here's match for various languages.
 
-| type | plugins |
-| --- | --- |
-| javascript | [ilib-loctool-webos-javascript](https://github.com/iLib-js/ilib-loctool-webos-javascript), [ilib-loctool-webos-json-resource](https://github.com/iLib-js/ilib-loctool-webos-json-resource)  |
-| c | [ilib-loctool-webos-c](https://github.com/iLib-js/ilib-loctool-webos-c), [ilib-loctool-webos-json-resource](https://github.com/iLib-js/ilib-loctool-webos-json-resource) |
-| cpp | [ilib-loctool-webos-cpp](https://github.com/iLib-js/ilib-loctool-webos-cpp), [ilib-loctool-webos-json-resource](https://github.com/iLib-js/ilib-loctool-webos-json-resource) |
-| qml | [ilib-loctool-webos-qml](https://github.com/iLib-js/ilib-loctool-webos-qml), [ilib-loctool-webos-ts-resource](https://github.com/iLib-js/ilib-loctool-webos-ts-resource) |
-| appinfo.json | [ilib-loctool-webos-appinfo-json](https://github.com/iLib-js/ilib-loctool-webos-appinfo-json) |
+| type | plugins |projectType  |
+| --- | --- | --- |
+| javascript | [ilib-loctool-webos-javascript](https://github.com/iLib-js/ilib-loctool-webos-javascript), [ilib-loctool-webos-json-resource](https://github.com/iLib-js/ilib-loctool-webos-json-resource)  | webos-web |
+| c | [ilib-loctool-webos-c](https://github.com/iLib-js/ilib-loctool-webos-c), [ilib-loctool-webos-json-resource](https://github.com/iLib-js/ilib-loctool-webos-json-resource) | webos-c |
+| cpp | [ilib-loctool-webos-cpp](https://github.com/iLib-js/ilib-loctool-webos-cpp), [ilib-loctool-webos-json-resource](https://github.com/iLib-js/ilib-loctool-webos-json-resource) | webos-cpp |
+| qml | [ilib-loctool-webos-qml](https://github.com/iLib-js/ilib-loctool-webos-qml), [ilib-loctool-webos-ts-resource](https://github.com/iLib-js/ilib-loctool-webos-ts-resource) | webos-qml |
+| appinfo.json | [ilib-loctool-webos-appinfo-json](https://github.com/iLib-js/ilib-loctool-webos-appinfo-json) | - |
 
 ##### (3-3) Run a localization tool on local
 
