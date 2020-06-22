@@ -38,7 +38,7 @@ In order to localizations on your project, you need to follow steps below.
 5) [Update Recipes to apply webOS build](http://localhost:1313/docs/guides/development/localization/localization-guide/#5-update-recipes)
 
 ---
-Here's a detail explanation.
+Here's a detailed explanation.
 #### (1) Write code using the internationalization(i18n) library
 In order to get localized strings on your project, Strings need to be wrapped with a function appropriate to the file type.
 Please see the [Localization String Guide]({{< relref "localization-string-guide" >}}).
