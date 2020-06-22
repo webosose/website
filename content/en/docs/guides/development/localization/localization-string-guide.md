@@ -5,7 +5,7 @@ weight: 10
 toc: true
 ---
 
-In order for the translations to be successful, Strings need to be wrapped with a function appropriate to the file type. 
+In order for the translations to be successful, Strings need to be wrapped with a function appropriate to the file type.
 webOS localization supports JavaScript, C/C++ and QML types.
 
 ## JavaScript

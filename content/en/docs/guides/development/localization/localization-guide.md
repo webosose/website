@@ -40,10 +40,12 @@ In order to localizations on your project, you need to follow steps below.
 ---
 Here's a detail explanation.
 #### (1) Write code using the internationalization(i18n) library
-see the [Localization String Guide]({{< relref "localization-string-guide" >}}).
+In order to get localized strings on your project, Strings need to be wrapped with a function appropriate to the file type.
+Please see the [Localization String Guide]({{< relref "localization-string-guide" >}}).
+
 #### (2) Prepare XLIFF files
 
-##### (2-1) What is xliff?
+##### (2-1) What is XLIFF?
 
 [XLIFF](http://docs.oasis-open.org/xliff/xliff-core/v2.0/xliff-core-v2.0.html) (XML Localization Interchange File Format) is an XML format file that contains the actual translation data. XLIFF must exist for each locale.
 The following shows an example of XLIFF, which represents the translation data for '*en-US*' locale of '*javascript*' application named '*sample*'. The localization tool of webOS OSE is based on XLIFF version 2.0.
@@ -82,15 +84,15 @@ The following table describes the key elements and attributes of XLIFF.
 | `<source>` | Source string - *the text to be translated* |
 | `<target>` | Target string - *the translated text* |
 
-##### (2-2) How to write xliff files?
+##### (2-2) How to write XLIFF files?
 When writing an XLIFF file, the value of `original` attribute must match the basename. In addition, the value of `name` attribute in `group` must match the type of programming language used for developing the apps or services, as follows:
 
 {{< code "en-US.xliff (javascript)" true >}}
 ```xml
 <?xml version="1.0"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en-KR" trgLang="en-US">
- <file id="sampleJs_f1" original="sampleJs">
-  <group id="sampleJs_g1" name="javascript">
+ <file id="sampleJS_f1" original="sampleJS">
+  <group id="sampleJS_g1" name="javascript">
 ...
 ```
 {{< /code >}}
@@ -118,7 +120,7 @@ For Qt/QML apps, the group name is "x-qml".
 {{< /code >}}
 
 
-##### (2-3) Where to put the xliff files?
+##### (2-3) Where to put the XLIFF files?
 
 XLIFF files for each locale must be placed in the directory with the same name as the module name, as shown below.
 
@@ -137,7 +139,7 @@ com.webos.app.sample
 {{< /code >}}
 
 
-#### (3) Prepare localization tool to use
+#### (3) Prepare a localization tool to use
 The localization tool parses source code along with XLIFF files, and generates string resources in formats required by each programming language. Therefore, you must provide translation data in XLIFF format to use the localization tool.
 In order to run the localization tool on your machine, You need to check out the localization repository then install plugins.
 
@@ -199,7 +201,7 @@ Here's math for various languages.
 | qml | [ilib-loctool-webos-qml](https://github.com/iLib-js/ilib-loctool-webos-qml), [ilib-loctool-webos-ts-resource](https://github.com/iLib-js/ilib-loctool-webos-ts-resource) |
 | appinfo.json | [ilib-loctool-webos-appinfo-json](https://github.com/iLib-js/ilib-loctool-webos-appinfo-json) |
 
-#### (4) Run localization tool on local
+#### (4) Run a localization tool on local
 {{< code "Running the Loctool" true >}}
 ```js
  node <path-to-the-loctool-dir>/loctool.js
@@ -370,4 +372,3 @@ The pseudo locales defined in webOS OSE are as follows. The character set differ
 | **zxx-Cyrl-XX** | Includes Cyrllic characters |
 | **zxx-Hans-XX** | Includes Chinese characters |
 | **zxx-Hebr-XX** | Includes Hebrew characters |
-
