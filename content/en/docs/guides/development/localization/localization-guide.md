@@ -13,7 +13,6 @@ To reach out to the users in the global market, it is essential to provide your 
 * Prepare multi-language string resources in the guided format.
     * You can prepare string resources yourself, or use the localization tool to make string resources generated at build time.
 
-
 {{< note "Locale identification in webOS OSE" >}}
 Locales in webOS OSE follow the BCP 47 standard. A locale is represented as a language tag, typically in *language*-[*script*]-[*region*] format, where the language code is a required field. For example,
 
@@ -31,17 +30,16 @@ For more information about BCP 47 and the language tag, refer to the following:
 
 ## How to prepare your project localization
 In order to localizations on your project, you need to follow steps below.
-1) [Write code using the internationalization(i18n) library](http://localhost:1313/docs/guides/development/localization/localization-guide/#1-write-code-using-the-internationalization-i18n-library)
-2) [Prepare XLIFF files](http://localhost:1313/docs/guides/development/localization/localization-guide/#2-prepare-xliff-files)
-3) [Prepare localization tool to use](http://localhost:1313/docs/guides/development/localization/localization-guide/#3-prepare-localization-tool-to-use)
-4) [Run localization tool on local](http://localhost:1313/docs/guides/development/localization/localization-guide/#4-run-localization-tool-on-local)
-5) [Update Recipes to apply webOS build](http://localhost:1313/docs/guides/development/localization/localization-guide/#5-update-recipes)
+1) [Write code using the internationalization(i18n) library](#1-write-code-using-the-internationalization-i18n-library)
+2) [Prepare XLIFF files](#2-prepare-xliff-files)
+3) [Prepare a localization tool to use](#3-prepare-a-localization-tool-to-use)
+4) [Update Recipes to apply webOS build](#4-update-recipes)
 
 ---
 Here's a detailed explanation.
 #### (1) Write code using the internationalization(i18n) library
 In order to get localized strings on your project, Strings need to be wrapped with a function appropriate to the file type.
-Please see the [Localization String Guide]({{< relref "localization-string-guide" >}}).
+Please see the [Writing Localizable Code]({{< relref "writinglocalizableCode" >}}).
 
 #### (2) Prepare XLIFF files
 
@@ -140,13 +138,18 @@ com.webos.app.sample
 
 
 #### (3) Prepare a localization tool to use
-The localization tool parses source code along with XLIFF files, and generates string resources in formats required by each programming language. Therefore, you must provide translation data in XLIFF format to use the localization tool.
-In order to run the localization tool on your machine, You need to check out the localization repository then install plugins.
+The localization tool parses source code along with XLIFF files, and generates string resources in formats required by each programming language.
 
-##### (3-1) Inatall a localization tool
-To install the loctool, you will need to make sure you have nodejs installed on your machine and in your path, as this is used to run the code. (Use 7.0 or later)
+Therefore, you must provide translation data in XLIFF format to use the localization tool.
+In order to run the localization tool on your machine, you need to check out the localization tool repository then install plugins.
+
+##### (3-1) Install a localization tool
+webOS OSE's localization tool is named [loctool](https://github.com/iLib-js/loctool/blob/development/README.md).
+
+In order to install the loctool, you will need to make sure you have nodejs installed on your machine and in your path, as this is used to run the code. (Use 7.0 or later)
 Once nodejs is installed, you can install the loctool itself. 
 
+If you check out `ilib-loctool-webos-dist` repository you can download all related plugins including loctool at once.
 {{< code "Installation" true >}}
 ```js
  git clone https://github.com/iLib-js/ilib-loctool-webos-dist
@@ -156,8 +159,9 @@ Once nodejs is installed, you can install the loctool itself.
 {{< /code >}}
 
 ##### (3-2) Prepare a configuration file
+To run the tool, you will need to create a `project.json` configuration file for each project and place it in the root of that project. 
 
-To run the tool, you will need to create a `project.json` configuration file for each project and place it in the root of that project. The loctool will recursively search the given directory (current dir by default) for project.json files to find the roots of the projects. The root of each project will be recursively searched for localizable files.
+The loctool will recursively search the given directory (current dir by default) for project.json files to find the roots of the projects. The root of each project will be recursively searched for localizable files.
 
 If want to learn more in detail, Please visit [loctool](https://github.com/iLib-js/loctool/blob/development/README.md#configuration) project site.
 Here's an example for webOS application
@@ -191,7 +195,7 @@ Here's an example for webOS application
 
 ###### plugins
 The loctool is driven by plugins that know how to parse various types of files, and write out the appropriate localized output.
-Here's math for various languages.
+Here's match for various languages.
 
 | type | plugins |
 | --- | --- |
@@ -201,7 +205,8 @@ Here's math for various languages.
 | qml | [ilib-loctool-webos-qml](https://github.com/iLib-js/ilib-loctool-webos-qml), [ilib-loctool-webos-ts-resource](https://github.com/iLib-js/ilib-loctool-webos-ts-resource) |
 | appinfo.json | [ilib-loctool-webos-appinfo-json](https://github.com/iLib-js/ilib-loctool-webos-appinfo-json) |
 
-#### (4) Run a localization tool on local
+##### (3-3) Run a localization tool on local
+
 {{< code "Running the Loctool" true >}}
 ```js
  node <path-to-the-loctool-dir>/loctool.js
@@ -215,8 +220,8 @@ Here's math for various languages.
 {{< /code >}}
 
 
-#### (5) Update Recipes
-In order to enabel localization task during a build. Recies files need to be udpated properly.
+#### (4) Update Recipes
+In order to enabel localization task during a build, recipes need to be updated properly.
 
 ##### Web
 
@@ -275,8 +280,7 @@ WEBOS_LOCALIZATION_XLIFF_BASENAME = "sample"
 ### Resource Format
 Here the resource output per types.
 ##### Web
-Web Application rely on iLib library. and it requires string resources in JSON format.
-
+Web Application relys on iLib library and it requires string resources in JSON format.
 If you are not using the localization tool, create a file named **`strings.json`** and write strings for translation in key-value format.
 
 {{< code "Example of strings.json" true >}}
@@ -369,6 +373,6 @@ The pseudo locales defined in webOS OSE are as follows. The character set differ
 | Pseudo Locale | Description |
 | --- | --- |
 | **zxx-XX** | Includes accented Latin characters |
-| **zxx-Cyrl-XX** | Includes Cyrllic characters |
+| **zxx-Cyrl-XX** | Includes Cyrillic characters |
 | **zxx-Hans-XX** | Includes Chinese characters |
 | **zxx-Hebr-XX** | Includes Hebrew characters |

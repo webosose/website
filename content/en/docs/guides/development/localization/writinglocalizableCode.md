@@ -1,5 +1,5 @@
 ---
-title: Localization-String Guide
+title: Writing Localizable Code
 date: 2020-06-19
 weight: 10
 toc: true
