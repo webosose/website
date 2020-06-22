@@ -282,9 +282,9 @@ WEBOS_LOCALIZATION_XLIFF_BASENAME = "sample"
 ```
 {{< /code >}}
 
-## Resource Format
-Here the resource output per types.
-##### Web
+## Resource Format per types
+Here the resource format explanation per types.
+### Web
 Web Application relys on iLib library and it requires string resources in JSON format.
 If you are not using the localization tool, create a file named **`strings.json`** and write strings for translation in key-value format.
 
@@ -316,10 +316,10 @@ com.webos.app.sample
 
 For example, the strings for French-language speakers in France need to be stored in `resources/fr/FR/strings.json`, while the strings for French-speaking residents of Canada stored in `resources/fr/CA/strings.json`.
 
-##### C/C++
+### C/C++
 You can also specify the name of the JSON file, but it is recommended that you use **`cppstrings.json`** for C++ and **`cstrings.json`** for C.
 
-##### QML
+### QML
 
 Basically, you can follow the localization guidelines of Qt. For details, refer to the [Qt documentation](http://doc.qt.io/qt-5/qtquick-internationalization.html).
 
