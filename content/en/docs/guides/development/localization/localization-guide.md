@@ -42,6 +42,9 @@ Here's a detailed explanation.
 In order to get localized strings on your project, Strings need to be wrapped with a function appropriate to the file type.
 Please see the [Writing Localizable Code]({{< relref "writinglocalizableCode" >}}).
 
+##### note
+If you want to create resources manually without using a localization tool, Please skip the next steps and take a look at the [Resource Format per types](#resource-format-per-types) section directly.
+
 ### (2) Prepare XLIFF files
 
 #### (2-1) What is XLIFF?
@@ -77,11 +80,18 @@ The following table describes the key elements and attributes of XLIFF.
 
 | Element/Attribute | Description |
 | --- | --- |
-| `<xliff> - srcLang` | Source language - the code of the language, in which *the text to be translated* is expressed |
+| `<xliff> - srcLang` | Source language - the code of the language, in which *the text to be translated* is expressed. |
 | `<xliff> - trgLang` | Target language - the code of the language, in which *the translated text* is expressed |
 | `<group> - name` | Programming language type - "javascript", "c", "cpp", "x-qml" (for Qt/QML) |
 | `<source>` | Source string - *the text to be translated* |
 | `<target>` | Target string - *the translated text* |
+
+##### notes
+* In webOS, we defined sourceLang as `en-KR`
+* basename :  application name. if the name is consist of many `.`,  the basename would be the last part.
+    * If an application name is  `com.webos.app.home`, the basename would be `home`.
+    * If an application name is  `sample`, the basename would be `sample`.
+
 
 #### (2-2) How to write XLIFF files?
 When writing an XLIFF file, the value of `original` attribute must match the basename. In addition, the value of `name` attribute in `group` must match the type of programming language used for developing the apps or services, as follows:
@@ -121,7 +131,7 @@ For Qt/QML apps, the group name is "x-qml".
 
 #### (2-3) Where to put the XLIFF files?
 
-XLIFF files for each locale must be placed in the directory with the same name as the module name, as shown below.
+XLIFF files for each locale must be placed in the directory with the same name as the base name, as shown below.
 
 {{< code "XLIFF Directory Structure" true >}}
 ```bash
@@ -156,6 +166,7 @@ If you check out [ilib-loctool-webos-dist](https://github.com/iLib-js/ilib-locto
  git clone https://github.com/iLib-js/ilib-loctool-webos-dist
  cd ilib-loctool-webos-dist
  npm install
+ // or to install it globally: npm install -g
 ```
 {{< /code >}}
 
@@ -196,7 +207,7 @@ Here's an example for webOS application.
 ```
 {{< /code >}}
 
-##### notes
+##### note
 `id` property's value in `project.json` have to be the same as xliff's directory name.
 
 ##### plugins
@@ -364,10 +375,7 @@ You can also specify the name of the JSON file, but it is recommended that you u
 
 
 ## Pseudo-Localization
-
-{{< note >}}
-For the definition of pseudo-localization, refer to the [Wikipedia page](https://en.wikipedia.org/wiki/Pseudolocalization).
-{{< /note >}}
+[Pseudolocalization](https://en.wikipedia.org/wiki/Pseudolocalization) (or pseudo-localization) is a software testing method used for testing internationalization aspects of software. Instead of translating the text of the software into a foreign language, as in the process of localization, the textual elements of an application are replaced with an altered version of the original language.
 
 When you use the localization tool, it generates the string resources for pseudo locale by default. (You do not need to add an XLIFF file for this locale.)
 

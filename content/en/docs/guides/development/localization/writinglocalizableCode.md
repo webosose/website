@@ -37,7 +37,7 @@ For more information on the functions above, refer to the [Enact documentation](
 
 For web apps that do not utilize Enact framework, use [`getString()`](http://www.translationcircle.com/ilib/doc/jsdoc/symbols/ResBundle.html#getString) API of [ResBundle](http://www.translationcircle.com/ilib/doc/jsdoc/symbols/ResBundle.html) feature in iLib.
 
-1.  First, load the iLib library (`ilib-web.js`) through the `<script>` tag.
+1.  First, load the iLib library [ilib-web.js](https://github.com/iLib-js/iLib/blob/development/js/lib/ilib-web.js) through the `<script>` tag.
 
     {{< code "Example for loading ilib-web.js" true >}}
     ``` html
