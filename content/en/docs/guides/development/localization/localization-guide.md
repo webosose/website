@@ -88,7 +88,7 @@ The following table describes the key elements and attributes of XLIFF.
 
 ##### notes
 * In webOS, we defined sourceLang as `en-KR`
-* basename :  application name. if the name is consist of many `.`,  the basename would be the last part.
+* basename :  An application name. If the name is consist of many `.`,  the basename would be the last part.
     * If an application name is  `com.webos.app.home`, the basename would be `home`.
     * If an application name is  `sample`, the basename would be `sample`.
 
