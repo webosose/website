@@ -42,8 +42,9 @@ Here's a detailed explanation.
 In order to get localized strings on your project, Strings need to be wrapped with a function appropriate to the file type.
 Please see the [Writing Localizable Code]({{< relref "writinglocalizableCode" >}}).
 
-##### note
-If you want to create resources manually without using a localization tool, Please skip the next steps and take a look at the [Resource Format per types](#resource-format-per-types) section directly.
+{{< note >}}
+If you want to create resources manually without using a localization tool,  Please skip the next steps and take a look at the [Resource Format per types](#resource-format-per-types) section directly.
+{{< /note >}}
 
 ### (2) Prepare XLIFF files
 
@@ -86,11 +87,12 @@ The following table describes the key elements and attributes of XLIFF.
 | `<source>` | Source string - *the text to be translated* |
 | `<target>` | Target string - *the translated text* |
 
-##### notes
+{{< note >}}
 * In webOS, we defined sourceLang as `en-KR`
 * basename :  An application name. If the name is consist of many `.`,  the basename would be the last part.
     * If an application name is  `com.webos.app.home`, the basename would be `home`.
     * If an application name is  `sample`, the basename would be `sample`.
+{{< /note >}}
 
 
 #### (2-2) How to write XLIFF files?
@@ -207,8 +209,11 @@ Here's an example for webOS application.
 ```
 {{< /code >}}
 
-##### note
+{{< note >}}
 `id` property's value in `project.json` have to be the same as xliff's directory name.
+{{< /note >}}
+##### note
+
 
 ##### plugins
 The loctool is driven by plugins that know how to parse various types of files, and write out the appropriate localized output.
