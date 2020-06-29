@@ -212,8 +212,6 @@ Here's an example for webOS application.
 {{< note >}}
 `id` property's value in `project.json` have to be the same as xliff's directory name.
 {{< /note >}}
-##### note
-
 
 ##### plugins
 The loctool is driven by plugins that know how to parse various types of files, and write out the appropriate localized output.
