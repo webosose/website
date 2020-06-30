@@ -1,5 +1,7 @@
 # Sync test
 
+# Sync test 2
+
 # webOS Open Source Edition website
 
 This repository contains the documentation and all the other assets for the [webOSE Open Source Edition (OSE) website](https://www.webosose.org).
