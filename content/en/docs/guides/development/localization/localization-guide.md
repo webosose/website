@@ -149,7 +149,6 @@ com.webos.app.sample
 ```
 {{< /code >}}
 
-
 ### (3) Prepare a localization tool to use
 The localization tool parses source code along with XLIFF files, and generates string resources in formats required by each programming language.
 
