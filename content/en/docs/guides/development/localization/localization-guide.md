@@ -1,6 +1,6 @@
 ---
 title: Localization Guide
-date: 2019-03-15
+date: 2020-06-30
 weight: 10
 toc: true
 ---

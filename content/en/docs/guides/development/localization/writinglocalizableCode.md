@@ -1,6 +1,6 @@
 ---
 title: Writing Localizable Code
-date: 2020-06-19
+date: 2020-06-30
 weight: 20
 toc: true
 ---
