@@ -1,6 +1,6 @@
 ---
 title: Developing External JS Services
-date: 2020-05-06
+date: 2020-06-24
 weight: 10
 toc: true
 ---
@@ -39,7 +39,7 @@ In the above command:
 The following shows an example directory structure of JS services packaged in an app.
 
 ``` bash
-sampleService
+sampleService/
 ├── helloclient.js
 ├── helloworld_webos_service.js
 ├── package.json
@@ -146,6 +146,7 @@ A `services.json` file defines the services that must be registered on the Luna 
 
 A `services.json` file looks like this:
 
+{{< code "services.json" >}}
 ``` json
 {
     "id": "com.domain.app.service",
@@ -155,6 +156,7 @@ A `services.json` file looks like this:
     }]
 }
 ```
+{{< /code >}}
 
 ### Step 4: Package the JS Service
 

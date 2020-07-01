@@ -1,13 +1,13 @@
 ---
 title: Developing Built-in QML Apps
-date: 2020-05-07
+date: 2020-06-17
 weight: 20
 toc: true
 ---
 
 To create a built-in QML app, you must write the source code and prepare the required configuration files.
 
-For easier understanding, the process to create a built-in QML app is explained using the example of an app named **`com.example.app.qml`** that has the following features:
+For easier understanding, the process to create a built-in QML app is explained using a sample app in [Sample Code Repository](https://github.com/webosose/samples). The sample app has the following features:
 
 - When the app is launched, it displays a "Hello, QML Application!!" message on the screen.
 - When the user clicks on the screen, it calls the `com.webos.service.systemservice/clock/getTime` method. "UTC" time on the response is printed on the screen.
@@ -15,15 +15,19 @@ For easier understanding, the process to create a built-in QML app is explained 
     - When it is first launched and relaunched, outputting the `params` value which is passed on the `launch` method of System and Application Manager (SAM)
     - When `windowState` changed.
 
-The directory structure of `com.example.app.qml` must be as follows:
+The directory structure of the sample app must be as follows:
 
 ``` bash
-com.example.app.qml
-├── main.qml
-├── appinfo.json
-├── icon.png
-├── com.example.app.qml.pro
-└── README.md
+qml-apps/
+├── build-config/
+│   ├── com.example.app.qml.bb
+│   └── webos-local.conf
+└── com.example.app.qml/
+    ├── appinfo.json
+    ├── com.example.app.qml.pro
+    ├── icon.png
+    ├── main.qml
+    └── README.md
 ```
 
 Developing a built-in QML app requires the following steps:
@@ -38,25 +42,24 @@ Developing a built-in QML app requires the following steps:
 ## Before you begin
 
 - Build and flash the webOS OSE image. For detailed information, see [Building webOS OSE]({{< relref "building-webos-ose" >}}) and [Flashing webOS OSE]({{< relref "flashing-webos-ose" >}}).
-
-- Create a project directory (`com.example.app.qml`) for the sample QML app, and move into the directory.
+- Download the sample repository, and move into `samples/qml-apps` directory.
 
     ``` bash
-    $ mkdir com.example.app.qml
-    $ cd com.example.app.qml
+    $ git clone https://github.com/webosose/samples
+    $ cd samples/qml-apps
     ```
 
 ## Step 1: Implement the QML App
+
+{{< note >}}
+In this guide, we will only explain essential parts of the sample codes. For full list of codes, refer to the sample repository.
+{{< /note >}}
 
 ### Source Code
 
 First, define the functionality of the QML app on the source code.
 
-For the sample QML app (`com.example.app.qml`), you must:
-
-- **Create and update the file:** `main.qml`
-- **Directory:** `com.example.app.qml`
-
+{{< code "main.qml" >}}
 ``` javascript {linenos=table}
 import QtQuick 2.4
 import WebOSServices 1.0
@@ -121,6 +124,7 @@ WebOSWindow {
     }
 }
 ```
+{{< /code >}}
 
 A brief explanation of the above file:
 
@@ -132,7 +136,7 @@ A brief explanation of the above file:
     - Line(7~13) : Set WebOSWindow properties and size and color.
     - Line(14): Set the `displayAffinity` property so that the app can be launched on the display corresponding to the `displayAffinity` value passed as a launch parameter.
     - Line(16~22) : Declare a Text object and string.
-    - Line(24~27) : A QML app (with the type "qml" on `appinfo.json`) is launched and registered to SAM by qml-runner. Through this process, the QML app can receive the parameters passed with the `launch` method call as `params`. With each `launch` method call, `onLaunchParamsChanged` is called even if the value of `params` does not change from that of the previous call. For details of PmLogLib usage, refer to [Using PmLogLib in QML]({{< relref "using-pmloglib-in-qml" >}}).
+    - Line(24~27) : A QML app (with the type "qml" on `appinfo.json`) is launched and registered to SAM by qml-runner. Through this process, the QML app can receive the parameters passed with the `launch` method call as `params`. With each `launch` method call, `onLaunchParamsChanged` is called even if the value of `params` ds not change from that of the previous call. For details of PmLogLib usage, refer to [Using PmLogLib in QML]({{< relref "using-pmloglib-in-qml" >}}).
     - Line(29~47) : Declare a Service object to call systemservice's `getTime` method. If the object receives the response, the app prints the UTC time on the screen.
     - Line(49~52) : When the user clicks on the screen, systemservice's `getTime` method is called.
     - Line(54~56) : `windowState` is a value that the WebOSWindow QML component sends to the app. Whenever the `windowState` value changes, `onWindowStateChanged` is called. Its value is 1 when the app is in the background and 4 when the app is in the foreground, following the definition of `Qt::WindowState`. For details, see [Qt::WindowState](https://doc.qt.io/qt-5/qt.html#WindowState-enum) on Qt documentation.
@@ -146,18 +150,14 @@ For detailed information for Qt, see [Qt documentation](http://doc.qt.io/).
 
 ### README.md
 
-This file provides general information of the QML app. For the sample app (`com.example.app.qml`), you should:
-
-- **Create and update the file:** `README.md`
-- **Directory:** `com.example.app.qml`
+This file provides general information of the QML app.
 
 {{< caution >}}
 * If the `README.md` file is missing, a build error occurs.
 * Make sure the 'Summary' section is a single line. Even **any whitespace** at the line above the 'Description' section is considered a part of the summary and can cause the build to fail.
 {{< /caution >}}
 
-**Sample README.md**
-
+{{< code "Sample README.md">}}
 ``` plaintext
 Summary
 -------
@@ -165,6 +165,7 @@ QML app sample
 
 Description
 -----------
+
 QML app sample
 
 How to Build on Linux
@@ -202,7 +203,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 SPDX-License-Identifier: Apache-2.0
+
 ```
+{{< /code >}}
 
 ## Step 2: Configure the QML App
 
@@ -210,11 +213,9 @@ This section describes how to prepare the configuration files required to build 
 
 ### appinfo.json
 
-Apps are required to have metadata before they can be packaged. This metadata is stored in a file called `appinfo.json`, which is used by the webOS device to identify the app, its icon, and other information that is needed to launch the app. For the sample QML app (`com.example.app.qml`), you must:
+Apps are required to have metadata before they can be packaged. This metadata is stored in a file called `appinfo.json`, which is used by the webOS device to identify the app, its icon, and other information that is needed to launch the app.
 
-- **Create and update the file:** `appinfo.json`
-- **Directory:** `com.example.app.qml`
-
+{{< code "appinfo.json" >}}
 ``` json {linenos=table}
 {
     "id": "com.example.app.qml",
@@ -227,6 +228,7 @@ Apps are required to have metadata before they can be packaged. This metadata is
     "requiredPermissions" : ["time", "applications"]
 }
 ```
+{{< /code >}}
 
 A brief explanation of the above file:
 
@@ -246,9 +248,7 @@ For more details, see [appinfo.json]({{< relref "appinfo-json" >}}).
 
 This file specifies the application name and the qmake template to be used for generating the project, as well as the source, header, and UI files included in the project.
 
-- **Create and update the file:** `com.example.app.qml.pro`
-- **Directory:** `com.example.app.qml`
-
+{{< code "com.example.app.qml.pro" >}}
 ``` bash {linenos=table}
 TEMPLATE = aux
 !load(webos-variables):error("Cannot load webos-variables.prf")
@@ -270,17 +270,14 @@ defined(WEBOS_INSTALL_WEBOS_APPLICATIONSDIR, var) {
     INSTALLS += target appinfo base icon
 }
 ```
+{{< /code >}}
 
 A brief explanation of the above file:
 
 - Line(1) : We do not require any actual compilation or link steps for the QML app. So, we set `TEMPLATE = aux`.
-
 - Line(2) : webOS platform `load(webos-variables)` will set `WEBOS_INSTALL_WEBOS_APPLICATIONSDIR`, which we will use as the deployment target folder.
-
 - Line(6) : Set installation directory on the target board. `INSTALL_APPDIR` would be `/usr/palm/applications/com.example.app.qml` on the target.
-
 - Line(7~16) : `*.files` specifies a path in the project directory and `*.path` specifies the path to the file system to be installed on the target.
-
 - Line(18) : Add target, appinfo, base, and icon to `INSTALLS` list.
 
 For more details, see [qmake Project Files](http://doc.qt.io/archives/qt-4.8/qmake-project-files.html).
@@ -291,13 +288,16 @@ After implementing and configuring the QML app, you must build the app.
 
 ### Add the Recipe File
 
-webOS OSE uses OpenEmbedded of Yocto Project to build its components. You must write a recipe that configures the build environment. For more details about the recipe, see [Yocto Project Reference Manual](https://www.yoctoproject.org/docs/current/ref-manual/ref-manual.html).
+webOS OSE uses OpenEmbedded of Yocto Project to build its components. OpenEmbedded needs a recipe file that configures the build environment. For more details about the recipe, see [Yocto Project Reference Manual](https://www.yoctoproject.org/docs/current/ref-manual/ref-manual.html).
 
-- **Create and update the file:** `<qml app name>.bb`
-- **Directory:** `build-webos/meta-webosose/meta-webos/recipes-webos/<qml app name>`
+You must move the recipe file into webOS OSE project directory.
+
+- **Recipe file:** `samples/qml-apps/build-config/com.example.app.qml.bb`
+- **Destination Directory:** `build-webos/meta-webosose/meta-webos/recipes-webos/<qml app name>`
 
 where `<qml app name>` is the name of the qml app. For the sample qml app, `<qml app name>` must be replaced by "com.example.app.qml".
 
+{{< code "com.example.app.qml.bb">}}
 ``` bash {linenos=table}
 SUMMARY = "QML App"
 SECTION = "webos/apps"
@@ -316,51 +316,45 @@ inherit webos_app
 
 FILES_${PN} += "${webos_applicationsdir}"
 ```
+{{< /code >}}
 
 A brief explanation of the above file:
 
 - Line(1~4) : Basic descriptions of the component.
-
 - Line(6) : A list of a package's build dependencies. Add `qtbase`, `qt-features-webos`, `qtdeclarative`, and `pmloglib`.
-
 - Line(7) : A list of a package's runtime dependencies (other packages) that must be installed in order for the built package to run correctly. Add `qml-webos-bridge` and `qml-webos-framework`.
-
 - Line(9) : Version of the component. For the webOS OSE component, this field is mandatory.
-
 - Line(10) : Revision version of the recipe. Each recipe requires a counter to track its modification history. Make sure that you increment the version when you edit the recipe, unless you only change the value of the `WEBOS_VERSION` field or comments.
-
 - Line(12) : Instruct OpenEmbedded that the component uses QMake for configuration, which is the preferred choice for webOS components.
-
 - Line(13) : Instruct OpenEmbedded to use the `WEBOS_VERSION` value as the component version number. If you develop your component on a local repository, this entry is required.
-
 - Line(14) : Inherit `webos_app`, because the component is an app.
-
 - Line(16) : `${webos_applicationsdir}` indicates `/usr/palm/applications`. `${PN}` is the package name, which is set to **com.example.app.qml**.
 
 ### Configure the Local Source Directory
 
 To build a component that is located on the local system, you must specify the directory information.
 
-- **Create and update the file:** `webos-local.conf`
-- **Directory:** `build-webos`
+You must move the configuration file into webOS OSE project directory.
+
+- **Configuration file:** `samples/qml-apps/build-config/webos-local.conf`
+- **Destination Directory:** `build-webos`
 
 For the sample QML app (`com.example.app.qml`), you must provide the local path where the source exists.
 
+{{< code "webos-local.conf" >}}
 ``` bash {linenos=table}
 INHERIT += "externalsrc"
 EXTERNALSRC_pn-com.example.app.qml = "/home/username/project/com.example.app.qml/"
 EXTERNALSRC_BUILD_pn-com.example.app.qml = "/home/username/project/com.example.app.qml/build/"
 PR_append_pn-com.example.app.qml =".local0"
 ```
+{{< /code >}}
 
 A brief explanation of the above file:
 
 - Line(1) : Inherit `externalsrc` bbclass file.
-
-- Line(2) : The local source directory. The syntax of the property is `EXTERNALSRC_pn-<component>`. For the value, input `"<full path of the project directory>"`
-
-- Line(3) : The local build directory. The syntax of the property is `EXTERNALSRC_BUILD_pn-<component>`. For the value, input `"<full path of the project directory>/build/"`
-
+- Line(2) : The local source directory. The syntax of the property is `EXTERNALSRC_pn-<component>`. For the value, input `"<absolute path of the project directory>"`
+- Line(3) : The local build directory. The syntax of the property is `EXTERNALSRC_BUILD_pn-<component>`. For the value, input `"<absolute path of the project directory>/build/"`
 - Line(4) : The appended revision version (PR) for building local source files. The syntax of the property is `PR_append_pn-<component>`. This property is optional.
 
 {{< note >}}
@@ -470,11 +464,14 @@ After building the app, you must verify its functionality.
             "subscribed": true,
             "running": [
                 {
-                    "id": "com.example.app.qml",
                     "webprocessid": "",
+                    "instanceId": "d641285a-5289-43d7-ac87-df2a509446290",
+                    "displayId": 0,
                     "defaultWindowType": "card",
                     "appType": "native_qml",
-                    "processId": "2779"
+                    "id": "com.example.app.qml",
+                    "processid": "1485",
+                    "launchPointId": "com.example.app.qml_default"
                 }
             ],
             "returnValue": true
@@ -500,7 +497,7 @@ After building the app, you must verify its functionality.
             Nov 13 21:44:56 raspberrypi4 qml-runner[1406]: [] [pmlog] QMLApp WINDOW_CHANGED {"status": 4}
             ```
 
-        - When the app goes to the background by launching another app, windowState is changed to "1".
+        - When the app gs to the background by launching another app, windowState is changed to "1".
 
             ``` plaintext
             Nov 13 21:49:24 raspberrypi4 qml-runner[1406]: [] [pmlog] QMLApp WINDOW_CHANGED {"status": 1}
@@ -551,7 +548,7 @@ Perform the following steps:
 2.  Build the webOS image using the following commands:
 
     ``` bash
-    build-webos$ source oe-init-build-env
+    build-webos$ source -init-build-env
     build-webos$ bitbake webos-image
     ```
 

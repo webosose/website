@@ -1,32 +1,36 @@
 ---
 title: Developing Built-in Native Apps
-date: 2020-05-07
+date: 2020-06-25
 weight: 20
 toc: true
 ---
 
 To create a built-in native app, you must write the source code and prepare the required configuration files.
 
-For easier understanding, the process to create a built-in native app is explained using the example of an app named **`com.example.app.nativeqt`** that has the following features:
+For easier understanding, the process to create a built-in native app is explained using a sample app in [Sample Code Repository](https://github.com/webosose/samples). The sample app has the following features:
 
 - Displays a "Hello, Native Qt Application!!" message on screen.
 - Calls **`com.webos.service.applicationmanager/registerApp`** method.
 - Prints logs when it is first launched.
 - Prints logs with the updated parameter and status whenever the app is relaunched.
 
-The directory structure of `com.example.app.nativeqt` must be as follows:
+The directory structure of the sample app must be as follows:
 
 ``` bash
-com.example.app.nativeqt
-├── main.cpp
-├── MyOpenGLWindow.h
-├── MyOpenGLWindow.cpp
-├── ServiceRequest.h
-├── ServiceRequest.cpp
-├── appinfo.json
-├── icon.png
-├── com.example.app.nativeqt.pro
-└── README.md
+native-apps/built-in/
+├── build-config/
+│   ├── com.example.app.nativeqt.bb
+│   └── webos-local.conf
+└── com.example.app.nativeqt/
+    ├── appinfo.json
+    ├── com.example.app.nativeqt.pro
+    ├── icon.png
+    ├── main.cpp
+    ├── MyOpenGLWindow.cpp
+    ├── MyOpenGLWindow.h
+    ├── README.md
+    ├── ServiceRequest.cpp
+    └── ServiceRequest.h
 ```
 
 Developing a built-in native app requires the following steps:
@@ -41,11 +45,11 @@ Developing a built-in native app requires the following steps:
 ## Before you begin
 
 - Build and flash the webOS OSE image. For detailed information, see [Building webOS OSE]({{< relref "building-webos-ose" >}}) and [Flashing webOS OSE]({{< relref "flashing-webos-ose" >}}).
-- Create a project directory (`com.example.app.nativeqt`) for the sample native app, and move into the directory.
+- Download the sample repository, and move into `samples/native-apps/built-in` directory.
 
     ``` bash
-    $ mkdir com.example.app.nativeqt
-    $ cd com.example.app.nativeqt
+    $ git clone https://github.com/webosose/samples
+    $ cd samples/native-apps/built-in
     ```
 
 ## Step 1: Implement the Native App
@@ -54,58 +58,17 @@ Developing a built-in native app requires the following steps:
 
 First, define the functionality of the native app on the source code.
 
-#### MyOpenGLWindow.h
-
-Define `MyOpenGLWindow` class. See [Appendix](#appendix-license-notice) for license information.
-
-- **Create and update the file:** `MyOpenGLWindow.h`
-- **Directory:** `com.example.app.nativeqt`
-
-``` cpp {linenos=table}
-#ifndef MYOPENGLWINDOW_H
-#define MYOPENGLWINDOW_H
-
-#include <QtGui/QWindow>
-#include <QtGui/QOpenGLFunctions>
-
-QT_BEGIN_NAMESPACE
-class QPainter;
-class QOpenGLContext;
-class QOpenGLPaintDevice;
-QT_END_NAMESPACE
-
-class MyOpenGLWindow : public QWindow, protected QOpenGLFunctions
-{
-    Q_OBJECT
-public:
-    explicit MyOpenGLWindow(QWindow *parent = 0);
-    ~MyOpenGLWindow();
-
-    virtual void render();
-
-protected:
-    void exposeEvent(QExposeEvent *event) override;
-
-private:
-    QOpenGLContext *m_context;
-    QOpenGLPaintDevice *m_device;
-};
-#endif
-```
+{{< note >}}
+In this guide, we will only explain essential parts of the sample codes. For full list of codes, refer to the sample repository.
+{{< /note >}}
 
 #### MyOpenGLWindow.cpp
 
-Define `MyOpenGLWindow` class member functions. See [Appendix](#appendix-license-notice) for license information.
+Define `MyOpenGLWindow` class member functions.
 
-- **Create and update the file:** `MyOpenGLWindow.cpp`
-- **Directory:** `com.example.app.nativeqt`
-
+{{< code "MyOpenGLWindow.cpp" >}}
 ``` cpp {linenos=table}
-#include "MyOpenGLWindow.h"
-#include <QtGui/QOpenGLContext>
-#include <QtGui/QOpenGLPaintDevice>
-#include <QtGui/QPainter>
-
+...
 MyOpenGLWindow::MyOpenGLWindow(QWindow *parent)
     : QWindow(parent)
     , m_device(nullptr)
@@ -119,67 +82,21 @@ MyOpenGLWindow::MyOpenGLWindow(QWindow *parent)
     m_context->makeCurrent(this);
     initializeOpenGLFunctions();
 }
-
-MyOpenGLWindow::~MyOpenGLWindow()
-{
-    delete m_device;
-}
-
-void MyOpenGLWindow::render()
-{
-    m_context->makeCurrent(this);
-
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
-    m_device = new QOpenGLPaintDevice;
-    m_device->setSize(size() * devicePixelRatio());
-    m_device->setDevicePixelRatio(devicePixelRatio());
-
-    QRect rect = geometry();
-    QPainter painter(m_device);
-
-    QFont font = painter.font();
-    font.setPointSize(50);
-    font.setStyleHint(QFont::Helvetica, QFont::PreferAntialias);
-
-    painter.setFont(font);
-    painter.setRenderHint(QPainter::HighQualityAntialiasing);
-    painter.setPen(Qt::yellow);
-    painter.drawText(rect, Qt::AlignCenter, "Hello, Native Qt Application!!");
-
-    m_context->swapBuffers(this);
-}
-
-void MyOpenGLWindow::exposeEvent(QExposeEvent *event)
-{
-    Q_UNUSED(event);
-    if (isExposed()){
-        render();
-    }
-}
+...
 ```
+{{< /code >}}
 
 A brief explanation of the above file:
 
-* Line(10) : Set the surface type of `MyOpenGLWindow` to `OpenGLSurface`. The type can be `OpenGLSurface` or `RasterGLSurface`.
+- Line(7) : Set the surface type of `MyOpenGLWindow` to `OpenGLSurface`. The type can be `OpenGLSurface` or `RasterGLSurface`.
 
 #### ServiceRequest.h
 
 Define a class that can register to luna-service2 and call `registerApp` method of System and Application Manager (SAM). This header file has the function declaration.
 
-- **Create and update the file:** `ServiceRequest.h`
-- **Directory:** `com.example.app.nativeqt`
-
+{{< code "ServiceRequest.h" >}}
 ``` cpp {linenos=table}
-#ifndef SERVICEREQUEST_H
-#define SERVICEREQUEST_H
-
-#include <glib.h>
-#include <string>
-#include <luna-service2/lunaservice.h>
-#include <pbnjson.hpp>
-#include <PmLog.h>
-
+...
 static PmLogContext getPmLogContext()
 {
     static PmLogContext s_context = 0;
@@ -189,38 +106,19 @@ static PmLogContext getPmLogContext()
     }
     return s_context;
 }
-
-class ServiceRequest
-{
-public:
-    ServiceRequest(std::string appId);
-    virtual ~ServiceRequest();
-    LSHandle* getHandle() const { return m_serviceHandle; }
-    void registerApp();
-
-protected:
-    LSHandle* acquireHandle();
-    void clearHandle();
-
-private:
-    GMainLoop* m_mainLoop;
-    LSHandle* m_serviceHandle;
-    std::string m_appId;
-};
-#endif
+...
 ```
+{{< /code >}}
 
 A brief explanation of the above file:
 
-* Line(10~18) : A function that calls `PmLogGetContext()` in PmLog library to print logs. For more details, see [Using PmLogLib in C/C++]({{< relref "using-pmloglib-in-c-cpp" >}}).
+- Line(3~11) : A function that calls `PmLogGetContext()` in PmLog library to print logs. For more details, see [Using PmLogLib in C/C++]({{< relref "using-pmloglib-in-c-cpp" >}}).
 
 #### ServiceRequest.cpp
 
 Define `ServiceRequest` class member functions. In addition, add helper functions related to PbnJson to use the library conveniently.
 
-- **Create and update the file:** `ServiceRequest.cpp`
-- **Directory:** `com.example.app.nativeqt`
-
+{{< code "ServiceRequest.cpp" >}}
 ``` cpp {linenos=table}
 #include "ServiceRequest.h"
 
@@ -352,6 +250,7 @@ void ServiceRequest::registerApp()
     }
 }
 ```
+{{< /code >}}
 
 A brief explanation of the above file:
 
@@ -366,11 +265,7 @@ A brief explanation of the above file:
 
 #### main.cpp
 
-For the sample native app (`com.example.app.nativeqt`), you must:
-
-- **Create and update the file:** `main.cpp`
-- **Directory:** `com.example.app.nativeqt`
-
+{{< code "main.cpp" >}}
 ``` cpp {linenos=table}
 #include "MyOpenGLWindow.h"
 #include "ServiceRequest.h"
@@ -402,6 +297,7 @@ int main(int argc, char **argv)
     return app.exec();
 }
 ```
+{{< /code >}}
 
 A brief explanation of the above file:
 
@@ -417,20 +313,16 @@ A brief explanation of the above file:
 
 For detailed information on Qt, see [Qt documentation](http://doc.qt.io/).
 
-### README.md
+## README.md
 
-This file provides general information of the native app. For the sample native app (`com.example.app.nativeqt`), you should:
-
-- **Create and update the file:** `README.md`
-- **Directory:** `com.example.app.nativeqt`
+This file provides general information of the native app.
 
 {{< caution >}}
-* If the `README.md` file is missing, a build error occurs.
-* Make sure the 'Summary' section is a single line. Even **any whitespace** at the line above the 'Description' section is considered a part of the summary and can cause the build to fail.
+- If the README.md file is missing, a build error occurs.
+- Make sure the ‘Summary’ section is a single line. Even any whitespace at the line above the ‘Description’ section is considered a part of the summary and can cause the build to fail.
 {{< /caution >}}
 
-**Sample README.md**
-
+{{< code "Sample README.md">}}
 ``` plaintext
 Summary
 -------
@@ -438,6 +330,7 @@ native app sample
 
 Description
 -----------
+
 native app sample
 
 How to Build on Linux
@@ -476,6 +369,7 @@ limitations under the License.
 
 SPDX-License-Identifier: Apache-2.0
 ```
+{{< /code >}}
 
 ## Step 2: Configure the Native App
 
@@ -483,11 +377,9 @@ This section describes how to prepare the configuration files required to build 
 
 ### appinfo.json
 
-Apps are required to have metadata before they can be packaged. This metadata is stored in a file called `appinfo.json`, which is used by the webOS device to identify the app, its icon, and other information that is needed to launch the app. For the sample native app (`com.example.app.nativeqt`), you must:
+Apps are required to have metadata before they can be packaged. This metadata is stored in a file called `appinfo.json`, which is used by the webOS device to identify the app, its icon, and other information that is needed to launch the app.
 
-- **Create and update the file:** `appinfo.json`
-- **Directory:** `com.example.app.nativeqt`
-
+{{< code "appinfo.json" >}}
 ``` json {linenos=table}
 {
     "id": "com.example.app.nativeqt",
@@ -501,6 +393,7 @@ Apps are required to have metadata before they can be packaged. This metadata is
     "nativeLifeCycleInterfaceVersion": 2
 }
 ```
+{{< /code >}}
 
 A brief explanation of the above file:
 
@@ -518,9 +411,7 @@ For more details, see [appinfo.json]({{< relref "appinfo-json" >}}).
 
 This file specifies the application name and the qmake template to be used for generating the project, as well as the source, header, and UI files included in the project.
 
-- **Create and update the file:** `com.example.app.nativeqt.pro`
-- **Directory:** `com.example.app.nativeqt`
-
+{{< code "com.example.app.nativeqt.pro" >}}
 ``` bash {linenos=table}
 TARGET = nativeqt
 
@@ -545,25 +436,18 @@ appinfo.files = appinfo.json
 
 INSTALLS += target icon appinfo
 ```
+{{< /code >}}
 
 A brief explanation of the above file:
 
 - Line(1) : Set `TARGET` name. It must be an executable file name of the app.
-
 - Line(3) : The `CONFIG` variable is a special variable that 'qmake' uses when generating a Makefile. qt is added to the list of existing values contained in `CONFIG`.
-
 - Line(4) : Link against the QtCore Module. Add '`gui-private`' to use private GUI include directories.
-
 - Line(6~7) : 'qmake' can configure the build process to make use of external libraries that are supported by [pkg-config](https://www.freedesktop.org/wiki/Software/pkg-config/), such as the luna-service2, glib, pbnjson, and PmLog libraries.
-
 - Line(9) : A list of source code files to be used when building the project.
-
 - Line(10) : A list of filenames of header (`.h`) files used when building the project.
-
 - Line(12) : Set installed directory on the target board. `INSTALL_APPDIR` would be `/usr/palm/applications/com.example.app.nativeqt ` on the target.
-
 - Line(14~20) : `*.files` specifies a path in project directory and `*.path` specifies the path to the file system to be installed on the target.
-
 - Line(22) : Add targets, icons, and appinfo files from the `INSTALLS` list.
 
 For more details, see [qmake Project Files](http://doc.qt.io/archives/qt-4.8/qmake-project-files.html).
@@ -574,13 +458,16 @@ After implementing and configuring the native app, you must build the app.
 
 ### Add the Recipe File
 
-webOS OSE uses OpenEmbedded of Yocto Project to build its components. You must write a recipe that configures the build environment. For more details about the recipe, see [Yocto Project Reference Manual](http://www.yoctoproject.org/docs/current/ref-manual/ref-manual.html).
+webOS OSE uses OpenEmbedded of Yocto Project to build its components. OpenEmbedded needs a recipe file that configures the build environment. For more details about the recipe, see [Yocto Project Reference Manual](http://www.yoctoproject.org/docs/current/ref-manual/ref-manual.html).
 
-- **Create and update the file:** `<native app name>.bb`
-- **Directory:** `build-webos/meta-webosose/meta-webos/recipes-webos/<native app name>`
+You must move the recipe file into webOS OSE project directory.
+
+- **Recipe file:** `samples/native-apps/built-in/build-config/com.example.app.nativeqt.bb`
+- **Destination Directory:** `build-webos/meta-webosose/meta-webos/recipes-webos/<native app name>`
 
 where `<native app name>` is the name of the native app. For the sample native app, `<native app name>` must be replaced by 'com.example.app.nativeqt'.
 
+{{< code "com.example.app.nativeqt.bb" >}}
 ``` bash {linenos=table}
 SUMMARY = "Native Qt App"
 SECTION = "webos/apps"
@@ -600,51 +487,45 @@ OE_QMAKE_PATH_HEADERS = "${OE_QMAKE_PATH_QT_HEADERS}"
 
 FILES_${PN} += "${webos_applicationsdir}"
 ```
+{{< /code >}}
 
 A brief explanation of the above file:
 
 - Line(1~4) : Basic descriptions of the component.
-
 - Line(6) : Version of the component. For the webOS OSE component, this field is mandatory.
-
 - Line(7) : Revision version of the recipe. Each recipe requires a counter to track its modification history. Make sure that you increment the version when you edit the recipe, unless you only change the value of the `WEBOS_VERSION` field or comments.
-
 - Line(9) : A list of a recipe's build-time dependencies.
-
 - Line(11) : Instruct OpenEmbedded to use the `WEBOS_VERSION` value as the component version number. If you develop your component on a local repository, this entry is required.
-
 - Line(12) : Instruct OpenEmbedded that the component uses QMake for configuration, which is the preferred choice for webOS components.
-
 - Line(13) : Inherit `webos_app`, because the component is an app.
-
 - Line(15) : Put `OE_QMAKE_PATH_HEADERS = "${OE_QMAKE_PATH_QT_HEADERS}"` so that Qt header files can be included at compile time.
-
 - Line(17) : `${webos_applicationsdir}` indicates `/usr/palm/applications`. `${PN}` is the package name, which is set to **webos.example.app.nativeqt**.
 
 ### Configure the Local Source Directory
 
 To build a component that is located on the local system, you must specify the directory information.
 
-- **Create and update the file:** `webos-local.conf`
-- **Directory:** `build-webos`
+You must move the configuration file into webOS OSE project directory.
+
+- **Configuration file:** `samples/native-apps/built-in/build-config/webos-local.conf`
+- **Destination directory:** `build-webos`
 
 For the sample native app (`com.example.app.nativqt`), you must provide the local path where the source exists.
 
+{{< code "webos-local.conf" >}}
 ``` bash {linenos=table}
 INHERIT += "externalsrc"
 EXTERNALSRC_pn-com.example.app.nativeqt = "/home/username/project/com.example.app.nativeqt/"
 EXTERNALSRC_BUILD_pn-com.example.app.nativeqt = "/home/username/project/com.example.app.nativeqt/build/"
 PR_append_pn-com.example.app.nativeqt =".local0"
 ```
+{{< /code >}}
 
 A brief explanation of the above file:
 
 - Line(1) : Inherit `externalsrc` bbclass file.
-
-- Line(2) : The local source directory. The syntax of the property is `EXTERNALSRC_pn-<component>`. For the value, input `"<full path of the project directory>"`
-
-- Line(3) : The local build directory. The syntax of the property is `EXTERNALSRC_BUILD_pn-<component>`. For the value, input `"<full path of the project directory>/build/"`
-
+- Line(2) : The local source directory. The syntax of the property is `EXTERNALSRC_pn-<component>`. For the value, input `"<absolute path of the project directory>"`
+- Line(3) : The local build directory. The syntax of the property is `EXTERNALSRC_BUILD_pn-<component>`. For the value, input `"<absolute path of the project directory>/build/"`
 - Line(4) : The appended revision version (PR) for building local source files. The syntax of the property is `PR_append_pn-<component>`. This property is optional.
 
 {{< note >}}
@@ -679,7 +560,7 @@ After building the app, you must verify its functionality.
     ├── MyOpenGLWindow.h
     ├── oe-logs -> /home/username/build/build-webos/BUILD/work/raspberrypi4-webos-linux-gnueabi/com.example.app.nativeqt/1.0.0-r0.local0/temp
     ├── oe-workdir -> /home/username/build/build-webos/BUILD/work/raspberrypi4-webos-linux-gnueabi/com.example.app.nativeqt/1.0.0-r0.local0
-    ├── README.md
+    ├── .md
     ├── ServiceRequest.cpp
     └── ServiceRequest.h
     ```
@@ -759,11 +640,14 @@ After building the app, you must verify its functionality.
             "subscribed": true,
             "running": [
                 {
-                    "id": "com.example.app.nativeqt",
                     "webprocessid": "",
+                    "instanceId": "0d67ed57-6585-4de5-b1cb-6f63ea04716d0",
+                    "displayId": 0,
                     "defaultWindowType": "card",
                     "appType": "native",
-                    "processid": "1778"
+                    "id": "com.example.app.nativeqt",
+                    "processid": "1337",
+                    "launchPointId": "com.example.app.nativeqt_default"
                 }
             ],
             "returnValue": true
@@ -867,59 +751,3 @@ Perform the following steps:
     For more details, see the [Flashing webOS OSE]({{< relref "flashing-webos-ose#linux" >}}) page.
 
 After rebooting, the native app becomes available on the Home Launcher.
-
-## Appendix: License Notice
-
-The sample code of [MyOpenGLWindow.h](#myopenglwindow-h) and [MyOpenGLWindow.cpp](#myopenglwindow-cpp) includes modification of code licensed under the following:
-
-``` plaintext
-/****************************************************************************
-**
-** Copyright (C) 2016 The Qt Company Ltd.
-** Contact: https://www.qt.io/licensing/
-**
-** This file is part of the documentation of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:BSD$
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** BSD License Usage
-** Alternatively, you may use this file under the terms of the BSD license
-** as follows:
-**
-** "Redistribution and use in source and binary forms, with or without
-** modification, are permitted provided that the following conditions are
-** met:
-**   * Redistributions of source code must retain the above copyright
-**     notice, this list of conditions and the following disclaimer.
-**   * Redistributions in binary form must reproduce the above copyright
-**     notice, this list of conditions and the following disclaimer in
-**     the documentation and/or other materials provided with the
-**     distribution.
-**   * Neither the name of The Qt Company Ltd nor the names of its
-**     contributors may be used to endorse or promote products derived
-**     from this software without specific prior written permission.
-**
-**
-** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
-**
-** $QT_END_LICENSE$
-**
-****************************************************************************/
-```

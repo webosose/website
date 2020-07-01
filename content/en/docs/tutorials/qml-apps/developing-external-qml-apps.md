@@ -1,6 +1,6 @@
 ---
 title: Developing External QML Apps
-date: 2020-04-29
+date: 2020-06-24
 weight: 10
 toc: true
 ---
@@ -33,35 +33,44 @@ In the above command:
   - `qmlapp` is the name of template that creates a basic QML app.
   - `sampleApp` is the QML app directory which is created in the current directory.
 
+The following shows an example directory structure of the sample app.
+
+``` bash
+sampleApp/
+戍式式 appinfo.json
+戍式式 icon.png
+戌式式 main.qml
+```
+
 The QML app directory (`sampleApp`) has the following files:
 
 <div class="table-container">
-<table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: auto" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p><strong>File</strong></p></th>
-<th><p><strong>Description</strong></p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><p>appinfo.json</p></td>
-<td><p>Configuration file that includes metadata for the QML app.</p></td>
-</tr>
-<tr class="even">
-<td><p>icon.png</p></td>
-<td><p>The icon image file. Can be replaced with a relevant icon.</p></td>
-</tr>
-<tr class="odd">
-<td><p>main.qml</p></td>
-<td><p>QML application main page. This page only shows "Hello, QML Application!!" text on the screen.</p></td>
-</tr>
-</tbody>
-</table>
+  <table class="table is-bordered is-fullwidth">
+    <colgroup>
+      <col style="width: auto" />
+      <col style="width: auto" />
+    </colgroup>
+    <thead>
+      <tr class="header">
+        <th><p><strong>File</strong></p></th>
+        <th><p><strong>Description</strong></p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="odd">
+        <td><p>appinfo.json</p></td>
+        <td><p>Configuration file that includes metadata for the QML app.</p></td>
+      </tr>
+      <tr class="even">
+        <td><p>icon.png</p></td>
+        <td><p>The icon image file. Can be replaced with a relevant icon.</p></td>
+      </tr>
+      <tr class="odd">
+        <td><p>main.qml</p></td>
+        <td><p>QML application main page. This page only shows "Hello, QML Application!!" text on the screen.</p></td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
 If you already have an existing QML app that you want to deploy on a webOS OSE device, you must add the `appinfo.json` file to the app root directory. To create this file, enter the following CLI command:
@@ -76,7 +85,7 @@ Design and implement the source code for the QML app.
 
 By default, the basic QML app template includes some basic code that prints a "Hello, QML Application!!" message. Therefore, if you want to create a demo QML app to test this process, you can skip this step and proceed.
 
-If you want to use a webOS service in the QML app, check the information and sample code provided in the [Implement the QML App]({{< relref "developing-built-in-qml-apps#step-1-implement-the-qml-app" >}}) section in [Developing Built-in QML Apps]({{< relref "developing-built-in-qml-apps" >}}).
+If you want to use a webOS service in the QML app, check the information provided in the [Implement the QML App]({{< relref "developing-built-in-qml-apps#step-1-implement-the-qml-app" >}}) section in [Developing Built-in QML Apps]({{< relref "developing-built-in-qml-apps" >}}).
 
 ## Step 3: Configure the QML App
 
@@ -84,6 +93,7 @@ The details or metadata of the QML app must be specified in the `appinfo.json` f
 
 CLI provides the `appinfo.json` file template as below.
 
+{{< code "appinfo.json" >}}
 ``` json
 {
     "id": "com.domain.app",
@@ -99,6 +109,7 @@ CLI provides the `appinfo.json` file template as below.
     ]
 }
 ```
+{{< /code >}}
 
 {{< note >}}
 If you are packaging a JS service within the QML app and the JS service uses methods of external services, you must add the group information of the external methods used by the JS service to the `requiredPermissions` field in `appinfo.json`.

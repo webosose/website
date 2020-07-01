@@ -1,32 +1,34 @@
 ---
 title: Developing Built-in JS Services
-date: 2019-11-14
+date: 2020-06-24
 weight: 20
 toc: true
 ---
 
 To create a built-in JS service, you must write the source code and prepare the required configuration files.
 
-For easier understanding, the process to create a built-in JS service is explained using the example of a service named **`com.example.service.js`** that has the following methods:
+For easier understanding, the process to create a built-in JS service is explained using using a sample service in [Sample Code Repository](https://github.com/webosose/samples). The sample service has the following methods:
 
 - **`hello`** - Calling this method on the target gives response as "Hello, JS Service!!".
-
 - **`locale`** - Calls methods of another service and gets a value from it.
 
-The directory structure of `com.example.service.js` must be as follows:
+The directory structure of the sample service must be as follows:
 
 ``` bash
-com.example.service.js
-├── CMakeLists.txt
-├── README.md
-├── files
-│   └── sysbus
-│       ├── com.example.service.js.api.json.in
-│       ├── com.example.service.js.perm.json.in
-│       ├── com.example.service.js.role.json.in
-│       └── com.example.service.js.service.in
-├── com_example_service_js.js
-├── package.json
+js-services/
+├── build-config/
+│   ├── com.example.service.js.bb
+│   └── webos-local.conf
+└── com.example.service.js/
+    ├── files/sysbus/
+    │   ├── com.example.service.js.api.json.in
+    │   ├── com.example.service.js.perm.json.in
+    │   ├── com.example.service.js.role.json.in
+    │   └── com.example.service.js.service.in
+    ├── CMakeLists.txt
+    ├── com_example_service_js.js
+    ├── package.json
+    └── README.md
 ```
 
 {{< note >}}
@@ -45,12 +47,11 @@ Developing a built-in JS service requires the following steps:
 ## Before you begin
 
 - Build and flash the webOS OSE image. For detailed information, see [Building webOS OSE]({{< relref "building-webos-ose" >}}) and [Flashing webOS OSE]({{< relref "flashing-webos-ose" >}}).
-
-- Create a project directory (`com.example.service.js`) for the sample JS service, and move into the directory.
+- Download the sample repository, and move into `samples/js-services` directory.
 
     ``` bash
-    $ mkdir com.example.service.js
-    $ cd com.example.service.js
+    $ git clone https://github.com/webosose/samples
+    $ cd samples/js-services
     ```
 
 ## Step 1: Implement the JS Service
@@ -59,11 +60,7 @@ Developing a built-in JS service requires the following steps:
 
 First, define the functionality of the JS service on the source code.
 
-For the sample JS service (`com.example.service.js`), you must:
-
-- **Create and update the file:** `com_example_service_js.js`
-- **Directory:** `com.example.service.js`
-
+{{< code "com_example_service_js.js" >}}
 ``` javascript {linenos=table}
 var Service = require('webos-service');
 var pmloglib = require('pmloglib');
@@ -90,33 +87,26 @@ service.register("locale", function(message) {
     });
 });
 ```
+{{< /code >}}
 
 A brief explanation of the above file:
 
 - Line(1) : Load the webos-service module. For more details about webos-service, see [webos-service Library API Reference.]({{< relref "webos-service-library-api-reference" >}})
-
 - Line(2~3) : Load the pmloglib module. For more details about pmloglib, see [Using PmLogLib in Node.js]({{< relref "using-pmloglib-in-nodejs" >}}).
-
 - Line(6) : Register the JS Service.
-
 - Line(9~13) : Register the `hello` method which responds to a request with a "Hello, JS Service!!" message
-
 - Line(16~24) : Register the `locale` method. This method gets the value of locale information from the response received by calling settingsservice's `getSystemSettings` method.
 
 ### README.md
 
-This file provides general information of the JS service and it must be located in the root directory. For the sample JS service (`com.example.service.js`), you must:
-
-- **Create and update the file:** `README.md`
-- **Directory:** `com.example.service.js`
+This file provides general information of the JS service and it must be located in the root directory.
 
 {{< caution >}}
 * If the `README.md` file is missing, a build error occurs.
 * Make sure the 'Summary' section is a single line. Even **any whitespace** at the line above the 'Description' section is considered a part of the summary and can cause the build to fail.
 {{< /caution >}}
 
-**Sample README.md**
-
+{{< code "Sample README.md" >}}
 ``` plaintext
 Summary
 -------
@@ -162,6 +152,7 @@ limitations under the License.
 
 SPDX-License-Identifier: Apache-2.0
 ```
+{{< /code >}}
 
 ## Step 2: Configure the JS Service
 
@@ -171,11 +162,7 @@ This section describes how to prepare the configuration files required to build 
 
 This file configures the service metadata and points to the main service file. It is required for packaging (related with Node.js) and must be located in the project root directory. For more details, see [Creating JS services]({{< relref "developing-external-js-services#creating-js-services" >}}).
 
-For the sample JS service (`com.example.service.js`), you must:
-
-- **Create and update the file:** `package.json`
-- **Directory:** `com.example.service.js`
-
+{{< code "package.json" >}}
 ``` json
 {
   "name": "com.example.service.js",
@@ -189,6 +176,7 @@ For the sample JS service (`com.example.service.js`), you must:
   "license": "Apache 2.0"
 }
 ```
+{{< /code >}}
 
 ### LS2 Configuration Files
 
@@ -198,33 +186,25 @@ To register and execute a service through LS2, it is necessary to create a Servi
 
 This file contains description of the service type and launch command.
 
-- **Create and update the file:** `<js service name>.service.in`
-- **Directory:** `<js service name>/files/sysbus`
-
-where `<js service name>` is the name of the JS service. For the sample JS service, `<js service name>` is to be replaced by 'com.example.service.js'.
-
+{{< code "com.example.service.js.service.in" >}}
 ``` bash {linenos=table}
 [D-BUS Service]
 Name=com.example.service.js
 Exec=@WEBOS_INSTALL_BINDIR@/run-js-service -n @WEBOS_INSTALL_WEBOS_SERVICESDIR@/com.example.service.js
 Type=dynamic
 ```
+{{< /code >}}
 
 A brief explanation of the above file:
 
 - Line(3) : The service can be run with JS service launcher script `run-js-service`.  The `-n` option means to use Node.js engine.(Currently, `-n` option is used by default). Set the name of the service along with the service path as parameters to the command.
-
 - Line(4) : Set as a dynamic service.
 
 #### Role File
 
 This file contains allowed service names for each component and individual security settings for each service name.
 
-- **Create and update the file:** `<js service name>.role.json.in`
-- **Directory:** `<js service name>/files/sysbus`
-
-where `<js service name>` is the name of the JS service. For the sample JS service, `<js service name>` is to be replaced by 'com.example.service.js'.
-
+{{< code "com.example.service.js.role.json.in">}}
 ``` json {linenos=table}
 {
     "appId":"com.example.service.js",
@@ -242,22 +222,19 @@ where `<js service name>` is the name of the JS service. For the sample JS servi
     ]
 }
 ```
+{{< /code >}}
 
 A brief explanation of the above file:
 
-* Line(4~6) : `allowedNames` - Names that this service is allowed to register. It can be an array of any valid service name strings, empty array [] for none, and empty string "" for an unnamed service.
-* Line(7~14) : The permissions for the service.
-    * `outbound` - Array of services that this service is allowed to send requests to. It can include strings of any valid service names. Use "\*" for all, empty array [] for none, and empty string "" for unnamed services. It's possible to use a wildcard (*) at the end of a string.
+- Line(4~6) : `allowedNames` - Names that this service is allowed to register. It can be an array of any valid service name strings, empty array [] for none, and empty string "" for an unnamed service.
+- Line(7~14) : The permissions for the service.
+    - `outbound` : Array of services that this service is allowed to send requests to. It can include strings of any valid service names. Use "\*" for all, empty array [] for none, and empty string "" for unnamed services. It's possible to use a wildcard (*) at the end of a string.
 
 #### Client Permission File
 
 This file defines what groups are required for this component to function properly.
 
-- **Create and update the file:** `<js service name>.perm.json.in`
-- **Directory:** `<js service name>/files/sysbus`
-
-where `<js service name>` is the name of the JS service. For the sample JS service, `<js service name>` is to be replaced by 'com.example.service.js'.​
-
+{{< code "com.example.service.js.perm.json.in" >}}
 ``` json {linenos=table}
 {
     "com.example.service.js": [
@@ -265,20 +242,17 @@ where `<js service name>` is the name of the JS service. For the sample JS servi
     ]
 }
 ```
+{{< /code >}}
 
 A brief explanation of the above file:
 
-* Line(3) : Since `com.example.service.js` calls settingsservice's `getSystemSettings` method, add the method's group name "settings.read" to the client permission file. When "webos-service" module is used, it calls activitymanager's `create` and `complete` methods to keep the dynamic service running for 5 seconds. So, add "activities.manage".
+- Line(3) : Since `com.example.service.js` calls settingsservice's `getSystemSettings` method, add the method's group name "settings.read" to the client permission file. When "webos-service" module is used, it calls activitymanager's `create` and `complete` methods to keep the dynamic service running for 5 seconds. So, add "activities.manage".
 
 #### API Permission File
 
 This file defines what methods are included into security groups this component provides.
 
-- **Create and update the file:** `<js service name>.api.json.in`
-- **Directory:** `<js service name>/files/sysbus`
-
-where `<js service name>` is the name of the JS service. For the sample JS service, `<js service name>` is to be replaced by 'com.example.service.js'.​​
-
+{{< code "com.example.service.js.api.json.in" >}}
 ``` json {linenos=table}
 {
     "com.example.service.js.group": [
@@ -286,20 +260,17 @@ where `<js service name>` is the name of the JS service. For the sample JS servi
     ]
 }
 ```
+{{< /code >}}
 
 A brief explanation of the above file:
 
-* Line(3) : Set this service's group name and specify the methods that belong to the group. In this example, the group name is set to "com.example.service.js.group", and all methods of `com.example.service.js` are added to this group.
+- Line(3) : Set this service's group name and specify the methods that belong to the group. In this example, the group name is set to "com.example.service.js.group", and all methods of `com.example.service.js` are added to this group.
 
 ### CMakeLists.txt
 
 This file is required to build the source code using CMake and it must be located in the root directory.
 
-For the sample JS service (`com.example.service.js`), you must:
-
-- **Create and update the file:** `CMakeLists.txt`
-- **Directory:** `com.example.service.js`
-
+{{< code "CMakeLists.txt" >}}
 ``` cmake {linenos=table}
 cmake_minimum_required(VERSION 2.8.7)
 project(com.example.service.js NONE)
@@ -325,21 +296,16 @@ install(DIRECTORY . DESTINATION ${INSTALL_DIR}
 
 webos_build_system_bus_files()
 ```
+{{< /code >}}
 
 A brief explanation of the above file:
 
 - Line(2) : Specify the project name and the file extension type. In this tutorial, we use "com.example.service.js" as the project name for indicating various filenames and pathnames. The file extension type allows CMake to skip unnecessary compiler checks.
-
 - Line(5) : Include webOS OSE modules for the build.
-
 - Line(7) : Specify the "**cmake-modules-webos**" version.
-
 - Line(8) : Specify `webos_component` with the component version to use webOS variables for the standard system paths. It commonly follows three digit versioning scheme.
-
 - Line(10) : The built-in js services must have source code, package.json, and services.json files for each service name in `/usr/palm/services/` under the target. To install the files to the target, set `/usr/palm/services/com.example.service.js` as the path.
-
 - Line(12~21) : Install the required file to `/usr/palm/services/com.example.service.js`. Exclude the files that do not need to be installed to target device.
-
 - Line(23) : Install the LS2 configuration files (`/files/sysbus`) to target.
 
 ## Step 3: Build the JS Service
@@ -348,14 +314,16 @@ After implementing and configuring the JS service, you must build the service.
 
 ### Add the Recipe File
 
-webOS OSE uses OpenEmbedded of Yocto Project to build its components. You must write a recipe that configures the build environment. For more details about the recipe, see [Yocto Project Reference Manual](http://www.yoctoproject.org/docs/current/ref-manual/ref-manual.html).
+webOS OSE uses OpenEmbedded of Yocto Project to build its components. OpenEmbedded needs a recipe file that configures the build environment. For more details about the recipe, see [Yocto Project Reference Manual](http://www.yoctoproject.org/docs/current/ref-manual/ref-manual.html).
 
-- **Create and update the file:** `<js service name>.bb`
+You must move the recipe file into webOS OSE project directory.
 
-- **Directory:** `build-webos/meta-webosose/meta-webos/recipes-webos/<js service name>`
+- **Recipe file:** `samples/js-services/build-config/com.example.service.js.bb`
+- **Destination directory:** `build-webos/meta-webosose/meta-webos/recipes-webos/<js service name>`
 
 where `<js service name>` is the name of the JS service. For the sample JS service, `<js service name>` must be replaced by 'com.example.service.js'.
 
+{{< code "com.example.service.js.bb" >}}
 ``` bash {linenos=table}
 SUMMARY = "JS Service Sample"
 AUTHOR = "Author's name <Author's e-mail>"
@@ -372,49 +340,45 @@ inherit webos_system_bus
 
 FILES_${PN} += "${webos_servicesdir}/${PN}/*"
 ```
+{{< /code >}}
 
 A brief explanation of the above file:
 
 - Lines(1~4) : Basic descriptions of the component.
-
 - Line(6) : Version of the component. For the webOS OSE component, this field is mandatory.
-
 - Line(7) : Revision version of the recipe. Each recipe requires a counter to track its modification history. Make sure that you increment the version when you edit the recipe, unless you only change the value of the `WEBOS_VERSION` field or comments.
-
 - Line(9) : Inherit common functions of webOS OSE. For all components of webOS OSE, this entry is required.
-
 - Line(10) : Instruct OpenEmbedded to use the `WEBOS_VERSION` value as the component version number. If you develop your component on a local repository, this entry is required.
-
 - Line(11) : Instruct OpenEmbedded that the component uses CMake for configuration, which is the preferred choice for webOS components.
-
 - Line(12) : To register component as a service and install LS2 configuration files, inherit `webos_system_bus`.
-
 - Line(14) : Append the list of files and directories that are placed in a package. Add the files under `/usr/palm/service/com.example.service.js` directory for packaging.
 
 ### Configure the Local Source Directory
 
 To build a component that is located on the local system, you must specify the directory information.
 
-- **Create and update the file:** `webos-local.conf`
-- **Directory :** `build-webos`
+You must move the configuration file into webOS OSE project directory.
+
+- **Configuration file:** `samples/js-services/build-config/webos-local.conf`
+- **Destination directory :** `build-webos`
 
 For the sample JS service (`com.example.service.js`), you must provide the local path where the source exists.
 
+
+{{< code "webos-local.conf" >}}
 ``` bash {linenos=table}
 INHERIT += "externalsrc"
 EXTERNALSRC_pn-com.example.service.js = "/home/username/project/com.example.service.js/"
 EXTERNALSRC_BUILD_pn-com.example.service.js = "/home/username/project/com.example.service.js/build/"
 PR_append_pn-com.example.service.js =".local0"
 ```
+{{< /code >}}
 
 A brief explanation of the above file:
 
 - Line(1) : Inherit `externalsrc` bbclass file.
-
-- Line(2) : The local source directory. The syntax of the property is `EXTERNALSRC_pn-<component>`. For the value, input `"<full path of the project directory>"`
-
-- Line(3) : The local build directory. The syntax of the property is `EXTERNALSRC_BUILD_pn-<component>`. For the value, input `"<full path of the project directory>/build/"`
-
+- Line(2) : The local source directory. The syntax of the property is `EXTERNALSRC_pn-<component>`. For the value, input `"<absolute path of the project directory>"`
+- Line(3) : The local build directory. The syntax of the property is `EXTERNALSRC_BUILD_pn-<component>`. For the value, input `"<absolute path of the project directory>/build/"`
 - Line(4) : The appended revision version (PR) for building local source files. The syntax of the property is `PR_append_pn-<component>`. This property is optional.
 
 {{< note >}}
@@ -442,12 +406,11 @@ After building the service, you must verify its functionality.
     com.example.service.js
     ├── CMakeLists.txt
     ├── README.md
-    ├── files
-    │   └── sysbus
-    │       ├── com.example.service.js.api.json.in
-    │       ├── com.example.service.js.perm.json.in
-    │       ├── com.example.service.js.role.json.in
-    │       └── com.example.service.js.service.in
+    ├── files/sysbus
+    │   ├── com.example.service.js.api.json.in
+    │   ├── com.example.service.js.perm.json.in
+    │   ├── com.example.service.js.role.json.in
+    │   └── com.example.service.js.service.in
     ├── com_example_service_js.js
     ├── package.json
     ├── oe-logs -> /home/username/build/build-webos/BUILD/work/raspberrypi4-webos-linux/com.example.service.js/0.0.1-r0.local0/temp

@@ -1,13 +1,13 @@
 ---
 title: Developing External Native Apps
-date: 2020-03-13
+date: 2020-06-25
 weight: 10
 toc: true
 ---
 
 External native apps are 3rd party native apps that must be installed on the webOS target device.
 
-Unlike other external apps (web or QML), a sample template is not provided for an external native app. So you have to create and implement the source code and required configuration files. Once the files are ready, you can package, install, and launch an external native app using the Command-Line Interface (CLI) tool that are provided by the webOS Open Source Edition (OSE) SDK. For detailed information on the CLI commands used in this tutorial, see [CLI commands]({{< relref "cli-user-guide#cli-commands" >}}).
+This page describes the steps to develop an external native app using [Sample Code Repository](https://github.com/webosose/samples) and CLI. For detailed information on the CLI commands used in this tutorial, see [CLI commands]({{< relref "cli-user-guide#cli-commands" >}}).
 
 Developing an external native app requires the following steps:
 
@@ -22,265 +22,62 @@ Developing an external native app requires the following steps:
 ## Before you begin
 
 - Make sure you have completed the steps in [Native Development Kit Setup]({{< relref "setting-up-native-development-kit" >}}).
-- Create a project directory (com.sample.waylandegl) for the sample native app, and move into the directory.
+- Download the sample repository, and move into `samples/native-apps/external/com.sample.waylandegl` directory.
 
    ``` bash
-   $ mkdir com.sample.waylandegl
-   $ cd com.sample.waylandegl
+   $ git clone https://github.com/webosose/samples
+   $ cd samples/native-apps/external/com.sample.waylandegl
    ```
 
 The directory structure of `com.sample.waylandegl` must be as follows:
 
 ``` bash
-com.sample.waylandegl
-├── src
+native-apps/external/com.sample.waylandegl/
+├── src/
 │   └── wayland_egl.c
 ├── appinfo.json
 ├── CMakeLists.txt
-└── icon.png
+├── icon.png
+└── README.md
 ```
 
 ## Step 1: Implement a Native App
 
-### wayland_egl.c
+### Source Code
 
-Define the functionality of the native app on the source code. The following source code will display a yellow screen on your target device. For the sample native app (`com.sample.waylandegl`), you must:
+Design and implement the source code for native app.
 
-- **Create and update the file:** `wayland_egl.c`
-- **Directory:** `com.sample.waylandegl/src`
+The sample codes will display a yellow screen on your target device. In this section, we will briefly explain webOS specific parts in `src/wayland_egl.c`.
 
+{{< code "wayland_egl.c" >}}
 ``` c {linenos=table}
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include <wayland-client.h>
 #include <wayland-egl.h>
-#include <wayland-webos-shell-client-protocol.h>
-#include <EGL/egl.h>
-#include <GLES2/gl2.h>
-
-struct wl_display *g_pstDisplay = NULL;
-struct wl_compositor *g_pstCompositor = NULL;
-struct wl_surface *g_pstSurface = NULL;
-struct wl_shell *g_pstShell = NULL;
-struct wl_shell_surface *g_pstShellSurface = NULL;
+...
 struct wl_webos_shell *g_pstWebOSShell = NULL;
 struct wl_webos_shell_surface *g_pstWebosShellSurface = NULL;
-struct wl_egl_window *g_pstEglWindow = NULL;
+...
 
-EGLDisplay g_pstEglDisplay = NULL;
-EGLConfig g_pstEglConfig = NULL;
-EGLSurface g_pstEglSurface = NULL;
-EGLContext g_pstEglContext = NULL;
-
-static void finalize();
-
-static void registryHandler(void *data, struct wl_registry *registry, uint32_t id, const char *interface, uint32_t version)
+// Please see wayland-webos-shell-client-protocol.h file for webOS specific wayland protocol
+g_pstWebosShellSurface = wl_webos_shell_get_shell_surface(g_pstWebOSShell, g_pstSurface);
+if (g_pstWebosShellSurface == NULL)
 {
-    if (strcmp(interface, "wl_compositor") == 0)
-    {
-        g_pstCompositor = wl_registry_bind(registry, id, &wl_compositor_interface, 1);
-    }
-    else if (strcmp(interface, "wl_shell") == 0)
-    {
-        g_pstShell = wl_registry_bind(registry, id, &wl_shell_interface, 1);
-    }
-    else  if (strcmp(interface, "wl_webos_shell") == 0)
-    {
-        g_pstWebOSShell = wl_registry_bind(registry, id, &wl_webos_shell_interface, 1);
-    }
+    fprintf(stderr, "Can't create webos shell surface\n");
+    exit(1);
 }
-
-static void registryRemover(void *data, struct wl_registry *registry, uint32_t id)
-{
-}
-
-static const struct wl_registry_listener s_stRegistryListener = {
-    registryHandler,
-    registryRemover
-};
-
-static void webosShellHandleState(void *data, struct wl_webos_shell_surface *wl_webos_shell_surface, uint32_t state)
-{
-    switch(state)
-    {
-        case WL_WEBOS_SHELL_SURFACE_STATE_FULLSCREEN:
-            break;
-        case WL_WEBOS_SHELL_SURFACE_STATE_MINIMIZED:
-            break;
-    }
-}
-
-static void webosShellHandlePosition(void *data, struct wl_webos_shell_surface *wl_webos_shell_surface, int32_t x, int32_t y)
-{
-}
-
-static void webosShellHandleClose(void *data, struct wl_webos_shell_surface *wl_webos_shell_surface)
-{
-    finalize();
-    exit(0);
-}
-
-static void webosShellHandleExpose(void *data, struct wl_webos_shell_surface *wl_webos_shell_surface, struct wl_array *rectangles)
-{
-}
-
-static void webosShellHandleStateAboutToChange(void *data, struct wl_webos_shell_surface *wl_webos_shell_surface, uint32_t state)
-{
-}
-
-static const struct wl_webos_shell_surface_listener s_pstWebosShellListener = {
-    webosShellHandleState,
-    webosShellHandlePosition,
-    webosShellHandleClose,
-    webosShellHandleExpose,
-    webosShellHandleStateAboutToChange
-};
-
-static void getWaylandServer()
-{
-    struct wl_registry *pstRegistry = NULL;
-
-    g_pstDisplay = wl_display_connect(NULL);
-    if (g_pstDisplay == NULL)
-    {
-        fprintf(stderr, "ERROR, cannot connect!\n");
-        exit(1);
-    }
-
-    pstRegistry = wl_display_get_registry(g_pstDisplay);
-    wl_registry_add_listener(pstRegistry, &s_stRegistryListener, NULL);
-
-    wl_display_dispatch(g_pstDisplay);
-    // wait for a synchronous response
-    wl_display_roundtrip(g_pstDisplay);
-
-    if (g_pstCompositor == NULL || g_pstShell == NULL || g_pstWebOSShell == NULL)
-    {
-        fprintf(stderr, "ERROR, cannot find compositor / shell\n");
-        exit(1);
-    }
-
-    g_pstSurface = wl_compositor_create_surface(g_pstCompositor);
-    if (g_pstSurface == NULL)
-    {
-        fprintf(stderr, "ERROR, cannot create surface \n");
-        exit(1);
-    }
-
-    g_pstShellSurface = wl_shell_get_shell_surface(g_pstShell, g_pstSurface);
-    if (g_pstShellSurface == NULL)
-    {
-        fprintf(stderr, "Can't create shell surface\n");
-        exit(1);
-    }
-    wl_shell_surface_set_toplevel(g_pstShellSurface);
-
-    // Please see wayland-webos-shell-client-protocol.h file for webOS specific wayland protocol
-    g_pstWebosShellSurface = wl_webos_shell_get_shell_surface(g_pstWebOSShell, g_pstSurface);
-    if (g_pstWebosShellSurface == NULL)
-    {
-        fprintf(stderr, "Can't create webos shell surface\n");
-        exit(1);
-    }
-    wl_webos_shell_surface_add_listener(g_pstWebosShellSurface, &s_pstWebosShellListener, g_pstDisplay);
-    wl_webos_shell_surface_set_property(g_pstWebosShellSurface, "appId", (getenv("APP_ID") ? getenv("APP_ID") : "com.sample.waylandegl"));
-    // for secondary display, set the last parameter as 1
-    wl_webos_shell_surface_set_property(g_pstWebosShellSurface, "displayAffinity", (getenv("DISPLAY_ID") ? getenv("DISPLAY_ID") : "0"));
-}
-
-static void createWindow()
-{
-    // webOS only supports full screen size
-    g_pstEglWindow = wl_egl_window_create(g_pstSurface, 1920, 1080);
-
-    if (g_pstEglWindow == EGL_NO_SURFACE)
-    {
-        fprintf(stderr, "ERROR, cannot create wayland egl window\n");
-        exit(1);
-    }
-
-    g_pstEglSurface = eglCreateWindowSurface(g_pstEglDisplay, g_pstEglConfig, g_pstEglWindow, NULL);
-
-    if (!eglMakeCurrent(g_pstEglDisplay, g_pstEglSurface, g_pstEglSurface, g_pstEglContext))
-    {
-        fprintf(stderr, "ERROR, cannot make current\n");
-    }
-}
-
-static void initEgl() {
-    EGLint major, minor, count, n, size;
-    EGLConfig *configs;
-    int i;
-
-    EGLint configAttributes[] = {
-            EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
-            EGL_RED_SIZE, 8,
-            EGL_GREEN_SIZE, 8,
-            EGL_BLUE_SIZE, 8,
-            EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
-            EGL_NONE
-    };
-
-    static const EGLint contextAttributes[] = {
-        EGL_CONTEXT_CLIENT_VERSION, 2,
-        EGL_NONE
-    };
-
-    g_pstEglDisplay = eglGetDisplay((EGLNativeDisplayType) g_pstDisplay);
-    if (g_pstEglDisplay == EGL_NO_DISPLAY)
-    {
-        fprintf(stderr, "ERROR, cannot create create egl g_pstDisplay\n");
-        exit(1);
-    }
-
-    if (eglInitialize(g_pstEglDisplay, &major, &minor) != EGL_TRUE)
-    {
-        fprintf(stderr, "ERROR, cannot initialize egl g_pstDisplay\n");
-        exit(1);
-    }
-    eglGetConfigs(g_pstEglDisplay, NULL, 0, &count);
-    configs = (EGLConfig*)calloc(count, sizeof(EGLConfig));
-    eglChooseConfig(g_pstEglDisplay, configAttributes, configs, count, &n);
-    // simply choose the first config
-    g_pstEglConfig = configs[0];
-    g_pstEglContext = eglCreateContext(g_pstEglDisplay, g_pstEglConfig, EGL_NO_CONTEXT, contextAttributes);
-}
-
-static void finalize()
-{
-    eglDestroyContext(g_pstEglDisplay, g_pstEglContext);
-    eglDestroySurface(g_pstEglDisplay, g_pstEglSurface);
-    eglTerminate(g_pstEglDisplay);
-    wl_display_disconnect(g_pstDisplay);
-}
-
-int main(int argc, char **argv)
-{
-    getWaylandServer();
-    initEgl();
-    createWindow();
-
-    while (wl_display_dispatch_pending(g_pstDisplay) != -1)
-    {
-        glClearColor(1.0, 1.0, 0.0, 1.0);
-        glClear(GL_COLOR_BUFFER_BIT);
-        glFlush();
-        eglSwapBuffers(g_pstEglDisplay, g_pstEglSurface);
-    }
-
-    finalize();
-    exit(0);
-}
+wl_webos_shell_surface_add_listener(g_pstWebosShellSurface, &s_pstWebosShellListener, g_pstDisplay);
+wl_webos_shell_surface_set_property(g_pstWebosShellSurface, "appId", (getenv("APP_ID") ? getenv("APP_ID") : "com.sample.waylandegl"));
+// for secondary display, set the last parameter as 1
+wl_webos_shell_surface_set_property(g_pstWebosShellSurface, "displayAffinity", (getenv("DISPLAY_ID") ? getenv("DISPLAY_ID") : "0"));
+...
 ```
+{{< /code >}}
 
 A brief explanation of the above file:
 
-- Line(7) : Include `wayland-webos-shell-client-protocol.h` header file which has `wl_webos_shell` and `wl_webos_shell_surface` structure.
-- Line(16~17) : Declare `wl_webos_shell` and `wl_webos_shell_surface` structure which are the webOS specific extension of `wl_shell` and `wl_shell_surface`.
-- Line(128~136) : Create a webOS shell surface for an existing surface and add the listener to receive events.
-- Line(138) : Set the property related to display. If you set the last parameter to `1`, the sample app will be displayed on a secondary display. To set up the secondary display, see [Dual-Display Setup]({{< relref "setting-up-dual-displays" >}}).
+- Line(1) : Include `wayland-webos-shell-client-protocol.h` header file which has `wl_webos_shell` and `wl_webos_shell_surface` structure.
+- Line(5~6) : Declare `wl_webos_shell` and `wl_webos_shell_surface` structure which are the webOS specific extension of `wl_shell` and `wl_shell_surface`.
+- Line(11~18) : Create a webOS shell surface for an existing surface and add the listener to receive events.
+- Line(20) : Set the property related to display. If you set the last parameter to `1`, the sample app will be displayed on a secondary display. To set up the secondary display, see [Dual-Display Setup]({{< relref "setting-up-dual-displays" >}}).
 
 For detailed information on the webOS-specific protocol extension, visit [webOS OSE GitHub](https://github.com/webosose/webos-wayland-extensions).
 
@@ -290,11 +87,9 @@ This section describes how to prepare the configuration files required to build 
 
 ### appinfo.json
 
-Apps are required to have metadata before they can be packaged. This metadata is stored in a file called `appinfo.json`, which is used by the webOS device to identify the app, its icon, and other information that is needed to launch the app. For the sample native app (`com.sample.waylandegl`), you must:
+Apps are required to have metadata before they can be packaged. This metadata is stored in a file called `appinfo.json`, which is used by the webOS device to identify the app, its icon, and other information that is needed to launch the app.
 
-- **Create and update the file:** `appinfo.json`
-- **Directory:** `com.sample.waylandegl`
-
+{{< code "appinfo.json" >}}
 ``` json {linenos=table}
 {
     "id": "com.sample.waylandegl",
@@ -306,6 +101,7 @@ Apps are required to have metadata before they can be packaged. This metadata is
     "icon": "icon.png"
 }
 ```
+{{< /code >}}
 
 A brief explanation of the above file:
 
@@ -319,15 +115,13 @@ For more details, see [appinfo.json]({{< relref "appinfo-json" >}}).
 
 ### CMakeLists.txt
 
-`CMakeLists.txt` file is used by CMake to generate the Makefile to build the project. This file specifies the source, header, and UI files included in the project. For the sample native app (`com.sample.waylandegl`), you must:
-
-- **Create and update the file:** `CMakeLists.txt`
-- **Directory:** `com.sample.waylandegl`
+`CMakeLists.txt` file is used by CMake to generate the Makefile to build the project. This file specifies the source, header, and UI files included in the project.
 
 {{< note >}}
 In this tutorial, we use the CMake to build the project. But you can use any other tools for the build.
 {{< /note >}}
 
+{{< code "CMakeLists.txt" >}}
 ``` cmake {linenos=table}
 cmake_minimum_required(VERSION 2.8.7)
 project(wayland_egl C CXX)
@@ -381,6 +175,7 @@ else()
     MESSAGE( "'icon.png' file was not found !!")
 endif()
 ```
+{{< /code >}}
 
 A brief explanation of the above file:
 

@@ -1,13 +1,30 @@
 ---
 title: Developing External Native Services
-date: 2020-02-25
+date: 2020-06-25
 weight: 10
 toc: true
 ---
 
 External native services are 3rd party native services that must be installed on the webOS target device. External native services must be packaged in a dummy app. Therefore, before creating the native service, make sure you have a dummy app to package with the external native service.
 
-Unlike JS service, a sample template is not provided for an external native service. So you have to create, implement, and build the source code and required configuration files. Once the files are ready, you can package, install, and launch an external native service using the Command-Line Interface (CLI) tool that is provided by the webOS Open Source Edition (OSE) SDK. For detailed information on the commands used in this tutorial, see [CLI commands]({{< relref "cli-user-guide#cli-commands" >}}).
+This page describes the steps to develop an external native service using [Sample Code Repository](https://github.com/webosose/samples) and CLI. For detailed information on the CLI commands used in this tutorial, see [CLI commands]({{< relref "cli-user-guide#cli-commands" >}}).
+
+The directory structure of the sample service must be as follows:
+
+```
+native-services/external/
+├── com.sample.echo/
+│   ├── appinfo.json
+│   ├── icon.png
+│   ├── index.html
+│   └── script.js
+├── com.sample.echo.service/
+│   ├── src/
+│   │   └── main.c
+│   ├── CMakeLists.txt
+│   └── services.json
+└── README.md
+```
 
 Developing an external native service requires the following steps:
 
@@ -22,307 +39,54 @@ Developing an external native service requires the following steps:
 ## Before you begin
 
 - Make sure you have completed the steps in [Native Development Kit Setup]({{< relref "setting-up-native-development-kit" >}}).
-- Create a directory (`com.sample.echo`) for a dummy app. This app will be packaged with a sample native service.
+- Download the sample repository, move into `samples/native-services/external/com.sample.echo.service` directory.
 
     ``` bash
-    $ mkdir com.sample.echo
-    ```
-
-  The directory structure of `com.sample.echo` must be as follows:
-
-    ```
-    com.sample.echo
-    ├── appinfo.json
-    ├── icon.png
-    ├── index.html
-    └── script.js
-    ```
-
-    {{< note >}}
-    You can use any type of dummy app (web, QML, native) for packaging an external native service.
-    {{< /note >}}
-
-- Create a project directory (`com.sample.echo.service`) for the sample native service, and move into the directory.
-
-    ``` bash
-    $ mkdir com.sample.echo.service
-    $ cd com.sample.echo.service
-    ```
-
-    The directory structure of `com.sample.echo.service` must be as follows:
-
-    ``` bash
-    com.sample.echo.service
-    ├── src
-    │   └── main.c
-    ├── services.json
-    └── CMakeLists.txt
+    $ git clone https://github.com/webosose/samples
+    $ cd samples/native-services/external/com.sample.echo.service
     ```
 
 ## Step 1: Implement a Native Service
 
-### Native Service
+### Source Code
 
 First, define the functionality of the native service on the source code.
 
-For the sample native service (`com.sample.echo.service`), you must:
+In this section, we will briefly explain webOS specific parts in `com.sample.echo.service/src/main.c`.
 
-- **Create and update the file:** `main.c`
-- **Directory:** `com.sample.echo.service/src`
-
+{{< code "main.c" >}}
 ``` c {linenos=table}
-#include <stdlib.h>
-#include <string.h>
-#include <glib.h>
-#include <stdio.h>
-#include <glib-object.h>
 #include <lunaservice.h>
 #include <luna-service2/lunaservice.h>
-#include <pbnjson.h>
-
-// This service name
-#define SERVICE_NAME "com.sample.echo.service"
-#define BUF_SIZE 64
-
-// Main loop for aliving background service
-GMainLoop *gmainLoop;
-
-LSHandle  *sh = NULL;
-LSMessage *message;
-
-// Declare of each method
-// All method format must be : bool function(LSHandle*, LSMessage*, void*)
+...
 bool echo(LSHandle *sh, LSMessage *message, void *data);
 
 LSMethod sampleMethods[] = {
     {"echo", echo},   // luna://com.sample.echo.service/echo
 };
-
-
-/*
- * Define luna://com.sample.echo.service/echo
- *  - A method that always returns the same value
- *
- * +----------------------------+            +--------------------------------+
- * |   com.sample.echo          |            | com.sample.echo.service        |
- * |   Foreground Application   |            |        Background Service      |
- * +----------------------------+            +--------------------------------+
- *   |                                                                        |
- *   |                                                                        |
- *   | 1. Request to luna://com.sample.echo.service/echo                      |
- *   |    with parameters { input: "Hello, World!" }                          |
- *   |                                                                        |
- *   | ---------------------------------------------------------------------> |
- *   |                                                                        |
- *   |                                                                        |
- *   |            2. Response to com.sample.echo                              |
- *   |               with result '{ "echoMessage" : "Hello, World!" }'        |
- *   |                                                                        |
- *   | <--------------------------------------------------------------------- |
- *   |                                                                        |
- *  \|/                                                                      \|/
- *   '                                                                        '
- */
+...
 bool echo(LSHandle *sh, LSMessage *message, void *data)
 {
-    LSError lserror;
-    JSchemaInfo schemaInfo;
-    jvalue_ref parsed = {0}, value = {0};
-    jvalue_ref jobj = {0}, jreturnValue = {0};
-    const char *input = NULL;
-    char buf[BUF_SIZE] = {0, };
-
-    LSErrorInit(&lserror);
-
-    // Initialize schema
-    jschema_info_init (&schemaInfo, jschema_all(), NULL, NULL);
-
-    // get message from LS2 and parsing to make object
-    parsed = jdom_parse(j_cstr_to_buffer(LSMessageGetPayload(message)), DOMOPT_NOOPT, &schemaInfo);
-
-    if (jis_null(parsed)) {
-        j_release(&parsed);
-        return true;
-    }
-
-    // Get value from payload.input
-    value = jobject_get(parsed, j_cstr_to_buffer("input"));
-
-    // JSON Object to string without schema validation check
-    input = jvalue_tostring_simple(value);
-
-    /**
-     * JSON create test
-     */
-    jobj = jobject_create();
-    if (jis_null(jobj)) {
-        j_release(&jobj);
-        return true;
-    }
-
-    jreturnValue = jboolean_create(TRUE);
-    jobject_set(jobj, j_cstr_to_buffer("returnValue"), jreturnValue);
-    jobject_set(jobj, j_cstr_to_buffer("echoMessage"), value);
-
-    LSMessageReply(sh, message, jvalue_tostring_simple(jobj), &lserror);
-
-    j_release(&parsed);
-    return true;
+  ...
 }
+...
+sh = LSMessageGetConnection(message);
 
-// Register background service and initialize
-int main(int argc, char* argv[])
-{
-    LSError lserror;
-    LSHandle  *handle = NULL;
-    bool bRetVal = FALSE;
+LSRegisterCategory(handle,"/",sampleMethods, NULL, NULL, &lserror);
 
-    LSErrorInit(&lserror);
-
-    // create a GMainLoop
-    gmainLoop = g_main_loop_new(NULL, FALSE);
-
-    bRetVal = LSRegister(SERVICE_NAME, &handle, &lserror);
-    if (FALSE== bRetVal) {
-        LSErrorFree( &lserror );
-        return 0;
-    }
-    sh = LSMessageGetConnection(message);
-
-    LSRegisterCategory(handle,"/",sampleMethods, NULL, NULL, &lserror);
-
-    LSGmainAttach(handle, gmainLoop, &lserror);
-
-    // run to check continuously for new events from each of the event sources
-    g_main_loop_run(gmainLoop);
-    // Decreases the reference count on a GMainLoop object by one
-    g_main_loop_unref(gmainLoop);
-
-    return 0;
-}
+LSGmainAttach(handle, gmainLoop, &lserror);
+...
 ```
+{{< /code >}}
 
 A brief explanation of the above file:
 
-- Line(7~8) : Include `lunaservice.h` header file to use luna service. For detailed information about luna service, visit [luna-service2 repository](https://github.com/webosose/luna-service2).
-- Line(22~26) : Declare `echo` method.
-- Line(53~98) : Implement `echo` method. This method will return the input as you typed.
-- Line(117) : Return a handle to the connection-to-bus through which message was sent.
-- Line(119) : Append a method to the category.
-- Line(121) : Attach a service to a glib mainloop.
-
-### Dummy App
-
-The native service must be packaged along with a dummy app. The dummy app can be any type of a webOS app.
-
-In this sample, the dummy app will call the `com.sample.echo.service/echo` method which is provided by the native service (`com.sample.echo.service`). To implement the dummy app, go to `com.sample.echo` directory.
-
-``` bash
-$ cd ../com.sample.echo
-```
-
-{{< note >}}
-In this tutorial, a web app is used for the dummy app. For detailed information for the dummy web app, see [Developing External Web Apps]({{< relref "developing-external-web-apps" >}}).
-{{< /note >}}
-
-#### appinfo.json
-
-``` json {linenos=table}
-{
-  "id": "com.sample.echo",
-  "version": "0.0.1",
-  "vendor": "LG Electronics, Inc.",
-  "type": "web",
-  "main": "index.html",
-  "title": "Native Service Test Application",
-  "icon": "icon.png",
-  "iconColor": "#FFFFFF"
-}
-```
-
-A brief explanation of the above file:
-
-- Line(2) : The ID for the app.
-- Line(5) : The type of the web app.
-- Line(7) : The title to be shown on the Home Launcher.
-- Line(8) : The icon to be shown on the Home Launcher. Make sure the icon file is available in the project root directory. You can use your own icon.png (80*80) file or attached [icon.png](/images/docs/tutorials/icon.png).
-
-#### index.html
-
-``` html {linenos=table}
-<html>
-
-<head>
-    <title>Native Background Service Test App</title>
-    <script type="text/javascript" src="./script.js"></script>
-    <style>
-        body {
-            font-size: 50px;
-        }
-    </style>
-</head>
-
-<body bgcolor='#FFFFFF'>
-    <p id='result'></p>
-</body>
-
-</html>
-```
-
-#### script.js
-
-``` javascript {linenos=table}
-// Private function
-var Debug = {
-    log: function (str) {
-        console.log(str);
-        document.getElementById('result').innerHTML = str;
-    },
-    error: function (str) {
-        document.getElementById('result').innerHTML = '<font color="#FF0000">' + str + '</font>';
-        console.error(str);
-    }
-}
-
-// Template code for calling Luna APIs
-function LSCall(service, method, parameters, callback) {
-    var lunaURL = 'luna://' + service + '/' + method;
-    var params = JSON.stringify(parameters);
-    var bridge = new WebOSServiceBridge();
-    bridge.url = lunaURL;
-    bridge.onservicecallback = callback;
-    bridge.call(lunaURL, params);
-}
-
-/***
-* Usage Example. Call luna://com.sample.echo.service/getDataByKey with
-* { key : ["name", "age", "gender"] }
-* Object parameter
-***/
-LSCall('com.sample.echo.service', 'echo',
-    { input: "WebOSServiceBridge test string" },
-    function (returnString) {
-        // Response data is JSON-formatted string value. So before use it, it must be parsed
-        var returnObject = JSON.parse(returnString);
-        // If returnValue is true, then its API operation is successfully done
-        // Response data is based on service API implementation
-        if (returnObject.returnValue === true) {
-            // Assume that its Luna API response with 'result' data
-            Debug.log('Data : ' + JSON.stringify(returnObject));
-        }
-        // If returnValue is false, then its API operation is failure during running.
-        // You can see errorCode and errorText
-        else {
-            Debug.error('errorCode : ' + returnObject.errorCode);
-            Debug.error('errorText : ' + returnObject.errorText);
-        }
-    }
-);
-```
-
-{{< note >}}
-`script.js` is implemented using WebOSServiceBridge API. For more details on using WebOSServiceBridge API, see [WebOSServiceBridge API Reference]({{< relref "webosservicebridge-api-reference" >}}).
-{{< /note >}}
+- Line(1~2) : Include `lunaservice.h` header file to use luna service. For detailed information about luna service, see [luna-service2 Library API Reference]({{< relref "luna-service2-library-api-reference" >}}) and [Introduction to LS2 API]({{< relref "introduction-to-ls2-api" >}}).
+- Line(6~10) : Declare `echo` method.
+- Line(14) : Implement `echo` method. This method will return the input as you typed.
+- Line(23) : Return a handle to the connection-to-bus through which message was sent.
+- Line(25) : Append a method to the category.
+- Line(27) : Attach a service to a glib mainloop.
 
 ## Step 2: Configure the Native Service
 
@@ -330,11 +94,9 @@ This section describes how to prepare the configuration files required to build 
 
 ### services.json
 
-Services are required to have metadata before they can be packaged. This metadata is stored in a file called `services.json`, which is used by the webOS device to identify the service, its executable file, and other information that is needed to run the service. For the sample native service (`com.sample.echo.service`), you must:
+Services are required to have metadata before they can be packaged. This metadata is stored in a file called `services.json`, which is used by the webOS device to identify the service, its executable file, and other information that is needed to run the service.
 
-- **Create and update the file:** `services.json`
-- **Directory:** `com.sample.echo.service`
-
+{{< code "services.json" >}}
 ``` json {linenos=table}
 {
   "id" : "com.sample.echo.service",
@@ -347,6 +109,7 @@ Services are required to have metadata before they can be packaged. This metadat
   }]
 }
 ```
+{{< /code >}}
 
 A brief explanation of the above file:
 
@@ -360,15 +123,13 @@ For more details, see [services.json]({{< relref "services-json" >}}).
 
 ### CMakeLists.txt
 
-`CMakeLists.txt` file is used by CMake to generate the Makefile to build the project. This file specifies the source, header, and UI files included in the project. For the sample native service (`com.sample.echo.service`), you must:
-
-- **Create and update the file:** `CMakeLists.txt`
-- **Directory:** `com.sample.echo.service`
+`CMakeLists.txt` file is used by CMake to generate the Makefile to build the project. This file specifies the source, header, and UI files included in the project.
 
 {{< note >}}
 In this tutorial, we use the CMake to build the project. But you can use any other tools for the build.
 {{< /note >}}
 
+{{< code "CMakeLists.txt" >}}
 ``` cmake {linenos=table}
 cmake_minimum_required(VERSION 2.8.7)
 project(nativeService C)
@@ -427,6 +188,7 @@ target_link_libraries (${BIN_NAME}
 
 file(COPY ${CMAKE_SOURCE_DIR}/services.json DESTINATION "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
 ```
+{{< /code >}}
 
 A brief explanation of the above file:
 
@@ -476,6 +238,10 @@ $ ares-package ../com.sample.echo ./pkg_arm
 ```
 
 In the above command, `../com.sample.echo` is the dummy app directory and `./pkg_arm` is the native service directory which contains `services.json` file. You can use an absolute or relative path. For more details on using `ares-package`, see [ares-package]({{< relref "cli-user-guide#ares-package" >}}).
+
+{{< note >}}
+You can use any type of dummy app (web, QML, native) for packaging an external native service.
+{{< /note >}}
 
 ## Step 5: Install the Native Service
 

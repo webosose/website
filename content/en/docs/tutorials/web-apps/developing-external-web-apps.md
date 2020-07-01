@@ -1,6 +1,6 @@
 ---
 title: Developing External Web Apps
-date: 2020-04-29
+date: 2020-06-24
 weight: 10
 toc: true
 ---
@@ -39,6 +39,14 @@ In the above command:
 - `webapp` is the name of template that creates a basic web app.
 - `sampleApp` is the web app directory which is created in the current directory.
 
+The following shows an example directory structure of the sample app.
+
+``` bash
+sampleApp/
+戍式式 appinfo.json
+戍式式 icon.png
+戌式式 index.html
+```
 The web app directory (`sampleApp`) has the following files:
 
 <div class="table-container">
@@ -77,9 +85,7 @@ $ ares-generate -t webappinfo webApp
 ```
 
 {{< note >}}
-
-To use LS2 API on webOS OSE 1.x, the webOS library must exist within the project directory. For more information, see the [built-in web app tutorial]({{< relref "developing-built-in-web-apps#webos-ose-1-x" >}}).
-
+To use LS2 API on webOS OSE 1.x, the webOS library must exist within the project directory. For more information, see the [Using LS2 API in Web Apps]({{< relref "using-ls2-api-in-web-apps#webos-ose-1-x" >}}).
 {{< /note >}}
 
 
@@ -89,7 +95,7 @@ Design and implement the source code for the web app.
 
 By default, the webapp web app template includes some basic code that prints a "Hello, Web Application!!" message. Therefore, if you want to create a demo web app to test this process, you can skip this step and proceed.
 
-If you want to use a webOS service in the web app, check the information and sample code provided in the [Implement the Web App]({{< relref "developing-built-in-web-apps#step-1-implement-the-web-app" >}}) section in "[Developing Built-in Web Apps]({{< relref "developing-built-in-web-apps" >}})".
+If you want to use a webOS service in the web app, check the information in the [Implement the Web App]({{< relref "developing-built-in-web-apps#step-1-implement-the-web-app" >}}) section in [Developing Built-in Web Apps]({{< relref "developing-built-in-web-apps" >}}).
 
 
 ### Step 3: Configure the Web App
@@ -98,6 +104,7 @@ The details or metadata of the web app must be specified in the `appinfo.json` f
 
 CLI provides the `appinfo.json` file template as below.
 
+{{< code "appinfo.json" >}}
 ``` json
 {
     "id": "com.domain.app",
@@ -110,6 +117,7 @@ CLI provides the `appinfo.json` file template as below.
     "requiredPermissions": ["time", "settings.read", "activities.manage"]
 }
 ```
+{{< /code >}}
 
 {{< note >}}
 If you are packaging a JS service within the web app and the JS service uses methods of external services, you must add the group information of the external methods used by the JS service to the `requiredPermissions` field in `appinfo.json`.
@@ -189,7 +197,6 @@ To close the app, use the `ares-launch` command as follows:
 ``` bash
 $ ares-launch --device <TARGET_DEVICE> --close com.domain.app
 ```
-
 
 ## Debugging Web Apps
 
