@@ -29,21 +29,21 @@ For more information about BCP 47 and the language tag, refer to the following:
 {{< /note >}}
 
 
-## How to prepare your project localization
-In order to localizations on your project, you need to follow steps below.
-1) [Write code using the internationalization(i18n) library](#1-write-code-using-the-internationalization-i18n-library)
+## Applying localization to your project
+In order to apply localization to your project, you need to follow the steps below:
+1) [Write codes using the internationalization(i18n) library](#1-write-codes-using-the-internationalization-i18n-library)
 2) [Prepare XLIFF files](#2-prepare-xliff-files)
-3) [Prepare a localization tool to use](#3-prepare-a-localization-tool-to-use)
+3) [Prepare the localization tool](#3-prepare-the-localization-tool)
 4) [Update Recipes to apply webOS build](#4-update-recipes-to-apply-webos-build)
 
 ---
 Here's a detailed explanation.
-### (1) Write code using the internationalization(i18n) library
+### (1) Write codes using the internationalization(i18n) library
 In order to get localized strings on your project, Strings need to be wrapped with a function appropriate to the file type.
-Please see the [Writing Localizable Code]({{< relref "writinglocalizableCode" >}}).
+Please refer to the following guide: [Writing Localizable Code]({{< relref "writinglocalizableCode" >}}).
 
 {{< note >}}
-If you want to create resources manually without using a localization tool,  Please skip the next steps and take a look at the [Resource Format per types](#resource-format-per-types) section directly.
+If you want to create resources manually without using a localization tool,  Please skip the next steps and go to the [Resource Formats](#resource-formats) section.
 {{< /note >}}
 
 ### (2) Prepare XLIFF files
@@ -81,17 +81,17 @@ The following table describes the key elements and attributes of XLIFF.
 
 | Element/Attribute | Description |
 | --- | --- |
-| `<xliff> - srcLang` | Source language - the code of the language, in which *the text to be translated* is expressed. |
+| `<xliff> - srcLang` | Source language - the code of the language, in which *the text to be translated* is expressed |
 | `<xliff> - trgLang` | Target language - the code of the language, in which *the translated text* is expressed |
 | `<group> - name` | Programming language type - "javascript", "c", "cpp", "x-qml" (for Qt/QML) |
 | `<source>` | Source string - *the text to be translated* |
 | `<target>` | Target string - *the translated text* |
 
 {{< note >}}
-* In webOS, we defined sourceLang as `en-KR`
-* basename :  An application name. If the name is consist of many `.`,  the basename would be the last part.
-    * If an application name is  `com.webos.app.home`, the basename would be `home`.
-    * If an application name is  `sample`, the basename would be `sample`.
+* The source language is defined as `en-KR`.
+* basename :  The short name for the application. The right-most word of the dot-connected string of the application name becomes the basename.
+    * If an application name is  `com.webos.app.home`, the basename is `home`.
+    * If an application name is  `sample`, the basename is `sample`.
 {{< /note >}}
 
 
@@ -133,7 +133,7 @@ For Qt/QML apps, the group name is "x-qml".
 
 #### (2-3) Where to put the XLIFF files?
 
-XLIFF files for each locale must be placed in the directory with the same name as the base name, as shown below.
+XLIFF files for each locale must be placed in the directory with the same name as the base name, as shown below:
 
 {{< code "XLIFF Directory Structure" true >}}
 ```bash
@@ -149,19 +149,19 @@ com.webos.app.sample
 ```
 {{< /code >}}
 
-### (3) Prepare a localization tool to use
-The localization tool parses source code along with XLIFF files, and generates string resources in formats required by each programming language.
+### (3) Prepare the localization tool
+The localization tool parses source codes along with XLIFF files, and generates string resources in formats required by each programming language.
 
 Therefore, you must provide translation data in XLIFF format to use the localization tool.
-In order to run the localization tool on your machine, you need to check out the localization tool repository then install plugins.
+In order to run the localization tool on your machine, you need to check out the localization tool repository and then install the plugins.
 
-#### (3-1) Install a localization tool
+#### (3-1) Install the localization tool
 webOS OSE's localization tool is named [loctool](https://github.com/iLib-js/loctool/blob/development/README.md).
 
-In order to install the loctool, you will need to make sure you have nodejs installed on your machine and in your path, as this is used to run the code. (Use 7.0 or later)
-Once nodejs is installed, you can install the loctool itself. 
+In order to install the loctool, make sure you have Node.js installed on your machine and in your path, as this is used to run the code (Use 7.0 or later).
+Once Node.js is installed, you can install the loctool.
 
-If you check out [ilib-loctool-webos-dist](https://github.com/iLib-js/ilib-loctool-webos-dist) repository, you can download all related plugins including loctool at once.
+By checking out the [ilib-loctool-webos-dist](https://github.com/iLib-js/ilib-loctool-webos-dist) repository, you can download all related plugins including loctool.
 {{< code "Installation" true >}}
 ```js
  git clone https://github.com/iLib-js/ilib-loctool-webos-dist
@@ -172,12 +172,13 @@ If you check out [ilib-loctool-webos-dist](https://github.com/iLib-js/ilib-locto
 {{< /code >}}
 
 #### (3-2) Prepare a configuration file
-To run the tool, you will need to create a `project.json` configuration file for each project and place it in the root of that project. 
+To run the tool, create a `project.json` configuration file for each project and place it in the root of that project.
 
-The loctool will recursively search the given directory (current dir by default) for project.json files to find the roots of the projects. The root of each project will be recursively searched for localizable files.
+The loctool recursively search the given directory (current dir by default) for project.json files to find the roots of the projects. The root of each project will be recursively searched for localizable files.
 
-If want to learn more in detail, Please visit [loctool](https://github.com/iLib-js/loctool/blob/development/README.md#configuration) project site.
-Here's an example for webOS application.
+For more information about loctool, please visit the [loctool](https://github.com/iLib-js/loctool/blob/development/README.md#configuration) project site.
+
+Here's an example for a webOS application.
 
 
 {{< code "project.json" true >}}
@@ -213,8 +214,8 @@ Here's an example for webOS application.
 {{< /note >}}
 
 ##### plugins
-The loctool is driven by plugins that know how to parse various types of files, and write out the appropriate localized output.
-Here's match for various languages.
+The loctool is driven by plugins that know how to parse various types of files and writes out the appropriate localized output.
+Here are matchs for various languages.
 
 | type | plugins |projectType  |
 | --- | --- | --- |
@@ -224,7 +225,7 @@ Here's match for various languages.
 | qml | [ilib-loctool-webos-qml](https://github.com/iLib-js/ilib-loctool-webos-qml), [ilib-loctool-webos-ts-resource](https://github.com/iLib-js/ilib-loctool-webos-ts-resource) | webos-qml |
 | appinfo.json | [ilib-loctool-webos-appinfo-json](https://github.com/iLib-js/ilib-loctool-webos-appinfo-json) | - |
 
-#### (3-3) Run a localization tool on local
+#### (3-3) Run the localization tool on local
 
 {{< code "Running the Loctool" true >}}
 ```js
@@ -234,15 +235,15 @@ Here's match for various languages.
  node <path-to-the-loctool-dir>/loctool.js -h
 
  // Example) options on webOS
- node <path-to-the-loctool-dir>/loctool.js -2 -x xliffPath --pseudo --localizeOnly -l locallist
+ node <path-to-the-loctool-dir>/loctool.js -2 -x xliffPath --pseudo --localizeOnly -l localelist
 ```
 {{< /code >}}
 
 
 ### (4) Update Recipes to apply webOS build
-In order to enabel localization task during a build, recipes need to be updated properly.
+In order to enable the localization task during build, recipes need to be updated properly.
 
-To use the localization tool for generating string resources at build time, add a line to inherit `webos_localizable` bbclass to the recipe.
+To use the localization tool for generating string resources at build time, add the following line to the recipe to inherit the `webos_localizable` bbclass.
 
 {{< code "sample.bb" true >}}
 ```bash
@@ -252,7 +253,7 @@ inherit webos_localizable
 
 #### C/C++
 
-Regarding C/C++ case, i18n library (`libwebosi18n`) need to build first.
+Regarding C/C++ cases, the i18n library (`libwebosi18n`) needs to be built first.
 In order to do that, add a dependency for the library to the recipe.
 
 {{< code "samplecpp.bb" true >}}
@@ -275,7 +276,7 @@ inherit webos_qt_localization
 
 ##### Tips
 
-If necessary, you can change the location of XLIFF directory or XLIFF basename by redefining the values below.
+If necessary, you can change the location of XLIFF directory or XLIFF basename by redefining the values below:
 
 {{< code "Default WEBOS_LOCALIZATION_DATA_PATH and WEBOS_LOCALIZATION_XLIFF_BASENAME" true >}}
 ```bash
@@ -295,10 +296,11 @@ WEBOS_LOCALIZATION_XLIFF_BASENAME = "sample"
 ```
 {{< /code >}}
 
-## Resource Format per types
-Here the resource format explanation per types.
+## Resource Formats
+This section explains the resource format of each supported programming language.
+
 ### Web
-Web Application relys on iLib library and it requires string resources in JSON format.
+Web Application relys on the iLib library and it requires string resources in JSON format.
 If you are not using the localization tool, create a file named **`strings.json`** and write strings for translation in key-value format.
 
 {{< code "Example of strings.json" true >}}
@@ -330,7 +332,7 @@ com.webos.app.sample
 For example, the strings for French-language speakers in France need to be stored in `resources/fr/FR/strings.json`, while the strings for French-speaking residents of Canada stored in `resources/fr/CA/strings.json`.
 
 ### C/C++
-You can also specify the name of the JSON file, but it is recommended that you use **`cppstrings.json`** for C++ and **`cstrings.json`** for C.
+You can also specify the name of the JSON file. However, it is recommended that you use **`cppstrings.json`** for C++ and **`cstrings.json`** for C.
 
 ### QML
 

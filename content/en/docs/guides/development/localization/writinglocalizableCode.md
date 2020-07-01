@@ -5,12 +5,12 @@ weight: 20
 toc: true
 ---
 
-In order for the translations to be successful, Strings need to be wrapped with a function appropriate to the file type.
-webOS localization supports JavaScript, C/C++ and QML types.
+To successfully localize your apps and services, strings need to be wrapped with a function appropriate to their file type.
+Localization in webOS OSE is available for the following programming languages: JavaScript, C/C++ and QML types.
 
 ## JavaScript
 
-For web apps developed in JavaScript, use [iLib](https://github.com/iLib-js/iLib) to write code for localization.
+For web apps developed in JavaScript, use [iLib](https://github.com/iLib-js/iLib) to write codes for localization.
 
 {{< note >}}
 For more information about iLib, refer to the [iLib documentation](https://github.com/iLib-js/iLib/blob/development/docs/index.md).
@@ -18,7 +18,7 @@ For more information about iLib, refer to the [iLib documentation](https://githu
 
 ### Enact Apps
 
-Enact framework offers [`$L`](https://enactjs.com/docs/modules/i18n/$L/) component as part of its i18n library, which provides functions to map to translated strings.
+Enact framework offers the [`$L`](https://enactjs.com/docs/modules/i18n/$L/) component as part of its i18n library, which provides functions to map to translated strings.
 
 {{< code "Example for $L usage" true >}}
 ``` js
@@ -30,12 +30,12 @@ toIString('Close'); // => an ilib IString representing "Close" in the current lo
 {{< /code >}}
 
 {{< note >}}
-For more information on the functions above, refer to the [Enact documentation](https://enactjs.com/docs/modules/i18n/$L/).
+For more information about the functions above, refer to the [Enact documentation](https://enactjs.com/docs/modules/i18n/$L/).
 {{< /note >}}
 
 ### Non-Enact Apps
 
-For web apps that do not utilize Enact framework, use [`getString()`](http://www.translationcircle.com/ilib/doc/jsdoc/symbols/ResBundle.html#getString) API of [ResBundle](http://www.translationcircle.com/ilib/doc/jsdoc/symbols/ResBundle.html) feature in iLib.
+For web apps that do not utilize Enact framework, use the [`getString()`](https://ilib-js.github.io/iLib/docs/api/jsdoc/symbols/ResBundle.html#getString) API of [ResBundle](https://ilib-js.github.io/iLib/docs/api/jsdoc/symbols/ResBundle.html) feature in iLib.
 
 1.  First, load the iLib library [ilib-web.js](https://github.com/iLib-js/iLib/blob/development/js/lib/ilib-web.js) through the `<script>` tag.
 
@@ -56,7 +56,7 @@ For web apps that do not utilize Enact framework, use [`getString()`](http://www
     <script src=file://usr/share/javascript/ilib/lib/ilib-web.js type="text/javascript"></script>
     ```
 
-2.  After that, use [`ResBundle.getString()`](http://www.translationcircle.com/ilib/doc/jsdoc/symbols/ResBundle.html#getString) method of iLib as shown in the example below.
+2.  After that, use the [`ResBundle.getString()`](https://ilib-js.github.io/iLib/docs/api/jsdoc/symbols/ResBundle.html#getString) method of iLib as shown in the example below:
 
     {{< code "Example for a non-Enact web app" true >}}
     ```js
@@ -72,7 +72,7 @@ For web apps that do not utilize Enact framework, use [`getString()`](http://www
 
 If you are developing apps or services in C++/C, use [libwebosi18n](https://github.com/webosose/libwebosi18n) to write code for localization.
 
-The following shows an example that uses `getLocString()` API of libwebosi18n in C++ and C.
+The following shows an example which uses the `getLocString()` API of libwebosi18n in C++ and C:
 
 {{< code "Using getLocString() in C++" true >}}
 ```cpp
@@ -103,7 +103,7 @@ resBundle_getLocString(resBundle, "String 1");
 
 To prepare string resources without using the localization tool and XLIFF, write them in JSON format just like in JavaScript. The format and directory structure are basically the same as what's described above.
 
-You can also specify the name of the JSON file, but it is recommended that you use **`cppstrings.json`** for C++ and **`cstrings.json`** for C.
+You can also specify the name of the JSON file. However, it is recommended that you use **`cppstrings.json`** for C++ and **`cstrings.json`** for C.
 
 ## Qt/QML
 
