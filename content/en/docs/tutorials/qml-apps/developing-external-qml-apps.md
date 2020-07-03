@@ -37,9 +37,9 @@ The following shows an example directory structure of the sample app.
 
 ``` bash
 sampleApp/
-¦§¦¡¦¡ appinfo.json
-¦§¦¡¦¡ icon.png
-¦¦¦¡¦¡ main.qml
+â”œâ”€â”€ appinfo.json
+â”œâ”€â”€ icon.png
+â””â”€â”€ main.qml
 ```
 
 The QML app directory (`sampleApp`) has the following files:

@@ -43,9 +43,9 @@ The following shows an example directory structure of the sample app.
 
 ``` bash
 sampleApp/
-¦§¦¡¦¡ appinfo.json
-¦§¦¡¦¡ icon.png
-¦¦¦¡¦¡ index.html
+â”œâ”€â”€ appinfo.json
+â”œâ”€â”€ icon.png
+â””â”€â”€ index.html
 ```
 The web app directory (`sampleApp`) has the following files:
 
