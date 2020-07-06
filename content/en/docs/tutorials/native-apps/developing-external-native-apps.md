@@ -1,6 +1,6 @@
 ---
 title: Developing External Native Apps
-date: 2020-06-25
+date: 2020-07-03
 weight: 10
 toc: true
 ---
@@ -184,8 +184,8 @@ A brief explanation of the above file:
 - Line(4~20) : Add the directories that contain the header files.
 - Line(22~29) : Set the name of result binary file and source files to be built.
 - Line(30) : Set the language for linker.
-- Line(32~37) : Specifies the libraries to be used.
-- Line(40~51) : Copies the `appinfo.json` and `icon.png` files to the output folder.
+- Line(32~37) : Specify the libraries to be used.
+- Line(40~51) : Copy the `appinfo.json` and `icon.png` files to the output folder.
 
 For more details, see [CMake Reference Documentation](https://cmake.org/documentation/).
 

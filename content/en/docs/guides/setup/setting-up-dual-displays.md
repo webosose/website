@@ -1,7 +1,7 @@
 ---
-title: Dual-Display Setup
+title: Dual Display Setup
 display_title: Setting Up Dual Displays with Touchscreens on Raspberry Pi 4
-date: 2020-03-30
+date: 2020-07-03
 weight: 50
 toc: true
 ---

@@ -1,6 +1,6 @@
 ---
 title: webOS OSE 2.0.0 Release
-date: 2019-10-29
+date: 2020-07-03
 slug: webos-ose-2-0-0-release
 posttype: release
 toc: false
@@ -43,9 +43,9 @@ New reference UI/UX is optimized for touch input, and comes with restyled, card-
 The quick access menu has been partially implemented, and missing features will be provided in the future release.
 {{< /note >}}
 
-## Dual-display Support
+## Dual Display Support
 
-Dual-display support is a preliminary step for multi-display support, which is essential for a rear seat entertainment (RSE) system. To see how to connect dual displays to Raspberry Pi 4, see [Dual-Display Setup Guide]({{< relref "setting-up-dual-displays" >}}).
+Dual display support is a preliminary step for multi-display support, which is essential for a rear seat entertainment (RSE) system. To see how to connect dual displays to Raspberry Pi 4, see [Dual-Display Setup Guide]({{< relref "setting-up-dual-displays" >}}).
 
 Using dual display with Raspberry Pi 4, you can launch web apps on the secondary display as well as on the primary display. For details of how to launch web apps on the secondary display, see [Launching Web Apps for Dual Display]({{< relref "launching-web-apps-for-dual-display" >}}).
 

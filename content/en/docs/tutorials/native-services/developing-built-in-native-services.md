@@ -1,6 +1,6 @@
 ---
 title: Developing Built-in Native Services
-date: 2020-06-24
+date: 2020-07-03
 weight: 20
 toc: true
 ---
@@ -336,8 +336,8 @@ This file contains allowed service names for each component and individual secur
 
 A brief explanation of the above file:
 
-- Line(2) : `exeName` - Specifies the full path to the binary for a native service. Must be of the form: "/path/to/binary"
-- Line(3) : `type` - Indicates whether the app is privileged (can change its role) or regular. Possible values are privileged or regular.
+- Line(2) : `exeName` - Specify the full path to the binary for a native service. Must be of the form: "/path/to/binary"
+- Line(3) : `type` - Indicate whether the app is privileged (can change its role) or regular. Possible values are privileged or regular.
 - Line(4~6) : `allowedNames` - Names that this service is allowed to register. It can be an array of any valid service name strings, empty array [] for none, and empty string "" for an unnamed service.
 - Line(7~14) : The permissions for the service.
     - `outbound` - Array of services that this service is allowed to send requests to. It can include strings of any valid service names. Use "\*" for all, empty array [] for none, and empty string "" for unnamed services. It's possible to use a wildcard (*) at the end of a string.

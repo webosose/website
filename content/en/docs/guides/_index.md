@@ -1,7 +1,7 @@
 ---
 title: Guides
 section_main: true
-date: 2020-03-06
+date: 2020-07-03
 weight: 20
 ---
 
@@ -27,7 +27,7 @@ This unit describes steps to set up the webOS OSE development environment.
 * [Building webOS OSE]({{< relref "building-webos-ose" >}})
 * [Flashing webOS OSE]({{< relref "flashing-webos-ose" >}})
 * [Network Setup]({{< relref "setting-up-networking" >}})
-* [Dual-Display Setup]({{< relref "setting-up-dual-displays" >}})
+* [Dual Display Setup]({{< relref "setting-up-dual-displays" >}})
 * [Google Assistant Setup]({{< relref "setting-up-google-assistant" >}})
 * [Firmware-Over-the-Air Setup]({{< relref "setting-up-fota" >}})
 * [GDB Debugging Setup]({{< relref "setting-up-debugging" >}})

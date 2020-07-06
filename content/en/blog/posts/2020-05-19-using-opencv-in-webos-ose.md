@@ -1,6 +1,6 @@
 ---
 title: Using OpenCV in webOS OSE
-date: 2020-05-19
+date: 2020-07-03
 slug: using-opencv-in-webos-ose
 posttype: article
 toc: true
@@ -123,9 +123,9 @@ cv2.imwrite('savedimage.jpg', img_gray)
 
 A brief explanation of the above file:
 
-- Line(3) : Reads the image from the file.
-- Line(4) : Converts the read image into a grayscale image.
-- Line(5) : Writes the converted image to the file.
+- Line(3) : Read the image from the file.
+- Line(4) : Convert the read image into a grayscale image.
+- Line(5) : Write the converted image to the file.
 
 Now, shall we run the Python code?
 
