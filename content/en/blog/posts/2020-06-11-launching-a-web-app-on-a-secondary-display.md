@@ -1,6 +1,6 @@
 ---
 title: Launching a web app on a secondary display
-date: 2020-07-03
+date: 2020-06-11
 slug: launching-a-web-app-on-a-secondary-display
 posttype: article
 toc: true

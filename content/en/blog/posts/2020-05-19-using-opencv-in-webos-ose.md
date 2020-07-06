@@ -1,6 +1,6 @@
 ---
 title: Using OpenCV in webOS OSE
-date: 2020-07-03
+date: 2020-05-19
 slug: using-opencv-in-webos-ose
 posttype: article
 toc: true
