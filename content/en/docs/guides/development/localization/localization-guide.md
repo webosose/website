@@ -176,19 +176,19 @@ To run the tool, create a `project.json` configuration file for each project and
 
 The loctool recursively search the given directory (current dir by default) for project.json files to find the roots of the projects. The root of each project will be recursively searched for localizable files.
 
-For more information about loctool, please visit the [loctool](https://github.com/iLib-js/loctool/blob/development/README.md#configuration) project site.
+For more information about [loctool configuration](https://github.com/iLib-js/loctool/blob/development/README.md#configuration), please visit the loctool project site.
 
 Here's an example for a webOS application.
 
 
-{{< code "project.json" true >}}
+{{< code "project.json (Web) " true >}}
 ```json
 {
     "name": "com.webos.app.home",
     "id": "home",
     "projectType": "webos-web",
     "sourceLocale": "en-KR",
-    "pseudoLocale": ["zxx-XX", "zxx-Hans-XX"],
+    "pseudoLocale": ["zxx-XX", "zxx-Cyrl-XX", "zxx-Hans-XX", "zxx-Hebr-XX"],
     "resourceDirs": {
          "json":"resources"
      },
@@ -197,6 +197,34 @@ Here's an example for a webOS application.
      },
     "plugins": [
          "ilib-loctool-webos-javascript",
+         "ilib-loctool-webos-appinfo-json"
+     ],
+     "excludes": [
+         "*"
+     ],
+     "includes": [
+         "src"
+     ]
+}
+```
+{{< /code >}}
+
+{{< code "project.json (QML) " true >}}
+```json
+{
+    "name": "ime-manager",
+    "id": "imemanager",
+    "projectType": "webos-qml",
+    "sourceLocale": "en-KR",
+    "pseudoLocale": ["zxx-XX", "zxx-Cyrl-XX", "zxx-Hans-XX", "zxx-Hebr-XX"],
+    "resourceDirs": {
+         "ts":"resources"
+     },
+     "resourceFileTypes": {
+         "ts":"ilib-loctool-webos-ts-resource"
+     },
+    "plugins": [
+         "ilib-loctool-webos-qml",
          "ilib-loctool-webos-appinfo-json"
      ],
      "excludes": [
@@ -276,23 +304,17 @@ inherit webos_qt_localization
 
 ##### Tips
 
-If necessary, you can change the location of XLIFF directory or XLIFF basename by redefining the values below:
+If necessary, you can change the location of XLIFF directory by redefining the values below:
 
-{{< code "Default WEBOS_LOCALIZATION_DATA_PATH and WEBOS_LOCALIZATION_XLIFF_BASENAME" true >}}
+{{< code "Default WEBOS_LOCALIZATION_DATA_PATH" true >}}
 ```bash
 WEBOS_LOCALIZATION_DATA_PATH ?= "${S}"
-
-#The default is the value of the last dot-separated field of PN.
-WEBOS_LOCALIZATION_XLIFF_BASENAME ?= "${@ '${BPN}'.split('.')[-1] }"
 ```
 {{< /code >}}
 
-For example, if the package name of an application is "com.webos.app.sample", the basename is "sample". This value must match the value of `original` attribute and the name of the directory where XLIFF files are located.
-
 {{< code "Example of modified recipe" true >}}
 ```bash
-WEBOS_LOCALIZATION_DATA_PATH = "${S}"
-WEBOS_LOCALIZATION_XLIFF_BASENAME = "sample"
+WEBOS_LOCALIZATION_DATA_PATH = "${STAGING_DATADIR}/localization"
 ```
 {{< /code >}}
 
