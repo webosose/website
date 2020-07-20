@@ -1,23 +1,23 @@
 ---
 title: com.webos.service.audio
-date: 2020-05-11
+date: 2020-07-16
 weight: 100
 toc: true
 ---
 <div>
   <h2>API Summary</h2>
-  <p>This service controls the audio policy of a webOS system. Its role is to implement audio routing (sending audio streams to the proper destinations) and setting volumes in different scenarios.</p>
+  <p>Controls the audio policy of a webOS system. Implements audio routing (sending audio streams to the proper destinations) and setting volumes in different scenarios.</p>
   <p>Its functionality is categorized into the following modules:</p>
   <ul>
-    <li>Master - To control the master volume of audio output devices.</li>
-    <li>UMI - Handles connections and manages volume for audio resources, when playing audio from applications like YouTube.</li>
-    <li>System - To control audio policy for DTMF (touch tones), alarm, calendar, and effects.</li>
-    <li>Media - To control audio policy for media playback.</li>
-    <li>Ringtone - To control audio policy for ringtone.</li>
-    <li>Alert - To control audio policy for for alerts.</li>
+    <li><strong>Master:</strong> Controls the master volume of audio output devices.</li>
+    <li><strong>UMI:</strong> Handles connections and manages volume for audio resources, when playing audio from applications like YouTube.</li>
+    <li><strong>System:</strong>&nbsp;Controls audio policy for DTMF (touch tones), alarm, calendar, and effects.</li>
+    <li><strong>Media:</strong>&nbsp;Controls audio policy for media playback.</li>
+    <li><strong>Ringtone:</strong> Controls audio policy for ringtones.</li>
+    <li><strong>Alert:</strong> Controls audio policy for alerts.</li>
   </ul>
-  <p>In addition, there is a &#39;soundSettings&#39; category, to manage sound settings such as setting the output device for the audio.</p>
-  <p><strong>Note: [</strong>Applicable for &quot;Master&quot;, &quot;UMI&quot;, and &quot;SoundSettings&quot;<strong>]&nbsp;</strong>The &lsquo;audio&rsquo; service calls the &lsquo;audiooutput&rsquo; service to communicate with the audio hardware layer.</p>
+  <p>In addition, there is a <strong>soundSettings</strong>&nbsp;category, to manage sound settings such as setting the output device for the audio.</p>
+  <p><strong>Note: [&nbsp;</strong>Applicable for <strong>Master</strong>, <strong>UMI</strong>, and <strong>SoundSettings ]&nbsp;</strong>The <strong>audio</strong>&nbsp;service calls the <strong>audiooutput</strong>&nbsp;service to communicate with the audio hardware layer.</p>
 </div>
 <h2>Overview of the API</h2>
 <div>
@@ -5403,7 +5403,7 @@ toc: true
     </p>
   </div>
 </div>
-<h3> state/setSoundProfile</h3>
+<h3>state/setSoundProfile</h3>
 <div>
   <h4>Description</h4>
   <p>Sets a particular sound profile.</p>
@@ -6457,7 +6457,39 @@ toc: true
   <h4>Description</h4>
   <p>Gives the current&nbsp;master volume of the audio output device.&nbsp;</p>
   <h4>Parameters</h4>
-  <p>None</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if subscribed to get notifications.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true:</strong> Subscribed for notifications</li>
+              <li><strong>false:</strong> Not subscribed</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   <h4>Call Returns</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -6481,10 +6513,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates the status of operation. Possible values are:</p>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
@@ -6509,7 +6542,15 @@ toc: true
           <td>Optional</td>
           <td>Object array: <a href="#volumestatus"> VolumeStatus</a></td>
           <td>
-            <p>Volume status of different audio output devices.</p>
+            <p>Indicates the status of volume&nbsp;for different audio output devices.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>callerId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the luna service name of the calling application.</p>
           </td>
         </tr>
       </tbody>
@@ -6517,17 +6558,32 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -n 1 luna://com.webos.service.audio/master/getVolume &#39;{}&#39;</p>
+    <p># luna-send -n i -f luna://com.webos.service.audio/master/getVolume &#39;{<br />
+      &nbsp; &nbsp;&quot;subscribe&quot;:true<br />
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
-      &nbsp; &nbsp;&quot;volumeStatus&quot;:[<br />
-      &nbsp; &nbsp; &nbsp; {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;muted&quot;:false,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;volume&quot;:99,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;soundOutput&quot;:&quot;alsa&quot;<br />
-      &nbsp; &nbsp; &nbsp; }<br />
-      &nbsp; &nbsp;],<br />
-      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      &nbsp; &nbsp;&quot;volumeStatus&quot;:{<br />
+      &nbsp; &nbsp; &nbsp; &quot;sessionId&quot;:0,<br />
+      &nbsp; &nbsp; &nbsp; &quot;muted&quot;:false,<br />
+      &nbsp; &nbsp; &nbsp; &quot;volume&quot;:100,<br />
+      &nbsp; &nbsp; &nbsp; &quot;soundOutput&quot;:&quot;alsa&quot;<br />
+      &nbsp; &nbsp;},<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp; &nbsp;&quot;callerId&quot;:&quot;com.webos.lunasend-2027&quot;<br />
+      }
+    </p>
+    <p>After change volume for session 1:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;volumeStatus&quot;:{<br />
+      &nbsp; &nbsp; &nbsp; &quot;sessionId&quot;:1,<br />
+      &nbsp; &nbsp; &nbsp; &quot;muted&quot;:false,<br />
+      &nbsp; &nbsp; &nbsp; &quot;volume&quot;:50,<br />
+      &nbsp; &nbsp; &nbsp; &quot;soundOutput&quot;:&quot;alsa&quot;<br />
+      &nbsp; &nbsp;},<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp; &nbsp;&quot;callerId&quot;:&quot;com.webos.lunasend-2057&quot;<br />
       }
     </p>
   </div>
@@ -6555,14 +6611,26 @@ toc: true
           </th>
         </tr>
         <tr>
+          <td>sessionId</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Indicates&nbsp;the display/session applicable to the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>0</li>
+              <li>1</li>
+            </ul>
+            <p><strong>Note: </strong>If not provided, the operation is applied to session 0.</p>
+          </td>
+        </tr>
+        <tr>
           <td>soundOutput</td>
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Target sound output device. Possible values are:</p>
-            <ul>
-              <li>alsa</li>
-            </ul>
+            <p>Indicates the target sound output device.</p>
+            <p>Possible value: &quot;alsa&quot;</p>
           </td>
         </tr>
         <tr>
@@ -6570,7 +6638,8 @@ toc: true
           <td>Required</td>
           <td>Number</td>
           <td>
-            <p>Volume level to be set. The valid volume range is between 0-100.&nbsp;</p>
+            <p>Indicates the volume level to be set.</p>
+            <p>Possible range: <strong>0-100</strong>&nbsp;</p>
           </td>
         </tr>
       </tbody>
@@ -6599,7 +6668,8 @@ toc: true
           <td>Required</td>
           <td>Number</td>
           <td>
-            <p>Current volume level. The volume can range between 0-100.</p>
+            <p>Indicates the current volume level.</p>
+            <p>Possible range: <strong>0-100</strong></p>
           </td>
         </tr>
         <tr>
@@ -6607,10 +6677,8 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Target sound output device.&nbsp;Possible values are:</p>
-            <ul>
-              <li>alsa</li>
-            </ul>
+            <p>Indicates the target sound output device.</p>
+            <p>Possible value: &quot;alsa&quot;</p>
           </td>
         </tr>
         <tr>
@@ -6618,10 +6686,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates the status of operation. Possible values are:</p>
+            <p>Indicates the status of operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
@@ -6646,12 +6715,32 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -f -n 1 luna://com.webos.service.audio/master/setVolume &#39;{&quot;soundOutput&quot;:&quot;alsa&quot;,&quot;volume&quot;:10}&#39;</p>
+    <p># luna-send -f -n 1 luna://com.webos.service.audio/master/setVolume &#39;{<br />
+      &nbsp; &nbsp;&quot;soundOutput&quot;:&quot;alsa&quot;,<br />
+      &nbsp; &nbsp;&quot;volume&quot;:57,<br />
+      &nbsp; &nbsp;&quot;sessionId&quot;:0<br />
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
-      &nbsp; &nbsp; &quot;volume&quot;: 10,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;soundOutput&quot;: &quot;alsa&quot;<br />
+      &nbsp;&nbsp;&nbsp; &quot;volume&quot;: 57,<br />
+      &nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp;&nbsp;&nbsp; &quot;soundOutput&quot;: &quot;alsa&quot;<br />
+      }
+    </p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -f -n 1 luna://com.webos.service.audio/master/setVolume &#39;{<br />
+      &nbsp; &nbsp;&quot;soundOutput&quot;:&quot;alsa&quot;,<br />
+      &nbsp; &nbsp;&quot;volume&quot;:50,<br />
+      &nbsp; &nbsp;&quot;sessionId&quot;:1<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp;&nbsp; &quot;volume&quot;: 50,<br />
+      &nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp;&nbsp;&nbsp; &quot;soundOutput&quot;: &quot;alsa&quot;<br />
       }
     </p>
   </div>
@@ -6679,14 +6768,26 @@ toc: true
           </th>
         </tr>
         <tr>
+          <td>sessionId</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Indicates the display/session applicable to the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>0</li>
+              <li>1</li>
+            </ul>
+            <p><strong>Note: </strong>If not provided, the operation is applied to session 0.</p>
+          </td>
+        </tr>
+        <tr>
           <td>soundOutput</td>
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Audio output device. Possible values are:</p>
-            <ul>
-              <li>&quot;alsa&quot;</li>
-            </ul>
+            <p>Indicates the audio output device.</p>
+            <p>Possible value: &quot;alsa&quot;</p>
           </td>
         </tr>
       </tbody>
@@ -6715,7 +6816,8 @@ toc: true
           <td>Required</td>
           <td>Number</td>
           <td>
-            <p>Current level of volume. The volume can range from 0-100.&nbsp;</p>
+            <p>Indicates the current level of volume.</p>
+            <p>Possible range: <strong>0-100</strong></p>
           </td>
         </tr>
         <tr>
@@ -6723,10 +6825,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates the status of operation. Possible values are:</p>
+            <p>Indicates the status of operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
@@ -6751,10 +6854,8 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Audio output device. Possible values are:</p>
-            <ul>
-              <li>alsa</li>
-            </ul>
+            <p>Indicates the audio output device.</p>
+            <p>Possible value: &quot;alsa&quot;&nbsp;</p>
           </td>
         </tr>
       </tbody>
@@ -6762,10 +6863,28 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -f -n 1 luna://com.webos.service.audio/master/volumeUp &#39;{&quot;soundOutput&quot;:&quot;alsa&quot;}&#39;</p>
+    <p># luna-send -f -n 1 luna://com.webos.service.audio/master/volumeUp &#39;{<br />
+      &nbsp; &nbsp;&quot;soundOutput&quot;:&quot;alsa&quot;,<br />
+      &nbsp; &nbsp;&quot;sessionId&quot;:0<br />
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;volume&quot;: 12,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;soundOutput&quot;: &quot;alsa&quot;<br />
+      }
+    </p>
+  </div>
+  <div class="code-bg-grey">
+    <p>#&nbsp;luna-send -f -n 1 luna://com.webos.service.audio/master/volumeUp &#39;{<br />
+      &nbsp; &nbsp;&quot;soundOutput&quot;:&quot;alsa&quot;,<br />
+      &nbsp; &nbsp;&quot;sessionId&quot;:1<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;volume&quot;: 20<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp; &quot;soundOutput&quot;: &quot;alsa&quot;<br />
       }
@@ -6799,10 +6918,22 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Audio output device. Possible values are:</p>
+            <p>Indicates the audio output device.</p>
+            <p>Possible value: &quot;alsa&quot;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>sessionId</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Indicates the display/session applicable to the operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li>alsa</li>
+              <li>0</li>
+              <li>1</li>
             </ul>
+            <p><strong>Note: </strong>If not provided, the operation is applied to session 0.</p>
           </td>
         </tr>
       </tbody>
@@ -6831,7 +6962,8 @@ toc: true
           <td>Required</td>
           <td>Number</td>
           <td>
-            <p>Current&nbsp;level of volume. The volume can range from 0-100.</p>
+            <p>Indicates the current&nbsp;level of volume.</p>
+            <p>Possible range: <strong>0-100</strong></p>
           </td>
         </tr>
         <tr>
@@ -6839,10 +6971,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates the status of operation. Possible values are:&nbsp;</p>
+            <p>Indicates the status of operation.</p>
+            <p>Possible values are:&nbsp;</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
@@ -6867,10 +7000,8 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Audio sound output device. Possible values are:</p>
-            <ul>
-              <li>alsa&nbsp;</li>
-            </ul>
+            <p>Indicates the audio sound output device.</p>
+            <p>Possible value: &quot;alsa&quot;</p>
           </td>
         </tr>
       </tbody>
@@ -6878,10 +7009,28 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -f -n 1 luna://com.webos.service.audio/master/volumeDown &#39;{&quot;soundOutput&quot;:&quot;alsa&quot;}&#39;</p>
+    <p># luna-send -f -n 1 luna://com.webos.service.audio/master/volumeDown &#39;{<br />
+      &nbsp; &nbsp;&quot;soundOutput&quot;:&quot;alsa&quot;,<br />
+      &nbsp; &nbsp;&quot;sessionId&quot;:0<br />
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;volume&quot;: 11,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;soundOutput&quot;: &quot;alsa&quot;<br />
+      }
+    </p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -f -n 1 luna://com.webos.service.audio/master/volumeDown &#39;{<br />
+      &nbsp; &nbsp;&quot;soundOutput&quot;:&quot;alsa&quot;,<br />
+      &nbsp; &nbsp;&quot;sessionId&quot;:1<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;volume&quot;: 49,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp; &quot;soundOutput&quot;: &quot;alsa&quot;<br />
       }
@@ -6915,11 +7064,26 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates if the master volume is to be muted. Possible values are:&nbsp;</p>
+            <p>Indicates if the master volume is to be muted.</p>
+            <p>Possible values are:&nbsp;</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- If the master volume is to be muted.</li>
-              <li><strong>false&nbsp;</strong>- If the master volume is not to be muted.&nbsp;</li>
+              <li><strong>true:&nbsp;</strong>Master volume to be muted.</li>
+              <li><strong>false: </strong>Master volume not to be muted.</li>
             </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>sessionId</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Indicates the display/session applicable to the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>0</li>
+              <li>1</li>
+            </ul>
+            <p><strong>Note: </strong>If not provided, the operation is applied to the audio device connected to both the displays/sessions.</p>
           </td>
         </tr>
         <tr>
@@ -6927,10 +7091,8 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>&nbsp;Audio output device. Possible values are:</p>
-            <ul>
-              <li>alsa</li>
-            </ul>
+            <p>Indicates the audio output device.</p>
+            <p>Possible value: &quot;alsa&quot;</p>
           </td>
         </tr>
       </tbody>
@@ -6959,10 +7121,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates the status of operation. Possible values are:</p>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
@@ -6987,10 +7150,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates if the master volume is muted. Possible values are:</p>
+            <p>Indicates if the master volume is on mute or not.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true - </strong>If the master volume&nbsp;is muted.&nbsp;</li>
-              <li><strong>false </strong>- If the master volume is not muted.</li>
+              <li><strong>true: </strong>Master volume&nbsp;is on mute.&nbsp;</li>
+              <li><strong>false:&nbsp;</strong>Master volume is not on mute.</li>
             </ul>
           </td>
         </tr>
@@ -6999,10 +7163,8 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Audio output device. Possible values are:</p>
-            <ul>
-              <li>alsa</li>
-            </ul>
+            <p>Indicates the audio output device.</p>
+            <p>Possible value: &quot;alsa&quot;</p>
           </td>
         </tr>
       </tbody>
@@ -7010,7 +7172,12 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -f -n 1 luna://com.webos.service.audio/master/muteVolume &#39;{&quot;soundOutput&quot;:&quot;alsa&quot;,&quot;mute&quot;:true}&#39;</p>
+    <p># luna-send -f -n 1 luna://com.webos.service.audio/master/muteVolume &#39;{<br />
+      &nbsp; &nbsp;&quot;soundOutput&quot;:&quot;alsa&quot;,<br />
+      &nbsp; &nbsp;&quot;mute&quot;:true,<br />
+      &nbsp; &nbsp;&quot;sessionId&quot;:0<br />
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;mute&quot;: true,<br />
@@ -7018,8 +7185,44 @@ toc: true
       &nbsp; &nbsp; &quot;soundOutput&quot;: &quot;alsa&quot;<br />
       }
     </p>
-    <p>&nbsp;</p>
-    <p># luna-send -f -n 1 luna://com.webos.service.audio/master/muteVolume &#39;{&quot;soundOutput&quot;:&quot;alsa&quot;,&quot;mute&quot;:false}&#39;</p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -f -n 1 luna://com.webos.service.audio/master/muteVolume &#39;{<br />
+      &nbsp; &nbsp;&quot;soundOutput&quot;:&quot;alsa&quot;,<br />
+      &nbsp; &nbsp;&quot;mute&quot;:false,<br />
+      &nbsp; &nbsp;&quot;sessionId&quot;:0<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;mute&quot;: false,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;soundOutput&quot;: &quot;alsa&quot;<br />
+      }
+    </p>
+  </div>
+  <div class="code-bg-grey">
+    <p>#&nbsp;luna-send -f -n 1 luna://com.webos.service.audio/master/muteVolume &#39;{<br />
+      &nbsp; &nbsp;&quot;soundOutput&quot;:&quot;alsa&quot;,<br />
+      &nbsp; &nbsp;&quot;mute&quot;:true,<br />
+      &nbsp; &nbsp;&quot;sessionId&quot;:1<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp;&nbsp; &quot;mute&quot;: true,<br />
+      &nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp;&nbsp;&nbsp; &quot;soundOutput&quot;: &quot;alsa&quot;<br />
+      }
+    </p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -f -n 1 luna://com.webos.service.audio/master/muteVolume &#39;{<br />
+      &nbsp; &nbsp;&quot;soundOutput&quot;:&quot;alsa&quot;,<br />
+      &nbsp; &nbsp;&quot;mute&quot;:false,<br />
+      &nbsp; &nbsp;&quot;sessionId&quot;:1<br />
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;mute&quot;: false,<br />
@@ -8634,7 +8837,7 @@ toc: true
 <h3>alarm/getAlarmOn</h3>
 <div>
   <h4>Description</h4>
-  <p>Returns the value set by the alarm.</p>
+  <p><span style="color:#FF0000">Returns the value set by the&nbsp;<strong>alarm.</strong></span></p>
   <h4>Parameters</h4>
   <p>None</p>
   <h4>Call Returns</h4>
@@ -10611,7 +10814,7 @@ toc: true
     </table>
   </div>
   <h3>VolumeStatus</h3>
-  <p>This object will give Volume details of sound out device</p>
+  <p>Provides the volume details of the target sound output device.</p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
@@ -10634,10 +10837,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates if the audio is muted. Possible values are:</p>
+            <p>Indicates if the audio is on mute or not.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>-<strong>&nbsp;</strong>If the audio is muted.</li>
-              <li><strong>false&nbsp;</strong>-<strong>&nbsp;</strong>If the audio is not muted.</li>
+              <li><strong>true: </strong>Audio is on mute.</li>
+              <li><strong>false: </strong>Audio is not on mute.</li>
             </ul>
           </td>
         </tr>
@@ -10646,7 +10850,7 @@ toc: true
           <td>Required</td>
           <td>Number</td>
           <td>
-            <p>Current volume level. Returns a value only if the audio is not muted.</p>
+            <p>Indicates the current volume level. Returns a value only if the audio is not on mute.</p>
           </td>
         </tr>
         <tr>
@@ -10654,9 +10858,20 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Target sound output device. Possible values are:</p>
+            <p>Indicates the target sound output device.</p>
+            <p>Possible value: &quot;alsa&quot;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>sessionId</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Indicates the volume status of the targeted display/session.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li>alsa</li>
+              <li>0</li>
+              <li>1</li>
             </ul>
           </td>
         </tr>
@@ -10680,17 +10895,52 @@ toc: true
         </th>
       </tr>
       <tr>
-        <td>1</td>
-        <td>Could not validate json message against schema</td>
+        <td>200</td>
+        <td>Audio not connected</td>
         <td>
-          <p>Invalid number of input parameters against defined schema of the method</p>
+          <p>Audio not connected</p>
         </td>
       </tr>
       <tr>
-        <td>1</td>
-        <td>Not a valid json message</td>
+        <td>17</td>
+        <td>Audiod internal error</td>
         <td>
-          <p>Wrong JSON message format</p>
+          <p>AUDIOD_ERRORCODE_FAILED_MIXER_CALL</p>
+        </td>
+      </tr>
+      <tr>
+        <td>19</td>
+        <td>Audiod internal error</td>
+        <td>
+          <p>AUDIOD_ERRORCODE_INVALID_AUDIO_TYPE</p>
+        </td>
+      </tr>
+      <tr>
+        <td>18</td>
+        <td>Audiod internal error</td>
+        <td>
+          <p>AUDIOD_ERRORCODE_INVALID_ENVELOPE_INSTANCE</p>
+        </td>
+      </tr>
+      <tr>
+        <td>16</td>
+        <td>Audiod internal error</td>
+        <td>
+          <p>AUDIOD_ERRORCODE_INVALID_MIXER_INSTANCE</p>
+        </td>
+      </tr>
+      <tr>
+        <td>21</td>
+        <td>Invalid parameters</td>
+        <td>
+          <p>AUDIOD_ERRORCODE_INVALID_PARAMS</p>
+        </td>
+      </tr>
+      <tr>
+        <td>23</td>
+        <td>Invalid schema</td>
+        <td>
+          <p>AUDIOD_ERRORCODE_INVALID_SCHEMA</p>
         </td>
       </tr>
       <tr>
@@ -10705,48 +10955,6 @@ toc: true
         <td>Volume limit reached</td>
         <td>
           <p>AUDIOD_ERRORCODE_NOT_SUPPORT_VOLUME_CHANGE</p>
-        </td>
-      </tr>
-      <tr>
-        <td>16</td>
-        <td>Audiod internal error</td>
-        <td>
-          <p>AUDIOD_ERRORCODE_INVALID_MIXER_INSTANCE</p>
-        </td>
-      </tr>
-      <tr>
-        <td>17</td>
-        <td>Audiod internal error</td>
-        <td>
-          <p>AUDIOD_ERRORCODE_FAILED_MIXER_CALL</p>
-        </td>
-      </tr>
-      <tr>
-        <td>18</td>
-        <td>Audiod internal error</td>
-        <td>
-          <p>AUDIOD_ERRORCODE_INVALID_ENVELOPE_INSTANCE</p>
-        </td>
-      </tr>
-      <tr>
-        <td>19</td>
-        <td>Audiod internal error</td>
-        <td>
-          <p>AUDIOD_ERRORCODE_INVALID_AUDIO_TYPE</p>
-        </td>
-      </tr>
-      <tr>
-        <td>20</td>
-        <td>Unknown error</td>
-        <td>
-          <p>AUDIOD_ERRORCODE_UNKNOWN_ERROR</p>
-        </td>
-      </tr>
-      <tr>
-        <td>21</td>
-        <td>Invalid parameters</td>
-        <td>
-          <p>AUDIOD_ERRORCODE_INVALID_PARAMS</p>
         </td>
       </tr>
       <tr>
@@ -10785,17 +10993,17 @@ toc: true
         </td>
       </tr>
       <tr>
-        <td>23</td>
-        <td>Invalid schema</td>
+        <td>20</td>
+        <td>Unknown error</td>
         <td>
-          <p>AUDIOD_ERRORCODE_INVALID_SCHEMA</p>
+          <p>AUDIOD_ERRORCODE_UNKNOWN_ERROR</p>
         </td>
       </tr>
       <tr>
-        <td>200</td>
-        <td>Audio not connected</td>
+        <td>1</td>
+        <td>Could not validate json message against schema</td>
         <td>
-          <p>Audio not connected</p>
+          <p>Invalid number of input parameters against defined schema of the method</p>
         </td>
       </tr>
       <tr>
@@ -10803,6 +11011,13 @@ toc: true
         <td>Volume control is not supported</td>
         <td>
           <p>Volume control is not supported</p>
+        </td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>Not a valid json message</td>
+        <td>
+          <p>Wrong JSON message format</p>
         </td>
       </tr>
     </tbody>

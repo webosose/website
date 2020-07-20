@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.bluetooth2
-date: 2020-04-05
+date: 2020-07-16
 weight: 110
 toc: true
 ---
@@ -1142,9 +1142,38 @@ toc: true
 <h3>adapter/cancelDiscovery</h3>
 <div>
   <h4>Description</h4>
-  <p>Cancel discovering remote Bluetooth devices. Only one adapter can be discovered&nbsp;at a time.</p>
+  <p>Cancel discovering remote Bluetooth devices.</p>
+  <p>Discovery of specific adapter can&nbsp;be canceled based on the adapter address passed.</p>
   <h4>Parameters</h4>
-  <p>None</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter executing this method.</p>
+            <p>If not specified, the default adapter will be used.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   <h4>Call Returns</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -2461,7 +2490,8 @@ toc: true
 <h3>adapter/startDiscovery</h3>
 <div>
   <h4>Description</h4>
-  <p>Start discovering remote Bluetooth devices.&nbsp;Discovering continues until&nbsp;<strong>adapter/cancelDiscovery</strong>​ is called or for&nbsp;<strong>bluetooth2AdapterStatus.</strong><strong>discoveryTimeout</strong>​ seconds (if non-zero). Only one adapter can be discovering at a time.</p>
+  <p>Start discovering remote Bluetooth devices.&nbsp;Discovering continues until&nbsp;<strong>adapter/cancelDiscovery</strong>​ is called or for&nbsp;<strong>bluetooth2AdapterStatus.</strong><strong>discoveryTimeout</strong>​ seconds (if non-zero).</p>
+  <p>Discovery of specific Adapter can be invoked by passing the adapter address</p>
   <p>To get the list of&nbsp;devices found, subscribe to&nbsp;<strong>device/getStatus</strong>.</p>
   <h4>Parameters</h4>
   <div class="table-container">
@@ -2760,6 +2790,151 @@ toc: true
       &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:101,<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
       &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;Bluetooth&nbsp;adapter&nbsp;is&nbsp;not&nbsp;available&quot;<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>adapter/unpair</h3>
+<div>
+  <h4>Description</h4>
+  <p>Disconnect from the paired remote device. All pairing information about the remote device will be removed and any open connections will be closed. However, the remote device is still discoverable.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>address</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The address (bdaddr) of the remote device to unpair.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>-&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>-&nbsp;Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The address of the&nbsp;default adapter&nbsp;will be always returned.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>Error Codes Reference</strong>&quot; section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>101, 102, 105, 106, 143, 144</td>
+          <td>See API Error Codes Reference</td>
+          <td>
+            <p><span style="color:rgb(0, 0, 0)">See <strong>API Error Codes Reference</strong>.</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td>122</td>
+          <td>Failed to unpair</td>
+          <td>
+            <p>Failed to unpair the Bluetooth adapter with the paired remote Bluetooth device.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.bluetooth2/adapter/unpair &#39;{<br />
+      &nbsp; &nbsp; &nbsp;&nbsp;&quot;address&quot;: &quot;34:4d:f7:f9:52:f7&quot;<br />
+      }&#39;
+    </p>
+    <p>&nbsp;</p>
+    <p>Response for a successful call:</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;adapterAddress&quot;:&quot;00:00:45:0e:48:9b&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Response for a failed call: If unpairing fails</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:122,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;Failed&nbsp;to&nbsp;unpair&quot;<br />
       }
     </p>
   </div>
@@ -3074,151 +3249,6 @@ toc: true
       &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:101,<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
       &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;Bluetooth&nbsp;adapter&nbsp;is&nbsp;not&nbsp;available&quot;<br />
-      }
-    </p>
-  </div>
-</div>
-<h3>adapter/unpair</h3>
-<div>
-  <h4>Description</h4>
-  <p>Disconnect from the paired remote device. All pairing information about the remote device will be removed and any open connections will be closed. However, the remote device is still discoverable.</p>
-  <h4>Parameters</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>address</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>The address (bdaddr) of the remote device to unpair.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Call Returns</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates the status of operation. Possible values are:</p>
-            <ul>
-              <li><strong>true&nbsp;</strong>-&nbsp;Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>-&nbsp;Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>adapterAddress</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>The address of the&nbsp;default adapter&nbsp;will be always returned.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>errorCode</td>
-          <td>Optional</td>
-          <td>Number</td>
-          <td>
-            <p>The error code for the failed operation.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>errorText</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>Error Codes Reference</strong>&quot; section of this method for details.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Error Codes Reference</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Error Code</p>
-          </th>
-          <th width="30%">
-            <p>Error Text</p>
-          </th>
-          <th width="55%">
-            <p>Error Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>101, 102, 105, 106, 143, 144</td>
-          <td>See API Error Codes Reference</td>
-          <td>
-            <p><span style="color:rgb(0, 0, 0)">See <strong>API Error Codes Reference</strong>.</span></p>
-          </td>
-        </tr>
-        <tr>
-          <td>122</td>
-          <td>Failed to unpair</td>
-          <td>
-            <p>Failed to unpair the Bluetooth adapter with the paired remote Bluetooth device.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Example</h4>
-  <div class="code-bg-grey">
-    <p># luna-send -n 1 -f luna://com.webos.service.bluetooth2/adapter/unpair &#39;{<br />
-      &nbsp; &nbsp; &nbsp;&nbsp;&quot;address&quot;: &quot;34:4d:f7:f9:52:f7&quot;<br />
-      }&#39;
-    </p>
-    <p>&nbsp;</p>
-    <p>Response for a successful call:</p>
-    <p>{&nbsp;&nbsp;<br />
-      &nbsp;&nbsp;&nbsp;&quot;adapterAddress&quot;:&quot;00:00:45:0e:48:9b&quot;,<br />
-      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-      }
-    </p>
-    <p>&nbsp;</p>
-    <p>Response for a failed call: If unpairing fails</p>
-    <p>{&nbsp;&nbsp;<br />
-      &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:122,<br />
-      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
-      &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;Failed&nbsp;to&nbsp;unpair&quot;<br />
       }
     </p>
   </div>
@@ -9306,13 +9336,14 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example for reading a descriptor value from the local adapter:</p>
     <p># luna-send -f -n 1 luna://com.webos.service.bluetooth2/gatt/readDescriptorValue &#39;{<br />
       &nbsp; &nbsp; &nbsp; &quot;service&quot;:&quot;f000aa40-0451-4000-b000-000000000000&quot;,<br />
       &nbsp; &nbsp; &nbsp; &quot;characteristic&quot;:&quot;f000aa41-0451-4000-b000-000000000000&quot;<br />
       &nbsp; &nbsp; &nbsp; &quot;descriptor&quot;:&quot;00002902-0000-1000-8000-00805f9b34fc&quot;<br />
       }&#39;
     </p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;adapterAddress&quot;: &quot;00:00:ba:87:d1:a7&quot;,<br />
       &nbsp;&nbsp; &nbsp;&quot;characteristic&quot;: &quot;f000aa41-0451-4000-b000-000000000000&quot;,<br />
@@ -14213,8 +14244,8 @@ toc: true
     </p>
   </div>
 </div>
+<h2>Objects</h2>
 <div>
-  <h2>Objects</h2>
   <h3>bluetooth2Adapter</h3>
   <p>Object containing constant information about the adapter.</p>
   <div class="table-container">
@@ -14247,7 +14278,7 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>If <strong>true</strong>, this is the default adapter and <strong>adapter/</strong> methods called without an <strong>adapterAddress</strong> parameter will operate on it.<br></p>
+            <p>If <strong>true</strong>, this is the default adapter and <strong>adapter/</strong> methods called without an <strong>adapterAddress</strong> parameter will operate on it.</p>
             <p>Note that <strong>default </strong>(like all of the other values in this object) will not change while the adapter is present. This means if the default adapter is dynamic and is removed, there will no longer be an adapter with <strong>default</strong>&nbsp;set to&nbsp;<strong>true</strong>​.</p>
           </td>
         </tr>
@@ -15757,6 +15788,20 @@ toc: true
         </td>
       </tr>
       <tr>
+        <td>242</td>
+        <td>AVRCP send PASS THROUGH command failed</td>
+        <td>
+          <p>Failed to send AVRCP PASS THROUGH command.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>254</td>
+        <td>Failed to set absolute volume</td>
+        <td>
+          <p>Failed to set absolute volume.</p>
+        </td>
+      </tr>
+      <tr>
         <td>169</td>
         <td>GATT service discovery cannot be started, one of adapterAddress or address should be supplied</td>
         <td>
@@ -15775,6 +15820,13 @@ toc: true
         <td>GATT read characteristics failed</td>
         <td>
           <p>Failed&nbsp;to read the requested characteristics.&nbsp;</p>
+        </td>
+      </tr>
+      <tr>
+        <td>141</td>
+        <td>Transfer was canceled</td>
+        <td>
+          <p>FTP file transfer to the remote Bluetooth device has been canceled by the client.</p>
         </td>
       </tr>
       <tr>

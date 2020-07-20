@@ -1,16 +1,16 @@
 ---
 title: com.webos.bootManager
-date: 2020-04-16
+date: 2020-07-07
 weight: 20
 toc: true
 ---
 <div>
   <h2>API Summary</h2>
-  <p>The basic role of this service is to monitor and control the boot status/mode.</p>
+  <p>Monitors and controls the boot status/mode.</p>
   <p>It manages the boot sequence for:</p>
   <ul>
     <li>Ensuring&nbsp;boot time performance.</li>
-    <li>Providing&nbsp;bootmode like &#39;Normal&#39;, and so on.</li>
+    <li>Providing&nbsp;boot mode like &#39;Normal&#39;, and so on.</li>
   </ul>
 </div>
 <h2>Overview of the API</h2>
@@ -19,123 +19,128 @@ toc: true
   <ul></ul>
 </div>
 <h2>Methods</h2>
-<h3>generateSignal</h3>
 <div>
-  <h4>Description</h4>
-  <p style="text-align:start">Generates boot step signals. Caller and argument are decided statically.</p>
-  <h4>Parameters</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>name</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p style="text-align:left">Logical event name to notify bootd.</p>
-            <p style="text-align:left">If bootd internal components wait the logical event, bootd unblocks internal components.</p>
-            <p style="text-align:left">Normally, this is used to generate upstart signal like &#39;core-boot-done&#39;, &#39;init-boot-done&#39; and &#39;minimal-boot-done&#39;.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Call Returns</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>errorText</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
-            <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
-            </ul>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Error Codes Reference</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Error Code</p>
-          </th>
-          <th width="30%">
-            <p>Error Text</p>
-          </th>
-          <th width="55%">
-            <p>Error Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>Error getting parameter name</td>
-          <td>
-            <p>There is no &#39;name&#39; key or value in request payload.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>Invalid JSON argument</td>
-          <td>
-            <p>If parameter is not valid json format, this error occurs.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Example</h4>
-  <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.bootManager/generateSignal &#39;{ &quot;name&quot;: &quot;minimal-boot-done&quot; }&#39;</p>
+  <h3>generateSignal</h3>
+  <div>
+    <h4>Description</h4>
+    <p style="text-align:start">Generates boot step signals. Caller and argument are decided statically.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>name</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p style="text-align:left">Indicates the logical event name to notify bootd. Normally, this is used to generate upstart signal like &#39;core-boot-done&#39;, &#39;init-boot-done&#39; and &#39;minimal-boot-done&#39;.</p>
+              <p style="text-align:left"><strong>Note:</strong>&nbsp;If bootd internal components await the logical event, bootd unblocks internal components.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true:</strong>&nbsp;Indicates that the operation was successful.</li>
+                <li><strong>false:</strong>&nbsp;Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Error getting parameter name</td>
+            <td>
+              <p>Indicates that there is no<strong> </strong>name (key or value) in the request payload.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Invalid JSON argument</td>
+            <td>
+              <p>Indicates that the parameter provided does&nbsp;not have a valid json format.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.bootManager/generateSignal &#39;{<br />
+        &nbsp; &nbsp;&quot;name&quot;:&quot;minimal-boot-done&quot;<br />
+        }&#39;
+      </p>
+    </div>
   </div>
 </div>
 <h3>getBootStatus</h3>
 <div>
   <h4>Description</h4>
-  <p>Gets&nbsp;the boot status or subscribe to updates on the boot status.</p>
+  <p>Gets the boot status or subscribe to updates on the boot status.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -159,10 +164,11 @@ toc: true
           <td>Optional</td>
           <td>boolean</td>
           <td>
-            <p>Subscribe for future updates.&nbsp;Possible values are:</p>
+            <p>Indicates if subscribed to get future updates.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Get future updates.</li>
-              <li><strong>false&nbsp;</strong>- To receive one-time update.</li>
+              <li><strong>true:</strong>&nbsp;Get future updates.</li>
+              <li><strong>false:&nbsp;</strong>To receive a one-time update.</li>
             </ul>
           </td>
         </tr>
@@ -192,10 +198,11 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Returns current status name of booting process.</p>
+            <p>Returns the current status of the booting process.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li>&#39;normal&#39; : It is &#39;normal&#39; mode</li>
-              <li>&#39;unknown&#39; : It is &#39;unknown&#39; mode</li>
+              <li><strong>normal:</strong> The current status of the booting process is normal.</li>
+              <li><strong>unknown:</strong> The current status of the booting process unknown.</li>
             </ul>
           </td>
         </tr>
@@ -204,12 +211,13 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Returns current power status</p>
+            <p>Returns current power status.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li>&#39;active&#39; : This is &#39;active&#39; mode.</li>
-              <li>&#39;activeStandby&#39; : This is &#39;activeStandby&#39; mode</li>
-              <li>&#39;suspend&#39; : This is &#39;suspend&#39; mode.</li>
-              <li>&#39;unknown&#39; : This is &#39;unknown&#39; mode.</li>
+              <li><strong>active:</strong> Current power status is in&nbsp;active&nbsp;mode.</li>
+              <li><strong>activeStandby:</strong> Current power&nbsp;status is in activeStandby&nbsp;mode.</li>
+              <li><strong>suspend:</strong> Current power status is in suspend&nbsp;mode.</li>
+              <li><strong>unknown:</strong> Current power status is in&nbsp;unknown&nbsp;mode.</li>
             </ul>
           </td>
         </tr>
@@ -218,20 +226,21 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Returns current target system.</p>
+            <p>Returns the current target system.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li>&#39;emulator&#39;</li>
-              <li>&#39;hardware&#39;</li>
-              <li>&#39;unknown&#39;</li>
+              <li>emulator</li>
+              <li>hardware</li>
+              <li>unknown</li>
             </ul>
           </td>
         </tr>
         <tr>
           <td>signals</td>
           <td>Required</td>
-          <td>Object array</td>
+          <td>Object array: <a href="#signals"> signals</a></td>
           <td>
-            <p>Please refer &#39;Objects&#39; section below.</p>
+            <p>Returns signal information.</p>
           </td>
         </tr>
         <tr>
@@ -239,7 +248,7 @@ toc: true
           <td>Required</td>
           <td>boolean</td>
           <td>
-            <p>true to indicate subscribed</p>
+            <p>Returns true to indicate subscribed.</p>
           </td>
         </tr>
         <tr>
@@ -247,7 +256,8 @@ toc: true
           <td>Required</td>
           <td>boolean</td>
           <td>
-            <p><strong>returnValue</strong> will <strong>always</strong> contain <strong>true</strong>.</p>
+            <p>Indicates the status of the operation.</p>
+            <p><strong>Note:</strong>&nbsp;<strong>returnValue</strong> is always set to <strong>true</strong>.</p>
           </td>
         </tr>
       </tbody>
@@ -276,10 +286,11 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Returns current status name of booting process.</p>
+            <p>Returns the current status of the booting process.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li>&#39;normal&#39; : It is &#39;normal&#39; mode</li>
-              <li>&#39;unknown&#39; : It is &#39;unknown&#39; mode</li>
+              <li><strong>normal:</strong> The current status of the booting process is normal.</li>
+              <li><strong>unknown:</strong> The current status of the booting process unknown.</li>
             </ul>
           </td>
         </tr>
@@ -288,12 +299,13 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Returns current power status</p>
+            <p>Returns current power status.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li>&#39;active&#39; : This is &#39;active&#39; mode.</li>
-              <li>&#39;activeStandby&#39; : This is &#39;activeStandby&#39; mode</li>
-              <li>&#39;suspend&#39; : This is &#39;suspend&#39; mode.</li>
-              <li>&#39;unknown&#39; : This is &#39;unknown&#39; mode.</li>
+              <li><strong>active:</strong> Current power status is in&nbsp;active&nbsp;mode.</li>
+              <li><strong>activeStandby:</strong> Current power&nbsp;status is in activeStandby&nbsp;mode.</li>
+              <li><strong>suspend:</strong> Current power status is in suspend&nbsp;mode.</li>
+              <li><strong>unknown:</strong> Current power status is in&nbsp;unknown&nbsp;mode.</li>
             </ul>
           </td>
         </tr>
@@ -302,20 +314,21 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Returns current target system.</p>
+            <p>Returns the current target system.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li>&#39;emulator&#39;</li>
-              <li>&#39;hardware&#39;</li>
-              <li>&#39;unknown&#39;</li>
+              <li>emulator</li>
+              <li>hardware</li>
+              <li>unknown</li>
             </ul>
           </td>
         </tr>
         <tr>
           <td>signals</td>
           <td>Required</td>
-          <td>Object array</td>
+          <td>Object array: <a href="#signals"> signals</a></td>
           <td>
-            <p>Please refer &#39;Objects&#39; section below.</p>
+            <p>Indicates signal information.</p>
           </td>
         </tr>
         <tr>
@@ -323,7 +336,8 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p><strong>returnValue</strong> will <strong>always</strong> contain <strong>true</strong>.</p>
+            <p>Indicates the status of the operation.</p>
+            <p><strong>Note:</strong>&nbsp;<strong>returnValue</strong> is always set to <strong>true</strong>.</p>
           </td>
         </tr>
       </tbody>
@@ -331,33 +345,37 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -n 1 -f luna://com.webos.bootManager/getBootStatus &#39;{ &quot;subscribe&quot; : true }&#39;</p>
+    <p># luna-send -n 1 -f luna://com.webos.bootManager/getBootStatus &#39;{<br />
+      &nbsp; &nbsp;&quot;subscribe&quot;:true<br />
+      }&#39;
+    </p>
     <p>Response:</p>
-    <p>{&nbsp;&nbsp;<br />
-      &nbsp;&nbsp;&nbsp;&quot;bootTarget&quot;:&quot;hardware&quot;,<br />
-      &nbsp;&nbsp;&nbsp;&quot;bootStatus&quot;:&quot;normal&quot;,<br />
-      &nbsp;&nbsp;&nbsp;&quot;powerStatus&quot;:&quot;active&quot;,<br />
-      &nbsp;&nbsp;&nbsp;&quot;signals&quot;:{&nbsp;&nbsp;<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;boot-done&quot;:true,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;core-boot-done&quot;:true,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;datastore-init-start&quot;:true,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;minimal-boot-done&quot;:true,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;init-boot-done&quot;:true,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;rest-boot-done&quot;:true<br />
-      &nbsp;&nbsp;&nbsp;},<br />
-      &nbsp;&nbsp;&nbsp;&quot;subscribed&quot;:true,<br />
-      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+    <p>{<br />
+      &nbsp; &nbsp;&quot;bootTarget&quot;:&quot;hardware&quot;,<br />
+      &nbsp; &nbsp;&quot;bootStatus&quot;:&quot;normal&quot;,<br />
+      &nbsp; &nbsp;&quot;powerStatus&quot;:&quot;active&quot;,<br />
+      &nbsp; &nbsp;&quot;signals&quot;:{<br />
+      &nbsp; &nbsp; &nbsp; &quot;boot-done&quot;:true,<br />
+      &nbsp; &nbsp; &nbsp; &quot;core-boot-done&quot;:true,<br />
+      &nbsp; &nbsp; &nbsp; &quot;datastore-init-start&quot;:true,<br />
+      &nbsp; &nbsp; &nbsp; &quot;minimal-boot-done&quot;:true,<br />
+      &nbsp; &nbsp; &nbsp; &quot;init-boot-done&quot;:true,<br />
+      &nbsp; &nbsp; &nbsp; &quot;rest-boot-done&quot;:true<br />
+      &nbsp; &nbsp;},<br />
+      &nbsp; &nbsp;&quot;subscribed&quot;:true,<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
       }
     </p>
   </div>
 </div>
+<h2>Objects</h2>
 <div>
-  <h2>Objects</h2>
   <h3>signals</h3>
-  <p>This is upstart signal object array.</p>
-  <p>Each object is upstart signal itself.</p>
-  <p>Default value of upstart signal is &#39;false&#39;.</p>
-  <p>The value becomes &#39;true&#39; after bootd generates the signal</p>
+  <p>Contains an array of upstart signals. The value of an upstart signal is set to&nbsp;<strong>true</strong>&nbsp;after bootd generates the signal.</p>
+  <p><strong>Note:</strong></p>
+  <ul>
+    <li>The value of all upstart signal in this array is set to <strong>false</strong> by default.</li>
+  </ul>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
@@ -376,11 +394,19 @@ toc: true
           </th>
         </tr>
         <tr>
+          <td>snapshot-resume-done</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates <strong>snapshot-resume-done</strong>&nbsp;upstart signal.</p>
+          </td>
+        </tr>
+        <tr>
           <td>core-boot-done</td>
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>&#39;core-boot-done&#39; upstart signal</p>
+            <p>Indicates <strong>core-boot-done</strong>&nbsp;upstart signal.</p>
           </td>
         </tr>
         <tr>
@@ -388,7 +414,7 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>&#39;init-boot-done&#39; upstart signal</p>
+            <p>Indicates <strong>init-boot-done</strong>&nbsp;upstart signal.</p>
           </td>
         </tr>
         <tr>
@@ -396,7 +422,7 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>&#39;datastore-init-start&#39; upstart signal</p>
+            <p>Indicates <strong>datastore-init-start</strong>&nbsp;upstart signal.</p>
           </td>
         </tr>
         <tr>
@@ -404,7 +430,7 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>&#39;minimal-boot-done&#39; upstart signal</p>
+            <p>Indicates <strong>minimal-boot-done</strong>&nbsp;upstart signal.</p>
           </td>
         </tr>
         <tr>
@@ -412,7 +438,7 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>&#39;rest-boot-done&#39; upstart signal</p>
+            <p>Indicates <strong>rest-boot-done</strong>&nbsp;upstart signal.</p>
           </td>
         </tr>
         <tr>
@@ -420,7 +446,7 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>&#39;boot-done&#39; upstart signal</p>
+            <p>Indicates <strong>boot-done</strong> upstart signal.</p>
           </td>
         </tr>
       </tbody>

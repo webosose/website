@@ -1,24 +1,24 @@
 ---
 title: com.webos.service.location
-date: 2020-05-12
+date: 2020-07-16
 weight: 230
 toc: true
 ---
 <div>
   <h2>API Summary</h2>
-  <p>Location Service provides basic location services for single or multiple position fixes.&nbsp;This service connects to Luna bus to interact with other system components (e.g. apps, services) that require location services.</p>
+  <p>Provides basic location services for single or multiple position fixes.&nbsp;This service connects to Luna bus to interact with other system components (e.g. apps, services) that require location services.</p>
   <ul></ul>
 </div>
 <h2>Overview of the API</h2>
 <div>
-  <p>Location Service d<span style="background-color:transparent">ecides the type of location service provider is suitable based on the request parameters. Once a suitable location service provider is selected, the service uses the location service provider to construct positions fix(es). webOS uses the following location service providers for position fixing:</span></p>
+  <p>D<span style="background-color:transparent">ecides the type of location service provider based on the request parameters. Once a suitable location service provider is selected, the service uses the location service provider to construct positions fix(es). webOS uses the following location service providers for position fixing:</span></p>
   <ul>
-    <li>GPS / AGPS.</li>
+    <li>GPS / AGPS</li>
     <li>WPS / CellID.</li>
-    <li>Geocoding / Reverse geocoding.</li>
+    <li>Geocoding / Reverse geocoding</li>
     <li>Mock: Enables to test location features with fake information.</li>
   </ul>
-  <p>The location service provider is also called a location source and location handler.</p>
+  <p><strong>Note:</strong> The location service provider is also called a location source and location handler.</p>
 </div>
 <h2>Methods</h2>
 <div>
@@ -55,7 +55,7 @@ toc: true
                 <li><strong>true:&nbsp;</strong>Get notifications.</li>
                 <li><strong>false:&nbsp;</strong>Notifications are not required.</li>
               </ul>
-              <p><strong>Default value</strong>: true</p>
+              <p>Default: <strong>true</strong></p>
             </td>
           </tr>
         </tbody>
@@ -231,7 +231,8 @@ toc: true
           <td>Required</td>
           <td>string</td>
           <td>
-            <p>Indicates formatted user-readable address lines. Either address&nbsp;or <strong>component</strong> parameter&nbsp;is required for the <strong>getGeoCodeLocation</strong> service to transform the address successfully.</p>
+            <p>Indicates formatted user-readable address lines.</p>
+            <p><strong>Note:&nbsp;</strong>Either address&nbsp;or <strong>component</strong> parameter&nbsp;is required for the <strong>getGeoCodeLocation</strong> service to transform the address successfully.</p>
           </td>
         </tr>
         <tr>
@@ -239,7 +240,8 @@ toc: true
           <td>Required</td>
           <td>Object array: <a href="#components"> components</a></td>
           <td>
-            <p>Indicates the component filter required. Either address&nbsp;or <strong>component</strong> parameter&nbsp;is required&nbsp;for the <strong>getGeoCodeLocation</strong> service to transform the address successfully.</p>
+            <p>Indicates the component filter required.</p>
+            <p><strong>Note:</strong> Either address&nbsp;or <strong>component</strong> parameter&nbsp;is required&nbsp;for the <strong>getGeoCodeLocation</strong> service to transform the address successfully.</p>
           </td>
         </tr>
         <tr>
@@ -329,7 +331,10 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>#&nbsp;luna-send -f -n 1 luna://com.webos.service.location/getGeoCodeLocation &#39;{&quot;address&quot;:&quot;221-2, Yangjae 2-dong, Seocho-gu, Seoul, Korea&quot;}&#39;</p>
+    <p>#&nbsp;luna-send -f -n 1 luna://com.webos.service.location/getGeoCodeLocation &#39;{<br />
+      &nbsp; &nbsp;&quot;address&quot;:&quot;221-2, Yangjae 2-dong, Seocho-gu, Seoul, Korea&quot;<br />
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;errorCode&quot;:0,<br />
@@ -457,7 +462,7 @@ toc: true
               <li><strong>true:</strong>&nbsp;Get notifications.</li>
               <li><strong>false:&nbsp;</strong>Notifications are not required.</li>
             </ul>
-            <p><strong>Default value</strong>: true</p>
+            <p>Default: <strong>true</strong></p>
           </td>
         </tr>
       </tbody>
@@ -760,7 +765,10 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -f -n 1 luna://com.webos.service.location/getLocationHandlerDetails &#39;{&quot;Handler&quot;:&quot;gps&quot;}&#39;</p>
+    <p># luna-send -f -n 1 luna://com.webos.service.location/getLocationHandlerDetails &#39;{<br />
+      &nbsp; &nbsp;&quot;Handler&quot;:&quot;gps&quot;<br />
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;requiresNetwork&quot;:false,<br />
@@ -812,7 +820,7 @@ toc: true
               <li><strong>true:&nbsp;</strong>Get notifications.</li>
               <li><strong>false:</strong>&nbsp;Notifications are not required.</li>
             </ul>
-            <p><strong>Default value</strong>: true</p>
+            <p>Default: <strong>true</strong></p>
           </td>
         </tr>
         <tr>
@@ -841,9 +849,9 @@ toc: true
             <p>Indicates the type of location service provider.</p>
             <p>Possible values are :</p>
             <ul>
-              <li>gps</li>
-              <li>network</li>
-              <li>passive</li>
+              <li>&quot;gps&quot;</li>
+              <li>&quot;network&quot;</li>
+              <li>&quot;passive&quot;</li>
             </ul>
           </td>
         </tr>
@@ -1095,7 +1103,10 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -f -n 1 luna://com.webos.service.location/getLocationUpdates &#39;{&quot;Handler&quot;:&quot;network&quot;}&#39;</p>
+    <p># luna-send -f -n 1 luna://com.webos.service.location/getLocationUpdates &#39;{<br />
+      &nbsp; &nbsp;&quot;Handler&quot;:&quot;gps&quot;<br />
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
@@ -1152,7 +1163,8 @@ toc: true
   <h4>Description</h4>
   <p>Transforms a given coordinate (latitude, longitude) into a (partial) address.</p>
   <p><strong>Note:</strong></p>
-  <p>The amount of detail in a reverse geocoded location description may vary. For example, one might contain the full street address of the closest building, while another might contain only a city name and postal code.</p>
+  <p>The amount of detail in a reverse geocoded location description may vary.</p>
+  <p>Example: One location might contain the full street address of the closest building, while another location might contain only a city name and postal code.</p>
   <p><strong>Google Reverse Geocoding API:</strong></p>
   <ul>
     <li>Supports Google Reverse Geocoding API.</li>
@@ -1964,7 +1976,7 @@ toc: true
               <li><strong>true:</strong>&nbsp;Get notifications.</li>
               <li><strong>false:</strong>&nbsp;Notifications are not required.</li>
             </ul>
-            <p><strong>Default value</strong>: true.</p>
+            <p>Default: <strong>true</strong></p>
           </td>
         </tr>
       </tbody>
@@ -2239,7 +2251,7 @@ toc: true
 <h3>mock/enable</h3>
 <div>
   <h4>Description</h4>
-  <p>Enable a mock location of the given provider.</p>
+  <p>Enables a mock location of the given provider.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -2341,7 +2353,7 @@ toc: true
 <h3>mock/disable</h3>
 <div>
   <h4>Description</h4>
-  <p>Disable the mock location of the given provider.</p>
+  <p>Disables the mock location of the given provider.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -2432,7 +2444,6 @@ toc: true
       &nbsp; &nbsp;&quot;name&quot;:&quot;network&quot;<br />
       }&#39;
     </p>
-    <p>&nbsp;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
@@ -2573,7 +2584,7 @@ toc: true
 <h2>Objects</h2>
 <div>
   <h3>location</h3>
-  <p>The object of location for mock.</p>
+  <p>Indicates the&nbsp;object of location for mock.</p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
@@ -2700,7 +2711,7 @@ toc: true
     </table>
   </div>
   <h3>components</h3>
-  <p>A component filter for which&nbsp;a geocode has to be generated.</p>
+  <p>Indicates the component filter for which&nbsp;a geocode has to be generated.</p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
@@ -2762,7 +2773,7 @@ toc: true
     </table>
   </div>
   <h3>bounds</h3>
-  <p>The bounding box of the viewport within which to bias geocode results more prominently.</p>
+  <p>Indicates the bounding box of the viewport within which to bias geocode results more prominently.</p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>

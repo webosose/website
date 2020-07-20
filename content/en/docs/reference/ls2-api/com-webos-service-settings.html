@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.settings
-date: 2020-04-16
+date: 2020-07-07
 weight: 290
 toc: true
 ---
@@ -591,7 +591,6 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Run luna-send command:</p>
     <p># luna-send -n 1 luna://com.webos.service.settings/deleteSystemSettings &#39;{<br />
       &nbsp; &nbsp; &nbsp; &quot;category&quot;: &quot;option&quot;,<br />
       &nbsp; &nbsp; &nbsp; &quot;keys&quot;: [<br />
@@ -599,11 +598,11 @@ toc: true
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;]<br />
       }&#39; -f
     </p>
-    <p>&nbsp;</p>
-    <p>Example response for a successful call:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;method&quot;: &quot;deleteSystemSettings&quot;,</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;method&quot;: &quot;deleteSystemSettings&quot;,<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;: true
+    </p>
     <p>}</p>
   </div>
 </div>
@@ -2175,6 +2174,18 @@ toc: true
             </ul>
           </td>
         </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the current subscription status.</p>
+            <ul>
+              <li>true: Subscription is ON</li>
+              <li>false: Subscription is OFF</li>
+            </ul>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -2205,29 +2216,29 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Run luna-send command:</p>
     <p># luna-send -n 1 luna://com.webos.service.settings/getSystemSettingValues &#39;{&quot;category&quot;:&quot;picture&quot;, &quot;key&quot;:&quot;brightness&quot;}&#39; -f</p>
-    <p>&nbsp;</p>
-    <p>Example response for a successful call:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;method&quot;: &quot;getSystemSettingValues&quot;,</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true,</p>
-    <p style="margin-left:40px">&quot;vtype&quot;: &quot;Range&quot;,</p>
-    <p style="margin-left:40px">&quot;values&quot;: {</p>
-    <p style="margin-left:80px">&quot;range&quot;: {</p>
-    <p style="margin-left:120px">&quot;interval&quot;: 1,</p>
-    <p style="margin-left:120px">&quot;max&quot;: 100,</p>
-    <p style="margin-left:120px">&quot;min&quot;: 0</p>
-    <p style="margin-left:80px">}</p>
-    <p style="margin-left:40px">}</p>
-    <p>}</p>
-    <p>&nbsp;</p>
-    <p>Example response for a failed call:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;error&quot;: &quot;no result in DB&quot;,</p>
-    <p style="margin-left:40px">&quot;method&quot;: &quot;getSystemSettingValues&quot;,</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: false</p>
-    <p>}</p>
+    <p>Response for a successful call:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;method&quot;: &quot;getSystemSettingValues&quot;,<br />
+      &nbsp; &nbsp;&quot;subscribed&quot;: true,<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp;&quot;vtype&quot;: &quot;Range&quot;,<br />
+      &nbsp; &nbsp;&quot;values&quot;: {<br />
+      &nbsp; &nbsp; &nbsp;&nbsp;&quot;range&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;interval&quot;: 1,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;max&quot;: 100,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;min&quot;: 0<br />
+      &nbsp; &nbsp; &nbsp;&nbsp;}<br />
+      &nbsp; &nbsp;}<br />
+      }
+    </p>
+    <p>Response for a failed call:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;error&quot;: &quot;no result in DB&quot;,<br />
+      &nbsp; &nbsp;&quot;method&quot;: &quot;getSystemSettingValues&quot;,<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;: false<br />
+      }
+    </p>
   </div>
 </div>
 <h3>internal/getCurrentSubscriptions</h3>
@@ -2435,7 +2446,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Describes the error. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.&nbsp;See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;for more details.</p>
+            <p>Indicates the reason for the failure of the operation. See the <strong>&quot;Error Codes&quot;</strong> section of this method for details.</p>
           </td>
         </tr>
       </tbody>
@@ -2463,33 +2474,40 @@ toc: true
             <p>Fatal failure like OOM.</p>
           </td>
         </tr>
+        <tr>
+          <td>N/A</td>
+          <td>Unexpected request on PrefsInternalCategory::handleMethodInstrument</td>
+          <td>
+            <p>&nbsp;</p>
+            <p>Unexpected request on PrefsInternalCategory::handleMethodInstrument</p>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Run luna-send command: (Create log)</p>
-    <p># luna-send -n 1 -f luna://com.webos.service.settings/internal/instrument &#39;{&quot;control&quot;:&quot;start&quot;}</p>
-    <p>&nbsp;</p>
-    <p>Example response for a successful call:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;instrumentStatus&quot;: &quot;started&quot;,</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
-    <p>&nbsp;</p>
-    <p>Example response for a failed call:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: false,</p>
-    <p style="margin-left:40px">&quot;errorText&quot;: &quot;unexpected request on PrefsInternalCategory::handleMethodInstrument&quot;</p>
-    <p>}</p>
-    <p>&nbsp;</p>
-    <p>Run luna-send command:(Change current app)</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.settings/internal/instrument &#39;{&quot;control&quot;:&quot;start&quot;}&#39;</p>
+    <p>Response for a successful call:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;instrumentStatus&quot;: &quot;started&quot;,<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>Response for a failed call:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp;&quot;errorText&quot;: &quot;unexpected request on PrefsInternalCategory::handleMethodInstrument&quot;<br />
+      }
+    </p>
+  </div>
+  <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.settings/internal/instrument &#39;{&quot;control&quot;:&quot;changeApp&quot;,&quot;params&quot;:{&quot;app_id&quot;:&quot;com.webos.app.live&quot;}}&#39;</p>
-    <p>&nbsp;</p>
-    <p>Example response for a successful call:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>resetSystemSettingDesc</h3>
@@ -2613,13 +2631,13 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Run luna-send command:</p>
     <p># luna-send -n 1 -a com.webos.setting luna://com.webos.service.settings/resetSystemSettingDesc &#39;{&quot;category&quot;:&quot;support&quot;}&#39;</p>
-    <p>&nbsp;</p>
-    <p>Example response for a successful call:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;method&quot;: &quot;resetSystemSettingDesc&quot;<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>resetSystemSettings</h3>
@@ -2771,13 +2789,12 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Run luna-send command:</p>
     <p># luna-send -n 1 -a com.webos.setting luna://com.webos.service.settings/resetSystemSettings &#39;{&quot;category&quot;:&quot;support&quot;, &quot;keys&quot;:[&quot;automaticUpdate&quot;]}&#39;</p>
-    <p>&nbsp;</p>
-    <p>Example response for a successful call:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>setSystemSettingDesc</h3>
@@ -2855,43 +2872,7 @@ toc: true
           <td>Optional</td>
           <td>Object: <a href="#values"> values</a></td>
           <td>
-            <p>Specify the properties of the&nbsp;<strong>values</strong>&nbsp;object according to&nbsp;<strong>vtype</strong>. The format for the value of each vtype is:</p>
-            <ul>
-              <li>
-                array
-                <p>{</p>
-                <p>&nbsp; array: [ string, string, ...]</p>
-                <p>}</p>
-              </li>
-              <li>
-                arrayExt
-                <p>{</p>
-                <p>&nbsp; arrayExt: [ object, object, ...]</p>
-                <p>}</p>
-                <p>Object Syntax:</p>
-                <p>{</p>
-                <p>&nbsp;&nbsp; visible: boolean</p>
-                <p>&nbsp;&nbsp; active: boolean</p>
-                <p>&nbsp;&nbsp; value: string</p>
-                <p>}</p>
-              </li>
-              <li>
-                range
-                <p>{</p>
-                <p>&nbsp; range: {</p>
-                <p>&nbsp;&nbsp;&nbsp; max: integer</p>
-                <p>&nbsp;&nbsp;&nbsp; min: integer</p>
-                <p>&nbsp;&nbsp;&nbsp; interval: integer</p>
-                <p>&nbsp; }</p>
-                <p>}</p>
-              </li>
-              <li>
-                file
-                <p>{</p>
-                <p>&nbsp; &quot;file&quot;: string</p>
-                <p>}</p>
-              </li>
-            </ul>
+            <p>Specify the properties of the&nbsp;<strong>values</strong>&nbsp;object according to&nbsp;<strong>vtype</strong>.</p>
           </td>
         </tr>
         <tr>
@@ -2984,7 +2965,7 @@ toc: true
           <td>Optional</td>
           <td>string</td>
           <td>
-            <p>Describes the error. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.&nbsp;See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;for more details.</p>
+            <p>Indicates the reason for the failure of the operation. See the <strong>&quot;Error Codes&quot; </strong>section of this method for details.</p>
           </td>
         </tr>
       </tbody>
@@ -3017,29 +2998,29 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Run luna-send command:</p>
     <p># luna-send -f -n 1 -a com.webos.service.settings luna://com.webos.service.settings/setSystemSettingDesc &#39;{<br />
-      &nbsp; &nbsp; &nbsp; &nbsp;&quot;key&quot;: &quot;brightness&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp;&quot;ui&quot;: {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;visible&quot;: false,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;displayName&quot;: &quot;brightness&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;active&quot;: true,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;widget&quot;: &quot;None&quot;<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}<br />
+      &nbsp; &nbsp;&quot;key&quot;: &quot;brightness&quot;,<br />
+      &nbsp; &nbsp;&quot;ui&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &quot;visible&quot;: false,<br />
+      &nbsp; &nbsp; &nbsp; &quot;displayName&quot;: &quot;brightness&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;active&quot;: true,<br />
+      &nbsp; &nbsp; &nbsp; &quot;widget&quot;: &quot;None&quot;<br />
+      &nbsp; &nbsp;}<br />
       }&#39;
     </p>
-    <p>&nbsp;</p>
-    <p>Example response for a successful call:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
-    <p>&nbsp;</p>
-    <p>Example response for a failed call:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;method&quot;: &quot;setSystemSettingDesc&quot;,</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: false,</p>
-    <p style="margin-left:40px">&quot;errorText&quot;: &quot;The format of value is wrong. &#39;value&#39;:{$ref:&#39;VaildValues&#39;}. $ref is one of &#39;array&#39;, &#39;range&#39;, or &#39;date&#39;&quot;</p>
-    <p>}</p>
+    <p>Response for a successful call:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;method&quot;: &quot;setSystemSettingDesc&quot;,&nbsp;<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>Response for a failed call:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;method&quot;: &quot;setSystemSettingDesc&quot;,<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp;&quot;errorText&quot;: &quot;The format of value is wrong. &#39;value&#39;:{$ref:&#39;VaildValues&#39;}. $ref is one of &#39;array&#39;, &#39;range&#39;, or &#39;date&#39;&quot;<br />
+      }
+    </p>
   </div>
 </div>
 <h3>setSystemSettingFactoryDesc</h3>
@@ -3252,27 +3233,28 @@ toc: true
   <div class="code-bg-grey">
     <p>Run luna-send command:</p>
     <p># luna-send -f -n 1 -a com.webos.service.settings luna://com.webos.service.settings/setSystemSettingFactoryDesc &#39;{<br />
-      &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;key&quot;: &quot;brightness&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;ui&quot;: {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;visible&quot;: false,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;displayName&quot;: &quot;brightness&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;active&quot;: true,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;widget&quot;: &quot;None&quot;<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}<br />
+      &nbsp; &nbsp;&quot;key&quot;: &quot;brightness&quot;,<br />
+      &nbsp; &nbsp;&quot;ui&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &quot;visible&quot;: false,<br />
+      &nbsp; &nbsp; &nbsp; &quot;displayName&quot;: &quot;brightness&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;active&quot;: true,<br />
+      &nbsp; &nbsp; &nbsp; &quot;widget&quot;: &quot;None&quot;<br />
+      &nbsp; &nbsp;}<br />
       }&#39;
     </p>
-    <p>&nbsp;</p>
-    <p>Example response for a successful call:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
-    <p>&nbsp;</p>
-    <p>Example response for a failed call:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;method&quot;: &quot;setSystemSettingDesc&quot;,</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: false,</p>
-    <p style="margin-left:40px">&quot;errorText&quot;: &quot;The format of value is wrong. &#39;value&#39;:{$ref:&#39;VaildValues&#39;}. $ref is one of &#39;array&#39;, &#39;range&#39;, or &#39;date&#39;&quot;</p>
-    <p>}</p>
+    <p>Response for a successful call:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp;&quot;method&quot;: &quot;setSystemSettingFactoryDesc&quot;<br />
+      }
+    </p>
+    <p>Response for a failed call:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;method&quot;: &quot;setSystemSettingFactoryDesc&quot;,<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp;&quot;errorText&quot;: &quot;The format of value is wrong. &#39;value&#39;:{$ref:&#39;VaildValues&#39;}. $ref is one of &#39;array&#39;, &#39;range&#39;, or &#39;date&#39;&quot;<br />
+      }
+    </p>
   </div>
 </div>
 <h3>setSystemSettingFactoryValue</h3>
@@ -3406,6 +3388,14 @@ toc: true
             </ul>
           </td>
         </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the <strong>&quot;Error Codes&quot;</strong> section of this method for details.</p>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -3471,26 +3461,18 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Run luna-send command:</p>
-    <p># luna-send \-n 1 luna://com.webos.service.settings/setSystemSettingFactoryValue &#39;{<br />
-      &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;category&quot;:&quot;picture&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;dimension&quot;:{&quot;input&quot;:&quot;hdmi2&quot;, &quot;pictureMode&quot;:&quot;vivid&quot;, &quot;_3dStatus&quot;:&quot;2d&quot;},<br />
-      &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;settings&quot;:{&quot;brightness&quot;:30, &quot;contrast&quot;:44}<br />
+    <p># luna-send -f -n 1 luna://com.webos.service.settings/setSystemSettingFactoryValue &#39;{<br />
+      &nbsp; &nbsp;&quot;category&quot;:&quot;picture&quot;,<br />
+      &nbsp; &nbsp;&quot;dimension&quot;:{&quot;input&quot;:&quot;hdmi2&quot;, &quot;pictureMode&quot;:&quot;vivid&quot;, &quot;_3dStatus&quot;:&quot;2d&quot;},<br />
+      &nbsp; &nbsp;&quot;settings&quot;:{&quot;brightness&quot;:30, &quot;contrast&quot;:44}<br />
       }&#39;
     </p>
-    <p>&nbsp;</p>
-    <p>Example response for a successful call:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;method&quot;: &quot;setSystemSettingFactoryValue&quot;,</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
-    <p>&nbsp;</p>
-    <p>Example response for a failed call:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;method&quot;: &quot;setSystemSettingDesc&quot;,</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: false,</p>
-    <p style="margin-left:40px">&quot;errorText&quot;: &quot;The format of value is wrong. &#39;value&#39;:{$ref:&#39;VaildValues&#39;}. $ref is one of &#39;array&#39;, &#39;range&#39;, or &#39;date&#39;&quot;</p>
-    <p>}</p>
+    <p>Response for a successful call:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;method&quot;: &quot;setSystemSettingFactoryValue&quot;,<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>setSystemSettings</h3>
@@ -3709,19 +3691,18 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Run luna-send command:</p>
     <p># luna-send \-n 1 luna://com.webos.service.settings/setSystemSettings &#39;{<br />
       &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;category&quot;:&quot;picture&quot;,<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &quot;dimension&quot;:{&quot;input&quot;:&quot;hdmi2&quot;, &quot;pictureMode&quot;:&quot;vivid&quot;, &quot;_3dStatus&quot;:&quot;2d&quot;},<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &quot;settings&quot;:{&quot;brightness&quot;:30, &quot;contrast&quot;:44}<br />
       }&#39;
     </p>
-    <p>&nbsp;</p>
-    <p>Example response for a successful call:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;method&quot;: &quot;setSystemSettings&quot;,</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;method&quot;: &quot;setSystemSettings&quot;,<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>setSystemSettingValues</h3>
@@ -3775,38 +3756,7 @@ toc: true
           <td>Required</td>
           <td>Object: <a href="#values"> values</a></td>
           <td>
-            <p>Specify the properties of the&nbsp;<strong>values</strong>&nbsp;object according to&nbsp;<strong>vtype</strong>. The format for the value of each vtype is:</p>
-            <ul></ul>
-            <ul>
-              <li>
-                array
-                <p>{</p>
-                <p>&nbsp; array: [ string, string, ...]</p>
-                <p>}</p>
-              </li>
-              <li>
-                arrayExt
-                <p>{</p>
-                <p>&nbsp; arrayExt: [ object, object, ...]</p>
-                <p>}</p>
-                <p>Object Syntax:</p>
-                <p>{</p>
-                <p>&nbsp;&nbsp; visible: boolean</p>
-                <p>&nbsp;&nbsp; active: boolean</p>
-                <p>&nbsp;&nbsp; value: string</p>
-                <p>}</p>
-              </li>
-              <li>
-                range
-                <p>{</p>
-                <p>&nbsp; range: {</p>
-                <p>&nbsp;&nbsp;&nbsp; max: integer</p>
-                <p>&nbsp;&nbsp;&nbsp; min: integer</p>
-                <p>&nbsp;&nbsp;&nbsp; interval: integer</p>
-                <p>&nbsp; }</p>
-                <p>}</p>
-              </li>
-            </ul>
+            <p>Specify the properties of the&nbsp;<strong>values</strong>&nbsp;object according to&nbsp;<strong>vtype</strong>.</p>
           </td>
         </tr>
         <tr>
@@ -3911,8 +3861,7 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Run luna-send command:</p>
-    <p># luna-send \-n 1 luna://com.webos.service.settings/setSystemSettingValues &#39;{<br />
+    <p># luna-send -f -n 1 luna://com.webos.service.settings/setSystemSettingValues &#39;{<br />
       &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;category&quot;:&quot;picture&quot;,<br />
       &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;key&quot;:&quot;pictureMode&quot;,<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &quot;op&quot;:&quot;update&quot;,<br />
@@ -3920,22 +3869,22 @@ toc: true
       &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;values&quot;:{&quot;arrayExt&quot;:[{&quot;value&quot;:&quot;expert1&quot;, &quot;visible&quot;:false, &quot;active&quot;:false}]}<br />
       }&#39;
     </p>
-    <p>&nbsp;</p>
-    <p>Example response for a successful call:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
-    <p>&nbsp;</p>
-    <p>Example response for a failed call:</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;method&quot;: &quot;setSystemSettingDesc&quot;,</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: false,</p>
-    <p style="margin-left:40px">&quot;errorText&quot;: &quot;The format of value is wrong. &#39;value&#39;:{$ref:&#39;VaildValues&#39;}. $ref is one of &#39;array&#39;, &#39;range&#39;, or &#39;date&#39;&quot;</p>
-    <p>}</p>
+    <p>Response for a successful call:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp;&quot;method&quot;: &quot;setSystemSettingValues&quot;<br />
+      }
+    </p>
+    <p>Response for a failed call:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;method&quot;: &quot;setSystemSettingValues&quot;,<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp;&quot;errorText&quot;: &quot;The format of value is wrong. &#39;value&#39;:{$ref:&#39;VaildValues&#39;}. $ref is one of &#39;array&#39;, &#39;range&#39;, or &#39;date&#39;&quot;}
+    </p>
   </div>
 </div>
+<h2>Objects</h2>
 <div>
-  <h2>Objects</h2>
   <h3>dimension</h3>
   <p>Settings Service can set many different values under the same setting according to dimension.</p>
   <div class="table-container">
@@ -4041,7 +3990,7 @@ toc: true
           </td>
         </tr>
         <tr>
-          <td>displayNmae</td>
+          <td>displayName</td>
           <td>Required</td>
           <td>String</td>
           <td>
@@ -4060,7 +4009,39 @@ toc: true
     </table>
   </div>
   <h3>values</h3>
-  <p>It is the information that is used for the validation of configurable values.</p>
+  <p>Specify the properties of the&nbsp;<strong>values</strong>&nbsp;object according to&nbsp;<strong>vtype</strong>. It is the information that is used for the validation of configurable values.</p>
+  <p>The format for the value of each vtype is:</p>
+  <ul></ul>
+  <ul>
+    <li>
+      array
+      <p>{</p>
+      <p>&nbsp; array: [ string, string, ...]</p>
+      <p>}</p>
+    </li>
+    <li>
+      arrayExt
+      <p>{</p>
+      <p>&nbsp; arrayExt: [ object, object, ...]</p>
+      <p>}</p>
+      <p>Object Syntax:</p>
+      <p>{</p>
+      <p>&nbsp;&nbsp; visible: boolean</p>
+      <p>&nbsp;&nbsp; active: boolean</p>
+      <p>&nbsp;&nbsp; value: string</p>
+      <p>}</p>
+    </li>
+    <li>
+      range
+      <p>{</p>
+      <p>&nbsp; range: {</p>
+      <p>&nbsp;&nbsp;&nbsp; max: integer</p>
+      <p>&nbsp;&nbsp;&nbsp; min: integer</p>
+      <p>&nbsp;&nbsp;&nbsp; interval: integer</p>
+      <p>&nbsp; }</p>
+      <p>}</p>
+    </li>
+  </ul>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>

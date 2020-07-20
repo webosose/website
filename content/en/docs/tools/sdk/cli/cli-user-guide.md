@@ -1,7 +1,7 @@
 ---
 title: User Guide
 display_title: Command-Line Interface User Guide
-date: 2020-05-26
+date: 2020-07-09
 weight: 10
 toc: true
 ---
@@ -35,6 +35,43 @@ CLI provides the following key features:
     - Enables Node's Inspector for debugging JavaScript services
     - Provides web app information
     - Provides JavaScript service information
+
+## System Requirements
+
+Required version for each operating system are as follows:
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <colgroup>
+      <col style="width: auto" />
+      <col style="width: auto" />
+    </colgroup>
+    <thead>
+      <tr class="header">
+        <th><p>OS</p></th>
+        <th><p>Requirement</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="odd">
+        <td><p>Linux</p></td>
+        <td><p>Ubuntu 18.04 LTS 64-bit</p></td>
+      </tr>
+      <tr class="even">
+        <td><p>macOS</p></td>
+        <td><p>Mac OS X 10.13 High Sierra or higher</p></td>
+      </tr>
+      <tr class="odd">
+        <td><p>Windows</p></td>
+        <td><p>Windows 10 64-bit</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+{{< note >}}
+CLI is working on Node.js v8.12.0.
+{{< /note >}}
 
 ## Installing CLI
 
@@ -183,13 +220,6 @@ The following table shows the available CLI commands.
 ### ares-generate
 
 This command creates a webOS app or service from a template. `ares-generate` displays a list of available templates for a web app, JS services, and webOS configuration files.
-
-{{< note >}}
-The `ares-generate` command requires Git and internet connection. So, before you use the command,
-
-- Check if Git is installed on the host machine, and [set up Git](https://help.github.com/articles/set-up-git) if it is not already installed.
-- Make sure the host machine is connected to the internet.
-{{< /note >}}
 
 #### Usages
 
@@ -389,6 +419,10 @@ Here are some examples of the CLI usage:
 
 This command packages an app and a JS service into a package file (`.ipk`) which is stored in a specified directory.
 
+{{< note >}}
+CLI no longer supports Enyo features since v1.12.0.
+{{< /note >}}
+
 #### Usages
 
 ```shell
@@ -533,11 +567,7 @@ Here are some examples of the different uses:
 
 ### ares-setup-device
 
-This command displays a list of registered target devices. You can also add, modify, or remove them from the list. This command is mainly used to modify target's host address which is running on a remote host. If you execute the command without any options, the command runs in interactive mode.
-
-{{< note >}}
-The emulator is set as the default device. Therefore, a command that needs to connect to a device (e.g. `ares-install`) will request a connection to the emulator unless the `--device` option is specified.
-{{< /note >}}
+This command displays a list of registered target devices. You can add, modify, or remove them from the list. This command is mainly used to modify target's host address which is running on a remote host. If you execute the command without any options, the command runs in interactive mode.
 
 #### Usages
 
@@ -549,6 +579,8 @@ ares-setup-device [OPTION...] --add|-a [TARGET_NAME] [--info|-i [DEVICE_INFO]]
 ares-setup-device [OPTION...] --modify|-m [TARGET_NAME] [--info|-i [DEVICE_INFO]]
 
 ares-setup-device [OPTION...] --remove|-r [TARGET_NAME]
+
+ares-setup-device [OPTION...] --default|-f [TARGET_NAME]
 
 ares-setup-device --search|-s
 
@@ -602,41 +634,46 @@ ares-setup-device --help|-h
 <td><p>Deletes a target device that matches the device name you enter.</p></td>
 </tr>
 <tr class="odd">
+<td><p>-f, --default</p></td>
+<td><p>TARGET_NAME</p></td>
+<td><p>Sets a default target device.</p><p>If you don't set a target device, the default target device is used as the target device.</p></td>
+</tr>
+<tr class="even">
 <td><p>-s, --search</p></td>
 <td><p>None</p></td>
 <td><p>Searches webOS devices in the same network with <a href="https://en.wikipedia.org/wiki/Simple_Service_Discovery_Protocol">SSDP</a> and displays the found device list. When you select a device from the device list, IP address of the selected device will be set for device information automatically.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><p>-t, --timeout</p></td>
 <td><p>TIMEOUT</p></td>
 <td><p>Sets timeout value for the <code>--search</code> option. This option does not have to be preceded by the <code>--search</code> option. The default value is 5 (unit: second).</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><p>-R, --reset</p></td>
 <td><p>None</p></td>
 <td><p>Initializes the list of registered target devices.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><p>-l, --list</p></td>
 <td><p>None</p></td>
 <td><p>Lists registered target devices.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><p>-F, --listfull</p></td>
 <td><p>None</p></td>
 <td><p>Lists registered target devices' information with more detail (JSON string).</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><p>-v</p></td>
 <td><p>None</p></td>
 <td><p>Displays the execution log.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><p>-V, --version</p></td>
 <td><p>None</p></td>
 <td><p>Displays the version of the CLI.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><p>-h, --help</p></td>
 <td><p>None</p></td>
 <td><p>Displays the help of the <code>ares-setup-device</code> command.</p></td>
@@ -681,6 +718,10 @@ ares-setup-device --help|-h
 <li><p>For the device, do not enter anything, leave it blank. The value will be auto-generated by using the passphrase provided by the user.</p></li>
 </ul></li>
 <li><p><strong>passphrase</strong>: Passphrase for using the SSH private key file.</p></li>
+<li><p><strong>default</strong>: Setting a default device.</p>
+<ul><li><p>Enter <code>true</code> to set a default device. Default value is <code>false</code>.</p></li>
+<li><p>This key must be used with <code>--add</code> option.</p></li></ul>
+</li>
 </ul>
 <p> </p>
 <p>When using CLI in interactive mode, take care when entering the required values or choosing to use the default values, otherwise you might not be able to use the device.</p></td>
@@ -711,9 +752,9 @@ Here are some examples of the CLI usage:
     ```shell
     ares-setup-device --list
 
-    name        deviceinfo               connection
-    ---------   --------------------     ------------
-    device      root@127.0.0.1:22        ssh
+    name               deviceinfo               connection  profile
+    ------------------ ------------------------ ----------- -------
+    emulator (default) developer@127.0.0.1:6622 ssh         ose
     ```
 
 * Listing all details of target devices
@@ -742,16 +783,16 @@ Here are some examples of the CLI usage:
     ]
     ```
 
-* Adding the target device (target device name: `target`, host address: `10.123.45.67`, port number: `22`, user: `root`)
+* Adding the target device as a default device (target device name: `target`, host address: `10.123.45.67`, port number: `22`, user: `root`)
 
     ```shell
-    ares-setup-device --add target -i "host=10.123.45.67" -i "port=22" -i "username=root"
+    ares-setup-device --add target -i "host=10.123.45.67" -i "port=22" -i "username=root" -i "default=true"
     ```
 
 * Adding the target device with JSON format (target device name: `target`, host address: `10.123.45.67`, port number: `22`, user: `root`)
 
     ```shell
-    ares-setup-device --add target --info "{'host':'10.123.45.67', 'port':'22', 'username':'root'}"
+    ares-setup-device --add target --info "{'host':'10.123.45.67', 'port':'22', 'username':'root', 'default':true}"
     ```
 
 * Adding the target device with interactive mode (target device name: `target`, host address: `10.123.45.67`, port number: `22`, user: `root`)
@@ -759,9 +800,9 @@ Here are some examples of the CLI usage:
     ```shell
     ares-setup-device
 
-    name     deviceinfo               connection
-    -------- ------------------------ ----------
-    device   root@127.0.0.1:22        ssh
+    name               deviceinfo               connection  profile
+    ------------------ ------------------------ ----------- -------
+    emulator (default) developer@127.0.0.1:6622 ssh         ose
 
     ** You can modify the device info in the above list, or add a new device.
     ? Select: add
@@ -772,12 +813,13 @@ Here are some examples of the CLI usage:
     ? Enter description: sample
     ? Select authentication: password
     ? Enter password: [hidden]
+    ? Set default? Yes
     ? Save? Yes
 
-    name     deviceinfo                  connection
-    -------- --------------------------- ----------
-    device   root@127.0.0.1:22           ssh
-    target   root@10.123.45.67:22        ssh
+    name               deviceinfo               connection profile
+    ------------------ ------------------------ ---------- -------
+    target (default)   root@10.123.45.67:22     ssh        ose
+    emulator           developer@127.0.0.1:6622 ssh        ose
     ```
 
     {{< note >}}
@@ -795,10 +837,10 @@ Here are some examples of the CLI usage:
     ```shell
     ares-setup-device
 
-    name     deviceinfo                  connection
-    -------- --------------------------- ----------
-    device   root@127.0.0.1:22           ssh
-    target   root@10.123.45.67:22        ssh
+    name               deviceinfo               connection profile
+    ------------------ ------------------------ ---------- -------
+    target (default)   root@10.123.45.67:22     ssh        ose
+    emulator           developer@127.0.0.1:6622 ssh        ose
 
     ** You can modify the device info in the above list, or add a new device.
     ? Select: modify
@@ -811,16 +853,21 @@ Here are some examples of the CLI usage:
     ? Enter password: [hidden]
     ? Save? Yes
 
-    name     deviceinfo                  connection
-    -------- --------------------------- ----------
-    device   root@127.0.0.1:22           ssh
-    target   root@10.123.45.67:9922      ssh
-    Success to modify a device!!
+    name             deviceinfo               connection profile
+    ---------------- ------------------------ ---------- -------
+    target (default) root@10.123.45.67:9922   ssh        ose
+    emulator         developer@127.0.0.1:6622 ssh        ose
     ```
 
     {{< note >}}
     If you want to keep the previous value, press the enter key without any value.
     {{< /note >}}
+
+* Setting the default device (target device name: `target`)
+
+    ``` shell
+    ares-setup-device --default target
+    ```
 
 * Removing the target device (target device name: `target`)
 
@@ -829,7 +876,7 @@ Here are some examples of the CLI usage:
     ```
 
     {{< note >}}
-    To remove a target device, you only need to enter the name of the target device following the command.
+    To remove or set a target device, you only need to enter the name of the target device following the command.
     {{< /note >}}
 
 ### ares-install
@@ -1039,16 +1086,21 @@ ares-launch --help|-h
 <td><p>Lists all the available devices.</p></td>
 </tr>
 <tr class="odd">
+<td><p>-H, --hosted</p></td>
+<td><p>APP_DIR</p></td>
+<td><p>Runs an app without installation</p></td>
+</tr>
+<tr class="even">
 <td><p>-v</p></td>
 <td><p>None</p></td>
 <td><p>Displays the execution log.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><p>-V, --version</p></td>
 <td><p>None</p></td>
 <td><p>Displays the version of the CLI.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><p>-h, --help</p></td>
 <td><p>None</p></td>
 <td><p>Displays the help of the <code>ares-launch</code> command.</p></td>
@@ -1075,14 +1127,20 @@ ares-launch --help|-h
 <td><p>ID of the application to launch or terminate.</p></td>
 </tr>
 <tr class="even">
+<td><p>APP_DIR</p></td>
+<td><p>Working directory of an app.</p>
+<p>If <code>--hosted</code> option is used with a directory path, an app (ID: <code>com.sdk.ares.hostedapp</code>) is launched on the target device. The launched opens the files in the <code>APP_DIR</code> directory.</p>
+<p>To close this app, use <code>--close</code> option with <code>com.sdk.ares.hostedapp</code> as an <code>APP_ID</code>.</p></td>
+</tr>
+<tr class="odd">
 <td><p>DISPLAY_ID</p></td>
 <td><p>ID of the display to launch an app. It should be an integer type. (Use <code>0</code> for primary display and <code>1</code> for secondary display.)</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><p>TARGET_DEVICE</p></td>
 <td><p>Specifies the target device on which the application is installed.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><p>PARAMS</p></td>
 <td><p>Specifies the parameters which are used on application launching. It is entered using JSON-type strings in the format <code>"{'param1':'value1', 'param2':'value2 which contains spaces', ...}"</code>.</p></td>
 </tr>
@@ -1125,6 +1183,12 @@ Here are some examples of the different uses:
 
     ```shell
     ares-launch --device target --close com.example.sampleapp
+    ```
+
+* Running the app without installation
+
+    ```shell
+    ares-launch --device target --hosted sampleApp
     ```
 
 ### ares-inspect
@@ -1203,16 +1267,21 @@ ares-inspect --help|-h
 <td><p>Lists all the available devices.</p></td>
 </tr>
 <tr class="even">
+<td><p>-dp, --display</p></td>
+<td><p>DISPLAY_ID</p></td>
+<td><p>Launches an application and opens Web Inspector on a specified display.</p></td>
+</tr>
+<tr class="odd">
 <td><p>-v</p></td>
 <td><p>None</p></td>
 <td><p>Displays the execution log.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><p>-V, --version</p></td>
 <td><p>None</p></td>
 <td><p>Displays the version of the CLI.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><p>-h, --help</p></td>
 <td><p>None</p></td>
 <td><p>Displays the help of the <code>ares-inspect</code> command.</p></td>

@@ -1,12 +1,40 @@
 ---
 title: Release Notes
 display_title: Command-Line Interface Release Notes
-date: 2020-05-12
+date: 2020-07-06
 weight: 20
 toc: true
 ---
 
 This page provides the summary of each Command-Line Interface (CLI) release for webOS Open Source Edition (OSE).
+
+## v1.12.0 (July 2020)
+
+This version is compatible with **webOS OSE 2.6.0**. See below for the new and changed features in this release.
+
+### New features
+
+* Supports to launch Web Inspector on dual display (`–-display` option) in `ares-inspect`.
+* Supports to set a default device (`-–default` option) in `ares-setup-device`.
+* Supports to run a web app without installation ( `--hosted` option) in `ares-launch`.
+
+### Changed features
+
+* Updated Node.js version to v8.12.0.
+* Updated descriptions in `--help` option.
+
+### Removed features
+
+* Removed a Git dependency in `ares-generate`.
+* Removed Enyo features in `ares-package` and `ares-generate`.
+
+### Fixed issues
+
+* Fixed typos.
+
+### Known issues
+
+* Screencast feature of Web Inspector is not working on OSE emulator.
 
 ## v1.11.1 (May 2020)
 

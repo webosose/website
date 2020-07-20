@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.systemservice
-date: 2020-04-16
+date: 2020-07-09
 weight: 310
 toc: true
 ---
@@ -15,12 +15,12 @@ toc: true
     <li>Wallpaper</li>
     <li>Local formats</li>
   </ul>
-  <p><strong>Note: </strong>This service can be used by&nbsp;both: internal system services and third-party components.&nbsp;However, third-party components cannot access and modify all system-critical settings. These methods are marked as &quot;private&quot;.</p>
+  <p><strong>Note: </strong>This service can be used by&nbsp;both&nbsp;internal system services and third-party components.&nbsp;However, third-party components cannot access and modify all system-critical settings. These methods are marked as &quot;<strong>private</strong>&quot;.</p>
 </div>
 <h2>Overview of the API</h2>
 <div>
   <p>This service must be used when an application needs to read or modify system settings. It should not be used to implement any business functionality, such as saving business data through backup procedures. It is often&nbsp;used by UI applications.</p>
-  <p>This API provides a group of system utilities:</p>
+  <p>This service provides a group of system utilities:</p>
   <ul>
     <li><strong>backup </strong>- backs up the systemprefs database</li>
     <li><strong>clock </strong>- manage clock settings</li>
@@ -36,6 +36,7 @@ toc: true
   <p>These values represent system settings which can be queried or modified. Some of them are read-only or write-only, some values are hardware specific(like ringtone). A list of system preference values:</p>
   <ul>
     <li>locale</li>
+    <li>timeSources</li>
     <li>region</li>
     <li>ringtone</li>
     <li>useNetworkTime</li>
@@ -45,8 +46,6 @@ toc: true
     <li>timeChangeLaunch - list of ls2 uris to launch when time is changed</li>
     <li>timeDriftPeriodHr - time refresh period</li>
     <li>wallpaper</li>
-    <li>screenSize.width</li>
-    <li>screenSize.height&nbsp;</li>
   </ul>
   <p>User can set their own values, these values will be stored permanently. Custom values can be used to save program settings.</p>
   <p>There are three functions to manage preference values:</p>
@@ -86,9 +85,9 @@ toc: true
           <tr>
             <td>tempDir</td>
             <td>Required</td>
-            <td>string</td>
+            <td>String</td>
             <td>
-              <p>Directory to store temporarily generated files (files that are to be restored).</p>
+              <p>Directory to store temporarily generated files&nbsp;(files that are to be restored).</p>
             </td>
           </tr>
           <tr>
@@ -177,22 +176,23 @@ toc: true
     </div>
     <h4>Example</h4>
     <div class="code-bg-grey">
-      <p>Example of a successful call:</p>
       <p># luna-send -n 1 -f luna://com.webos.service.systemservice/backup/postRestore &#39;{<br />
         &nbsp; &nbsp; &nbsp; &nbsp;&quot;tempDir&quot;: &quot;/tmp/&quot;,<br />
         &nbsp; &nbsp; &nbsp; &nbsp;&quot;files&quot;: [&quot;/var/luna/preferences/systemprefs_backup.db&quot;]<br />
         }&#39;
       </p>
-      <p>{</p>
-      <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-      <p>}</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: true<br />
+        }
+      </p>
     </div>
   </div>
 </div>
 <h3>backup/preBackup</h3>
 <div>
   <h4>Description</h4>
-  <p>The <strong>preBackup</strong> method creates dump files containing platform-specific environment settings. Call this method before executing the backup procedure in order to save these settings..</p>
+  <p>The <strong>preBackup</strong> method creates dump files containing platform-specific environment settings. Call this method before executing the backup procedure in order to save these settings.</p>
   <p>The dump files are saved into the directory specified by the <strong>temp_dir</strong> parameter or <strong>&#39;${localstatedir}/preferences&#39;</strong>.</p>
   <p>The list of the platform-specific settings that are saved in the dump file is specified in the <strong>sysservice-backupkeys.json</strong> file. Below is an example of this file:</p>
   <p>[<br />
@@ -708,24 +708,25 @@ toc: true
             <p>Accepted parameters:</p>
             <ul>
               <li>battery_challange</li>
+              <li>keyboard_type</li>
               <li>board_type</li>
               <li>product_id</li>
               <li>serial_number</li>
               <li>installer</li>
-              <li>modem_present</li>
               <li>storage_size</li>
+              <li>modem_present</li>
               <li>hardware_id</li>
-              <li>nduid</li>
-              <li>hardware_revision</li>
               <li>ram_size</li>
-              <li>wifi_addr</li>
+              <li>hardware_revision</li>
               <li>wired_addr</li>
+              <li>wifi_addr</li>
               <li>last_reset_type</li>
+              <li>radio_type</li>
               <li>storage_free</li>
-              <li>battery_response,</li>
+              <li>battery_response</li>
               <li>device_name</li>
+              <li>nduid</li>
               <li>bt_addr</li>
-              <li>keyboard_type</li>
             </ul>
           </td>
         </tr>
@@ -751,44 +752,13 @@ toc: true
           </th>
         </tr>
         <tr>
-          <td>board_type</td>
+          <td>battery_challange</td>
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Board type</p>
-          </td>
-        </tr>
-        <tr>
-          <td>device_name</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Device name</p>
-          </td>
-        </tr>
-        <tr>
-          <td>hardware_id</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Hardware ID</p>
-          </td>
-        </tr>
-        <tr>
-          <td>hardware_revision</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Hardware revision</p>
-          </td>
-        </tr>
-        <tr>
-          <td>installer</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Tool used to install the image.</p>
-            <p>Currently, the <strong>Is not supported</strong>&nbsp;value is always returned.</p>
+            <p>Battery challenge.</p>
+            <p>Currently, the &quot;<strong>not supported</strong>&quot; value is always returned.</p>
+            <p><strong>Note:</strong> There is a typo in the parameter name. Use the spelling as given in this table.</p>
           </td>
         </tr>
         <tr>
@@ -800,19 +770,11 @@ toc: true
           </td>
         </tr>
         <tr>
-          <td>modem_present</td>
+          <td>board_type</td>
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Modem availability</p>
-          </td>
-        </tr>
-        <tr>
-          <td>nduid</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>NDUID</p>
+            <p>Board type.</p>
           </td>
         </tr>
         <tr>
@@ -820,24 +782,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Product ID</p>
-          </td>
-        </tr>
-        <tr>
-          <td>radio_type</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p><span style="color:rgb(102, 102, 102)">Internal ID code for the radio type.</span></p>
-            <p>Currently, the <strong>Is not supported</strong>&nbsp;value is always returned.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>ram_size</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>RAM size</p>
+            <p>Product ID.</p>
           </td>
         </tr>
         <tr>
@@ -845,16 +790,16 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Serial number</p>
+            <p>Serial number.</p>
           </td>
         </tr>
         <tr>
-          <td>storage_free</td>
+          <td>installer</td>
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Free storage size</p>
-            <p>Currently, the <strong>Is not supported</strong>&nbsp;value is always returned.</p>
+            <p>Tool used to install the image.</p>
+            <p>Currently, the&nbsp;&quot;<strong>not supported</strong>&quot; value is always returned.</p>
           </td>
         </tr>
         <tr>
@@ -862,15 +807,40 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Storage size</p>
+            <p>Storage size.</p>
           </td>
         </tr>
         <tr>
-          <td>wifi_addr</td>
+          <td>modem_present</td>
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>WiFi MAC address</p>
+            <p>Modem availability.</p>
+            <p><strong>Note: </strong>This parameter&nbsp;is &quot;not supported&quot;, even&nbsp;though the response shows this value as &quot;N&quot; to indicate&nbsp;modem is not present.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>hardware_id</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Hardware ID.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>ram_size</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>RAM size.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>hardware_revision</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Hardware revision.</p>
           </td>
         </tr>
         <tr>
@@ -878,35 +848,15 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Wired/Ethernet&nbsp;MAC address</p>
+            <p>Wired/Ethernet&nbsp;MAC address.</p>
           </td>
         </tr>
         <tr>
-          <td>last_reset_type</td>
+          <td>wifi_addr</td>
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Reason code for last reboot (may come from /proc/cmdline).</p>
-            <p>Currently, the <strong>Is not supported</strong>&nbsp;value is always returned.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>battery_challange</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Battery challenge.</p>
-            <p>Currently, the <strong>Is not supported</strong> value is always returned.</p>
-            <p>Note: there is a typo in the parameter name. Use the spelling as given in this table.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>battery_response</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Battery response.</p>
-            <p>Currently, the <strong>Is not supported</strong>&nbsp;value is always returned.</p>
+            <p>WiFi MAC address.</p>
           </td>
         </tr>
         <tr>
@@ -922,19 +872,63 @@ toc: true
           </td>
         </tr>
         <tr>
-          <td>errorText</td>
+          <td>last_reset_type</td>
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+            <p>Reason code for last reboot (may come from /proc/cmdline).</p>
+            <p>Currently, the&nbsp;&quot;<strong>not supported</strong>&quot; value is always returned.</p>
           </td>
         </tr>
         <tr>
-          <td>bt_addrd</td>
+          <td>radio_type</td>
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Currently, the <strong>Is not supported</strong>&nbsp;value is always returned.</p>
+            <p><span style="color:rgb(102, 102, 102)">Internal ID code for the radio type.</span></p>
+            <p>Currently, the&nbsp;&quot;<strong>not supported</strong>&quot; value is always returned.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>storage_free</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Free storage size.</p>
+            <p>Currently, the&nbsp;&quot;<strong>not supported</strong>&quot; value is always returned.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>battery_response</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Battery response.</p>
+            <p>Currently, the&nbsp;&quot;<strong>not supported</strong>&quot; value is always returned.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>device_name</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Device name.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>nduid</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>NDUID.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>bt_addr</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Bluetooth address.</p>
           </td>
         </tr>
         <tr>
@@ -942,8 +936,16 @@ toc: true
           <td>Optional</td>
           <td>Number</td>
           <td>
-            <p>&nbsp;The error code for the failed operation.</p>
+            <p>The error code for the failed operation.</p>
             <p><strong>Note</strong>:If the method fails, the <strong>errorText</strong> is always returned but the&nbsp;<strong>errorCode</strong> is returned only for specific errors..</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes&quot;</strong>&nbsp;section of this method for details.</p>
           </td>
         </tr>
       </tbody>
@@ -996,7 +998,7 @@ toc: true
           <td>None</td>
           <td>Invalid parameter: + [parameter name]</td>
           <td>
-            <p>The parameter mentioned in the error messageis invalid.</p>
+            <p>The parameter mentioned in the error message is invalid.</p>
           </td>
         </tr>
       </tbody>
@@ -1264,7 +1266,7 @@ toc: true
 <h3>getPreferenceValues</h3>
 <div>
   <h4>Description</h4>
-  <p>The <strong>getPreferenceValues</strong> method retrieves a list of valid values for the specified key. If the key is of a type that takes one of a discrete set of valid values, <strong>getPreferenceValues</strong> returns that set.&nbsp;Otherwise, <strong>getPreferencValues</strong> returns nothing for the key. For more details, see the examples provided for this API method.</p>
+  <p>The <strong>getPreferenceValues</strong> method retrieves a list of valid values for the specified key. If the key is of a type that takes one of a discrete set of valid values, <strong>getPreferenceValues</strong> returns that set.&nbsp;Otherwise, <strong>getPreferenceValues</strong> returns nothing for the key. For more details, see the examples.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -1302,8 +1304,6 @@ toc: true
               <li>timeDriftPeriodHr</li>
               <li>nitzValidity</li>
               <li>wallpaper</li>
-              <li>screenSize.width</li>
-              <li>screenSize.height</li>
             </ul>
           </td>
         </tr>
@@ -1593,7 +1593,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes&quot;</strong>&nbsp;section of this method for details.</p>
           </td>
         </tr>
       </tbody>
@@ -1661,9 +1661,15 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send&nbsp;-n 1 -f luna://com.webos.service.systemservice/osInfo/query &#39; {&quot;parameters&quot;:[&quot;webos_name&quot;, &quot;webos_release&quot;,&quot;webos_build_id&quot;]} &#39;</p>
-    <p>&nbsp;</p>
-    <p>Returns:</p>
+    <p># luna-send&nbsp;-n 1 -f luna://com.webos.service.systemservice/osInfo/query &#39;{<br />
+      &nbsp; &nbsp;&quot;parameters&quot;:[<br />
+      &nbsp; &nbsp; &nbsp;&nbsp;&quot;webos_name&quot;,<br />
+      &nbsp; &nbsp; &nbsp;&nbsp;&quot;webos_release&quot;,<br />
+      &nbsp; &nbsp; &nbsp;&nbsp;&quot;webos_build_id&quot;<br />
+      &nbsp; &nbsp;]<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
     <p>{&nbsp;&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&quot;webos_release&quot;:&quot;1.0.p&quot;,<br />
       &nbsp;&nbsp;&nbsp;&quot;webos_build_id&quot;:&quot;4&quot;,<br />
@@ -1967,8 +1973,6 @@ toc: true
               <li>timeDriftPeriodHr</li>
               <li>nitzValidity</li>
               <li>wallpaper</li>
-              <li>screenSize.width</li>
-              <li>screenSize.height</li>
             </ul>
             <p>New key will be created if any other key is specified.</p>
           </td>
@@ -3309,12 +3313,6 @@ toc: true
   <h4>Description</h4>
   <p>The <strong>setSystemNetworkTime</strong> method is&nbsp;used to send a NITZ messages to Luna System Service. A NITZ message contains the&nbsp;local time and date, time zone and DST offset, as well as network provider identity.&nbsp;NITZ can be used to update the system clock of network devices.</p>
   <p>This method is&nbsp;called by the service, which receives the time data from the service provider.</p>
-  <ul>
-    <li>While Airplanmode is off, if Device&#39;s timezone setting is off and user manually select the timezone, then when NITZ message arrives, it will use the timezone specified by the device to calculate for times. Time is always the unix time in seconds.</li>
-    <li>If Airplane mode is off and both device&#39;s Networktimezone &amp; NetworkTime are off, then NITZ message is ignored.</li>
-    <li>If Airplane mode is off and NetworkTime is off and NetworkTimezone is on then time is calculated based on current device time offset by current NetworkTimezone. (i.e device is 3pm pacific time with NetworkTime off, then device is traveled to NewYork while in Airplanemode, once arrive in Newyork, turnoff Airplanemode, time is calculated by taking device current time offset by NewYork timezone (it ignores networktime).</li>
-  </ul>
-  <p><strong>Note</strong>: Prior to using this service to send a fake nitz message to LunaSysService, device must be in AirplaneMode and NetworkTime and Network TimeZone must be turned on.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -4596,6 +4594,13 @@ toc: true
             <p>Internal luna bus error.</p>
           </td>
         </tr>
+        <tr>
+          <td>None</td>
+          <td>File not found.</td>
+          <td>
+            <p>File not found.</p>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -4607,15 +4612,16 @@ toc: true
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;destType&quot; : &quot;jpg&quot;<br />
       }&#39;
     </p>
-    <p>&nbsp;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true,</p>
-    <p style="margin-left:40px">&quot;conversionResult&quot;: {</p>
-    <p style="margin-left:80px">&quot;dest&quot;: &quot;//tmp/test.jpg&quot;,</p>
-    <p style="margin-left:80px">&quot;source&quot;: &quot;//mnt/lg/tvservice/res/lgres/bootani/light_open.png&quot;,</p>
-    <p style="margin-left:80px">&quot;destType&quot;: &quot;jpg&quot;</p>
-    <p style="margin-left:40px">}</p>
-    <p>}</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp;&quot;conversionResult&quot;: {<br />
+      &nbsp; &nbsp; &nbsp;&nbsp;&quot;dest&quot;: &quot;//tmp/test.jpg&quot;,<br />
+      &nbsp; &nbsp; &nbsp;&nbsp;&quot;source&quot;: &quot;//mnt/lg/tvservice/res/lgres/bootani/light_open.png&quot;,<br />
+      &nbsp; &nbsp; &nbsp;&nbsp;&quot;destType&quot;: &quot;jpg&quot;<br />
+      &nbsp; &nbsp;}<br />
+      }
+    </p>
   </div>
 </div>
 <h3>wallpaper/deleteWallpaper</h3>
@@ -4764,12 +4770,14 @@ toc: true
   <h4>Example</h4>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/wallpaper/deleteWallpaper &#39;{ &quot;wallpaperName&quot;: &quot;record-large.png&quot; }&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true,</p>
-    <p style="margin-left:40px">&quot;wallpaper&quot;: {</p>
-    <p style="margin-left:80px">&quot;wallpaperName&quot;: &quot;record-large.png&quot;</p>
-    <p style="margin-left:40px">}</p>
-    <p>}</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp;&quot;wallpaper&quot;: {<br />
+      &nbsp; &nbsp; &nbsp;&nbsp;&quot;wallpaperName&quot;: &quot;record-large.png&quot;<br />
+      &nbsp; &nbsp;}<br />
+      }
+    </p>
   </div>
 </div>
 <h3>wallpaper/importWallpaper</h3>
@@ -5358,8 +5366,8 @@ toc: true
     <p>}</p>
   </div>
 </div>
+<h2>Objects</h2>
 <div>
-  <h2>Objects</h2>
   <h3>TimeSourceOffset</h3>
   <p>Details about the offset from one of the time-sources.</p>
   <p>Example:&nbsp;</p>

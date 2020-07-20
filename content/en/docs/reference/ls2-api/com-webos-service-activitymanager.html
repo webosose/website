@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.activitymanager
-date: 2020-03-31
+date: 2020-07-16
 weight: 70
 toc: true
 ---
@@ -13,46 +13,46 @@ toc: true
 <div>
   <p>The <strong>Activity Manager</strong> is responsible for coordinating work in the system. This includes work currently being done and work that is scheduled to be done at some point in the future. The primary unit of control is the <strong>Activity</strong>, which represents some specific item of work in the system - such as syncing an email account or a game that is being played.</p>
   <p>The Activity Manager will track <strong>H/W and S/W</strong> through Activity and notify when the specified events occur. If there is a dynamic service that needs to wake up when certain conditions are met, Activity Manager is the best choice.</p>
-  <p>{{< figure src="/images/docs/reference/com-webos-service-activitymanager-activity-state-transition-diagram.png" alt="activity state transition diagram" >}}</p>
+  <p><img src="/images/docs/reference/com-webos-service-activitymanager-activity-state-transition-diagram.png" alt="activity state transition diagram"></p>
   <p>An&nbsp;Activity can have the state shown in the diagram above. What the Activity does for each state is as follows.</p>
   <ul>
     <li>
-      <span style="color:#0000FF"><strong>creating</strong></span>
+      <strong><span style="color:#0000FF">creating</span></strong>
       <ul>
         <li>The <strong>create</strong>&nbsp;method is called and the activity is <strong>creating</strong>.</li>
       </ul>
     </li>
     <li>
-      <span style="color:#008000"><strong>created</strong></span>&nbsp;
+      <strong><span style="color:#008000">created</span></strong>
       <ul>
         <li>The&nbsp;activity was <strong>created&nbsp;</strong>successfully.&nbsp;</li>
         <li>When the&nbsp;<strong>create</strong> method is called with <strong>{&#39;start&#39;&nbsp;:&nbsp;true}</strong>, the activity automatically moves to&nbsp;<strong>unsatisfied&nbsp;</strong>state.</li>
       </ul>
     </li>
     <li>
-      <span style="color:#0000FF"><strong>starting</strong></span>
+      <strong><span style="color:#0000FF">starting</span></strong>
       <ul>
         <li>The <strong>start </strong>method is called and the activity is <strong>starting</strong>.</li>
         <li>In this step, the activity will subscribe requirements, triggers, and schedule.</li>
       </ul>
     </li>
     <li>
-      <span style="color:#008000"><strong>unsatisfied</strong></span>
+      <strong><span style="color:#008000">unsatisfied</span></strong>
       <ul>
-        <li><span style="color:#008000"><strong></strong></span>The activity waits for all conditions to be satisfied - requirements, triggers and schedule.</li>
+        <li><span style="color:#008000"><strong>​</strong></span>The activity waits for all conditions to be satisfied - requirements, triggers and schedule.</li>
         <li>The activity in <strong>unsatisfied</strong>&nbsp;state can be paused by the&nbsp;<strong>pause</strong>&nbsp;method.</li>
       </ul>
     </li>
     <li>
       <strong><span style="color:#0000FF">pausing</span></strong>
       <ul>
-        <li><strong><span style="color:#0000FF"></span></strong>The <strong>pause</strong>&nbsp;method is called and the activity is&nbsp;<strong>pausing</strong>.</li>
+        <li><strong><span style="color:#0000FF">​</span></strong>The <strong>pause</strong>&nbsp;method is called and the activity is&nbsp;<strong>pausing</strong>.</li>
       </ul>
     </li>
     <li>
       <strong><span style="color:#008000">paused</span></strong>
       <ul>
-        <li><strong><span style="color:#008000"></span></strong>The activity is <strong>paused</strong>.</li>
+        <li><strong><span style="color:#008000">​</span></strong>The activity is <strong>paused</strong>.</li>
         <li>In this state, the activity&nbsp;does not move to the <strong>satisfied&nbsp;</strong>state, although all conditions&nbsp;are satisfied.</li>
         <li>The activity can move to unsatisfied state by <strong>start</strong>&nbsp;method.</li>
       </ul>
@@ -60,28 +60,28 @@ toc: true
     <li>
       <strong><span style="color:#0000FF">satisfying</span></strong>
       <ul>
-        <li><strong><span style="color:#0000FF"></span></strong>All conditions of the activity are&nbsp;<strong>satisfying</strong>.&nbsp;</li>
+        <li><strong><span style="color:#0000FF">​</span></strong>All conditions of the activity are&nbsp;<strong>satisfying</strong>.&nbsp;</li>
         <li>An activity in <strong>unsatisfied&nbsp;</strong>state automatically moves to this state without an API&nbsp;call.</li>
       </ul>
     </li>
     <li>
       <strong><span style="color:#008000">satisfied</span></strong>
       <ul>
-        <li><strong><span style="color:#008000"></span></strong>All conditions&nbsp;of the activity are <strong>satisfied</strong>.</li>
+        <li><strong><span style="color:#008000">​</span></strong>All conditions&nbsp;of the activity are <strong>satisfied</strong>.</li>
         <li>There is nothing to do special.</li>
       </ul>
     </li>
     <li>
       <strong><span style="color:#0000FF">expiring</span></strong>
       <ul>
-        <li><strong><span style="color:#0000FF"></span></strong>The activity is <strong>expiring</strong>.</li>
+        <li><strong><span style="color:#0000FF">​</span></strong>The activity is <strong>expiring</strong>.</li>
         <li>The activity&nbsp;will call the callback method and unsubscribe&nbsp;triggers and cancel schedule.</li>
       </ul>
     </li>
     <li>
       <strong><span style="color:#008000">expired</span></strong>
       <ul>
-        <li><strong><span style="color:#008000"></span></strong>The activity is over.</li>
+        <li><strong><span style="color:#008000">​</span></strong>The activity is over.</li>
         <li>All callbacks are handled successfully.</li>
         <li>If the activity is not set to&nbsp;<strong>continuous&nbsp;</strong>property, the activity is in <strong>expired&nbsp;</strong>state forever.</li>
         <li>If its parent wants to start it again, the&nbsp;parent should call <strong>complete</strong>&nbsp;method with <strong>{&#39;restart &#39;: true}</strong>.</li>
@@ -91,7 +91,7 @@ toc: true
     <li>
       <strong><span style="color:#0000FF">restarting</span></strong>
       <ul>
-        <li><strong><span style="color:#0000FF"></span></strong>The activity is <strong>restarting</strong>.</li>
+        <li><strong><span style="color:#0000FF">​</span></strong>The activity is <strong>restarting</strong>.</li>
         <li>
           There are two ways to restart an activity.
           <ul>
@@ -104,7 +104,7 @@ toc: true
     <li>
       <strong><span style="color:#0000FF">failing</span></strong>
       <ul>
-        <li><strong><span style="color:#0000FF"></span></strong>An error occurs during activity job and the activity is <strong>failing</strong>.</li>
+        <li><strong><span style="color:#0000FF">​</span></strong>An error occurs during activity job and the activity is <strong>failing</strong>.</li>
         <li>Any activity in any state can move to this state, if an error occurs.</li>
         <li>Make sure that Triggers or Callbacks do not fail for any reason. Their failure will move the activity immediately to this state.</li>
       </ul>
@@ -112,21 +112,21 @@ toc: true
     <li>
       <strong><span style="color:#008000">failed</span></strong>
       <ul>
-        <li><strong><span style="color:#008000"></span></strong>The activity has&nbsp;<strong>failed<span style="color:#008000">,</span></strong>&nbsp;and the activity manager cannot do anything anymore.</li>
+        <li><strong><span style="color:#008000">​</span></strong>The activity has&nbsp;<strong>failed<span style="color:#008000">,</span></strong>&nbsp;and the activity manager cannot do anything anymore.</li>
         <li>The parent should call <strong>cancel</strong>&nbsp;method to destroy the activity.</li>
       </ul>
     </li>
     <li>
       <strong><span style="color:#0000FF">destroying</span></strong>
       <ul>
-        <li><strong><span style="color:#0000FF"></span></strong>The <strong>cancel&nbsp;</strong>method is called and the activity is <strong>destroying</strong>.</li>
+        <li><strong><span style="color:#0000FF">​</span></strong>The <strong>cancel&nbsp;</strong>method is called and the activity is <strong>destroying</strong>.</li>
         <li>The <strong>cancel</strong> method can be called in any activity state,</li>
       </ul>
     </li>
     <li>
       <strong><span style="color:#008000">destroyed</span></strong>
       <ul>
-        <li><strong><span style="color:#008000"></span></strong>The activity is <strong>destroyed</strong>.</li>
+        <li><strong><span style="color:#008000">​</span></strong>The activity is <strong>destroyed</strong>.</li>
         <li>In this state, the activity will be&nbsp;excluded from being managed by the activity manager.</li>
       </ul>
     </li>
@@ -1432,6 +1432,7 @@ toc: true
 <div>
   <h4>Description</h4>
   <p>Suspend the work on the specified Activity and place the Activity in <strong>pause</strong> state.</p>
+  <p><strong>NOTE: </strong>An activity can be paused only if it is in the <strong>unsatisfied </strong>state. Use the&nbsp;<strong>getActivityInfo</strong>&nbsp;method to check the state of an activity.&nbsp;</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -1519,7 +1520,33 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -n 1 -f luna://com.webos.service.activitymanager/pause &#39;{&quot;activityId&quot;:58}&#39;</p>
+    <p>Create activity</p>
+    <p># luna-send -f -i luna://com.webos.service.activitymanager/create &#39;{<br />
+      &nbsp; &quot;activity&quot;: {<br />
+      &nbsp; &nbsp; &quot;description&quot;: &quot;&quot;,&quot;name&quot;: &quot;test activity&quot;,<br />
+      &nbsp; &nbsp; &quot;trigger&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &quot;method&quot;: &quot;luna://com.webos.service.config/getConfigs&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;params&quot;: {&quot;configNames&quot;: [&quot;com.webos.service.activitymanager.p2test.trigger&quot;],&quot;subscribe&quot;: true},<br />
+      &nbsp; &nbsp; &nbsp; &quot;where&quot;: {&quot;op&quot;:&quot;=&quot;,&quot;prop&quot;:[&quot;configs&quot;,&quot;com.webos.service.activitymanager.p2test.trigger&quot;],&quot;val&quot;:true}<br />
+      &nbsp; &nbsp; },&quot;type&quot;: {&quot;foreground&quot;: true}<br />
+      &nbsp; },&quot;replace&quot;: true,&quot;start&quot;: true, &quot;subscribe&quot;:true<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&quot;subscribed&quot;: true,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&quot;activityId&quot;: 11,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>Pause activity</p>
+    <p>#&nbsp;luna-send -n 1 -f&nbsp;luna://com.webos.service.activitymanager/pause&nbsp;&#39;{&quot;activityId&quot;: 11}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }<br />
+      &nbsp;
+    </p>
   </div>
 </div>
 <h3>getActivityInfo</h3>
@@ -1670,8 +1697,7 @@ toc: true
     <p>Example 1:</p>
     <p># luna-send -n 1 -f luna://com.webos.service.activitymanager/getActivityInfo &#39;{<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;activityId&quot;:36,<br />
-      &nbsp; &nbsp; &nbsp; &quot;current&quot;:false,<br />
-      &nbsp; &nbsp; &nbsp; &quot;internal&quot;:false<br />
+      &nbsp; &nbsp; &nbsp; &quot;current&quot;:false<br />
       &nbsp; }&#39;
     </p>
     <p>Response:</p>
@@ -1710,7 +1736,6 @@ toc: true
     <p>Example 2:</p>
     <p># luna-send -n 1 -f -a &quot;creator&quot; luna://com.webos.service.activitymanager/getActivityInfo &#39;{<br />
       &nbsp;&nbsp;&nbsp;&nbsp;&quot;current&quot;: true,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&quot;internal&quot;: true,<br />
       &nbsp;&nbsp;&nbsp;&nbsp;&quot;activityName&quot;: &quot;sdet&quot;<br />
       }&#39;
     </p>
@@ -1724,32 +1749,6 @@ toc: true
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;parent&quot;: {<br />
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&quot;appId&quot;: &quot;creator&quot;<br />
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;internal&quot;: {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;m_userInitiated&quot;: false,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;m_powerDebounce&quot;: false,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;m_explicit&quot;: false,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;m_released&quot;: false,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;m_ready&quot;: true,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;m_requeue&quot;: false,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;m_sentCommand&quot;: &quot;start&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;m_intCommand&quot;: &quot;null&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;m_terminate&quot;: false,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;m_initialized&quot;: true,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;m_continuous&quot;: false,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;m_id&quot;: 80,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;m_extCommand&quot;: &quot;start&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;m_running&quot;: true,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;m_priority&quot;: 3,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;m_useSimpleType&quot;: true,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;m_scheduled&quot;: true,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;m_yielding&quot;: false,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;m_immediate&quot;: true,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;m_focused&quot;: false,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;m_persistent&quot;: false,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;m_restart&quot;: false,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;m_ending&quot;: false,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;m_bus&quot;: 1<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;sdet&quot;,<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &quot;adopters&quot;: [],<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &quot;focused&quot;: false,<br />
@@ -1771,8 +1770,7 @@ toc: true
     <p># luna-send -n 1 -f luna://com.webos.service.activitymanager/getActivityInfo &#39;{<br />
       &nbsp; &nbsp; &quot;details&quot;:false,<br />
       &nbsp; &nbsp; &quot;subscribers&quot;:false,<br />
-      &nbsp; &nbsp; &quot;current&quot;:false,<br />
-      &nbsp; &nbsp; &quot;internal&quot;:false<br />
+      &nbsp; &nbsp; &quot;current&quot;:false<br />
       }&#39;
     </p>
     <p>Response:</p>
@@ -1891,712 +1889,715 @@ toc: true
     </p>
   </div>
 </div>
-<div>
 <h2>Objects</h2>
-<h3>Activity</h3>
-<p>Represent everything about an Activity-name, type, state, requirements, schedule, trigger, callback, id,creator, adopters, processes, flows, and associations.&nbsp;</p>
-<div class="table-container">
-  <table class="table is-bordered is-fullwidth">
-    <tbody>
-      <tr>
-        <th width="15%">
-          <p>Name</p>
-        </th>
-        <th width="15%">
-          <p>Required</p>
-        </th>
-        <th width="15%">
-          <p>Type</p>
-        </th>
-        <th>
-          <p>Description</p>
-        </th>
-      </tr>
-      <tr>
-        <td>name</td>
-        <td>Required</td>
-        <td>String</td>
-        <td>
+<div>
+  <h3>Activity</h3>
+  <p>Represent everything about an Activity-name, type, state, requirements, schedule, trigger, callback, id,creator, adopters, processes, flows, and associations.&nbsp;</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>name</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
             <p>Activity name. Must be unique for creator. Applies to both persistent and non-persistent Activities. The create call will fail if this field is not unique unless the "replace" field is true.<br></p>
-        </td>
-      </tr>
-      <tr>
-        <td>description</td>
-        <td>Required</td>
-        <td>String</td>
-        <td>
+          </td>
+        </tr>
+        <tr>
+          <td>description</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
             <p>Activity description.<br></p>
-        </td>
-      </tr>
-      <tr>
-        <td>type</td>
-        <td>Required</td>
-        <td>Object: <a href="#type"> Type</a></td>
-        <td>
-          <p>Indicates how the Activity is handled. Principally, it is used to denote the Activity as either foreground or background, and whether it is continuous&nbsp;or not.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>schedule</td>
-        <td>Optional</td>
-        <td>Object: <a href="#schedule">Schedule</a></td>
-        <td>
-          <p>Time-based requirements for Activity.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>trigger</td>
-        <td>Optional</td>
-        <td>Object: <a href="#trigger">Trigger</a></td>
-        <td>Event that must occur for Activity to run.</td>
-      </tr>
-      <tr>
-        <td>requirements</td>
-        <td>Optional</td>
-        <td>Object: <a href="#requirement"> Requirement</a></td>
-        <td>
-          <p>Conditions that must satisfy&nbsp;for Activity to run.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>callback</td>
-        <td>Optional</td>
-        <td>Object: <a href="#callback">Callback</a></td>
-        <td>
-          <p>Call to invoke when Activity runs. This object should be defined when activity is needed to start immediately.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>metadata</td>
-        <td>Optional</td>
-        <td>Object</td>
-        <td>
-          <p>Opaque object the Activity Manager stores and returns in the callback parameters.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>activityId</td>
-        <td>Optional</td>
-        <td>Number (uint64_t)</td>
-        <td>
-          <p>Activity ID</p>
-        </td>
-      </tr>
-      <tr>
-        <td>creator</td>
-        <td>Optional</td>
-        <td>Object: <a href="#parent"> Parent</a></td>
-        <td>
-          <p><strong><span style="color:#FF0000">NOTE: The &#39;creator&#39; in Activity object can be set only&nbsp;by </span><span style="color:#FF0000">configurator</span><span style="color:#FF0000">.</span></strong></p>
-        </td>
-      </tr>
-      <tr>
-        <td>parent</td>
-        <td>Optional</td>
-        <td>Object: <a href="#parent"> Parent</a></td>
-        <td>
+          </td>
+        </tr>
+        <tr>
+          <td>type</td>
+          <td>Required</td>
+          <td>Object: <a href="#type"> Type</a></td>
+          <td>
+            <p>Indicates how the Activity is handled. Principally, it is used to denote the Activity as either foreground or background, and whether it is continuous&nbsp;or not.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>schedule</td>
+          <td>Optional</td>
+          <td>Object: <a href="#schedule">Schedule</a></td>
+          <td>
+            <p>Time-based requirements for Activity.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>trigger</td>
+          <td>Optional</td>
+          <td>Object: <a href="#trigger">Trigger</a></td>
+          <td>Event that must occur for Activity to run.</td>
+        </tr>
+        <tr>
+          <td>requirements</td>
+          <td>Optional</td>
+          <td>Object: <a href="#requirement"> Requirement</a></td>
+          <td>
+            <p>Conditions that must satisfy&nbsp;for Activity to run.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>callback</td>
+          <td>Optional</td>
+          <td>Object: <a href="#callback">Callback</a></td>
+          <td>
+            <p>Call to invoke when Activity runs. This object should be defined when activity is needed to start immediately.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>metadata</td>
+          <td>Optional</td>
+          <td>Object</td>
+          <td>
+            <p>Opaque object the Activity Manager stores and returns in the callback parameters.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>activityId</td>
+          <td>Optional</td>
+          <td>Number (uint64_t)</td>
+          <td>
+            <p>Activity ID</p>
+          </td>
+        </tr>
+        <tr>
+          <td>creator</td>
+          <td>Optional</td>
+          <td>Object: <a href="#parent"> Parent</a></td>
+          <td>
+            <p><strong>NOTE: The &#39;creator&#39; in Activity object can be set only by configurator.</strong></p>
+          </td>
+        </tr>
+        <tr>
+          <td>parent</td>
+          <td>Optional</td>
+          <td>Object: <a href="#parent"> Parent</a></td>
+          <td>
             <p>Activity parent<br></p>
-        </td>
-      </tr>
-      <tr>
-        <td>adopters</td>
-        <td>Optional</td>
-        <td>Object array: <a href="#parent"> Parent</a></td>
-        <td>
-          <p>Activity adopters&nbsp;<span style="background-color: initial;">(parent object array)</span></p>
-        </td>
-      </tr>
-      <tr>
-        <td>state</td>
-        <td>Optional</td>
-        <td>String</td>
-        <td>
-          <p><span style="color:#FF0000"><strong>NOTE:&nbsp;These states are deprecated. These&nbsp;will be replaced with new states in the next version.</strong></span></p>
-          <p>Activity state. Property that represents current activity state with following strings:</p>
-          <ul>
-            <li>init : Activity has been created and is waiting for Activity&#39;s associations and initial app and service subscriptions to be in place.</li>
-            <li>waiting: Activity is waiting for a trigger to fire or its scheduled time to begin running.</li>
-            <li>blocked: Activity is waiting for its specified Requirements to be met.</li>
-            <li>queued: The Activity is queued and ready to run.</li>
-            <li>running: The Activity is running.</li>
-            <li>pause: The Activity is paused.</li>
-            <li>cancelling: The Activity has been cancelled and waiting for potential adopters to take over as the parent.</li>
-            <li>cancelled: The Activity is cancelled.</li>
-            <li>stopping: The Activity is in the process of stopping.</li>
-            <li>stopped: The Activity has been stopped.</li>
-            <li>complete: The Activity is complete and has stopped.</li>
-          </ul>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-<h3>Callback</h3>
-<p>The <strong>Callback</strong> object<strong>&nbsp;</strong>specifies a method to be called, and optionally arguments that should be passed to that method when the activity moves from &#39;satisfied&#39; state to &#39;expiring&#39;.</p>
-<p>If the&nbsp;<strong>callback</strong> method&nbsp;fails::</p>
-<ul>
-  <li>For normal (non-continuous) activity: activity is moved to &#39;failed&#39; state.</li>
-  <li>For continuous activity: activity moved to &#39;unsatisfied&#39; state.</li>
-</ul>
-<p>To change the behavior when callback fails, use the &#39;<strong>ignoreReturn</strong>&#39; property.</p>
-<div class="table-container">
-  <table class="table is-bordered is-fullwidth">
-    <tbody>
-      <tr>
-        <th width="15%">
-          <p>Name</p>
-        </th>
-        <th width="15%">
-          <p>Required</p>
-        </th>
-        <th width="15%">
-          <p>Type</p>
-        </th>
-        <th>
-          <p>Description</p>
-        </th>
-      </tr>
-      <tr>
-        <td>method</td>
-        <td>Required</td>
-        <td>String</td>
-        <td>Callback URI.</td>
-      </tr>
-      <tr>
-        <td>params</td>
-        <td>Optional</td>
-        <td>any</td>
-        <td>
-          <p>Parameters to be passed to the callback method.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>ignoreReturn</td>
-        <td>Optional</td>
-        <td>Boolean</td>
-        <td>
-          <p>Keeps the activity alive when the activity&nbsp;callback fails. Possible values are:</p>
-          <ul>
-            <li>
-              <strong>true </strong>: Activity manager does not cancel the activity but moves it to the next step.
-              <ul>
-                <li>For normal (non-continuous) activity: waits for client to complete (or cancel)</li>
-                <li>For continuous activity: restarts activity</li>
-              </ul>
-            </li>
-            <li><strong>false </strong>:Activity manager&nbsp;moves the activity to failed&nbsp;state and ultimately cancels it.</li>
-          </ul>
-          <p>Default values:</p>
-          <ul>
-            <li><strong>false&nbsp;:</strong> For non-continuous (normal) activity.&nbsp;(because backward compatibility should be maintained)</li>
-            <li><strong>true : </strong>For continuous activity.</li>
-          </ul>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-<h3>InfoActivity</h3>
-<p>Activity information</p>
-<div class="table-container">
-  <table class="table is-bordered is-fullwidth">
-    <tbody>
-      <tr>
-        <th width="15%">
-          <p>Name</p>
-        </th>
-        <th width="15%">
-          <p>Required</p>
-        </th>
-        <th width="15%">
-          <p>Type</p>
-        </th>
-        <th>
-          <p>Description</p>
-        </th>
-      </tr>
-      <tr>
-        <td>activityId</td>
-        <td>Required</td>
-        <td>Number (uint64_t)</td>
-        <td>
-          <p>Activity ID</p>
-        </td>
-      </tr>
-      <tr>
-        <td>creator</td>
-        <td>Required</td>
-        <td>Object: <a href="#infocreator"> InfoCreator</a></td>
-        <td>
-          <p>Indicates creator</p>
-        </td>
-      </tr>
-      <tr>
-        <td>name</td>
-        <td>Required</td>
-        <td>String</td>
-        <td>
-          <p>Activity name</p>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-<h3>InfoCreator</h3>
-<p>Creator information</p>
-<div class="table-container">
-  <table class="table is-bordered is-fullwidth">
-    <tbody>
-      <tr>
-        <th width="15%">
-          <p>Name</p>
-        </th>
-        <th width="15%">
-          <p>Required</p>
-        </th>
-        <th width="15%">
-          <p>Type</p>
-        </th>
-        <th>
-          <p>Description</p>
-        </th>
-      </tr>
-      <tr>
-        <td>serviceId</td>
-        <td>Required</td>
-        <td>String</td>
-        <td>
-          <p>Service ID</p>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-<h3>InfoQueue</h3>
-<p>List of Activities for which power is currently locked.</p>
-<div class="table-container">
-  <table class="table is-bordered is-fullwidth">
-    <tbody>
-      <tr>
-        <th width="15%">
-          <p>Name</p>
-        </th>
-        <th width="15%">
-          <p>Required</p>
-        </th>
-        <th width="15%">
-          <p>Type</p>
-        </th>
-        <th>
-          <p>Description</p>
-        </th>
-      </tr>
-      <tr>
-        <td>activities</td>
-        <td>Required</td>
-        <td>Object array: <a href="#infoactivity">InfoActivity</a></td>
-        <td>
-          <p>Activities array</p>
-        </td>
-      </tr>
-      <tr>
-        <td>name</td>
-        <td>Required</td>
-        <td>String</td>
-        <td>
-          <p>Queued status</p>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-<h3>InfoRequirement</h3>
-<p>Supported requirement information</p>
-<div class="table-container">
-  <table class="table is-bordered is-fullwidth">
-    <tbody>
-      <tr>
-        <th width="15%">
-          <p>Name</p>
-        </th>
-        <th width="15%">
-          <p>Required</p>
-        </th>
-        <th width="15%">
-          <p>Type</p>
-        </th>
-        <th>
-          <p>Description</p>
-        </th>
-      </tr>
-      <tr>
-        <td>name</td>
-        <td>Optional</td>
-        <td>String</td>
-        <td>
-          <p>requirement name</p>
-        </td>
-      </tr>
-      <tr>
-        <td>type-schema</td>
-        <td>Optional</td>
-        <td>Object</td>
-        <td>
-          <p>requirement type</p>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-<h3>Parent</h3>
-The Parent (or potential parent) of an Activity specified as an app ID or service ID. The Activity Manager automatically obtains this value when the app or service invokes the create() or adopt()
-<div class="table-container">
-  <table class="table is-bordered is-fullwidth">
-    <tbody>
-      <tr>
-        <th width="15%">
-          <p>Name</p>
-        </th>
-        <th width="15%">
-          <p>Required</p>
-        </th>
-        <th width="15%">
-          <p>Type</p>
-        </th>
-        <th>
-          <p>Description</p>
-        </th>
-      </tr>
-      <tr>
-        <td>appId</td>
-        <td>Optional</td>
-        <td>String</td>
-        <td>Application ID. Either this or serviceId must be specified.</td>
-      </tr>
-      <tr>
-        <td>serviceId</td>
-        <td>Optional</td>
-        <td>String</td>
-        <td>Service ID. Either this or appId must be specified.</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-<h3>Requirement</h3>
-<p>The <strong>Requirements </strong>are preconditions that the Activity Manager will ensure are met before an Activity will be run. Any number of requirements may be specified for a single Activity, and all must be met in order for the Activity to move to the&nbsp;<span style="color:#008000"><strong>satisfied&nbsp;</strong></span>state.&nbsp;<strong>Requirements&nbsp;</strong>can transition from the met state back to unmet if the condition the particular requirement is monitoring for no longer holds true.</p>
-<p>The Requirements available on the system can be queried&nbsp;using <strong>getManagerInfo&nbsp;</strong>method.</p>
-<p>Example :<br />
-  luna-send -n 1 -f luna://com.webos.service.activitymanager/create &#39;{<br />
-  &nbsp;&nbsp; &nbsp;&quot;activity&quot;: {<br />
-  &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;<strong>&quot;requirements&quot;: {&quot;bootup&quot;: true, &quot;internet&quot;: true}</strong>,<br />
-  &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&quot;name&quot;: &quot;browser-restart&quot;, &quot;description&quot;: &quot;&quot;, &quot;type&quot;: {&quot;foreground&quot;: true},<br />
-  &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&quot;callback&quot;: {&quot;method&quot;: &quot;luna://com.webos.service.applicationmanager/launch&quot;, &quot;params&quot;: {&quot;id&quot;: &quot;com.webos.app.enactbrowser&quot;}},<br />
-  &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&quot;trigger&quot;: {&quot;method&quot;:&quot;luna://com.webos.service.applicationmanager/getAppLifeStatus&quot;, &quot;params&quot;: {&quot;subscribe&quot;: true},<br />
-  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;where&quot;: {&quot;and&quot;:[{&quot;op&quot;: &quot;=&quot;, &quot;prop&quot;: &quot;appId&quot;, &quot;val&quot;: &quot;com.webos.app.enactbrowser&quot;}, {&quot;op&quot;: &quot;=&quot;, &quot;prop&quot;: &quot;status&quot;, &quot;val&quot;:&quot;stop&quot;}]}}<br />
-  &nbsp;&nbsp; &nbsp;},<br />
-  &nbsp;&nbsp;&nbsp; &quot;replace&quot;: true,<br />
-  &nbsp;&nbsp;&nbsp; &quot;start&quot;: true<br />
-  }&#39;
-</p>
-<p>&nbsp;</p>
-<div class="table-container">
-  <table class="table is-bordered is-fullwidth">
-    <tbody>
-      <tr>
-        <th width="15%">
-          <p>Name</p>
-        </th>
-        <th width="15%">
-          <p>Required</p>
-        </th>
-        <th width="15%">
-          <p>Type</p>
-        </th>
-        <th>
-          <p>Description</p>
-        </th>
-      </tr>
-      <tr>
-        <td>bootup</td>
-        <td>Optional</td>
-        <td>Boolean</td>
-        <td>
-          <p>bootup</p>
-        </td>
-      </tr>
-      <tr>
-        <td>internet</td>
-        <td>Optional</td>
-        <td>Boolean</td>
-        <td>
-          <p>internet</p>
-        </td>
-      </tr>
-      <tr>
-        <td>wifi</td>
-        <td>Optional</td>
-        <td>Boolean</td>
-        <td>
-          <p>wifi</p>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-<h3>Schedule</h3>
-<p>The&nbsp;<strong>Schedule</strong> object will define the time-based requirements for an Activity. If <strong>Schedule </strong>is specified, the schedule must be met before the Activity move to&nbsp;<strong>satisfied </strong>state.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>adopters</td>
+          <td>Optional</td>
+          <td>Object array: <a href="#parent"> Parent</a></td>
+          <td>
+            <p>Activity adopters&nbsp;<span style="background-color: initial;">(parent object array)</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td>state</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Activity state. Property that represents current activity state with following strings:</p>
+            <ul>
+              <li>creating</li>
+              <li>created</li>
+              <li>starting</li>
+              <li>unsatisfied</li>
+              <li>pausing</li>
+              <li>paused</li>
+              <li>satisfying</li>
+              <li>satisfied</li>
+              <li>expiring</li>
+              <li>expired</li>
+              <li>restarting</li>
+              <li>failing</li>
+              <li>failed</li>
+              <li>destroying</li>
+              <li>destroyed</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>Callback</h3>
+  <p>The <strong>Callback</strong> object<strong>&nbsp;</strong>specifies a method to be called, and optionally arguments that should be passed to that method when the activity moves from &#39;satisfied&#39; state to &#39;expiring&#39;.</p>
+  <p>If the&nbsp;<strong>callback</strong> method&nbsp;fails::</p>
+  <ul>
+    <li>For normal (non-continuous) activity: activity is moved to &#39;failed&#39; state.</li>
+    <li>For continuous activity: activity moved to &#39;unsatisfied&#39; state.</li>
+  </ul>
+  <p>To change the behavior when callback fails, use the &#39;<strong>ignoreReturn</strong>&#39; property.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>method</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>Callback URI.</td>
+        </tr>
+        <tr>
+          <td>params</td>
+          <td>Optional</td>
+          <td>any</td>
+          <td>
+            <p>Parameters to be passed to the callback method.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>ignoreReturn</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Keeps the activity alive when the activity&nbsp;callback fails. Possible values are:</p>
+            <ul>
+              <li>
+                <strong>true </strong>: Activity manager does not cancel the activity but moves it to the next step.
+                <ul>
+                  <li>For normal (non-continuous) activity: waits for client to complete (or cancel)</li>
+                  <li>For continuous activity: restarts activity</li>
+                </ul>
+              </li>
+              <li><strong>false </strong>:Activity manager&nbsp;moves the activity to failed&nbsp;state and ultimately cancels it.</li>
+            </ul>
+            <p>Default values:</p>
+            <ul>
+              <li><strong>false&nbsp;:</strong> For non-continuous (normal) activity.&nbsp;(because backward compatibility should be maintained)</li>
+              <li><strong>true : </strong>For continuous activity.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>InfoActivity</h3>
+  <p>Activity information</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>activityId</td>
+          <td>Required</td>
+          <td>Number (uint64_t)</td>
+          <td>
+            <p>Activity ID</p>
+          </td>
+        </tr>
+        <tr>
+          <td>creator</td>
+          <td>Required</td>
+          <td>Object: <a href="#infocreator"> InfoCreator</a></td>
+          <td>
+            <p>Indicates creator</p>
+          </td>
+        </tr>
+        <tr>
+          <td>name</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Activity name</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>InfoCreator</h3>
+  <p>Creator information</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>serviceId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Service ID</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>InfoQueue</h3>
+  <p>List of Activities for which power is currently locked.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>activities</td>
+          <td>Required</td>
+          <td>Object array: <a href="#infoactivity">InfoActivity</a></td>
+          <td>
+            <p>Activities array</p>
+          </td>
+        </tr>
+        <tr>
+          <td>name</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Queued status</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>InfoRequirement</h3>
+  <p>Supported requirement information</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>name</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>requirement name</p>
+          </td>
+        </tr>
+        <tr>
+          <td>type-schema</td>
+          <td>Optional</td>
+          <td>Object</td>
+          <td>
+            <p>requirement type</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>Parent</h3>
+  The Parent (or potential parent) of an Activity specified as an app ID or service ID. The Activity Manager automatically obtains this value when the app or service invokes the create() or adopt()
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>appId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>Application ID. Either this or serviceId must be specified.</td>
+        </tr>
+        <tr>
+          <td>serviceId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>Service ID. Either this or appId must be specified.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>Requirement</h3>
+  <p>The <strong>Requirements </strong>are preconditions that the Activity Manager will ensure are met before an Activity will be run. Any number of requirements may be specified for a single Activity, and all must be met in order for the Activity to move to the&nbsp;<strong>satisfied</strong><span style="color:#008000"><strong>&nbsp;</strong></span>state.&nbsp;<strong>Requirements&nbsp;</strong>can transition from the met state back to unmet if the condition the particular requirement is monitoring for no longer holds true.</p>
+  <p>The Requirements available on the system can be queried&nbsp;using <strong><a href="#getmanagerinfo">getManagerInfo</a>&nbsp;</strong>method.</p>
+  <p>Example :<br />
+    luna-send -n 1 -f luna://com.webos.service.activitymanager/create &#39;{<br />
+    &nbsp;&nbsp; &nbsp;&quot;activity&quot;: {<br />
+    &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;<strong>&quot;requirements&quot;: {&quot;bootup&quot;: true, &quot;internet&quot;: true}</strong>,<br />
+    &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&quot;name&quot;: &quot;browser-restart&quot;, &quot;description&quot;: &quot;&quot;, &quot;type&quot;: {&quot;foreground&quot;: true},<br />
+    &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&quot;callback&quot;: {&quot;method&quot;: &quot;luna://com.webos.service.applicationmanager/launch&quot;, &quot;params&quot;: {&quot;id&quot;: &quot;com.webos.app.enactbrowser&quot;}},<br />
+    &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&quot;trigger&quot;: {&quot;method&quot;:&quot;luna://com.webos.service.applicationmanager/getAppLifeStatus&quot;, &quot;params&quot;: {&quot;subscribe&quot;: true},<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;where&quot;: {&quot;and&quot;:[{&quot;op&quot;: &quot;=&quot;, &quot;prop&quot;: &quot;appId&quot;, &quot;val&quot;: &quot;com.webos.app.enactbrowser&quot;}, {&quot;op&quot;: &quot;=&quot;, &quot;prop&quot;: &quot;status&quot;, &quot;val&quot;:&quot;stop&quot;}]}}<br />
+    &nbsp;&nbsp; &nbsp;},<br />
+    &nbsp;&nbsp;&nbsp; &quot;replace&quot;: true,<br />
+    &nbsp;&nbsp;&nbsp; &quot;start&quot;: true<br />
+    }&#39;
+  </p>
+  <p>&nbsp;</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>bootup</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>bootup</p>
+          </td>
+        </tr>
+        <tr>
+          <td>internet</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>internet</p>
+          </td>
+        </tr>
+        <tr>
+          <td>wifi</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>wifi</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>Schedule</h3>
+  <p>The&nbsp;<strong>Schedule</strong> object will define the time-based requirements for an Activity. If <strong>Schedule </strong>is specified, the schedule must be met before the Activity move to&nbsp;<strong>satisfied </strong>state.</p>
   <p><strong>NOTE&nbsp;: </strong>Some properties of Schedule may be changed.</p>
-<p><strong>1. Basic schedule</strong></p>
-<p><strong>&quot;schedule&quot;: {</strong><br />
-  &nbsp;&nbsp; &nbsp;// Start time. Time format is a subset of&nbsp;ISO 8601.<br />
-  &nbsp;&nbsp; &nbsp;// That is, &quot;YYYY-MM-DD HH:MM:SS&quot; for local, or&nbsp;&quot;YYYY-MM-DD HH:MM:SSZ&quot; for UTC.<br />
-  &nbsp;&nbsp; &nbsp;&quot;<strong>start</strong>&quot;: &quot;2017-03-01 21:00:00&quot;,<br />
-  <strong>}</strong>
-</p>
-<p>&nbsp;</p>
-<p><strong>2. Smart interval</strong></p>
-<p>Smart intervals align all Activities operating with that period to the same start times, allowing them to batch up and avoid unnecessary device wakeups, potentially saving significant amounts of power.</p>
-<p><strong>&quot;schedule&quot;: {</strong><br />
-  &nbsp; &nbsp; // Time between events, in seconds.<br />
-  &nbsp; &nbsp; //&nbsp;For a smart interval, the interval must be an even multiple of days,<br />
-  &nbsp;&nbsp; &nbsp;// or one of the following: 12h, 6h, 3h, 1h, 30m, 15m, 10m, or 5m.<br />
-  &nbsp; &nbsp; &quot;<strong>interval</strong>&quot;:&nbsp;&quot;5m&quot;<br />
-  <strong>}</strong>
-</p>
-<p>&nbsp;</p>
-<p><strong>3. Precise interval</strong></p>
-<p><strong>&quot;schedule&quot;: {</strong><br />
-  &nbsp; &nbsp; //&nbsp;Specifies that the Interval should occur at the precisely specified start time, and every&nbsp;given interval thereafter.<br />
-  &nbsp;&nbsp;&nbsp;&nbsp;&quot;<strong>precise</strong>&quot;:&nbsp;true,<br />
-  <br />
-  &nbsp;&nbsp; &nbsp;// Start time. Time format is a subset of ISO 8601.<br />
-  &nbsp;&nbsp; &nbsp;// That is&nbsp;&quot;YYYY-MM-DD HH:MM:SS&quot; for local, and&nbsp;&quot;YYYY-MM-DD HH:MM:SSZ&quot; for UTC.<br />
-  &nbsp; &nbsp; &quot;<strong>start</strong>&quot;: &quot;2017-03-01 21:00:00&quot;,<br />
-  <br />
-  &nbsp;&nbsp; &nbsp;// End time for the interval (<strong>NOTE. </strong>This does not work currently.)<br />
-  &nbsp; &nbsp; [ &quot;<strong>end</strong>&quot;: &quot;2017-03-01 22:00:00&quot;, ]<br />
-  <br />
-  &nbsp;&nbsp; &nbsp;// Time between events, in seconds.<br />
-  &nbsp;&nbsp; &nbsp;//&nbsp;Specifies the number of days, hours, minutes, and seconds between executions of the Activity.<br />
-  &nbsp;&nbsp; &nbsp;//&nbsp;They must be specified in order, but any can be&nbsp;left out.&nbsp; Any interval is valid.<br />
-  &nbsp;&nbsp; &nbsp;&quot;<strong>interval</strong>&quot;: &quot;1m&quot;,<br />
-  <strong>}</strong>
-</p>
-<p>&nbsp;</p>
-<div class="table-container">
-  <table class="table is-bordered is-fullwidth">
-    <tbody>
-      <tr>
-        <th width="15%">
-          <p>Name</p>
-        </th>
-        <th width="15%">
-          <p>Required</p>
-        </th>
-        <th width="15%">
-          <p>Type</p>
-        </th>
-        <th>
-          <p>Description</p>
-        </th>
-      </tr>
-      <tr>
-        <td>start</td>
-        <td>Optional</td>
-        <td>String</td>
-        <td>
-          <p><strong>start </strong>is required for basic schedue or precise interval.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>end</td>
-        <td>Optional</td>
-        <td>String</td>
-        <td>
-          <p>end time</p>
-        </td>
-      </tr>
-      <tr>
-        <td>precise</td>
-        <td>Optional</td>
-        <td>Boolean</td>
-        <td>
-          <p><strong>precise</strong> is required for precise interval</p>
-        </td>
-      </tr>
-      <tr>
-        <td>interval</td>
-        <td>Optional</td>
-        <td>String</td>
-        <td>
-          <p><strong>interval </strong>is required for smart or precise interval</p>
-        </td>
-      </tr>
-      <tr>
-        <td>skip</td>
-        <td>Optional</td>
-        <td>Boolean</td>
-        <td>
-          <p>skip</p>
-        </td>
-      </tr>
-      <tr>
-        <td>local</td>
-        <td>Optional</td>
-        <td>Boolean</td>
-        <td>
-          <p>local</p>
-        </td>
-      </tr>
-      <tr>
-        <td>relative</td>
-        <td>Optional</td>
-        <td>Boolean</td>
-        <td>
-          <p>relative</p>
-        </td>
-      </tr>
-      <tr>
-        <td>lastFinished</td>
-        <td>Optional</td>
-        <td>String</td>
-        <td>
-          <p>lastFinished</p>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-<h3>Trigger</h3>
-<p>Activities with Triggers do not become runnable until an event occurs on a subscribed method. In addition, other requirements or scheduling constraints may also need to be met before the Activity is runnable. When the Activity starts, the specified method is called with &quot;subscribe=true&quot;, and any additional arguments the Activity creator provides. If another Activity has previously been created and started with an identical Trigger, with the same method and arguments, then the Activity Manager may utilize its existing subscription to monitor the Triggering event, unless &quot;unique&quot; is true in the Trigger specification.</p>
+  <p><strong>1. Basic schedule</strong></p>
+  <p><strong>&quot;schedule&quot;: {</strong><br />
+    &nbsp;&nbsp; &nbsp;// Start time. Time format is a subset of&nbsp;ISO 8601.<br />
+    &nbsp;&nbsp; &nbsp;// That is, &quot;YYYY-MM-DD HH:MM:SS&quot; for local, or&nbsp;&quot;YYYY-MM-DD HH:MM:SSZ&quot; for UTC.<br />
+    &nbsp;&nbsp; &nbsp;&quot;<strong>start</strong>&quot;: &quot;2017-03-01 21:00:00&quot;,<br />
+    <strong>}</strong>
+  </p>
+  <p>&nbsp;</p>
+  <p><strong>2. Smart interval</strong></p>
+  <p>Smart intervals align all Activities operating with that period to the same start times, allowing them to batch up and avoid unnecessary device wakeups, potentially saving significant amounts of power.</p>
+  <p><strong>&quot;schedule&quot;: {</strong><br />
+    &nbsp; &nbsp; // Time between events, in seconds.<br />
+    &nbsp; &nbsp; //&nbsp;For a smart interval, the interval must be an even multiple of days,<br />
+    &nbsp;&nbsp; &nbsp;// or one of the following: 12h, 6h, 3h, 1h, 30m, 15m, 10m, or 5m.<br />
+    &nbsp; &nbsp; &quot;<strong>interval</strong>&quot;:&nbsp;&quot;5m&quot;<br />
+    <strong>}</strong>
+  </p>
+  <p>&nbsp;</p>
+  <p><strong>3. Precise interval</strong></p>
+  <p><strong>&quot;schedule&quot;: {</strong><br />
+    &nbsp; &nbsp; //&nbsp;Specifies that the Interval should occur at the precisely specified start time, and every&nbsp;given interval thereafter.<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&quot;<strong>precise</strong>&quot;:&nbsp;true,<br />
+    <br />
+    &nbsp;&nbsp; &nbsp;// Start time. Time format is a subset of ISO 8601.<br />
+    &nbsp;&nbsp; &nbsp;// That is&nbsp;&quot;YYYY-MM-DD HH:MM:SS&quot; for local, and&nbsp;&quot;YYYY-MM-DD HH:MM:SSZ&quot; for UTC.<br />
+    &nbsp; &nbsp; &quot;<strong>start</strong>&quot;: &quot;2017-03-01 21:00:00&quot;,<br />
+    <br />
+    &nbsp;&nbsp; &nbsp;// End time for the interval (<strong>NOTE. </strong>This does not work currently.)<br />
+    &nbsp; &nbsp; [ &quot;<strong>end</strong>&quot;: &quot;2017-03-01 22:00:00&quot;, ]<br />
+    <br />
+    &nbsp;&nbsp; &nbsp;// Time between events, in seconds.<br />
+    &nbsp;&nbsp; &nbsp;//&nbsp;Specifies the number of days, hours, minutes, and seconds between executions of the Activity.<br />
+    &nbsp;&nbsp; &nbsp;//&nbsp;They must be specified in order, but any can be&nbsp;left out.&nbsp; Any interval is valid.<br />
+    &nbsp;&nbsp; &nbsp;&quot;<strong>interval</strong>&quot;: &quot;1m&quot;,<br />
+    <strong>}</strong>
+  </p>
+  <p>&nbsp;</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>start</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p><strong>start </strong>is required for basic schedue or precise interval.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>end</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>end time</p>
+          </td>
+        </tr>
+        <tr>
+          <td>precise</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p><strong>precise</strong> is required for precise interval</p>
+          </td>
+        </tr>
+        <tr>
+          <td>interval</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p><strong>interval </strong>is required for smart or precise interval</p>
+          </td>
+        </tr>
+        <tr>
+          <td>skip</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>skip</p>
+          </td>
+        </tr>
+        <tr>
+          <td>local</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>local</p>
+          </td>
+        </tr>
+        <tr>
+          <td>relative</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>relative</p>
+          </td>
+        </tr>
+        <tr>
+          <td>lastFinished</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>lastFinished</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>Trigger</h3>
+  <p>Activities with Triggers do not become runnable until an event occurs on a subscribed method. In addition, other requirements or scheduling constraints may also need to be met before the Activity is runnable. When the Activity starts, the specified method is called with &quot;subscribe=true&quot;, and any additional arguments the Activity creator provides. If another Activity has previously been created and started with an identical Trigger, with the same method and arguments, then the Activity Manager may utilize its existing subscription to monitor the Triggering event, unless &quot;unique&quot; is true in the Trigger specification.</p>
   <p><strong>NOTE: </strong>Key Trigger and Compare Trigger are deprecated.</p>
-<p><strong>1. Key Trigger</strong> is triggered when the specified key exists.</p>
-<p><strong>&quot;trigger&quot;: {</strong><br />
-  &nbsp; &nbsp; &quot;<strong>method</strong>&quot;:&nbsp;&quot;luna://com.webos.service.applicationmanager/getForegroundAppInfo&quot;,<br />
-  &nbsp; &nbsp; &quot;<strong>params</strong>&quot;: {&nbsp;&quot;subscribe&quot;:&nbsp;true,&nbsp;&quot;extraInfo&quot;:&nbsp;true&nbsp;},<br />
-  &nbsp;&nbsp; &nbsp;&quot;<strong>key</strong>&quot;:&nbsp;&quot;foregroundAppInfo&quot;<br />
-  <strong>}</strong>
-</p>
-<p>&nbsp;</p>
-<p><strong>2. Compare Trigger</strong> is triggered when<strong>&nbsp;</strong>the specified key &amp; value pair in compare&nbsp;are matched.</p>
-<p><strong>&quot;trigger&quot;: {</strong><br />
-  &nbsp; &nbsp; &quot;<strong>method</strong>&quot;:&nbsp;&quot;luna://com.webos.service.applicationmanager/getForegroundAppInfo&quot;,<br />
-  &nbsp;&nbsp;&nbsp;&nbsp;&quot;<strong>params</strong>&quot;: {&nbsp;&quot;subscribe&quot;:&nbsp;true&nbsp;},<br />
-  &nbsp; &nbsp; &quot;<strong>compare</strong>&quot;: {&nbsp;&quot;appId&quot;:&nbsp;&quot;com.webos.app.enactbrowser&quot;&nbsp;}<br />
-  <strong>}</strong>
-</p>
-<p>&nbsp;</p>
-<p><strong>3. Where Trigger</strong> is triggered when the conditions of where clauses are satisfied.</p>
-<p>3-1. Single Trigger</p>
-<p><strong>&quot;trigger&quot;: {</strong><br />
-  &nbsp; &nbsp; &quot;<strong>method</strong>&quot;:&nbsp;&quot;luna://com.webos.service.connectionmanager/getstatus&quot;,<br />
-  &nbsp;&nbsp; &nbsp;&quot;<strong>params</strong>&quot;: {&nbsp;&quot;subscribe&quot;:&nbsp;true&nbsp;},<br />
-  &nbsp; &nbsp; &quot;<strong>where</strong>&quot;: {&nbsp;&quot;prop&quot;: &quot;isInternetConnectionAvailable&quot;,&nbsp;&quot;op&quot;: &quot;=&quot;,&nbsp;&quot;val&quot;: true&nbsp;}<br />
-  <strong>}</strong>
-</p>
-<p>3-2.&nbsp;Multiple Trigger can be combined by &#39;<strong>and</strong>&#39; or &#39;<strong>or</strong>&#39;</p>
-<p><strong>&quot;trigger&quot;: {</strong><br />
-  &nbsp;&nbsp; &nbsp;&quot;<strong>and</strong>&quot;: [<br />
-  &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;{<br />
-  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ....<br />
-  &nbsp; &nbsp; &nbsp; &nbsp; },<br />
-  &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;{<br />
+  <p><strong>1. Key Trigger</strong> is triggered when the specified key exists.</p>
+  <p><strong>&quot;trigger&quot;: {</strong><br />
+    &nbsp; &nbsp; &quot;<strong>method</strong>&quot;:&nbsp;&quot;luna://com.webos.service.applicationmanager/getForegroundAppInfo&quot;,<br />
+    &nbsp; &nbsp; &quot;<strong>params</strong>&quot;: {&nbsp;&quot;subscribe&quot;:&nbsp;true,&nbsp;&quot;extraInfo&quot;:&nbsp;true&nbsp;},<br />
+    &nbsp;&nbsp; &nbsp;&quot;<strong>key</strong>&quot;:&nbsp;&quot;foregroundAppInfo&quot;<br />
+    <strong>}</strong>
+  </p>
+  <p>&nbsp;</p>
+  <p><strong>2. Compare Trigger</strong> is triggered when<strong>&nbsp;</strong>the specified key &amp; value pair in compare&nbsp;are matched.</p>
+  <p><strong>&quot;trigger&quot;: {</strong><br />
+    &nbsp; &nbsp; &quot;<strong>method</strong>&quot;:&nbsp;&quot;luna://com.webos.service.applicationmanager/getForegroundAppInfo&quot;,<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&quot;<strong>params</strong>&quot;: {&nbsp;&quot;subscribe&quot;:&nbsp;true&nbsp;},<br />
+    &nbsp; &nbsp; &quot;<strong>compare</strong>&quot;: {&nbsp;&quot;appId&quot;:&nbsp;&quot;com.webos.app.enactbrowser&quot;&nbsp;}<br />
+    <strong>}</strong>
+  </p>
+  <p>&nbsp;</p>
+  <p><strong>3. Where Trigger</strong> is triggered when the conditions of where clauses are satisfied.</p>
+  <p>3-1. Single Trigger</p>
+  <p><strong>&quot;trigger&quot;: {</strong><br />
+    &nbsp; &nbsp; &quot;<strong>method</strong>&quot;:&nbsp;&quot;luna://com.webos.service.connectionmanager/getstatus&quot;,<br />
+    &nbsp;&nbsp; &nbsp;&quot;<strong>params</strong>&quot;: {&nbsp;&quot;subscribe&quot;:&nbsp;true&nbsp;},<br />
+    &nbsp; &nbsp; &quot;<strong>where</strong>&quot;: {&nbsp;&quot;prop&quot;: &quot;isInternetConnectionAvailable&quot;,&nbsp;&quot;op&quot;: &quot;=&quot;,&nbsp;&quot;val&quot;: true&nbsp;}<br />
+    <strong>}</strong>
+  </p>
+  <p>3-2.&nbsp;Multiple Trigger can be combined by &#39;<strong>and</strong>&#39; or &#39;<strong>or</strong>&#39;</p>
+  <p><strong>&quot;trigger&quot;: {</strong><br />
+    &nbsp;&nbsp; &nbsp;&quot;<strong>and</strong>&quot;: [<br />
+    &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;{<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ....<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+    &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;{<br />
     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;<strong>method</strong>&quot;:&nbsp;&quot;luna://com.webos.service.applicationmanager/getAppLifeStatus&quot;,<br />
-  &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&quot;<strong>params</strong>&quot;: {&nbsp;&quot;subscribe&quot;:&nbsp;true&nbsp;},<br />
-  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;<strong>where</strong>&quot;: {&nbsp;&quot;and&quot;: [<br />
-  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {&nbsp;&quot;op&quot;:&nbsp;&quot;=&quot;,&nbsp;&quot;prop&quot;:&nbsp;&quot;appId&quot;,&nbsp;&quot;val&quot;:&nbsp;&quot;com.webos.app.enactbrowser&quot;&nbsp;},<br />
-  &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&quot;op&quot;:&nbsp;&quot;=&quot;,&nbsp;&quot;prop&quot;:&nbsp;&quot;status&quot;,&nbsp;&quot;val&quot;:&nbsp;&quot;close&quot;&nbsp;}<br />
-  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]}<br />
-  &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;},<br />
-  &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;{<br />
-  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ....<br />
-  &nbsp; &nbsp; &nbsp; &nbsp; },<br />
-  &nbsp;&nbsp; &nbsp;]<br />
-  <strong>}</strong>
-</p>
-<p>&nbsp;</p>
-<p>The Activity Manager will unsubscribe all subscriptions of Triggers, if the Activity arrives &#39;satisfied&#39; state, and re-subscribe Triggers when &#39;restarting&#39;.<br />
-  <br />
-  <strong>WARNING</strong><br />
-  <br />
-  Do<strong> NOT</strong> ignore the trigger information returned in a callback. If an error is returned to the method specified for a Trigger, then the Trigger fires immediately. This could happen if, for example, the parameters passed to the method were invalid or wrong. If the Trigger callback re-starts the Activity, i.e., in the case of a db8 watch, then the potential exists for an infinite loop. Check for errors.
-</p>
-<p><span style="color:#FF0000"><strong>NOTE.</strong></span> <strong>As the &#39;failed&#39; state is added, if an error is returned from the Trigger method, the Activity will move to &#39;failed&#39; state without calling Callback in the next version.</strong><br />
-  <br />
-  Keep the mutual exclusion among the &quot;key&quot;, &quot;compare&quot;, and &quot;where&quot; properties. They are incompatible with each other.
-</p>
-<div class="table-container">
-  <table class="table is-bordered is-fullwidth">
-    <tbody>
-      <tr>
-        <th width="15%">
-          <p>Name</p>
-        </th>
-        <th width="15%">
-          <p>Required</p>
-        </th>
-        <th width="15%">
-          <p>Type</p>
-        </th>
-        <th>
-          <p>Description</p>
-        </th>
-      </tr>
-      <tr>
-        <td>method</td>
-        <td>Required</td>
-        <td>String</td>
-        <td>Name of callback method.</td>
-      </tr>
-      <tr>
-        <td>params</td>
-        <td>Optional</td>
-        <td>Object</td>
-        <td>Parameters for subscription or watch.</td>
-      </tr>
-      <tr>
-        <td>where</td>
-        <td>Optional</td>
-        <td>Object</td>
-        <td>
+    &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&quot;<strong>params</strong>&quot;: {&nbsp;&quot;subscribe&quot;:&nbsp;true&nbsp;},<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;<strong>where</strong>&quot;: {&nbsp;&quot;and&quot;: [<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {&nbsp;&quot;op&quot;:&nbsp;&quot;=&quot;,&nbsp;&quot;prop&quot;:&nbsp;&quot;appId&quot;,&nbsp;&quot;val&quot;:&nbsp;&quot;com.webos.app.enactbrowser&quot;&nbsp;},<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&quot;op&quot;:&nbsp;&quot;=&quot;,&nbsp;&quot;prop&quot;:&nbsp;&quot;status&quot;,&nbsp;&quot;val&quot;:&nbsp;&quot;close&quot;&nbsp;}<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]}<br />
+    &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;},<br />
+    &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;{<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ....<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+    &nbsp;&nbsp; &nbsp;]<br />
+    <strong>}</strong>
+  </p>
+  <p>&nbsp;</p>
+  <p>The Activity Manager will unsubscribe all subscriptions of Triggers, if the Activity arrives &#39;satisfied&#39; state, and re-subscribe Triggers when &#39;restarting&#39;.<br />
+    <br />
+    <strong>WARNING</strong><br />
+    <br />
+    Do<strong> NOT</strong> ignore the trigger information returned in a callback. If an error is returned to the method specified for a Trigger, then the Trigger fires immediately. This could happen if, for example, the parameters passed to the method were invalid or wrong. If the Trigger callback re-starts the Activity, i.e., in the case of a db8 watch, then the potential exists for an infinite loop. Check for errors.
+  </p>
+  <p><span style="color:#FF0000"><strong>NOTE.</strong></span> <strong>As the &#39;failed&#39; state is added, if an error is returned from the Trigger method, the Activity will move to &#39;failed&#39; state without calling Callback in the next version.</strong><br />
+    <br />
+    Keep the mutual exclusion among the &quot;key&quot;, &quot;compare&quot;, and &quot;where&quot; properties. They are incompatible with each other.
+  </p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>method</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>Name of callback method.</td>
+        </tr>
+        <tr>
+          <td>params</td>
+          <td>Optional</td>
+          <td>Object</td>
+          <td>Parameters for subscription or watch.</td>
+        </tr>
+        <tr>
+          <td>where</td>
+          <td>Optional</td>
+          <td>Object</td>
+          <td>
             <p>Single db8 where clause or array of db8 where clauses.<br></p>
-        </td>
-      </tr>
-      <tr>
-        <td>compare</td>
-        <td>Optional</td>
-        <td>Object</td>
-        <td>
+          </td>
+        </tr>
+        <tr>
+          <td>compare</td>
+          <td>Optional</td>
+          <td>Object</td>
+          <td>
             <p>Object that holds key and value properties. Trigger will query with the key and compare old value with specified value.<br></p>
-        </td>
-      </tr>
-      <tr>
-        <td>key</td>
-        <td>Optional</td>
-        <td>String</td>
-        <td>
+          </td>
+        </tr>
+        <tr>
+          <td>key</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
             <p>Key property name. Activity Manager looks for this field in callback response, i.e., "fired" from db8 watch where query results have changed.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>and</td>
-        <td>Optional</td>
-        <td>Object array: <a href="#trigger"> Trigger</a></td>
-        <td>
-          <p>The <strong>and</strong> field is used when combining multiple triggers to be combined with an &#39;and&#39; condition.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>or</td>
-        <td>Optional</td>
-        <td>Object array: <a href="#trigger"> Trigger</a></td>
-        <td>
-          <p>The <strong>or</strong> field is used when combining multiple triggers to be combined with an &#39;or&#39; condition.</p>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+          </td>
+        </tr>
+        <tr>
+          <td>and</td>
+          <td>Optional</td>
+          <td>Object array: <a href="#trigger"> Trigger</a></td>
+          <td>
+            <p>The <strong>and</strong> field is used when combining multiple triggers to be combined with an &#39;and&#39; condition.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>or</td>
+          <td>Optional</td>
+          <td>Object array: <a href="#trigger"> Trigger</a></td>
+          <td>
+            <p>The <strong>or</strong> field is used when combining multiple triggers to be combined with an &#39;or&#39; condition.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 <h2>API Error Codes Reference</h2>
 <div class="table-container">

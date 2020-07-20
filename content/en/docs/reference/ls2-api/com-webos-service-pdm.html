@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.pdm
-date: 2020-04-14
+date: 2020-07-08
 weight: 250
 toc: true
 ---
@@ -1140,6 +1140,54 @@ toc: true
             <p>Absolute path where the device is mounted.</p>
           </td>
         </tr>
+        <tr>
+          <td>seqWriteMinimum</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Sequential I/O write performance - Minimum value of measurement result (MB/sec).</p>
+          </td>
+        </tr>
+        <tr>
+          <td>seqWriteAverage</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Sequential I/O write performance - Average value (MB/sec).</p>
+          </td>
+        </tr>
+        <tr>
+          <td>seqReadMinimum</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Sequential I/O read performance - Minimum value of measurement result (MB/sec).</p>
+          </td>
+        </tr>
+        <tr>
+          <td>seqReadAverage</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Sequential I/O read performance - Average value (MB/sec).</p>
+          </td>
+        </tr>
+        <tr>
+          <td>randReadMinimum</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Random I/O read performance - Minimum value of measurement result (MB/sec).</p>
+          </td>
+        </tr>
+        <tr>
+          <td>randReadAverage</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Random I/O read performance - Average value (MB/sec).</p>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -1190,6 +1238,20 @@ toc: true
           </td>
         </tr>
         <tr>
+          <td>ioTestResult</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Test result for IO performance. Possible values are:&nbsp;</p>
+
+            <ul>
+              <li>Pass</li>
+              <li>Fail</li>
+              <li>Testing</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
           <td>ioPerformance</td>
           <td>Required</td>
           <td>Object: <a href="#ioperformance"> ioPerformance</a></td>
@@ -1202,38 +1264,221 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -n 1 -f luna://com.webos.service.pdm/getIoPerformance &#39;{ &quot;driveName&quot; : &quot;sda1&quot;, &quot;chunkSize&quot; : 256}&#39;</p>
-    <p>&nbsp;</p>
+    <p>Example 1:</p>
+
+    <p># luna-send -n 1 -f luna://com.webos.service.pdm/getIoPerformance &#39;{ &quot;driveName&quot; : &quot;sda1&quot;, &quot;chunkSize&quot; : 512}&#39;</p>
+
     <p>Response:</p>
-    <p>{<br />
-      &nbsp; &nbsp; &quot;ioPerformance&quot;: {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;seqWriteAverage&quot;: 8.2411526076037,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;seqReadMinimum&quot;: 27.027027027027,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;randReadMinimum&quot;: 4.4305031279352,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;seqReadAverage&quot;: 57.856977551493,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;seqWriteMinimum&quot;: 2.0088711751093,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;randReadAverage&quot;: 17.251864279584<br />
-      &nbsp; &nbsp; },<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
+
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;ioPerformance&quot;:{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqWriteAverage&quot;:9.9941800558142,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqReadMinimum&quot;:29.850746268657,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;randReadMinimum&quot;:22.12389380531,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqReadAverage&quot;:41.893391373369,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqWriteMinimum&quot;:0.55068505220494,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;randReadAverage&quot;:29.873937956611<br />
+      &nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;ioTestResult&quot;:&quot;pass&quot;<br />
+      }</p>
+
     <p>&nbsp;</p>
+
+    <p>Example 2:</p>
+
     <p># luna-send -n 1 -f luna://com.webos.service.pdm/getIoPerformance &#39;{ &quot;driveName&quot; : &quot;&quot;, &quot;mountName&quot; : &quot;/tmp/usb/sda/sda1/test&quot; , &quot;chunkSize&quot; : 512}&#39;</p>
-    <p>&nbsp;</p>
+
     <p>Response:</p>
-    <p>{<br />
-      &nbsp; &nbsp;&quot;ioPerformance&quot;:{<br />
-      &nbsp; &nbsp; &nbsp; &quot;seqWriteAverage&quot;:32.972694,<br />
-      &nbsp; &nbsp; &nbsp; &quot;seqReadMinimum&quot;:18.726592,<br />
-      &nbsp; &nbsp; &nbsp; &quot;randReadMinimum&quot;:13.839681,<br />
-      &nbsp; &nbsp; &nbsp; &quot;seqReadAverage&quot;:87.412587,<br />
-      &nbsp; &nbsp; &nbsp; &quot;seqWriteMinimum&quot;:27.044569,<br />
-      &nbsp; &nbsp; &nbsp; &quot;randReadAverage&quot;:25.132259<br />
-      &nbsp; &nbsp;},<br />
-      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }
-    </p>
-  </div>
+
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;ioPerformance&quot;:{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqWriteAverage&quot;:9.9941800558142,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqReadMinimum&quot;:29.850746268657,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;randReadMinimum&quot;:22.12389380531,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqReadAverage&quot;:41.893391373369,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqWriteMinimum&quot;:0.55068505220494,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;randReadAverage&quot;:29.873937956611<br />
+      &nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;ioTestResult&quot;:&quot;pass&quot;<br />
+      }</p>
+
+    <p>&nbsp;</p>
+
+    <p>Example 3:</p>
+
+    <p>#&nbsp;luna-send -n 1 -f luna://com.webos.service.pdm/getIoPerformance &#39;{ &quot;driveName&quot; : &quot;&quot;, &quot;mountName&quot; : &quot;/tmp/usb/sda/sda1/test&quot;, &quot;chunkSize&quot; : 512, &quot;count&quot; : 30}&#39;</p>
+
+    <p>Response:</p>
+
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;ioPerformance&quot;:{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqWriteAverage&quot;:9.9941800558142,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqReadMinimum&quot;:29.850746268657,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;randReadMinimum&quot;:22.12389380531,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqReadAverage&quot;:41.893391373369,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqWriteMinimum&quot;:0.55068505220494,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;randReadAverage&quot;:29.873937956611<br />
+      &nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;ioTestResult&quot;:&quot;pass&quot;<br />
+      }</p>
+
+    <p>&nbsp;</p>
+
+    <p>Example 4:</p>
+
+    <p>#&nbsp;luna-send -n 1 -f luna://com.webos.service.pdm/getIoPerformance &#39;{ &quot;driveName&quot; : &quot;sda1&quot;, &quot;chunkSize&quot; : 512}&#39;</p>
+
+    <p>Response:</p>
+
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:1009,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;Error&nbsp;in&nbsp;test&nbsp;IO&nbsp;performance&quot;<br />
+      }</p>
+
+    <p>&nbsp;</p>
+
+    <p>Example 5:</p>
+
+    <p>/ # luna-send -n 1 -f luna://com.webos.service.pdm/getIoPerformance &#39;{ &quot;driveName&quot; : &quot;sda1&quot;, &quot;chunkSize&quot; : 512}&#39; &amp;<br />
+      / # luna-send -n 1 -f luna://com.webos.service.pdm/getIoPerformance &#39;{ &quot;driveName&quot; : &quot;sda1&quot;, &quot;chunkSize&quot; : 512}&#39; &amp;</p>
+
+    <p>Response:</p>
+
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;ioTestResult&quot;:&quot;testing&quot;<br />
+      }</p>
+
+    <p>&nbsp;</p>
+
+    <p>Example 6:</p>
+
+    <p>/ # luna-send -n 1 -f luna://com.webos.service.pdm/getIoPerformance &#39;{ &quot;driveName&quot; : &quot;sda1&quot;, &quot;chunkSize&quot; : 512, &quot;seqWriteMinimum&quot; : 1251 }&#39;</p>
+
+    <p>Response:</p>
+
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;ioPerformance&quot;:{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqWriteAverage&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqReadMinimum&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;randReadMinimum&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqReadAverage&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqWriteMinimum&quot;:21.32287091134,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;randReadAverage&quot;:0<br />
+      &nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;ioTestResult&quot;:&quot;fail&quot;<br />
+      }</p>
+
+    <p>&nbsp;</p>
+
+    <p>Example 7:</p>
+
+    <p>/ # luna-send -n 1 -f luna://com.webos.service.pdm/getIoPerformance &#39;{ &quot;driveName&quot; : &quot;sda1&quot;, &quot;chunkSize&quot; : 512, &quot;seqWriteAverage&quot; : 1251}&#39;</p>
+
+    <p>Response:</p>
+
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;ioPerformance&quot;:{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqWriteAverage&quot;:31.053971802994,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqReadMinimum&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;randReadMinimum&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqReadAverage&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqWriteMinimum&quot;:31.053971802994,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;randReadAverage&quot;:0<br />
+      &nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;ioTestResult&quot;:&quot;fail&quot;<br />
+      }</p>
+
+    <p>&nbsp;</p>
+
+    <p>Example 8:</p>
+
+    <p>/ # luna-send -n 1 -f luna://com.webos.service.pdm/getIoPerformance &#39;{ &quot;driveName&quot; : &quot;sda1&quot;, &quot;chunkSize&quot; : 512, &quot;seqReadMinimum&quot; : 1251}&#39;</p>
+
+    <p>Response:</p>
+
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;ioPerformance&quot;:{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqWriteAverage&quot;:10.736202905646,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqReadMinimum&quot;:28.881700554529,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;randReadMinimum&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqReadAverage&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqWriteMinimum&quot;:0.80793586928244,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;randReadAverage&quot;:0<br />
+      &nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;ioTestResult&quot;:&quot;fail&quot;<br />
+      }</p>
+
+    <p>&nbsp;</p>
+
+    <p>Example 9:&nbsp;</p>
+
+    <p>/ # luna-send -n 1 -f luna://com.webos.service.pdm/getIoPerformance &#39;{ &quot;driveName&quot; : &quot;sda1&quot;, &quot;chunkSize&quot; : 512, &quot;seqReadAverage&quot; : 1251}&#39;</p>
+
+    <p>Response:</p>
+
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;ioPerformance&quot;:{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqWriteAverage&quot;:11.796341356864,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqReadMinimum&quot;:30.066145520144,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;randReadMinimum&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqReadAverage&quot;:30.066145520144,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqWriteMinimum&quot;:0.95698908266854,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;randReadAverage&quot;:0<br />
+      &nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;ioTestResult&quot;:&quot;fail&quot;<br />
+      }</p>
+
+    <p>&nbsp;</p>
+
+    <p>Example 10:</p>
+
+    <p>/ # luna-send -n 1 -f luna://com.webos.service.pdm/getIoPerformance &#39;{ &quot;driveName&quot; : &quot;sda1&quot;, &quot;chunkSize&quot; : 512, &quot;randReadMinimum&quot; : 1251}&#39;</p>
+
+    <p>Response:</p>
+
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;ioPerformance&quot;:{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqWriteAverage&quot;:11.73091073864,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqReadMinimum&quot;:28.850037505049,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;randReadMinimum&quot;:27.884669008979,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqReadAverage&quot;:41.72678801373,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqWriteMinimum&quot;:0.94705579295087,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;randReadAverage&quot;:0<br />
+      &nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;ioTestResult&quot;:&quot;fail&quot;<br />
+      }</p>
+
+    <p>&nbsp;</p>
+
+    <p>Example 11:</p>
+
+    <p>/ # luna-send -n 1 -f luna://com.webos.service.pdm/getIoPerformance &#39;{ &quot;driveName&quot; : &quot;sda1&quot;, &quot;chunkSize&quot; : 512, &quot;randReadAverage&quot; : 1251}&#39;</p>
+
+    <p>Response:</p>
+
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;ioPerformance&quot;:{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqWriteAverage&quot;:11.803461971134,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqReadMinimum&quot;:27.021184608733,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;randReadMinimum&quot;:30.308540946839,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqReadAverage&quot;:42.017842456621,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;seqWriteMinimum&quot;:0.96479464346014,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;randReadAverage&quot;:30.308540946839<br />
+      &nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;ioTestResult&quot;:&quot;fail&quot;<br />
+      }</p>  
+    </div>
 </div>
 <h3>getSpaceInfo</h3>
 <div>
