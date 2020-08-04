@@ -23,7 +23,7 @@ The following guide refers to [Configure a Developer Project and Account Setting
 
     3. Type a name of your project and click **Create project**.
 
-You just created a new Actions Console project. For your convenience, keep this page open and go to the next step. We will register a device in [Register the Device Model]({{< relref "#register-the-device-model">}}).
+You just created a new Actions Console project. For your convenience, keep this page open and go to the next step. We will register a device in [Registering the Device Model]({{< relref "#registering-the-device-model">}}).
 
 ## Enabling Google Assistant API
 
@@ -82,7 +82,7 @@ To use Google Assistant API, you have to share the Activity Controls data with G
 
 ## Registering the Device Model
 
-To register the device model, you have to go back to the page which you opened in [Create a New Project](#create-a-new-project).
+To register the device model, you have to go back to the page which you opened in [Creating a New Project](#creating-a-new-project).
 
 {{< note >}}
 If you closed the page, you can go the device registration page as follows:
@@ -154,7 +154,7 @@ Get a credentials file using the downloaded client secret file (in JSON format).
 
 ### Register the Device ID
 
-Now you register an ID for device model that you created in [Register the Device Model]({{< relref "#register-the-device-model" >}}).
+Now you register an ID for device model that you created in [Registering the Device Model]({{< relref "#registering-the-device-model" >}}).
 
 1. Open `device_id.json` file.
 
@@ -166,7 +166,7 @@ Now you register an ID for device model that you created in [Register the Device
 2. Modify the fields:
 
     - `id` : Input the device instance string. Typically, my_webos.
-    - `model_id` : Input the device model ID registered in [Register the Device Model]({{< relref "#register-the-device-model" >}}).
+    - `model_id` : Input the device model ID registered in [Registering the Device Model]({{< relref "#registering-the-device-model" >}}).
 
 3. Register the device using the command:
 
@@ -184,7 +184,7 @@ Now you register an ID for device model that you created in [Register the Device
 
 2.  Modify the fields:
 
-    - `GOOGLEAI_DEVICE_MODEL` : Input the device model ID registered in [Register the Device Model]({{< relref "#register-the-device-model" >}}).
+    - `GOOGLEAI_DEVICE_MODEL` : Input the device model ID registered in [Registering the Device Model]({{< relref "#registering-the-device-model" >}}).
     - `GOOGLEAI_DEVICE_ID` : Input the device instance string registered in [Register the Device ID]({{< relref "#register-the-device-id" >}}).
 
 3. Reboot the device or restart the service daemon:
