@@ -1,6 +1,6 @@
 ---
 title: Governance Model
-date: 2020-06-17
+date: 2020-08-26
 weight: 10
 toc: false
 ---
@@ -15,7 +15,7 @@ webOS OSE is an open community, which is governed by the Apache Software License
 
 webOS OSE uses well-known tools and processes to make contributing and communicating straightforward.
 
-These resources include this website, GitHub, and forums. We host code on GitHub, and maintainers use the well-known GitHub pull request mechanism to review and accept contributions. Learn more about [How We Accept Contributions]({{< relref "/contributing#how-we-accept-contributions" >}}).
+These resources include this website, GitHub, and forums. We host code on GitHub, and maintainers use the well-known GitHub pull request mechanism to review and accept contributions. Learn more about [How We Accept Contributions]({{< relref "contributing-to-source-code#how-we-accept-contributions" >}}).
 
 Everyone contributing to the webOS OSE or participating in the forums or other resources provided by webOS OSE must abide by the [Community Guidelines](https://forum.webosose.org/t/welcome-to-the-webos-ose-community/1018). While creative ideas and respectful debates on topics are encouraged, webOS OSE reserves the right to act as needed to protect the integrity of webOS OSE, including the removal of any posts deemed inappropriate or offensive.
 

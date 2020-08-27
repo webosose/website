@@ -1,13 +1,13 @@
 ---
 title: FAQ
-date: 2018-10-11
+date: 2020-08-26
 weight: 40
 toc: false
 ---
 
 ## Q. How do I get involved?
 
-A. The best way to get started is to join the community, where you can contribute to the code, participate in the forums, report and track bugs and receive updates on the latest releases. We have opportunities for all kinds of contributors. Learn more about [who can contribute]({{< relref "/contributing#who-can-contribute" >}}).
+A. The best way to get started is to join the community, where you can contribute to the code, participate in the forums, report and track bugs and receive updates on the latest releases. We have opportunities for all kinds of contributors. Learn more about [who can contribute]({{< relref "contributing-to-source-code#who-can-contribute" >}}).
 
 ## Q. How will the webOS OSE Project work?
 

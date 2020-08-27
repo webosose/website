@@ -1,12 +1,11 @@
 ---
-title: Contributing
-display_title: Contributing to webOS Open Source Edition
-date: 2019-04-12
+title: Contributing to Source Code
+date: 2020-08-26
 weight: 10
 toc: true
 ---
 
-This page describes how you can contribute to the webOS Open Source Edition (OSE) project.
+This page describes how you can contribute to source codes of the webOS Open Source Edition (OSE) project.
 
 ## Who Can Contribute?
 
