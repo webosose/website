@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.location
-date: 2020-07-16
+date: 2020-08-27
 weight: 230
 toc: true
 ---
@@ -15,10 +15,36 @@ toc: true
   <ul>
     <li>GPS / AGPS</li>
     <li>WPS / CellID.</li>
-    <li>Geocoding / Reverse geocoding</li>
+    <li>Geocoding / Reverse geocoding (prerequisites : check &quot;Google Geocoding API Key&quot; section below)</li>
     <li>Mock: Enables to test location features with fake information.</li>
   </ul>
   <p><strong>Note:</strong> The location service provider is also called a location source and location handler.</p>
+  <p>&nbsp;</p>
+  <p><strong>Google Geocoding API Key</strong></p>
+  <p>To&nbsp;use the GeoCoding functionality, you must have the Geocoding API keys&nbsp;to authenticate requests associated with your project for usage and billing purposes. You must perform the following steps:</p>
+  <ol>
+    <li>Sign up and create a billing account with&nbsp;<a href="https://developers.google.com/maps/gmp-get-started" rel="nofollow">Google Maps Platform</a>.</li>
+    <li>Follow steps to get&nbsp;<a href="https://developers.google.com/maps/documentation/geocoding/get-api-key" rel="nofollow">GeoCoding API key</a>.</li>
+    <li>Encrypt generated GeoCoding key&nbsp;with base64 encoding, execute following command in terminal<br />
+      $&nbsp;<strong>echo&nbsp;&quot;GEOCODING_KEY&quot;&nbsp;| base64</strong><br />
+      &lt;&lt;ENCRYPTED_GEOCODING_KEY&gt;&gt;
+    </li>
+    <li>
+      Write encrypted key in file&nbsp;<strong>/etc/location/wsp.conf</strong>&nbsp;present&nbsp;on your device. Create following file:
+      <p>{<br />
+        &nbsp; &nbsp;&nbsp;&quot;wpsName&quot;:&nbsp;&quot;google&quot;,<br />
+        &nbsp; &nbsp;&nbsp;&quot;apiKey&quot;:&nbsp;&quot;ENCRYPTED_GEOCODING_KEY&quot;,<br />
+        &nbsp; &nbsp;&nbsp;&quot;services&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;features&quot;: [&quot;geocode&quot;,&nbsp;&quot;reverseGeocode&quot;],<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;url&quot;:&nbsp;&quot;https://maps.googleapis.com/maps/api/geocode/json?&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;}<br />
+        &nbsp; &nbsp;&nbsp;]<br />
+        }
+      </p>
+    </li>
+    <li>If the location service is already running, reboot the device.</li>
+  </ol>
 </div>
 <h2>Methods</h2>
 <div>
@@ -203,10 +229,19 @@ toc: true
 <div>
   <h4>Description</h4>
   <p><span style="color:#222222">Transforms a given street address or other description of a location into a coordinate</span><span style="color:#222222"> (latitude, longitude)</span><span style="color:#222222">.</span></p>
-  <p><strong><span style="color:rgb(93, 92, 92)">Google Geocoding API</span></strong></p>
+  <p><strong><span style="color:rgb(93, 92, 92)">Important points:</span></strong></p>
   <ul>
     <li>Supports Google Geocoding API.</li>
-    <li>For more details:&nbsp;<a href="https://developers.google.com/maps/documentation/geocoding/?hl=en">https://developers.google.com/maps/documentation/geocoding/?hl=en</a>.</li>
+    <li>
+      Prerequisite:
+      <ul>
+        <li>Set up the Geocoding API key as described in&nbsp;<a href="#com.webos.service.locationv1.0-OverviewoftheAPI">Overview</a>&nbsp;&gt; &quot;Google Geocoding API Key&quot;.&nbsp;</li>
+        <li>Enable network location provider state by:<br />
+          # luna-send -f -n 1 luna://com.webos.service.location/<strong>setState </strong>&#39;{&quot;Handler&quot;:&quot;network&quot;,&quot;state&quot;:true}&#39;
+        </li>
+      </ul>
+    </li>
+    <li>For more details:&nbsp;<a href="https://developers.google.com/maps/documentation/geocoding/?hl=en" style="font-size: 10pt; line-height: 13pt; background-color: transparent;">https://developers.google.com/maps/documentation/geocoding/?hl=en</a>.</li>
   </ul>
   <h4>Parameters</h4>
   <div class="table-container">
@@ -818,7 +853,7 @@ toc: true
             <p>Possible values are:</p>
             <ul>
               <li><strong>true:&nbsp;</strong>Get notifications.</li>
-              <li><strong>false:</strong>&nbsp;Notifications are not required.</li>
+              <li><strong>false:</strong>&nbsp;Notifications are not required. It will however provide only a single response, but only when updates are available</li>
             </ul>
             <p>Default: <strong>true</strong></p>
           </td>
@@ -1107,7 +1142,8 @@ toc: true
       &nbsp; &nbsp;&quot;Handler&quot;:&quot;gps&quot;<br />
       }&#39;
     </p>
-    <p>Response:</p>
+    <p>Response:&nbsp;Only subscription response is provided. This will be available only when location data is available.</p>
+    <p>Subscription response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
       &nbsp; &nbsp;&quot;speed&quot;:-1,<br />
@@ -1130,7 +1166,8 @@ toc: true
       &nbsp; &nbsp;&quot;minimumInterval&quot;:20000<br />
       }&#39;
     </p>
-    <p>Response:</p>
+    <p>Response:&nbsp;Only subscription response is provided. This will be available only when location data is available.</p>
+    <p>Subscription response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
       &nbsp; &nbsp;&quot;errorCode&quot;:0,<br />
@@ -1162,13 +1199,20 @@ toc: true
 <div>
   <h4>Description</h4>
   <p>Transforms a given coordinate (latitude, longitude) into a (partial) address.</p>
-  <p><strong>Note:</strong></p>
-  <p>The amount of detail in a reverse geocoded location description may vary.</p>
-  <p>Example: One location might contain the full street address of the closest building, while another location might contain only a city name and postal code.</p>
-  <p><strong>Google Reverse Geocoding API:</strong></p>
+  <p><strong>Note:&nbsp;</strong>The amount of detail in a reverse geocoded location description may vary. For example, one location might contain the full street address of the closest building, while another location might contain only a city name and postal code.</p>
+  <p><strong><span style="color:rgb(93, 92, 92)">Important points:</span></strong></p>
   <ul>
     <li>Supports Google Reverse Geocoding API.</li>
-    <li>For more details:&nbsp;<a class="external-link" href="https://developers.google.com/maps/documentation/geocoding/?hl=en" rel="nofollow" target="_blank">https://developers.google.com/maps/documentation/geocoding/?hl=en</a>.</li>
+    <li>
+      Prerequisite:
+      <ul>
+        <li>Set up the Geocoding API key as described in&nbsp;<a href="#com.webos.service.locationv1.0-OverviewoftheAPI">Overview</a>&nbsp;&gt; &quot;Google Geocoding API Key&quot;.&nbsp;</li>
+        <li>Enable network location provider state by:<br />
+          # luna-send -f -n 1 luna://com.webos.service.location/<strong>setState&nbsp;</strong>&#39;{&quot;Handler&quot;:&quot;network&quot;,&quot;state&quot;:true}&#39;
+        </li>
+      </ul>
+    </li>
+    <li>For more details:&nbsp;<a href="https://developers.google.com/maps/documentation/geocoding/?hl=en" style="font-size: 10pt; line-height: 13pt; background-color: transparent;">https://developers.google.com/maps/documentation/geocoding/?hl=en</a>.</li>
   </ul>
   <h4>Parameters</h4>
   <div class="table-container">
@@ -2272,7 +2316,7 @@ toc: true
         </tr>
         <tr>
           <td>name</td>
-          <td>Optional</td>
+          <td>Required</td>
           <td>String</td>
           <td>
             <p>Name of the location service provider.</p>
@@ -2573,13 +2617,6 @@ toc: true
       }
     </p>
   </div>
-</div>
-<h3>exitLocation</h3>
-<div>
-  <h4>Description</h4>
-  <p>Internal use only method for debugging. This method must not be called by apps or services other than Location service.&nbsp;This method does not have any parameters or return values.</p>
-  <h4>Parameters</h4>
-  <p>None</p>
 </div>
 <h2>Objects</h2>
 <div>
