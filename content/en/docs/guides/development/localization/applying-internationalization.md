@@ -1,16 +1,23 @@
 ---
-title: Writing Localizable Code
-date: 2020-06-30
-weight: 20
+title: Applying Internationalization
+date: 2020-08-27
+weight: 11
 toc: true
 ---
 
-To successfully localize your apps and services, strings need to be wrapped with a function appropriate to their file type.
-Localization in webOS OSE is available for the following programming languages: JavaScript, C/C++ and QML types.
+To successfully localize your apps and services, you need to internationalize them first.
+
+Internationalization mainly carries out the following two tasks: marking text strings for translation and formatting locale-sensitive data. Text strings of your apps and services need to be marked for translation. Formatting locale-sensitive data, such as dates, times, numbers or currency, for different locales and cultural conventions are also required. These are done by using an external internationalization library for each supported programming language. 
+
+Internationalization in webOS OSE is available for different programming languages.  See [Overview](/docs/guides/development/localization/localization#overview) for the list of supported programming languages.
+
+{{< note >}}
+This page only provides guides for marking strings for translation. For more information about formatting locale-sensitive data, please refer to the user guide of the provided internationalization library for each programming language.
+{{< /note >}}
 
 ## JavaScript
 
-For web apps developed in JavaScript, use [iLib](https://github.com/iLib-js/iLib) to write codes for localization.
+For web apps developed in JavaScript, use [iLib](https://github.com/iLib-js/iLib) to internationalize your code.
 
 {{< note >}}
 For more information about iLib, refer to the [iLib documentation](https://github.com/iLib-js/iLib/blob/development/docs/index.md).
@@ -30,7 +37,7 @@ toIString('Close'); // => an ilib IString representing "Close" in the current lo
 {{< /code >}}
 
 {{< note >}}
-For more information about the functions above, refer to the [Enact documentation](https://enactjs.com/docs/modules/i18n/$L/).
+For more information about the [`$L`](https://enactjs.com/docs/modules/i18n/$L/) component, refer to the [Enact documentation](https://enactjs.com/docs/modules/i18n/$L/).
 {{< /note >}}
 
 ### Non-Enact Apps
@@ -70,7 +77,7 @@ For web apps that do not utilize Enact framework, use the [`getString()`](https:
 
 ## C++/C
 
-If you are developing apps or services in C++/C, use [libwebosi18n](https://github.com/webosose/libwebosi18n) to write code for localization.
+If you are developing apps or services in C++/C, use [libwebosi18n](https://github.com/webosose/libwebosi18n) to internationalize your code.
 
 The following shows an example which uses the `getLocString()` API of libwebosi18n in C++ and C:
 
@@ -100,12 +107,6 @@ resBundle_getLocString(resBundle, "String 1");
 ```
 {{< /code >}}
 
-
-To prepare string resources without using the localization tool and XLIFF, write them in JSON format just like in JavaScript. The format and directory structure are basically the same as what's described above.
-
-You can also specify the name of the JSON file. However, it is recommended that you use **`cppstrings.json`** for C++ and **`cstrings.json`** for C.
-
 ## Qt/QML
 
-
-Basically, you can follow the localization guidelines of Qt. For details, refer to the [Qt documentation](http://doc.qt.io/qt-5/qtquick-internationalization.html).
+For Qt/QML apps, follow Qt's internationalization guideline. For details, refer to the [Qt documentation](http://doc.qt.io/qt-5/qtquick-internationalization.html).

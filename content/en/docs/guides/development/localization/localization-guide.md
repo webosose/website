@@ -1,18 +1,26 @@
 ---
 title: Localization Guide
-date: 2020-06-30
+date: 2020-08-27
 weight: 10
 toc: true
 ---
 
 ## Overview
 
-To reach out to the users in the global market, it is essential to provide your apps and services in many different languages. There are a few things to keep in mind when you localize your apps or services for webOS Open Source Edition (OSE).
+To reach out to the users in the global market, it is essential to provide your apps and services in many different languages. Making your apps and services ready for global distribution mainly consists of the following processes: internationalization (i18n) and localization (i10n). Internationalization is the process of preparing your app's content for localization so that it can be adapted to different languages and regions. Localization is the process of adapting it to a specific language and locale.
 
-* Write code using the internationalization (i18n) library provided by webOS OSE.
-    * This page provides the links to external pages with detailed information on libraries and coding rules for each programming language.
-* Prepare multi-language string resources in the guided format.
-    * You can prepare string resources yourself, or use the localization tool to make string resources generated at build time.
+Internationalization and localization are available on different programming languages. Check the programming language you use for building your app or service and follow the guides for the programming language that you are working on:
+
+* JavaScript: for web apps and services
+* C/C++: for native apps and services
+* QML: for Qt/QML apps
+
+There are a few things to keep in mind when you localize your apps or services for webOS Open Source Edition (OSE).
+
+* Write code for your apps and services using the provided internationalization (i18n) libraries. This page provides the links to external pages with detailed information on libraries and coding rules.
+* Prepare multi-language string resources in the guided formats. You can prepare string resources yourself, or use a localization tool to make string resources generated at build time.
+* Test your apps and services by iterating the localization process. This helps you identify changes to be translated or non-translated content at early stages. By means of pseudolocalization, you can test the internationalized apps and services with pseudolanguages even before localizing them.
+* Set up a communication channel with your translator. Since the translator will be working with XLIFF files for translation, it's highly recommended that your translator be familiar with the XLIFF standard.
 
 {{< note "Locale identification in webOS OSE" >}}
 Locales in webOS OSE follow the BCP 47 standard. A locale is represented as a language tag, typically in *language*-[*script*]-[*region*] format, where the language code is a required field. For example,
@@ -28,386 +36,33 @@ For more information about BCP 47 and the language tag, refer to the following:
 * [Language Tag](http://en.wikipedia.org/wiki/IETF_language_tag)
 {{< /note >}}
 
+## Applying Internationalization
 
-## Applying localization to your project
-In order to apply localization to your project, you need to follow the steps below:
-1) [Write codes using the internationalization(i18n) library](#1-write-codes-using-the-internationalization-i18n-library)
-2) [Prepare XLIFF files](#2-prepare-xliff-files)
-3) [Prepare the localization tool](#3-prepare-the-localization-tool)
-4) [Update Recipes to apply webOS build](#4-update-recipes-to-apply-webos-build)
+Internationalization is essentially the prerequisite for localizing your content. This means you must internationalize your code first. Internationalization structures your apps and services' content for localization. This is accomplished by marking your text for translation and formatting locale-sensitive data with appropriate APIs provided by an international library for the programming language you're working on. 
 
----
-Here's a detailed explanation.
-### (1) Write codes using the internationalization(i18n) library
-In order to get localized strings on your project, Strings need to be wrapped with a function appropriate to the file type.
-Please refer to the following guide: [Writing Localizable Code]({{< relref "writinglocalizableCode" >}}).
+Please refer to the following guide for details: [Applying Internationalization](/docs/guides/development/localization/applying-internationalization).
 
-{{< note >}}
-If you want to create resources manually without using a localization tool,  Please skip the next steps and go to the [Resource Formats](#resource-formats) section.
-{{< /note >}}
+Once you're done with internationalization, it's advisable to test your internationalized app or service with the prebuilt pseudolanguages. See [Testing With Pseudolocalization](#testing-with-pseudolocalization) for more information.
 
-### (2) Prepare XLIFF files
+## Applying Localization
 
-#### (2-1) What is XLIFF?
+After you have internationalized your apps and services and tested them with pseudolocalization, your apps and services are ready to be localized. 
 
-[XLIFF](http://docs.oasis-open.org/xliff/xliff-core/v2.0/xliff-core-v2.0.html) (XML Localization Interchange File Format) is an XML format file that contains the actual translation data. XLIFF must exist for each locale.
-The following shows an example of XLIFF, which represents the translation data for '*en-US*' locale of '*javascript*' application named '*sample*'. The localization tool of webOS OSE is based on XLIFF version 2.0.
+You need to prepare string resources for different languages and locales. A string resource is a set of text strings for your apps and services. Creating string resources can be done either manually or by using a localization tool.
 
-{{< code "en-US.xliff (web)" true >}}
-```xml
-<?xml version="1.0"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en-KR" trgLang="en-US">
- <file id="sample_f1" original="sample">
-  <group id="sample_g1" name="javascript">
-   <unit id="sample_1">
-    <segment>
-     <source>String 1</source>
-     <target>Translation 1</target>
-    </segment>
-   </unit>
-   <unit id="sample_2">
-    <segment>
-     <source>String 2</source>
-     <target>Translation 2</target>
-    </segment>
-   </unit>
-  </group>
- </file>
-</xliff>
-```
-{{< /code >}}
+Please refer to the following guide for more information about applying localization: [Applying Localization](/docs/guides/development/localization/applying-localization).
 
-The following table describes the key elements and attributes of XLIFF.
+## Testing With Pseudolocalization
 
-| Element/Attribute | Description |
-| --- | --- |
-| `<xliff> - srcLang` | Source language - the code of the language, in which *the text to be translated* is expressed |
-| `<xliff> - trgLang` | Target language - the code of the language, in which *the translated text* is expressed |
-| `<group> - name` | Programming language type - "javascript", "c", "cpp", "x-qml" (for Qt/QML) |
-| `<source>` | Source string - *the text to be translated* |
-| `<target>` | Target string - *the translated text* |
+Once you have internationalized your app, you can test the internationalized app by using [pseudolocalization](https://en.wikipedia.org/wiki/Pseudolocalization) (or pseudo-localization) before actually localizing your app. It helps you detect localization issues even before actual translation data is updated.
 
-{{< note >}}
-* The source language is defined as `en-KR`.
-* basename :  The short name for the application. The right-most word of the dot-connected string of the application name becomes the basename.
-    * If an application name is  `com.webos.app.home`, the basename is `home`.
-    * If an application name is  `sample`, the basename is `sample`.
-{{< /note >}}
+The localization tool introduced in [Applying Localization](/docs/guides/development/localization/applying-localization), the loctool, generates string resources for a set of pseudo locales (you do not need XLIFF files for these locales). A pseudo string is generated by processing a source string marked for translation during the internationalization process. For hard-coded strings, however, their pseudo strings are not generated.
 
+The following describes how to generate pseudo strings with the loctool:
+* In the `project.json` configuration file, set the value of `pseudoLocale` to the pseudolocales you wish to generate. See [Preparing a Configuration File](/docs/guides/development/localization/applying-localization/#preparing-a-configuration-file) for details.
+* Run the loctool with the `--pseudo` option. See [Running the Localization Tool](/docs/guides/development/localization/applying-localization/#running-the-localization-tool) for details.
 
-#### (2-2) How to write XLIFF files?
-When writing an XLIFF file, the value of `original` attribute must match the basename. In addition, the value of `name` attribute in `group` must match the type of programming language used for developing the apps or services, as follows:
-
-{{< code "en-US.xliff " true >}}
-```xml
-<?xml version="1.0"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en-KR" trgLang="en-US">
- <file id="sampleJS_f1" original="sampleJS">
-  <group id="sampleJS_g1" name="javascript">
-...
-```
-{{< /code >}}
-
-{{< code "en-US.xliff \(c)" true >}}
-```xml
-<?xml version="1.0"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en-KR" trgLang="en-US">
- <file id="samplec_f1" original="samplec">
-  <group id="samplec_g1" name="c">
-...
-```
-{{< /code >}}
-
-For Qt/QML apps, the group name is "x-qml".
-
-{{< code "en-US.xliff (qml)" true >}}
-```xml
-<?xml version="1.0"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en-KR" trgLang="en-US">
- <file id="sampleqml_f1" original="sampleqml">
-  <group id="sampleqml_g1" name="x-qml">
-...
-```
-{{< /code >}}
-
-
-#### (2-3) Where to put the XLIFF files?
-
-XLIFF files for each locale must be placed in the directory with the same name as the base name, as shown below:
-
-{{< code "XLIFF Directory Structure" true >}}
-```bash
-com.webos.app.sample
-├── sample
-     ├── af-ZA.xliff
-     │── ar-SA.xliff
-...
-     │── en-GB.xliff
-     │── en-US.xliff
-...
-     └── zh-Hans-CN.xliff
-```
-{{< /code >}}
-
-### (3) Prepare the localization tool
-The localization tool parses source codes along with XLIFF files, and generates string resources in formats required by each programming language.
-
-Therefore, you must provide translation data in XLIFF format to use the localization tool.
-In order to run the localization tool on your machine, you need to check out the localization tool repository and then install the plugins.
-
-#### (3-1) Install the localization tool
-webOS OSE's localization tool is named [loctool](https://github.com/iLib-js/loctool/blob/development/README.md).
-
-In order to install the loctool, make sure you have Node.js installed on your machine and in your path, as this is used to run the code (Use 7.0 or later).
-Once Node.js is installed, you can install the loctool.
-
-By checking out the [ilib-loctool-webos-dist](https://github.com/iLib-js/ilib-loctool-webos-dist) repository, you can download all related plugins including loctool.
-{{< code "Installation" true >}}
-```js
- git clone https://github.com/iLib-js/ilib-loctool-webos-dist
- cd ilib-loctool-webos-dist
- npm install
- // or to install it globally: npm install -g
-```
-{{< /code >}}
-
-#### (3-2) Prepare a configuration file
-To run the tool, create a `project.json` configuration file for each project and place it in the root of that project.
-
-The loctool recursively search the given directory (current dir by default) for project.json files to find the roots of the projects. The root of each project will be recursively searched for localizable files.
-
-For more information about [loctool configuration](https://github.com/iLib-js/loctool/blob/development/README.md#configuration), please visit the loctool project site.
-
-Here's an example for a webOS application.
-
-
-{{< code "project.json (Web) " true >}}
-```json
-{
-    "name": "com.webos.app.home",
-    "id": "home",
-    "projectType": "webos-web",
-    "sourceLocale": "en-KR",
-    "pseudoLocale": ["zxx-XX", "zxx-Cyrl-XX", "zxx-Hans-XX", "zxx-Hebr-XX"],
-    "resourceDirs": {
-         "json":"resources"
-     },
-     "resourceFileTypes": {
-         "json":"ilib-loctool-webos-json-resource"
-     },
-    "plugins": [
-         "ilib-loctool-webos-javascript",
-         "ilib-loctool-webos-appinfo-json"
-     ],
-     "excludes": [
-         "*"
-     ],
-     "includes": [
-         "src"
-     ]
-}
-```
-{{< /code >}}
-
-{{< code "project.json (QML) " true >}}
-```json
-{
-    "name": "ime-manager",
-    "id": "imemanager",
-    "projectType": "webos-qml",
-    "sourceLocale": "en-KR",
-    "pseudoLocale": ["zxx-XX", "zxx-Cyrl-XX", "zxx-Hans-XX", "zxx-Hebr-XX"],
-    "resourceDirs": {
-         "ts":"resources"
-     },
-     "resourceFileTypes": {
-         "ts":"ilib-loctool-webos-ts-resource"
-     },
-    "plugins": [
-         "ilib-loctool-webos-qml",
-         "ilib-loctool-webos-appinfo-json"
-     ],
-     "excludes": [
-         "*"
-     ],
-     "includes": [
-         "src"
-     ]
-}
-```
-{{< /code >}}
-
-{{< note >}}
-`id` property's value in `project.json` have to be the same as xliff's directory name.
-{{< /note >}}
-
-##### plugins
-The loctool is driven by plugins that know how to parse various types of files and writes out the appropriate localized output.
-Here are matchs for various languages.
-
-| type | plugins |projectType  |
-| --- | --- | --- |
-| javascript | [ilib-loctool-webos-javascript](https://github.com/iLib-js/ilib-loctool-webos-javascript), [ilib-loctool-webos-json-resource](https://github.com/iLib-js/ilib-loctool-webos-json-resource)  | webos-web |
-| c | [ilib-loctool-webos-c](https://github.com/iLib-js/ilib-loctool-webos-c), [ilib-loctool-webos-json-resource](https://github.com/iLib-js/ilib-loctool-webos-json-resource) | webos-c |
-| cpp | [ilib-loctool-webos-cpp](https://github.com/iLib-js/ilib-loctool-webos-cpp), [ilib-loctool-webos-json-resource](https://github.com/iLib-js/ilib-loctool-webos-json-resource) | webos-cpp |
-| qml | [ilib-loctool-webos-qml](https://github.com/iLib-js/ilib-loctool-webos-qml), [ilib-loctool-webos-ts-resource](https://github.com/iLib-js/ilib-loctool-webos-ts-resource) | webos-qml |
-| appinfo.json | [ilib-loctool-webos-appinfo-json](https://github.com/iLib-js/ilib-loctool-webos-appinfo-json) | - |
-
-#### (3-3) Run the localization tool on local
-
-{{< code "Running the Loctool" true >}}
-```js
- node <path-to-the-loctool-dir>/loctool.js
-
- // To see the usage
- node <path-to-the-loctool-dir>/loctool.js -h
-
- // Example) options on webOS
- node <path-to-the-loctool-dir>/loctool.js -2 -x xliffPath --pseudo --localizeOnly -l localelist
-```
-{{< /code >}}
-
-
-### (4) Update Recipes to apply webOS build
-In order to enable the localization task during build, recipes need to be updated properly.
-
-To use the localization tool for generating string resources at build time, add the following line to the recipe to inherit the `webos_localizable` bbclass.
-
-{{< code "sample.bb" true >}}
-```bash
-inherit webos_localizable
-```
-{{< /code >}}
-
-#### C/C++
-
-Regarding C/C++ cases, the i18n library (`libwebosi18n`) needs to be built first.
-In order to do that, add a dependency for the library to the recipe.
-
-{{< code "samplecpp.bb" true >}}
-```bash
-...
-DEPENDS="libwebosi18n"
-...
-inherit webos_localizable
-```
-{{< /code >}}
-
-##### QML
-For QML app, the recipe must inherit `webos_qt_localization` instead of `webos_localizable`. `webos_qt_localization` bbclass includes an additional process to convert a `.ts` file into a `.qm` file.
-
-{{< code "sample.bb for QML" true >}}
-```bash
-inherit webos_qt_localization
-```
-{{< /code >}}
-
-##### Tips
-
-If necessary, you can change the location of XLIFF directory by redefining the values below:
-
-{{< code "Default WEBOS_LOCALIZATION_DATA_PATH" true >}}
-```bash
-WEBOS_LOCALIZATION_DATA_PATH ?= "${S}"
-```
-{{< /code >}}
-
-{{< code "Example of modified recipe" true >}}
-```bash
-WEBOS_LOCALIZATION_DATA_PATH = "${STAGING_DATADIR}/localization"
-```
-{{< /code >}}
-
-## Resource Formats
-This section explains the resource format of each supported programming language.
-
-### Web
-Web Application relys on the iLib library and it requires string resources in JSON format.
-If you are not using the localization tool, create a file named **`strings.json`** and write strings for translation in key-value format.
-
-{{< code "Example of strings.json" true >}}
-```json
-{
-  "String 1": "Translation 1",
-  "String 2": "Translation 2"
-}
-```
-{{< /code >}}
-
-Make sure that you prepare `strings.json` files for each locale under the `resources` directory. The directory structure is as below.
-
-{{< code "Locale Resource Structure" true >}}
-```bash
-com.webos.app.sample
-├── resources
-│   └── <language>
-│       ├── <script>
-│       │   ├── <region>
-│       │   │   └── strings.json
-│       │   └── strings.json
-│       └── strings.json
-├── src
-│
-```
-{{< /code >}}
-
-For example, the strings for French-language speakers in France need to be stored in `resources/fr/FR/strings.json`, while the strings for French-speaking residents of Canada stored in `resources/fr/CA/strings.json`.
-
-### C/C++
-You can also specify the name of the JSON file. However, it is recommended that you use **`cppstrings.json`** for C++ and **`cstrings.json`** for C.
-
-### QML
-
-Basically, you can follow the localization guidelines of Qt. For details, refer to the [Qt documentation](http://doc.qt.io/qt-5/qtquick-internationalization.html).
-
-If you use the localization tool, `.qm` files for each locale are generated in the following file name format.
-
-* Format: **`sampleqml_[lang]_[script]_[region].qm`**
-* Examples: `sampleqml_en_GB.qm`, `sampleqml_zh_Hans_CN.qm`
-
-
-## Preventing the Use of Duplicate Data
-
-If you consider preventing the use of duplicate data, configure the structure of string resources as follows. Let's take an example of English where there may be other translation terms by region.
-
-| Term | en-US (English - USA) | en-GB (English - United Kingdom) |
-| --- | --- | --- |
-| All | All | All |
-| Hello | Hi | Hi |
-| Color | Color | Colour |
-| Subway | Subway | Underground |
-
-To avoid duplicates, configure directories and files as follows:
-
-* All: If the original term and translated strings are the same, there is no need to write translations in the resource file.
-* Hello: If the strings for en-US and en-GB are the same, write them in `en/strings.json`.
-* Color, Subway: If the translations for US and UK English are different, write them in `en/US/strings.json` and `en/GB/strings.json` respectively.
-
-```bash
-com.webos.app.sample
-└── resources
-    └── en
-        ├── GB
-        │   └── strings.json              : Colour, Underground
-        ├── US
-        │   └── strings.json              : Color, Subway
-        └── strings.json                  : Hi
-```
-
-
-To prepare string resources without using the localization tool and XLIFF, write them in JSON format just like in JavaScript. The format and directory structure are basically the same as what's described above.
-
-You can also specify the name of the JSON file, but it is recommended that you use **`cppstrings.json`** for C++ and **`cstrings.json`** for C.
-
-
-## Pseudo-Localization
-[Pseudolocalization](https://en.wikipedia.org/wiki/Pseudolocalization) (or pseudo-localization) is a software testing method used for testing internationalization aspects of software. Instead of translating the text of the software into a foreign language, as in the process of localization, the textual elements of an application are replaced with an altered version of the original language.
-
-When you use the localization tool, it generates the string resources for pseudo locale by default. (You do not need to add an XLIFF file for this locale.)
-
-A pseudo string is generated by processing the source string. For hard-coded strings, however, a pseudo string is not generated.
-
-The pseudo locales defined in webOS OSE are as follows. The character set differs per locale. Therefore, you can check the localization issue even before the actual translation data is updated.
+The pseudo locales defined in webOS OSE are as follows. The character set differs per locale.
 
 | Pseudo Locale | Description |
 | --- | --- |
