@@ -1,6 +1,6 @@
 ---
 title: "SDK Download"
-date: 2020-09-23
+date: 2020-09-29
 weight: 5
 file_download: true
 toc: true
@@ -30,11 +30,11 @@ See the [CLI release notes]({{< relref "cli-release-notes" >}}).
 
 |	Platform	|	Beanviser Package	|	Size	|
 |-----------------------|-------------------|-----------|
-|	Linux (32-bit)	|	<a href="javascript:" onclick="file_dn('Beanviser', 'Linux', 'beanviser-linux32-2.0.3.tgz', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/beanviser/v2.0.3/beanviser-linux32-2.0.3.tgz');">beanviser-linux32-2.0.3.tgz</a>	|	151.6 MB	|
-|	Linux (64-bit)	|	<a href="javascript:" onclick="file_dn('Beanviser', 'Linux', 'beanviser-linux64-2.0.3.tgz', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/beanviser/v2.0.3/beanviser-linux64-2.0.3.tgz');">beanviser-linux64-2.0.3.tgz</a>	|	151.9 MB	|
-|	macOS (64-bit)	|	<a href="javascript:" onclick="file_dn('Beanviser', 'macOS', 'beanviser-mac64-2.0.3.tgz', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/beanviser/v2.0.3/beanviser-mac64-2.0.3.tgz');">beanviser-mac64-2.0.3.tgz</a>	|	139.9 MB	|
-|	Windows	(32-bit) |	<a href="javascript:" onclick="file_dn('Beanviser', 'Windows', 'beanviser-win32-2.0.3.zip', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/beanviser/v2.0.3/beanviser-win32-2.0.3.zip');">beanviser-win32-2.0.3.zip</a>	|	148.1 MB	|
-|	Windows	(64-bit) |	<a href="javascript:" onclick="file_dn('Beanviser', 'Windows', 'beanviser-win64-2.0.3.zip', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/beanviser/v2.0.3/beanviser-win64-2.0.3.zip');">beanviser-win64-2.0.3.zip</a>	|	156.4 MB	|
+|	Linux (32-bit)	|	<a href="javascript:" onclick="file_dn('Beanviser', 'Linux', 'beanviser-linux32-2.0.3.tgz', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/beanviser/v2.0.3/beanviser-linux32-2.0.3.tgz');">beanviser-linux32-2.0.3.tgz</a>	|	155.4 MB	|
+|	Linux (64-bit)	|	<a href="javascript:" onclick="file_dn('Beanviser', 'Linux', 'beanviser-linux64-2.0.3.tgz', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/beanviser/v2.0.3/beanviser-linux64-2.0.3.tgz');">beanviser-linux64-2.0.3.tgz</a>	|	155.8 MB	|
+|	macOS (64-bit)	|	<a href="javascript:" onclick="file_dn('Beanviser', 'macOS', 'beanviser-mac64-2.0.3.tgz', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/beanviser/v2.0.3/beanviser-mac64-2.0.3.tgz');">beanviser-mac64-2.0.3.tgz</a>	|	142.4 MB	|
+|	Windows	(32-bit) |	<a href="javascript:" onclick="file_dn('Beanviser', 'Windows', 'beanviser-win32-2.0.3.zip', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/beanviser/v2.0.3/beanviser-win32-2.0.3.zip');">beanviser-win32-2.0.3.zip</a>	|	150.5 MB	|
+|	Windows	(64-bit) |	<a href="javascript:" onclick="file_dn('Beanviser', 'Windows', 'beanviser-win64-2.0.3.zip', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/beanviser/v2.0.3/beanviser-win64-2.0.3.zip');">beanviser-win64-2.0.3.zip</a>	|	158.8 MB	|
 
 See the [Beanviser release notes]({{< relref "beanviser-release-notes" >}}).
 
