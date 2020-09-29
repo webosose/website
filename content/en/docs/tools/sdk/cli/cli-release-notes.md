@@ -1,12 +1,29 @@
 ---
 title: Release Notes
 display_title: Command-Line Interface Release Notes
-date: 2020-07-06
+date: 2020-09-22
 weight: 20
 toc: true
 ---
 
 This page provides the summary of each Command-Line Interface (CLI) release for webOS Open Source Edition (OSE).
+
+## v1.13.0 (October 2020)
+
+This version is compatible with **webOS OSE 2.7.0**. See below for the new and changed features in this release.
+
+### New features
+
+* Added a new command, `ares-device-info`. For more details, see [CLI User Guide]({{< relref "cli-user-guide#ares-device-info">}}).
+
+### Changed features
+
+* Organized and unified error messages.
+* Updated README file.
+
+### Removed features
+
+* Removed `pmloglib.Context` in the JS service template.
 
 ## v1.12.0 (July 2020)
 

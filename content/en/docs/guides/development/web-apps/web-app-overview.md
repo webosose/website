@@ -1,6 +1,6 @@
 ---
 title: Overview
-date: 2018-05-12
+date: 2020-09-29
 weight: 10
 toc: true
 ---
@@ -8,6 +8,10 @@ toc: true
 This page explains general concepts related to web apps for webOS Open Source Edition (OSE).
 
 Web apps built for a webOS device are similar to standard web apps that use web-based technologies like HTML, CSS, and JavaScript. Developers with experience in building web apps can easily start developing web apps for webOS OSE.
+
+{{< caution >}}
+If you run 8 or more web apps at the same time on Raspberry Pi 4, the system might crash due to limitation of the VC4 (VideoCore 4) driver present in the Raspberry Pi.
+{{< /caution >}}
 
 Let us understand some webOS-specific concepts regarding web apps.
 

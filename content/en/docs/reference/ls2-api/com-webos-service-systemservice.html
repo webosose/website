@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.systemservice
-date: 2020-07-09
+date: 2020-09-23
 weight: 310
 toc: true
 ---
@@ -421,7 +421,7 @@ toc: true
         </tr>
         <tr>
           <td>utc</td>
-          <td>Required</td>
+          <td>Optional</td>
           <td>Number</td>
           <td>
             <p>Seconds since epoch for UTC.</p>
@@ -429,7 +429,7 @@ toc: true
         </tr>
         <tr>
           <td>offset</td>
-          <td>Required</td>
+          <td>Optional</td>
           <td>Object: <a href="#timesourceoffset"> TimeSourceOffset</a></td>
           <td>
             <p>Offset from some other time source (usually from <strong>system</strong>).</p>
@@ -576,8 +576,9 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Time source associated with time info update (default &quot;manual&quot;).<br />
-              See <strong>clock/getTime</strong> method for more details.
+            <p>Time source associated with time info update (default &quot;manual&quot;).</p>
+            <p>Only those sources that are listed in the <strong>timeSources</strong> Preference key can be set.<br />
+              &nbsp;
             </p>
           </td>
         </tr>
@@ -643,6 +644,14 @@ toc: true
             <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
           </td>
         </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Error Code Number</p>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -668,6 +677,13 @@ toc: true
             <p>The request data is invalid.</p>
           </td>
         </tr>
+        <tr>
+          <td>None</td>
+          <td>Requested clock is not registered</td>
+          <td>
+            <p>Time source is not among list of available ones (&quot;timeSources&quot;).</p>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -680,7 +696,7 @@ toc: true
 <div>
   <h4>Description</h4>
   <p>The <strong>query</strong> method to get the device system information such as product Id, system number, hardware information, Wi-FI address, battery status and others. Please refer to the return values table below for a complete list of the system parameters.</p>
-  <p><strong>Note:</strong> This is an internal method. Third-party applications cannot use it.</p>
+  <p><strong>Note:</strong> This method must not be used by 3rd-party applications.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -727,6 +743,7 @@ toc: true
               <li>device_name</li>
               <li>nduid</li>
               <li>bt_addr</li>
+              <li><span style="background-color:rgb(255, 255, 255); color:rgb(0, 0, 0)"></span>device_id</span></li>
             </ul>
           </td>
         </tr>
@@ -932,6 +949,14 @@ toc: true
           </td>
         </tr>
         <tr>
+          <td>device_id</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p><span style="background-color:rgb(255, 255, 255); color:rgb(0, 0, 0)">ID&nbsp;for&nbsp;uniquely&nbsp;identifying&nbsp;the&nbsp;device</span></p>
+          </td>
+        </tr>
+        <tr>
           <td>errorCode</td>
           <td>Optional</td>
           <td>Number</td>
@@ -1009,89 +1034,6 @@ toc: true
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/deviceInfo/query &#39;{}&#39;</p>
   </div>
 </div>
-<h3>erase/EraseAll</h3>
-<div>
-  <h4>Description</h4>
-  <p>The <strong>eraseAll</strong> method erases all partitions on the internal system storage. The method will clear:</p>
-  <ol>
-    <li>Media partition: the data saved by the user.</li>
-    <li>Var partition: the external applications and their data.</li>
-    <li>Developer partition: unsigned applications.</li>
-  </ol>
-  <p>This method is internal, only system applications can use it. It is not available for the third-party applications.</p>
-  <h4>Parameters</h4>
-  <p>None</p>
-  <h4>Call Returns</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
-            <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check and &quot;errorText&quot; field&nbsp;for details</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>errorText</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Error Codes Reference</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Error Code</p>
-          </th>
-          <th width="30%">
-            <p>Error Text</p>
-          </th>
-          <th width="55%">
-            <p>Error Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>Failed to execute NYX erase API</td>
-          <td>
-            <p>Failed to execute NYX erase API</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Example</h4>
-  <div class="code-bg-grey">
-    <p># luna-send -n 1 -f luna://com.webos.service.systemservice/erase/EraseAll &#39;{}&#39;</p>
-  </div>
-</div>
 <h3>getPreferences</h3>
 <div>
   <h4>Description</h4>
@@ -1128,6 +1070,19 @@ toc: true
           <td>string array</td>
           <td>
             <p>An array of key names. A <strong>key</strong> is a system preference or custom user key (see overview of this API for details).</p>
+            <p>Accepted key names:</p>
+            <ul>
+              <li>locale</li>
+              <li>region</li>
+              <li>ringtone</li>
+              <li>useNetworkTime</li>
+              <li>useNetworkTimeZone</li>
+              <li>timeZone</li>
+              <li>timeFormat</li>
+              <li>timeChangeLaunch</li>
+              <li>timeDriftPeriodHr</li>
+              <li>wallpaper</li>
+            </ul>
           </td>
         </tr>
       </tbody>
@@ -1266,7 +1221,7 @@ toc: true
 <h3>getPreferenceValues</h3>
 <div>
   <h4>Description</h4>
-  <p>The <strong>getPreferenceValues</strong> method retrieves a list of valid values for the specified key. If the key is of a type that takes one of a discrete set of valid values, <strong>getPreferenceValues</strong> returns that set.&nbsp;Otherwise, <strong>getPreferenceValues</strong> returns nothing for the key. For more details, see the examples.</p>
+  <p>Retrieves a list of valid values for the specified key. If the key is of a type that takes one of a discrete set of valid values, it&nbsp;returns that set.&nbsp;Otherwise, it&nbsp;returns nothing for the key.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -1300,9 +1255,6 @@ toc: true
               <li>useNetworkTimeZone</li>
               <li>timeZone</li>
               <li>timeFormat</li>
-              <li>timeChangeLaunch</li>
-              <li>timeDriftPeriodHr</li>
-              <li>nitzValidity</li>
               <li>wallpaper</li>
             </ul>
           </td>
@@ -1338,10 +1290,7 @@ toc: true
               <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
               <li><strong>false&nbsp;</strong>- Indicates that the operation failed.&nbsp;</li>
             </ul>
-            <p>The <strong>getPreferenceValues </strong>method may fail because of:</p>
-            <ul>
-              <li>&nbsp;<strong>key</strong> is not specifyed or is invalid</li>
-            </ul>
+            <p>The&nbsp;method can fail if&nbsp;the &quot;<strong>key</strong> is not specified or is invalid&quot;.</p>
           </td>
         </tr>
         <tr>
@@ -1358,6 +1307,30 @@ toc: true
           <td>String</td>
           <td>
             <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>[key name]</td>
+          <td>Optional</td>
+          <td>Any array</td>
+          <td>
+            <p>Contains the set returned for the specified key name in command parameters.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>syszones</td>
+          <td>Optional</td>
+          <td>Any array</td>
+          <td>
+            <p>Provides ZoneID&nbsp;with the respective time offset for different time zones.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>mccInfo</td>
+          <td>Optional</td>
+          <td>Any array</td>
+          <td>
+            <p>Provides a 3 digit mobile country code [mcc], which signifies&nbsp;details of the region. Example: &quot;mcc&quot; : 460.</p>
           </td>
         </tr>
       </tbody>
@@ -1404,19 +1377,28 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example 1:</p>
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/getPreferenceValues &#39;{&quot;key&quot;: &quot;useNetworkTime&quot; }&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;useNetworkTime&quot;:&nbsp;[true, false],</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
-    <p>&nbsp;</p>
-    <p>Example 2:</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;useNetworkTime&quot;:[<br />
+      &nbsp; &nbsp; &nbsp; true,<br />
+      &nbsp; &nbsp; &nbsp; false<br />
+      &nbsp; &nbsp;],<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+  </div>
+  <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/getPreferenceValues &#39;{ &quot;key&quot;: &quot;timeFormat&quot; }&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;timeFormat&quot;:&nbsp;[&quot;HH12&quot;, &quot;HH24&quot;],</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;timeFormat&quot;:[<br />
+      &nbsp; &nbsp; &nbsp; &quot;HH12&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;HH24&quot;<br />
+      &nbsp; &nbsp;],<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>osInfo/query</h3>
@@ -1707,7 +1689,8 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Absolute path to the ringtone file.<br></p>
+            <p>Absolute path to the ringtone file.</p>
+            <p><strong>Note:</strong>&nbsp;The ringtone file needs to be copied manually to the target prior to using this API</p>
           </td>
         </tr>
       </tbody>
@@ -1801,6 +1784,8 @@ toc: true
           <td>None</td>
           <td>Source file doesn&#39;t exist</td>
           <td>
+            <p>Note: The ringtone file needs to be copied manually to the target first.</p>
+            <p>Note:&nbsp;#cp &lt;local_directory&gt;/ringtone.mp3 /usr/palm/sounds/</p>
             <p>The file could not be found by the specified filepath.</p>
           </td>
         </tr>
@@ -1809,7 +1794,13 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
+    <p>// Copy the ringtone file(.mp3) to desired location. For example, &quot;/usr/palm/sounds/&quot;</p>
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/ringtone/addRingtone &#39;{&quot;filePath&quot;: &quot;/usr/palm/sounds/ringtone.mp3&quot; }&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>ringtone/deleteRingtone</h3>
@@ -1840,7 +1831,8 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Absolute path to the ringtone file.<br></p>
+            <p>Absolute path to the ringtone file. The directory must be given only as &quot;/media/internal/ringtones/&quot;</p>
+            <p><strong>Note:</strong>&nbsp;The ringtone file needs to be added via <strong>addRingtone</strong> API prior to using this API.</p>
           </td>
         </tr>
       </tbody>
@@ -1920,6 +1912,7 @@ toc: true
           <td>None</td>
           <td>Unable to delete ringtone.</td>
           <td>
+            <p>Note:&nbsp;The ringtone file must be present in the location</p>
             <p>Unable to delete ringtone.</p>
           </td>
         </tr>
@@ -1928,7 +1921,13 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
+    <p>// The ringtone file must be present in&nbsp;&quot;/media/internal/ringtones/&quot;</p>
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/ringtone/deleteRingtone &#39;{&quot;filePath&quot;: &quot;/media/internal/ringtones/ringtone.mp3&quot; }&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>setPreferences</h3>
@@ -1969,9 +1968,7 @@ toc: true
               <li>useNetworkTimeZone</li>
               <li>timeZone</li>
               <li>timeFormat</li>
-              <li>timeChangeLaunch</li>
               <li>timeDriftPeriodHr</li>
-              <li>nitzValidity</li>
               <li>wallpaper</li>
             </ul>
             <p>New key will be created if any other key is specified.</p>
@@ -2684,6 +2681,51 @@ toc: true
           </th>
         </tr>
         <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>isDST</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates whether the system is currently using Daylight Saving Time (DST). The possible values:</p>
+            <ul>
+              <li><strong>True </strong>-&nbsp;System is using DST</li>
+              <li><strong>False</strong> - System is not using DST</li>
+            </ul>
+            <p><strong>Note: </strong>This field is not provided if the DST information is not available.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>localtime</td>
+          <td>Required</td>
+          <td>Object: <a href="#localtime"> LocalTime</a></td>
+          <td>
+            <p style="text-align: left;">The object that contains information about the current system time.<br></p>
+          </td>
+        </tr>
+        <tr>
+          <td>offset</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p style="text-align: left;">The number of minutes from UTC. This can be negative for time zones west of UTC, and positive for time zones east of UTC.<br></p>
+          </td>
+        </tr>
+        <tr>
           <td>returnValue</td>
           <td>Required</td>
           <td>Boolean</td>
@@ -2708,27 +2750,11 @@ toc: true
           </td>
         </tr>
         <tr>
-          <td>utc</td>
-          <td>Required</td>
-          <td>Number</td>
+          <td>timestamp</td>
+          <td>Optional</td>
+          <td>Object: <a href="#timestamp"> Timestamp</a></td>
           <td>
-            <p style="text-align: left;">The number of milliseconds since Epoch (midnight of January 1, 1970 UTC), also know as the Unix time.<br></p>
-          </td>
-        </tr>
-        <tr>
-          <td>localtime</td>
-          <td>Required</td>
-          <td>Object: <a href="#localtime"> LocalTime</a></td>
-          <td>
-            <p style="text-align: left;">The object that contains information about the current system time.<br></p>
-          </td>
-        </tr>
-        <tr>
-          <td>offset</td>
-          <td>Required</td>
-          <td>Number</td>
-          <td>
-            <p style="text-align: left;">The number of minutes from UTC. This can be negative for time zones west of UTC, and positive for time zones east of UTC.<br></p>
+            <p><strong>Monotonic</strong>&nbsp;timestamp</p>
           </td>
         </tr>
         <tr>
@@ -2740,14 +2766,6 @@ toc: true
           </td>
         </tr>
         <tr>
-          <td>TZ</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p style="text-align: left;"><span data-cke-bookmark="1" style="display: none;">&nbsp;</span>Contains the time zone abbreviation in the standard Unix format, for example PDT (which stands for Pacific Daylight Time). The time zone corresponds to the current time zone of the system.<br></p>
-          </td>
-        </tr>
-        <tr>
           <td>timeZoneFile</td>
           <td>Required</td>
           <td>String</td>
@@ -2756,40 +2774,27 @@ toc: true
           </td>
         </tr>
         <tr>
-          <td>timestamp</td>
-          <td>Optional</td>
-          <td>Object: <a href="#timestamp"> Timestamp</a></td>
-          <td>
-            <p><strong>Monotonic</strong>&nbsp;timestamp</p>
-          </td>
-        </tr>
-        <tr>
-          <td>isDST</td>
-          <td>Optional</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates whether the system is currently using Daylight Saving Time (DST). The possible values:</p>
-            <ul>
-              <li><strong>True </strong>-&nbsp;System is using DST</li>
-              <li><strong>False</strong> - System is not using DST</li>
-            </ul>
-            <p><strong>Note: </strong>This field is not provided if the DST information is not available.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>errorCode</td>
-          <td>Optional</td>
-          <td>Number</td>
-          <td>
-            <p>The error code for the failed operation.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>errorText</td>
-          <td>Optional</td>
+          <td>TZ</td>
+          <td>Required</td>
           <td>String</td>
           <td>
-            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+            <p style="text-align: left;"><span data-cke-bookmark="1" style="display: none;">&nbsp;</span>Contains the time zone abbreviation in the standard Unix format, for example PDT (which stands for Pacific Daylight Time). The time zone corresponds to the current time zone of the system.<br></p>
+          </td>
+        </tr>
+        <tr>
+          <td>utc</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p style="text-align: left;">The number of milliseconds since Epoch (midnight of January 1, 1970 UTC), also know as the Unix time.<br></p>
+          </td>
+        </tr>
+        <tr>
+          <td>systemTimeSource</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>&nbsp;It will denote the time source used for system time synchronization.</p>
           </td>
         </tr>
       </tbody>
@@ -2883,6 +2888,14 @@ toc: true
           <td>Boolean</td>
           <td>
             <p>A flag that indicates whether daylight saving time (DST) is in effect at the time described. The value is&nbsp;<strong>true</strong>&nbsp;if DST is in effect,&nbsp;<strong>false</strong>&nbsp;if it is not, and absent if the information is not available.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>systemTimeSource</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>It will denote the time source used for system time synchronization.</p>
           </td>
         </tr>
       </tbody>
@@ -3883,7 +3896,7 @@ toc: true
 <h3>timezone/getTimeZoneFromEasData</h3>
 <div>
   <h4>Description</h4>
-  <p>The <strong>getTimeZoneFromEasData</strong>&nbsp;method gets the time-zone that matches the provided EAS data. This method enables you to determine the time zone by the speicified time stamp.</p>
+  <p>Gets the time-zone that matches the provided EAS data. This method enables you to determine the time zone by the specified time stamp.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -3968,7 +3981,10 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>The timezone matching the given parameters.<br></p>
+            <p>The timezone matching the given parameters.</p>
+            <p><strong>Note: </strong>When there are multiple locations that match the specified &quot;bias&quot;, the entry that first appears in the preferences is returned. For example, Gibraltar and Brussles, both have offset from UTC as 60. So, if bias is given as &quot;-60&quot;, the API returns timezone as &quot;Gibraltar&quot; since it appears before &quot;Brussels&quot;. This order can be checked in the output of the following command:<br />
+              #&nbsp;luna-send -n 1 -f luna://com.webos.service.systemservice/getPreferenceValues &#39;{&quot;key&quot;: &quot;timeZone&quot; }&#39;
+            </p>
           </td>
         </tr>
         <tr>
@@ -4677,7 +4693,7 @@ toc: true
         </tr>
         <tr>
           <td>wallpaper</td>
-          <td>Required</td>
+          <td>Optional</td>
           <td>Object: <a href="#wallpaper"> Wallpaper</a></td>
           <td>
             <p>A wallpaper object corresponding with the deleted wallpaper</p>
@@ -4698,7 +4714,7 @@ toc: true
         <tr>
           <td>errorCode</td>
           <td>Optional</td>
-          <td>String</td>
+          <td>Number</td>
           <td>
             <p>The error code for the failed operation.</p>
           </td>
@@ -4920,7 +4936,7 @@ toc: true
         </tr>
         <tr>
           <td>wallpaper</td>
-          <td>Required</td>
+          <td>Optional</td>
           <td>Object: <a href="#wallpaper"> Wallpaper</a></td>
           <td>
             <p>A wallpaper object. This object can be passed to setPreferences to set the wallpaper key.</p>
@@ -5111,7 +5127,7 @@ toc: true
         </tr>
         <tr>
           <td>wallpaper</td>
-          <td>Required</td>
+          <td>Optional</td>
           <td>Object: <a href="#wallpaper"> Wallpaper</a></td>
           <td>
             <p>A wallpaper object. This object can be passed to <strong>setPreferences</strong> to set the wallpaper key.</p>
@@ -5243,7 +5259,7 @@ toc: true
 <h3>time/getCurrentTimeZoneByLocale</h3>
 <div>
   <h4>Description</h4>
-  <p>The <strong>time/getCurrentTimeZoneByLocale</strong> method returns the locale info matching the requested locale settings. In particular, the name of the city is returned on the language for which the code is specified in the <strong>locale </strong>request parameter.</p>
+  <p>Returns the locale info matching the requested locale settings. In particular, the name of the city is returned on the language for which the code is specified in the <strong>locale </strong>request parameter.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -5351,19 +5367,21 @@ toc: true
   <h4>Example</h4>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/time/getCurrentTimeZoneByLocale &#39;{&quot;locale&quot;:&quot;ko&quot;}&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;timeZone&quot;: {</p>
-    <p style="margin-left:80px">&quot;supportDST&quot;: 0,</p>
-    <p style="margin-left:80px">&quot;offsetFromUTC&quot;: -480,</p>
-    <p style="margin-left:80px">&quot;City&quot;: &quot;로스앤젤레스&quot;,</p>
-    <p style="margin-left:80px">&quot;CountryCode&quot;: &quot;US&quot;,</p>
-    <p style="margin-left:80px">&quot;Description&quot;: &quot;Pacific Time&quot;,</p>
-    <p style="margin-left:80px">&quot;Country&quot;: &quot;United States of America&quot;,</p>
-    <p style="margin-left:80px">&quot;ZoneID&quot;: &quot;America/Los_Angeles&quot;,</p>
-    <p style="margin-left:80px">&quot;preferred&quot;: true</p>
-    <p style="margin-left:40px">},</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;timeZone&quot;:{<br />
+      &nbsp; &nbsp; &nbsp; &quot;supportDST&quot;:0,<br />
+      &nbsp; &nbsp; &nbsp; &quot;offsetFromUTC&quot;:-480,<br />
+      &nbsp; &nbsp; &nbsp; &quot;City&quot;:&quot;로스앤젤레스&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;CountryCode&quot;:&quot;US&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;Description&quot;:&quot;Pacific Time&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;Country&quot;:&quot;United States of America&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;ZoneID&quot;:&quot;America/Los_Angeles&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;preferred&quot;:true<br />
+      &nbsp; &nbsp;},<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h2>Objects</h2>

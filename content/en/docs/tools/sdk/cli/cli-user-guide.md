@@ -1,7 +1,7 @@
 ---
 title: User Guide
 display_title: Command-Line Interface User Guide
-date: 2020-07-09
+date: 2020-09-22
 weight: 10
 toc: true
 ---
@@ -214,6 +214,10 @@ The following table shows the available CLI commands.
 <td><p><a href="#ares-pull">ares-pull</a></p></td>
 <td><p>Pulls file(s) from a target device to a host machine.</p></td>
 </tr>
+<tr class="even">
+<td><p><a href="#ares-device-info">ares-device-info</a></p></td>
+<td><p>Displays the device information.</p></td>
+</tr>
 </tbody>
 </table></div>
 
@@ -323,9 +327,9 @@ ares-generate --help|-h
 <td><p>Lists the available templates. See description of the <code>-t</code> option above.</p></td>
 </tr>
 <tr class="even">
-<td><p>-v</p></td>
+<td><p>-h, --help</p></td>
 <td><p>None</p></td>
-<td><p>Displays the execution log.</p></td>
+<td><p>Displays the help of the <code>ares-generate</code> command</p></td>
 </tr>
 <tr class="odd">
 <td><p>-V, --version</p></td>
@@ -333,9 +337,9 @@ ares-generate --help|-h
 <td><p>Displays the version of the CLI.</p></td>
 </tr>
 <tr class="even">
-<td><p>-h, --help</p></td>
+<td><p>-v</p></td>
 <td><p>None</p></td>
-<td><p>Displays the help of the <code>ares-generate</code> command</p></td>
+<td><p>Displays the execution log.</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -379,7 +383,7 @@ ares-generate --help|-h
 
 #### Examples
 
-Here are some examples of the CLI usage:
+Here are some examples of the different uses:
 
 * Listing the templates (web application templates)
 
@@ -470,9 +474,9 @@ ares-package --help|-h
 <td><p>Proceeds up to the stage just before creating package file phase.</p></td>
 </tr>
 <tr class="odd">
-<td><p>-v</p></td>
+<td><p>-h, --help</p></td>
 <td><p>None</p></td>
-<td><p>Displays the execution log.</p></td>
+<td><p>Displays the help of the <code>ares-package</code> command.</p></td>
 </tr>
 <tr class="even">
 <td><p>-V, --version</p></td>
@@ -480,9 +484,9 @@ ares-package --help|-h
 <td><p>Displays the version of the CLI.</p></td>
 </tr>
 <tr class="odd">
-<td><p>-h, --help</p></td>
+<td><p>-v</p></td>
 <td><p>None</p></td>
-<td><p>Displays the help of the <code>ares-package</code> command.</p></td>
+<td><p>Displays the execution log.</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -582,10 +586,6 @@ ares-setup-device [OPTION...] --remove|-r [TARGET_NAME]
 
 ares-setup-device [OPTION...] --default|-f [TARGET_NAME]
 
-ares-setup-device --search|-s
-
-ares-setup-device --search|-s --timeout|-t [TIMEOUT]
-
 ares-setup-device --reset|-R
 
 ares-setup-device --list|-l
@@ -639,16 +639,6 @@ ares-setup-device --help|-h
 <td><p>Sets a default target device.</p><p>If you don't set a target device, the default target device is used as the target device.</p></td>
 </tr>
 <tr class="even">
-<td><p>-s, --search</p></td>
-<td><p>None</p></td>
-<td><p>Searches webOS devices in the same network with <a href="https://en.wikipedia.org/wiki/Simple_Service_Discovery_Protocol">SSDP</a> and displays the found device list. When you select a device from the device list, IP address of the selected device will be set for device information automatically.</p></td>
-</tr>
-<tr class="odd">
-<td><p>-t, --timeout</p></td>
-<td><p>TIMEOUT</p></td>
-<td><p>Sets timeout value for the <code>--search</code> option. This option does not have to be preceded by the <code>--search</code> option. The default value is 5 (unit: second).</p></td>
-</tr>
-<tr class="even">
 <td><p>-R, --reset</p></td>
 <td><p>None</p></td>
 <td><p>Initializes the list of registered target devices.</p></td>
@@ -664,9 +654,9 @@ ares-setup-device --help|-h
 <td><p>Lists registered target devices' information with more detail (JSON string).</p></td>
 </tr>
 <tr class="odd">
-<td><p>-v</p></td>
+<td><p>-h, --help</p></td>
 <td><p>None</p></td>
-<td><p>Displays the execution log.</p></td>
+<td><p>Displays the help of the <code>ares-setup-device</code> command.</p></td>
 </tr>
 <tr class="even">
 <td><p>-V, --version</p></td>
@@ -674,9 +664,9 @@ ares-setup-device --help|-h
 <td><p>Displays the version of the CLI.</p></td>
 </tr>
 <tr class="odd">
-<td><p>-h, --help</p></td>
+<td><p>-v</p></td>
 <td><p>None</p></td>
-<td><p>Displays the help of the <code>ares-setup-device</code> command.</p></td>
+<td><p>Displays the execution log.</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -730,10 +720,6 @@ ares-setup-device --help|-h
 <td><p>TARGET_NAME</p></td>
 <td><p>Specifies the name of the target device.</p></td>
 </tr>
-<tr class="odd">
-<td><p>TIMEOUT</p></td>
-<td><p>Timeout value for device searching (unit: second).</p></td>
-</tr>
 </tbody>
 </table></div>
 
@@ -745,7 +731,7 @@ The following example shows a `DEVICE_INFO` written in JSON format:
 
 #### Examples
 
-Here are some examples of the CLI usage:
+Here are some examples of the different uses:
 
 * Listing target devices
 
@@ -920,7 +906,7 @@ ares-install --help|-h
 <tr class="odd">
 <td><p>-d, --device</p></td>
 <td><p>TARGET_DEVICE</p></td>
-<td><p>Specifies the target device. Unless specified, it will be set to the emulator.</p>
+<td><p>Specifies the target device. Unless specified, it will be set to the default target device.</p>
 </td>
 </tr>
 <tr class="even">
@@ -944,9 +930,9 @@ ares-install --help|-h
 <td><p>Removes the specified app from the device.</p></td>
 </tr>
 <tr class="even">
-<td><p>-v</p></td>
+<td><p>-h, --help</p></td>
 <td><p>None</p></td>
-<td><p>Displays the execution log.</p></td>
+<td><p>Displays the help of the <code>ares-install</code> command.</p></td>
 </tr>
 <tr class="odd">
 <td><p>-V, --version</p></td>
@@ -954,9 +940,9 @@ ares-install --help|-h
 <td><p>Displays the version of the CLI.</p></td>
 </tr>
 <tr class="even">
-<td><p>-h, --help</p></td>
+<td><p>-v</p></td>
 <td><p>None</p></td>
-<td><p>Displays the help of the <code>ares-install</code> command.</p></td>
+<td><p>Displays the execution log.</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -992,7 +978,7 @@ ares-install --help|-h
 
 #### Examples
 
-Here are some examples of the CLI usage:
+Here are some examples of the different uses:
 
 * Listing available target devices
 
@@ -1057,7 +1043,7 @@ ares-launch --help|-h
 <tr class="odd">
 <td><p>-d, --device</p></td>
 <td><p>TARGET_DEVICE</p></td>
-<td><p>Specifies the target device. Unless specified, it will be set to the emulator.</p>
+<td><p>Specifies the target device. Unless specified, it will be set to the default target device.</p>
 </td>
 </tr>
 <tr class="even">
@@ -1091,9 +1077,9 @@ ares-launch --help|-h
 <td><p>Runs an app without installation</p></td>
 </tr>
 <tr class="even">
-<td><p>-v</p></td>
+<td><p>-h, --help</p></td>
 <td><p>None</p></td>
-<td><p>Displays the execution log.</p></td>
+<td><p>Displays the help of the <code>ares-launch</code> command.</p></td>
 </tr>
 <tr class="odd">
 <td><p>-V, --version</p></td>
@@ -1101,9 +1087,9 @@ ares-launch --help|-h
 <td><p>Displays the version of the CLI.</p></td>
 </tr>
 <tr class="even">
-<td><p>-h, --help</p></td>
+<td><p>-v</p></td>
 <td><p>None</p></td>
-<td><p>Displays the help of the <code>ares-launch</code> command.</p></td>
+<td><p>Displays the execution log.</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -1199,8 +1185,9 @@ This command enables Web Inspector or Node's Inspector. Each inspector displays 
 We highly recommend you to use the same version as Chrome/Chromium of webOS OSE. Using other versions might cause unexpected errors.
 
 - To check the Chromium version of your target device, do one of the following:
+    - Execute the `ares-device-info` command. In this case, `username` of the target device must be `root`. For more details, see [DEVICE_INFO]({{< relref "cli-user-guide#parameters-2" >}}) parameter of `ares-device-info`.
     - Execute the `Web Browser` app and go to http://useragentstring.com.
-    - Visit the [Chromium repository](https://github.com/webosose?q=chromium&type=&language=) on webOS OSE GitHub and see `src/chrome/VERSION` file.
+    - Visit the [webOS OSE GitHub](https://github.com/webosose?q=chromium&type=&language=) and find a Chromium repository of the latest version. Then see `src/chrome/VERSION` file.
 - To download old builds of Chrome/Chromium, visit the [Chromium Project website](https://www.chromium.org/getting-involved/download-chromium).
 {{< /caution >}}
 
@@ -1237,7 +1224,7 @@ ares-inspect --help|-h
 <tr class="odd">
 <td><p>-d, --device</p></td>
 <td><p>TARGET_DEVICE</p></td>
-<td><p>Specifies the target device. Unless specified, it will be set to the emulator.</p>
+<td><p>Specifies the target device. Unless specified, it will be set to the default target device.</p>
 </td>
 </tr>
 <tr class="even">
@@ -1272,9 +1259,9 @@ ares-inspect --help|-h
 <td><p>Launches an application and opens Web Inspector on a specified display.</p></td>
 </tr>
 <tr class="odd">
-<td><p>-v</p></td>
+<td><p>-h, --help</p></td>
 <td><p>None</p></td>
-<td><p>Displays the execution log.</p></td>
+<td><p>Displays the help of the <code>ares-inspect</code> command.</p></td>
 </tr>
 <tr class="even">
 <td><p>-V, --version</p></td>
@@ -1282,9 +1269,9 @@ ares-inspect --help|-h
 <td><p>Displays the version of the CLI.</p></td>
 </tr>
 <tr class="odd">
-<td><p>-h, --help</p></td>
+<td><p>-v</p></td>
 <td><p>None</p></td>
-<td><p>Displays the help of the <code>ares-inspect</code> command.</p></td>
+<td><p>Displays the execution log.</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -1375,9 +1362,9 @@ ares-server --help|-h
 <td><p>Opens the default browser of the host machine.</p></td>
 </tr>
 <tr class="odd">
-<td><p>-v</p></td>
+<td><p>-h, --help</p></td>
 <td><p>None</p></td>
-<td><p>Displays the execution log.</p></td>
+<td><p>Displays the help of the <code>ares-server</code> command.</p></td>
 </tr>
 <tr class="even">
 <td><p>-V, --version</p></td>
@@ -1385,9 +1372,9 @@ ares-server --help|-h
 <td><p>Displays the version of the CLI.</p></td>
 </tr>
 <tr class="odd">
-<td><p>-h, --help</p></td>
+<td><p>-v</p></td>
 <td><p>None</p></td>
-<td><p>Displays the help of the <code>ares-server</code> command.</p></td>
+<td><p>Displays the execution log.</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -1466,7 +1453,7 @@ ares-shell --help|-h
 <tr class="odd">
 <td><p>-d, --device</p></td>
 <td><p>TARGET_DEVICE</p></td>
-<td><p>Specifies the target device. Unless specified, it will be set to the emulator.</p>
+<td><p>Specifies the target device. Unless specified, it will be set to the default target device.</p>
 </td>
 </tr>
 <tr class="even">
@@ -1480,9 +1467,9 @@ ares-shell --help|-h
 <td><p>Lists available target devices.</p></td>
 </tr>
 <tr class="even">
-<td><p>-v</p></td>
+<td><p>-h, --help</p></td>
 <td><p>None</p></td>
-<td><p>Displays the execution log.</p></td>
+<td><p>Displays the help of the <code>ares-shell</code> command.</p></td>
 </tr>
 <tr class="odd">
 <td><p>-V, --version</p></td>
@@ -1490,9 +1477,9 @@ ares-shell --help|-h
 <td><p>Displays the version of the CLI.</p></td>
 </tr>
 <tr class="even">
-<td><p>-h, --help</p></td>
+<td><p>-v</p></td>
 <td><p>None</p></td>
-<td><p>Displays the help of the <code>ares-shell</code> command.</p></td>
+<td><p>Displays the execution log.</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -1517,7 +1504,7 @@ ares-shell --help|-h
 </tr>
 <tr class="even">
 <td><p>TARGET_DEVICE</p></td>
-<td><p>Specifies the target device.</p></td>
+<td><p>Specifies the target device on which the shell is executed.</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -1578,7 +1565,7 @@ ares-push --help|-h
 <td><p>-d, --device</p></td>
 <td><p>TARGET_DEVICE</p></td>
 <td><p>Specifies the target device that you want to copy the file(s) to.</p>
-<p>Unless specified, it will be set to the emulator.</p>
+<p>Unless specified, it will be set to the default target device.</p>
 </td>
 </tr>
 <tr class="even">
@@ -1587,9 +1574,9 @@ ares-push --help|-h
 <td><p>Lists available target devices.</p></td>
 </tr>
 <tr class="odd">
-<td><p>-v</p></td>
+<td><p>-h, --help</p></td>
 <td><p>None</p></td>
-<td><p>Displays the execution log.</p></td>
+<td><p>Displays the help of the <code>ares-push</code> command.</p></td>
 </tr>
 <tr class="even">
 <td><p>-V, --version</p></td>
@@ -1597,14 +1584,14 @@ ares-push --help|-h
 <td><p>Displays the version of the CLI.</p></td>
 </tr>
 <tr class="odd">
-<td><p>-h, --help</p></td>
-<td><p>None</p></td>
-<td><p>Displays the help of the <code>ares-push</code> command.</p></td>
-</tr>
-<tr class="even">
 <td><p>-i, --ignore</p></td>
 <td><p>None</p></td>
 <td><p>Does not display detailed messages of the <code>ares-push</code> result.</p></td>
+</tr>
+<tr class="even">
+<td><p>-v</p></td>
+<td><p>None</p></td>
+<td><p>Displays the execution log.</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -1696,7 +1683,7 @@ ares-pull --help|-h
 <td><p>-d, --device</p></td>
 <td><p>TARGET_DEVICE</p></td>
 <td><p>Specifies the target device that you want to copy the file(s) from.</p>
-<p>Unless specified, it will be set to the emulator.</p>
+<p>Unless specified, it will be set to the default target device.</p>
 </td>
 </tr>
 <tr class="even">
@@ -1705,9 +1692,9 @@ ares-pull --help|-h
 <td><p>Lists available target devices.</p></td>
 </tr>
 <tr class="odd">
-<td><p>-v</p></td>
+<td><p>-h, --help</p></td>
 <td><p>None</p></td>
-<td><p>Displays the execution log.</p></td>
+<td><p>Displays the help of the <code>ares-pull</code> command.</p></td>
 </tr>
 <tr class="even">
 <td><p>-V, --version</p></td>
@@ -1715,14 +1702,14 @@ ares-pull --help|-h
 <td><p>Displays the version of the CLI.</p></td>
 </tr>
 <tr class="odd">
-<td><p>-h, --help</p></td>
-<td><p>None</p></td>
-<td><p>Displays the help of the <code>ares-pull</code> command.</p></td>
-</tr>
-<tr class="even">
 <td><p>-i, --ignore</p></td>
 <td><p>None</p></td>
 <td><p>Does not display detailed messages of the <code>ares-pull</code> result.</p></td>
+</tr>
+<tr class="even">
+<td><p>-v</p></td>
+<td><p>None</p></td>
+<td><p>Displays the execution log.</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -1776,4 +1763,107 @@ Here are some examples of the different uses:
 
     ```shell
     ares-pull --device target <targetPath>/foo.txt <hostPath>/foo.txt
+    ```
+
+### ares-device-info
+
+This command displays the information of the target device.
+
+#### Usages
+
+``` shell
+ares-device-info
+
+ares-device-info [OPTION...] [TARGET_DEVICE]
+
+ares-device-info --device-list|-D
+
+ares-device-info --version|-V
+
+ares-device-info --help|-h
+```
+
+#### Options
+
+<div class="table-container"><table class="table is-bordered is-fullwidth">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: auto" />
+<col style="width: auto" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><p>Option</p></th>
+<th><p>Parameter</p></th>
+<th><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>-s, --session</p></td>
+<td><p>None</p></td>
+<td><p>Displays the session information of the target device.</p>
+{{< note >}}
+This option is not supported in webOS OSE.
+{{< /note >}}
+</td>
+</tr>
+<tr class="even">
+<td><p>-d, --device</p></td>
+<td><p>TARGET_DEVICE</p></td>
+<td><p>Specifies the target device. Unless specified, it will be set to the default target device.</p>
+</td>
+</tr>
+<tr class="odd">
+<td><p>-D, --device-list</p></td>
+<td><p>None</p></td>
+<td><p>Lists all the available devices.</p></td>
+</tr>
+<tr class="even">
+<td><p>-h, --help</p></td>
+<td><p>None</p></td>
+<td><p>Displays the help of the <code>ares-device-info</code> command.</p></td>
+</tr>
+<tr class="odd">
+<td><p>-V, --version</p></td>
+<td><p>None</p></td>
+<td><p>Displays the version of the CLI.</p></td>
+</tr>
+<tr class="even">
+<td><p>-v</p></td>
+<td><p>None</p></td>
+<td><p>Displays the execution log.</p></td>
+</tr>
+</tbody>
+</table></div>
+
+#### Parameters
+
+<div class="table-container"><table class="table is-bordered is-fullwidth">
+<colgroup>
+<col style="width: auto" />
+<col style="width: auto" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><p>Parameter</p></th>
+<th><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>TARGET_DEVICE</p></td>
+<td><p>Specifies the target device. Unless specified, it will be set to the default target device.</p></td>
+</tr>
+</tbody>
+</table></div>
+
+#### Examples
+
+Here are some examples of the different uses:
+
+* Displaying the information of the target device (target device name: `target`)
+
+    ``` shell
+    ares-device-info --device target
     ```

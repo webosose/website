@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.activitymanager
-date: 2020-07-16
+date: 2020-09-29
 weight: 70
 toc: true
 ---
@@ -2593,6 +2593,138 @@ toc: true
           <td>Object array: <a href="#trigger"> Trigger</a></td>
           <td>
             <p>The <strong>or</strong> field is used when combining multiple triggers to be combined with an &#39;or&#39; condition.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>Type</h3>
+  <p>Indicate how the Activity is handled.<br />
+    <br />
+    <u>Forground or Background</u><br />
+    <br />
+    Default attributes are associated with background and foreground Activities:<br />
+    <br />
+    Foreground Activities<strong> </strong>are <em>high</em> priority and <em>immediate</em>- They cannot be queued and begin running when their prerequisites are met.<br />
+    Background Activities are<em> low </em>priority and not <em>immediate</em>- They are runnable, but queued until necessary resources become available.<br />
+    <br />
+    Whether an activity is foreground or background should only be set once. The default is foreground. If your app specifies foreground or background, do <strong>NOT</strong> set the advanced attributes like &quot;immediate&quot; and &quot;priority&quot;. If you set them, the Activity Manager will NOT create the Activity. If you do not set either foreground or background, then you MUST set &quot;immediate&quot; and &quot;priority&quot;.
+  </p>
+  <p><span style="color:#FF0000"><strong>NOTE</strong>.</span> <strong>Do not use&nbsp;background. If background is set, the Activity may not run at all.</strong><br />
+    <br />
+    <u>Persistent Activity</u><br />
+    <br />
+    If &quot;persist&quot; is true, the Activity continues across device reboots. These Activities are atomically updated and re-scheduled across version updates and device or services crashes. However, note that the Activity Manager does not have any visibility into what your activity is actually doing, so if your app is in the middle of doing something in response to a fired activity, the Activity Manager has no awareness of that. In other words, the state of an activity, such as &quot;paused&quot;, is not saved; instead, what happens is that activity specifications are reloaded as if you had just called &quot;create&quot; for it.<br />
+    <br />
+    <u>Explicit Activity</u><br />
+    <br />
+    If &quot;explicit&quot; is true, the Activity can only be terminated with a stop, cancel, or complete call. If the parent of an explicit Activity unsubscribes, and no other adopter is available, then, instead of being cancelled (the default) the Activity is moved back to the ready state and its callback is invoked.<br />
+    <br />
+    <u>Schema</u><br />
+    <br />
+    Note: All fields are optional, but if you do not set &quot;foreground&quot; or &quot;background&quot;, then you must set &quot;immediate&quot; and &quot;priority&quot;.
+  </p>
+  <p>&nbsp;</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>foreground</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Activity runs in the foreground and starts running when its prerequisites are met.&nbsp;Set either this&nbsp;or <strong>immediate </strong>as <strong>true</strong>.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>background</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Not currently&nbsp;used.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>immediate</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Activity should run immediately. Set either this or <strong>foreground </strong>as <strong>true</strong>.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>priority</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Not currently used.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>userInitiated</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>Not currently used.</td>
+        </tr>
+        <tr>
+          <td>persist</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Stores Activity state in db so it can span reboots, loss of service, or updates.<br />
+              <span style="color:#FF0000"><strong>NOTE:</strong></span>&nbsp;If set&nbsp;<strong>persist </strong>as <strong>true</strong>, make sure to call&nbsp;<strong><a href="#cancel">cancel</a></strong>&nbsp;to destroy the Activity when the activity is no longer needed. If not, the garbage Activity keeps on DB8 and can run unintentionally.<br />
+              <span style="color:#FF0000"><strong>NOTE:</strong></span>&nbsp;If an Activity is located in&nbsp;&#39;/etc/palm/activities&#39;, set <strong>persist </strong>as <strong>false</strong> if possible. Because configurator creates them automatically, whenever the Activity Manager starts.
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td>explicit</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Activity with a parent is canceled when the subscription of the parent is unsubscribed. However, if <strong>explicit</strong> is <strong>true</strong>, the activity is not canceled.<br />
+              It is recommended that do not keep subscription of the parent rather than set <strong>explicit </strong>as <strong>true</strong>.
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td>continuous</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Activity does not have a well defined ending point and could run indefinitely.<br />
+              Activity that satisfies&nbsp;all requirements calls a <strong>Callback </strong>and moves&nbsp;to the <strong>expired</strong> state. If <strong>continuous </strong>is true, the Activity moves to <strong>unsatisfied </strong>state as soon as the response of the Callback is received. At this point, if all requirements of the Activity are still satisfied, the Activity can loop quickly activity cycles. Therefore, <strong>continuous </strong>is very useful, but it should be used very carefully. If not, the Activity Manager may&nbsp;detect infinite loops and move the activity to <strong>failed </strong>state.
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td>power</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Activity requires device remain powered while it is running.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>powerDebounce</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Events associated with this Activity are due to complete shortly. Set this flag to keep the device from having to suspend/restart in the meantime.</p>
           </td>
         </tr>
       </tbody>

@@ -1,7 +1,7 @@
 ---
 title: User Guide
 display_title: Beanviser User Guide
-date: 2020-01-08
+date: 2020-09-21
 weight: 10
 toc: true
 ---
@@ -33,7 +33,7 @@ Beanviser provides a comprehensive set of features:
     - System CPU and Memory
     - Process CPU and Memory
 - Diagnostics:
-    - Pm Logs
+    - journald Logs
     - GStreamer Logs *(Available from Beanviser v2.0.0)*
     - Traffic on webOS service bus
 
@@ -70,7 +70,7 @@ Check out the software and hardware requirements to use Beanviser.
 <tbody>
 <tr class="odd">
 <td>Linux</td>
-<td>Ubuntu 14.04, 16.04 or Ubuntu Mint (Maya)</td>
+<td>Ubuntu 14.04, 16.04, 18.04 or Ubuntu Mint (Maya)</td>
 </tr>
 <tr class="even">
 <td>macOS</td>
@@ -364,14 +364,14 @@ Provides memory consumed by different processes, which includes:
 
 The above information is displayed using the following metrics:
 
-- In mega bytes
+- In megabytes
 - In percentage
 
 **How to...**
 
 - **General Usage:** Start the operation > View the data > Stop the operation
 
-- **Plot data for specific processes:** By default, the graph shows only system level CPU utilization. To plot for a specific process, select it from the list displayed in the top-right corner.
+- **Plot data for specific processes:** By default, the graph shows only system-level CPU utilization. To plot for a specific process, select it from the list displayed in the top-right corner.
 
 #### Log Viewer
 

@@ -1,6 +1,6 @@
 ---
 title: Using Node.js Modules
-date: 2018-10-15
+date: 2020-09-29
 weight: 50
 toc: true
 ---
@@ -9,10 +9,11 @@ This page shows you how to use Node.js modules inside your service.
 
 ## Using Node.js Core Modules
 
-webOS Open Source Edition supports all the Node.js core modules provided by Node.js v8.12.0. For the list of core modules and API details, see [Node.js v8.12.0 Manual & Documentation](https://nodejs.org/docs/v8.12.0/api/).
+webOS Open Source Edition supports all the Node.js core modules provided by Node.js v12.14.1. For the list of core modules and API details, see [Node.js v12.14.1 Documentation](https://nodejs.org/docs/v12.14.1/api/).
 
 {{< note >}}
-webOS OSE releases up to 1.7.0 support [Node.js v6.11.2](https://nodejs.org/docs/v6.11.2/api/).
+  - webOS OSE releases from 1.8.0 to 2.6.0 support [Node.js v8.12.0](https://nodejs.org/docs/v8.12.0/api/).
+  - webOS OSE releases up to 1.7.0 support [Node.js v6.11.2](https://nodejs.org/docs/v6.11.2/api/).
 {{< /note >}}
 
 To use Node.js core module, add the module with the top-level identifier to your service as the following code.

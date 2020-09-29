@@ -1,19 +1,19 @@
 ---
 title: com.webos.service.audiooutput
-date: 2019-04-25
+date: 2020-09-29
 weight: 105
 toc: true
 ---
 
 <div>
   <h2>API Summary</h2>
-  <p>This service connects&nbsp;the audio source to the audio output&nbsp;device and also controls the volume on the audio device. It provides HAL abstraction for the back-end, which means that&nbsp;the &#39;audiooutput&#39; service works with HAL or ALSA or other hardware abstraction layer.</p>
+  <p>Connects&nbsp;the audio source to the audio output&nbsp;device and also controls the volume on the audio device. It provides HAL abstraction for the back-end, which means that&nbsp;the &#39;audiooutput&#39; service works with HAL or ALSA or other hardware abstraction layer.</p>
   <p>The&nbsp;&#39;audiooutput&#39; service is a context-less (stateless) implementation of audio handling. Since the &#39;audio&#39; service&nbsp;manages audio policies, the &#39;audiooutput&#39; service&nbsp;will not hold any context information.</p>
   <p><strong>Note:</strong></p>
   <ul>
-    <li>This service must only be used by the &#39;audio&#39; service.</li>
-    <li>Application developers must not use&nbsp;this service directly.</li>
-    <li>[For webOS OSE Developers] Any modifications to this&nbsp;&#39;audiooutput&#39; service can adversely effect the working of the &#39;audio&#39; service.</li>
+    <li>The service must only be used by the &#39;audio&#39; service.</li>
+    <li>Application developers must not use&nbsp;the service directly.</li>
+    <li>[For webOS OSE Developers] Any modifications to the &#39;audiooutput&#39; service can adversely effect the working of the &#39;audio&#39; service.</li>
   </ul>
 </div>
 <h2>Overview of the API</h2>
@@ -26,7 +26,7 @@ toc: true
   <h3>audio/connect</h3>
   <div>
     <h4>Description</h4>
-    <p>Connects audio source to the audio sink.</p>
+    <p>Connects the audio source to the audio sink.</p>
     <h4>Parameters</h4>
     <div class="table-container">
       <table class="table is-bordered is-fullwidth">
@@ -50,7 +50,8 @@ toc: true
             <td>Required</td>
             <td>String</td>
             <td>
-              <p>Audio source. Possible values are:&nbsp;</p>
+              <p>Indicates the audio source.</p>
+              <p>Possible values are:&nbsp;</p>
               <ul>
                 <li>AMIXER</li>
               </ul>
@@ -61,7 +62,8 @@ toc: true
             <td>Required</td>
             <td>String</td>
             <td>
-              <p>Audio sink. Possible values are:</p>
+              <p>Indicates the audio sink.</p>
+              <p>Possible values are:</p>
               <ul>
                 <li>ALSA</li>
               </ul>
@@ -93,10 +95,11 @@ toc: true
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates the status of operation. Possible values are:</p>
+              <p>Indicates the status of the operation.</p>
+              <p>Possible values are:</p>
               <ul>
-                <li><strong>true </strong>- Indicates that the operation was successful.</li>
-                <li><strong>false </strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+                <li><strong>true</strong>:<strong> </strong>Indicates that the operation was successful.</li>
+                <li><strong>false</strong>:<strong> </strong>Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
               </ul>
             </td>
           </tr>
@@ -121,7 +124,7 @@ toc: true
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>Audio source.</p>
+              <p>Indicates the audio source.</p>
             </td>
           </tr>
           <tr>
@@ -129,7 +132,7 @@ toc: true
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>Audio sink.</p>
+              <p>Indicates the audio sink.</p>
             </td>
           </tr>
         </tbody>
@@ -137,14 +140,25 @@ toc: true
     </div>
     <h4>Example</h4>
     <div class="code-bg-grey">
-      <p>luna-send -n 1 luna://com.webos.service.audiooutput/audio/connect &#39;{ &quot;source&quot;: &quot;AMIXER&quot;, &quot;sink&quot; : &quot;ALSA&quot;}&#39;</p>
+      <p># luna-send -n 1 luna://com.webos.service.audiooutput/audio/connect &#39;{<br />
+        &nbsp;&nbsp; &quot;source&quot;:&quot;AMIXER&quot;,<br />
+        &nbsp;&nbsp; &quot;sink&quot;:&quot;ALSA&quot;<br />
+        }&#39;
+      </p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp;&nbsp; &quot;source&quot;:&quot;AMIXER&quot;,<br />
+        &nbsp;&nbsp; &quot;sink&quot;:&quot;ALSA&quot;,<br />
+        &nbsp;&nbsp; &quot;returnValue&quot;:true<br />
+        }
+      </p>
     </div>
   </div>
 </div>
 <h3>audio/disconnect</h3>
 <div>
   <h4>Description</h4>
-  <p>Disconnect from audio sink.</p>
+  <p>Disconnects from the audio sink.</p>
   <p><strong>Note: </strong>No changes if there is no connection.</p>
   <h4>Parameters</h4>
   <div class="table-container">
@@ -169,7 +183,8 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Audio source. Possible values are:&nbsp;</p>
+            <p>Indicates the audio source.</p>
+            <p>Possible values are:&nbsp;</p>
             <ul>
               <li>AMIXER</li>
             </ul>
@@ -180,7 +195,8 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Audio sink. Possible values are:</p>
+            <p>Indicates the audio sink.</p>
+            <p>Possible values are:</p>
             <ul>
               <li>ALSA</li>
             </ul>
@@ -212,10 +228,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates the status of operation. Possible values are:</p>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true </strong>- Indicates that the operation was successful.</li>
-              <li><strong>false </strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              <li><strong>true</strong>:<strong> </strong>Indicates that the operation was successful.</li>
+              <li><strong>false</strong>: Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
@@ -240,7 +257,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Audio source.</p>
+            <p>Indicates the audio source.</p>
           </td>
         </tr>
         <tr>
@@ -248,7 +265,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Audio sink.</p>
+            <p>Indicates the audio sink.</p>
           </td>
         </tr>
       </tbody>
@@ -256,13 +273,24 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 luna://com.webos.service.audiooutput/audio/disconnect &#39;{ &quot;source&quot;: &quot;AMIXER&quot;, &quot;sink&quot; : &quot;ALSA&quot;}&#39;</p>
+    <p># luna-send -n 1 luna://com.webos.service.audiooutput/audio/disconnect &#39;{<br />
+      &nbsp;&nbsp; &quot;source&quot;:&quot;AMIXER&quot;,<br />
+      &nbsp;&nbsp; &quot;sink&quot;:&quot;ALSA&quot;<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &quot;source&quot;:&quot;AMIXER&quot;,<br />
+      &nbsp;&nbsp; &quot;sink&quot;:&quot;ALSA&quot;,<br />
+      &nbsp;&nbsp; &quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>audio/getStatus</h3>
 <div>
   <h4>Description</h4>
-  <p>Lists information of all connected audio source and sinks.</p>
+  <p>Lists the information of all the connected audio source and sinks.</p>
   <h4>Parameters</h4>
   <p>None</p>
   <h4>Call Returns</h4>
@@ -288,10 +316,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates the status of operation. Possible values are:</p>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true</strong> - Indicates that the operation was successful.</li>
-              <li><strong>false </strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              <li><strong>true</strong>: Indicates that the operation was successful.</li>
+              <li><strong>false</strong>: Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
@@ -325,49 +354,51 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 -f luna://com.webos.service.audiooutput/audio/getStatus &#39;{}&#39;</p>
-    <p><br />
-      Scenario 1: Return when&nbsp;no source and sink is connected:
+    <p># luna-send -n 1 -f luna://com.webos.service.audiooutput/audio/getStatus &#39;{}&#39;</p>
+    <p>Response:</p>
+    <p>{</p>
+    <p>&nbsp; &nbsp; &quot;audio&quot;: [ ],<br />
+      &nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true
     </p>
-    <p>{</p>
-    <p>&nbsp; &nbsp; &quot;audio&quot;: [ ],</p>
-    <p>&nbsp; &nbsp; &quot;returnValue&quot;: true</p>
     <p>}</p>
-    <p>&nbsp;</p>
-    <p>Scenario 2: Return when&nbsp;only source and sink are connected:</p>
-    <p>{</p>
-    <p>&nbsp; &nbsp; &quot;audio&quot;:</p>
-    <p>&nbsp; &nbsp; [</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; {</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;source&quot;: &quot;ADEC0&quot;,</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;MAIN&quot;,</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;muted&quot;: false,</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;outputMode&quot;: &quot;null&quot;</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; }</p>
-    <p>&nbsp; &nbsp; ],</p>
-    <p>&nbsp; &nbsp; &quot;returnValue&quot;: true</p>
-    <p>}</p>
-    <p><br />
-      Scenario 3: Return when&nbsp;source, sink, and soundOut are connected:
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.audiooutput/audio/getStatus &#39;{}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &quot;audio&quot;:[<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;source&quot;:&quot;AMIXER&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;sink&quot;:&quot;ALSA&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;muted&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;outputMode&quot;:&quot;null&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />
+      &nbsp;&nbsp; ],<br />
+      &nbsp;&nbsp; &quot;returnValue&quot;:true<br />
+      }
     </p>
-    <p>{</p>
-    <p>&nbsp; &nbsp; &quot;audio&quot;:</p>
-    <p>&nbsp; &nbsp; [</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; {</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;source&quot;: &quot;AMIXER&quot;,</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;ALSA&quot;,</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;muted&quot;: false,</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;outputMode&quot;: &quot;alsa&quot;</p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; }</p>
-    <p>&nbsp; &nbsp; ],</p>
-    <p>&nbsp; &nbsp; &quot;returnValue&quot;: true</p>
-    <p>}</p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.audiooutput/audio/getStatus &#39;{}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &quot;audio&quot;:[<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;source&quot;:&quot;AMIXER&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;sink&quot;:&quot;ALSA&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;muted&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;outputMode&quot;:&quot;alsa&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />
+      &nbsp;&nbsp; ],<br />
+      &nbsp;&nbsp; &quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>audio/mute</h3>
 <div>
   <h4>Description</h4>
-  <p>Mute or unmute the connected audio source.</p>
+  <p>Mutes or unmutes the connected audio source.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -391,7 +422,8 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Audio source. Possible values are:</p>
+            <p>Indicates the audio source.</p>
+            <p>Possible values are:</p>
             <ul>
               <li>AMIXER</li>
             </ul>
@@ -402,7 +434,8 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Audio sink. Possible values are:</p>
+            <p>Indicates the audio sink.</p>
+            <p>Possible values are:</p>
             <ul>
               <li>ALSA</li>
             </ul>
@@ -413,10 +446,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicate&nbsp;if the audio source is to be muted. Possible values are:</p>
+            <p>Indicates if the audio source is to be muted.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true</strong>: audio source is muted.</li>
-              <li><strong>false</strong>: audio source is not muted.</li>
+              <li><strong>true</strong>: The audio source is muted.</li>
+              <li><strong>false</strong>: The audio source is not muted.</li>
             </ul>
           </td>
         </tr>
@@ -446,10 +480,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>&nbsp;Indicates the status of operation. Possible values are:</p>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true </strong>- Indicates that the operation was successful.</li>
-              <li><strong>false </strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              <li><strong>true</strong>:<strong> </strong>Indicates that the operation was successful.</li>
+              <li><strong>false</strong>:<strong> </strong>Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
@@ -458,7 +493,7 @@ toc: true
           <td>Optional</td>
           <td>Number (int8_t)</td>
           <td>
-            <p>&nbsp;The error code for the failed operation.</p>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
         <tr>
@@ -466,7 +501,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>&nbsp;Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
           </td>
         </tr>
         <tr>
@@ -474,7 +509,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Audio source.</p>
+            <p>Indicates the audio source.</p>
           </td>
         </tr>
         <tr>
@@ -482,7 +517,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Audio sink.</p>
+            <p>Indicates the audio sink.</p>
           </td>
         </tr>
         <tr>
@@ -490,10 +525,11 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates if the audio source is muted. Possible values are:</p>
+            <p>Indicates if the audio source is muted.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true</strong>: audio source is muted.</li>
-              <li><strong>false</strong>: audio source is not muted.</li>
+              <li><strong>true</strong>: The audio source is muted.</li>
+              <li><strong>false</strong>: The audio source is not muted.</li>
             </ul>
           </td>
         </tr>
@@ -502,7 +538,20 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 -f luna://com.webos.service.audiooutput/audio/mute &#39;{&quot;sink&quot;: &quot;ALSA&quot;, &quot;source&quot;: &quot;AMIXER&quot;, &quot;mute&quot;: true}&#39;</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.audiooutput/audio/mute &#39;{<br />
+      &nbsp;&nbsp; &quot;sink&quot;:&quot;ALSA&quot;,<br />
+      &nbsp;&nbsp; &quot;source&quot;:&quot;AMIXER&quot;,<br />
+      &nbsp;&nbsp; &quot;mute&quot;:true<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &quot;source&quot;:&quot;AMIXER&quot;,<br />
+      &nbsp;&nbsp; &quot;sink&quot;:&quot;ALSA&quot;,<br />
+      &nbsp;&nbsp; &quot;mute&quot;:true,<br />
+      &nbsp;&nbsp; &quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>audio/setSoundOut</h3>
@@ -532,7 +581,8 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Audio output device. Possible values are:</p>
+            <p>Indicates the audio output device.</p>
+            <p>Possible values are:</p>
             <ul>
               <li>alsa</li>
             </ul>
@@ -564,10 +614,11 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>&nbsp;Indicates the status of operation. Possible values are:</p>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true </strong>- Indicates that the operation was successful.</li>
-              <li><strong>false </strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              <li><strong>true</strong>:<strong> </strong>Indicates that the operation was successful.</li>
+              <li><strong>false</strong>:<strong> </strong>Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
@@ -576,7 +627,7 @@ toc: true
           <td>Optional</td>
           <td>Number (int8_t)</td>
           <td>
-            <p>&nbsp;The error code for the failed operation.</p>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
         <tr>
@@ -584,7 +635,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>&nbsp;Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
           </td>
         </tr>
         <tr>
@@ -592,7 +643,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Audio output device.</p>
+            <p>Indicates the audio output device.</p>
           </td>
         </tr>
       </tbody>
@@ -600,13 +651,22 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 luna://com.webos.service.audiooutput/audio/setSoundOut &#39;{&quot;soundOut&quot;: &quot;alsa&quot;}&#39;</p>
+    <p># luna-send -n 1 luna://com.webos.service.audiooutput/audio/setSoundOut &#39;{<br />
+      &nbsp;&nbsp; &quot;soundOut&quot;:&quot;alsa&quot;<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &quot;soundOut&quot;:&quot;alsa&quot;,<br />
+      &nbsp;&nbsp; &quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>audio/volume/up</h3>
 <div>
   <h4>Description</h4>
-  <p>Increase linearly, the master volume of the audio output device.</p>
+  <p>Linearly increases, the master volume of the audio output device.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -630,7 +690,8 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Audio output device. Possible values are:</p>
+            <p>Indicates the audio output device.</p>
+            <p>Possible values are:</p>
             <ul>
               <li>alsa</li>
             </ul>
@@ -662,10 +723,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>&nbsp;Indicates the status of operation. Possible values are:</p>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true </strong>- Indicates that the operation was successful.</li>
-              <li><strong>false </strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              <li><strong>true</strong>:<strong> </strong>Indicates that the operation was successful.</li>
+              <li><strong>false</strong>:<strong> </strong>Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
@@ -674,7 +736,7 @@ toc: true
           <td>Optional</td>
           <td>Number (int8_t)</td>
           <td>
-            <p>&nbsp;The error code for the failed operation.</p>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
         <tr>
@@ -690,7 +752,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Audio output device.</p>
+            <p>Indicates the audio output device.</p>
           </td>
         </tr>
         <tr>
@@ -698,7 +760,8 @@ toc: true
           <td>Optional</td>
           <td>Number (int8_t)</td>
           <td>
-            <p>The volume level after it is increased. Supported range is 0 to 100.</p>
+            <p>Indicates the volume level after it is increased.</p>
+            <p>Possible range: <strong>0 ~ 100</strong></p>
           </td>
         </tr>
       </tbody>
@@ -706,13 +769,23 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 luna://com.webos.service.audiooutput/audio/volume/up &#39;{&quot;soundOutput&quot;: &quot;alsa&quot;}&#39;</p>
+    <p># luna-send -n 1 luna://com.webos.service.audiooutput/audio/volume/up &#39;{<br />
+      &nbsp;&nbsp; &quot;soundOutput&quot;:&quot;alsa&quot;<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &quot;soundOutput&quot;:&quot;alsa&quot;,<br />
+      &nbsp;&nbsp; &quot;volume&quot;:11,<br />
+      &nbsp;&nbsp; &quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>audio/volume/down</h3>
 <div>
   <h4>Description</h4>
-  <p>Decrease linearly, the master volume of the audio output device.</p>
+  <p>Linearly decreases, the master volume of the audio output device.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -736,7 +809,8 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Audio output device. Possible values are:</p>
+            <p>Indicates the audio output device.</p>
+            <p>Possible values are:</p>
             <ul>
               <li>alsa</li>
             </ul>
@@ -768,10 +842,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>&nbsp;Indicates the status of operation. Possible values are:</p>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true </strong>- Indicates that the operation was successful.</li>
-              <li><strong>false </strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              <li><strong>true</strong>:<strong> </strong>Indicates that the operation was successful.</li>
+              <li><strong>false</strong>: Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
@@ -780,7 +855,7 @@ toc: true
           <td>Optional</td>
           <td>Number (int8_t)</td>
           <td>
-            <p>&nbsp;The error code for the failed operation.</p>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
         <tr>
@@ -788,7 +863,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>&nbsp;Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
           </td>
         </tr>
         <tr>
@@ -796,7 +871,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Audio output device.</p>
+            <p>Indicates the audio output device.</p>
           </td>
         </tr>
         <tr>
@@ -804,7 +879,8 @@ toc: true
           <td>Optional</td>
           <td>Number (int8_t)</td>
           <td>
-            <p>The volume level after it is decreased. Supported range is 0 to 100.</p>
+            <p>Indicates the volume level after it is decreased.</p>
+            <p>Possible range: <strong>0 ~ 100</strong></p>
           </td>
         </tr>
       </tbody>
@@ -812,13 +888,23 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 luna://com.webos.service.audiooutput/audio/volume/down &#39;{&quot;soundOutput&quot;: &quot;alsa&quot;}&#39;</p>
+    <p># luna-send -n 1 luna://com.webos.service.audiooutput/audio/volume/down &#39;{<br />
+      &nbsp;&nbsp; &quot;soundOutput&quot;:&quot;alsa&quot;<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &quot;soundOutput&quot;:&quot;alsa&quot;,<br />
+      &nbsp;&nbsp; &quot;volume&quot;:9,<br />
+      &nbsp;&nbsp; &quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
-<h3>audio/volume/set </h3>
+<h3>audio/volume/set</h3>
 <div>
   <h4>Description</h4>
-  <p>Set volume of the audio output device, to a&nbsp;specific numerical value.</p>
+  <p>Sets the volume of the audio output device, to a&nbsp;specific numerical value.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -842,7 +928,8 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Audio output device. Possible values are:</p>
+            <p>Indicates the audio output device.</p>
+            <p>Possible values are:</p>
             <ul>
               <li>alsa</li>
             </ul>
@@ -853,7 +940,8 @@ toc: true
           <td>Required</td>
           <td>Number (int8_t)</td>
           <td>
-            <p>Volume level to be set. Supported range is 0 to 100.</p>
+            <p>Indicates the volume level to be set.</p>
+            <p>Possible range: <strong>0 - 100</strong></p>
           </td>
         </tr>
       </tbody>
@@ -882,10 +970,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>&nbsp;Indicates the status of operation. Possible values are:</p>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true </strong>- Indicates that the operation was successful.</li>
-              <li><strong>false </strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              <li><strong>true</strong>:<strong> </strong>Indicates that the operation was successful.</li>
+              <li><strong>false</strong>:<strong> </strong>Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
@@ -894,7 +983,7 @@ toc: true
           <td>Optional</td>
           <td>Number (int8_t)</td>
           <td>
-            <p>&nbsp;The error code for the failed operation.</p>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
         <tr>
@@ -902,7 +991,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>&nbsp;Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
           </td>
         </tr>
         <tr>
@@ -910,7 +999,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Audio output device.</p>
+            <p>Indicates the audio output device.</p>
           </td>
         </tr>
         <tr>
@@ -918,7 +1007,8 @@ toc: true
           <td>Optional</td>
           <td>Number (int8_t)</td>
           <td>
-            <p>Volume level that is set.&nbsp;Supported range is 0 to 100.</p>
+            <p>Indicates the volume level to be set.</p>
+            <p>Possible range: <strong>0 - 100</strong></p>
           </td>
         </tr>
       </tbody>
@@ -926,13 +1016,24 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 luna://com.webos.service.audiooutput/audio/volume/set &#39;{&quot;soundOutput&quot;:&quot;alsa&quot;,&quot;volume&quot;:10}&#39;</p>
+    <p># luna-send -n 1 luna://com.webos.service.audiooutput/audio/volume/set &#39;{<br />
+      &nbsp;&nbsp; &quot;soundOutput&quot;:&quot;alsa&quot;,<br />
+      &nbsp;&nbsp; &quot;volume&quot;:10<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &quot;soundOutput&quot;:&quot;alsa&quot;,<br />
+      &nbsp;&nbsp; &quot;volume&quot;:10,<br />
+      &nbsp;&nbsp; &quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>audio/volume/getStatus</h3>
 <div>
   <h4>Description</h4>
-  <p>Lists information of all available audio output devices.</p>
+  <p>Lists the information of all available audio output devices.</p>
   <h4>Parameters</h4>
   <p>None</p>
   <h4>Call Returns</h4>
@@ -958,10 +1059,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>&nbsp;Indicates the status of operation. Possible values are: \</p>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true </strong>- Indicates that the operation was successful.</li>
-              <li><strong>false </strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              <li><strong>true:</strong> Indicates that the operation was successful.</li>
+              <li><strong>false:</strong> Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
@@ -970,7 +1072,7 @@ toc: true
           <td>Optional</td>
           <td>Number (int8_t)</td>
           <td>
-            <p>&nbsp;The error code for the failed operation.</p>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
         <tr>
@@ -986,8 +1088,7 @@ toc: true
           <td>Optional</td>
           <td>Object array: <a href="#volumestatus"> volumeStatus</a></td>
           <td>
-            <p>Information of audio output devices.</p>
-            <p><strong>Note:&nbsp;</strong>For definition of the object,&nbsp;click&nbsp;the link from the &quot;Type&quot; column.</p>
+            <p>Contains the information of the audio output devices.</p>
             <ul></ul>
           </td>
         </tr>
@@ -996,13 +1097,25 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 luna://com.webos.service.audiooutput/audio/volume/getStatus &#39;{}&#39;</p>
+    <p># luna-send -n 1 luna://com.webos.service.audiooutput/audio/volume/getStatus &#39;{}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp; &quot;volumeStatus&quot;:[<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;muted&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;volume&quot;:10,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;soundOutput&quot;:&quot;alsa&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />
+      &nbsp;&nbsp; ]<br />
+      }
+    </p>
   </div>
 </div>
 <h3>audio/volume/muteSoundOut</h3>
 <div>
   <h4>Description</h4>
-  <p>Mute the audio output device.</p>
+  <p>Mutes the audio output device.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -1026,7 +1139,8 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Audio output device.&nbsp;Possible values are:</p>
+            <p>Indicates the audio output device.</p>
+            <p>Possible values are:</p>
             <ul>
               <li>alsa</li>
             </ul>
@@ -1037,9 +1151,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicate&nbsp;if the audio output device is to be muted. Possible values are:</p>
+            <p>Indicates if the audio output device is to be muted.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true</strong>: mute.</li>
+              <li><strong>true</strong>: muted.</li>
               <li><strong>false</strong>: not muted.</li>
             </ul>
           </td>
@@ -1070,10 +1185,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>&nbsp;Indicates the status of operation. Possible values are:</p>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              <li><strong>true:</strong> Indicates that the operation was successful.</li>
+              <li><strong>false: </strong>Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
@@ -1082,7 +1198,7 @@ toc: true
           <td>Optional</td>
           <td>Number (int8_t)</td>
           <td>
-            <p>&nbsp;The error code for the failed operation</p>
+            <p>The error code for the failed operation</p>
           </td>
         </tr>
         <tr>
@@ -1090,7 +1206,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>&nbsp;Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
           </td>
         </tr>
         <tr>
@@ -1098,7 +1214,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Audio output device.</p>
+            <p>Indicates the audio output device.</p>
           </td>
         </tr>
         <tr>
@@ -1106,7 +1222,8 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates if the audio output device is muted. Possible values are:</p>
+            <p>Indicates if the audio output device is muted.</p>
+            <p>Possible values are:</p>
             <ul>
               <li><strong>true</strong>: muted.</li>
               <li><strong>false</strong>: not muted.</li>
@@ -1118,11 +1235,22 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>luna-send -n 1 luna://com.webos.service.audiooutput/audio/volume/muteSoundout &#39;{&quot;soundOutput&quot;: &quot;alsa&quot;, &quot;mute&quot;: false}&#39;</p>
+    <p># luna-send -n 1 luna://com.webos.service.audiooutput/audio/volume/muteSoundOut &#39;{<br />
+      &nbsp;&nbsp; &quot;soundOutput&quot;:&quot;alsa&quot;,<br />
+      &nbsp;&nbsp; &quot;mute&quot;:false<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp; &quot;soundOutput&quot;:&quot;alsa&quot;,<br />
+      &nbsp;&nbsp; &quot;mute&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
+<h2>Objects</h2>
 <div>
-  <h2>Objects</h2>
   <h3>audio</h3>
   <p>Contains information of the connections between source and sink.</p>
   <p><strong>Note:&nbsp;</strong>If no Source/Sink are connected, it returns an empty array.</p>
@@ -1148,11 +1276,12 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Audio source. Possible values are:</p>
+            <p>Indicates the audio source.</p>
+            <p>Possible values are:</p>
             <ul>
               <li>AMIXER</li>
             </ul>
-            <p><strong>Note:</strong> Returns empty string is no source and sink are connected.</p>
+            <p><strong>Note:</strong> Returns empty string if no source and sink are connected.</p>
           </td>
         </tr>
         <tr>
@@ -1160,11 +1289,12 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Audio sink. Possible values are:</p>
+            <p>Indicates the audio sink.</p>
+            <p>Possible values are:</p>
             <ul>
               <li>ALSA</li>
             </ul>
-            <p><strong>Note:</strong> Returns empty string is no source and sink are connected.</p>
+            <p><strong>Note:</strong> Returns empty string if no source and sink are connected.</p>
           </td>
         </tr>
         <tr>
@@ -1184,7 +1314,8 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Audio output device. Possible values are:</p>
+            <p>Indicates the audio output device.</p>
+            <p>Possible values are:</p>
             <ul>
               <li>alsa</li>
             </ul>
@@ -1195,7 +1326,7 @@ toc: true
     </table>
   </div>
   <h3>volumeStatus</h3>
-  <p>Contains information of the audio output devices.</p>
+  <p>Contains the information of the audio output devices.</p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
@@ -1218,7 +1349,8 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates if the audio output device is muted. Possible values are:</p>
+            <p>Indicates if the audio output device is muted.</p>
+            <p>Possible values are:</p>
             <ul>
               <li><strong>true</strong>: muted.</li>
               <li><strong>false</strong>: not muted.</li>
@@ -1230,7 +1362,8 @@ toc: true
           <td>Required</td>
           <td>Number (int8_t)</td>
           <td>
-            <p>Volume level of the audio output device. Values can be from 0 to 100.</p>
+            <p>Indicates the volume level of the audio output device.</p>
+            <p>Possible volume range: <strong>0 - 100</strong></p>
           </td>
         </tr>
         <tr>
@@ -1238,7 +1371,8 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Audio output device. Possible values are:</p>
+            <p>Indicates the audio output device.</p>
+            <p>Possible values are:</p>
             <ul>
               <li>alsa</li>
             </ul>

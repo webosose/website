@@ -1,6 +1,6 @@
 ---
 title: Developing Built-in JS Services
-date: 2020-06-24
+date: 2020-09-18
 weight: 20
 toc: true
 ---
@@ -63,8 +63,6 @@ First, define the functionality of the JS service on the source code.
 {{< code "com_example_service_js.js" >}}
 ``` javascript {linenos=table}
 var Service = require('webos-service');
-var pmloglib = require('pmloglib');
-var context = new pmloglib.Context("exampleJSService");
 
 // Register com.example.service.js
 var service = new Service("com.example.service.js");
@@ -79,7 +77,7 @@ service.register("hello", function(message) {
 // Call another service
 service.register("locale", function(message) {
     service.call("luna://com.webos.settingsservice/getSystemSettings", {"key":"localeInfo"}, function(m2) {
-        context.log(pmloglib.LOG_INFO, "LOCALE_CALLBACK", {"SERVICE_NAME": "exampleJSService"}, "get locale response");
+        console.log("LOCALE_CALLBACK, SERVICE_NAME: exampleJSService, get locale response");
         var response = "You appear to have your locale set to: " + m2.payload.settings.localeInfo.locales.UI;
         message.respond({
             message: response
@@ -92,10 +90,9 @@ service.register("locale", function(message) {
 A brief explanation of the above file:
 
 - Line(1) : Load the webos-service module. For more details about webos-service, see [webos-service Library API Reference.]({{< relref "webos-service-library-api-reference" >}})
-- Line(2~3) : Load the pmloglib module. For more details about pmloglib, see [Using PmLogLib in Node.js]({{< relref "using-pmloglib-in-nodejs" >}}).
-- Line(6) : Register the JS Service.
-- Line(9~13) : Register the `hello` method which responds to a request with a "Hello, JS Service!!" message
-- Line(16~24) : Register the `locale` method. This method gets the value of locale information from the response received by calling settingsservice's `getSystemSettings` method.
+- Line(4) : Register the JS Service.
+- Line(7~11) : Register the `hello` method which responds to a request with a "Hello, JS Service!!" message
+- Line(14~22) : Register the `locale` method. This method gets the value of locale information from the response received by calling settingsservice's `getSystemSettings` method.
 
 ### README.md
 

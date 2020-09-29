@@ -1,12 +1,28 @@
 ---
 title: Release Notes
 display_title: Beanviser Release Notes
-date: 2020-01-08
+date: 2020-09-25
 weight: 20
 toc: true
 ---
 
 This page provides the summary of each Beanviser release for webOS Open Source Edition (OSE).
+
+## v2.0.3 (September 29, 2020)
+
+### Changed features
+
+- Changes log format from pmlogd into journald.
+
+### Known Issues
+
+  - Beanviser cannot be launched if gconf shared libraries are not installed in your host machine.
+
+    **Workaround:** Install gconf shared libraries using the following command:
+
+    ``` shell
+    $ sudo apt install libgconf-2-4
+    ```
 
 ## v2.0.2 (October 31, 2019)
 

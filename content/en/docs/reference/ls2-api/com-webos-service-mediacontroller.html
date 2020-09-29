@@ -1,0 +1,2698 @@
+---
+title: com.webos.service.mediacontroller
+date: 2020-09-29
+weight: 235
+toc: true
+---
+<div>
+  <h2>API Summary</h2>
+  <p>Provides features to handle the <strong>AVRCP</strong> events regardless of application type (web app/native app) in order to remotely control the playback and handles key events such as play, pause, next, previous, mute and unmute.</p>
+</div>
+<h2>Overview of the API</h2>
+<div>
+  <p>Provides methods to manage media sessions and get metadata/playback status of the media and routes the <strong>AVRCP</strong> events received from the remote device to corresponding media client.</p>
+</div>
+<h2>Methods</h2>
+<div>
+  <h3>registerMediaSession</h3>
+  <div>
+    <h4>Description</h4>
+    <p>Registers media sessions, subscribes to receive <strong>AVRCP</strong> key events.</p>
+    <p><strong>Recommended usage</strong>: The API is recommended to be used by the <strong>application</strong>.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>mediaId</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the mediaId of the session to be registered.&nbsp;</p>
+            </td>
+          </tr>
+          <tr>
+            <td>appId</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the appId of the session to be registered.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>subscribe</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates if subscribe to get&nbsp;notifications.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true: </strong>Subscribed for notifications.</li>
+                <li><strong>false:&nbsp;</strong>Not subscribed.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+                <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>subscribed</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates if subscribed to get notifications.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true:&nbsp;</strong>Subscribed for notifications.</li>
+                <li><strong>false:&nbsp;</strong>Not subscribed.</li>
+              </ul>
+              <p><strong>Note: subscribed&nbsp;</strong>will always contain true since subscription ends only when the client chooses to close it.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>keyEvent</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the&nbsp;key event that is operated.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>play</li>
+                <li>pause</li>
+                <li>next</li>
+                <li>previous</li>
+                <li>mute</li>
+                <li>unmute</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>mediaId</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the&nbsp;mediaId of the registered session.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes</strong>&quot;&nbsp;section of this method for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Subscription Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+                <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>subscribed</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates if subscribed to get notifications.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true:&nbsp;</strong>Subscribed for notifications.</li>
+                <li><strong>false:&nbsp;</strong>Not subscribed.</li>
+              </ul>
+              <p><strong>Note: subscribed&nbsp;</strong>will always contain true since subscription ends only when the client chooses to close it.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>keyEvent</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the&nbsp;key event that is operated.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>play</li>
+                <li>pause</li>
+                <li>next</li>
+                <li>previous</li>
+                <li>mute</li>
+                <li>unmute</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>mediaId</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the mediaId for which the key events are&nbsp;posted.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes</strong>&quot;&nbsp;section of this method for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>0, 1, 2, 3, 4</td>
+            <td>See API Error Codes Reference</td>
+            <td>
+              <p>See the&nbsp;<strong>API Error Codes Reference</strong>&nbsp;section.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.mediacontroller/registerMediaSession &#39;{<br />
+        &nbsp; &nbsp; &nbsp; &quot;mediaId&quot;:&quot;xDFNUI&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &quot;appId&quot;:&quot;com.webos.app.test.youtube&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &quot;subscribe&quot;:true<br />
+        &nbsp; &nbsp;}&#39;
+      </p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&quot;subscribed&quot;:true,<br />
+        &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+        }
+      </p>
+    </div>
+  </div>
+</div>
+<h3>activateMediaSession</h3>
+<div>
+  <h4>Description</h4>
+  <p>Activates the media session.</p>
+  <p><strong>Recommended usage</strong>: The API is recommended to be used by the <strong>application</strong>.</p>
+  <p><strong>Note:</strong></p>
+  <ul>
+    <li>Only an&nbsp;active media session can&nbsp;receive the AVRCP key events and forward them to the application.</li>
+    <li>To activate a media session, the client must&nbsp;subscribe to the mediaId using&nbsp;registerMediaSession() API.</li>
+  </ul>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the mediaId of the session to be activated.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes</strong>&quot; section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>0, 1, 2, 3, 4</td>
+          <td>See the &quot;API Error Codes Reference&quot; section.</td>
+          <td>
+            <p>See the&nbsp;<strong>API Error Codes Reference&nbsp;</strong>section.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.mediacontroller/activateMediaSession &#39;{<br />
+      &nbsp; &nbsp;&quot;mediaId&quot;:&quot;xDFNUI&quot;<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>deactivateMediaSession</h3>
+<div>
+  <h4>Description</h4>
+  <p>Deactivates the media session.</p>
+  <p><strong>Recommended usage</strong>: The API is recommended to be used by the <strong>application</strong>.</p>
+  <p><strong>Note:</strong>&nbsp;After the&nbsp;media session is deactivated, the corresponding media client cannot receive <strong>AVRCP</strong> key events.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the mediaId of the session to be deactivated.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes</strong>&quot;&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>0, 1,  2, 3, 4</td>
+          <td>See the &quot;API Error Codes Reference&quot; section.</td>
+          <td>
+            <p>See the <strong>API Error Codes Reference</strong>&nbsp;section.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.mediacontroller/deactivateMediaSession &#39;{<br />
+      &nbsp; &nbsp;&quot;mediaId&quot;:&quot;xDFNUI&quot;<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>unregisterMediaSession</h3>
+<div>
+  <h4>Description</h4>
+  <p>Unsubscribes and unregisters the media session.</p>
+  <p><strong>Recommended usage</strong>: The API is recommended to be used by the <strong>application</strong>.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the mediaId of&nbsp;the session to be unregistered.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes</strong>&quot;&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>0, 1,  2, 3, 4</td>
+          <td>See the &quot;API Error Codes Reference&quot; section.</td>
+          <td>
+            <p>See the <strong>API Error Codes Reference</strong> section.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.mediacontroller/unregisterMediaSession &#39;{<br />
+      &nbsp; &nbsp;&quot;mediaId&quot;:&quot;xDFNUI&quot;<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }&nbsp;
+    </p>
+  </div>
+</div>
+<h3>getMediaMetaData</h3>
+<div>
+  <h4>Description</h4>
+  <p>Requests metadata of the media session related to the&nbsp;given mediaId.</p>
+  <p><strong>Recommended usage</strong>: The API is recommended to be used by the <strong>service</strong>.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the mediaId for meta data information.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>metaData</td>
+          <td>Optional</td>
+          <td>Object: <a href="#mediametadata"> mediaMetaData</a></td>
+          <td>
+            <p>Indicates details of the object mediaMetaData.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>0, 1, 2, 3, 4</td>
+          <td>See the &quot;API Error Codes Reference&quot; section.</td>
+          <td>
+            <p>See the <strong>API Error Codes Reference</strong>&nbsp;section.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.mediacontroller/getMediaMetaData &#39;{<br />
+      &nbsp; &nbsp;&quot;mediaId&quot;:&quot;xDFNUI&quot;<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp; &nbsp;&quot;metaData&quot;:{<br />
+      &nbsp; &nbsp; &nbsp; &quot;title&quot;:&quot;Big Bang Theory&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;artist&quot;:&quot;BIGBANG&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;totalDuration&quot;:&quot;20.15&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;album&quot;:&quot;BBT&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;genre&quot;:&quot;drama&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;trackNumber&quot;:2<br />
+      &nbsp; &nbsp;}<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>getMediaPlayStatus</h3>
+<div>
+  <h4>Description</h4>
+  <p>Gets the current&nbsp;playback status of the given mediaId, status such as stopped, paused, playing, buffering.</p>
+  <p><strong>Recommended usage</strong>: The API is recommended to be used by the <strong>service</strong>.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the mediaId of the session registered.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true:</strong>&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false:</strong>&nbsp;Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>playStatus</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the current play status of the media.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>PLAYSTATE_NONE</li>
+              <li>PLAYSTATE_STOPPED</li>
+              <li>PLAYSTATE_PAUSED</li>
+              <li>PLAYSTATE_PLAYING</li>
+              <li>PLAYSTATE_FAST_FORWARDING</li>
+              <li>PLAYSTATE_REWINDING</li>
+              <li>PLAYSTATE_BUFFERING</li>
+              <li>PLAYSTATE_ERROR</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes</strong>&quot;&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>0, 1, 2, 3, 4</td>
+          <td>See the &quot;API Error Codes Reference&quot; section.</td>
+          <td>
+            <p>See the <strong>API Error Codes Reference</strong>&nbsp;section.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.mediacontroller/getMediaPlayStatus &#39;{<br />
+      &nbsp; &nbsp;&quot;mediaId&quot;:&quot;xDFNUI&quot;<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp; &nbsp;&quot;playStatus&quot;:&quot;PLAYSTATE_PLAYING&quot;<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>getMediaSessionInfo</h3>
+<div>
+  <h4>Description</h4>
+  <p>Gets the details of a&nbsp;media session like app id, metadata, volume info.</p>
+  <p><strong>Recommended usage</strong>: The API is recommended to be used by the <strong>service</strong>.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the mediaId for the session registered.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>sessionInfo</td>
+          <td>Optional</td>
+          <td>Object: <a href="#mediasession"> mediaSession</a></td>
+          <td>
+            <p>Indicates media session&nbsp;information&nbsp;details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the <strong>&quot;Error Codes&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>0, 1, 2, 3, 4</td>
+          <td>See the &quot;API Error Codes Reference&quot; section.</td>
+          <td>
+            <p>See the <strong>API Error Codes Reference</strong>&nbsp;section.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.mediacontroller/getMediaSessionInfo &#39;{<br />
+      &nbsp; &nbsp;&quot;mediaId&quot;:&quot;xDFNUI&quot;<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp; &nbsp;&quot;sessionInfo&quot;:{<br />
+      &nbsp; &nbsp; &nbsp; &quot;mediaId&quot;:&quot;xDFNUI&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;appId&quot;:&quot;com.webos.test.youtube&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;metaData&quot;:{<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;title&quot;:&quot;Big Bang Theory&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;artist&quot;:&quot;BIGBANG&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;totalDuration&quot;:&quot;20.15&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;album&quot;:&quot;BBT&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;genre&quot;:&quot;drama&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;trackNumber&quot;:2<br />
+      &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &quot;volume&quot;:100<br />
+      &nbsp; &nbsp;}<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>getMediaSessionId</h3>
+<div>
+  <h4>Description</h4>
+  <p>Provides the&nbsp;list of mediaId&nbsp;of all the media sessions&nbsp;for a given app.</p>
+  <p><strong>Recommended usage</strong>: The API is recommended to be used by the <strong>service</strong>.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>appId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the appId for the given media session.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true:</strong> Indicates that the operation was successful.</li>
+              <li><strong>false:</strong> Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Optional</td>
+          <td>String array</td>
+          <td>
+            <p>Indicates the list of all mediaId for the appId received.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes</strong>&quot;&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>0, 1, 2, 3, 4</td>
+          <td>See the &quot;API Error Codes Reference&quot; section.</td>
+          <td>
+            <p>See the <strong>API Error Codes Reference</strong>&nbsp;section.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.mediacontroller/getMediaSessionId &#39;{<br />
+      &nbsp; &nbsp;&quot;appId&quot;:&quot;com.webos.test,youtube&quot;<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp; &nbsp;&quot;mediaId&quot;:[<br />
+      &nbsp; &nbsp; &nbsp; &quot;XCFRHKH&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;NBFSIEOL&quot;<br />
+      &nbsp; &nbsp;]<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>getActiveMediaSessions</h3>
+<div>
+  <h4>Description</h4>
+  <p>Gets the&nbsp;list of all the active media sessions.</p>
+  <p><strong>Recommended usage</strong>: The API is recommended to be used by the <strong>service</strong>.</p>
+  <h4>Parameters</h4>
+  <p>None</p>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true:</strong>&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false:</strong> Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>sessionList</td>
+          <td>Optional</td>
+          <td>String array</td>
+          <td>
+            <p>Indicates the list of all active sessions registered with service.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes</strong>&quot;&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>0, 1, 2, 3, 4</td>
+          <td>See the &quot;API Error Codes Reference&quot; section.</td>
+          <td>
+            <p>See the <strong>API Error Codes Reference</strong>&nbsp;section.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.mediacontroller/getActiveMediaSessions &#39;{}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp; &nbsp;&quot;sessionList&quot;:[<br />
+      &nbsp; &nbsp; &nbsp; &quot;XCFRHKH&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;NBFSIEOL&quot;<br />
+      &nbsp; &nbsp;]<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>setMediaMetaData</h3>
+<div>
+  <h4>Description</h4>
+  <p>Sets the metadata information for the session.</p>
+  <p><strong>Example:</strong>&nbsp;title, artist.</p>
+  <p><strong>Recommended usage</strong>: The API is recommended to be used by the <strong>application</strong>.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the mediaId of the session to set metadata.&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>mediaMetaData</td>
+          <td>Required</td>
+          <td>Object: <a href="#mediametadata"> mediaMetaData</a></td>
+          <td>
+            <p>Indicates the meta data details for the session.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true:</strong> Indicates that the operation was successful.</li>
+              <li><strong>false:</strong> Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;Error Codes&quot; section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>0, 1, 2, 3, 4</td>
+          <td>See the API Error Codes Reference section</td>
+          <td>
+            <p>See the API Error Codes Reference section</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.mediacontroller/setMediaMetaData &#39;{<br />
+      &nbsp; &nbsp;&quot;mediaId&quot;:&quot;xDFNUI&quot;,<br />
+      &nbsp; &nbsp;&quot;mediaMetaData&quot;:{<br />
+      &nbsp; &nbsp; &nbsp; &quot;title&quot;:&quot;BigBangTheory&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;artist&quot;:&quot;BigBang&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;totalDuration&quot;:&quot;10.10&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;album&quot;:&quot;BBT&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;genre&quot;:&quot;drama&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;trackNumber&quot;:2,<br />
+      &nbsp; &nbsp; &nbsp; &quot;volume&quot;:100<br />
+      &nbsp; &nbsp;}<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>setMediaPlayStatus</h3>
+<div>
+  <h4>Description</h4>
+  <p>Sets the playStatus for the session.</p>
+  <p>Example: play, pause, stopped and so on.</p>
+  <p><strong>Recommended usage</strong>: The API is recommended to be used by the <strong>application</strong>.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the mediaId of the session to set playStatus.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>playStatus</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the current playStatus of the media.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>PLAYSTATE_NONE</li>
+              <li>PLAYSTATE_STOPPED</li>
+              <li>PLAYSTATE_PAUSED</li>
+              <li>PLAYSTATE_PLAYING</li>
+              <li>PLAYSTATE_FAST_FORWARDING</li>
+              <li>PLAYSTATE_REWINDING</li>
+              <li>PLAYSTATE_BUFFERING</li>
+              <li>PLAYSTATE_ERROR</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true:</strong> Indicates that the operation was successful.</li>
+              <li><strong>false:</strong> Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;Error Codes&quot; section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>0, 1, 2, 3, 4</td>
+          <td>See the API Error Codes Reference section.</td>
+          <td>
+            <p>See the API Error Codes Reference section</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.mediacontroller/setMediaPlayStatus &#39;{<br />
+      &nbsp; &nbsp;&quot;mediaId&quot;:&quot;xQWERTY_0&quot;,<br />
+      &nbsp; &nbsp;&quot;playStatus&quot;:&quot;PLAYSTATE_PLAYING&quot;<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>setMediaMuteStatus</h3>
+<div>
+  <h4>Description</h4>
+  <p>Sets the status of the media session.</p>
+  <p><strong>Recommended usage</strong>: The API is recommended to be used by the <strong>application</strong>.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the mediaId of the session required to set the muteStatus.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>muteStatus</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the status of the media session.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>mute</li>
+              <li>unmute</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true:</strong>&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false:</strong>&nbsp;Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;Error Codes&quot; section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>0, 1, 2, 3, 4, 7</td>
+          <td>See the API Error Codes Reference section</td>
+          <td>
+            <p>See the API Error Codes Reference section.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.mediacontroller/setMediaMuteStatus &#39;{<br />
+      &nbsp; &nbsp;&quot;mediaId&quot;:&quot;xDFNUI&quot;,<br />
+      &nbsp; &nbsp;&quot;muteStatus&quot;:&quot;mute&quot;<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>setMediaPlayPosition</h3>
+<div>
+  <h4>Description</h4>
+  <p>Sets the play position for the media session.</p>
+  <p><strong>Recommended usage</strong>: The API is recommended to be used by the <strong>application</strong>.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the mediaId of the session.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>playPosition</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the current play position of the media session.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true:</strong>&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false:</strong>&nbsp;Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;Error Codes&quot; section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>0, 1, 2, 3, 4, 7</td>
+          <td>See the API Error Codes Reference sectio</td>
+          <td>
+            <p>See the API Error Codes Reference section</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.mediacontroller/setMediaPlayPosition &#39;{<br />
+      &nbsp; &nbsp;&quot;mediaId&quot;:&quot;xDFNUI&quot;,<br />
+      &nbsp; &nbsp;&quot;playPosition&quot;:&quot;10.10&quot;<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true
+    </p>
+    <p>}</p>
+  </div>
+</div>
+<h3>injectMediaKeyEvent</h3>
+<div>
+  <h4>Description</h4>
+  <p>Sets the keyEvent of the given displayId.</p>
+  <p><strong>Recommended usage</strong>: The API is recommended to be used by the <strong>service</strong>.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>displayId</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Indicates the displayId for which the key event is sent</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>0</li>
+              <li>1</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>keyEvent</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the keyEvent for the display.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>play</li>
+              <li>pause</li>
+              <li>mute</li>
+              <li>unmute</li>
+              <li>next</li>
+              <li>previous</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true:</strong>&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false:</strong>&nbsp;Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;Error Codes&quot; section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>0, 1, 2, 3, 4, 7</td>
+          <td>See the API Error Codes Reference section.</td>
+          <td>
+            <p>See the API Error Codes Reference section</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.mediacontroller/injectMediaKeyEvent&nbsp;&#39;{<br />
+      &nbsp; &nbsp;&quot;displayId&quot;:1,<br />
+      &nbsp; &nbsp;&quot;keyEvent&quot;:&quot;play&quot;<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>receiveMediaPlaybackInfo</h3>
+<div>
+  <h4>Description</h4>
+  <p>Subscribes to receive the play status, mute status, play position, mediaMetaData information.</p>
+  <p><strong>Recommended usage</strong>: The API is recommended to be used by the <strong>service</strong>.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>displayId</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Indicates the displayId for which the media play status is required.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>0</li>
+              <li>1</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>eventType</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the status for the required subscription response.</p>
+            <p>Possible values are :</p>
+            <ul>
+              <li>playStatus</li>
+              <li>muteStatus</li>
+              <li>playPosition</li>
+              <li>mediaMetaData</li>
+            </ul>
+            <p><strong>Note:</strong>&nbsp;If not set, eventType will send all the possible values as the response.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if subscribed to get notifications.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Subscribed for notifications</li>
+              <li><strong>false</strong>: Not subscribed</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true:</strong>&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false:</strong>&nbsp;Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if subscribed to get notifications.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Subscribed for notifications</li>
+              <li><strong>false</strong>: Not subscribed</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>displayId</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Indicates the displayId for the required media play status.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>0</li>
+              <li>1</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>eventType</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the status for the required subscription response.</p>
+            <p>Possible values are :</p>
+            <ul>
+              <li>playStatus</li>
+              <li>muteStatus</li>
+              <li>playPosition</li>
+              <li>mediaMetaData</li>
+            </ul>
+            <p><strong>Note:</strong>&nbsp;If not set, eventType will send all the possible values as the response.&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>playStatus</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the current play status of the media.&nbsp;</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>PLAYSTATE_NONE</li>
+              <li>PLAYSTATE_STOPPED</li>
+              <li>PLAYSTATE_PAUSED</li>
+              <li>PLAYSTATE_PLAYING</li>
+              <li>PLAYSTATE_FAST_FORWARDING</li>
+              <li>PLAYSTATE_REWINDING</li>
+              <li>PLAYSTATE_BUFFERING</li>
+              <li>PLAYSTATE_ERROR</li>
+            </ul>
+            <p><strong>Note</strong>: The information will be sent if the eventType is playStatus.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>muteStatus</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the current status of the media.&nbsp;</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>mute</li>
+              <li>unmute</li>
+            </ul>
+            <p><strong>Note</strong>: The information will be sent if the eventType is muteStatus.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>playPosition</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the current play position of the media.</p>
+            <p><strong>Note:</strong>&nbsp;The information will be sent if the eventType is playPosition.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>mediaMetaData</td>
+          <td>Optional</td>
+          <td>Object: <a href="#mediametadata"> mediaMetaData</a></td>
+          <td>
+            <p>Indicates the metadata information for the playback.</p>
+            <p><strong>Note</strong>: The information will be sent if the eventType is mediaMetaData.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;Error Codes&quot; section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Subscription Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true:</strong>&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false:</strong>&nbsp;Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if subscribed to get notifications.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Subscribed for notifications</li>
+              <li><strong>false</strong>: Not subscribed</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>displayId</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Indicates the displayId for the required media play status.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>0</li>
+              <li>1</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>eventType</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the status for the required subscription response.</p>
+            <p>Possible values are :</p>
+            <ul>
+              <li>playStatus</li>
+              <li>muteStatus</li>
+              <li>playPosition</li>
+              <li>mediaMetaData</li>
+            </ul>
+            <p><strong>Note:</strong>&nbsp;If not set, eventType will send all the possible values as the response.&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>playStatus</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the current play status of the media.&nbsp;</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>PLAYSTATE_NONE</li>
+              <li>PLAYSTATE_STOPPED</li>
+              <li>PLAYSTATE_PAUSED</li>
+              <li>PLAYSTATE_PLAYING</li>
+              <li>PLAYSTATE_FAST_FORWARDING</li>
+              <li>PLAYSTATE_REWINDING</li>
+              <li>PLAYSTATE_BUFFERING</li>
+              <li>PLAYSTATE_ERROR</li>
+            </ul>
+            <p><strong>Note</strong>: The information will be sent if eventType is playStatus.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>muteStatus</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the current status of the media.&nbsp;</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>mute</li>
+              <li>unmute</li>
+            </ul>
+            <p><strong>Note</strong>: The information will be sent if the eventType is muteStatus</p>
+          </td>
+        </tr>
+        <tr>
+          <td>playPosition</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the current play position of the media playback.</p>
+            <p><strong>Note</strong>: The information will be sent if the eventType is playPosition.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>mediaMetaData</td>
+          <td>Optional</td>
+          <td>Object: <a href="#mediametadata"> mediaMetaData</a></td>
+          <td>
+            <p>Indicates the metadata information for the playback<strong>.</strong></p>
+            <p><strong>Note:</strong>&nbsp;The information will be sent if the eventType is mediaMetaData.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;Error Codes&quot; section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>0, 1, 2, 3, 4, 6, 7</td>
+          <td>See the API Error Codes Reference section</td>
+          <td>
+            <p>See the API Error Codes Reference section</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.mediacontroller/receiveMediaPlaybackInfo&nbsp;&#39;{<br />
+      &nbsp;&nbsp; &quot;displayId&quot;:0,<br />
+      &nbsp;&nbsp; &quot;subscribe&quot;:true<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp; &quot;displayId&quot;:0,<br />
+      &nbsp;&nbsp; &quot;playStatus&quot;:&quot;PLAYSTATE_PLAYING&quot;,<br />
+      &nbsp;&nbsp; &quot;muteStatus&quot;:&quot;unmute&quot;,<br />
+      &nbsp;&nbsp; &quot;playPosition&quot;:&quot;10.10&quot;,<br />
+      &nbsp;&nbsp; &quot;metaData&quot;:{<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;title&quot;:&quot;Big Bang Theory&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;artist&quot;:&quot;BIGBANG&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;totalDuration&quot;:&quot;20.15&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;album&quot;:&quot;BBT&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;genre&quot;:&quot;drama&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;trackNumber&quot;:2<br />
+      &nbsp;&nbsp; }<br />
+      }
+    </p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.mediacontroller/receiveMediaPlaybackInfo&nbsp;&#39;{<br />
+      &nbsp;&nbsp; &quot;displayId&quot;:0,<br />
+      &nbsp;&nbsp; &quot;eventType&quot;:&quot;playStatus&quot;,<br />
+      &nbsp;&nbsp; &quot;subscribe&quot;:true<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp; &quot;displayId&quot;:0,<br />
+      &nbsp;&nbsp; &quot;eventType&quot;:&quot;playStatus&quot;,<br />
+      &nbsp;&nbsp; &quot;playStatus&quot;:&quot;PLAYSTATE_PLAYING&quot;<br />
+      }
+    </p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.mediacontroller/receiveMediaPlaybackInfo &#39;{<br />
+      &nbsp;&nbsp; &quot;displayId&quot;:0,<br />
+      &nbsp;&nbsp; &quot;eventType&quot;:&quot;muteStatus&quot;,<br />
+      &nbsp;&nbsp; &quot;subscribe&quot;:true<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp; &quot;displayId&quot;:0,<br />
+      &nbsp;&nbsp; &quot;eventType&quot;:&quot;muteStatus&quot;,<br />
+      &nbsp;&nbsp; &quot;muteStatus&quot;:&quot;unmute&quot;<br />
+      }
+    </p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.mediacontroller/receiveMediaPlaybackInfo &#39;{<br />
+      &nbsp;&nbsp; &quot;displayId&quot;:0,<br />
+      &nbsp;&nbsp; &quot;eventType&quot;:&quot;playPosition&quot;,<br />
+      &nbsp;&nbsp; &quot;subscribe&quot;:true<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&quot;displayId&quot;:0,<br />
+      &nbsp;&nbsp;&quot;eventType&quot;:&quot;playPosition&quot;,<br />
+      &nbsp;&nbsp;&quot;playPosition&quot;:&quot;10.10&quot;<br />
+      }
+    </p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.mediacontroller/receiveMediaPlaybackInfo &#39;{<br />
+      &nbsp;&nbsp; &quot;displayId&quot;:0,<br />
+      &nbsp;&nbsp; &quot;eventType&quot;:&quot;mediaMetaData&quot;,<br />
+      &nbsp;&nbsp; &quot;subscribe&quot;:true<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&quot;displayId&quot;:0,<br />
+      &nbsp;&nbsp;&quot;eventType&quot;:&quot;mediaMetaData&quot;,<br />
+      &nbsp;&nbsp;&quot;metaData&quot;:{<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;title&quot;:&quot;Big Bang Theory&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;artist&quot;:&quot;BIGBANG&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;totalDuration&quot;:&quot;20.15&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;album&quot;:&quot;BBT&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;genre&quot;:&quot;drama&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;trackNumber&quot;:2<br />
+      &nbsp;&nbsp;&nbsp;}<br />
+      }
+    </p>
+  </div>
+</div>
+<h2>Objects</h2>
+<div>
+  <h3>mediaSession</h3>
+  <p>Contains the details about&nbsp;mediaId, appId, and metaData.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the mediaId to be registered.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>appId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the corresponding appId of the mediaId.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>metaData</td>
+          <td>Required</td>
+          <td>Object: <a href="#mediametadata"> mediaMetaData</a></td>
+          <td>
+            <p>Indicates the details of metaData such as&nbsp;title, artist, total duration, album, genre, and track number.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>mediaMetaData</h3>
+  <p>Contains the mediaMetaData&nbsp;information.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>title</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the title of the media.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>artist</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates information about the artist.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>totalDuration</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the total duration of the media.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>album</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates details about the album.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>genre</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates details about the genre.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>trackNumber</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Indicates the track number.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>volume</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Indicates the current volume level of the session.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<h2>API Error Codes Reference</h2>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <tbody>
+      <tr>
+        <th width="15%">
+          <p>Error Code</p>
+        </th>
+        <th width="30%">
+          <p>Error Text</p>
+        </th>
+        <th width="55%">
+          <p>Error Description</p>
+        </th>
+      </tr>
+      <tr>
+        <td>0</td>
+        <td>Invalid mediaId</td>
+        <td>
+          <p>Indicates that the mediaId received is invalid.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>MediaId registration failed</td>
+        <td>
+          <p>Indicates the failure of&nbsp;mediaId registration.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Parsing Error</td>
+        <td>
+          <p>Indicates parsing of data has failed.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Invalid appId</td>
+        <td>
+          <p>Indicates that the appId does not match the mediaId.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>No active session</td>
+        <td>
+          <p>Indicates that no session is active.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>Media Session already registered</td>
+        <td>
+          <p>Indicates that session is already registered</p>
+        </td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>Media Session already active</td>
+        <td>
+          <p>Indicates that session is already activated</p>
+        </td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>Media Session already decativated</td>
+        <td>
+          <p>Indicates that session is already deactivated</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
