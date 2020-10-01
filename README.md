@@ -2,7 +2,7 @@
 
 This repository contains the documentation and all the other assets for the [webOSE Open Source Edition (OSE) website](https://www.webosose.org).
 
-## Copyright and License Information
+## ALERT-Copyright and License Information
 
 Unless otherwise specified, all content, including all source code files and documentation files in this repository are:
 
