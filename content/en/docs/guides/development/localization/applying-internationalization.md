@@ -9,7 +9,7 @@ To successfully localize your apps and services, you need to internationalize th
 
 Internationalization mainly carries out the following two tasks: marking text strings for translation and formatting locale-sensitive data. Text strings of your apps and services need to be marked for translation. Formatting locale-sensitive data, such as dates, times, numbers or currency, for different locales and cultural conventions are also required. These are done by using an external internationalization library for each supported programming language. 
 
-Internationalization in webOS OSE is available for different programming languages.  See [Overview](/docs/guides/development/localization/localization#overview) for the list of supported programming languages.
+Internationalization in webOS OSE is available for different programming languages.  See [Overview](/docs/guides/development/localization/localization-guide#overview) for the list of supported programming languages.
 
 {{< note >}}
 This page only provides guides for marking strings for translation. For more information about formatting locale-sensitive data, please refer to the user guide of the provided internationalization library for each programming language.
