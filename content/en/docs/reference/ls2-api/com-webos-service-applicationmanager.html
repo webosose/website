@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.applicationmanager
-date: 2020-07-16
+date: 2020-10-05
 weight: 90
 toc: true
 ---
@@ -18,8 +18,10 @@ toc: true
   <h3>launch</h3>
   <div>
     <h4>Description</h4>
-    <p>The&nbsp;<strong>launch</strong>&nbsp;method launches an application which corresponds to the given application ID. You can use this method to open your service or app. For example, user can download a content with your service in a background. When downloading a content is completed, your service needs to launch your app again.</p>
-    <p>You can give parameter in JSON object when launching an application. This method could be called multiple times for the same application with different parameters. Application should handle these overtime requests. Generally, application is re-launched for every request.</p>
+    <p>Launches an application corresponding to the given application ID. Opens the service or app.</p>
+    <p>Example: The user can download a content with a service in the background. Once the content is downloaded, the service must launch the app again.</p>
+    <p>Parameter can be given&nbsp;in the JSON object during the launch of the application. The method can be called multiple times for the same application with different parameters. Application should handle these overtime requests. Generally, application is re-launched for every request.</p>
+    <p><strong>Note : </strong>At least one parameter is required. (&#39;id&#39;, &#39;launchPointId&#39;, &#39;instanceId&#39;)</p>
     <h4>Parameters</h4>
     <div class="table-container">
       <table class="table is-bordered is-fullwidth">
@@ -43,7 +45,7 @@ toc: true
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>The application ID to be launched.</p>
+              <p>Indicates the application ID to be launched.</p>
             </td>
           </tr>
           <tr>
@@ -51,7 +53,7 @@ toc: true
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>The launch point ID of the app.</p>
+              <p>Indicates the launch point ID of the app.</p>
             </td>
           </tr>
           <tr>
@@ -59,7 +61,7 @@ toc: true
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>The instance ID of the app.</p>
+              <p>Indicates the instance ID of the app.</p>
             </td>
           </tr>
           <tr>
@@ -67,7 +69,7 @@ toc: true
             <td>Optional</td>
             <td>Object: <a href="#params"> params</a></td>
             <td>
-              <p>If&nbsp;<strong>params&nbsp;</strong>is used, it should contain information on the target application.&nbsp;You should specify correct parameters for each application. See the following parameter examples:</p>
+              <p>If&nbsp;<strong>params&nbsp;</strong>is used, it should contain information on the target application. Specify correct parameters for each application. See the following parameter examples:</p>
               <ul>
                 <li>YouTube application: &quot;params&quot;:{ &quot;contentTarget&quot; : &quot;https://www.youtube.com/tv?v=9bZkp7q19f0&quot;}</li>
                 <li>Today application: &quot;params&quot;:{&quot;type&quot;:&quot;showRecordedList&quot;}</li>
@@ -79,12 +81,14 @@ toc: true
             <td>Optional</td>
             <td>Boolean</td>
             <td>
+              <p>Indicates the status of the application running in the background.</p>
+              <p>Possible values are:&nbsp;</p>
               <ul>
-                <li>To run the application in the background, set&nbsp;<strong>keepAlive</strong>&nbsp;to&nbsp;<strong>true</strong>.&nbsp;</li>
-                <li>To terminate the application, set&nbsp;<strong>keepAlive</strong>&nbsp;to&nbsp;<strong>false</strong>.</li>
-                <li>The default value of&nbsp;<strong>keepAlive</strong>&nbsp;is <strong>false</strong>.</li>
+                <li><strong>true:</strong> To run the application in the background, set&nbsp;<strong>keepAlive</strong>&nbsp;to&nbsp;<strong>true</strong>.&nbsp;</li>
+                <li><strong>false:</strong> To terminate the application, set&nbsp;<strong>keepAlive</strong>&nbsp;to&nbsp;<strong>false</strong>.</li>
               </ul>
-              <p>Note: Only applicable to web app. Do not use&nbsp;<strong>keepAlive</strong>&nbsp;for native app launching. An web App, which is launched with this parameter, can be killed when memory status is low or critical.</p>
+              <p>Default:&nbsp;<strong>keepAlive</strong>&nbsp;is set to&nbsp;<strong>false</strong>.</p>
+              <p><strong>Note:</strong> Only applicable to web app. Do not use&nbsp;<strong>keepAlive</strong>&nbsp;for native app launching. An web App, which is launched with this parameter, can be killed when memory status is low or critical.</p>
             </td>
           </tr>
         </tbody>
@@ -113,10 +117,11 @@ toc: true
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <p>Indicates the status of operation.</p>
+              <p>Possible values are:</p>
               <ul>
-                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+                <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+                <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
               </ul>
             </td>
           </tr>
@@ -141,7 +146,7 @@ toc: true
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>InstanceId of running application.</p>
+              <p>Indicates the instanceId of the running application.</p>
             </td>
           </tr>
           <tr>
@@ -149,7 +154,7 @@ toc: true
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>LaunchPointId of running application.</p>
+              <p>Indicates the launchPointId of running application.</p>
             </td>
           </tr>
           <tr>
@@ -157,7 +162,7 @@ toc: true
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>ApplicationId of running application.</p>
+              <p>Indicates the appld&nbsp;of the running application.</p>
             </td>
           </tr>
           <tr>
@@ -165,7 +170,7 @@ toc: true
             <td>Optional</td>
             <td>Number (uint32_t)</td>
             <td>
-              <p>DisplayId of running application.</p>
+              <p>Indicates the displayId of the running application.</p>
             </td>
           </tr>
         </tbody>
@@ -173,20 +178,32 @@ toc: true
     </div>
     <h4>Example</h4>
     <div class="code-bg-grey">
-      <p>// One-time call</p>
-      <p>// Launching app without parameter</p>
       <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/launch &#39;{<br />
-        &nbsp; &nbsp;&quot;id&quot;:&quot;com.yourdomain.callee&quot;<br />
-        }&#39;
+        &nbsp;&nbsp;&nbsp;&quot;id&quot;:&quot;com.yourdomain.callee&quot;<br />
+        }&#39;<br />
+        {<br />
+        &nbsp;&nbsp;&nbsp;&quot;launchPointId&quot;: &quot;com.yourdomain.callee_default&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&quot;appId&quot;: &quot;com.yourdomain.callee&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
+        &nbsp;&nbsp;&nbsp;&quot;displayId&quot;: 0,<br />
+        &nbsp;&nbsp;&nbsp;&quot;instanceId&quot;: &quot;a3effa8b-fe4a-4f5c-953b-0d326c0d2ef20&quot;<br />
+        }
       </p>
-      <p>&nbsp;</p>
-      <p>// Launching app with parameters</p>
+    </div>
+    <div class="code-bg-grey">
       <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/launch &#39;{<br />
-        &nbsp; &nbsp;&quot;id&quot;:&quot;com.yourdomain.callee&quot;,<br />
-        &nbsp; &nbsp;&quot;params&quot;: {<br />
-        &nbsp; &nbsp; &nbsp;&nbsp;&quot;customParam1&quot;: &quot;value1&quot;<br />
-        &nbsp; &nbsp;}<br />
-        }&#39;
+        &nbsp;&nbsp;&nbsp;&quot;id&quot;:&quot;com.yourdomain.callee&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&quot;params&quot;: {<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;customParam1&quot;: &quot;value1&quot;<br />
+        &nbsp;&nbsp;&nbsp;}<br />
+        }<br />
+        {<br />
+        &nbsp;&nbsp;&nbsp;&quot;launchPointId&quot;: &quot;com.yourdomain.callee_default&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&quot;appId&quot;: &quot;com.yourdomain.callee&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
+        &nbsp;&nbsp;&nbsp;&quot;displayId&quot;: 0,<br />
+        &nbsp;&nbsp;&nbsp;&quot;instanceId&quot;: &quot;a3effa8b-fe4a-4f5c-953b-0d326c0d2ef20&quot;<br />
+        }
       </p>
     </div>
   </div>
@@ -194,7 +211,8 @@ toc: true
 <h3>pause</h3>
 <div>
   <h4>Description</h4>
-  <p>Pauses an application. The target app that gets pause call should handle itself to go background.</p>
+  <p>Pauses an application.</p>
+  <p><strong>Note</strong>: At least one parameter is required. (&#39;id&#39;, &#39;launchPointId&#39;, &#39;instanceId&#39;)</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -218,7 +236,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The application ID of the app.</p>
+            <p>Indicates the id of the application.</p>
           </td>
         </tr>
         <tr>
@@ -226,7 +244,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The launch point ID of the app.</p>
+            <p>Indicates the&nbsp;launchPointId&nbsp;of the application.</p>
           </td>
         </tr>
         <tr>
@@ -234,7 +252,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The instance ID of the app.</p>
+            <p>Indicates the instanceId&nbsp;of the application.</p>
           </td>
         </tr>
         <tr>
@@ -271,10 +289,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates the status of operation. Possible values are:</p>
+            <p>Indicates the status of operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false: </strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
@@ -299,7 +318,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>InstanceId of running application.</p>
+            <p>Indicates the instanceId of the running application.</p>
           </td>
         </tr>
         <tr>
@@ -307,7 +326,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>LaunchPointId of running application.</p>
+            <p>Indicates the launchPointId of the running application.</p>
           </td>
         </tr>
         <tr>
@@ -315,7 +334,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>ApplicationId of running application.</p>
+            <p>Indicates the appId of the running application.</p>
           </td>
         </tr>
         <tr>
@@ -323,7 +342,7 @@ toc: true
           <td>Optional</td>
           <td>Number (int32_t)</td>
           <td>
-            <p>DisplayId of running application.</p>
+            <p>Indicates the displayId of the running application.</p>
           </td>
         </tr>
       </tbody>
@@ -331,10 +350,13 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/pause &#39;{&quot;id&quot;:&quot;com.webos.app.test&quot;}&#39;</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/pause &#39;{<br />
+      &nbsp; &nbsp;&quot;id&quot;:&quot;com.webos.app.test&quot;<br />
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
-      &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
       }
     </p>
   </div>
@@ -343,6 +365,7 @@ toc: true
 <div>
   <h4>Description</h4>
   <p>Closes an application.</p>
+  <p><strong>Note: </strong>At least one parameter is required. (&#39;id&#39;, &#39;launchPointId&#39;, &#39;instanceId&#39;)</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -366,7 +389,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The application ID of the app.</p>
+            <p>Indicates the id&nbsp;of the application.</p>
           </td>
         </tr>
         <tr>
@@ -374,7 +397,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The launch point ID of the app.</p>
+            <p>Indicates the launchPointId&nbsp;of the application.</p>
           </td>
         </tr>
         <tr>
@@ -382,7 +405,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The instance ID of the app.</p>
+            <p>Indicates the instanceId&nbsp;of the application.</p>
           </td>
         </tr>
       </tbody>
@@ -411,9 +434,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates the status of operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li>If the&nbsp;<strong>close</strong>&nbsp;method succeeds,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>true</strong>.</li>
-              <li>If the&nbsp;<strong>close</strong>&nbsp;method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false</strong>.&nbsp;The method may fail because of one of the error conditions described in the <strong>Error Codes Reference</strong> of this method. See the <strong>Error Codes Reference</strong> for more information.</li>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false: </strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
@@ -422,7 +447,15 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The <strong>close</strong> method will return <strong>errorText</strong> only if it fails.&nbsp;See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>Indicates the reason for the failure of the operation. See the <strong>&quot;Error Codes&quot; </strong>section of this method for details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
         <tr>
@@ -430,7 +463,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The process ID of the closed application.</p>
+            <p>Indicates the processId&nbsp;of the closed application.</p>
           </td>
         </tr>
         <tr>
@@ -438,7 +471,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>InstanceId of running application.</p>
+            <p>Indicates the instanceId of the running application.</p>
           </td>
         </tr>
         <tr>
@@ -446,7 +479,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>LaunchPointId of running application.</p>
+            <p>Indicates the launchPointId of the running application.</p>
           </td>
         </tr>
         <tr>
@@ -454,7 +487,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>ApplicationId of running application.</p>
+            <p>Indicates the appId of the running application.</p>
           </td>
         </tr>
         <tr>
@@ -462,7 +495,7 @@ toc: true
           <td>Optional</td>
           <td>Number (int32_t)</td>
           <td>
-            <p>DisplayId of running application.</p>
+            <p>Indicates the displayId of running application.</p>
           </td>
         </tr>
       </tbody>
@@ -509,13 +542,23 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/close&nbsp;&#39;{&quot;id&quot;:&quot;com.webos.app.test&quot;}&#39;</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/close&nbsp;&#39;{<br />
+      &nbsp;&nbsp;&nbsp;&quot;id&quot;:&quot;com.webos.app.test&quot;<br />
+      }&#39;<br />
+      {<br />
+      &nbsp;&nbsp;&nbsp;&quot;launchPointId&quot;: &quot;com.webos.app.test_default&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;appId&quot;: &quot;com.webos.app.test&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;displayId&quot;: 0,<br />
+      &nbsp;&nbsp;&nbsp;&quot;instanceId&quot;: &quot;a3effa8b-fe4a-4f5c-953b-0d326c0d2ef20&quot;<br />
+      }
+    </p>
   </div>
 </div>
 <h3>closeByAppId</h3>
 <div>
   <h4>Description</h4>
-  <p>The <strong>closeByAppId</strong> method closes an application by appId in the system manager.</p>
+  <p>Closes an application by appId in the system manager.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -539,7 +582,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The application ID to be closed.</p>
+            <p>Indicates the id of the application.</p>
           </td>
         </tr>
         <tr>
@@ -547,8 +590,8 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The reason why this app is closed. Subscribers who are watching app status will get the&nbsp;reason.</p>
-            <p><strong>NOTE:&nbsp;</strong>This parameter is only for&nbsp;<strong>reserved caller</strong>&nbsp;such as surfacemanager. Other services or apps should not use this parameter.</p>
+            <p>Indicates the reason of why the app was&nbsp;closed. Subscribers who are watching app status will get the&nbsp;reason.</p>
+            <p><strong>Note:&nbsp;</strong>This parameter is only for&nbsp;<strong>reserved caller</strong>&nbsp;such as surfacemanager. Other services or apps should not use this parameter.</p>
           </td>
         </tr>
       </tbody>
@@ -577,10 +620,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <p>Indicates the status of operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check &quot;errorText&quot; field&nbsp;for details.</li>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check &quot;errorText&quot; field&nbsp;for details.</li>
             </ul>
           </td>
         </tr>
@@ -597,7 +641,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>InstanceId of running application.</p>
+            <p>Indicates the instanceId of the running application.</p>
           </td>
         </tr>
         <tr>
@@ -605,7 +649,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>LaunchPointId of running application.</p>
+            <p>Indicates the launchPointId of the running application.</p>
           </td>
         </tr>
         <tr>
@@ -613,7 +657,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>DisplayId of running application.</p>
+            <p>Indicates the displayId of the running application.</p>
           </td>
         </tr>
       </tbody>
@@ -667,14 +711,17 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/closeByAppId &#39;{&quot;id&quot;:&quot;com.webos.app.test&quot;}&#39;</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/closeByAppId &#39;{<br />
+      &nbsp; &nbsp;&quot;id&quot;:&quot;com.webos.app.test&quot;<br />
+      }&#39;
+    </p>
   </div>
 </div>
 <h3>listApps</h3>
 <div>
   <h4>Description</h4>
-  <p>The <strong>listApps&nbsp;</strong>method lists all of the registered applications.</p>
-  <p>Client can get all installed application information by this API.</p>
+  <p>Lists all of the registered applications.</p>
+  <p><strong>Note:</strong> Client can get all installed application information using&nbsp;this API.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -698,14 +745,13 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
-            <p>Subscribe to the method.&nbsp;Possible values are:</p>
+            <p>Indicates if subscribe to get notifications.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Enable subscription</li>
-              <li><strong>false&nbsp;</strong>- Disable subscription.</li>
-              <li>
-                <p>​<strong>Default value:</strong>&nbsp;false</p>
-              </li>
+              <li><strong>true: </strong>Subscribe for notifications</li>
+              <li><strong>false:&nbsp;</strong>Not subscribed</li>
             </ul>
+            <p>​​Default:&nbsp;<strong>false</strong></p>
           </td>
         </tr>
         <tr>
@@ -713,7 +759,7 @@ toc: true
           <td>Optional</td>
           <td>String array</td>
           <td>
-            <p>The value to be extracted from appinfo.json file.</p>
+            <p>Indicates the value to be extracted from appinfo.json file.</p>
           </td>
         </tr>
       </tbody>
@@ -742,7 +788,13 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p><strong>returnValue</strong>&nbsp;will&nbsp;<strong>always&nbsp;</strong>contain&nbsp;<strong>true</strong>.</p>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false:&nbsp;</strong>Indicates that the operation failed.</li>
+            </ul>
+            <p>Default:<strong> </strong><strong>true</strong></p>
           </td>
         </tr>
         <tr>
@@ -758,10 +810,11 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates if&nbsp;subscribed .</p>
+            <p>Indicates if subscribe to get notifications.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Subscribed.</li>
-              <li><strong>false&nbsp;</strong>- Not subscribed</li>
+              <li><strong>true: </strong>Subscribe for notifications</li>
+              <li><strong>false:&nbsp;</strong>Not subscribed</li>
             </ul>
           </td>
         </tr>
@@ -791,10 +844,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <p>Indicates the status of operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false:&nbsp;</strong>Indicates that the operation failed.</li>
             </ul>
           </td>
         </tr>
@@ -821,7 +875,13 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p><strong>subscribed&nbsp;</strong>will <strong>always </strong>contain&nbsp;<strong>true</strong>.</p>
+            <p>Indicates if subscribe to get notifications.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true: </strong>Subscribe for notifications</li>
+              <li><strong>false:&nbsp;</strong>Not subscribed</li>
+            </ul>
+            <p>Default:<strong> true</strong></p>
           </td>
         </tr>
         <tr>
@@ -829,10 +889,13 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The reason why the app&rsquo;s information has been changed. The value will be one of the followings:</p>
-            <p>&ldquo;added&rdquo;</p>
-            <p>&ldquo;updated&rdquo;</p>
-            <p>&ldquo;removed&rdquo;</p>
+            <p>Indicates the reason why the app&rsquo;s information has been changed.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>&ldquo;added&rdquo;</li>
+              <li>&ldquo;updated&rdquo;</li>
+              <li>&ldquo;removed&rdquo;</li>
+            </ul>
           </td>
         </tr>
         <tr>
@@ -840,7 +903,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The reason why the target app is added/removed.</p>
+            <p>Indicates the reason behind the target app being added/removed.</p>
           </td>
         </tr>
       </tbody>
@@ -848,35 +911,39 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example response for a successful call:</p>
     <p>This method returns information for all apps at first.</p>
-    <p># luna-send -i -f luna://com.webos.service.applicationmanager/listApps &#39;{&quot;subscribe&quot;:true}&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;subscribed&quot;: true,</p>
-    <p style="margin-left:40px">&quot;apps&quot;: [</p>
-    <p style="margin-left:80px">{</p>
-    <p style="margin-left:80px">....</p>
-    <p style="margin-left:80px">}</p>
-    <p style="margin-left:40px">],</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
-    <p>&nbsp;</p>
+    <p># luna-send -i -f luna://com.webos.service.applicationmanager/listApps &#39;{<br />
+      &nbsp; &nbsp;&quot;subscribe&quot;:true<br />
+      }&#39;
+    </p>
+    <p>Response:&nbsp;</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;subscribed&quot;:true,<br />
+      &nbsp; &nbsp;&quot;apps&quot;:[<br />
+      &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;....&quot;<br />
+      &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp;],<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
     <p>When an app is update/removed/installed, the method returns only changed app&#39;s information</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;subscribed&quot;: true,</p>
-    <p style="margin-left:40px">&quot;change&quot;: &quot;removed&quot;,</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true,</p>
-    <p style="margin-left:40px">&quot;app&quot;: {</p>
-    <p style="margin-left:80px">...</p>
-    <p style="margin-left:40px">}</p>
-    <p>}</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;subscribed&quot;:true,<br />
+      &nbsp; &nbsp;&quot;change&quot;:&quot;removed&quot;,<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp; &nbsp;&quot;app&quot;:{<br />
+      &nbsp; &nbsp; &nbsp; &quot;...&quot;<br />
+      &nbsp; &nbsp;}<br />
+      }
+    </p>
   </div>
 </div>
 <h3>running</h3>
 <div>
   <h4>Description</h4>
-  <p>The <strong>running </strong>method lists background/foreground applications and their process IDs that are running on webOS platform.</p>
-  <p>This API is one of key methods of applicationmanager.</p>
+  <p>Lists the background/foreground applications and their process IDs that are running on webOS platform.</p>
+  <p><strong>Note:</strong> This API is one of key methods of applicationmanager.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -900,12 +967,13 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
-            <p>Subscribe to the method.&nbsp;Possible values are:</p>
+            <p>Indicates if subscribed to get notifications.&nbsp;</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Enable subscription</li>
-              <li><strong>false&nbsp;</strong>- Disable subscription.</li>
+              <li><strong>true: </strong>Subscribe to get notifications</li>
+              <li><strong>false:&nbsp;</strong>Not subscribed</li>
             </ul>
-            <p>​​<strong>Default value:</strong>&nbsp;false</p>
+            <p><strong>​​</strong>Default:&nbsp;<strong>false</strong></p>
           </td>
         </tr>
       </tbody>
@@ -934,7 +1002,13 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p><strong>returnValue</strong>&nbsp;will <strong>always </strong>contain&nbsp;<strong>true</strong>.</p>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false:&nbsp;</strong>Indicates that the operation failed.</li>
+            </ul>
+            <p>Default: <strong>true</strong></p>
           </td>
         </tr>
         <tr>
@@ -942,10 +1016,11 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates if&nbsp;subscribed.</p>
+            <p>Indicates if subscribed to get notifications.&nbsp;</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Subscribed.</li>
-              <li><strong>false&nbsp;</strong>- Not subscribed</li>
+              <li><strong>true: </strong>Subscribe to get notifications</li>
+              <li><strong>false:&nbsp;</strong>Not subscribed<strong>​</strong></li>
             </ul>
           </td>
         </tr>
@@ -983,7 +1058,13 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p><strong>returnValue</strong>&nbsp;will&nbsp;<strong>always&nbsp;</strong>contain&nbsp;<strong>true</strong>.</p>
+            <p>Indicates the status of operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false:&nbsp;</strong>Indicates that the operation failed.</li>
+            </ul>
+            <p>Default: <strong>true</strong></p>
           </td>
         </tr>
         <tr>
@@ -991,10 +1072,11 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates if&nbsp;subscribed.</p>
+            <p>Indicates if subscribed to get notifications.&nbsp;</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Subscribed.</li>
-              <li><strong>false&nbsp;</strong>- Not subscribed</li>
+              <li><strong>true: </strong>Subscribe to get notifications</li>
+              <li><strong>false:&nbsp;</strong>Not subscribed<strong>​</strong></li>
             </ul>
           </td>
         </tr>
@@ -1011,41 +1093,29 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example response for a successful call:</p>
-    <p># luna-send -i -f luna://com.webos.service.applicationmanager/running &#39;{&quot;subscribe&quot;:true}&#39;<br />
-      {<br />
-      &nbsp;&nbsp;&nbsp;
+    <p># luna-send -i -f luna://com.webos.service.applicationmanager/running &#39;{<br />
+      &nbsp; &nbsp;&quot;subscribe&quot;:true<br />
+      }&#39;
     </p>
-    <p>&nbsp;&nbsp;&nbsp; &quot;subscribed&quot;: true,<br />
-      &nbsp;&nbsp;&nbsp;
+    <p>Response:&nbsp;</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;subscribed&quot;:true,<br />
+      &nbsp; &nbsp;&quot;running&quot;:[<br />
+      &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;id&quot;:&quot;bareapp&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;...&quot;<br />
+      &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp;],<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }
     </p>
-    <p>&nbsp;&nbsp;&nbsp; &quot;running&quot;: [<br />
-      &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
-    </p>
-    <p>&nbsp; &nbsp;&nbsp; &nbsp; {<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;
-    </p>
-    <p>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;id&quot;: &quot;bareapp&quot;,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;
-    </p>
-    <p>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;
-    </p>
-    <p>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; }<br />
-      &nbsp;&nbsp;&nbsp;
-    </p>
-    <p>&nbsp;&nbsp;&nbsp; ],<br />
-      &nbsp;&nbsp;&nbsp;
-    </p>
-    <p>&nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true</p>
-    <p>}</p>
   </div>
 </div>
 <h3>dev/closeByAppId</h3>
 <div>
   <h4>Description</h4>
-  <p>The <strong>dev/closeByAppId</strong> method closes an application by app ID.</p>
-  <p><strong>Note:&nbsp;</strong>This method is available only in developer mode (devmode).&nbsp;To enable devmode, call &#39;com.webos.service.devmode&#39; (&#39;setDevMode&#39;) with value &#39;true&#39;.&nbsp;</p>
+  <p>Closes an application by the application id.</p>
+  <p><strong>Note:&nbsp;</strong>Available only in developer mode (devmode).&nbsp;To enable devmode, call &#39;com.webos.service.devmode&#39; (&#39;setDevMode&#39;) with value &#39;true&#39;.&nbsp;</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -1069,7 +1139,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>The application ID to be closed.</p>
+            <p>Indicates the application id&nbsp;to be closed.</p>
           </td>
         </tr>
       </tbody>
@@ -1098,10 +1168,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <p>Indicates the status of operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. &nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</li>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false:&nbsp;</strong>Indicates that the operation failed. &nbsp;See the &quot;Error Codes&quot;&nbsp;section of this method for details.</li>
             </ul>
           </td>
         </tr>
@@ -1110,7 +1181,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>nstanceId of running application.</p>
+            <p>Indicates the instanceId of running application.</p>
           </td>
         </tr>
         <tr>
@@ -1118,7 +1189,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>LaunchPointId of running application.</p>
+            <p>Indicates the launchPointId of running application.</p>
           </td>
         </tr>
         <tr>
@@ -1126,7 +1197,7 @@ toc: true
           <td>Optional</td>
           <td>Number (int32_t)</td>
           <td>
-            <p>DisplayId of running application.</p>
+            <p>Indicates the displayId of the running application.</p>
           </td>
         </tr>
       </tbody>
@@ -1187,17 +1258,20 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/dev/closeByAppId &#39;{&quot;id&quot;:&quot;com.webos.app.test&quot;}&#39;</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/dev/closeByAppId &#39;{<br />
+      &nbsp; &nbsp;&quot;id&quot;:&quot;com.webos.app.test&quot;<br />
+      }&#39;
+    </p>
   </div>
 </div>
 <h3>dev/listApps</h3>
 <div>
   <h4>Description</h4>
-  <p>The <strong>dev/listApps&nbsp;</strong>method lists all of the registered applications.</p>
+  <p>Lists all of the registered applications.</p>
   <p><strong>Note:&nbsp;</strong></p>
   <ul>
-    <li>This method is available only in developer mode (devmode).&nbsp;To enable devmode, call &#39;com.webos.service.devmode&#39; (&#39;setDevMode&#39;) with value &#39;true&#39;.&nbsp;</li>
-    <li>This method works for devmode app type.</li>
+    <li>Available only in developer mode (devmode).&nbsp;To enable devmode, call &#39;com.webos.service.devmode&#39; (&#39;setDevMode&#39;) with value &#39;true&#39;.&nbsp;</li>
+    <li>Works for devmode app type.</li>
   </ul>
   <h4>Parameters</h4>
   <div class="table-container">
@@ -1222,12 +1296,13 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Subscribe to the method.&nbsp;Possible values are:</p>
+            <p>Indicates if subscribed to get notifications.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Enable subscription</li>
-              <li><strong>false&nbsp;</strong>- Disable subscription.</li>
+              <li><strong>true:</strong> Subscribe to get notifications</li>
+              <li><strong>false</strong>: Do not subscribe</li>
             </ul>
-            <p>​​<strong>Default value:</strong>&nbsp;false</p>
+            <p>Default: <strong>false</strong></p>
           </td>
         </tr>
         <tr>
@@ -1235,7 +1310,7 @@ toc: true
           <td>Optional</td>
           <td>String array</td>
           <td>
-            <p>The name of properties to be extracted from appinfo.json file.</p>
+            <p>Indicates the name of properties to be extracted from appinfo.json file.</p>
           </td>
         </tr>
       </tbody>
@@ -1264,10 +1339,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <p>Indicates the status of operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.&nbsp;See the&nbsp;<strong>API Error Codes Reference</strong>&nbsp;for more information.</li>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false:&nbsp;</strong>Indicates that the operation failed.&nbsp;See the &quot;API Error Codes Reference&quot; for more information.</li>
             </ul>
           </td>
         </tr>
@@ -1276,9 +1352,11 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates if subscribed to get notifications.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li>If it is subscribed,&nbsp;<strong>subscribed&nbsp;</strong>will contain&nbsp;<strong>true</strong>.</li>
-              <li>If it is not subscribed,&nbsp;<strong>subscribed&nbsp;</strong>will contain&nbsp;<strong>false</strong>.</li>
+              <li><strong>true:</strong> Subscribed to get notifications</li>
+              <li><strong>false:</strong> Not subscribed</li>
             </ul>
           </td>
         </tr>
@@ -1316,10 +1394,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <p>Indicates the status of operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.&nbsp;See the&nbsp;<strong>API Error Codes Reference</strong>&nbsp;for more information.</li>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false:&nbsp;</strong>Indicates that the operation failed.&nbsp;See the &quot;API Error Codes Reference&quot; for more information.</li>
             </ul>
           </td>
         </tr>
@@ -1346,7 +1425,13 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p><strong>subscribed&nbsp;</strong>will <strong>always </strong>contain&nbsp;<strong>true</strong>.</p>
+            <p>Indicates if subscribed to get notifications.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true:</strong> Subscribed to get notifications</li>
+              <li><strong>false:</strong> Not subscribed</li>
+            </ul>
+            <p>Default:<strong> true</strong></p>
           </td>
         </tr>
         <tr>
@@ -1354,11 +1439,12 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The reason why the app&rsquo;s information has been changed. The value will be one of the followings:</p>
+            <p>Indicates the reason for the change in the app information.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li>&ldquo;added&rdquo;</li>
-              <li>&ldquo;updated&rdquo;</li>
-              <li>&ldquo;removed&rdquo;</li>
+              <li>added</li>
+              <li>updated</li>
+              <li>removed</li>
             </ul>
           </td>
         </tr>
@@ -1367,7 +1453,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The reason why the target app is added/removed.</p>
+            <p>Indicates the reason why the target app is added/removed.</p>
           </td>
         </tr>
       </tbody>
@@ -1375,38 +1461,42 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example response for a successful call:</p>
     <p>This method returns information for all apps at first.</p>
-    <p># luna-send -i -f luna://com.webos.service.applicationmanager/dev/listApps &#39;{&quot;subscribe&quot;:true}&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40.0px">&quot;subscribed&quot;: true,</p>
-    <p style="margin-left:40.0px">&quot;apps&quot;: [</p>
-    <p style="margin-left:80.0px">{</p>
-    <p style="margin-left:80.0px">....</p>
-    <p style="margin-left:80.0px">}</p>
-    <p style="margin-left:40.0px">],</p>
-    <p style="margin-left:40.0px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
-    <p>&nbsp;</p>
+    <p># luna-send -i -f luna://com.webos.service.applicationmanager/dev/listApps &#39;{<br />
+      &nbsp; &nbsp;&quot;subscribe&quot;:true<br />
+      }&#39;
+    </p>
+    <p>Response:&nbsp;</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;subscribed&quot;:true,<br />
+      &nbsp; &nbsp;&quot;apps&quot;:[<br />
+      &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;....&quot;<br />
+      &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp;],<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
     <p>When an app is update/removed/installed, the method returns only changed app&#39;s information</p>
-    <p>{</p>
-    <p style="margin-left:40.0px">&quot;subscribed&quot;: true,</p>
-    <p style="margin-left:40.0px">&quot;change&quot;: &quot;removed&quot;,</p>
-    <p style="margin-left:40.0px">&quot;returnValue&quot;: true,</p>
-    <p style="margin-left:40.0px">&quot;app&quot;: {</p>
-    <p style="margin-left:80.0px">...</p>
-    <p style="margin-left:40.0px">}</p>
-    <p>}</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;subscribed&quot;:true,<br />
+      &nbsp; &nbsp;&quot;change&quot;:&quot;removed&quot;,<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp; &nbsp;&quot;app&quot;:{<br />
+      &nbsp; &nbsp; &nbsp; &quot;...&quot;<br />
+      &nbsp; &nbsp;}<br />
+      }
+    </p>
   </div>
 </div>
 <h3>dev/running</h3>
 <div>
   <h4>Description</h4>
-  <p>The <strong>dev/running </strong>method lists background/foreground applications and their process IDs that are running on webOS platform.</p>
+  <p>Lists the background/foreground applications and their process IDs that are running on the webOS platform.</p>
   <p><strong>Note:&nbsp;</strong></p>
   <ul>
-    <li>This method is available only in developer mode (devmode).&nbsp;To enable devmode, call &#39;com.webos.service.devmode&#39; (&#39;setDevMode&#39;) with value &#39;true&#39;.&nbsp;</li>
-    <li>This method works for devmode app type.</li>
+    <li>Available only in developer mode (devmode).&nbsp;To enable devmode, call &#39;com.webos.service.devmode&#39; (&#39;setDevMode&#39;) with value &#39;true&#39;.&nbsp;</li>
+    <li>Works for devmode app type.</li>
   </ul>
   <h4>Parameters</h4>
   <div class="table-container">
@@ -1431,12 +1521,13 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
-            <p>Subscribe to the method.&nbsp;Possible values are:</p>
+            <p>Indicates if subscribed to get notifications.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Enable subscription</li>
-              <li><strong>false&nbsp;</strong>- Disable subscription.</li>
+              <li><strong>true: </strong>Subscribe to get notifications</li>
+              <li><strong>false: </strong>Not subscribed</li>
             </ul>
-            <p>​​<strong>Default value:</strong>&nbsp;false</p>
+            <p>​​Default:&nbsp;<strong>false</strong></p>
           </td>
         </tr>
       </tbody>
@@ -1465,7 +1556,13 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p><strong>returnValue</strong>&nbsp;will <strong>always </strong>contain&nbsp;<strong>true</strong>.</p>
+            <p>Indicates the status of operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false:&nbsp;</strong>Indicates that the operation failed.&nbsp;</li>
+            </ul>
+            <p><strong>Note: returnValue&nbsp;</strong>will always contain&nbsp;<strong>true</strong>.</p>
           </td>
         </tr>
         <tr>
@@ -1473,9 +1570,11 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates if subscribed to get notifications.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li>If it is subscribed,&nbsp;<strong>subscribed&nbsp;</strong>will contain&nbsp;<strong>true</strong>.</li>
-              <li>If it is not subscribed,&nbsp;<strong>subscribed&nbsp;</strong>will contain&nbsp;<strong>false</strong>.</li>
+              <li><strong>true: </strong>Subscribe to get notifications</li>
+              <li><strong>false: </strong>Not subscribed</li>
             </ul>
           </td>
         </tr>
@@ -1513,7 +1612,13 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p><strong>returnValue</strong>&nbsp;will&nbsp;<strong>always&nbsp;</strong>contain&nbsp;<strong>true</strong>.</p>
+            <p>Indicates the status of operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false:&nbsp;</strong>Indicates that the operation failed.&nbsp;See the&nbsp;<strong>API Error Codes Reference</strong>&nbsp;for more information.</li>
+            </ul>
+            <p><strong>Note: returnValue&nbsp;</strong>will always contain&nbsp;<strong>true</strong>.</p>
           </td>
         </tr>
         <tr>
@@ -1521,9 +1626,11 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates if subscribed to get notifications.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li>If it is subscribed,&nbsp;<strong>subscribed&nbsp;</strong>will contain&nbsp;<strong>true</strong>.</li>
-              <li>If it is not subscribed,&nbsp;<strong>subscribed&nbsp;</strong>will contain&nbsp;<strong>false</strong>.</li>
+              <li><strong>true: </strong>Subscribe to get notifications</li>
+              <li><strong>false: </strong>Not subscribed</li>
             </ul>
           </td>
         </tr>
@@ -1540,28 +1647,32 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example response for a successful call:</p>
-    <p># luna-send -i -f luna://com.webos.service.applicationmanager/dev/running &#39;{&quot;subscribe&quot;:true}&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40.0px">&quot;subscribed&quot;: true,</p>
-    <p style="margin-left:40.0px">&quot;running&quot;: [</p>
-    <p style="margin-left:80.0px">{</p>
-    <p style="margin-left:120.0px">&quot;id&quot;: &quot;com.webos.app.test&quot;,</p>
-    <p style="margin-left:120.0px">&quot;webprocessid&quot;: &quot;&quot;,</p>
-    <p style="margin-left:120.0px">&quot;defaultWindowType&quot;: &quot;card&quot;,</p>
-    <p style="margin-left:120.0px">&quot;appType&quot;: &quot;native&quot;,</p>
-    <p style="margin-left:120.0px">&quot;processid&quot;: &quot;1176&quot;</p>
-    <p style="margin-left:80.0px">}</p>
-    <p style="margin-left:40.0px">],</p>
-    <p style="margin-left:40.0px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p># luna-send -i -f luna://com.webos.service.applicationmanager/dev/running &#39;{<br />
+      &nbsp; &nbsp;&quot;subscribe&quot;:true<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;subscribed&quot;:true,<br />
+      &nbsp; &nbsp;&quot;running&quot;:[<br />
+      &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;id&quot;:&quot;com.webos.app.test&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;webprocessid&quot;:&quot;&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;defaultWindowType&quot;:&quot;card&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;appType&quot;:&quot;native&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;processid&quot;:&quot;1176&quot;<br />
+      &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp;],<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>getForegroundAppInfo</h3>
 <div>
   <h4>Description</h4>
   <p>Gets the information on the foreground application.</p>
-  <p>The information comes from LSM. Please use extraInfo parameter to get raw responsePayload from LSM.</p>
+  <p><strong>Note:</strong> The information comes from LSM. Please use extraInfo parameter to get raw responsePayload from LSM.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -1585,12 +1696,12 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
-            <p>If enabled, the method returns an array of foreground applications.</p>
+            <p>Indicates if enabled, the method returns an array of foreground applications.</p>
             <ul>
-              <li><strong>true</strong> - To enable.</li>
-              <li><strong>false </strong>- To disable.</li>
+              <li><strong>true: </strong>Enable.</li>
+              <li><strong>false: </strong>Disable.</li>
             </ul>
-            <p>Default value:&nbsp;<strong>false</strong>.</p>
+            <p>Default:&nbsp;<strong>false</strong>.</p>
           </td>
         </tr>
         <tr>
@@ -1598,12 +1709,13 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
-            <p>Subscribe to the method.&nbsp;Possible values are:</p>
+            <p>Indicates if subscribed&nbsp;to get notifications.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Enable subscription</li>
-              <li><strong>false&nbsp;</strong>- Disable subscription.</li>
+              <li><strong>true:&nbsp;</strong>Subscribed to get notifications</li>
+              <li><strong>false: </strong>Not subscribed</li>
             </ul>
-            <p>​<strong>Default value:</strong>&nbsp;false</p>
+            <p>​Default:<strong>&nbsp;false</strong></p>
           </td>
         </tr>
       </tbody>
@@ -1632,7 +1744,13 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p><strong>returnValue</strong> will <strong>always </strong>contain <strong>true</strong>.</p>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false:&nbsp;</strong>Indicates that the operation failed.&nbsp;</li>
+            </ul>
+            <p>Default:<strong> true</strong></p>
           </td>
         </tr>
         <tr>
@@ -1640,10 +1758,11 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates if&nbsp;subscribed.</p>
+            <p>Indicates if subscribed&nbsp;to get notifications.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Subscribed for changes</li>
-              <li><strong>false&nbsp;</strong>- Not subscribed</li>
+              <li><strong>true:&nbsp;</strong>Subscribed to get notifications</li>
+              <li><strong>false: </strong>Not subscribed</li>
             </ul>
           </td>
         </tr>
@@ -1652,7 +1771,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>The application ID of the application running in the foreground.</p>
+            <p>Indicates the appId&nbsp;running in the foreground.</p>
           </td>
         </tr>
         <tr>
@@ -1660,7 +1779,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The launch point ID of the app.</p>
+            <p>Indicates the launchPointId&nbsp;of the application.</p>
           </td>
         </tr>
         <tr>
@@ -1668,7 +1787,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The instance ID of the app.</p>
+            <p>Indicates the instanceId of the application.</p>
           </td>
         </tr>
         <tr>
@@ -1676,7 +1795,7 @@ toc: true
           <td>Optional</td>
           <td>Number</td>
           <td>
-            <p>The display ID of the app.</p>
+            <p>Indicates the displayId&nbsp;of the application.</p>
           </td>
         </tr>
         <tr>
@@ -1684,7 +1803,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>The window ID of the application running in the foreground.&nbsp;</p>
+            <p>Indicates the windowId&nbsp;of the application running in the foreground.&nbsp;</p>
           </td>
         </tr>
         <tr>
@@ -1692,7 +1811,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>The process ID of the application running in the foreground.</p>
+            <p>Indicates the processId&nbsp;of the application running in the foreground.</p>
           </td>
         </tr>
         <tr>
@@ -1700,7 +1819,7 @@ toc: true
           <td>Optional</td>
           <td>Object array: <a href="#foregroundappinfo"> foregroundAppInfo</a></td>
           <td>
-            <p>An array of the foreground application.</p>
+            <p>Indicates an array of the foreground application.</p>
           </td>
         </tr>
       </tbody>
@@ -1729,7 +1848,13 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p><strong>returnValue</strong> will <strong>always </strong>contain <strong>true</strong>.</p>
+            <p>Indicates the status of operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false:&nbsp;</strong>Indicates that the operation failed.&nbsp;</li>
+            </ul>
+            <p>Default:<strong> true</strong></p>
           </td>
         </tr>
         <tr>
@@ -1737,7 +1862,13 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p><strong>subscribed </strong>will <strong>always </strong>contain <strong>true</strong>.</p>
+            <p>Indicates if subscribed to get the notifications.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Subscribed to get the notifications</li>
+              <li><strong>false</strong>: Not subscribed</li>
+            </ul>
+            <p>Default:<strong> true</strong></p>
           </td>
         </tr>
         <tr>
@@ -1745,7 +1876,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>The application ID of the application running in the foreground.</p>
+            <p>Indicates the application ID of the application running in the foreground.</p>
           </td>
         </tr>
         <tr>
@@ -1753,7 +1884,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The launch point ID of the app.&nbsp;</p>
+            <p>Indicates the launchPointId&nbsp;of the application.</p>
           </td>
         </tr>
         <tr>
@@ -1761,7 +1892,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The instance ID of the app.&nbsp;</p>
+            <p>Indicates the instanceId&nbsp;of the application.</p>
           </td>
         </tr>
         <tr>
@@ -1769,7 +1900,7 @@ toc: true
           <td>Optional</td>
           <td>Number</td>
           <td>
-            <p>The display ID of the app.&nbsp;</p>
+            <p>Indicates the displayId of the application.</p>
           </td>
         </tr>
         <tr>
@@ -1777,7 +1908,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>The window ID of the application running in the foreground.&nbsp;</p>
+            <p>Indicates the windowId&nbsp;of the application running in the foreground.&nbsp;</p>
           </td>
         </tr>
         <tr>
@@ -1785,7 +1916,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>The process ID of the application running in the foreground.</p>
+            <p>Indicates the processId&nbsp;of the application running in the foreground.</p>
           </td>
         </tr>
         <tr>
@@ -1793,7 +1924,7 @@ toc: true
           <td>Optional</td>
           <td>Object array: <a href="#foregroundappinfo"> foregroundAppInfo</a></td>
           <td>
-            <p>An array of the foreground application.</p>
+            <p>Indicates an array of the foreground application.</p>
           </td>
         </tr>
       </tbody>
@@ -1810,8 +1941,12 @@ toc: true
       &nbsp; &nbsp;&quot;processId&quot;:&quot;&quot;<br />
       }
     </p>
-    <p>&nbsp;</p>
-    <p># luna-send -i -f luna://com.webos.service.applicationmanager/getForegroundAppInfo &#39;{&quot;subscribe&quot;:true}&#39;</p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -i -f luna://com.webos.service.applicationmanager/getForegroundAppInfo &#39;{<br />
+      &nbsp; &nbsp;&quot;subscribe&quot;:true<br />
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;appId&quot;:&quot;bareapp&quot;,<br />
@@ -1821,15 +1956,19 @@ toc: true
       &nbsp; &nbsp;&quot;processId&quot;:&quot;&quot;<br />
       }
     </p>
-    <p>&nbsp;</p>
-    <p># luna-send -i -f luna://com.webos.service.applicationmanager/getForegroundAppInfo &#39;{&quot;subscribe&quot;:true, &quot;extraInfo&quot; : true}&#39;</p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -i -f luna://com.webos.service.applicationmanager/getForegroundAppInfo &#39;{<br />
+      &nbsp; &nbsp;&quot;subscribe&quot;:true,<br />
+      &nbsp; &nbsp;&quot;extraInfo&quot;:true<br />
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;subscribed&quot;:true,<br />
       &nbsp; &nbsp;&quot;foregroundAppInfo&quot;:[<br />
-      &nbsp; &nbsp; &nbsp; {
-    </p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;instanceId&quot;: &quot;c057ba89-6de6-4807-a5fe-81e8af4aac700&quot;,<br />
+      &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;instanceId&quot;:&quot;c057ba89-6de6-4807-a5fe-81e8af4aac700&quot;,<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;windowGroup&quot;:false,<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;appId&quot;:&quot;bareapp&quot;,<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;windowType&quot;:&quot;_WEBOS_WINDOW_TYPE_CARD&quot;,<br />
@@ -1848,8 +1987,8 @@ toc: true
 <h3>getAppLifeStatus</h3>
 <div>
   <h4>Description</h4>
-  <p>The <strong>getAppLifeStatus</strong> method provides application&#39;s life cycle status.</p>
-  <p>This API is useful to do something based on application&#39;s life cycle status.</p>
+  <p>Provides the application&#39;s life cycle status.</p>
+  <p><strong>Note:</strong> This API is useful to do something based on application&#39;s life cycle status.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -1873,12 +2012,13 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Subscribe to the method.&nbsp;Possible values are:</p>
+            <p>Indicates if subscribed to get the notifications.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Enable subscription</li>
-              <li><strong>false&nbsp;</strong>- Disable subscription.</li>
+              <li><strong>true: </strong>Subscribe to get notifications</li>
+              <li><strong>false:&nbsp;</strong>Not subscribed.</li>
             </ul>
-            <p>​<strong>Default value:</strong>&nbsp;false</p>
+            <p>​Default:&nbsp;<strong>false</strong></p>
           </td>
         </tr>
       </tbody>
@@ -1907,10 +2047,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <p>Indicates the status of operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check &quot;errorText&quot; field&nbsp;for details.</li>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check &quot;errorText&quot; field&nbsp;for details.</li>
             </ul>
           </td>
         </tr>
@@ -1919,10 +2060,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates if&nbsp;subscribed.</p>
+            <p>Indicates if subscribed to get the notifications.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Subscribed for changes</li>
-              <li><strong>false&nbsp;</strong>- Not subscribed</li>
+              <li><strong>true: </strong>Subscribe to get notifications</li>
+              <li><strong>false:&nbsp;</strong>Not subscribed.</li>
             </ul>
           </td>
         </tr>
@@ -1931,7 +2073,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;Error Codes&quot;&nbsp;section of this method for details.</p>
           </td>
         </tr>
       </tbody>
@@ -1960,10 +2102,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check &quot;errorText&quot; field&nbsp;for details.</li>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check &quot;errorText&quot; field&nbsp;for details.</li>
             </ul>
           </td>
         </tr>
@@ -1972,10 +2115,11 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Indicates if&nbsp;subscribed.</p>
+            <p>Indicates if&nbsp;subscribed to get notifications.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Subscribed for changes</li>
-              <li><strong>false&nbsp;</strong>- Not subscribed</li>
+              <li><strong>true:&nbsp;</strong>Subscribed for notifications</li>
+              <li><strong>false:&nbsp;</strong>Not subscribed</li>
             </ul>
           </td>
         </tr>
@@ -1984,7 +2128,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The ID of application whose status has been changed.</p>
+            <p>Indicates the appId&nbsp;whose status has been changed.</p>
           </td>
         </tr>
         <tr>
@@ -1992,7 +2136,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The launch point ID of the app.</p>
+            <p>Indicates the launchPointId&nbsp;of the application.</p>
           </td>
         </tr>
         <tr>
@@ -2000,7 +2144,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The instance ID of the app.&nbsp;</p>
+            <p>Indicates the instanceId&nbsp;of the application.</p>
           </td>
         </tr>
         <tr>
@@ -2008,7 +2152,8 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The application&#39;s status. The value will be one of the followings:</p>
+            <p>Indicates the status of the application.</p>
+            <p>Possible values are:</p>
             <ul>
               <li>stop</li>
               <li>launching</li>
@@ -2024,7 +2169,8 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The application type. The value will be one of the followings:</p>
+            <p>Indicates the application type.</p>
+            <p>Possible values are:</p>
             <ul>
               <li>web</li>
               <li>native</li>
@@ -2036,7 +2182,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Process ID of the app.</p>
+            <p>Indicates the processId of the application.</p>
           </td>
         </tr>
         <tr>
@@ -2044,7 +2190,7 @@ toc: true
           <td>Optional</td>
           <td>Number</td>
           <td>
-            <p>The display ID of the app.&nbsp;</p>
+            <p>Indicates the displayId&nbsp;of the application.</p>
           </td>
         </tr>
         <tr>
@@ -2052,8 +2198,8 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>In&nbsp;<strong>LAUNCHING/RELAUNCHING</strong>&nbsp;status, the reason means how the target app is launched.</p>
-            <p>In&nbsp;<strong>CLOSING/STOP</strong>&nbsp;status, the reason means why the target app is closed.</p>
+            <p>In&nbsp;<strong>LAUNCHING/RELAUNCHING</strong>&nbsp;status, indicates the reason for the launching the target app.</p>
+            <p>In&nbsp;<strong>CLOSING/STOP</strong>&nbsp;status, indicates the reason for closing the target app.</p>
           </td>
         </tr>
         <tr>
@@ -2061,7 +2207,8 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Window type of the app.&nbsp;This reason is replied only in&nbsp;<strong>FOREGROUND&nbsp;</strong>status.</p>
+            <p>Indicates the windowType of the application.</p>
+            <p><strong>Note:</strong> This reason is replied only in&nbsp;<strong>FOREGROUND&nbsp;</strong>status.</p>
           </td>
         </tr>
         <tr>
@@ -2069,7 +2216,8 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
-            <p>Indicate that the app has window group or not.&nbsp;This reason is replied only in&nbsp;<strong>FOREGROUND&nbsp;</strong>status.</p>
+            <p>Indicates that the app has window group or not.</p>
+            <p><strong>Note:</strong> This reason is replied only in&nbsp;<strong>FOREGROUND&nbsp;</strong>status.</p>
           </td>
         </tr>
         <tr>
@@ -2077,7 +2225,8 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
-            <p>Indicate that the app is window group owner or not.&nbsp;This reason is replied only in&nbsp;<strong>FOREGROUND&nbsp;</strong>status.</p>
+            <p>Indicates that the app is window group owner or not.</p>
+            <p><strong>Note:</strong> This reason is replied only in&nbsp;<strong>FOREGROUND&nbsp;</strong>status.</p>
           </td>
         </tr>
         <tr>
@@ -2085,7 +2234,8 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Indicate who is window group&nbsp;owner of the app.&nbsp;This reason is replied only in&nbsp;<strong>FOREGROUND&nbsp;</strong>status.</p>
+            <p>Indicates the window group&nbsp;owner of the app.</p>
+            <p><strong>Note:&nbsp;</strong>This reason is replied only in&nbsp;<strong>FOREGROUND&nbsp;</strong>status.</p>
           </td>
         </tr>
         <tr>
@@ -2093,7 +2243,8 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Indicate whether&nbsp;the app is preloaded or not. This reason is replied only in&nbsp;<strong>BACKGROUND&nbsp;</strong>status.</p>
+            <p>Indicates whether&nbsp;the app is preloaded or not.</p>
+            <p><strong>Note:</strong> This reason is replied only in&nbsp;<strong>BACKGROUND&nbsp;</strong>status.</p>
           </td>
         </tr>
       </tbody>
@@ -2126,47 +2277,32 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example response for a successful call:</p>
     <p>AppLifeStatus can be subscribed by below command,</p>
-    <p># luna-send -i -f luna://com.webos.service.applicationmanager/getAppLifeStatus &#39;{&quot;subscribe&quot;:true}&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;subscribed&quot;: true,</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
-    <p>&nbsp;</p>
+    <p># luna-send -i -f luna://com.webos.service.applicationmanager/getAppLifeStatus &#39;{<br />
+      &nbsp; &nbsp;&quot;subscribe&quot;:true<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;subscribed&quot;:true,<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
     <p>When barenativeqt is launched, outputs are shown like below.</p>
     <p>{<br />
-      &nbsp;&nbsp;&nbsp;
+      &nbsp; &nbsp;&quot;reason&quot;:&quot;&quot;,<br />
+      &nbsp; &nbsp;&quot;appId&quot;:&quot;barenativeqt&quot;,<br />
+      &nbsp; &nbsp;&quot;status&quot;:&quot;launching&quot;,<br />
+      &nbsp; &nbsp;&quot;type&quot;:&quot;native&quot;<br />
+      }
     </p>
-    <p>&nbsp;&nbsp;&nbsp; &quot;reason&quot;: &quot;&quot;,<br />
-      &nbsp;&nbsp;&nbsp;
-    </p>
-    <p>&nbsp;&nbsp;&nbsp; &quot;appId&quot;: &quot;barenativeqt&quot;,<br />
-      &nbsp;&nbsp;&nbsp;
-    </p>
-    <p>&nbsp;&nbsp;&nbsp; &quot;status&quot;: &quot;launching&quot;,<br />
-      &nbsp;&nbsp;&nbsp;
-    </p>
-    <p>&nbsp;&nbsp;&nbsp; &quot;type&quot;: &quot;native&quot;</p>
-    <p>}</p>
-    <p>&nbsp;</p>
     <p>When barenativeqt is closed, below outputs are shown.</p>
     <p>{<br />
-      &nbsp;&nbsp;&nbsp;
-    </p>
-    <p>&nbsp;&nbsp;&nbsp; &quot;reason&quot;: &quot;undefined&quot;,<br />
-      &nbsp;&nbsp;&nbsp;
-    </p>
-    <p>&nbsp;&nbsp;&nbsp; &quot;appId&quot;: &quot;barenativeqt&quot;,<br />
-      &nbsp;&nbsp;&nbsp;
-    </p>
-    <p>&nbsp;&nbsp;&nbsp; &quot;status&quot;: &quot;stop&quot;,<br />
-      &nbsp;&nbsp;&nbsp;
-    </p>
-    <p>&nbsp;&nbsp;&nbsp; &quot;processId&quot;: &quot;932&quot;,<br />
-      &nbsp;&nbsp;&nbsp;
-    </p>
-    <p>&nbsp;&nbsp;&nbsp; &quot;type&quot;: &quot;native&quot;<br />
+      &nbsp; &nbsp;&quot;reason&quot;:&quot;undefined&quot;,<br />
+      &nbsp; &nbsp;&quot;appId&quot;:&quot;barenativeqt&quot;,<br />
+      &nbsp; &nbsp;&quot;status&quot;:&quot;stop&quot;,<br />
+      &nbsp; &nbsp;&quot;processId&quot;:&quot;932&quot;,<br />
+      &nbsp; &nbsp;&quot;type&quot;:&quot;native&quot;<br />
       }
     </p>
   </div>
@@ -2174,7 +2310,7 @@ toc: true
 <h3>getAppLifeEvents</h3>
 <div>
   <h4>Description</h4>
-  <p>The&nbsp;<strong>getAppLifeEvents</strong>&nbsp;method provides application&#39;s&nbsp;event status in its life cycle.</p>
+  <p>Provides the application&#39;s&nbsp;event status in its life cycle.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -2195,15 +2331,16 @@ toc: true
         </tr>
         <tr>
           <td>subscribe</td>
-          <td>Optional</td>
+          <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Subscribe for notifications.&nbsp;Possible values are:</p>
+            <p>Indicates if subscribed to get notifications.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Get notifications</li>
-              <li><strong>false&nbsp;</strong>- Notifications are not required</li>
+              <li><strong>true: </strong>Subscribed for notifications</li>
+              <li><strong>false:&nbsp;</strong>Not subscribed</li>
             </ul>
-            <p>​<strong>Default value:</strong>&nbsp;false</p>
+            <p>​Default:&nbsp;<strong>false</strong></p>
           </td>
         </tr>
       </tbody>
@@ -2232,10 +2369,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates the status of operation. Possible values are:</p>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
@@ -2244,10 +2382,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates if&nbsp;subscribed to get notified.</p>
+            <p>Indicates if&nbsp;subscribed to get notifications.</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Get notifications</li>
-              <li><strong>false&nbsp;</strong>- Notifications are not required​</li>
+              <li><strong>true: </strong>Subscribe for<strong>&nbsp;</strong>notifications</li>
+              <li><strong>false:&nbsp;</strong>Not subscribed</li>
             </ul>
           </td>
         </tr>
@@ -2256,7 +2394,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+            <p>Indicates the reason for the failure of the operation. See the &quot;API Error Codes Reference&quot; section for details.</p>
           </td>
         </tr>
         <tr>
@@ -2293,10 +2431,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates the status of operation. Possible values are:</p>
+            <p>Indicates the status of operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
@@ -2305,10 +2444,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates if&nbsp;subscribed to get notified.</p>
+            <p>Indicates if&nbsp;subscribed to get notifications.</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Get notifications</li>
-              <li><strong>false&nbsp;</strong>- Notifications are not required​</li>
+              <li><strong>true: </strong>Subscribe for notifications</li>
+              <li><strong>false:&nbsp;</strong>Not subscribed</li>
             </ul>
           </td>
         </tr>
@@ -2317,7 +2456,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>The ID of application whose event has been changed.</p>
+            <p>Indicates the appId whose event has been changed.</p>
           </td>
         </tr>
         <tr>
@@ -2325,7 +2464,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The launch point ID of the app.</p>
+            <p>Indicates the launchPointId&nbsp;of the app.</p>
           </td>
         </tr>
         <tr>
@@ -2333,7 +2472,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The instance ID of the app.</p>
+            <p>Indicates the instanceId&nbsp;of the app.</p>
           </td>
         </tr>
         <tr>
@@ -2341,7 +2480,7 @@ toc: true
           <td>Optional</td>
           <td>Number</td>
           <td>
-            <p>The display ID of the app.</p>
+            <p>Indicates the displayId&nbsp;of the app.</p>
           </td>
         </tr>
         <tr>
@@ -2349,7 +2488,8 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>The application&#39;s status. The valid values are:</p>
+            <p>Indicates the application&#39;s status.</p>
+            <p>Possible values are:</p>
             <ul>
               <li>splash</li>
               <li>preload</li>
@@ -2367,7 +2507,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The application title as it is shown in the Launcher and in the application window.</p>
+            <p>Indicates the application title as it is shown in the launcher and in the application window.</p>
             <p><strong>Note: </strong>It is included only when event type is &quot;splash&quot;.</p>
           </td>
         </tr>
@@ -2376,7 +2516,8 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates if splash image is shown. This value is set during app scanning. Possible values are:</p>
+            <p>Indicates if splash image is shown. This value is set during app scanning.</p>
+            <p>Possible values are:</p>
             <ul>
               <li><strong>true</strong>:<strong> </strong>Splash image is shown.&nbsp;</li>
               <li><strong>false</strong>: Splash image is not shown.&nbsp;</li>
@@ -2389,7 +2530,8 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates of spinner is shown. This value is set during app scanning. Possible values are:</p>
+            <p>Indicates if the spinner is shown. The value is set during app scanning.</p>
+            <p>Possible values are:</p>
             <ul>
               <li><strong>true: </strong>Spinner is shown.&nbsp;</li>
               <li><strong>false: </strong>Spinner is not shown.&nbsp;</li>
@@ -2402,8 +2544,9 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The background image to be shown while application is loading, e.g., splash-background.png.</p>
-            <p><strong>Note:</strong>&nbsp;It is included only when event type is &quot;splash&quot;.</p>
+            <p>Indicates the background image to be shown while the application is loading.</p>
+            <p>Example: splash-background.png.</p>
+            <p><strong>Note:</strong>&nbsp;It is included only when the event type is &quot;splash&quot;.</p>
           </td>
         </tr>
         <tr>
@@ -2411,14 +2554,15 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
-            <p>Current preload status.&nbsp;The value will be one of the following:</p>
+            <p>Indicates the current preload status.</p>
+            <p>Possible values are:</p>
             <ul>
               <li>full</li>
               <li>semi-full</li>
               <li>partial</li>
               <li>minimal</li>
             </ul>
-            <p><strong>Note:</strong>&nbsp;It is included only when event type is &quot;preload&quot;.</p>
+            <p><strong>Note:</strong>&nbsp;It is included only when the event type is &quot;preload&quot;.</p>
           </td>
         </tr>
         <tr>
@@ -2426,8 +2570,8 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The reason how the target app is launched and&nbsp;why the target app is closed.</p>
-            <p>Note:&nbsp;It is included only when event type is &quot;launch/close/stop&quot;.</p>
+            <p>Indicates the reason behind the launching/closing of the target app.</p>
+            <p><strong>Note:</strong>&nbsp;It is included only when event type is &quot;launch/close/stop&quot;.</p>
           </td>
         </tr>
         <tr>
@@ -2435,7 +2579,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Window type of the app.</p>
+            <p>Indicates the windowType of the application.</p>
             <p><strong>Note:</strong>&nbsp;It is included only when event type is &quot;foreground&quot;.</p>
           </td>
         </tr>
@@ -2444,7 +2588,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Indicate that the app has window group or not.</p>
+            <p>Indicates if the application has windowGroup or not.</p>
             <p><strong>Note:</strong>&nbsp;It is included only when event type is &quot;foreground&quot;.</p>
           </td>
         </tr>
@@ -2453,7 +2597,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Indicate that the app is window group owner or not.</p>
+            <p>Indicates that the application has WindowGroupOwner or not.</p>
             <p><strong>Note:</strong>&nbsp;It is included only when event type is &quot;foreground&quot;.</p>
           </td>
         </tr>
@@ -2462,7 +2606,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Indicate who is window group&nbsp;owner of the app.</p>
+            <p>Indicates the&nbsp;windowGroupOwner of the application.</p>
             <p><strong>Note:</strong>&nbsp;It is included only when event type is &quot;foreground&quot;.</p>
           </td>
         </tr>
@@ -2471,7 +2615,8 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Current background status.&nbsp;The value will be one of the followings:</p>
+            <p>Indicates the current background status.</p>
+            <p>Possible values are:</p>
             <ul>
               <li>preload</li>
               <li>normal</li>
@@ -2484,41 +2629,46 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example response for a successful call:</p>
-    <p># luna-send -i -f luna://com.webos.service.applicationmanager/getAppLifeEvents &#39;{&quot;subscribe&quot;:true}&#39;</p>
-    <p>{</p>
-    <p>&quot;subscribed&quot;: true,</p>
-    <p>&quot;returnValue&quot;: true</p>
-    <p>}</p>
-    <p>&nbsp;</p>
-    <p>When livetv app is launched, outputs related to splash are shown like below.</p>
-    <p>{</p>
-    <p>&quot;event&quot;: &quot;splash&quot;,</p>
-    <p>&quot;title&quot;: &quot;Live TV&quot;,</p>
-    <p>&quot;appId&quot;: &quot;com.webos.app.livetv&quot;,</p>
-    <p>&quot;showSpinner&quot;: true,</p>
-    <p>&quot;showSplash&quot;: true,</p>
-    <p>&quot;returnValue&quot;: true,</p>
-    <p>&quot;splashBackground&quot;: &quot;file:///usr/palm/applications/com.webos.app.livetv/assets/livetv.png&quot;</p>
-    <p>}</p>
-    <p>&nbsp;</p>
-    <p>Example response for a failed call:</p>
-    <p>For error case, if subscribe filed is empty, below error text is shown.</p>
-    <p># luna-send -i -f luna://com.webos.service.applicationmanager/getAppLifeEvents &#39;{}&#39;<br />
-      {
+    <p># luna-send -i -f luna://com.webos.service.applicationmanager/getAppLifeEvents &#39;{<br />
+      &nbsp; &nbsp;&quot;subscribe&quot;:true<br />
+      }&#39;
     </p>
-    <p>&quot;subscribed&quot;: false,</p>
-    <p>&quot;errorCode&quot;: 1,</p>
-    <p>&quot;returnValue&quot;: false,</p>
-    <p>&quot;errorText&quot;: &quot;subscription is required&quot;</p>
-    <p>}</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;subscribed&quot;:true,<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+    <p>When livetv app is launched, outputs related to splash are shown like below.</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;event&quot;:&quot;splash&quot;,<br />
+      &nbsp; &nbsp;&quot;title&quot;:&quot;Live TV&quot;,<br />
+      &nbsp; &nbsp;&quot;appId&quot;:&quot;com.webos.app.livetv&quot;,<br />
+      &nbsp; &nbsp;&quot;showSpinner&quot;:true,<br />
+      &nbsp; &nbsp;&quot;showSplash&quot;:true,<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp; &nbsp;&quot;splashBackground&quot;:&quot;file:///usr/palm/applications/com.webos.app.livetv/assets/livetv.png&quot;<br />
+      }
+    </p>
+  </div>
+  <div class="code-bg-grey">
+    <p>For error case, if subscribe filed is empty, below error text is shown.</p>
+    <p># luna-send -i -f luna://com.webos.service.applicationmanager/getAppLifeEvents &#39;{}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;subscribed&quot;:false,<br />
+      &nbsp; &nbsp;&quot;errorCode&quot;:1,<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:false,<br />
+      &nbsp; &nbsp;&quot;errorText&quot;:&quot;subscription is required&quot;<br />
+      }
+    </p>
   </div>
 </div>
 <h3>getAppBasePath</h3>
 <div>
   <h4>Description</h4>
   <p>Gets the path of the application.</p>
-  <p><strong>Note:</strong> This API is useful to get base directory path of installed application.</p>
+  <p><strong>Note: </strong>This API is useful to get base directory path of installed application.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -2542,7 +2692,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>The application ID.</p>
+            <p>Indicates the appId.</p>
           </td>
         </tr>
       </tbody>
@@ -2571,27 +2721,28 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <p>Indicates the status of operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check &quot;errorText&quot; field&nbsp;for details.</li>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check &quot;errorText&quot; field&nbsp;for details.</li>
             </ul>
           </td>
         </tr>
         <tr>
           <td>appId</td>
-          <td>Required</td>
+          <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The application ID.</p>
+            <p>Indicates the appId.</p>
           </td>
         </tr>
         <tr>
           <td>basePath</td>
-          <td>Required</td>
+          <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The application&nbsp;path.</p>
+            <p>Indicates the application&nbsp;path.</p>
           </td>
         </tr>
         <tr>
@@ -2599,7 +2750,15 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;Error Codes&quot;&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
       </tbody>
@@ -2646,7 +2805,10 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -n 1 -a &quot;bareapp&quot; -f luna://com.webos.service.applicationmanager/getAppBasePath &#39;{ &quot;appId&quot;: &quot;bareapp&quot; }&#39;</p>
+    <p># luna-send -n 1 -a &quot;bareapp&quot; -f luna://com.webos.service.applicationmanager/getAppBasePath &#39;{<br />
+      &nbsp; &nbsp;&quot;appId&quot;:&quot;bareapp&quot;<br />
+      }&#39;
+    </p>
   </div>
 </div>
 <h3>getAppInfo</h3>
@@ -2677,13 +2839,13 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Indicates the application ID.</p>
+            <p>Indicates the id of the application.</p>
           </td>
         </tr>
         <tr>
           <td>properties</td>
           <td>Optional</td>
-          <td>String</td>
+          <td>String array</td>
           <td>
             <p>Indicates the value to be extracted from appinfo.json file.</p>
           </td>
@@ -2724,15 +2886,15 @@ toc: true
         </tr>
         <tr>
           <td>appId</td>
-          <td>Required</td>
+          <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Indicates the appId.</p>
+            <p>Indicates the appld.</p>
           </td>
         </tr>
         <tr>
           <td>appInfo</td>
-          <td>Required</td>
+          <td>Optional</td>
           <td>Object: <a href="#appinfo"> appInfo</a></td>
           <td>
             <p>If the <strong>getAppinfo </strong>method succeeds, the <strong>appInfo</strong> object contains information about the application.</p>
@@ -2743,7 +2905,15 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;Error Codes Reference&quot;&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
       </tbody>
@@ -2794,7 +2964,7 @@ toc: true
       &nbsp; &nbsp;&quot;id&quot;:&quot;com.webos.app.test&quot;<br />
       }&#39;
     </p>
-    <p>Response:&nbsp;</p>
+    <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;appInfo&quot;:{<br />
       &nbsp; &nbsp; &nbsp; &quot;...&quot;<br />
@@ -2808,7 +2978,7 @@ toc: true
 <h3>getAppStatus</h3>
 <div>
   <h4>Description</h4>
-  <p>The&nbsp;<strong>getAppStatus&nbsp;</strong>method gets the application status and information.</p>
+  <p>Gets the application status and information.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -2832,7 +3002,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>The application ID.</p>
+            <p>Indicates the appld.</p>
           </td>
         </tr>
         <tr>
@@ -2840,7 +3010,7 @@ toc: true
           <td>Optional</td>
           <td>Object: <a href="#appinfo"> appInfo</a></td>
           <td>
-            <p>Information of the app.</p>
+            <p>Indicates the information of the application.</p>
           </td>
         </tr>
       </tbody>
@@ -2869,10 +3039,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates the status of operation. Possible values are:</p>
+            <p>Indicates the status of operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
@@ -2881,7 +3052,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>The target application ID.&nbsp;</p>
+            <p>Indicates the target appld.</p>
           </td>
         </tr>
         <tr>
@@ -2897,7 +3068,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Current app status.&nbsp;</p>
+            <p>Indicates the current app status.&nbsp;</p>
           </td>
         </tr>
         <tr>
@@ -2905,7 +3076,8 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates if target app is present on the device. Possible values are:</p>
+            <p>Indicates if target app is present on the device.</p>
+            <p>Possible values are:</p>
             <ul>
               <li><strong>true</strong>: Target app exists&nbsp;on the device.&nbsp;</li>
               <li><strong>false</strong>: Target app does not exist on&nbsp;the device.&nbsp;</li>
@@ -2917,7 +3089,8 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates whether the target app could be launched or not. Possible values are:</p>
+            <p>Indicates whether the target app could be launched or not.</p>
+            <p>Possible values are:</p>
             <ul>
               <li><strong>true: </strong>Target app could be launched.&nbsp;</li>
               <li><strong>false:</strong> Target app could not be launched.&nbsp;</li>
@@ -2945,7 +3118,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+            <p>Indicates the reason for the failure of the operation. See the &quot;API Error Codes Reference&quot; section for details.</p>
           </td>
         </tr>
       </tbody>
@@ -2974,10 +3147,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates the status of operation. Possible values are:</p>
+            <p>Indicates the status of operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false:&nbsp;</strong>Indicates that the operation failed.&nbsp;</li>
             </ul>
           </td>
         </tr>
@@ -2986,7 +3160,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>The target application ID.&nbsp;</p>
+            <p>Indicates the target appld.</p>
           </td>
         </tr>
         <tr>
@@ -2994,7 +3168,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Indicates event according to the target app status.</p>
+            <p>Indicates the event according to the target app status.</p>
           </td>
         </tr>
         <tr>
@@ -3002,7 +3176,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Current app status.&nbsp;</p>
+            <p>Indicates the current app status.&nbsp;</p>
           </td>
         </tr>
         <tr>
@@ -3010,10 +3184,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates if target app is present on the device. Possible values are:</p>
+            <p>Indicates if target app is present on the device.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true</strong>: Target app exists&nbsp;on the device.&nbsp;</li>
-              <li><strong>false</strong>: Target app does not exist on&nbsp;the device.</li>
+              <li><strong>true:</strong> Target app exists&nbsp;on the device.&nbsp;</li>
+              <li><strong>false:</strong> Target app does not exist on&nbsp;the device.</li>
             </ul>
           </td>
         </tr>
@@ -3042,48 +3217,63 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example response for a successful call without appInfo:</p>
-    <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/getAppStatus &#39;{&quot;appId&quot;:&quot;com.webos.app.browser&quot;}&#39;</p>
-    <p>{</p>
-    <p>&quot;event&quot;: &quot;nothing&quot;,</p>
-    <p>&quot;appId&quot;: &quot;com.webos.app.browser&quot;,</p>
-    <p>&quot;status&quot;: &quot;launchable&quot;,</p>
-    <p>&quot;exist&quot;: true,</p>
-    <p>&quot;launchable&quot;: true,</p>
-    <p>&quot;returnValue&quot;: true</p>
-    <p>}</p>
-    <p>&nbsp;</p>
-    <p>Example response for a successful call without appInfo:</p>
-    <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/getAppStatus &#39;{&quot;appId&quot;:&quot;com.webos.app.browser&quot;, &quot;appInfo&quot;:true}&#39;</p>
-    <p>{</p>
-    <p>&quot;event&quot;: &quot;nothing&quot;,</p>
-    <p>&quot;appInfo&quot;: {</p>
-    <p>....</p>
-    <p>&quot;id&quot;: &quot;com.webos.app.browser&quot;,</p>
-    <p>&quot;title&quot;: &quot;Web Browser&quot;,</p>
-    <p>....</p>
-    <p>},</p>
-    <p>&quot;appId&quot;: &quot;com.webos.app.browser&quot;,</p>
-    <p>&quot;status&quot;: &quot;launchable&quot;,</p>
-    <p>&quot;exist&quot;: true,</p>
-    <p>&quot;launchable&quot;: true,</p>
-    <p>&quot;returnValue&quot;: true</p>
-    <p>}</p>
-    <p>&nbsp;</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/getAppStatus &#39;{<br />
+      &nbsp; &nbsp;&quot;appId&quot;:&quot;com.webos.app.browser&quot;<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;event&quot;:&quot;nothing&quot;,<br />
+      &nbsp; &nbsp;&quot;appId&quot;:&quot;com.webos.app.browser&quot;,<br />
+      &nbsp; &nbsp;&quot;status&quot;:&quot;launchable&quot;,<br />
+      &nbsp; &nbsp;&quot;exist&quot;:true,<br />
+      &nbsp; &nbsp;&quot;launchable&quot;:true,<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/getAppStatus &#39;{<br />
+      &nbsp; &nbsp;&quot;appId&quot;:&quot;com.webos.app.browser&quot;,<br />
+      &nbsp; &nbsp;&quot;appInfo&quot;:true<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;event&quot;:&quot;nothing&quot;,<br />
+      &nbsp; &nbsp;&quot;appInfo&quot;:{<br />
+      &nbsp; &nbsp; &nbsp; &quot;....&quot; &nbsp; &nbsp; &nbsp;&quot;id&quot;:&quot;com.webos.app.browser&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;title&quot;:&quot;Web Browser&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;....&quot;<br />
+      &nbsp; &nbsp;},<br />
+      &nbsp; &nbsp;&quot;appId&quot;:&quot;com.webos.app.browser&quot;,<br />
+      &nbsp; &nbsp;&quot;status&quot;:&quot;launchable&quot;,<br />
+      &nbsp; &nbsp;&quot;exist&quot;:true,<br />
+      &nbsp; &nbsp;&quot;launchable&quot;:true,<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+  </div>
+  <div class="code-bg-grey">
     <p>Example response for a failed call:</p>
-    <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/getAppStatus &#39;{&quot;id&quot;:&quot;com.webos.app.browser&quot;}&#39;</p>
-    <p>{</p>
-    <p>&quot;errorCode&quot;: 2,</p>
-    <p>&quot;returnValue&quot;: false,</p>
-    <p>&quot;errorText&quot;: &quot;invalid parameters&quot;</p>
-    <p>}</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/getAppStatus &#39;{<br />
+      &nbsp; &nbsp;&quot;id&quot;:&quot;com.webos.app.browser&quot;<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;errorCode&quot;:2,<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:false,<br />
+      &nbsp; &nbsp;&quot;errorText&quot;:&quot;invalid parameters&quot;<br />
+      }
+    </p>
   </div>
 </div>
 <h3>listLaunchPoints</h3>
 <div>
   <h4>Description</h4>
-  <p>The <strong>listLaunchPoints</strong> method gets all of the launchpoints.</p>
-  <p>LaunchPoint is virtual instance of application. The webOS provides <strong>shortcut</strong> based on launchPoint.</p>
+  <p>Gets all of the launchpoints.</p>
+  <p><strong>Note:</strong> LaunchPoint is the virtual instance of an application. The webOS provides <strong>shortcut</strong> based on launchPoint.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -3107,12 +3297,13 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
-            <p>Subscribe to the method.&nbsp;Possible values are:</p>
+            <p>Indicates if subscribed to get notifications.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Enable subscription</li>
-              <li><strong>false&nbsp;</strong>- Disable subscription.</li>
+              <li><strong>true: </strong>Subscribed for notifications</li>
+              <li><strong>false: </strong>Not subscribed</li>
             </ul>
-            <p>​​<strong>Default value:</strong>&nbsp;false</p>
+            <p>​​Default: <strong>false</strong></p>
           </td>
         </tr>
       </tbody>
@@ -3141,7 +3332,13 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p><strong>returnValue</strong>&nbsp;will&nbsp;<strong>always&nbsp;</strong>contain&nbsp;<strong>true</strong>.</p>
+            <p>Indicates the status of operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false:&nbsp;</strong>Indicates that the operation failed.&nbsp;</li>
+            </ul>
+            <p><strong>Note: returnValue</strong>&nbsp;will&nbsp;<strong>always&nbsp;</strong>contain&nbsp;<strong>true</strong>.</p>
           </td>
         </tr>
         <tr>
@@ -3149,9 +3346,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates if subscribed to get notifications.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li>If it is&nbsp;subscribed,&nbsp;<strong>subscribed&nbsp;</strong>will contain&nbsp;<strong>true</strong>.</li>
-              <li>If it is not&nbsp;subscribed,&nbsp;<strong>subscribed&nbsp;</strong>will contain&nbsp;<strong>false</strong>.</li>
+              <li><strong>true: </strong>Subscribed for notifications</li>
+              <li><strong>false: </strong>Not subscribed</li>
             </ul>
           </td>
         </tr>
@@ -3189,9 +3388,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li>If the&nbsp;<strong>listLaunchPoints</strong>&nbsp;method succeeds,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>true</strong>.</li>
-              <li>If the&nbsp;<strong>listLaunchPoints</strong>&nbsp;method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false</strong>.&nbsp;The method may fail because of one of the error conditions described in the <strong>API&nbsp;Error Codes&nbsp;</strong><strong>Reference</strong> of this service. See the <strong>API&nbsp;Error Codes Reference</strong> for more information.</li>
+              <li><strong>true</strong>: Indicates that the operation was successful.</li>
+              <li><strong>false</strong>: Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
@@ -3200,7 +3401,13 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p><strong>subscribed&nbsp;</strong>will <strong>always </strong>contain&nbsp;<strong>true</strong>.</p>
+            <p>Indicates if subscribed to get the notifications.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true: </strong>Subscribed for notifications</li>
+              <li><strong>false: </strong>Not subscribed</li>
+            </ul>
+            <p>Default<strong>: true</strong></p>
           </td>
         </tr>
         <tr>
@@ -3208,7 +3415,21 @@ toc: true
           <td>Optional</td>
           <td>Object</td>
           <td>
-            <p><strong>launchPoint&nbsp;</strong>is returned if only one app&#39;s launchPoint is changed by updating/removing/installing.</p>
+            <p>Returned if only one app&#39;s launchPoint is changed by updating/removing/installing.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>change</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the change in the status of the launch point.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>added</li>
+              <li>updated</li>
+              <li>removed</li>
+            </ul>
           </td>
         </tr>
         <tr>
@@ -3224,32 +3445,23 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example response for a successful call:</p>
-    <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/listLaunchPoints &#39;{&quot;subscribe&quot;:true}&#39;</p>
-    <p>{</p>
-    <p>&nbsp;&nbsp;&nbsp; &quot;subscribed&quot;: true,<br />
-      &nbsp;
+    <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/listLaunchPoints &#39;{<br />
+      &nbsp;&nbsp; &quot;subscribe&quot;:true<br />
+      }&#39;
     </p>
-    <p>&nbsp;&nbsp;&nbsp; &quot;launchPoints&quot;: [<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &quot;subscribed&quot;:true,<br />
+      &nbsp;&nbsp; &quot;launchPoints&quot;:[<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;id&quot;:&quot;bareapp&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;...&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;...&quot;<br />
+      &nbsp;&nbsp; ],<br />
+      &nbsp;&nbsp; &quot;returnValue&quot;:true<br />
+      }
     </p>
-    <p>&nbsp;&nbsp;&nbsp; {<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;
-    </p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &quot;id&quot;: &quot;bareapp&quot;,</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;
-    </p>
-    <p>&nbsp;&nbsp;&nbsp; },</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
-    <p>&nbsp;&nbsp;&nbsp; ...<br />
-      &nbsp;&nbsp;&nbsp;
-    </p>
-    <p>],<br />
-      &nbsp;&nbsp;&nbsp;
-    </p>
-    <p>&quot;returnValue&quot;: true</p>
-    <p>}</p>
   </div>
 </div>
 <h3>addLaunchPoint</h3>
@@ -3280,7 +3492,15 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>The launchpoint ID to be added.</p>
+            <p>Indicates the application ID to be added.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>launchPointId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the&nbsp;launchpoint ID to be added.</p>
           </td>
         </tr>
         <tr>
@@ -3288,7 +3508,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The launchpoint&nbsp;title.</p>
+            <p>Indicates the launchpoint&nbsp;title.</p>
           </td>
         </tr>
         <tr>
@@ -3296,7 +3516,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The path of the icon image displayed for the launchpoint.</p>
+            <p>Indicates the path of the icon image displayed for the launchpoint.</p>
           </td>
         </tr>
         <tr>
@@ -3304,7 +3524,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The path of the background image displayed to the user when the user hovers over the launchpoint.</p>
+            <p>Indicates the path of the background image displayed to the user when the user hovers over the launchpoint.</p>
           </td>
         </tr>
         <tr>
@@ -3312,9 +3532,9 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The background color for the launchpoint.&nbsp;It will be displayed when the&nbsp;<strong>bgImage</strong>&nbsp;is not provided or unable to display. A color can be specified as a hex value or as a HTML color name.&nbsp;</p>
+            <p>Indicates the background color for the launchpoint.&nbsp;It will be displayed when the&nbsp;<strong>bgImage</strong>&nbsp;is not provided or unable to display. A color can be specified as a hex value or as a HTML color name.&nbsp;</p>
             <p>Format:&nbsp;color hex code (ex. #000000(black))&nbsp;</p>
-            <p><a class="external-link" href="http://www.color-hex.com/" rel="nofollow" style="line-height: 1.6em; color: rgb(216, 5, 70); text-decoration: none;">http://www.color-hex.com/</a></p>
+            <p>http://www.color-hex.com/</p>
           </td>
         </tr>
         <tr>
@@ -3322,7 +3542,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The path of the image displayed in the Recents tile.</p>
+            <p>Indicates the path of the image displayed in the &quot;Recents&quot; tile.</p>
           </td>
         </tr>
         <tr>
@@ -3330,9 +3550,9 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The background color for the application tile. The&nbsp;application&nbsp;tile is displayed in the Home, the Launcher, and the Recent screen.</p>
+            <p>Indicates the background color for the application tile. The&nbsp;application&nbsp;tile is displayed in the Home, the Launcher, and the Recent screen.</p>
             <p>Format:&nbsp;color hex code (ex. #000000(black))&nbsp;</p>
-            <p><a class="external-link" href="http://www.color-hex.com/" rel="nofollow" style="color: rgb(216, 5, 70); line-height: 1.6em; text-decoration: none;">http://www.color-hex.com/</a></p>
+            <p>http://www.color-hex.com/</p>
           </td>
         </tr>
         <tr>
@@ -3340,7 +3560,8 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p><span style="line-height:1.6em">The path of the large icon (130x130 pixels) displayed in the top left corner of the screen, when the user hovers over an application tile in the Launcher. This file path is relative to the appinfo.json file.</span></p>
+            <p>Indicates the path of the large icon (130x130 pixels) displayed in the top left corner of the screen, when the user hovers over an application tile in the Launcher.</p>
+            <p><strong>Note</strong>: This file path is relative to the appinfo.json file.</p>
           </td>
         </tr>
         <tr>
@@ -3348,7 +3569,8 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>A brief description for the launchpoint.&nbsp;The&nbsp;<strong>appDescription&nbsp;</strong>cannot exceed 60 characters.</p>
+            <p>Indicates a brief description for the launchpoint.</p>
+            <p><strong>Note</strong>: The&nbsp;<strong>appDescription&nbsp;</strong>cannot exceed 60 characters.</p>
           </td>
         </tr>
         <tr>
@@ -3364,7 +3586,7 @@ toc: true
           <td>Optional</td>
           <td>String array</td>
           <td>
-            <p>The paths of the background images displayed to the user when the user hovers over the launchpoint.</p>
+            <p>Indicates the paths of the background images displayed to the user when the user hovers over the launchpoint.</p>
           </td>
         </tr>
         <tr>
@@ -3372,10 +3594,18 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The tile size on UI: normal or large.&nbsp;<br />
-              The default value is normal. The large tile hints that UI should make this tile larger than normal (2x).<br />
-              Usually, large size may be used for promotional application.&nbsp;
-            </p>
+            <p>Indicates the tile size on UI.</p>
+            <p>Possible values are</p>
+            <ul>
+              <li>normal</li>
+              <li>large.&nbsp;</li>
+            </ul>
+            <p>Default:<strong> normal</strong></p>
+            <p><strong>Note</strong>:</p>
+            <ul>
+              <li>The large tile hints that UI should make this tile larger than normal (2x).</li>
+              <li>Usually, large size may be used for promotional application.&nbsp;</li>
+            </ul>
           </td>
         </tr>
         <tr>
@@ -3383,11 +3613,13 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates if the launchpoint position is movable or not.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li>To enable <strong>unmovable</strong>, set <strong>unmovable </strong>to <strong>true</strong>.&nbsp;If it is set to <strong>true</strong>, the launchpoint position can not be moved by the user.</li>
-              <li>To disable <strong>unmovable</strong>, set <strong>unmovable </strong>to <strong>false</strong>.</li>
-              <li>The default value of <strong>unmovable </strong>is <strong>false</strong>.</li>
+              <li><strong>true</strong>: The launchpoint position cannot be moved by the user.</li>
+              <li><strong>false</strong>: the launchpoint position can be moved by the user.</li>
             </ul>
+            <p>Default: <strong>false</strong></p>
           </td>
         </tr>
         <tr>
@@ -3395,19 +3627,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The additional data that may be used for&nbsp;analytical purposes. The userData will simply be logged when the user interacts with it in Launcher.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>supportI18nTitle</td>
-          <td>Optional</td>
-          <td>Boolean</td>
-          <td>
-            <ul>
-              <li>If&nbsp;<strong>&quot;supportI18nTitle&quot;</strong>&nbsp;is set to&nbsp;<strong>true</strong>, i18n will be supported for title when any information of this launch point is changed.</li>
-              <li>If&nbsp;<strong>&quot;supportI18nTitle&quot;</strong>&nbsp;is set to&nbsp;<strong>false</strong>, i18n will be supported for title when any information of this launch point is changed.</li>
-              <li>The default value of&nbsp;<strong>supportI18nTitle&nbsp;</strong>is&nbsp;<strong>true</strong></li>
-            </ul>
+            <p>Indicates the additional data that may be used for&nbsp;analytical purposes. The userData will be logged when the user interacts with it in Launcher.</p>
           </td>
         </tr>
         <tr>
@@ -3415,7 +3635,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Indicate a category(group) of the launch point. The value should be the one of below mapping table.</p>
+            <p>Indicates the category(group) of the launch point. The value should be the one of below mapping table.</p>
             <p><u>*$RESERVED_VALUE is for special callers to be controlled by LPM.</u></p>
             <table>
               <tbody>
@@ -3449,11 +3669,23 @@ toc: true
           </td>
         </tr>
         <tr>
+          <td>supportI18nTitle</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <ul>
+              <li>If&nbsp;<strong>&quot;supportI18nTitle&quot;</strong>&nbsp;is set to&nbsp;<strong>true</strong>, i18n will be supported for title when any information of this launch point is changed.</li>
+              <li>If&nbsp;<strong>&quot;supportI18nTitle&quot;</strong>&nbsp;is set to&nbsp;<strong>false</strong>, i18n will be supported for title when any information of this launch point is changed.</li>
+              <li>The default value of&nbsp;<strong>supportI18nTitle&nbsp;</strong>is&nbsp;<strong>true</strong></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
           <td>favicon</td>
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The paths of favorite icon for the launchpoint.</p>
+            <p>Indicates the paths of the favorite icon for the launchpoint.</p>
           </td>
         </tr>
         <tr>
@@ -3462,7 +3694,7 @@ toc: true
           <td>Boolean</td>
           <td>
             <p>If it is set to&nbsp;<strong>true</strong>, the app will be fresh-launched(re-randering)&nbsp;whenever user clicks the launchpoint.</p>
-            <p>Note: This parameter is deprecated in IvyLeague.</p>
+            <p><strong>Note</strong>: This parameter is deprecated in IvyLeague.</p>
           </td>
         </tr>
       </tbody>
@@ -3491,18 +3723,20 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li>If the <strong>addLaunchPoint&nbsp;</strong>method succeeds,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>true</strong>.</li>
-              <li>If the&nbsp;<strong>addLaunchPoint&nbsp;</strong>method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false</strong>.&nbsp;The method may fail because of one of the error conditions described in the <strong>Error Codes&nbsp;</strong><strong>Reference</strong> of this method. See the <strong>Error Codes Reference</strong> for more information.</li>
+              <li><strong>true</strong>: Indicates that the operation was successful.</li>
+              <li><strong>false</strong>: Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
         </tr>
         <tr>
           <td>launchPointId</td>
-          <td>Required</td>
+          <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The&nbsp;launchpoint ID to be added.</p>
+            <p>Indicates the&nbsp;launchpoint ID to be added.</p>
           </td>
         </tr>
         <tr>
@@ -3510,7 +3744,15 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The <strong>addLaunchPoint</strong> method will return <strong>errorText</strong>&nbsp;only if it fails. See the <strong>Error Codes Reference</strong> of this method for more details.</p>
+            <p>Indicates the reason for the failure of the operation. See the &quot;Error Codes&quot; section of this method for details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
       </tbody>
@@ -3543,26 +3785,26 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example response for a successful call:</p>
-    <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/addLaunchPoint &#39;{&quot;id&quot;:&quot;com.webos.app.test&quot;, &quot;title&quot;:&quot;TestLP&quot;}&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;launchPointId&quot;: &quot;178884&quot;,</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
-    <p>&nbsp;</p>
-    <p>Example response for a failed call:</p>
-    <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/addLaunchPoint &#39;{&quot;id&quot;:&quot;com.webos.app.test&quot;}&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: false,</p>
-    <p style="margin-left:40px">&quot;errorText&quot;: &quot;invalid json request&quot;</p>
-    <p>}</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/addLaunchPoint &#39;{<br />
+      &nbsp;&nbsp; &quot;id&quot;:&quot;com.webos.app.test&quot;,<br />
+      &nbsp;&nbsp; &quot;title&quot;:&quot;TestLP&quot;<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &quot;launchPointId&quot;:&quot;178884&quot;,<br />
+      &nbsp;&nbsp; &quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>updateLaunchPoint</h3>
 <div>
   <h4>Description</h4>
-  <p>The <strong>updateLaunchPoint </strong>method updates a dynamic launchpoint.</p>
-  <p>If a user changes the HDMI application icon to another icon like a game icon using Input Manager on a TV, the HDMI application icon is dynamically changed to the new icon on the launcher.</p>
+  <p>Updates a dynamic launchpoint.</p>
+  <p><strong>Note:</strong> If a user changes the HDMI application icon to another icon like a game icon using Input Manager on a TV, the HDMI application icon is dynamically&nbsp;<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;changed to the new icon on the launcher.
+  </p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -3586,8 +3828,8 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>The&nbsp;launchpoint ID to be updated.</p>
-            <p>Both launchPointId and one or more parameters (title, icon, etc) need to be passed from service user.</p>
+            <p>Indicates the&nbsp;launchpoint ID to be updated.</p>
+            <p><strong>Note</strong>: Both launchPointId and one or more parameters (title, icon, etc) need to be passed from service user.</p>
           </td>
         </tr>
         <tr>
@@ -3595,7 +3837,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The launchpoint&nbsp;title.</p>
+            <p>Indicates the launchpoint&nbsp;title.</p>
           </td>
         </tr>
         <tr>
@@ -3603,7 +3845,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The path of the icon image displayed for the launchpoint.</p>
+            <p>Indicates the path of the icon image displayed for the launchpoint.</p>
           </td>
         </tr>
         <tr>
@@ -3611,9 +3853,9 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The path of the background image displayed to the user when the user hovers over the launchpoint.</p>
+            <p>Indicates the path of the background image displayed to the user when the user hovers over the launchpoint.</p>
             <p>Format:&nbsp;color hex code (ex. #000000(black))&nbsp;</p>
-            <p><a class="external-link" href="http://www.color-hex.com/" rel="nofollow" style="color: rgb(216, 5, 70); line-height: 1.6em; text-decoration: none;">http://www.color-hex.com/</a></p>
+            <p>http://www.color-hex.com/</p>
           </td>
         </tr>
         <tr>
@@ -3621,7 +3863,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The background color for the launchpoint.&nbsp;It will be displayed when the&nbsp;<strong>bgImage</strong>&nbsp;is not provided or unable to display. A color can be specified as a hex value or as a HTML color name.&nbsp;</p>
+            <p>Indicates the background color for the launchpoint.&nbsp;It will be displayed when the&nbsp;<strong>bgImage</strong>&nbsp;is not provided or unable to display. A color can be specified as a hex value or as a HTML color name.</p>
           </td>
         </tr>
         <tr>
@@ -3629,7 +3871,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The path of the image displayed in the Recents tile.</p>
+            <p>Indicates the path of the image displayed in the Recents tile.</p>
           </td>
         </tr>
         <tr>
@@ -3637,9 +3879,9 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The background color for the application tile. The&nbsp;application&nbsp;tile is displayed in the Home, the Launcher, and the Recent screen.</p>
+            <p>Indicates the background color for the application tile. The&nbsp;application&nbsp;tile is displayed in the Home, the Launcher, and the Recent screen.</p>
             <p>Format:&nbsp;color hex code (ex. #000000(black))&nbsp;</p>
-            <p><a class="external-link" href="http://www.color-hex.com/" rel="nofollow" style="color: rgb(216, 5, 70); line-height: 1.6em; text-decoration: none;">http://www.color-hex.com/</a></p>
+            <p>http://www.color-hex.com/</p>
           </td>
         </tr>
         <tr>
@@ -3647,7 +3889,8 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The path of the large icon (130x130 pixels) displayed in the top left corner of the screen, when the user hovers over an application tile in the Launcher. This file path is relative to the appinfo.json file.</p>
+            <p>Indicates the path of the large icon (130x130 pixels) displayed in the top left corner of the screen, when the user hovers over an application tile in the Launcher.</p>
+            <p><strong>Note</strong>: This file path is relative to the appinfo.json file.</p>
           </td>
         </tr>
         <tr>
@@ -3655,7 +3898,8 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>A brief description for the launchpoint.&nbsp;The <strong>appDescription&nbsp;</strong>cannot exceed 60 characters.</p>
+            <p>Indicates a brief description for the launchpoint.</p>
+            <p><strong>Note</strong>: The <strong>appDescription&nbsp;</strong>cannot exceed 60 characters.</p>
           </td>
         </tr>
         <tr>
@@ -3671,7 +3915,7 @@ toc: true
           <td>Optional</td>
           <td>String array</td>
           <td>
-            <p>The paths of the background images displayed to the user when the user hovers over the launchpoint.</p>
+            <p>Indicates the paths of the background images displayed to the user when the user hovers over the launchpoint.</p>
           </td>
         </tr>
         <tr>
@@ -3679,10 +3923,18 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The tile size on UI: normal or large.&nbsp;<br />
-              The default value is normal. The large tile hints that UI should make this tile larger than normal (2x).<br />
-              Usually, large size may be used for promotional application.&nbsp;
-            </p>
+            <p>Indicates the tile size on UI.</p>
+            <p>Possible values are</p>
+            <ul>
+              <li>normal</li>
+              <li>large.&nbsp;</li>
+            </ul>
+            <p>Default:<strong> normal</strong></p>
+            <p><strong>Note</strong>:</p>
+            <ul>
+              <li>The large tile hints that UI should make this tile larger than normal (2x).</li>
+              <li>Usually, large size may be used for promotional application.</li>
+            </ul>
           </td>
         </tr>
         <tr>
@@ -3690,11 +3942,13 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates if the launchpoint position is movable or not.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li>To enable&nbsp;<strong>unmovable</strong>, set&nbsp;<strong>unmovable&nbsp;</strong>to&nbsp;<strong>true</strong>.&nbsp;If it is set to<strong>true</strong>, the launchpoint position can not be moved by the user.</li>
-              <li>To disable&nbsp;<strong>unmovable</strong>, set&nbsp;<strong>unmovable&nbsp;</strong>to&nbsp;<strong>false</strong>.</li>
-              <li>The default value of&nbsp;<strong>unmovable&nbsp;</strong>is&nbsp;<strong>false</strong>.</li>
+              <li><strong>true</strong>: The launchpoint position cannot be moved by the user.</li>
+              <li><strong>false</strong>: the launchpoint position can be moved by the user.</li>
             </ul>
+            <p>Default: <strong>false</strong></p>
           </td>
         </tr>
         <tr>
@@ -3702,7 +3956,8 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The additional data that may be used for&nbsp;analytical purposes. The userData will simply be logged when the user interacts with it in Launcher.</p>
+            <p>Indicates the additional data that may be used for&nbsp;analytical purposes.</p>
+            <p><strong>Note</strong>: The userData will simply be logged when the user interacts with it in Launcher.</p>
           </td>
         </tr>
         <tr>
@@ -3710,7 +3965,8 @@ toc: true
           <td>Optional</td>
           <td>Object array</td>
           <td>
-            <p>The list of icon images. The icons will be shown in launch point alternately.</p>
+            <p>Indicates the list of icon images.</p>
+            <p><strong>Note</strong>: The icons will be shown in the launch point alternately.</p>
           </td>
         </tr>
         <tr>
@@ -3718,7 +3974,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Favorite icon image displayed for the website.</p>
+            <p>Indicates the favorite icon image displayed for the website.</p>
           </td>
         </tr>
         <tr>
@@ -3756,7 +4012,7 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
-            <p>This indicates&nbsp;whether the target app is re-launched whenever the launch point is clicked. (Not fast-switching)</p>
+            <p>Indicates if the target app is re-launched whenever the launch point is clicked. (Not fast-switching)</p>
             <p><strong>Note:</strong> This parameter is deprecated in IvyLeague.</p>
           </td>
         </tr>
@@ -3786,10 +4042,20 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li>If the&nbsp;<strong>updateLaunchPoint</strong>&nbsp;method succeeds,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>true</strong>.</li>
-              <li>If the&nbsp;<strong>updateLaunchPoint</strong>&nbsp;method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false</strong>.&nbsp;The method may fail because of one of the error conditions described in the <strong>Error Codes&nbsp;Reference</strong> of this method. See the <strong>Error Codes Reference</strong> for more information.</li>
+              <li><strong>true</strong>: Indicates that the operation was successful.</li>
+              <li><strong>false</strong>: Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number (int8_t)</td>
+          <td>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
         <tr>
@@ -3797,7 +4063,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The <strong>updateLaunchPoint</strong> method will return <strong>errorText</strong>&nbsp;only if it fails. See the <strong>Error Codes Reference</strong> of this method for more details.</p>
+            <p>Indicates the reason for the failure of the operation. See the &quot;API Error Codes Reference&quot; section for more details.</p>
           </td>
         </tr>
       </tbody>
@@ -3837,25 +4103,35 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example response for a successful call:</p>
-    <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/updateLaunchPoint &#39;{&quot;launchPointId&quot;:&quot;178884&quot;, &quot;title&quot;:&quot;Test&quot;}&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
-    <p>&nbsp;</p>
-    <p>Example response for a failed call:</p>
-    <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/updateLaunchPoint &#39;{&quot;launchPointId&quot;:&quot;178884&quot;}&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: false,</p>
-    <p style="margin-left:40px">&quot;errorText&quot;: &quot;Insufficient parameters&quot;</p>
-    <p>}</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/updateLaunchPoint &#39;{<br />
+      &nbsp;&nbsp; &quot;launchPointId&quot;:&quot;178884&quot;,<br />
+      &nbsp;&nbsp; &quot;title&quot;:&quot;Test&quot;<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &quot;returnValue&quot;:true<br />
+      }
+    </p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/updateLaunchPoint &#39;{<br />
+      &nbsp;&nbsp; &quot;launchPointId&quot;:&quot;178884&quot;<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &quot;returnValue&quot;:false,<br />
+      &nbsp;&nbsp; &quot;errorText&quot;:&quot;Insufficient parameters&quot;<br />
+      }
+    </p>
   </div>
 </div>
 <h3>removeLaunchPoint</h3>
 <div>
   <h4>Description</h4>
-  <p>The <strong>removeLaunchPoint </strong>method removes a dynamic launchpoint.</p>
-  <p>It can cause application uninstall.</p>
+  <p>Removes a dynamic launchpoint.</p>
+  <p><strong>Note:</strong> It can cause application uninstall.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -3879,7 +4155,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>The launchpoint ID to be removed.</p>
+            <p>Indicates the launchpoint ID to be removed.</p>
           </td>
         </tr>
       </tbody>
@@ -3908,10 +4184,20 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li>If the&nbsp;<strong>removeLaunchPoint</strong>&nbsp;method succeeds,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>true</strong>.</li>
-              <li>If the&nbsp;<strong>removeLaunchPoint</strong>&nbsp;method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false</strong>.&nbsp;The method may fail because of one of the error conditions described in the <strong>Error Codes&nbsp;</strong><strong>Reference</strong> of this method. See the <strong>Error Codes Reference</strong> for more information.</li>
+              <li><strong>true</strong>: Indicates that the operation was successful.</li>
+              <li><strong>false</strong>: Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number (int8_t)</td>
+          <td>
+            <p>The error code for the failed operation.</p>
           </td>
         </tr>
         <tr>
@@ -3919,7 +4205,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The <strong>removeLaunchPoint</strong> method will return <strong>errorText</strong>&nbsp;only if it fails. See the <strong>Error Codes Reference</strong> of this method for more details.</p>
+            <p>Indicates the reason for the failure of the operation. See the &quot;API Error Codes Reference&quot; section for more details.</p>
           </td>
         </tr>
       </tbody>
@@ -3959,24 +4245,26 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example response for a successful call:</p>
-    <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/removeLaunchPoint &#39;{&quot;launchPointId&quot;:&quot;178884&quot;}&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
-    <p>&nbsp;</p>
-    <p>Example response for a failed call:</p>
-    <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/removeLaunchPoint &#39;{}&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: false,</p>
-    <p style="margin-left:40px">&quot;errorText&quot;: &quot;invalid json request&quot;</p>
-    <p>}</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/removeLaunchPoint &#39;{<br />
+      &nbsp;&nbsp; &quot;launchPointId&quot;:&quot;178884&quot;<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>registerApp</h3>
 <div>
   <h4>Description</h4>
-  <p>The&nbsp;<strong>registerApp&nbsp;</strong>method registers a native application. This method <strong>should be called by launched&nbsp;native&nbsp;application</strong> to indicate if it is ready to receive several events.&nbsp;Each event is communicated via the ls message connection and the reply will be delivered only to the app that is performing the action.</p>
+  <p>Registers a native application.</p>
+  <p><strong>Note:</strong></p>
+  <ul>
+    <li>This method <strong>should be called by launched&nbsp;native&nbsp;application</strong> to indicate if it is ready to receive several events.</li>
+    <li>Each event is communicated via the ls message connection and the reply will be delivered only to the app that is performing the action.</li>
+  </ul>
   <h4>Parameters</h4>
   <p>None</p>
   <h4>Call Returns</h4>
@@ -4002,10 +4290,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates the status of operation. Possible values are:</p>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.&nbsp;</li>
+              <li><strong>true:</strong> Indicates that the operation was successful.</li>
+              <li><strong>false: </strong>Indicates that the operation failed.</li>
             </ul>
           </td>
         </tr>
@@ -4051,10 +4340,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates the status of operation. Possible values are:</p>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.&nbsp;</li>
+              <li><strong>true</strong>: Indicates that the operation was successful.</li>
+              <li><strong>false</strong>:<strong> </strong>Indicates that the operation failed.</li>
             </ul>
           </td>
         </tr>
@@ -4063,7 +4353,7 @@ toc: true
           <td>Optional</td>
           <td>Object: <a href="#params"> params</a></td>
           <td>
-            <p>Information to be delivered to the registered&nbsp;app.</p>
+            <p>Indicates the information to be delivered to the registered&nbsp;app.</p>
           </td>
         </tr>
         <tr>
@@ -4071,7 +4361,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The reason why this app is launch/closed.</p>
+            <p>Indicates the reason for the app to be launched/closed.</p>
           </td>
         </tr>
         <tr>
@@ -4079,7 +4369,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>ID of the registered app.&nbsp;</p>
+            <p>Indicates the <strong>ID</strong> of the registered app.&nbsp;</p>
           </td>
         </tr>
       </tbody>
@@ -4105,8 +4395,12 @@ toc: true
 <h3>lockApp</h3>
 <div>
   <h4>Description</h4>
-  <p>The <strong>lockApp </strong>method&nbsp;locks an application.&nbsp;Once it is locked, the application cannot be launched.</p>
-  <p><strong>NOTE: </strong>This method is only called by <strong>appinstalld</strong>. Do not use this method in your application.</p>
+  <p>Locks an application.&nbsp;</p>
+  <p><strong>Note:&nbsp;</strong></p>
+  <ul>
+    <li>Once it is locked, the application cannot be launched.</li>
+    <li>This method is only called by <strong>appinstalld</strong>. Do not use this method in your application.</li>
+  </ul>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -4138,9 +4432,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates if the application is locked.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li>To lock the application, set <strong>lock </strong>to <strong>true</strong>.&nbsp;If it is set to <strong>true</strong>, the application won&#39;t be launched.</li>
-              <li>To unlock the application, set <strong>lock&nbsp;</strong>to <strong>false.</strong></li>
+              <li><strong>true</strong>: The application is locked, set <strong>lock </strong>to <strong>true</strong>.&nbsp;If set to <strong>true</strong>, the application cannot be launched.</li>
+              <li><strong>false</strong>: The application is unlocked.</li>
             </ul>
           </td>
         </tr>
@@ -4170,9 +4466,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates the status of operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li>If the <strong>lockApp&nbsp;</strong>method succeeds,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>true</strong>.</li>
-              <li>If the&nbsp;<strong>lockApp&nbsp;</strong>method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false</strong>.&nbsp;The method may fail because of one of the error conditions described in the <strong>Error Codes&nbsp;</strong><strong>Reference</strong> of this method. See the <strong>Error Codes Reference</strong> for more information.</li>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check &quot;errorText&quot; field&nbsp;for details.</li>
             </ul>
           </td>
         </tr>
@@ -4181,9 +4479,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
+            <p>Indicates if the application is locked or unlocked.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li>If the application is locked, <strong>locked </strong>will contain <strong>true</strong>.</li>
-              <li>If the application is unlocked, <strong>locked </strong>will contain <strong>false</strong>.</li>
+              <li><strong>true:</strong> The application is locked</li>
+              <li><strong>false:</strong> The application is unlocked</li>
             </ul>
           </td>
         </tr>
@@ -4192,7 +4492,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>The application ID which is locked or unlocked.</p>
+            <p>Indicates the application ID which is locked or unlocked.</p>
           </td>
         </tr>
         <tr>
@@ -4200,7 +4500,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The <strong>lockApp</strong> method will return <strong>errorText</strong>&nbsp;only if it fails. See the <strong>Error Codes Reference</strong> of this method for more details.</p>
+            <p>Indicates the reason for the failure of the operation. See the &quot;Error Codes&quot; section of this method for details.</p>
           </td>
         </tr>
       </tbody>
@@ -4249,7 +4549,7 @@ toc: true
 <h2>Objects</h2>
 <div>
   <h3>appInfo</h3>
-  <p>The object contains information about the application.</p>
+  <p>Contains the information about the application.</p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
@@ -4272,7 +4572,14 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>The application ID, e.g., \&quot;com.newco.app.myApp\&quot;. Every application has a unique ID, created from reverse DNS naming conventions. The launcher uses the ID to uniquely identify application and displays it with the title above. The application ID is unique, set once, and cannot be changed after publishing the application.</p>
+            <p>Indicates the application ID.</p>
+            <p><strong>Example</strong>: \&quot;com.newco.app.myApp\&quot;</p>
+            <p><strong>Note</strong>:</p>
+            <ul>
+              <li>Every application has a unique ID, created from reverse DNS naming conventions.</li>
+              <li>The launcher uses the ID to uniquely identify application and displays it with the title above.</li>
+              <li>The application ID is unique,can only be set once, and cannot be changed after publishing the application.</li>
+            </ul>
           </td>
         </tr>
         <tr>
@@ -4280,7 +4587,8 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>The launchpoint for the application. This is a file path relative to the appinfo.json file and needs to point to an HTML file.</p>
+            <p>Indicates the launchpoint of the application.</p>
+            <p><strong>Note</strong>: This is a file path relative to the <strong>appinfo.json</strong> file and needs to point to an <strong>HTML</strong> file.</p>
           </td>
         </tr>
         <tr>
@@ -4288,7 +4596,8 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>The application title as it is shown in the Launcher and in the application window. The application title is unique, set once.</p>
+            <p>Indicates the application title as it is shown in the launcher and in the application window.</p>
+            <p><strong>Note</strong>: The application title is unique, set once.</p>
           </td>
         </tr>
         <tr>
@@ -4296,7 +4605,8 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>The path of the icon image displayed for the application.&nbsp;<span style="line-height:1.6em">This file path is relative to the appinfo.json file. The default is \&quot;icon.png\&quot;.</span></p>
+            <p>Indicates the path of the icon image displayed for the application.</p>
+            <p><strong>Note</strong>: The file path is relative to the appinfo.json file. The default is \&quot;icon.png\&quot;</p>
           </td>
         </tr>
         <tr>
@@ -4384,7 +4694,7 @@ toc: true
     </table>
   </div>
   <h3>launchPoints</h3>
-  <p>The object contains the array of launchpoints.</p>
+  <p>Contains the array of launchpoints.</p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
@@ -4494,7 +4804,7 @@ toc: true
     </table>
   </div>
   <h3>params</h3>
-  <p>The object contains the parameters for the target application. You should specify correct parameters for each application. As each application has different parameters, the parameters&nbsp;of params cannot be defined.</p>
+  <p>Contains the parameters for the target application. Specify correct parameters for each application. As each application has different parameters, the parameters&nbsp;of params cannot be defined.</p>
   <h3>foregroundAppInfo</h3>
   <p>The object contains <span style="color:rgb(0, 0, 0)">sorted&nbsp;</span>foreground applications in ascending order.</p>
   <div class="table-container">
@@ -4558,7 +4868,7 @@ toc: true
     </table>
   </div>
   <h3>running</h3>
-  <p>This object contains the array of the&nbsp;running applications.</p>
+  <p>Indicates the object that contains the array of the&nbsp;running applications.</p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
@@ -4651,4 +4961,57 @@ toc: true
       </tbody>
     </table>
   </div>
+</div>
+<h2>API Error Codes Reference</h2>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <tbody>
+      <tr>
+        <th width="15%">
+          <p>Error Code</p>
+        </th>
+        <th width="30%">
+          <p>Error Text</p>
+        </th>
+        <th width="55%">
+          <p>Error Description</p>
+        </th>
+      </tr>
+      <tr>
+        <td>None</td>
+        <td>Missing required key</td>
+        <td>
+          <p>Missing required key.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>None</td>
+        <td>invalid json request</td>
+        <td>
+          <p>Invalid JSON request.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>-102</td>
+        <td>[ID] has been locked.</td>
+        <td>
+          <p>Application has been locked.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>-203</td>
+        <td>[ID] is already launching</td>
+        <td>
+          <p>The native application is already launching.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>-312</td>
+        <td>not allowed</td>
+        <td>
+          <p>EULA is not accepted.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
