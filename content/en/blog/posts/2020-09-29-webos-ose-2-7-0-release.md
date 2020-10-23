@@ -32,15 +32,15 @@ webOS OSE has upgraded its Yocto support from 2.6 to 3.1. The following build-we
 See the following list for the supported version of each component:
 
   - gcc - 9.3
-  - glib - 2.62.4
-  - glibc - 2.3.1
+  - glib - 2.62.6
+  - glibc - 2.31
   - boost - 1.72.0
-  - python - 3.9.7
+  - python3 - 3.8.2
   - openssl - 1.1.1g
   - gstreamer - 1.16.2 (included in build 235)
-  - node.JS -12.14 (included in build 234)
+  - node.JS -12.14.1 (included in build 234)
   - bluez5 - 5.54 (included in build 234)
-  - Raspberry Pi 4 kernel for OSE - kernel-4.19.126-v7l
+  - Raspberry Pi 4 kernel for OSE - kernel-5.4.59
 
 ## App mirroring support
 App mirroring is a feature that mirrors one screen to another screen. OSE allows to implement app mirroring features such as mirroring between displays by using APIs of LSM (Luna Surface Manager).
