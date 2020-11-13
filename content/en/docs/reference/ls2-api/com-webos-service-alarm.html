@@ -1,36 +1,76 @@
 ---
 title: com.webos.service.alarm
-date: 2019-04-24
+date: 2020-11-09
 weight: 85
 toc: true
 ---
 <div>
-  <H2>API Summary</h2>
-  <p>The <strong>com.webos.service.alarm</strong> API enables webOS daemons or apps to call webOS API methods with specific parameters in a specified time interval.&nbsp;</p>
+  <h2>API Summary</h2>
+  <p>
+    The <strong>com.webos.service.alarm</strong> API enables webOS daemons or
+    apps to call webOS API methods with specific parameters in a specified time
+    interval.&nbsp;
+  </p>
 </div>
 <h2>Overview of the API</h2>
 <div>
-  <p><u><strong>About webOS alarms</strong></u></p>
+  <p>
+    <u><strong>About webOS alarms</strong></u>
+  </p>
   <ul>
-    <li>A webOS alarm is a timer that causes a webOS API method to be called after a specified time interval.</li>
+    <li>
+      A webOS alarm is a timer that causes a webOS API method to be called after
+      a specified time interval.
+    </li>
     <li>webOS manages a list of alarms in a SQL database.</li>
     <li>Each webOS app or daemon can have its unique set of alarms.&nbsp;</li>
     <li>webOS app can request all alrams present in alarms database.</li>
     <li>webOS app can request next wakeup alarm present in database.</li>
   </ul>
-  <p><u><strong>Using the com.webos.service.alarm</strong></u></p>
+  <p>
+    <u><strong>Using the com.webos.service.alarm</strong></u>
+  </p>
   <ul>
     <li>Any webOS app or daemon can use the com.webos.service.alarm API.</li>
   </ul>
-  <p><u><strong>Wake up vs. non-wake up</strong></u></p>
-  <p>An important decision that you need to make when using the com.webos.service.alarm is whether the alarm wakes up the system or not.</p>
-  <p><strong>IMPORTANT</strong>: Waking up only applies to webOS devices that can go into a suspend state.&nbsp;</p>
-  <p>In order to save power, systems typically go into a suspend state. When a system is in a suspend state, none of the processes on the system are running, and the system goes into a very low power mode.</p>
+  <p>
+    <u><strong>Wake up vs. non-wake up</strong></u>
+  </p>
+  <p>
+    An important decision that you need to make when using the
+    com.webos.service.alarm is whether the alarm wakes up the system or not.
+  </p>
+  <p>
+    <strong>IMPORTANT</strong>: Waking up only applies to webOS devices that can
+    go into a suspend state.&nbsp;
+  </p>
+  <p>
+    In order to save power, systems typically go into a suspend state. When a
+    system is in a suspend state, none of the processes on the system are
+    running, and the system goes into a very low power mode.
+  </p>
   <ul>
-    <li><strong>Wake up alarm</strong> - When an alarm is set as a wake up alarm, the alarm is guaranteed to be delivered at the requested time, whether the system is awake or suspended at the requested time. &nbsp;If the system is suspended, system will be woken up to deliver the alarm. As one would expect, if the system is awake, the alarm is delivered normally. The wake up alarm is the most significant advantage of the alarm API over other operating system provided alarms.</li>
-    <li><strong>Non-wake up alarm</strong> - When an alarm is set as a non-wake up alarm, the alarm is delivered at requested time <u><em>only</em></u><em>&nbsp;</em>if the system is awake at that time. If the system is suspended at the requested time, the alarm will be delivered after the system is woken up, for example, by a user action.</li>
+    <li>
+      <strong>Wake up alarm</strong> - When an alarm is set as a wake up alarm,
+      the alarm is guaranteed to be delivered at the requested time, whether the
+      system is awake or suspended at the requested time. &nbsp;If the system is
+      suspended, system will be woken up to deliver the alarm. As one would
+      expect, if the system is awake, the alarm is delivered normally. The wake
+      up alarm is the most significant advantage of the alarm API over other
+      operating system provided alarms.
+    </li>
+    <li>
+      <strong>Non-wake up alarm</strong> - When an alarm is set as a non-wake up
+      alarm, the alarm is delivered at requested time <u><em>only</em></u><em>&nbsp;</em>if the system is awake at that time. If the system is
+      suspended at the requested time, the alarm will be delivered after the
+      system is woken up, for example, by a user action.
+    </li>
   </ul>
-  <p>Wake up or non-wake up is determined by&nbsp;<strong>wakeup&nbsp;</strong>parameter in the&nbsp;<strong>set&nbsp;</strong>method.</p>
+  <p>
+    Wake up or non-wake up is determined
+    by&nbsp;<strong>wakeup&nbsp;</strong>parameter in
+    the&nbsp;<strong>set&nbsp;</strong>method.
+  </p>
 </div>
 <h2>Methods</h2>
 <div>
@@ -38,7 +78,10 @@ toc: true
   <div>
     <h4>Description</h4>
     <p>Creates a new alarm for an absolute time or a relative time.</p>
-    <p>By using the &quot;<strong>wakeup</strong>&quot; parameter you can define it as a wake-up or a non-wake up alarm.&nbsp;</p>
+    <p>
+      By using the &quot;<strong>wakeup</strong>&quot; parameter you can define
+      it as a wake-up or a non-wake up alarm.&nbsp;
+    </p>
     <h4>Parameters</h4>
     <div class="table-container">
       <table class="table is-bordered is-fullwidth">
@@ -70,8 +113,15 @@ toc: true
             <td>Required</td>
             <td>String</td>
             <td>
-              <p>The <strong>at </strong>parameter sets the absolute time, and must be in the format <em>mm/dd/yyyy</em>&nbsp;<em>HH:MM:SS</em>&nbsp;to be passed.</p>
-              <p><strong>Note: </strong>Either this, or <strong>in</strong> is required.</p>
+              <p>
+                The <strong>at </strong>parameter sets the absolute time, and
+                must be in the format
+                <em>mm/dd/yyyy</em>&nbsp;<em>HH:MM:SS</em>&nbsp;to be passed.
+              </p>
+              <p>
+                <strong>Note: </strong>Either this, or <strong>in</strong> is
+                required.
+              </p>
             </td>
           </tr>
           <tr>
@@ -79,8 +129,14 @@ toc: true
             <td>Required</td>
             <td>String</td>
             <td>
-              <p>The <strong>in&nbsp;</strong>parameter sets the relative time and must be in the format <em>HH:MM:SS</em> to be passed.</p>
-              <p><strong>Note: </strong>Either this, or <strong>at</strong> is required.</p>
+              <p>
+                The <strong>in&nbsp;</strong>parameter sets the relative time
+                and must be in the format <em>HH:MM:SS</em> to be passed.
+              </p>
+              <p>
+                <strong>Note: </strong>Either this, or <strong>at</strong> is
+                required.
+              </p>
             </td>
           </tr>
           <tr>
@@ -88,7 +144,9 @@ toc: true
             <td>Required</td>
             <td>String</td>
             <td>
-              <p>The webOS API method that should be called when the alarm fires.</p>
+              <p>
+                The webOS API method that should be called when the alarm fires.
+              </p>
               <p>Example:&nbsp;luna//com.webos.service.test/alarmFired</p>
             </td>
           </tr>
@@ -97,8 +155,14 @@ toc: true
             <td>Required</td>
             <td>Object</td>
             <td>
-              <p>Parameters that need to be passed with the <strong>uri </strong>when the alarm fires.</p>
-              <p>Example: {&quot;param1&quot;:&quot;abc&quot;,&quot;param2&quot;:&quot;xyz&quot;}</p>
+              <p>
+                Parameters that need to be passed with the
+                <strong>uri </strong>when the alarm fires.
+              </p>
+              <p>
+                Example:
+                {&quot;param1&quot;:&quot;abc&quot;,&quot;param2&quot;:&quot;xyz&quot;}
+              </p>
             </td>
           </tr>
           <tr>
@@ -106,12 +170,19 @@ toc: true
             <td>Optional</td>
             <td>Boolean</td>
             <td>
-              <p>Specifies if the alarm is a wake-up&nbsp;alarm. Possible values are:</p>
+              <p>
+                Specifies if the alarm is a wake-up&nbsp;alarm. Possible values
+                are:
+              </p>
               <ul>
                 <li><strong>true </strong>- Create a wake-up alarm,</li>
-                <li><strong>false </strong>- Create a non-wake up&nbsp;alarm</li>
+                <li>
+                  <strong>false </strong>- Create a non-wake up&nbsp;alarm
+                </li>
               </ul>
-              <p>​​Default value:&nbsp;<span style="color:#000000"><strong>false.</strong></span></p>
+              <p>
+                ​​Default value:&nbsp;<span style="color: #000000"><strong>false.</strong></span>
+              </p>
             </td>
           </tr>
           <tr>
@@ -120,9 +191,20 @@ toc: true
             <td>Boolean</td>
             <td>
               <ul>
-                <li>If there is an existing alarm with the same key, and you don&#39;t want to delete it, set <strong>keep_existing</strong> to true.</li>
-                <li>To&nbsp;<span style="color:#000000">clear</span><span style="color:#FF0000">&nbsp;</span>existing alarms with the same key, set <strong>keep_existing&nbsp;</strong>to&nbsp;<strong>false</strong>.</li>
-                <li>The default value of <strong>keep_existing&nbsp;</strong>is&nbsp;<strong>false</strong>.</li>
+                <li>
+                  If there is an existing alarm with the same key, and you
+                  don&#39;t want to delete it, set
+                  <strong>keep_existing</strong> to true.
+                </li>
+                <li>
+                  To&nbsp;<span style="color: #000000">clear</span><span style="color: #ff0000">&nbsp;</span>existing alarms
+                  with the same key, set
+                  <strong>keep_existing&nbsp;</strong>to&nbsp;<strong>false</strong>.
+                </li>
+                <li>
+                  The default value of
+                  <strong>keep_existing&nbsp;</strong>is&nbsp;<strong>false</strong>.
+                </li>
               </ul>
             </td>
           </tr>
@@ -152,7 +234,11 @@ toc: true
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>If the alarm was created successfully, the <strong>set</strong>&nbsp;method will return the&nbsp;<strong>key</strong>&nbsp;of the alarm that it created.</p>
+              <p>
+                If the alarm was created successfully, the
+                <strong>set</strong>&nbsp;method will return
+                the&nbsp;<strong>key</strong>&nbsp;of the alarm that it created.
+              </p>
             </td>
           </tr>
           <tr>
@@ -160,10 +246,19 @@ toc: true
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <p>
+                Indicates the status of operation.&nbsp;Possible values are:
+              </p>
               <ul>
-                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorText&quot; field&nbsp;for details</li>
+                <li>
+                  <strong>true&nbsp;</strong>- Indicates that the operation was
+                  successful.
+                </li>
+                <li>
+                  <strong>false&nbsp;</strong>- Indicates that the operation
+                  failed. Check the&nbsp;&quot;errorText&quot; field&nbsp;for
+                  details
+                </li>
               </ul>
             </td>
           </tr>
@@ -172,7 +267,10 @@ toc: true
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>Indicates the reason for the failure of the operation.&nbsp;See the&nbsp;<strong>Error Codes Reference </strong>and&nbsp;<strong>API Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+              <p>
+                Indicates the reason for the failure of the operation.&nbsp;See
+                the&nbsp;<strong>Error Codes Reference </strong>and&nbsp;<strong>API Error Codes Reference</strong>&nbsp;of this method for more details.
+              </p>
             </td>
           </tr>
         </tbody>
@@ -204,14 +302,21 @@ toc: true
             <td>None</td>
             <td>Could not set timeout</td>
             <td>
-              <p>Due to some unknown error, the system could not set the timeout.</p>
+              <p>
+                Due to some unknown error, the system could not set the timeout.
+              </p>
             </td>
           </tr>
           <tr>
             <td>None</td>
             <td>Invalid format for timeout/set</td>
             <td>
-              <p>The values provided for <strong>at </strong>or <strong>in</strong> did not match the required format - <em>mm/dd/yyyy HH:MM:SS</em>&nbsp;for <strong>at </strong>and <em>HH:MM:SS</em><strong>&nbsp;</strong>for <strong>in.</strong></p>
+              <p>
+                The values provided for <strong>at </strong>or
+                <strong>in</strong> did not match the required format -
+                <em>mm/dd/yyyy HH:MM:SS</em>&nbsp;for <strong>at </strong>and
+                <em>HH:MM:SS</em><strong>&nbsp;</strong>for <strong>in.</strong>
+              </p>
             </td>
           </tr>
         </tbody>
@@ -220,9 +325,11 @@ toc: true
     <h4>Example</h4>
     <div class="code-bg-grey">
       <p>Example for a successful call:</p>
-      <p># luna-send -n 1 luna://com.webos.service.alarm/set &#39;{<br />
+      <p>
+        # luna-send -n 1 luna://com.webos.service.alarm/set &#39;{<br />
         &nbsp; &nbsp; &nbsp; &quot;key&quot;:&quot;test&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &quot;uri&quot;:&quot;luna://com.webos.service.testsleepd/firealarm&quot;,<br />
+        &nbsp; &nbsp; &nbsp;
+        &quot;uri&quot;:&quot;luna://com.webos.service.testsleepd/firealarm&quot;,<br />
         &nbsp; &nbsp; &nbsp; &quot;params&quot;:{},<br />
         &nbsp; &nbsp; &nbsp; &quot;at&quot;:&quot;09/24/2014 04:40:00&quot;,<br />
         &nbsp; &nbsp; &nbsp; &quot;wakeup&quot;:true<br />
@@ -234,12 +341,20 @@ toc: true
       <p>&nbsp; &nbsp; &quot;key&quot;: &quot;test&quot;</p>
       <p>}</p>
       <p>&nbsp;</p>
-      <p>Example for a successful call:&nbsp;params input parameter&nbsp;is used to pass parameters to alarm client; in this case &quot;com.webos.display&quot; will receive &quot;state : on&quot; and take respective action</p>
-      <p># luna-send -n 1 luna://com.webos.service.alarm/set &#39;{<br />
+      <p>
+        Example for a successful call:&nbsp;params input parameter&nbsp;is used
+        to pass parameters to alarm client; in this case
+        &quot;com.webos.display&quot; will receive &quot;state : on&quot; and
+        take respective action
+      </p>
+      <p>
+        # luna-send -n 1 luna://com.webos.service.alarm/set &#39;{<br />
         &nbsp; &nbsp; &nbsp; &quot;at&quot;:&quot;08/11/2014 09:26:05&quot;,<br />
         &nbsp; &nbsp; &nbsp; &quot;key&quot;:&quot;test_alarm&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &quot;params&quot;:{\&quot;state\&quot;: \&quot;on\&quot;},<br />
-        &nbsp; &nbsp; &nbsp; &quot;uri&quot;:&quot;luna://com.webos.display/control/setState&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &quot;params&quot;:{\&quot;state\&quot;:
+        \&quot;on\&quot;},<br />
+        &nbsp; &nbsp; &nbsp;
+        &quot;uri&quot;:&quot;luna://com.webos.display/control/setState&quot;,<br />
         &nbsp; &nbsp; &nbsp; &quot;wakeup&quot;:true<br />
         }&#39;
       </p>
@@ -249,11 +364,16 @@ toc: true
       <p>&nbsp; &nbsp; &quot;key&quot;:&quot;test_alarm&quot;</p>
       <p>}</p>
       <p>&nbsp;</p>
-      <p>Example for a failed call: key input parameter&nbsp;is not specified</p>
-      <p># luna-send -n 1 luna://com.webos.service.alarm/set&nbsp;&#39;{<br />
+      <p>
+        Example for a failed call: key input parameter&nbsp;is not specified
+      </p>
+      <p>
+        # luna-send -n 1 luna://com.webos.service.alarm/set&nbsp;&#39;{<br />
         &nbsp; &nbsp; &nbsp; &quot;at&quot;:&quot;08/11/2014 09:26:05&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &quot;params&quot;:{\&quot;state\&quot;:\&quot;on\&quot;},<br />
-        &nbsp; &nbsp; &nbsp; &quot;uri&quot;:&quot;luna://com.webos.display/control/setState&quot;,<br />
+        &nbsp; &nbsp; &nbsp;
+        &quot;params&quot;:{\&quot;state\&quot;:\&quot;on\&quot;},<br />
+        &nbsp; &nbsp; &nbsp;
+        &quot;uri&quot;:&quot;luna://com.webos.display/control/setState&quot;,<br />
         &nbsp; &nbsp; &nbsp; &quot;wakeup&quot;:true<br />
         }&#39;
       </p>
@@ -261,7 +381,10 @@ toc: true
       <p>{</p>
       <p>&nbsp; &nbsp; &quot;errorCode&quot;:-1,</p>
       <p>&nbsp; &nbsp; &quot;returnValue&quot;:false,</p>
-      <p>&nbsp; &nbsp; &quot;errorText&quot;:&quot;Invalid format for timeout/set&quot;</p>
+      <p>
+        &nbsp; &nbsp; &quot;errorText&quot;:&quot;Invalid format for
+        timeout/set&quot;
+      </p>
       <p>}</p>
     </div>
   </div>
@@ -269,7 +392,10 @@ toc: true
 <h3>clear</h3>
 <div>
   <h4>Description</h4>
-  <p>Deletes an existing alarm. Apps or daemons can identify the alarm to be deleted by specifying its&nbsp;<strong>key.</strong></p>
+  <p>
+    Deletes an existing alarm. Apps or daemons can identify the alarm to be
+    deleted by specifying its&nbsp;<strong>key.</strong>
+  </p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -293,7 +419,11 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p><strong>key </strong>of&nbsp;the alarm that you wish to delete. This is the same key that was specified when the alarm was created the&nbsp;<strong>set</strong>&nbsp;method.</p>
+            <p>
+              <strong>key </strong>of&nbsp;the alarm that you wish to delete.
+              This is the same key that was specified when the alarm was created
+              the&nbsp;<strong>set</strong>&nbsp;method.
+            </p>
           </td>
         </tr>
       </tbody>
@@ -322,7 +452,10 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The same unique identifier is returned if the alarm was deleted successfully.</p>
+            <p>
+              The same unique identifier is returned if the alarm was deleted
+              successfully.
+            </p>
           </td>
         </tr>
         <tr>
@@ -332,8 +465,15 @@ toc: true
           <td>
             <p>Indicates the status of operation.&nbsp;Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorText&quot; field&nbsp;for details</li>
+              <li>
+                <strong>true&nbsp;</strong>- Indicates that the operation was
+                successful.
+              </li>
+              <li>
+                <strong>false&nbsp;</strong>- Indicates that the operation
+                failed. Check the&nbsp;&quot;errorText&quot; field&nbsp;for
+                details
+              </li>
             </ul>
           </td>
         </tr>
@@ -342,7 +482,10 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Indicates the reason for the failure of the operation.&nbsp;See the&nbsp;<strong>Error Codes Reference </strong>and&nbsp;<strong>API Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            <p>
+              Indicates the reason for the failure of the operation.&nbsp;See
+              the&nbsp;<strong>Error Codes Reference </strong>and&nbsp;<strong>API Error Codes Reference</strong>&nbsp;of this method for more details.
+            </p>
           </td>
         </tr>
       </tbody>
@@ -375,15 +518,18 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -n 1 luna://com.webos.service.alarm/clear &#39;{&quot;key&quot;:&quot;test&quot;}&#39;</p>
+    <p>
+      # luna-send -n 1 luna://com.webos.service.alarm/clear
+      &#39;{&quot;key&quot;:&quot;test&quot;}&#39;
+    </p>
     <p>{</p>
-    <p style="margin-left: 40px;">&quot;key&quot;: &quot;test&quot;,</p>
-    <p style="margin-left: 40px;">&quot;returnValue&quot;: true</p>
+    <p style="margin-left: 40px">&quot;key&quot;: &quot;test&quot;,</p>
+    <p style="margin-left: 40px">&quot;returnValue&quot;: true</p>
     <p>}</p>
   </div>
 </div>
+<h2>Objects</h2>
 <div>
-  <h2>Objects</h2>
   <h3>alarmObject</h3>
   <p>Object contains information about the alarms.</p>
   <div class="table-container">
@@ -408,7 +554,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates whether the alarm can&nbsp;wakeup the device from suspend state or not.</p>
+            <p>
+              Indicates whether the alarm can&nbsp;wakeup the device from
+              suspend state or not.
+            </p>
             <ul>
               <li>true: can wakeup the device&nbsp;from suspend state</li>
               <li>false: cannot wakeup the device&nbsp;from suspend state</li>
@@ -420,7 +569,10 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Expiry time when the alarm will be expired. It is returned as a&nbsp;string&nbsp;in a format: <em>MM/DD/YYYY HH:MM:SS</em>.</p>
+            <p>
+              Expiry time when the alarm will be expired. It is returned as
+              a&nbsp;string&nbsp;in a format: <em>MM/DD/YYYY HH:MM:SS</em>.
+            </p>
           </td>
         </tr>
         <tr>
@@ -437,8 +589,14 @@ toc: true
           <td>Optional</td>
           <td>Object</td>
           <td>
-            <p>Parameters that need to be passed with the&nbsp;<strong>uri&nbsp;</strong>when the alarm fires.</p>
-            <p>Example: {&quot;param1&quot;:&quot;abc&quot;,&quot;param2&quot;:&quot;xyz&quot;}</p>
+            <p>
+              Parameters that need to be passed with
+              the&nbsp;<strong>uri&nbsp;</strong>when the alarm fires.
+            </p>
+            <p>
+              Example:
+              {&quot;param1&quot;:&quot;abc&quot;,&quot;param2&quot;:&quot;xyz&quot;}
+            </p>
           </td>
         </tr>
         <tr>
@@ -454,7 +612,9 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates whether the alarm is calendar alarm or relative alarm.</p>
+            <p>
+              Indicates whether the alarm is calendar alarm or relative alarm.
+            </p>
             <ul>
               <li>true: calendar alarm</li>
               <li>false: relative alarm</li>

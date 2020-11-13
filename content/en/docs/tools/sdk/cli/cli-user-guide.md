@@ -1,7 +1,7 @@
 ---
 title: User Guide
 display_title: Command-Line Interface User Guide
-date: 2020-09-22
+date: 2020-11-05
 weight: 10
 toc: true
 ---
@@ -1169,6 +1169,12 @@ Here are some examples of the different uses:
 
     ```shell
     ares-launch --device target --close com.example.sampleapp
+    ```
+
+* Terminating application on the primary display
+
+    ```shell
+    ares-launch --device target --close com.example.sampleapp --display 0
     ```
 
 * Running the app without installation

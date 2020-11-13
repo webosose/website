@@ -17,9 +17,9 @@ Please refer to the [release notes]({{< relref "webos-ose-1-6-0-release-notes" >
 
 ## Media component & API changes
 
-As of this release, [*`com.webos.service.avoutput`*]({{< relref "com-webos-service-avoutput" >}}) (avoutputd) has been retired.
+As of this release, [*`com.webos.service.avoutput`*]() (avoutputd) has been retired.
 
-Instead, [`com.webos.service.videooutput`]({{< relref "com-webos-service-videooutput" >}}) (videooutputd) has been added. This API is a replacement for video control functionalities of *`com.webos.service.avoutput`*. Audio control functionalities are provided by [`com.webos.service.audiooutput`]({{< relref "com-webos-service-audiooutput" >}}).
+Instead, [`com.webos.service.videooutput`]() (videooutputd) has been added. This API is a replacement for video control functionalities of *`com.webos.service.avoutput`*. Audio control functionalities are provided by [`com.webos.service.audiooutput`]({{< relref "com-webos-service-audiooutput" >}}).
 
 From this release onward, [`com.webos.media`]({{< relref "com-webos-media" >}}) (uMediaServer) will use `com.webos.service.videooutput` instead of *`com.webos.service.avoutput`* to control video-related features.
 

@@ -1,0 +1,1176 @@
+---
+title: com.webos.service.intent
+date: 2020-11-13
+weight: 225
+toc: true
+---
+
+{{< note >}}
+`com.webos.service.intent` is available since webOS OSE 2.8.0.
+{{< /note >}}
+
+<div>
+  <h2>API Summary</h2>
+  <p>An intent is an abstract description of an operation to be performed. Intent manager is a native service to handle the intent.</p>
+  <p>There are two types of intent:</p>
+  <ul>
+    <li><strong>Implicit Intent</strong> : Does not specify a component</li>
+    <li><strong>Explicit Intent</strong> : Specifies a component</li>
+  </ul>
+</div>
+<h2>Overview of the API</h2>
+<div>
+  <p>Intent manager has roles to handle intents and manage handlers.</p>
+  <ul>
+    <li><strong>Intent</strong>:&nbsp;An abstract description of an operation to be performed.</li>
+    <li><strong>Handler</strong>: System components which can handle specific type of intents.</li>
+    <li><strong>Requester</strong>: System components which want&nbsp;to start&nbsp;an intent.</li>
+  </ul>
+  <p>When the requester calls the <strong>start</strong> API with an intent, intent manager finds the suitable handler in the handler&nbsp;pool. Normally, handler is an app, so intent manager calls the <strong>launch</strong> API in the SAM to launch the (handler) app. The <strong>intent</strong> object is passed to application through launch&nbsp;<strong>params</strong> object</p>
+  <p>Sometimes, requester wants to get result from the handler. In such case, requester should subscribe to the <strong>start</strong> API to get the subscription message from the handler. Intent manager sends subscription message when the handler calls the&nbsp;<strong>sendResult</strong> API.</p>
+  <p>Requester can subscribe to the result by using the <strong>subscribeResult </strong>API also.</p>
+  <p>&nbsp;</p>
+  <p><strong>Steps to support intent - application</strong></p>
+  <ol>
+    <li>Modify appinfo.json first to support intent. Here is a simple example for enact browser. Lines highlighted in the below json code are newly added.<br />
+      <br />
+      $ vi /usr/palm/applications/com.webos.app.enactbrowser/appinfo.json<br />
+      {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;....<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;mimeTypes&quot;: [ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; { &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;mime&quot;: &quot;text/html&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;extension&quot;: &quot;html&quot;, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;stream&quot;: true &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; { &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;scheme&quot;: &quot;http&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; { &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;scheme&quot;: &quot;https&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; } &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; ], &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
+      <span style="color:#FF0000">&nbsp; &nbsp; &nbsp; &nbsp;</span><strong> &quot;intentFilters&quot;: [ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; { &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;actions&quot;: [&quot;action_url&quot;, &quot;action_uri&quot;],<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;uris&quot;: [&quot;http://youtube.com&quot;, &quot;http://&quot;, &quot;https://&quot;]<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; } &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; ],</strong><br />
+      &nbsp; &nbsp; &nbsp; &nbsp; ....<br />
+      }<br />
+      &nbsp;</li>
+    <li>To apply the changes, restart the SAM module and intent manager2.<br />
+      <br />
+      $ restart sam<br />
+      $ restart com.webos.service.intent<br />
+      &nbsp;</li>
+    <li>Verify the changes:<br />
+      &nbsp;
+      <ul>
+        <li><strong>On the SAM module:</strong><br />
+          <br />
+          $ luna-send -f -n 1 luna://com.webos.service.applicationmanager/getAppInfo &#39;{ &quot;id&quot;: &quot;com.webos.app.enactbrowser&quot;}&#39;
+          <p>Response:</p>
+          <p>{<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&quot;appId&quot;: &quot;com.webos.app.enactbrowser&quot;,<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&quot;appInfo&quot;: {<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;....<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;intentFilters&quot;: [<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;uris&quot;: [<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;http://youtube.com&quot;,<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;http://&quot;,<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;https://&quot;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;actions&quot;: [<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;action_url&quot;,<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;action_uri&quot;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;....<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;}<br />
+            }</p>
+        </li>
+        <li><strong>On intent manager:</strong><br />
+          <br />
+          # luna-send -f -n 1 luna://com.webos.service.intent/query &#39;{ &quot;intent&quot;: { &quot;action&quot;: &quot;action_url&quot;, &quot;uri&quot;:&quot;http://google.com&quot;}}&#39;
+          <p>Response:</p>
+          <p>{<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&quot;handlers&quot;: [<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;name&quot;: &quot;com.webos.app.enactbrowser&quot;,<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;intentFilters&quot;: [<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;uris&quot;: [<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;http://youtube.com&quot;,<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;http://&quot;,<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;https://&quot;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;actions&quot;: [<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;action_url&quot;,<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;action_uri&quot;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;]<br />
+            }<br />
+            &nbsp;</p>
+        </li>
+      </ul>
+    </li>
+    <li>Start &#39;intent&#39; and verify the handler.<br />
+      <br />
+      $ luna-send -f -n 1 luna://com.webos.service.intent/start &#39;{ &quot;intent&quot;: { &quot;action&quot;: &quot;action_url&quot;, &quot;uri&quot;:&quot;http://google.com&quot;}}&#39;
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;intentId&quot;: 10,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true<br />
+        }</p>
+    </li>
+  </ol>
+  <p style="margin-left:40px">&nbsp;</p>
+  <p><a id="listofintents" name="listofintents"><strong>List of intents</strong></a></p>
+  <table border="1" cellpadding="1" cellspacing="1">
+    <thead>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="text-align:center; width:150px"><strong>Intent</strong></td>
+        <td style="text-align:center; width:150px"><strong>Action and URI</strong></td>
+        <td style="text-align:center; width:350px"><strong>Examples (snippet of &#39;appinfo.json&#39; file)</strong></td>
+      </tr>
+      <tr>
+        <td>View URI (browser)</td>
+        <td>
+          <ul>
+            <li>action:<strong>&nbsp;</strong>view</li>
+            <li>uri (format):&nbsp;http://</li>
+          </ul>
+        </td>
+        <td>
+          <p><strong>Example 1</strong> - Ability to view all URIs starting with http and https.</p>
+          <p>&quot;intentFilters&quot;:[<br />
+            &nbsp;&nbsp; {<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;actions&quot;:[&quot;view&quot;],<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;uris&quot;:[&quot;http://&quot;,&quot;https://&quot;]<br />
+            &nbsp;&nbsp; }<br />
+            ]</p>
+          <p><strong>Example 2</strong> - Ability to view the 2 URIs mentioned below.</p>
+          <p>&quot;intentFilters&quot;:[<br />
+            &nbsp;&nbsp; {<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;actions&quot;:[&quot;view&quot;],<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;uris&quot;:[&quot;https://google.com&quot;, &quot;http://naver.com&quot;]<br />
+            &nbsp;&nbsp; }<br />
+            ]</p>
+        </td>
+      </tr>
+      <tr>
+        <td>View map (navigation)</td>
+        <td>
+          <ul>
+            <li>action:&nbsp;view</li>
+            <li>uri (format):&nbsp;geo://</li>
+          </ul>
+        </td>
+        <td>
+          <p><strong>Example 1</strong> - Ability to view all map locations.</p>
+          <p>&quot;intentFilters&quot;:[<br />
+            &nbsp;&nbsp; {<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;actions&quot;:[&quot;view&quot;],<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;uris&quot;:[&quot;geo://&quot;]<br />
+            &nbsp;&nbsp; }<br />
+            ]</p>
+          <p><strong>Example 2</strong> - Examples of other uris:</p>
+          <ul>
+            <li>geo:323482,4306480</li>
+            <li>geo:37.786971,-122.399677</li>
+            <li>geo:37.786971,-122.399677;u=35</li>
+            <li>geo:323482,4306480;crs=EPSG:32618;u=20</li>
+            <li>geo:37.786971,-122.399677;crs=Moon-2011;u=35</li>
+            <li>geo:0.0?q=Home</li>
+          </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h2>Methods</h2>
+<div>
+  <h3>query</h3>
+  <div>
+    <h4>Description</h4>
+    <p>Clients can get handlers&nbsp;by calling the API.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>intent</td>
+            <td>Optional</td>
+            <td>Object: <a href="#intent"> intent</a></td>
+            <td>
+              <p>Details of the intent.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true</strong>: Indicates that the operation was successful.</li>
+                <li><strong>false</strong>: Indicates that the operation failed.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>handlers</td>
+            <td>Required</td>
+            <td>Object array: <a href="#handler"> handler</a></td>
+            <td>
+              <p>Please refer the<strong> handler </strong>object in the <strong>object</strong> section.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div class="code-bg-grey">
+      <p># luna-send -f -n 1 luna://com.webos.service.intent/query &#39;{}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp; &nbsp; &quot;handlers&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;sessionId&quot;: &quot;34117815-8721-4370-9cd3-ba74ff7349f5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;bareapp&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;intentFilters&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;actions&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;action_test&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; ....<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;sessionId&quot;: &quot;b51ca1c7-8d20-4ac0-87e1-62b41162d1da&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;com.webos.app.volume&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;intentFilters&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; ]<br />
+        }</p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -f -n 1 luna://com.webos.service.intent/query &#39;{<br />
+        &nbsp;&nbsp; &quot;sessionId&quot;:&quot;b51ca1c7-8d20-4ac0-87e1-62b41162d1da&quot;<br />
+        }&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp; &nbsp; &quot;handlers&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;sessionId&quot;: &quot;b51ca1c7-8d20-4ac0-87e1-62b41162d1da&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;bareapp&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;intentFilters&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;actions&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;action_test&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; ....<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;sessionId&quot;: &quot;b51ca1c7-8d20-4ac0-87e1-62b41162d1da&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;com.webos.app.volume&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;intentFilters&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; ]<br />
+        }</p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -f -n 1 luna://com.webos.service.intent/query &#39;{<br />
+        &nbsp;&nbsp; &quot;intent&quot;:{<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;name&quot;:&quot;bareapp&quot;<br />
+        &nbsp;&nbsp; }<br />
+        }&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp; &nbsp; &quot;handlers&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;sessionId&quot;: &quot;34117815-8721-4370-9cd3-ba74ff7349f5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;bareapp&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;intentFilters&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;actions&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;action_test&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;sessionId&quot;: &quot;b51ca1c7-8d20-4ac0-87e1-62b41162d1da&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;bareapp&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;intentFilters&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;actions&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;action_test&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; ]<br />
+        }</p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -f -n 1 luna://com.webos.service.intent/query &#39;{<br />
+        &nbsp;&nbsp; &quot;intent&quot;:{<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;action&quot;:&quot;action_test&quot;<br />
+        &nbsp;&nbsp; }<br />
+        }&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp; &nbsp; &quot;handlers&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;sessionId&quot;: &quot;34117815-8721-4370-9cd3-ba74ff7349f5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;bareapp&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;intentFilters&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;actions&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;action_test&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;sessionId&quot;: &quot;b51ca1c7-8d20-4ac0-87e1-62b41162d1da&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;bareapp&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;intentFilters&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;actions&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;action_test&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; ]<br />
+        }</p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -f -n 1 luna://com.webos.service.intent/query &#39;{<br />
+        &nbsp; &nbsp;&quot;sessionId&quot; : &quot;34117815-8721-4370-9cd3-ba74ff7349f5&quot;,<br />
+        &nbsp; &nbsp;&quot;intent&quot;: { &quot;action&quot;: &quot;action_test&quot;}<br />
+        }&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp; &nbsp; &quot;handlers&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;sessionId&quot;: &quot;34117815-8721-4370-9cd3-ba74ff7349f5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;bareapp&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;intentFilters&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;actions&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;action_test&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; ]<br />
+        }</p>
+    </div>
+  </div>
+</div>
+<h3>start</h3>
+<div>
+  <h4>Description</h4>
+  <p>Starts the handlers based on the intent information provided in the request payload.</p>
+  <p>Please refer &#39;<strong>subscribeResult</strong>&#39; API for subscription payload.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>intent</td>
+          <td>Optional</td>
+          <td>Object: <a href="#intent"> intent</a></td>
+          <td>
+            <p>Details of the intent.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if subscribed to get the notifications.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Subscribed for notifications</li>
+              <li><strong>false</strong>: Not subscribed</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Indicates that the operation was successful.</li>
+              <li><strong>false</strong>: Indicates that the operation failed.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if subscribed to get the notifications.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Subscribed for notifications</li>
+              <li><strong>false</strong>: Not subscribed</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>intentId</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Indicates the Intent ID.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.intent/start &#39;{<br />
+      &nbsp; &nbsp;&quot;sessionId&quot;: &quot;34117815-8721-4370-9cd3-ba74ff7349f5&quot;,<br />
+      &nbsp; &nbsp;&quot;intent&quot;: { &quot;action&quot;: &quot;action_test&quot; }<br />
+      }&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;intentId&quot;: 28,<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp;&quot;sessionId&quot;: &quot;34117815-8721-4370-9cd3-ba74ff7349f5&quot;<br />
+      }</p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -i -f luna://com.webos.service.intent/start &#39;{<br />
+      &nbsp; &nbsp;&quot;sessionId&quot;: &quot;34117815-8721-4370-9cd3-ba74ff7349f5&quot;,<br />
+      &nbsp; &nbsp;&quot;intent&quot;: { &quot;action&quot;: &quot;action_test&quot; },<br />
+      &nbsp; &nbsp;&quot;subscribe&quot;: true<br />
+      }&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;subscribed&quot;: true,<br />
+      &nbsp; &nbsp;&quot;intentId&quot;: 14,<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp;&quot;sessionId&quot;: &quot;34117815-8721-4370-9cd3-ba74ff7349f5&quot;<br />
+      }</p>
+    <p>Subscription Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;subscribed&quot;: true,<br />
+      &nbsp; &nbsp;&quot;result&quot;: &quot;ok&quot;,<br />
+      &nbsp; &nbsp;&quot;intent&quot;: {<br />
+      &nbsp; &nbsp;&nbsp; &nbsp; &quot;extra&quot;: {<br />
+      &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &quot;data&quot;: true<br />
+      &nbsp; &nbsp;&nbsp; &nbsp; }<br />
+      &nbsp; &nbsp;},<br />
+      &nbsp; &nbsp;&quot;from&quot;: &quot;com.webos.lunasend-36099&quot;,<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp;&quot;intentId&quot;: 14<br />
+      }<br />
+      {<br />
+      &nbsp;&nbsp; &quot;subscribed&quot;: true,<br />
+      &nbsp;&nbsp; &quot;result&quot;: &quot;ok&quot;,<br />
+      &nbsp;&nbsp; &quot;intent&quot;: {<br />
+      &nbsp;&nbsp; &nbsp; &nbsp; &quot;extra&quot;: {<br />
+      &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;data&quot;: true<br />
+      &nbsp;&nbsp; &nbsp; &nbsp; }<br />
+      &nbsp;&nbsp; },<br />
+      &nbsp;&nbsp; &quot;from&quot;: &quot;com.webos.lunasend-36100&quot;,<br />
+      &nbsp;&nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp;&nbsp; &quot;intentId&quot;: 14<br />
+      }</p>
+  </div>
+</div>
+<h3>subscribeResult</h3>
+<div>
+  <h4>Description</h4>
+  <p>All running intents have their own &#39;intentId&#39;. Of course, handlers can reply results thought &#39;intentId&#39;.</p>
+  <p>Other component including requester can subscribe the results with this API.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>intentId</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Indicates the intent ID.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if subscribed to get the notifications.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Subscribed for notifications</li>
+              <li><strong>false</strong>: Not subscribed</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Indicates that the operation was successful.</li>
+              <li><strong>false</strong>: Indicates that the operation failed.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates if subscribed to get the notifications.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Subscribed for notifications</li>
+              <li><strong>false</strong>: Not subscribed</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>intentId</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Indicates the intent ID.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Subscription Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Indicates that the operation was successful.</li>
+              <li><strong>false</strong>: Indicates that the operation failed.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if subscribed to get the notifications.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Subscribed for notifications</li>
+              <li><strong>false</strong>: Not subscribed</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>intentId</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Indicates the intent ID which used in <strong>sendResult</strong> and <strong>subscribeResult</strong></p>
+          </td>
+        </tr>
+        <tr>
+          <td>result</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the result string provided by the handler.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>intent</td>
+          <td>Optional</td>
+          <td>Object: <a href="#intent"> intent</a></td>
+          <td>
+            <p>Please refer the <strong>intent</strong> object in the <strong>object </strong>section.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>from</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the handler&#39;s luna ID.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -i -f luna://com.webos.service.intent/subscribeResult &#39;{<br />
+      &nbsp;&nbsp; &quot;intentId&quot;:14,<br />
+      &nbsp;&nbsp; &quot;subscribe&quot;:true<br />
+      }&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
+      &nbsp; &nbsp; &quot;intentId&quot;: 14<br />
+      }</p>
+    <p>Subscription response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
+      &nbsp; &nbsp; &quot;result&quot;: &quot;ok&quot;,<br />
+      &nbsp; &nbsp; &quot;intent&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;extra&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;data&quot;: true<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &quot;from&quot;: &quot;com.webos.lunasend-36099&quot;,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;intentId&quot;: 14<br />
+      }</p>
+  </div>
+</div>
+<h3>sendResult</h3>
+<div>
+  <h4>Description</h4>
+  <p>Enables the handlers to reply with the results.</p>
+  <p><strong>Note: </strong>Also refer &#39;subscribeResult&#39; API.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>intentId</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Indicates the intent ID used in the <strong>sendResult</strong> and <strong>subscribeResult</strong>.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>result</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the result string which is provided by the handler.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>intent</td>
+          <td>Optional</td>
+          <td>Object: <a href="#intent"> intent</a></td>
+          <td>
+            <p>Details of the intent.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Indicates that the operation was successful.</li>
+              <li><strong>false</strong>: Indicates that the operation failed.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.intent/sendResult &#39;{<br />
+      &nbsp;&nbsp; &quot;intentId&quot;:33,<br />
+      &nbsp;&nbsp; &quot;result&quot;:&quot;ok&quot;<br />
+      }&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;intentId&quot;: 33<br />
+      }</p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.intent/sendResult &#39;{<br />
+      &nbsp;&nbsp; &quot;intentId&quot;:33,<br />
+      &nbsp;&nbsp; &quot;result&quot;:&quot;ok&quot;,<br />
+      &nbsp;&nbsp; &quot;intent&quot;:{<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;extra&quot;:{<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;data&quot;:true<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />
+      &nbsp;&nbsp; }<br />
+      }&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;intentId&quot;: 33<br />
+      }</p>
+  </div>
+</div>
+<h2>Objects</h2>
+<div>
+  <h3>handler</h3>
+  <p>Indicates the application to handle the intent.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>name</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the handler&#39;s&nbsp;luna bus&nbsp;ID. Usually, it is application id.</p>
+            <p>Example: com.webos.service.intentmanager.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>sessionId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the handler&#39;s session ID.</p>
+            <p>Example: navigation handler should be started under &#39;driver&#39; session.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>intentFilters</td>
+          <td>Optional</td>
+          <td>Object array: <a href="#intentfilter"> intentFilter</a></td>
+          <td>
+            <p>Indicates the filter for the intent.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>intentFilter</h3>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>actions</td>
+          <td>Optional</td>
+          <td>String array</td>
+          <td>
+            <p>Indicates the action list handled by the handler.&nbsp;Refer to <strong>intent </strong>object for a list of supported actions.</p>
+            <p><strong>Note</strong>: This can be <strong>empty</strong>&nbsp;if handler can&#39;t handle any kinds of action.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>mimeTypes</td>
+          <td>Optional</td>
+          <td>String array</td>
+          <td>
+            <p>Indicates the mimeType list handled by the handler.&nbsp;Refer to <strong>intent </strong>object for a list of supported mime types.</p>
+            <p><strong>Note</strong>: This can be&nbsp;<strong>empty</strong>&nbsp;if handler can&#39;t handle any kinds of mimeType.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>uris</td>
+          <td>Optional</td>
+          <td>String array</td>
+          <td>
+            <p>Indicates the uri&nbsp;list which handler can handle.&nbsp;Refer to <strong>intent </strong>object for a list of supported URIs.</p>
+            <p><strong>Note</strong>: This can be&nbsp;<strong>empty</strong>&nbsp;if handler can&#39;t handle any kinds of uri.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>intent</h3>
+  <p>Provides details of the intent.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>name</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the <strong>handler</strong> name.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>action</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the action name.</p>
+            <p><strong>Note:</strong> Check <a href="#listofintents">List of intents</a> for supported actions and URIs.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>uri</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the uri pattern list.</p>
+            <p>&lt;scheme&gt;://&lt;host&gt;:&lt;port&gt;/&lt;path&gt;</p>
+            <p>Example: https://en.wikipedia.org/wiki/File_URI_scheme</p>
+            <p><strong>Note:</strong> Check <a href="#listofintents">List of intents</a> for supported actions and URIs.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>mimeType</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the mime type.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>video/mpeg</strong></li>
+              <li><strong>audio/mpeg</strong></li>
+              <li><strong>image/*</strong></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>extra</td>
+          <td>Optional</td>
+          <td>Object</td>
+          <td>
+            <p>Indicates the additional parameter for the handler.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<h2>API Error Codes Reference</h2>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <tbody>
+      <tr>
+        <th width="15%">
+          <p>Error Code</p>
+        </th>
+        <th width="30%">
+          <p>Error Text</p>
+        </th>
+        <th width="55%">
+          <p>Error Description</p>
+        </th>
+      </tr>
+      <tr>
+        <td>None</td>
+        <td>Failed to start intent</td>
+        <td>
+          <p>Failed to start intent because of internal error.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>None</td>
+        <td>Invalid parameter</td>
+        <td>
+          <p>Invalid parameters.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>None</td>
+        <td>Failed to parse intent</td>
+        <td>
+          <p>Failed to parse intent because required keys do not exist.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>None</td>
+        <td>Cannot find session</td>
+        <td>
+          <p>Cannot find session if given sessionId is not valid.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>None</td>
+        <td>Cannot find handler</td>
+        <td>
+          <p>Cannot find handler for given intent.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>None</td>
+        <td>&#39;intentId&#39; is required parameter</td>
+        <td>
+          <p>Intent ID&nbsp;is a required parameter and must be provided.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

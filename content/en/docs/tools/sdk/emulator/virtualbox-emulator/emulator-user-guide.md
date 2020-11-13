@@ -1,7 +1,7 @@
 ---
 title: User Guide
 display_title: VirtualBox Emulator User Guide
-date: 2020-09-24
+date: 2020-11-06
 weight: 10
 toc: true
 ---
@@ -26,7 +26,6 @@ Key characteristics of the emulator are as follows:
 
 ### Known Issues
 
-* Touch input is not supported.
 * Since webOS OSE 2.7.0, Ubuntu 20.04 build system and additional patches are needed to build the VirtualBox Emulator. For more details on how to build and patch, visit [webOS OSE emulator GitHub](https://github.com/webosose-emulator/build-webos).
 
 ## System Requirements

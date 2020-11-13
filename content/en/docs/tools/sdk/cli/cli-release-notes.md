@@ -1,12 +1,21 @@
 ---
 title: Release Notes
 display_title: Command-Line Interface Release Notes
-date: 2020-09-22
+date: 2020-11-05
 weight: 20
 toc: true
 ---
 
 This page provides the summary of each Command-Line Interface (CLI) release for webOS Open Source Edition (OSE).
+
+## v1.13.1 (November 2020)
+
+This version is compatible with **webOS OSE 2.8.0**. See below for the new and changed features in this release.
+
+### Changed features
+
+* Updated the source code through static analysis (ESLint and JSHint).
+* Updated JS service template.
 
 ## v1.13.0 (October 2020)
 

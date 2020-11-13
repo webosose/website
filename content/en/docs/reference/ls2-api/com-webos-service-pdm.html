@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.pdm
-date: 2020-09-22
+date: 2020-11-13
 weight: 250
 toc: true
 ---
@@ -8,23 +8,18 @@ toc: true
 <div>
   <h2>API Summary</h2>
   <p>Manages USB devices that are connected to the webOS system.</p>
-
   <p><strong>Main Functions:</strong></p>
-
   <ul>
     <li>Mount/unmount of Mass Storage Class (MSC)&nbsp;USB devices</li>
     <li>Format, Fdisk, File system check (FSCK)</li>
-    <li>
-      Detect USB device
-      <ul></ul>
+    <li>Detect USB device
+      <ul>
+      </ul>
     </li>
   </ul>
-
   <p><strong>Supported USB Devices</strong></p>
-
   <ul>
-    <li>
-      MSC USB device
+    <li>MSC USB device
       <ul>
         <li>Supported file system: Windows compatible file system (FAT, NTFS)</li>
         <li>Supported device type: HDD, Memory Stick, SSD, Memory card</li>
@@ -35,9 +30,7 @@ toc: true
     <li>HID &amp; XPAD</li>
     <li>USB to Serial</li>
   </ul>
-
   <p><strong>Important Terms</strong></p>
-
   <ul>
     <li>Device - A device that is&nbsp;directly connected to a USB port or hub.</li>
     <li>Drive - A device can have multiple drives, where each drive is a partition of a physical storage device.</li>
@@ -46,8 +39,8 @@ toc: true
 <h2>Overview of the API</h2>
 <div>
   <p>NA</p>
-
-  <ul></ul>
+  <ul>
+  </ul>
 </div>
 <h2>Methods</h2>
 <div>
@@ -55,7 +48,6 @@ toc: true
   <div>
     <h4>Description</h4>
     <p>Unmounts all drives of the storage device for safe removal.</p>
-
     <p><strong>Prerequisite:</strong>&nbsp;The storage device must be connected.</p>
     <h4>Parameters</h4>
     <div class="table-container">
@@ -81,8 +73,7 @@ toc: true
             <td>Number</td>
             <td>
               <p>Indicates the unique identifier of the&nbsp;device. It is auto-assigned when the device is connected.</p>
-
-              <p><strong>Note</strong>: Use the <strong><a href="#getattacheddevicestatus">getAttachedDeviceStatus()</a></strong>&nbsp;method to get a list of devices and their&nbsp;device numbers.</p>
+              <p><strong>Note</strong>: Use the <strong>getAttachedDeviceStatus()&nbsp;</strong>method to get a list of devices and their&nbsp;device numbers.</p>
             </td>
           </tr>
         </tbody>
@@ -112,12 +103,10 @@ toc: true
             <td>boolean</td>
             <td>
               <p>Indicates the status of the operation.</p>
-
               <p>Possible values are:</p>
-
               <ul>
                 <li><strong>true</strong>: Indicates that the operation was successful.</li>
-                <li><strong>false</strong>: Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+                <li><strong>false</strong>:<strong> </strong>Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
               </ul>
             </td>
           </tr>
@@ -142,1449 +131,1344 @@ toc: true
     </div>
     <h4>Example</h4>
     <div class="code-bg-grey">
-      <p>
-        # luna-send -n 1 -f luna://com.webos.service.pdm/eject &#39;{<br />
+      <p># luna-send -n 1 -f luna://com.webos.service.pdm/eject &#39;{<br />
         &nbsp;&nbsp; &quot;deviceNum&quot;:2<br />
-        }&#39;
-      </p>
-
+        }&#39;</p>
       <p>Response:</p>
-
-      <p>
-        {<br />
+      <p>{<br />
         &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-        }
-      </p>
-    </div>
-  </div>  
-  <h3>format</h3>
-  <div>
-    <h4>Description</h4>
-    <p>Formats the connected drive.</p>
-    <h4>Parameters</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>driveName&nbsp;</td>
-            <td>Required</td>
-            <td>string</td>
-            <td>
-              <p>Indicates the information that can identify the drive.</p>
-
-              <p>Example: sda1</p>          
-            </td>
-          </tr>
-          <tr>
-            <td>fsType&nbsp;</td>
-            <td>Optional</td>
-            <td>string</td>
-            <td>
-              <p>Indicates the file system type.</p>
-              
-              <p>Possible values are:</p>
-
-              <ul>
-                <li><strong>fat</strong></li>
-                <li><strong>ntfs</strong></li>
-              </ul>
-
-              <p>Default: <strong>fat</strong></p>
-            </td>
-          </tr>
-          <tr>
-            <td>volumeLabel</td>
-            <td>Optional</td>
-            <td>string</td>
-            <td>
-              <p>Indicates the volume label for the drive.</p>
-
-              <p>Default: <strong>volumeLabel</strong> not set</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Call Returns</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>returnValue</td>
-            <td>Required</td>
-            <td>boolean</td>
-            <td>
-              <p>Indicates the status of the operation.</p>
-
-              <p>Possible values are:</p>
-
-              <ul>
-                <li><strong>true</strong>: Indicates that the operation was successful.</li>
-                <li><strong>false</strong>: Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>string</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Example</h4>
-    <div class="code-bg-grey">
-      <p>
-        # luna-send -n 1 -f luna://com.webos.service.pdm/format &#39;{<br />
-        &nbsp;&nbsp; &quot;driveName&quot;:&quot;sda&quot;,<br />
-        &nbsp;&nbsp; &quot;fsType&quot;:&quot;fat&quot;,<br />
-        &nbsp;&nbsp; &quot;volumeLabel&quot;:&quot;test&quot;<br />
-        }&#39;
-      </p>
-
-      <p>Response:</p>
-
-      <p>
-        {<br />
-        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-        }
-      </p>
-    </div>
-    <div class="code-bg-grey">
-      <p>
-        # luna-send -n 1 -f luna://com.webos.service.pdm/format &#39;{<br />
-        &nbsp;&nbsp; &quot;driveName&quot;:&quot;sda1&quot;<br />
-        }&#39;
-      </p>
-
-      <p>Response:</p>
-
-      <p>
-        {<br />
-        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-        }
-      </p>
+        }</p>
     </div>
   </div>
-  <h3>fsck</h3>
-  <div>
-    <h4>Description</h4>
-    <p>Checks the file system by performing fsck (File System Check) of the corresponding connected drive.</p>
-
-    <p>
-      <strong>Note</strong>: On connecting a USB device with a large number of files, the PDM service prompts for &ldquo;Check &amp; Repair&rdquo; and &ldquo;Open Now&rdquo;. The fsck() API will do the file system checking when &ldquo;Check
-      &amp; Repair&rdquo; is selected.
-    </p>
-    <h4>Parameters</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>driveName&nbsp;</td>
-            <td>Required</td>
-            <td>string</td>
-            <td>
-              <p>Indicates the information that can identify the drive.</p>
-
-              <p>Example: <strong>sda1</strong></p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Call Returns</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>returnValue</td>
-            <td>Required</td>
-            <td>boolean</td>
-            <td>
-              <p>Indicates the status of the operation.</p>
-
-              <p>Possible values are:</p>
-
-              <ul>
-                <li><strong>true</strong>: Indicates that the operation was successful.</li>
-                <li><strong>false</strong>: Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>        
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>string</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Example</h4>
-    <div class="code-bg-grey">
-      <p>
-        # luna-send -n 1 -f luna://com.webos.service.pdm/fsck &#39;{<br />
-        &nbsp;&nbsp; &quot;driveName&quot;:&quot;sda&quot;<br />
-        }&#39;
-      </p>
-
-      <p>Response:</p>
-
-      <p>
-        {<br />
-        &nbsp;&nbsp; &quot;returnValue&quot;:true<br />
-        }
-      </p>
-    </div>
+</div>
+<h3>format</h3>
+<div>
+  <h4>Description</h4>
+  <p>Formats the connected drive.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>driveName&nbsp;</td>
+          <td>Required</td>
+          <td>string</td>
+          <td>
+            <p>Indicates the information that can identify the drive.</p>
+            <p>Example: sda1</p>
+          </td>
+        </tr>
+        <tr>
+          <td>fsType&nbsp;</td>
+          <td>Optional</td>
+          <td>string</td>
+          <td>
+            <p>Indicates the file system type.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>fat</strong></li>
+              <li><strong>ntfs</strong></li>
+            </ul>
+            <p>Default: <strong>fat</strong></p>
+          </td>
+        </tr>
+        <tr>
+          <td>volumeLabel</td>
+          <td>Optional</td>
+          <td>string</td>
+          <td>
+            <p>Indicates the volume label for the drive.</p>
+            <p>Default: <strong>volumeLabel</strong> not set</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-  <h3>getAttachedDeviceStatus</h3>
-  <div>
-    <h4>Description</h4>
-    <p>Gets the status&nbsp;information of connected device(s).</p>
-    <h4>Parameters</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>subscribe</td>
-            <td>Required</td>
-            <td>boolean</td>
-            <td>
-              <p>Subscribe to get notified&nbsp;when the device status information changes. Possible values are:</p>
-
-              <ul>
-                <li><strong>true </strong>-&nbsp;Subscribe for changes.</li>
-                <li><strong>false </strong>- Not subscribed.</li>
-              </ul>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Call Returns</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>returnValue</td>
-            <td>Required</td>
-            <td>boolean</td>
-            <td>
-              <p>Indicates the status of operation. Possible values are:</p>
-
-              <ul>
-                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>string</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>deviceStatusList&nbsp;</td>
-            <td>Required</td>
-            <td>Object: <a href="#devicestatuslist"> deviceStatusList</a></td>
-            <td>
-              <p>An array containing the status information of the device.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Subscription Returns</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>returnValue</td>
-            <td>Required</td>
-            <td>Boolean</td>
-            <td>
-              <p>Indicates the status of operation. Possible values are:</p>
-
-              <ul>
-                <li><strong>true </strong>- Indicates that the operation was successful.</li>
-                <li><strong>false </strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>deviceStatusList&nbsp;</td>
-            <td>Required</td>
-            <td>Object: <a href="#devicestatuslist"> deviceStatusList</a></td>
-            <td>
-              <p>An array containing the status information of the device.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Example</h4>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.pdm/getAttachedDeviceStatus &#39;{ &quot;subscribe&quot; : true }&#39;</p>
-
-      <p>&nbsp;</p>
-
-      <p>Response:&nbsp;</p>
-
-      <p>
-        {<br />
-        &nbsp; &nbsp;&quot;deviceStatusList&quot;:[<br />
-        &nbsp; &nbsp; &nbsp; {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;deviceNum&quot;:0,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;deviceStatus&quot;:&quot;NOTHING&quot;<br />
-        &nbsp; &nbsp; &nbsp; },<br />
-        &nbsp; &nbsp; &nbsp; {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;deviceNum&quot;:1,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;deviceStatus&quot;:&quot;EJECTED&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;driveStatusList&quot;:[<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;driveName&quot;:&quot;apps&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;driveStatus&quot;:&quot;UMOUNT_OK&quot;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;]<br />
-        &nbsp; &nbsp; &nbsp; },<br />
-        &nbsp; &nbsp; &nbsp; {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;deviceNum&quot;:2,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;deviceStatus&quot;:&quot;NOTHING&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;driveStatusList&quot;:[<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;driveName&quot;:&quot;sdb1&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;driveStatus&quot;:&quot;MOUNT_OK&quot;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;]<br />
-        &nbsp; &nbsp; &nbsp; }<br />
-        &nbsp; &nbsp;],<br />
-        &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-        }
-      </p>
-    </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Indicates that the operation was successful.</li>
+              <li><strong>false</strong>:<strong> </strong>Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>string</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-  <h3>getAttachedNonStorageDeviceList</h3>
-  <div>
-    <h4>Description</h4>
-    <p>Gets the status&nbsp;information of connected non-storage device(s).</p>
-    <h4>Parameters</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>subscribe</td>
-            <td>Required</td>
-            <td>boolean</td>
-            <td>
-              <p>Subscribe to get notified when a device is connected and the list of non-storage device changes. Possible values are:</p>
-
-              <ul>
-                <li><strong>true </strong>- Subscribe for changes.</li>
-                <li><strong>false</strong> - Not subscribed.</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>category</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Category of non-storage&nbsp;device. Possible values are:</p>
-
-              <ul>
-                <li>Audio</li>
-                <li>Video</li>
-                <li>Net</li>
-              </ul>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Call Returns</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>returnValue</td>
-            <td>Required</td>
-            <td>boolean</td>
-            <td>
-              <p>Indicates the status of operation. Possible values are:</p>
-
-              <ul>
-                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>string</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>powerStatus</td>
-            <td>Required</td>
-            <td>String</td>
-            <td>
-              <p>Power-on status of the device.</p>
-
-              <p><strong>Note: </strong>This value always defaults to &quot;<strong>normal</strong>&quot;.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>nonStorageDeviceList</td>
-            <td>Optional</td>
-            <td>Object: <a href="#nonstoragedevicelist"> nonStorageDeviceList</a></td>
-            <td>
-              <p>An array containing the information about the non-storage device that is currently connected.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>videoDeviceList</td>
-            <td>Optional</td>
-            <td>Object: <a href="#videodevicelist"> videoDeviceList</a></td>
-            <td>
-              <p>An array of video device lists connected.</p>
-
-              <p><strong>Note: </strong>Returned only when &quot;<strong>category</strong>&quot; is&nbsp;&quot;<strong>Video</strong>&quot;.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>audioDeviceList</td>
-            <td>Optional</td>
-            <td>Object: <a href="#audiodevicelist"> audioDeviceList</a></td>
-            <td>
-              <p>An array of audio device list&nbsp;connected.</p>
-
-              <p><strong>Note:</strong>&nbsp;Returned only when &quot;<strong>category</strong>&quot; is&nbsp;&quot;<strong>Audio</strong>&quot;.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>netDeviceList</td>
-            <td>Optional</td>
-            <td>Object: <a href="#netdevicelist"> netDeviceList</a></td>
-            <td>
-              <p>An array of net device list&nbsp;connected.</p>
-
-              <p><strong>Note:</strong>&nbsp;Returned only when &quot;<strong>category</strong>&quot; is&nbsp;&quot;<strong>Net</strong>&quot;.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Subscription Returns</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>returnValue</td>
-            <td>Required</td>
-            <td>Boolean</td>
-            <td>
-              <p>Indicates the status of operation. Possible values are:</p>
-
-              <ul>
-                <li><strong>true </strong>- Indicates that the operation was successful.</li>
-                <li><strong>false </strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>powerStatus</td>
-            <td>Required</td>
-            <td>String</td>
-            <td>
-              <p>Power-on status of the device.</p>
-
-              <p><strong>Note: </strong>This value always defaults to &quot;<strong>normal</strong>&quot;.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>nonStorageDeviceList</td>
-            <td>Required</td>
-            <td>Object: <a href="#nonstoragedevicelist"> nonStorageDeviceList</a></td>
-            <td>
-              <p>An array containing the information about the non-storage device that is currently connected.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>videoDeviceList</td>
-            <td>Optional</td>
-            <td>Object: <a href="#videodevicelist"> videoDeviceList</a></td>
-            <td>
-              <p>An array of video devices&nbsp;connected.</p>
-
-              <p><strong>Note:</strong>&nbsp;Returned only&nbsp;when &quot;<strong>category</strong>&quot; is &quot;<strong>Video</strong>&quot;.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>audioDeviceList</td>
-            <td>Optional</td>
-            <td>Object: <a href="#audiodevicelist"> audioDeviceList</a></td>
-            <td>
-              <p>An array of audio devices connected.</p>
-
-              <p><strong>Note:</strong>&nbsp;Returned only when &quot;<strong>category</strong>&quot; is &quot;<strong>Audio</strong>&quot;.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>netDeviceList</td>
-            <td>Optional</td>
-            <td>Object: <a href="#netdevicelist"> netDeviceList</a></td>
-            <td>
-              <p>An array of net devices connected.</p>
-
-              <p><strong>Note:</strong>&nbsp;Returned only when &quot;<strong>category</strong>&quot; is &quot;<strong>Net</strong>&quot;.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Example</h4>
-    <div class="code-bg-grey">
-      <p>Example 1: To view all non-storage devices attached</p>
-      <p># luna-send -n 1 -f luna://com.webos.service.pdm/getAttachedNonStorageDeviceList &#39;{ &quot;subscribe&quot; : true }&#39;</p>
-
-      <p>Response:</p>
-
-      <p>
-        {<br />
-        &nbsp; &nbsp; &quot;powerStatus&quot;: &quot;normal&quot;,<br />
-        &nbsp; &nbsp; &quot;nonStorageDeviceList&quot;: [<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;usbPortNum&quot;: 255,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;serialNumber&quot;: &quot;&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;isPowerOnConnect&quot;: false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;deviceNum&quot;: 52,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;deviceSubtype&quot;: &quot;usbhid&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;vendorName&quot;: &quot;DELL&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;deviceType&quot;: &quot;HID&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;productName&quot;: &quot;Dell USB Entry Keyboard&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;devSpeed&quot;: &quot;LOW&quot;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; },<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;usbPortNum&quot;: 2,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;serialNumber&quot;: &quot;&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;isPowerOnConnect&quot;: false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;deviceNum&quot;: 62,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;deviceSubtype&quot;: &quot;usbhid&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;vendorName&quot;: &quot;17ef&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;deviceType&quot;: &quot;HID&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;productName&quot;: &quot;Lenovo Optical USB Mouse&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;devSpeed&quot;: &quot;LOW&quot;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; }<br />
-        &nbsp; &nbsp; ],<br />
-        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-        }
-      </p>
-      <p>&nbsp;</p>
-      <p>Example 2: To view all non-storage (video) devices attached</p>
-      <p># luna-send -n 1 -f luna://com.webos.service.pdm/getAttachedNonStorageDeviceList &#39;{ &quot;subscribe&quot; : true, &quot;category&quot; : &quot;Video&quot; }&#39;</p>
-      <p>&nbsp;</p>
-      <p>Response:<br />
-        {<br />
-        &nbsp; &nbsp; &quot;powerStatus&quot;: &quot;normal&quot;,<br />
-        &nbsp; &nbsp; &quot;videoDeviceList&quot;: [<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;KERNEL&quot;: &quot;video0&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;SUBSYSTEM&quot;: &quot;video4linux&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;vendorName&quot;: &quot;Logitech, Inc.&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;productName&quot;: &quot;081b&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;devSpeed&quot;: &quot;HIGH&quot;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; }<br />
-        &nbsp; &nbsp; ],<br />
-        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-        }
-      </p>
-      <p>&nbsp;</p>
-      <p>Example 3: To view all non-storage (audio) devices attached</p>
-      <p># luna://com.webos.service.pdm/getAttachedNonStorageDeviceList &#39;{ &quot;subscribe&quot; : true, &quot;category&quot; : &quot;Audio&quot; }&#39;</p>
-      <p>&nbsp;</p>
-      <p>Response:<br />
-        {<br />
-        &nbsp; &nbsp; &quot;powerStatus&quot;: &quot;normal&quot;,<br />
-        &nbsp; &nbsp; &quot;audioDeviceList&quot;: [<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;cardNumber&quot;: 1,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;cardName&quot;: &quot;card1&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;cardId&quot;: &quot;Wireless&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;usbPortNum&quot;: 3,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;devSpeed&quot;: &quot;HIGH&quot;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; }<br />
-        &nbsp; &nbsp; ],<br />
-        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-        }
-      </p>
-      <p>&nbsp;</p>
-      <p>Example 4: To view all non-storage (net) devices attached</p>
-      <p># luna-send -n 1 -f luna://com.webos.service.pdm/getAttachedNonStorageDeviceList &#39;{ &quot;subscribe&quot; : true, &quot;category&quot; : &quot;Net&quot; }&#39;</p>
-      <p>&nbsp;</p>
-      <p>Response:<br />
-        {<br />
-        &nbsp; &nbsp; &quot;netDeviceList&quot;: [<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;duplex&quot;: &quot;&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;ifindex&quot;: &quot;4&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;linkmode&quot;: &quot;0&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;address&quot;: &quot;50:3e:aa:6d:65:e5&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;vendorName&quot;: &quot;TP-LINK&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;productName&quot;: &quot;USB 10 100 1000 LAN&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;devSpeed&quot;: &quot;HIGH&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;operstate&quot;: &quot;down&quot;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; }<br />
-        &nbsp; &nbsp; ],<br />
-        &nbsp; &nbsp; &quot;powerStatus&quot;: &quot;normal&quot;,<br />
-        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-        }
-      </p>
-    </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.pdm/format &#39;{<br />
+      &nbsp;&nbsp; &quot;driveName&quot;:&quot;sda&quot;,<br />
+      &nbsp;&nbsp; &quot;fsType&quot;:&quot;fat&quot;,<br />
+      &nbsp;&nbsp; &quot;volumeLabel&quot;:&quot;test&quot;<br />
+      }&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }</p>
   </div>
-  <h3>getAttachedStorageDeviceList</h3>
-  <div>
-    <h4>Description</h4>
-    <p>Gets status&nbsp;information of connected storage device(s).</p>
-    <h4>Parameters</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>subscribe</td>
-            <td>Required</td>
-            <td>boolean</td>
-            <td>
-              <p>Indicates if subscribed to get the notifications.</p>
-
-              <p>Possible values are:</p>
-
-              <ul>
-                <li><strong>true</strong>: Subscribe for notifications.</li>
-                <li><strong>false</strong>: Not subscribed.</li>
-              </ul>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Call Returns</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>returnValue</td>
-            <td>Required</td>
-            <td>boolean</td>
-            <td>
-              <p>Indicates the status of the operation.</p>
-
-              <p>Possible values are:</p>
-
-              <ul>
-                <li><strong>true</strong>: Indicates that the operation was successful.</li>
-                <li><strong>false</strong>: Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>string</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>powerStatus</td>
-            <td>Required</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the power-on status of the device.</p>
-
-              <p><strong>Note: </strong>This value always defaults to &quot;<strong>normal</strong>&quot;.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>storageDeviceList</td>
-            <td>Required</td>
-            <td>Object: <a href="#storagedevicelist"> storageDeviceList</a></td>
-            <td>
-              <p>Indicates an array containing information about the currently connected storage device(s).</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Subscription Returns</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>returnValue</td>
-            <td>Required</td>
-            <td>Boolean</td>
-            <td>
-              <p>Indicates the status of operation. Possible values are:</p>
-
-              <ul>
-                <li><strong>true </strong>- Indicates that the operation was successful.</li>
-                <li><strong>false </strong>- Indicates that the operation failed. Check the &quot;<strong>errorCode</strong>&quot; and &quot;<strong>errorText</strong>&quot; fields for details.</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;API Error Codes Reference&quot; section for details.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>powerStatus</td>
-            <td>Required</td>
-            <td>String</td>
-            <td>
-              <p>Power-on status of the device.</p>
-
-              <p><strong>Note: </strong>This value always defaults to &quot;<strong>normal</strong>&quot;.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>storageDeviceList</td>
-            <td>Required</td>
-            <td>Object: <a href="#storagedevicelist"> storageDeviceList</a></td>
-            <td>
-              <p>An array containing information about the currently connected storage device(s).</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Example</h4>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.pdm/getAttachedStorageDeviceList &#39;{ &quot;subscribe&quot; : true }&#39;</p>
-
-      <p>Response:&nbsp;</p>
-
-      <p>
-        {<br />
-        &nbsp; &nbsp;&quot;powerStatus&quot;:&quot;normal&quot;,<br />
-        &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
-        &nbsp; &nbsp;&quot;storageDeviceList&quot;:[<br />
-        &nbsp; &nbsp; &nbsp; {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;usbPortNum&quot;:2,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;rootPath&quot;:&quot;/tmp/usb/sdb&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;storageDriveList&quot;:[<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;isMounted&quot;:true,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;volumeLabel&quot;:&quot;MX-ES&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;uuid&quot;:&quot;1209-3C50&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;driveName&quot;:&quot;sdb1&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;driveSize&quot;:31190064,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;fsType&quot;:&quot;fat&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;mountName&quot;:&quot;/tmp/usb/sdb/sdb1&quot;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;],<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;serialNumber&quot;:&quot;000000000000000236&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;isPowerOnConnect&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;deviceNum&quot;:2,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;vendorName&quot;:&quot;MX&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;storageType&quot;:&quot;FLASH&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;deviceType&quot;:&quot;USB_STORAGE&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;productName&quot;:&quot;Mass Storage Device&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;devSpeed&quot;:&quot;HIGH&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;errorReason&quot;:&quot;NOTHING&quot;<br />
-        &nbsp; &nbsp; &nbsp; }<br />
-        &nbsp; &nbsp;]<br />
-        }
-      </p>
-    </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.pdm/format &#39;{<br />
+      &nbsp;&nbsp; &quot;driveName&quot;:&quot;sda1&quot;<br />
+      }&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }</p>
   </div>
-  <h3>getSpaceInfo</h3>
-  <div>
-    <h4>Description</h4>
-    <p>Gets the space information of the connected drive.</p>
-
-    <p><strong>Note</strong>: The drive must be mounted.</p>
-    <h4>Parameters</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>driveName&nbsp;</td>
-            <td>Required</td>
-            <td>string</td>
-            <td>
-              <p>Information that can identify the drive (e.g.&nbsp;sda1)</p>
-            </td>
-          </tr>
-          <tr>
-            <td>directCheck</td>
-            <td>Optional</td>
-            <td>boolean</td>
-            <td>
-              <p>Indicates if PDM needs to newly&nbsp;measure the&nbsp;drive space information at the time of API call. Possible values are:</p>
-
-              <ul>
-                <li><strong>true</strong> - Newly measures the information</li>
-                <li><strong>false</strong> - Returns periodically measured information</li>
-              </ul>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Call Returns</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>returnValue</td>
-            <td>Required</td>
-            <td>boolean</td>
-            <td>
-              <p>Indicates the status of operation. Possible values are:</p>
-
-              <ul>
-                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>string</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>spaceInfo</td>
-            <td>Required</td>
-            <td>Object: <a href="#spaceinfo"> spaceInfo</a></td>
-            <td>
-              <p>Information about the drive space.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Example</h4>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.pdm/getSpaceInfo &#39;{ &quot;driveName&quot; : &quot;sda&quot; , &quot;directCheck&quot; : true }&#39;</p>
-
-      <p>Response:</p>
-
-      <p>
-        {<br />
-        &nbsp; &nbsp;&quot;spaceInfo&quot;:{<br />
-        &nbsp; &nbsp; &nbsp; &quot;usedRate&quot;:0,<br />
-        &nbsp; &nbsp; &nbsp; &quot;freeSize&quot;:31116080.000000,<br />
-        &nbsp; &nbsp; &nbsp; &quot;totalSize&quot;:31190064.000000,<br />
-        &nbsp; &nbsp; &nbsp; &quot;usedSize&quot;:73984.000000<br />
-        &nbsp; &nbsp;},<br />
-        &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-        }
-      </p>
-    </div>
+</div>
+<h3>fsck</h3>
+<div>
+  <h4>Description</h4>
+  <p>Checks the file system by performing fsck (File System Check) of the corresponding connected drive.</p>
+  <p><strong>Note</strong>: On connecting a USB device with a large number of files, the PDM service prompts for &ldquo;Check &amp; Repair&rdquo; and &ldquo;Open Now&rdquo;. The fsck() API will do the file system checking when &ldquo;Check &amp; Repair&rdquo; is selected.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>driveName&nbsp;</td>
+          <td>Required</td>
+          <td>string</td>
+          <td>
+            <p>Indicates the information that can identify the drive.</p>
+            <p>Example: <strong>sda1</strong></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-  <h3>isWritableDrive</h3>
-  <div>
-    <h4>Description</h4>
-    <p>Checks the file system attribute of the drive and returns whether it is writable.&nbsp;</p>
-    <h4>Parameters</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>driveName</td>
-            <td>Required</td>
-            <td>String</td>
-            <td>
-              <p><span style="color: rgb(34, 34, 34);">Information that can identify the drive (e.g.&nbsp;sda1)</span></p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Call Returns</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>returnValue</td>
-            <td>Required</td>
-            <td>boolean</td>
-            <td>
-              <p>Indicates the status of operation. Possible values are:</p>
-
-              <ul>
-                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>string</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>isWritable</td>
-            <td>Required</td>
-            <td>boolean</td>
-            <td>
-              <p>Indicates if data can be written on the drive. Possible values are:&nbsp;</p>
-
-              <ul>
-                <li><strong>true </strong>- Writable drive</li>
-                <li><strong>false </strong>- Cannot be written</li>
-              </ul>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Example</h4>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.pdm/isWritableDrive &#39;{ &quot;driveName&quot; : &quot;sda&quot; }&#39;</p>
-
-      <p>Response:</p>
-
-      <p>
-        {<br />
-        &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
-        &nbsp; &nbsp;&quot;isWritable&quot;:true<br />
-        }
-      </p>
-    </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Indicates that the operation was successful.</li>
+              <li><strong>false</strong>:<strong> </strong>Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>string</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-  <h3>setVolumeLabel</h3>
-  <div>
-    <h4>Description</h4>
-    <p>Sets the volume label of the drive. It is supported only when file system type is FAT.</p>
-    <h4>Parameters</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>driveName&nbsp;</td>
-            <td>Required</td>
-            <td>string</td>
-            <td>
-              <p>Information that can identify the drive (e.g.&nbsp;sda1)</p>
-            </td>
-          </tr>
-          <tr>
-            <td>volumeLabel</td>
-            <td>Required</td>
-            <td>string</td>
-            <td>
-              <p>Volume label for the drive.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Call Returns</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>returnValue</td>
-            <td>Required</td>
-            <td>boolean</td>
-            <td>
-              <p>Indicates the status of operation. Possible values are:</p>
-
-              <ul>
-                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>string</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Example</h4>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.pdm/setVolumeLabel &#39;{ &quot;driveName&quot; : &quot;sda&quot;, &quot;volumeLabel&quot; : &quot;webos&quot; }&#39;</p>
-
-      <p>&nbsp;</p>
-
-      <p>Response:</p>
-
-      <p>
-        {&nbsp;&nbsp;<br />
-        &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-        }
-      </p>
-    </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.pdm/fsck &#39;{<br />
+      &nbsp;&nbsp; &quot;driveName&quot;:&quot;sda&quot;<br />
+      }&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &quot;returnValue&quot;:true<br />
+      }</p>
   </div>
-  <h3>umountAllDrive</h3>
-  <div>
-    <h4>Description</h4>
-    <p>Unmounts all drives.&nbsp;</p>
-    <h4>Parameters</h4>
-    <p>None</p>
-    <h4>Call Returns</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>returnValue</td>
-            <td>Required</td>
-            <td>boolean</td>
-            <td>
-              <p>Indicates the status of operation. Possible values are:</p>
-
-              <ul>
-                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>string</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Example</h4>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.pdm/umountAllDrive &#39;{}&#39;</p>
-
-      <p>&nbsp;</p>
-
-      <p>Response:</p>
-
-      <p>
-        {&nbsp;&nbsp;<br />
-        &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-        }
-      </p>
-    </div>
+</div>
+<h3>getAttachedDeviceStatus</h3>
+<div>
+  <h4>Description</h4>
+  <p>Gets the status&nbsp;information of connected device(s).</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Required</td>
+          <td>boolean</td>
+          <td>
+            <p>Subscribe to get notified&nbsp;when the device status information changes. Possible values are:</p>
+            <ul>
+              <li><strong>true </strong>-&nbsp;Subscribe for changes.</li>
+              <li><strong>false </strong>- Not subscribed.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>boolean</td>
+          <td>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>string</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>deviceStatusList&nbsp;</td>
+          <td>Required</td>
+          <td>Object: <a href="#devicestatuslist"> deviceStatusList</a></td>
+          <td>
+            <p>An array containing the status information of the device.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Subscription Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true </strong>- Indicates that the operation was successful.</li>
+              <li><strong>false </strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>deviceStatusList&nbsp;</td>
+          <td>Required</td>
+          <td>Object: <a href="#devicestatuslist"> deviceStatusList</a></td>
+          <td>
+            <p>An array containing the status information of the device.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.pdm/getAttachedDeviceStatus &#39;{ &quot;subscribe&quot; : true }&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:&nbsp;</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;deviceStatusList&quot;:[<br />
+      &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;deviceNum&quot;:0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;deviceStatus&quot;:&quot;NOTHING&quot;<br />
+      &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;deviceNum&quot;:1,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;deviceStatus&quot;:&quot;EJECTED&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;driveStatusList&quot;:[<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;driveName&quot;:&quot;apps&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;driveStatus&quot;:&quot;UMOUNT_OK&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;]<br />
+      &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;deviceNum&quot;:2,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;deviceStatus&quot;:&quot;NOTHING&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;driveStatusList&quot;:[<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;driveName&quot;:&quot;sdb1&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;driveStatus&quot;:&quot;MOUNT_OK&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;]<br />
+      &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp;],<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }</p>
+  </div>
+</div>
+<h3>getAttachedNonStorageDeviceList</h3>
+<div>
+  <h4>Description</h4>
+  <p>Gets the status&nbsp;information of connected non-storage device(s).</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Required</td>
+          <td>boolean</td>
+          <td>
+            <p>Subscribe to get notified when a device is connected and the list of non-storage device changes. Possible values are:</p>
+            <ul>
+              <li><strong>true </strong>- Subscribe for changes.</li>
+              <li><strong>false</strong> - Not subscribed.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>category</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Category of non-storage&nbsp;device. Possible values are:</p>
+            <ul>
+              <li>Audio</li>
+              <li>Video</li>
+              <li>Net</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>boolean</td>
+          <td>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>string</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>powerStatus</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Power-on status of the device.</p>
+            <p><strong>Note: </strong>This value always defaults to &quot;<strong>normal</strong>&quot;.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>nonStorageDeviceList</td>
+          <td>Optional</td>
+          <td>Object: <a href="#nonstoragedevicelist"> nonStorageDeviceList</a></td>
+          <td>
+            <p>An array containing the information about the non-storage device that is currently connected.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>videoDeviceList</td>
+          <td>Optional</td>
+          <td>Object: <a href="#videodevicelist"> videoDeviceList</a></td>
+          <td>
+            <p>An array of video device lists connected.</p>
+            <p><strong>Note: </strong>Returned only when &quot;<strong>category</strong>&quot; is&nbsp;&quot;<strong>Video</strong>&quot;.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>audioDeviceList</td>
+          <td>Optional</td>
+          <td>Object: <a href="#audiodevicelist"> audioDeviceList</a></td>
+          <td>
+            <p>An array of audio device list&nbsp;connected.</p>
+            <p><strong>Note:</strong>&nbsp;Returned only when &quot;<strong>category</strong>&quot; is&nbsp;&quot;<strong>Audio</strong>&quot;.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>netDeviceList</td>
+          <td>Optional</td>
+          <td>Object: <a href="#netdevicelist"> netDeviceList</a></td>
+          <td>
+            <p>An array of net device list&nbsp;connected.</p>
+            <p><strong>Note:</strong>&nbsp;Returned only when &quot;<strong>category</strong>&quot; is&nbsp;&quot;<strong>Net</strong>&quot;.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Subscription Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true </strong>- Indicates that the operation was successful.</li>
+              <li><strong>false </strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>powerStatus</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Power-on status of the device.</p>
+            <p><strong>Note: </strong>This value always defaults to &quot;<strong>normal</strong>&quot;.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>nonStorageDeviceList</td>
+          <td>Required</td>
+          <td>Object: <a href="#nonstoragedevicelist"> nonStorageDeviceList</a></td>
+          <td>
+            <p>An array containing the information about the non-storage device that is currently connected.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>videoDeviceList</td>
+          <td>Optional</td>
+          <td>Object: <a href="#videodevicelist"> videoDeviceList</a></td>
+          <td>
+            <p>An array of video devices&nbsp;connected.</p>
+            <p><strong>Note:</strong>&nbsp;Returned only&nbsp;when &quot;<strong>category</strong>&quot; is &quot;<strong>Video</strong>&quot;.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>audioDeviceList</td>
+          <td>Optional</td>
+          <td>Object: <a href="#audiodevicelist"> audioDeviceList</a></td>
+          <td>
+            <p>An array of audio devices connected.</p>
+            <p><strong>Note:</strong>&nbsp;Returned only when &quot;<strong>category</strong>&quot; is &quot;<strong>Audio</strong>&quot;.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>netDeviceList</td>
+          <td>Optional</td>
+          <td>Object: <a href="#netdevicelist"> netDeviceList</a></td>
+          <td>
+            <p>An array of net devices connected.</p>
+            <p><strong>Note:</strong>&nbsp;Returned only when &quot;<strong>category</strong>&quot; is &quot;<strong>Net</strong>&quot;.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.pdm/getAttachedNonStorageDeviceList &#39;{ &quot;subscribe&quot; : true }&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;powerStatus&quot;: &quot;normal&quot;,<br />
+      &nbsp; &nbsp; &quot;nonStorageDeviceList&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;usbPortNum&quot;: 255,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;serialNumber&quot;: &quot;&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;isPowerOnConnect&quot;: false,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;deviceNum&quot;: 52,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;deviceSubtype&quot;: &quot;usbhid&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;vendorName&quot;: &quot;DELL&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;deviceType&quot;: &quot;HID&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;productName&quot;: &quot;Dell USB Entry Keyboard&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;devSpeed&quot;: &quot;LOW&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;usbPortNum&quot;: 2,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;serialNumber&quot;: &quot;&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;isPowerOnConnect&quot;: false,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;deviceNum&quot;: 62,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;deviceSubtype&quot;: &quot;usbhid&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;vendorName&quot;: &quot;17ef&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;deviceType&quot;: &quot;HID&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;productName&quot;: &quot;Lenovo Optical USB Mouse&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;devSpeed&quot;: &quot;LOW&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }</p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.pdm/getAttachedNonStorageDeviceList &#39;{ &quot;subscribe&quot; : true, &quot;category&quot; : &quot;Video&quot; }&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;powerStatus&quot;: &quot;normal&quot;,<br />
+      &nbsp; &nbsp; &quot;videoDeviceList&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;KERNEL&quot;: &quot;video0&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;SUBSYSTEM&quot;: &quot;video4linux&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;vendorName&quot;: &quot;Logitech, Inc.&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;productName&quot;: &quot;081b&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;devSpeed&quot;: &quot;HIGH&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }</p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna://com.webos.service.pdm/getAttachedNonStorageDeviceList &#39;{ &quot;subscribe&quot; : true, &quot;category&quot; : &quot;Audio&quot; }&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;powerStatus&quot;: &quot;normal&quot;,<br />
+      &nbsp; &nbsp; &quot;audioDeviceList&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;cardNumber&quot;: 1,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;cardName&quot;: &quot;card1&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;cardId&quot;: &quot;Wireless&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;usbPortNum&quot;: 3,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;devSpeed&quot;: &quot;HIGH&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }</p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.pdm/getAttachedNonStorageDeviceList &#39;{ &quot;subscribe&quot; : true, &quot;category&quot; : &quot;Net&quot; }&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;netDeviceList&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;duplex&quot;: &quot;&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;ifindex&quot;: &quot;4&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;linkmode&quot;: &quot;0&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;address&quot;: &quot;50:3e:aa:6d:65:e5&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;vendorName&quot;: &quot;TP-LINK&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;productName&quot;: &quot;USB 10 100 1000 LAN&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;devSpeed&quot;: &quot;HIGH&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;operstate&quot;: &quot;down&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &quot;powerStatus&quot;: &quot;normal&quot;,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }</p>
+  </div>
+</div>
+<h3>getAttachedStorageDeviceList</h3>
+<div>
+  <h4>Description</h4>
+  <p>Gets status&nbsp;information of connected storage device(s).</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Required</td>
+          <td>boolean</td>
+          <td>
+            <p>Indicates if subscribed to get the notifications.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Subscribe for notifications.</li>
+              <li><strong>false</strong>: Not subscribed.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>:<strong> </strong>Indicates that the operation was successful.</li>
+              <li><strong>false</strong>: Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>string</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>powerStatus</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the power-on status of the device.</p>
+            <p><strong>Note: </strong>This value always defaults to &quot;<strong>normal</strong>&quot;.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>storageDeviceList</td>
+          <td>Required</td>
+          <td>Object: <a href="#storagedevicelist"> storageDeviceList</a></td>
+          <td>
+            <p>Indicates an array containing information about the currently connected storage device(s).</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Subscription Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true </strong>- Indicates that the operation was successful.</li>
+              <li><strong>false </strong>- Indicates that the operation failed. Check the &quot;<strong>errorCode</strong>&quot; and &quot;<strong>errorText</strong>&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;API Error Codes Reference&quot; section for details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>powerStatus</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Power-on status of the device.</p>
+            <p><strong>Note: </strong>This value always defaults to &quot;<strong>normal</strong>&quot;.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>storageDeviceList</td>
+          <td>Required</td>
+          <td>Object: <a href="#storagedevicelist"> storageDeviceList</a></td>
+          <td>
+            <p>An array containing information about the currently connected storage device(s).</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.pdm/getAttachedStorageDeviceList &#39;{ &quot;subscribe&quot; : true }&#39;</p>
+    <p>Response:&nbsp;</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;powerStatus&quot;:&quot;normal&quot;,<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp; &nbsp;&quot;storageDeviceList&quot;:[<br />
+      &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;usbPortNum&quot;:2,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;rootPath&quot;:&quot;/tmp/usb/sdb&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;storageDriveList&quot;:[<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;isMounted&quot;:true,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;volumeLabel&quot;:&quot;MX-ES&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;uuid&quot;:&quot;1209-3C50&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;driveName&quot;:&quot;sdb1&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;driveSize&quot;:31190064,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;fsType&quot;:&quot;fat&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;mountName&quot;:&quot;/tmp/usb/sdb/sdb1&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;],<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;serialNumber&quot;:&quot;000000000000000236&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;isPowerOnConnect&quot;:false,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;deviceNum&quot;:2,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;vendorName&quot;:&quot;MX&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;storageType&quot;:&quot;FLASH&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;deviceType&quot;:&quot;USB_STORAGE&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;productName&quot;:&quot;Mass Storage Device&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;devSpeed&quot;:&quot;HIGH&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;errorReason&quot;:&quot;NOTHING&quot;<br />
+      &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp;]<br />
+      }</p>
+  </div>
+</div>
+<h3>getSpaceInfo</h3>
+<div>
+  <h4>Description</h4>
+  <p>Gets the space information of the connected drive.</p>
+  <p><strong>Note</strong>: The drive must be mounted.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>driveName&nbsp;</td>
+          <td>Required</td>
+          <td>string</td>
+          <td>
+            <p>Information that can identify the drive (e.g.&nbsp;sda1)</p>
+          </td>
+        </tr>
+        <tr>
+          <td>directCheck</td>
+          <td>Optional</td>
+          <td>boolean</td>
+          <td>
+            <p>Indicates if PDM needs to newly&nbsp;measure the&nbsp;drive space information at the time of API call. Possible values are:</p>
+            <ul>
+              <li><strong>true</strong> - Newly measures the information</li>
+              <li><strong>false</strong> - Returns periodically measured information</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>boolean</td>
+          <td>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>string</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>spaceInfo</td>
+          <td>Required</td>
+          <td>Object: <a href="#spaceinfo"> spaceInfo</a></td>
+          <td>
+            <p>Information about the drive space.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.pdm/getSpaceInfo &#39;{ &quot;driveName&quot; : &quot;sda&quot; , &quot;directCheck&quot; : true }&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;spaceInfo&quot;:{<br />
+      &nbsp; &nbsp; &nbsp; &quot;usedRate&quot;:0,<br />
+      &nbsp; &nbsp; &nbsp; &quot;freeSize&quot;:31116080.000000,<br />
+      &nbsp; &nbsp; &nbsp; &quot;totalSize&quot;:31190064.000000,<br />
+      &nbsp; &nbsp; &nbsp; &quot;usedSize&quot;:73984.000000<br />
+      &nbsp; &nbsp;},<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }</p>
+  </div>
+</div>
+<h3>isWritableDrive</h3>
+<div>
+  <h4>Description</h4>
+  <p>Checks the file system attribute of the drive and returns whether it is writable.&nbsp;</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>driveName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p><span style="color:rgb(34, 34, 34)">Information that can identify the drive (e.g.&nbsp;sda1)</span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>boolean</td>
+          <td>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>string</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>isWritable</td>
+          <td>Required</td>
+          <td>boolean</td>
+          <td>
+            <p>Indicates if data can be written on the drive. Possible values are:&nbsp;</p>
+            <ul>
+              <li><strong>true </strong>- Writable drive</li>
+              <li><strong>false </strong>- Cannot be written</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.pdm/isWritableDrive &#39;{ &quot;driveName&quot; : &quot;sda&quot; }&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp; &nbsp;&quot;isWritable&quot;:true<br />
+      }</p>
+  </div>
+</div>
+<h3>setVolumeLabel</h3>
+<div>
+  <h4>Description</h4>
+  <p>Sets the volume label of the drive. It is supported only when file system type is FAT.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>driveName&nbsp;</td>
+          <td>Required</td>
+          <td>string</td>
+          <td>
+            <p>Information that can identify the drive (e.g.&nbsp;sda1)</p>
+          </td>
+        </tr>
+        <tr>
+          <td>volumeLabel</td>
+          <td>Required</td>
+          <td>string</td>
+          <td>
+            <p>Volume label for the drive.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>boolean</td>
+          <td>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>string</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.pdm/setVolumeLabel &#39;{ &quot;driveName&quot; : &quot;sda&quot;, &quot;volumeLabel&quot; : &quot;webos&quot; }&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }</p>
+  </div>
+</div>
+<h3>umountAllDrive</h3>
+<div>
+  <h4>Description</h4>
+  <p>Unmounts all drives.&nbsp;</p>
+  <h4>Parameters</h4>
+  <p>None</p>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>boolean</td>
+          <td>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>string</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.pdm/umountAllDrive &#39;{}&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }</p>
   </div>
 </div>
 <h2>Objects</h2>
@@ -1643,6 +1527,90 @@ toc: true
       </tbody>
     </table>
   </div>
+  <h3>deviceStatusList</h3>
+  <p>List of the storage and non-storage devices connected and their statuses.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>deviceNum</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Device number</p>
+          </td>
+        </tr>
+        <tr>
+          <td>deviceStatus</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Status of the device</p>
+          </td>
+        </tr>
+        <tr>
+          <td>driveStatusList</td>
+          <td>Optional</td>
+          <td>Object: <a href="#drivestatuslist"> driveStatusList</a></td>
+          <td>
+            <p>List of statuses of the drives in the device</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>driveStatusList</h3>
+  <p>List of the drives in the connected storage devices and their statuses.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>driveName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Name of the drive</p>
+          </td>
+        </tr>
+        <tr>
+          <td>driveStatus</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Mount status of the drive</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   <h3>nonStorageDeviceList</h3>
   <p>List of information about the non-storage&nbsp;devices that are&nbsp;currently connected.</p>
   <div class="table-container">
@@ -1684,7 +1652,6 @@ toc: true
           <td>Boolean</td>
           <td>
             <p>Indicates whether the device was connected during power on. Possible values are:</p>
-
             <ul>
               <li><strong>true&nbsp;</strong>- Connected during power on</li>
               <li><strong>false&nbsp;</strong>- Connected after&nbsp;powering on</li>
@@ -1705,7 +1672,6 @@ toc: true
           <td>String</td>
           <td>
             <p>Sub-type of the device connected.</p>
-
             <p>For example: If deviceType is &quot;<strong>usb</strong>&quot;, then&nbsp;deviceSubtype can be &quot;<strong>usbhid</strong>&quot; etc.</p>
           </td>
         </tr>
@@ -1739,7 +1705,6 @@ toc: true
           <td>String</td>
           <td>
             <p>Speed of the device. Possible values are:</p>
-
             <ul>
               <li>LOW</li>
               <li>HIGH</li>
@@ -1807,7 +1772,6 @@ toc: true
           <td>String</td>
           <td>
             <p>Speed of the device. Possible values are:</p>
-
             <ul>
               <li>LOW</li>
               <li>HIGH</li>
@@ -1875,7 +1839,6 @@ toc: true
           <td>String</td>
           <td>
             <p>Speed of the sound device. Possible values are:</p>
-
             <ul>
               <li>LOW</li>
               <li>HIGH</li>
@@ -1927,7 +1890,6 @@ toc: true
           <td>String</td>
           <td>
             <p>Tells whether specified interface is managed and configured by systemd network manager. Possible values are:</p>
-
             <ul>
               <li>0 -&nbsp;LINK_AUTO</li>
               <li>1 -&nbsp;LINK_MANUAL</li>
@@ -1941,7 +1903,6 @@ toc: true
           <td>String</td>
           <td>
             <p>Bandwidth of the device. Possible values are:</p>
-
             <ul>
               <li>uni-directional</li>
               <li>bi-directional</li>
@@ -1978,7 +1939,6 @@ toc: true
           <td>String</td>
           <td>
             <p>Speed of the device. Possible values are:</p>
-
             <ul>
               <li>LOW</li>
               <li>HIGH</li>
@@ -2046,7 +2006,6 @@ toc: true
           <td>Boolean</td>
           <td>
             <p>Indicates whether the device was connected during power on. Possible values are:</p>
-
             <ul>
               <li><strong>true&nbsp;</strong>- Connected during power on.</li>
               <li><strong>false&nbsp;</strong>- Connected after&nbsp;powering on.</li>
@@ -2107,7 +2066,6 @@ toc: true
           <td>String</td>
           <td>
             <p>Describes the status of device mounting. Possible values are:</p>
-
             <ul>
               <li>NOTHING - Mount successful</li>
               <li>NOMOUNTED - Mount unsuccessful</li>
@@ -2145,7 +2103,6 @@ toc: true
           <td>Boolean</td>
           <td>
             <p>Indicates whether the device is mounted or not. Possible values are:</p>
-
             <ul>
               <li><strong>true&nbsp;</strong>- Device is mounted</li>
               <li><strong>false&nbsp;</strong>- Device is not&nbsp;mounted</li>

@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.activitymanager
-date: 2020-09-29
+date: 2020-11-13
 weight: 70
 toc: true
 ---
@@ -16,70 +16,60 @@ toc: true
   <p><img src="/images/docs/reference/com-webos-service-activitymanager-activity-state-transition-diagram.png" alt="activity state transition diagram"></p>
   <p>An&nbsp;Activity can have the state shown in the diagram above. What the Activity does for each state is as follows.</p>
   <ul>
-    <li>
-      <strong><span style="color:#0000FF">creating</span></strong>
+    <li><span style="color:#0000FF"><strong>creating</strong></span>
       <ul>
         <li>The <strong>create</strong>&nbsp;method is called and the activity is <strong>creating</strong>.</li>
       </ul>
     </li>
-    <li>
-      <strong><span style="color:#008000">created</span></strong>
+    <li><span style="color:#008000"><strong>created</strong></span>&nbsp;
       <ul>
         <li>The&nbsp;activity was <strong>created&nbsp;</strong>successfully.&nbsp;</li>
         <li>When the&nbsp;<strong>create</strong> method is called with <strong>{&#39;start&#39;&nbsp;:&nbsp;true}</strong>, the activity automatically moves to&nbsp;<strong>unsatisfied&nbsp;</strong>state.</li>
       </ul>
     </li>
-    <li>
-      <strong><span style="color:#0000FF">starting</span></strong>
+    <li><span style="color:#0000FF"><strong>starting</strong></span>
       <ul>
         <li>The <strong>start </strong>method is called and the activity is <strong>starting</strong>.</li>
         <li>In this step, the activity will subscribe requirements, triggers, and schedule.</li>
       </ul>
     </li>
-    <li>
-      <strong><span style="color:#008000">unsatisfied</span></strong>
+    <li><span style="color:#008000"><strong>unsatisfied</strong></span>
       <ul>
         <li><span style="color:#008000"><strong>​</strong></span>The activity waits for all conditions to be satisfied - requirements, triggers and schedule.</li>
         <li>The activity in <strong>unsatisfied</strong>&nbsp;state can be paused by the&nbsp;<strong>pause</strong>&nbsp;method.</li>
       </ul>
     </li>
-    <li>
-      <strong><span style="color:#0000FF">pausing</span></strong>
+    <li><strong><span style="color:#0000FF">pausing</span></strong>
       <ul>
         <li><strong><span style="color:#0000FF">​</span></strong>The <strong>pause</strong>&nbsp;method is called and the activity is&nbsp;<strong>pausing</strong>.</li>
       </ul>
     </li>
-    <li>
-      <strong><span style="color:#008000">paused</span></strong>
+    <li><strong><span style="color:#008000">paused</span></strong>
       <ul>
         <li><strong><span style="color:#008000">​</span></strong>The activity is <strong>paused</strong>.</li>
         <li>In this state, the activity&nbsp;does not move to the <strong>satisfied&nbsp;</strong>state, although all conditions&nbsp;are satisfied.</li>
         <li>The activity can move to unsatisfied state by <strong>start</strong>&nbsp;method.</li>
       </ul>
     </li>
-    <li>
-      <strong><span style="color:#0000FF">satisfying</span></strong>
+    <li><strong><span style="color:#0000FF">satisfying</span></strong>
       <ul>
         <li><strong><span style="color:#0000FF">​</span></strong>All conditions of the activity are&nbsp;<strong>satisfying</strong>.&nbsp;</li>
         <li>An activity in <strong>unsatisfied&nbsp;</strong>state automatically moves to this state without an API&nbsp;call.</li>
       </ul>
     </li>
-    <li>
-      <strong><span style="color:#008000">satisfied</span></strong>
+    <li><strong><span style="color:#008000">satisfied</span></strong>
       <ul>
         <li><strong><span style="color:#008000">​</span></strong>All conditions&nbsp;of the activity are <strong>satisfied</strong>.</li>
         <li>There is nothing to do special.</li>
       </ul>
     </li>
-    <li>
-      <strong><span style="color:#0000FF">expiring</span></strong>
+    <li><strong><span style="color:#0000FF">expiring</span></strong>
       <ul>
         <li><strong><span style="color:#0000FF">​</span></strong>The activity is <strong>expiring</strong>.</li>
         <li>The activity&nbsp;will call the callback method and unsubscribe&nbsp;triggers and cancel schedule.</li>
       </ul>
     </li>
-    <li>
-      <strong><span style="color:#008000">expired</span></strong>
+    <li><strong><span style="color:#008000">expired</span></strong>
       <ul>
         <li><strong><span style="color:#008000">​</span></strong>The activity is over.</li>
         <li>All callbacks are handled successfully.</li>
@@ -88,12 +78,10 @@ toc: true
         <li>If parent does not want to restart it, then it must call the <strong>cancel&nbsp;</strong>method.</li>
       </ul>
     </li>
-    <li>
-      <strong><span style="color:#0000FF">restarting</span></strong>
+    <li><strong><span style="color:#0000FF">restarting</span></strong>
       <ul>
         <li><strong><span style="color:#0000FF">​</span></strong>The activity is <strong>restarting</strong>.</li>
-        <li>
-          There are two ways to restart an activity.
+        <li>There are two ways to restart an activity.
           <ul>
             <li>One is to call the&nbsp;<strong>complete </strong>method with <strong>{&#39;restart&#39; : true}</strong>.</li>
             <li>Another is to give the <strong>continuous</strong>&nbsp;property to true when creating the activity. If the activity was created with <strong>continuous</strong> property, the activity will move to <strong>unsatisfied&nbsp;</strong>state as soon as receive the callback&nbsp;response.</li>
@@ -101,30 +89,26 @@ toc: true
         </li>
       </ul>
     </li>
-    <li>
-      <strong><span style="color:#0000FF">failing</span></strong>
+    <li><strong><span style="color:#0000FF">failing</span></strong>
       <ul>
         <li><strong><span style="color:#0000FF">​</span></strong>An error occurs during activity job and the activity is <strong>failing</strong>.</li>
         <li>Any activity in any state can move to this state, if an error occurs.</li>
         <li>Make sure that Triggers or Callbacks do not fail for any reason. Their failure will move the activity immediately to this state.</li>
       </ul>
     </li>
-    <li>
-      <strong><span style="color:#008000">failed</span></strong>
+    <li><strong><span style="color:#008000">failed</span></strong>
       <ul>
         <li><strong><span style="color:#008000">​</span></strong>The activity has&nbsp;<strong>failed<span style="color:#008000">,</span></strong>&nbsp;and the activity manager cannot do anything anymore.</li>
         <li>The parent should call <strong>cancel</strong>&nbsp;method to destroy the activity.</li>
       </ul>
     </li>
-    <li>
-      <strong><span style="color:#0000FF">destroying</span></strong>
+    <li><strong><span style="color:#0000FF">destroying</span></strong>
       <ul>
         <li><strong><span style="color:#0000FF">​</span></strong>The <strong>cancel&nbsp;</strong>method is called and the activity is <strong>destroying</strong>.</li>
         <li>The <strong>cancel</strong> method can be called in any activity state,</li>
       </ul>
     </li>
-    <li>
-      <strong><span style="color:#008000">destroyed</span></strong>
+    <li><strong><span style="color:#008000">destroyed</span></strong>
       <ul>
         <li><strong><span style="color:#008000">​</span></strong>The activity is <strong>destroyed</strong>.</li>
         <li>In this state, the activity will be&nbsp;excluded from being managed by the activity manager.</li>
@@ -267,8 +251,7 @@ toc: true
             <td>Boolean</td>
             <td>
               <p>If it is subscribed, <strong>subscribed</strong> will contain <strong>true</strong>.<br />
-                If it is not subscribed, <strong>subscribed</strong> will contain <strong>false</strong>.
-              </p>
+                If it is not subscribed, <strong>subscribed</strong> will contain <strong>false</strong>.</p>
             </td>
           </tr>
           <tr>
@@ -338,8 +321,7 @@ toc: true
                 &nbsp; &nbsp; &quot;activityId&quot;: 10813,<br />
                 &nbsp; &nbsp; &quot;event&quot;: &quot;start&quot;,<br />
                 &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-                }
-              </p>
+                }</p>
             </td>
           </tr>
           <tr>
@@ -356,8 +338,7 @@ toc: true
             <td>Boolean</td>
             <td>
               <p>If it is subscribed, <strong>subscribed</strong> will contain <strong>true</strong>.<br />
-                If it is not subscribed, <strong>subscribed</strong> will contain <strong>false</strong>.
-              </p>
+                If it is not subscribed, <strong>subscribed</strong> will contain <strong>false</strong>.</p>
             </td>
           </tr>
           <tr>
@@ -386,23 +367,20 @@ toc: true
         &nbsp; },<br />
         &nbsp; &quot;start&quot;: true,<br />
         &nbsp; &quot;subscribe&quot;: true<br />
-        }&#39;
-      </p>
+        }&#39;</p>
       <p>Response:</p>
       <p>{<br />
         &nbsp; &quot;activityId&quot;: 83,<br />
         &nbsp; &quot;returnValue&quot;: true,<br />
         &nbsp; &quot;subscribed&quot;: true<br />
-        }
-      </p>
+        }</p>
       <p>Subscription Response:</p>
       <p>{<br />
         &nbsp; &quot;event&quot;: &quot;start&quot;,<br />
         &nbsp; &quot;activityId&quot;: 83,<br />
         &nbsp; &quot;returnValue&quot;: true,<br />
         &nbsp; &quot;subscribed&quot;: true<br />
-        }
-      </p>
+        }</p>
       <p>-----------------------------------------------------------------------------------------------------------------------</p>
       <p>2. Example code to create scheduled activity:</p>
       <p># luna-send -f -i luna://com.webos.service.activitymanager/create &#39;{<br />
@@ -414,23 +392,20 @@ toc: true
         &nbsp; },<br />
         &nbsp; &quot;start&quot;: true,<br />
         &nbsp; &quot;subscribe&quot;: true<br />
-        }&#39;
-      </p>
+        }&#39;</p>
       <p>Response:</p>
       <p>{<br />
         &nbsp; &quot;activityId&quot;: 102,<br />
         &nbsp; &quot;returnValue&quot;: true,<br />
         &nbsp; &quot;subscribed&quot;: true<br />
-        }
-      </p>
+        }</p>
       <p>Subscription response:</p>
       <p>{<br />
         &nbsp; &quot;event&quot;: &quot;start&quot;,<br />
         &nbsp; &quot;activityId&quot;: 102,<br />
         &nbsp; &quot;returnValue&quot;: true,<br />
         &nbsp; &quot;subscribed&quot;: true<br />
-        }
-      </p>
+        }</p>
       <p>-----------------------------------------------------------------------------------------------------------------------</p>
       <p>3. Example code to create scheduled activity with callback:</p>
       <p># luna-send -f -i luna://com.webos.service.activitymanager/create &#39;{<br />
@@ -446,23 +421,20 @@ toc: true
         &nbsp; },<br />
         &nbsp; &quot;start&quot;: true,<br />
         &nbsp; &quot;subscribe&quot;: true<br />
-        }&#39;
-      </p>
+        }&#39;</p>
       <p>Response:</p>
       <p>{<br />
         &nbsp; &quot;activityId&quot;: 84,<br />
         &nbsp; &quot;returnValue&quot;: true,<br />
         &nbsp; &quot;subscribed&quot;: true<br />
-        }
-      </p>
+        }</p>
       <p>Subscription response:</p>
       <p>{<br />
         &nbsp; &quot;event&quot;: &quot;start&quot;,<br />
         &nbsp; &quot;activityId&quot;: 84,<br />
         &nbsp; &quot;returnValue&quot;: true,<br />
         &nbsp; &quot;subscribed&quot;: true<br />
-        }
-      </p>
+        }</p>
       <p>-----------------------------------------------------------------------------------------------------------------------</p>
       <p>4. Example code to create activity with multiple trigger:</p>
       <p># luna-send -i&nbsp;-f luna://com.webos.service.activitymanager/create &#39;{<br />
@@ -496,23 +468,20 @@ toc: true
         &nbsp; },<br />
         &nbsp; &quot;start&quot;: true,<br />
         &nbsp; &quot;subscribe&quot;: true<br />
-        }&#39;
-      </p>
+        }&#39;</p>
       <p>Response:</p>
       <p>{<br />
         &nbsp; &quot;activityId&quot;: 85,<br />
         &nbsp; &quot;returnValue&quot;: true,<br />
         &nbsp; &quot;subscribed&quot;: true<br />
-        }
-      </p>
+        }</p>
       <p>Subscription response:</p>
       <p>{<br />
         &nbsp; &quot;event&quot;: &quot;start&quot;,<br />
         &nbsp; &quot;activityId&quot;: 85,<br />
         &nbsp; &quot;returnValue&quot;: true,<br />
         &nbsp; &quot;subscribed&quot;: true<br />
-        }
-      </p>
+        }</p>
       <p>-----------------------------------------------------------------------------------------------------------------------</p>
       <p>5. Example code to create continuous activity</p>
       <p># luna-send -n 1 -f luna://com.webos.service.activitymanager/create &#39;{<br />
@@ -528,23 +497,20 @@ toc: true
         &nbsp;&nbsp;},<br />
         &nbsp;&nbsp;&quot;replace&quot;:true,<br />
         &nbsp;&nbsp;&quot;start&quot;:true<br />
-        }&#39;
-      </p>
+        }&#39;</p>
       <p>Response:</p>
       <p>{<br />
         &nbsp; &quot;activityId&quot;: 60,<br />
         &nbsp; &quot;returnValue&quot;: true,<br />
         &nbsp; &quot;subscribed&quot;: false<br />
-        }
-      </p>
+        }</p>
       <p>Subscription response:</p>
       <p>{<br />
         &nbsp; &quot;event&quot;: &quot;start&quot;,<br />
         &nbsp; &quot;activityId&quot;: 60,<br />
         &nbsp; &quot;returnValue&quot;: true,<br />
         &nbsp; &quot;subscribed&quot;: true<br />
-        }
-      </p>
+        }</p>
     </div>
   </div>
 </div>
@@ -824,15 +790,13 @@ toc: true
       &nbsp; &nbsp;&nbsp;},<br />
       &nbsp; &nbsp; &quot;replace&quot;: true,<br />
       &nbsp; &nbsp;&nbsp;&quot;start&quot;: true<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;subscribed&quot;: false,<br />
       &nbsp; &nbsp; &quot;activityId&quot;: 62,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
+      }</p>
     <p>&nbsp;</p>
     <p>Step 2: Close any app.</p>
     <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/closeByAppId &#39;{&quot;id&quot;:&quot;com.webos.app.enactbrowser&quot;}&#39;</p>
@@ -840,20 +804,17 @@ toc: true
     <p>{<br />
       &nbsp; &nbsp; &quot;appId&quot;: &quot;com.webos.app.enactbrowser&quot;,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
+      }</p>
     <p>&nbsp;</p>
     <p>Step 3: Complete the activity and then start it again.</p>
     <p># luna-send -n 1 -f -a myapp luna://com.webos.service.activitymanager/complete &#39;{<br />
       &nbsp; &nbsp;&nbsp;&quot;activityName&quot;: &quot;browser closed&quot;,<br />
       &nbsp; &nbsp;&nbsp;&quot;restart&quot;: true<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>cancel</h3>
@@ -1172,8 +1133,7 @@ toc: true
           <td>Boolean</td>
           <td>
             <p>If it is subscribed, <strong>subscribed</strong> will contain <strong>true</strong>.<br />
-              If it is not subscribed, <strong>subscribed</strong> will contain <strong>false</strong>.
-            </p>
+              If it is not subscribed, <strong>subscribed</strong> will contain <strong>false</strong>.</p>
           </td>
         </tr>
         <tr>
@@ -1199,8 +1159,7 @@ toc: true
           <td>
             <p><strong>adopted</strong> indicates a successful or failed adoption.</p>
             <p>If the app or service adopts the Activity, <strong>adopted</strong> will contain true.<br />
-              If the app or service does not adopt the Activity, <strong>adopted</strong> will contain&nbsp;false.
-            </p>
+              If the app or service does not adopt the Activity, <strong>adopted</strong> will contain&nbsp;false.</p>
           </td>
         </tr>
       </tbody>
@@ -1254,8 +1213,7 @@ toc: true
               &nbsp; &nbsp; &quot;activityId&quot;: 10813,<br />
               &nbsp; &nbsp; &quot;event&quot;: &quot;start&quot;,<br />
               &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-              }
-            </p>
+              }</p>
           </td>
         </tr>
         <tr>
@@ -1272,8 +1230,7 @@ toc: true
           <td>Boolean</td>
           <td>
             <p>If it is subscribed, <strong>subscribed</strong> will contain <strong>true</strong>.<br />
-              If it is not subscribed, <strong>subscribed</strong> will contain <strong>false</strong>.
-            </p>
+              If it is not subscribed, <strong>subscribed</strong> will contain <strong>false</strong>.</p>
           </td>
         </tr>
         <tr>
@@ -1298,37 +1255,32 @@ toc: true
       &nbsp;&nbsp;&quot;wait&quot;: true,<br />
       &nbsp;&nbsp;&quot;subscribe&quot;: true,<br />
       &nbsp;&nbsp;&quot;detailedEvents&quot;: false<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &quot;subscribed&quot;: true,<br />
       &nbsp; &quot;adopted&quot;: false<br />
-      }
-    </p>
+      }</p>
     <p>Subscription Response: If parent of the activity did not release the activity</p>
     <p>{<br />
       &nbsp;&nbsp;&quot;adopted&quot;: false,<br />
       &nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
       &nbsp;&nbsp;&quot;subscribed&quot;: true<br />
-      }
-    </p>
+      }</p>
     <p>Subscription Response: When the activity is released and current app or service adopts the activity. Only one adopter receives this result and it becomes the parent of the activity.&nbsp;Other adopter candidates remain as adopter continuously. (First in, First out)</p>
     <p>{<br />
       &nbsp;&nbsp;&quot;event&quot;: &quot;orphan&quot;,<br />
       &nbsp;&nbsp;&quot;activityId&quot;: 90,<br />
       &nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
       &nbsp;&nbsp;&quot;subscribed&quot;: true<br />
-      }
-    </p>
+      }</p>
     <p>Subscription Response: When the activity is transferred to another adopter.</p>
     <p>{<br />
       &nbsp;&nbsp;&quot;adopted&quot;: true,<br />
       &nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
       &nbsp;&nbsp;&quot;subscribed&quot;: true<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>release</h3>
@@ -1530,23 +1482,20 @@ toc: true
       &nbsp; &nbsp; &nbsp; &quot;where&quot;: {&quot;op&quot;:&quot;=&quot;,&quot;prop&quot;:[&quot;configs&quot;,&quot;com.webos.service.activitymanager.p2test.trigger&quot;],&quot;val&quot;:true}<br />
       &nbsp; &nbsp; },&quot;type&quot;: {&quot;foreground&quot;: true}<br />
       &nbsp; },&quot;replace&quot;: true,&quot;start&quot;: true, &quot;subscribe&quot;:true<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp;&nbsp;&nbsp;&nbsp;&quot;subscribed&quot;: true,<br />
       &nbsp;&nbsp;&nbsp;&nbsp;&quot;activityId&quot;: 11,<br />
       &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true<br />
-      }
-    </p>
+      }</p>
     <p>Pause activity</p>
     <p>#&nbsp;luna-send -n 1 -f&nbsp;luna://com.webos.service.activitymanager/pause&nbsp;&#39;{&quot;activityId&quot;: 11}&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
       }<br />
-      &nbsp;
-    </p>
+      &nbsp;</p>
   </div>
 </div>
 <h3>getActivityInfo</h3>
@@ -1698,8 +1647,7 @@ toc: true
     <p># luna-send -n 1 -f luna://com.webos.service.activitymanager/getActivityInfo &#39;{<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;activityId&quot;:36,<br />
       &nbsp; &nbsp; &nbsp; &quot;current&quot;:false<br />
-      &nbsp; }&#39;
-    </p>
+      &nbsp; }&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp;&nbsp;&nbsp;&nbsp;&quot;activity&quot;: {<br />
@@ -1718,8 +1666,7 @@ toc: true
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;subscribers&quot;: [],<br />
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;creator&quot;: {<br />
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;serviceId&quot;: &quot;com.webos.service.test&quot;<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},
-    </p>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},</p>
     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;state&quot;: &quot;waiting&quot;,<br />
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;schedule&quot;: {<br />
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;interval&quot;: &quot;1d&quot;,<br />
@@ -1730,15 +1677,13 @@ toc: true
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;activityId&quot;: 36<br />
       &nbsp;&nbsp;&nbsp;&nbsp;},<br />
       &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true<br />
-      }
-    </p>
+      }</p>
     <p>&nbsp;</p>
     <p>Example 2:</p>
     <p># luna-send -n 1 -f -a &quot;creator&quot; luna://com.webos.service.activitymanager/getActivityInfo &#39;{<br />
       &nbsp;&nbsp;&nbsp;&nbsp;&quot;current&quot;: true,<br />
       &nbsp;&nbsp;&nbsp;&nbsp;&quot;activityName&quot;: &quot;sdet&quot;<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp;&nbsp;&nbsp;&nbsp;&quot;activity&quot;: {<br />
@@ -1763,16 +1708,14 @@ toc: true
       &nbsp; &nbsp; &nbsp; &nbsp; &quot;activityId&quot;: 80<br />
       &nbsp; &nbsp; },<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
+      }</p>
     <p>&nbsp;</p>
     <p>Example 3:</p>
     <p># luna-send -n 1 -f luna://com.webos.service.activitymanager/getActivityInfo &#39;{<br />
       &nbsp; &nbsp; &quot;details&quot;:false,<br />
       &nbsp; &nbsp; &quot;subscribers&quot;:false,<br />
       &nbsp; &nbsp; &quot;current&quot;:false<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;activities&quot;: [<br />
@@ -1786,8 +1729,7 @@ toc: true
       &nbsp; &nbsp; &nbsp; &nbsp; }<br />
       &nbsp; &nbsp; ],<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>getManagerInfo</h3>
@@ -1885,8 +1827,7 @@ toc: true
       &nbsp; &nbsp; { &quot;name&quot;: &quot;internet&quot;, &quot;type-schema&quot;: {&quot;type&quot;: &quot;boolean&quot;} },<br />
       &nbsp; &nbsp; { &quot;name&quot;: &quot;wifi&quot;, &quot;type-schema&quot;: {&quot;type&quot;: &quot;boolean&quot;} }<br />
       &nbsp; ]<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h2>Objects</h2>
@@ -2078,8 +2019,7 @@ toc: true
           <td>
             <p>Keeps the activity alive when the activity&nbsp;callback fails. Possible values are:</p>
             <ul>
-              <li>
-                <strong>true </strong>: Activity manager does not cancel the activity but moves it to the next step.
+              <li><strong>true </strong>: Activity manager does not cancel the activity but moves it to the next step.
                 <ul>
                   <li>For normal (non-continuous) activity: waits for client to complete (or cancel)</li>
                   <li>For continuous activity: restarts activity</li>
@@ -2249,9 +2189,7 @@ toc: true
       </tbody>
     </table>
   </div>
-  <h3>Parent</h3>
-  The Parent (or potential parent) of an Activity specified as an app ID or service ID. The Activity Manager automatically obtains this value when the app or service invokes the create() or adopt()
-  <div class="table-container">
+  <h3>Parent</h3>The Parent (or potential parent) of an Activity specified as an app ID or service ID. The Activity Manager automatically obtains this value when the app or service invokes the create() or adopt()<div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
         <tr>
@@ -2284,8 +2222,8 @@ toc: true
     </table>
   </div>
   <h3>Requirement</h3>
-  <p>The <strong>Requirements </strong>are preconditions that the Activity Manager will ensure are met before an Activity will be run. Any number of requirements may be specified for a single Activity, and all must be met in order for the Activity to move to the&nbsp;<strong>satisfied</strong><span style="color:#008000"><strong>&nbsp;</strong></span>state.&nbsp;<strong>Requirements&nbsp;</strong>can transition from the met state back to unmet if the condition the particular requirement is monitoring for no longer holds true.</p>
-  <p>The Requirements available on the system can be queried&nbsp;using <strong><a href="#getmanagerinfo">getManagerInfo</a>&nbsp;</strong>method.</p>
+  <p>The <strong>Requirements </strong>are preconditions that the Activity Manager will ensure are met before an Activity will be run. Any number of requirements may be specified for a single Activity, and all must be met in order for the Activity to move to the&nbsp;<span style="color:#008000"><strong>satisfied&nbsp;</strong></span>state.&nbsp;<strong>Requirements&nbsp;</strong>can transition from the met state back to unmet if the condition the particular requirement is monitoring for no longer holds true.</p>
+  <p>The Requirements available on the system can be queried&nbsp;using <a href="#getmanagerinfo"><strong>getManagerInfo&nbsp;</strong></a>method.</p>
   <p>Example :<br />
     luna-send -n 1 -f luna://com.webos.service.activitymanager/create &#39;{<br />
     &nbsp;&nbsp; &nbsp;&quot;activity&quot;: {<br />
@@ -2297,8 +2235,7 @@ toc: true
     &nbsp;&nbsp; &nbsp;},<br />
     &nbsp;&nbsp;&nbsp; &quot;replace&quot;: true,<br />
     &nbsp;&nbsp;&nbsp; &quot;start&quot;: true<br />
-    }&#39;
-  </p>
+    }&#39;</p>
   <p>&nbsp;</p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -2352,8 +2289,7 @@ toc: true
     &nbsp;&nbsp; &nbsp;// Start time. Time format is a subset of&nbsp;ISO 8601.<br />
     &nbsp;&nbsp; &nbsp;// That is, &quot;YYYY-MM-DD HH:MM:SS&quot; for local, or&nbsp;&quot;YYYY-MM-DD HH:MM:SSZ&quot; for UTC.<br />
     &nbsp;&nbsp; &nbsp;&quot;<strong>start</strong>&quot;: &quot;2017-03-01 21:00:00&quot;,<br />
-    <strong>}</strong>
-  </p>
+    <strong>}</strong></p>
   <p>&nbsp;</p>
   <p><strong>2. Smart interval</strong></p>
   <p>Smart intervals align all Activities operating with that period to the same start times, allowing them to batch up and avoid unnecessary device wakeups, potentially saving significant amounts of power.</p>
@@ -2362,8 +2298,7 @@ toc: true
     &nbsp; &nbsp; //&nbsp;For a smart interval, the interval must be an even multiple of days,<br />
     &nbsp;&nbsp; &nbsp;// or one of the following: 12h, 6h, 3h, 1h, 30m, 15m, 10m, or 5m.<br />
     &nbsp; &nbsp; &quot;<strong>interval</strong>&quot;:&nbsp;&quot;5m&quot;<br />
-    <strong>}</strong>
-  </p>
+    <strong>}</strong></p>
   <p>&nbsp;</p>
   <p><strong>3. Precise interval</strong></p>
   <p><strong>&quot;schedule&quot;: {</strong><br />
@@ -2381,8 +2316,7 @@ toc: true
     &nbsp;&nbsp; &nbsp;//&nbsp;Specifies the number of days, hours, minutes, and seconds between executions of the Activity.<br />
     &nbsp;&nbsp; &nbsp;//&nbsp;They must be specified in order, but any can be&nbsp;left out.&nbsp; Any interval is valid.<br />
     &nbsp;&nbsp; &nbsp;&quot;<strong>interval</strong>&quot;: &quot;1m&quot;,<br />
-    <strong>}</strong>
-  </p>
+    <strong>}</strong></p>
   <p>&nbsp;</p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -2476,16 +2410,14 @@ toc: true
     &nbsp; &nbsp; &quot;<strong>method</strong>&quot;:&nbsp;&quot;luna://com.webos.service.applicationmanager/getForegroundAppInfo&quot;,<br />
     &nbsp; &nbsp; &quot;<strong>params</strong>&quot;: {&nbsp;&quot;subscribe&quot;:&nbsp;true,&nbsp;&quot;extraInfo&quot;:&nbsp;true&nbsp;},<br />
     &nbsp;&nbsp; &nbsp;&quot;<strong>key</strong>&quot;:&nbsp;&quot;foregroundAppInfo&quot;<br />
-    <strong>}</strong>
-  </p>
+    <strong>}</strong></p>
   <p>&nbsp;</p>
   <p><strong>2. Compare Trigger</strong> is triggered when<strong>&nbsp;</strong>the specified key &amp; value pair in compare&nbsp;are matched.</p>
   <p><strong>&quot;trigger&quot;: {</strong><br />
     &nbsp; &nbsp; &quot;<strong>method</strong>&quot;:&nbsp;&quot;luna://com.webos.service.applicationmanager/getForegroundAppInfo&quot;,<br />
     &nbsp;&nbsp;&nbsp;&nbsp;&quot;<strong>params</strong>&quot;: {&nbsp;&quot;subscribe&quot;:&nbsp;true&nbsp;},<br />
     &nbsp; &nbsp; &quot;<strong>compare</strong>&quot;: {&nbsp;&quot;appId&quot;:&nbsp;&quot;com.webos.app.enactbrowser&quot;&nbsp;}<br />
-    <strong>}</strong>
-  </p>
+    <strong>}</strong></p>
   <p>&nbsp;</p>
   <p><strong>3. Where Trigger</strong> is triggered when the conditions of where clauses are satisfied.</p>
   <p>3-1. Single Trigger</p>
@@ -2493,8 +2425,7 @@ toc: true
     &nbsp; &nbsp; &quot;<strong>method</strong>&quot;:&nbsp;&quot;luna://com.webos.service.connectionmanager/getstatus&quot;,<br />
     &nbsp;&nbsp; &nbsp;&quot;<strong>params</strong>&quot;: {&nbsp;&quot;subscribe&quot;:&nbsp;true&nbsp;},<br />
     &nbsp; &nbsp; &quot;<strong>where</strong>&quot;: {&nbsp;&quot;prop&quot;: &quot;isInternetConnectionAvailable&quot;,&nbsp;&quot;op&quot;: &quot;=&quot;,&nbsp;&quot;val&quot;: true&nbsp;}<br />
-    <strong>}</strong>
-  </p>
+    <strong>}</strong></p>
   <p>3-2.&nbsp;Multiple Trigger can be combined by &#39;<strong>and</strong>&#39; or &#39;<strong>or</strong>&#39;</p>
   <p><strong>&quot;trigger&quot;: {</strong><br />
     &nbsp;&nbsp; &nbsp;&quot;<strong>and</strong>&quot;: [<br />
@@ -2513,19 +2444,16 @@ toc: true
     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ....<br />
     &nbsp; &nbsp; &nbsp; &nbsp; },<br />
     &nbsp;&nbsp; &nbsp;]<br />
-    <strong>}</strong>
-  </p>
+    <strong>}</strong></p>
   <p>&nbsp;</p>
   <p>The Activity Manager will unsubscribe all subscriptions of Triggers, if the Activity arrives &#39;satisfied&#39; state, and re-subscribe Triggers when &#39;restarting&#39;.<br />
     <br />
     <strong>WARNING</strong><br />
     <br />
-    Do<strong> NOT</strong> ignore the trigger information returned in a callback. If an error is returned to the method specified for a Trigger, then the Trigger fires immediately. This could happen if, for example, the parameters passed to the method were invalid or wrong. If the Trigger callback re-starts the Activity, i.e., in the case of a db8 watch, then the potential exists for an infinite loop. Check for errors.
-  </p>
+    Do<strong> NOT</strong> ignore the trigger information returned in a callback. If an error is returned to the method specified for a Trigger, then the Trigger fires immediately. This could happen if, for example, the parameters passed to the method were invalid or wrong. If the Trigger callback re-starts the Activity, i.e., in the case of a db8 watch, then the potential exists for an infinite loop. Check for errors.</p>
   <p><span style="color:#FF0000"><strong>NOTE.</strong></span> <strong>As the &#39;failed&#39; state is added, if an error is returned from the Trigger method, the Activity will move to &#39;failed&#39; state without calling Callback in the next version.</strong><br />
     <br />
-    Keep the mutual exclusion among the &quot;key&quot;, &quot;compare&quot;, and &quot;where&quot; properties. They are incompatible with each other.
-  </p>
+    Keep the mutual exclusion among the &quot;key&quot;, &quot;compare&quot;, and &quot;where&quot; properties. They are incompatible with each other.</p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
@@ -2603,13 +2531,12 @@ toc: true
     <br />
     <u>Forground or Background</u><br />
     <br />
-    Default attributes are associated with background and foreground Activities:<br />
+    ​Default attributes are associated with background and foreground Activities:<br />
     <br />
-    Foreground Activities<strong> </strong>are <em>high</em> priority and <em>immediate</em>- They cannot be queued and begin running when their prerequisites are met.<br />
+    ​Foreground Activities<strong> </strong>are <em>high</em> priority and <em>immediate</em>- They cannot be queued and begin running when their prerequisites are met.<br />
     Background Activities are<em> low </em>priority and not <em>immediate</em>- They are runnable, but queued until necessary resources become available.<br />
     <br />
-    Whether an activity is foreground or background should only be set once. The default is foreground. If your app specifies foreground or background, do <strong>NOT</strong> set the advanced attributes like &quot;immediate&quot; and &quot;priority&quot;. If you set them, the Activity Manager will NOT create the Activity. If you do not set either foreground or background, then you MUST set &quot;immediate&quot; and &quot;priority&quot;.
-  </p>
+    Whether an activity is foreground or background should only be set once. The default is foreground. If your app specifies foreground or background, do <strong>NOT</strong> set the advanced attributes like &quot;immediate&quot; and &quot;priority&quot;. If you set them, the Activity Manager will NOT create the Activity. If you do not set either foreground or background, then you MUST set &quot;immediate&quot; and &quot;priority&quot;.</p>
   <p><span style="color:#FF0000"><strong>NOTE</strong>.</span> <strong>Do not use&nbsp;background. If background is set, the Activity may not run at all.</strong><br />
     <br />
     <u>Persistent Activity</u><br />
@@ -2622,8 +2549,7 @@ toc: true
     <br />
     <u>Schema</u><br />
     <br />
-    Note: All fields are optional, but if you do not set &quot;foreground&quot; or &quot;background&quot;, then you must set &quot;immediate&quot; and &quot;priority&quot;.
-  </p>
+    Note: All fields are optional, but if you do not set &quot;foreground&quot; or &quot;background&quot;, then you must set &quot;immediate&quot; and &quot;priority&quot;.</p>
   <p>&nbsp;</p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -2687,8 +2613,7 @@ toc: true
           <td>
             <p>Stores Activity state in db so it can span reboots, loss of service, or updates.<br />
               <span style="color:#FF0000"><strong>NOTE:</strong></span>&nbsp;If set&nbsp;<strong>persist </strong>as <strong>true</strong>, make sure to call&nbsp;<strong><a href="#cancel">cancel</a></strong>&nbsp;to destroy the Activity when the activity is no longer needed. If not, the garbage Activity keeps on DB8 and can run unintentionally.<br />
-              <span style="color:#FF0000"><strong>NOTE:</strong></span>&nbsp;If an Activity is located in&nbsp;&#39;/etc/palm/activities&#39;, set <strong>persist </strong>as <strong>false</strong> if possible. Because configurator creates them automatically, whenever the Activity Manager starts.
-            </p>
+              <span style="color:#FF0000"><strong>NOTE:</strong></span>&nbsp;If an Activity is located in&nbsp;&#39;/etc/palm/activities&#39;, set <strong>persist </strong>as <strong>false</strong> if possible. Because configurator creates them automatically, whenever the Activity Manager starts.</p>
           </td>
         </tr>
         <tr>
@@ -2697,8 +2622,7 @@ toc: true
           <td>Boolean</td>
           <td>
             <p>Activity with a parent is canceled when the subscription of the parent is unsubscribed. However, if <strong>explicit</strong> is <strong>true</strong>, the activity is not canceled.<br />
-              It is recommended that do not keep subscription of the parent rather than set <strong>explicit </strong>as <strong>true</strong>.
-            </p>
+              It is recommended that do not keep subscription of the parent rather than set <strong>explicit </strong>as <strong>true</strong>.</p>
           </td>
         </tr>
         <tr>
@@ -2707,8 +2631,7 @@ toc: true
           <td>Boolean</td>
           <td>
             <p>Activity does not have a well defined ending point and could run indefinitely.<br />
-              Activity that satisfies&nbsp;all requirements calls a <strong>Callback </strong>and moves&nbsp;to the <strong>expired</strong> state. If <strong>continuous </strong>is true, the Activity moves to <strong>unsatisfied </strong>state as soon as the response of the Callback is received. At this point, if all requirements of the Activity are still satisfied, the Activity can loop quickly activity cycles. Therefore, <strong>continuous </strong>is very useful, but it should be used very carefully. If not, the Activity Manager may&nbsp;detect infinite loops and move the activity to <strong>failed </strong>state.
-            </p>
+              Activity that satisfies&nbsp;all requirements calls a <strong>Callback </strong>and moves&nbsp;to the <strong>expired</strong> state. If <strong>continuous </strong>is true, the Activity moves to <strong>unsatisfied </strong>state as soon as the response of the Callback is received. At this point, if all requirements of the Activity are still satisfied, the Activity can loop quickly activity cycles. Therefore, <strong>continuous </strong>is very useful, but it should be used very carefully. If not, the Activity Manager may&nbsp;detect infinite loops and move the activity to <strong>failed </strong>state.</p>
           </td>
         </tr>
         <tr>
