@@ -33,15 +33,6 @@ This version corresponds to the [GitHub releases](https://github.com/webosose/bu
   - Memory Manager
     - Enabled memcg for 5.4 kernel
 
-#### Connectivity
-  - Bluetooth Manager
-    - Added the contact service and the vcard parser library
-
-#### Display
-
-  - LSM
-    - Added the support for DRM multi-plane composition
-
 #### Intelligence
 
   - TTS
