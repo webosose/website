@@ -1,6 +1,6 @@
 ---
 title: "SDK Download"
-date: 2020-11-10
+date: 2020-12-17
 weight: 5
 file_download: true
 toc: true
@@ -8,21 +8,15 @@ toc: true
 
 This page provides the package download links for webOS Open Source Edition (OSE) SDK.
 
-{{< note >}}
+## Emulator 
+
 Emulator is created as a virtual machine image when you build webOS OSE platform source code with `qemux86` option configured. For more information, see [Building webOS Open Source Edition]({{< relref "building-webos-ose" >}}).
-{{< /note >}}
 
 ## Command-Line Interface
 
-* Version: v1.13.1
+* Version: v2.0.2
 
-|	Platform	|	CLI Package	|	Size	|
-|-----------------------|-------------------|-----------|
-|	Linux	|	<a href="javascript:" onclick="file_dn('CLI', 'Linux', 'ares-webos-cli-linux-1.13.1.tgz','https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.13.1/ares-webos-cli-linux-1.13.1.tgz');">ares-webos-cli-linux-1.13.1.tgz</a>	|	27.8 MB	|
-|	macOS	|	<a href="javascript:" onclick="file_dn('CLI', 'macOS', 'ares-webos-cli-mac-1.13.1.tgz', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.13.1/ares-webos-cli-mac-1.13.1.tgz');">ares-webos-cli-mac-1.13.1.tgz</a>	|	14.9 MB	|
-|	Windows	|	<a href="javascript:" onclick="file_dn('CLI', 'Windows', 'ares-webos-cli-win-1.13.1.zip', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.13.1/ares-webos-cli-win-1.13.1.zip');"> ares-webos-cli-win-1.13.1.zip</a>	|	15.6 MB	|
-
-See the [CLI release notes]({{< relref "cli-release-notes" >}}).
+Command Line Interface (CLI) is installed using `npm`. For more information, see [CLI User Guide]({{< relref "cli-user-guide" >}}).
 
 ## Beanviser
 

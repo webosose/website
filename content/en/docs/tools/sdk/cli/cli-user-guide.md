@@ -1,12 +1,12 @@
 ---
 title: User Guide
 display_title: Command-Line Interface User Guide
-date: 2020-11-05
+date: 2020-12-28
 weight: 10
 toc: true
 ---
 
-**Command-Line Interface (CLI)** of webOS Open Source Edition (OSE) provides a collection of commands used for creating, packaging, installing, and launching apps or services in the command line environment. CLI allows you to develop and test apps or services without having to use a specific IDE.
+**Command-Line Interface (CLI)** of webOS Open Source Edition (OSE). It provides a collection of commands used for creating, packaging, installing, and launching apps or services in the command line environment. CLI lets you develop and test apps or services without using any IDE.
 
 ## Key Features
 
@@ -37,6 +37,8 @@ CLI provides the following key features:
     - Provides JavaScript service information
 
 ## System Requirements
+
+### Operating Systems
 
 Required version for each operating system are as follows:
 
@@ -69,80 +71,27 @@ Required version for each operating system are as follows:
   </table>
 </div>
 
-{{< note >}}
-CLI is working on Node.js v8.12.0.
-{{< /note >}}
+### Software Tools
+
+* Node.js (Use v8.12.0 to v14.15.1.)
+* npm
 
 ## Installing CLI
 
-This section describes how to install CLI on your host machine.
+You can install CLI using the following command. It is recommended to install CLI globally.
 
-### Download the Package
+``` shell
+$ npm install -g @webosose/ares-cli
 
-First, download the CLI package for your operating system from the [SDK download]({{< relref "sdk-download" >}}) page.
-
-### Unzip the Package
-
-Unzip the downloaded CLI package. After unzipping the package, you can execute the CLI commands located in the following directories.
-
-  - Windows: `ares-cli\bin`
-  - Linux & macOS: `ares-cli/bin`
-
-{{< caution "Alerts for CLI Installation on Windows" >}}
-
-Due to recursively nested directory structure of Node.js modules used by CLI, the resulting path length may exceed the [maximum path length of Windows](https://docs.microsoft.com/en-us/windows/desktop/FileIO/naming-a-file#maximum-path-length-limitation). To prevent issues while installing and using CLI, we strongly recommend that you do the following:
-
-  - To unzip the package, use a program that supports file path names longer than 260 characters, such as 7-Zip.
-  - Unzip the package under the root directory (for example, `C:\` or `D:\`).
-{{< /caution >}}
-
-### Set the Path
-
-To make it easy to execute CLI commands, you need to add the CLI directory to the `PATH` environment variable.
-
-#### Windows
-
-If you unzipped the package under `C:\`, the CLI commands would be located in `C:\ares-cli\bin`. You need to add the directory to the environment variable using one of the commands below in a command shell.
-
-{{< code "Setting the PATH variable in the system environment (run the shell as Administrator)" true >}}
-```shell
-C:\> setx /m PATH "C:\ares-cli\bin;%PATH%"
-```
-{{< /code >}}
-
-{{< code "Setting the PATH variable in the user environment" true >}}
-```shell
-C:\> setx PATH "C:\ares-cli\bin;%PATH%"
-```
-{{< /code >}}
-
-To make the changes take effect, you must restart the command shell.
-
-#### Linux & macOS
-
-There are many ways to set the environment variable in Linux and macOS. Here, we describe the method to add the information to the `.profile` so that the PATH is automatically configured each time the shell is executed. We will assume that CLI has been unzipped under the home directory.
-
-First, open the `.profile` which is located in the home directory. If the file does not exist, the command will create one.
-
-```shell
-$ vi ~/.profile
+# Check the installation.
+$ ares --version
+Version: 2.x.x
 ```
 
-Add the lines below at the end of the file.
-
-```shell
-...
-# add CLI path
-if [ -d "$HOME/ares-cli/bin" ]; then
-  export PATH="$PATH:$HOME/ares-cli/bin"
-fi
-```
-
-To make the changes take effect, you must execute the following command or restart the shell.
-
-```shell
-$ source ~/.profile
-```
+{{< note >}}
+- For Linux and macOS, `sudo` command might be required depending on the environment.
+- After the installation, check if the installed version matches with the latest version of [CLI npm package](https://www.npmjs.com/package/@webosose/ares-cli).
+{{< /note >}}
 
 ## CLI Workflow
 
@@ -215,7 +164,7 @@ The following table shows the available CLI commands.
 <td><p>Pulls file(s) from a target device to a host machine.</p></td>
 </tr>
 <tr class="even">
-<td><p><a href="#ares-device-info">ares-device-info</a></p></td>
+<td><p><a href="#ares-device">ares-device</a></p></td>
 <td><p>Displays the device information.</p></td>
 </tr>
 </tbody>
@@ -1191,7 +1140,7 @@ This command enables Web Inspector or Node's Inspector. Each inspector displays 
 We highly recommend you to use the same version as Chrome/Chromium of webOS OSE. Using other versions might cause unexpected errors.
 
 - To check the Chromium version of your target device, do one of the following:
-    - Execute the `ares-device-info` command. In this case, `username` of the target device must be `root`. For more details, see [DEVICE_INFO]({{< relref "cli-user-guide#parameters-2" >}}) parameter of `ares-device-info`.
+    - Execute the `ares-device -i` command. In this case, make sure `username` of the target device is set as `root`. Otherwise the Chromium version won't be displayed. For more details, see [DEVICE_INFO](#parameters-2) of `ares-setup-device`.
     - Execute the `Web Browser` app and go to http://useragentstring.com.
     - Visit the [webOS OSE GitHub](https://github.com/webosose?q=chromium&type=&language=) and find a Chromium repository of the latest version. Then see `src/chrome/VERSION` file.
 - To download old builds of Chrome/Chromium, visit the [Chromium Project website](https://www.chromium.org/getting-involved/download-chromium).
@@ -1771,22 +1720,24 @@ Here are some examples of the different uses:
     ares-pull --device target <targetPath>/foo.txt <hostPath>/foo.txt
     ```
 
-### ares-device-info
+### ares-device
 
 This command displays the information of the target device.
+
+{{< note >}}
+Since CLI 2.0.0, `ares-device-info` is replaced by `ares-device`.
+{{< /note >}}
 
 #### Usages
 
 ``` shell
-ares-device-info
+ares-device [OPTION...] [TARGET_DEVICE]
 
-ares-device-info [OPTION...] [TARGET_DEVICE]
+ares-device --device-list|-D
 
-ares-device-info --device-list|-D
+ares-device --version|-V
 
-ares-device-info --version|-V
-
-ares-device-info --help|-h
+ares-device --help|-h
 ```
 
 #### Options
@@ -1806,36 +1757,40 @@ ares-device-info --help|-h
 </thead>
 <tbody>
 <tr class="odd">
-<td><p>-s, --session</p></td>
+<td><p>-i, --system-info</p></td>
 <td><p>None</p></td>
-<td><p>Displays the session information of the target device.</p>
+<td><p>Displays the device system information.</p></td>
+</tr>
+<tr class="even">
+<td><p>-s, --session-info</p></td>
+<td><p>None</p></td>
+<td><p>Displays the device session information.</p>
 {{< note >}}
 This option is not supported in webOS OSE.
 {{< /note >}}
 </td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><p>-d, --device</p></td>
 <td><p>TARGET_DEVICE</p></td>
-<td><p>Specifies the target device. Unless specified, it will be set to the default target device.</p>
-</td>
+<td><p>Specifies the target device. Unless specified, it will be set to the default target device.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><p>-D, --device-list</p></td>
 <td><p>None</p></td>
 <td><p>Lists all the available devices.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><p>-h, --help</p></td>
 <td><p>None</p></td>
-<td><p>Displays the help of the <code>ares-device-info</code> command.</p></td>
+<td><p>Displays the help of the <code>ares-device</code> command.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><p>-V, --version</p></td>
 <td><p>None</p></td>
 <td><p>Displays the version of the CLI.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><p>-v</p></td>
 <td><p>None</p></td>
 <td><p>Displays the execution log.</p></td>
@@ -1868,8 +1823,8 @@ This option is not supported in webOS OSE.
 
 Here are some examples of the different uses:
 
-* Displaying the information of the target device (target device name: `target`)
+* Displaying the system information of the target device (target device name: `target`)
 
     ``` shell
-    ares-device-info --device target
+    ares-device --system-info --device target
     ```

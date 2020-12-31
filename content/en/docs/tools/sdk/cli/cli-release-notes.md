@@ -1,12 +1,31 @@
 ---
 title: Release Notes
 display_title: Command-Line Interface Release Notes
-date: 2020-11-05
+date: 2020-12-24
 weight: 20
 toc: true
 ---
 
 This page provides the summary of each Command-Line Interface (CLI) release for webOS Open Source Edition (OSE).
+
+## 2.0.2 (December 2020)
+
+This version is compatible with **webOS OSE 2.8.0**. See below for the new and changed features in this release.
+
+### New features
+
+* Released the source code to [GitHub](https://github.com/webosose/ares-cli). 
+* Published the CLI package to [npm](https://www.npmjs.com/package/@webosose/ares-cli).
+* Added `ares-device` command. This command replaces `ares-device-info`.
+
+### Changed features
+
+* Supports Node.js v14.15.1.
+* Updated `README.md`.
+
+### Fixed issues
+
+* Added a logic for checking `ares-setup-device`'s parameter and fixed typos.
 
 ## v1.13.1 (November 2020)
 
