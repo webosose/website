@@ -1,7 +1,7 @@
 ---
 title: Applying Localization
 date: 2020-08-27
-weight: 12
+weight: 30
 toc: true
 ---
 

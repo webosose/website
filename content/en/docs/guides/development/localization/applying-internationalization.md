@@ -1,7 +1,7 @@
 ---
 title: Applying Internationalization
 date: 2020-08-27
-weight: 11
+weight: 20
 toc: true
 ---
 

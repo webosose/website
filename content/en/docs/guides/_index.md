@@ -1,7 +1,7 @@
 ---
 title: Guides
 section_main: true
-date: 2020-07-03
+date: 2020-12-31
 weight: 20
 ---
 
@@ -45,6 +45,7 @@ This unit explains how you can build apps and services for webOS OSE.
 * [Configuration Files]({{< relref "appinfo-json" >}})
 * [Localization Guide]({{< relref "localization-guide" >}})
 * [Logging Guide]({{< relref "logging-overview" >}})
+* [Bluetooth Guide]({{< relref "bluetooth-guide" >}})
 
 ## Core Topics
 
