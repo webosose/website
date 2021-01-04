@@ -1,6 +1,6 @@
 ---
 title: Bluetooth Guide
-date: 2020-12-31
+date: 2021-01-04
 weight: 10
 toc: true
 ---
@@ -1345,4 +1345,4 @@ This profile is to replace the RS-232 serial communication. Using this profile, 
 
 15. You can check the sent message on the **BT MESSENGER** tab.
 
-    <img src="/images/docs/guides/development/connectivity/bluetooth-guide/spp-read.png" alt="Receiving a text message from the webOS device" caption="" width="250px" />
+    <img src="/images/docs/guides/development/connectivity/bluetooth-guide/spp-write-a-message.png" alt="Receiving a text message from the webOS device" caption="" width="250px" />
