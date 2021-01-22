@@ -1,0 +1,900 @@
+---
+title: com.webos.service.unifiedsearch
+date: 2021-01-21
+weight: 340
+toc: true
+---
+
+<div>
+  <h2>API Summary</h2>
+  <p>Searches various items (intents) by using keyword.</p>
+</div>
+<h2>Overview of the API</h2>
+<div>
+  <p>Unified search service handles various&nbsp;search targets and&nbsp;allows to find&nbsp;it&#39;s items.</p>
+  <p><strong>Note: </strong>This service works tightly with the <a href="{{< relref "com-webos-service-intent" >}}">com.webos.service.intent</a> service.</p>
+  <p>&nbsp;</p>
+  <p><strong>Search Targets</strong></p>
+  <ul>
+    <li><strong>Application</strong>: Search&nbsp;by title<br />
+      &nbsp;</li>
+    <li><strong>Application contents</strong>: Search&nbsp;by string mapping what app has specified (e.g. Settings). See the &quot;Configuring Application Contents Search&quot; section below.<br />
+      <strong>Note: </strong>Currently, only supports&nbsp;<strong>&quot;web&quot;</strong> type applications that follow the webOs i18n structure.&nbsp;<br />
+      &nbsp;</li>
+    <li><strong>Plugins</strong>: Search by plugin (e.g.&nbsp;audio, video, image, contact)&nbsp;</li>
+  </ul>
+  <p><strong>Note: </strong>The service has internal database (sqlite3&nbsp;FTS3)&nbsp;to index items of application and application&nbsp;contents. For plugins, the service generally searches items from the database (DB8) directly.</p>
+  <p>&nbsp;</p>
+  <p><strong>Configuring Application Contents Search</strong></p>
+  <p>To search within the contents of an app, you need to:.</p>
+  <ol>
+    <li>
+      <p>Create a mapping JSON file. Check below example.</p>
+      <p><em>search.json</em></p>
+      <div class="code-bg-grey">
+      <p>{<br />
+        &nbsp; &nbsp;&nbsp;&quot;items&quot;: [{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;path&quot;: &quot;/..../....&quot;,&nbsp; &nbsp; &lt;------------- intent path (search key = uri + path)<br />
+        &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;extra&quot;: { ...&nbsp; },&nbsp; &nbsp; &nbsp; &nbsp;&lt;------------- extra field of intent (optional)<br />
+        &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;labels&quot;: [&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&lt;------------- list of resource key<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;Language&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;...<br />
+        &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;]<br />
+        &nbsp; &nbsp;&nbsp;}, ...]<br />
+        }</p>
+      </div>
+    </li>
+    <li>
+      <p>In the appinfo.json file, specify the path of the mapping JSON file and the intentFilters.</p>
+      <p><em>appinfo.json</em></p>
+      <div class="code-bg-grey">
+      <p>{<br />
+        &nbsp; &nbsp;&quot;....&quot;,<br />
+        &nbsp; &nbsp;&quot;searchIndex&quot;:&quot;search.json&quot;,&nbsp; &nbsp; &lt;------------- mapping JSON file<br />
+        &nbsp; &nbsp;&quot;intentFilters&quot;:[<br />
+        &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;actions&quot;:[<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;view&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;],<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;uris&quot;:[<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;app://$APP_ID$&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;]<br />
+        &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp;],<br />
+        &nbsp; &nbsp;&quot;....&quot;<br />
+        }</p>
+      </div>
+    </li>
+  </ol>
+  <ul>
+    <li>
+      <p>resources/ilibmanifest.json : will read &#39;*/strings.json&#39; on&nbsp;&#39;files&#39; array.</p>
+    </li>
+    <li>
+      <p>resources/*/strings.json : will load entire key:value into the sqlite3 FTS database.</p>
+    </li>
+  </ul>
+  <p>Since the search API returns the search result as &quot;Intent&quot;s,&nbsp;the app should be able to handle the intent also.</p>
+  <p>The parameters will come as part&nbsp;of &quot;webOSSystem.launchParams&quot;. You can use this to move app page to show the searched content. For example:</p>
+  <div class="code-bg-grey">
+    <p>var params = JSON.parse(webOSSystem.launchParams);<br />
+      params.parsedUri.path // &lt;--- what you created on items&#39;s path in&nbsp;<em>search.json</em><br />
+      params.extra&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; // (optional) items&#39;s extra in&nbsp;<em>search.json</em></p>
+  </div>
+  <p>&nbsp;</p>
+  <hr />
+  <p><strong>Developing plugins</strong></p>
+  <p>We support the C++ implementation only. Please refer &quot;./plugins/media&quot; as a&nbsp; plugin template first.</p>
+  <p>To implement yours,&nbsp;<strong>add &quot;com.webos.service.unifiedsearch&quot; to DEPENDS</strong> of your component recipe file.<br />
+    And place the result shared object (.so) file on&nbsp;<strong>/usr/lib/plugins/unifiedsearch</strong> folder.</p>
+  <p>The unified search core has following classes to implement plugin.<br />
+    <strong>You need to inherit at least 3 classes (bold items), and need to implement virtual functions.</strong></p>
+  <ul>
+    <li>Object
+      <ul>
+        <li>SearchItem (.h) : a common data format to save/load items</li>
+        <li>Intent (.h) : a format to handle intent, and also display the items on screen</li>
+      </ul>
+    </li>
+    <li>Controller
+      <ul>
+        <li>LunaClient (.h) : to access LS2 as com.webos.service.unifiedsearch contact</li>
+        <li><strong>Category</strong> (.h) : a&nbsp;set of item, generating &quot;Intent&quot; from &quot;SearchItem&quot;</li>
+        <li><strong>DataSource</strong> (.h) : item store, store/search the &quot;SearchItem&quot; internally</li>
+      </ul>
+    </li>
+    <li>Bridge
+      <ul>
+        <li>SearchSet (.h) : have a DataSource and multiple Category</li>
+        <li><strong>Plugin</strong> (.h) : pass a SearchSet to the unified search service</li>
+      </ul>
+    </li>
+  </ul>
+  <p>- Plugin workflow<br />
+    <img src="/images/docs/reference/com-webos-service-unifiedsearch-plugin-workflow.png" alt="plugin workflow"></p>
+  <p>- Implementation steps</p>
+  <ol>
+    <li>Inherit &amp; implement <strong>DataSource</strong> class
+      <ul>
+        <li>override &quot;search&quot; function: search your datasource(e.g. DB8) and create SearchItem vector &amp; return it by using callback.
+          <ul>
+            <li>Should return all category items that matched with &#39;searchKey&#39; as async<br />
+              (if you handle multiple categories on your plugin)</li>
+            <li>The callback:&nbsp;function&lt;void(string, vector&lt;SearchItemPtr&gt;)&gt;</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li>Inherit &amp; implement <strong>Category</strong> class
+      <ul>
+        <li>override &quot;generateIntent&quot; function to convert SearchItem to Intent
+          <ul>
+            <li>Generally, you will set &#39;Action&#39;, &#39;URI&#39; and &#39;Display&#39; on this stage.</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li>Inherit &amp; implement <strong>Plugin</strong>&nbsp;class
+      <ul>
+        <li>create a DataSource and categories</li>
+        <li>create a SearchSet with the DataSource and add created categories</li>
+        <li>override &quot;getSearchSet&quot; to return upper SearchSet</li>
+        <li>create &#39;extern &quot;C&quot; Plugin* create_plugin()&#39; function to return a pointer of your Plugin (as singleton)<br />
+          &nbsp;</li>
+      </ul>
+    </li>
+  </ol>
+  <p>- Using LunaClient class to easy LS2 implementation</p>
+  <ol>
+    <li>Inherit &amp; implement <strong>LunaClient&nbsp;</strong>class
+      <ul>
+        <li>It will use&nbsp;the context of &#39;com.webos.service.unifiedsearch&#39;.
+          <ul>
+            <li>So if you want to connect LS2 as another context, please re-implement your own LS2 class.</li>
+            <li>And also, if you want to connect another ACG group, please contact &#39;jb.seo@lge.com&#39; to update client permissions.</li>
+          </ul>
+        </li>
+        <li>Create a function to get your data
+          <ul>
+            <li>Use follow function to call, implement as async<br />
+              LunaClient::call(string method, string payload,&nbsp;function&lt;bool(LSMessage&nbsp;*message)&gt; cb, bool subscribe)<br />
+              &nbsp;</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ol>
+  <p>- About the Async implementation</p>
+  <ul>
+    <li>The unifiedsearch&#39;s <strong>search </strong>API will response after all data sources&#39; search function were&nbsp;done.<br />
+      Because it requires some async targets (e.g. LS2)</li>
+    <li>It&#39;s designed&nbsp;
+      <ol>
+        <li>passing shared_ptr of some &#39;Task&#39; which has the callback to the lambda function as capture</li>
+        <li>because of lambda holds the shared_ptr, it will keep the Task until the function ended</li>
+        <li>and if all lambda functions are done, the Task will be destroyed.</li>
+        <li>On the destructor of Task, it will call the callback.</li>
+      </ol>
+    </li>
+  </ul>
+</div>
+<h2>Methods</h2>
+<div>
+  <h3>search</h3>
+  <div>
+    <h4>Description</h4>
+    <p>Searches with keyword and return intents&nbsp;of items.</p>
+    <p><strong>Note</strong>: Returning intent can be implicit or explicit intent and have display property to show this on screen.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>key</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the keyword to find items.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true:&nbsp;</strong>Method execution is successful</li>
+                <li><strong>false:&nbsp;</strong>Method executed with errors. Check the errorCode and errorText for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>results</td>
+            <td>Optional</td>
+            <td>Object array: <a href="#groupedintents"> groupedIntents</a></td>
+            <td>
+              <p>Indicates the results that are grouped intents by categories.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation. See the&nbsp;<strong>Error Codes </strong>section for more details.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>101</td>
+            <td>The &#39;key&#39; isn&#39;t specified.</td>
+            <td>
+              <p>The &#39;key&#39; does not exist in the request payload.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>102</td>
+            <td>The &#39;key&#39; is empty or too short. (needs &gt;= 2 bytes)</td>
+            <td>
+              <p>Need to type more than 2 bytes on &#39;key&#39;.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.unifiedsearch/search &#39;{&quot;key&quot;:&quot;pro&quot;}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&quot;results&quot;:[<br />
+        &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;items&quot;:[<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;intent&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;action&quot;:&quot;view&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;uri&quot;:&quot;app://com.webos.app.avn.settings/Settings/Profiles&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;},<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;display&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;title&quot;:&quot;Profiles&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;icon&quot;:&quot;/usr/palm/applications/com.webos.app.avn.settings/icon.png&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;],<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;categoryId&quot;:&quot;com.webos.app.avn.settings&quot;<br />
+        &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;items&quot;:[<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;intent&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;:&quot;com.webos.app.androidauto&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;},<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;display&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;title&quot;:&quot;Android Auto Projection&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;icon&quot;:&quot;/usr/palm/applications/com.webos.app.androidauto/icon.png&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;],<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;categoryId&quot;:&quot;sam.apps&quot;<br />
+        &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp;],<br />
+        &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+        }</p>
+    </div>
+  </div>
+</div>
+<h3>getCategories</h3>
+<div>
+  <h4>Description</h4>
+  <p>Gets an ordered list of enabled and disabled categories.</p>
+  <h4>Parameters</h4>
+  <p>None</p>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true:&nbsp;</strong>Method execution is successful</li>
+              <li><strong>false:&nbsp;</strong>Method executed with errors. Check the errorCode and errorText for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>enabled</td>
+          <td>Required</td>
+          <td>Object array: <a href="#category">category</a></td>
+          <td>
+            <p>Indicates the ordered array of enabled categories.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>disabled</td>
+          <td>Required</td>
+          <td>Object array: <a href="#category">category</a></td>
+          <td>
+            <p>Indicates the array of disabled categories.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.unifiedsearch/getCategories &#39;{ }&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;disabled&quot;:[<br />
+      &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;id&quot;:&quot;com.webos.app.avn.settings&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;name&quot;:&quot;Enact AVN Settings&quot;<br />
+      &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp;],<br />
+      &nbsp; &nbsp;&quot;enabled&quot;:[<br />
+      &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;id&quot;:&quot;mediaindexer.audio&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;name&quot;:&quot;Audio Files&quot;<br />
+      &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;id&quot;:&quot;sam.apps&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;name&quot;:&quot;Applications&quot;<br />
+      &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp;],<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }</p>
+  </div>
+</div>
+<h3>updateCategory</h3>
+<div>
+  <h4>Description</h4>
+  <p>Allows enabling or disabling of a category and change the order of the category.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>id</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Specifies the category to be updated.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>enabled</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if the category is enabled.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: The category is enabled</li>
+              <li><strong>false</strong>: the category is disabled</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>rank</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Indicates the position in which the specific category is returned by the <strong>getCategories()</strong> API.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true:&nbsp;</strong>Method execution is successful</li>
+              <li><strong>false:&nbsp;</strong>Method executed with errors. Check the errorCode and errorText for details..</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>Error Codes</strong>&quot;&nbsp;section for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>201</td>
+          <td>The &#39;id&#39; isn&#39;t specified.</td>
+          <td>
+            <p>The ID is a mandatory parameter. It must be specified.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>202</td>
+          <td>Needs to add at least one of &#39;rank&#39; or &#39;enabled&#39;.</td>
+          <td>
+            <p>Updating category means change rank or enable/disable. So, you should add one of them.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>203</td>
+          <td>Needs &#39;rank&#39; if its enabled.</td>
+          <td>
+            <p>When you &#39;enable&#39; the category, you should set &#39;rank&#39; to order.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>204</td>
+          <td>Shouldn&#39;t insert &#39;rank&#39; when its disabled.</td>
+          <td>
+            <p>When it goes disable, the &#39;rank&#39; is useless.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>205</td>
+          <td>Internal database error.</td>
+          <td>
+            <p>Failed to update the internal database.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>1. Change the rank of a category.</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.unifiedsearch/updateCategory &#39;{<br />
+      &nbsp; &nbsp;&nbsp;&quot;id&quot;:&quot;com.webos.app.avn.settings&quot;,<br />
+      &nbsp; &nbsp; &quot;rank&quot;:1<br />
+      }&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false<br />
+      }</p>
+    <p>&nbsp;</p>
+    <p>2. Get the list of categories.</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.unifiedsearch/getCategories &#39;{ }&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;disabled&quot;:[<br />
+      &nbsp; &nbsp; &nbsp;&nbsp;<br />
+      &nbsp; &nbsp;],<br />
+      &nbsp; &nbsp;&quot;enabled&quot;:[<br />
+      &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;id&quot;:&quot;com.webos.app.avn.settings&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;name&quot;:&quot;Enact AVN Settings&quot;<br />
+      &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;id&quot;:&quot;mediaindexer.audio&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;name&quot;:&quot;Audio Files&quot;<br />
+      &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;id&quot;:&quot;sam.apps&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;name&quot;:&quot;Applications&quot;<br />
+      &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp;],<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }</p>
+  </div>
+  <div class="code-bg-grey">
+    <p>1. Disable a category.</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.unifiedsearch/updateCategory &#39;{<br />
+      &nbsp; &nbsp;&nbsp;&quot;id&quot;:&quot;com.webos.app.avn.settings&quot;,<br />
+      &nbsp; &nbsp; &quot;enabled&quot;:false<br />
+      }&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false<br />
+      }</p>
+    <p>&nbsp;</p>
+    <p>2. Get the list of categories.</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.unifiedsearch/getCategories &#39;{}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;disabled&quot;:[<br />
+      &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;id&quot;:&quot;com.webos.app.avn.settings&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;name&quot;:&quot;Enact AVN Settings&quot;<br />
+      &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp;],<br />
+      &nbsp; &nbsp;&quot;enabled&quot;:[<br />
+      &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;id&quot;:&quot;mediaindexer.audio&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;name&quot;:&quot;Audio Files&quot;<br />
+      &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;id&quot;:&quot;sam.apps&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;name&quot;:&quot;Applications&quot;<br />
+      &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp;],<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }</p>
+  </div>
+  <div class="code-bg-grey">
+    <p>1. Enable a category with rank 2.</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.unifiedsearch/updateCategory &#39;{<br />
+      &nbsp; &nbsp;&nbsp;&quot;id&quot;:&quot;com.webos.app.avn.settings&quot;,<br />
+      &nbsp; &nbsp;&nbsp;&quot;enabled&quot;:true,<br />
+      &nbsp; &nbsp;&nbsp;&quot;rank&quot;:2<br />
+      }&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false<br />
+      }</p>
+    <p>&nbsp;</p>
+    <p>2. Get a list of categories.</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.unifiedsearch/getCategories &#39;{}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;disabled&quot;:[<br />
+      &nbsp; &nbsp; &nbsp;&nbsp;<br />
+      &nbsp; &nbsp;],<br />
+      &nbsp; &nbsp;&quot;enabled&quot;:[<br />
+      &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;id&quot;:&quot;mediaindexer.audio&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;name&quot;:&quot;Audio Files&quot;<br />
+      &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;id&quot;:&quot;com.webos.app.avn.settings&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;name&quot;:&quot;Enact AVN Settings&quot;<br />
+      &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;id&quot;:&quot;sam.apps&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;name&quot;:&quot;Applications&quot;<br />
+      &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp;],<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }</p>
+  </div>
+</div>
+<h2>Objects</h2>
+<div>
+  <h3>groupedIntents</h3>
+  <p>Indicates the categorized intents</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>categoryId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the <strong>ID</strong> of the category.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>items</td>
+          <td>Optional</td>
+          <td>Object array: <a href="#item">item</a></td>
+          <td>
+            <p>Indicates the list of items.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>item</h3>Provide a detailed description of the object. Limit to 2-3 paragraphs.<div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>intent</td>
+          <td>Required</td>
+          <td>Object: <a href="#intent">intent</a></td>
+          <td>
+            <p>Indicates the intent of the item.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>display</td>
+          <td>Required</td>
+          <td>Object: <a href="#display">display</a></td>
+          <td>
+            <p>Indicates the display information of the item.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>intent</h3>
+  <p>Contains intent that has &#39;display&#39; attribute on &#39;extra&#39; field internally.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>action</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the action name.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>uri</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the uri pattern list.</p>
+            <p>&lt;scheme&gt;://&lt;host&gt;:&lt;port&gt;/&lt;path&gt;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>name</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the&nbsp;handler&nbsp;name (used for explicit intent)</p>
+          </td>
+        </tr>
+        <tr>
+          <td>extra</td>
+          <td>Optional</td>
+          <td>Object</td>
+          <td>
+            <p>Indicates the additional parameter for the handler.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>display</h3>
+  <p>Indicates the display information to show on screen.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>title</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the&nbsp;title to display on screen.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>icon</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the icon (thumbnail) path to be displayed on the screen.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>category</h3>
+  <p>Indicates the category information.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>id</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the category ID.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>name</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the category name to be displayed on the screen.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

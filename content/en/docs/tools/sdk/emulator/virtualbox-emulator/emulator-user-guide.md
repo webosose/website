@@ -1,7 +1,7 @@
 ---
 title: User Guide
 display_title: VirtualBox Emulator User Guide
-date: 2020-11-06
+date: 2021-01-22
 weight: 10
 toc: true
 ---
@@ -88,9 +88,13 @@ setx PATH "C:\Program Files\Oracle\VirtualBox;%PATH%"
 
 To make the changes take effect, you must restart the command shell.
 
-## Installing VirtualBox Extension Pack
+## (Optional) Installing VirtualBox Extension Pack
 
-To [configure USB devices](#configuring-usb-devices), Oracle VM VirtualBox Extension Pack is required.
+Basically, VirtualBox supports USB 1.1 (OHCI) devices. To configure USB 2.0 or 3.0 devices, Oracle VM VirtualBox Extension Pack is required.
+
+{{< caution >}}
+Oracle VM VirtualBox Extension Pack is only free for "Personal Use". For more details, see [VirtualBox Extension Pack Personal Use and Evaluation License](https://www.virtualbox.org/wiki/VirtualBox_PUEL).
+{{< /caution >}}
 
 Download the same version of Extension Pack as your installed version of VirtualBox from the [download page](https://www.virtualbox.org/wiki/Downloads), and install the Extension Pack.
 
@@ -326,21 +330,18 @@ Currently, the emulator supports Bluetooth dongle, USB storage device, USB Webca
 {{< /note >}}
 
 {{< note "Prerequisite" >}}
-The VirtualBox Extension Pack must be installed. See [Installing VirtualBox Extension Pack](#installing-virtualbox-extension-pack) for more information.
+To configure USB 2.0 or 3.0 devices, the VirtualBox Extension Pack must be installed. See [(Optional) Installing VirtualBox Extension Pack](#optional-installing-virtualbox-extension-pack) for more information.
 {{< /note >}}
 
 To add the device, before launching the virtual machine on VirtualBox, do the following:
 
-{{< figure src="/images/docs/tools/emulator/vbox_emulator_image_usb.jpg" alt="Configuring USB on VirtualBox Emulator" >}}
+{{< figure src="/images/docs/tools/emulator/vbox_emulator_img_usb.png" alt="Configuring USB on VirtualBox Emulator" >}}
 
 1.	Select the virtual machine (from the left-hand side).
 2.	Click the settings icon to display the settings dialog.
 3.	Click **USB**.
 4.	Select the **Enable USB Controller** checkbox.
-5.	Select the **USB 2.0 (EHCI) Controller** or **USB 3.0 (xHCI) Controller** option.
-    {{< note >}}
-    If you encounter the "Invalid settings detected" message when you select USB 2.0/3.0, make sure that you installed the Extension Pack according to [Installing VirtualBox Extension Pack](#installing-virtualbox-extension-pack).
-    {{< /note >}}
+5.	Select the **USB 1.1 (OHCI) Controller** option.
 6.	Click the + icon (on the right-hand side) to get a list of USB devices.
 7.	Select the required device (Bluetooth dongle, USB storage device, or USB webcam).
 8.	The device is added to the **USB Device Filters** field.

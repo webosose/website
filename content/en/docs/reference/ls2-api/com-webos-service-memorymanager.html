@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.memorymanager
-date: 2020-11-13
+date: 2020-01-21
 weight: 240
 toc: true
 ---
@@ -24,7 +24,7 @@ toc: true
   <h3>getMemoryStatus</h3>
   <div>
     <h4>Description</h4>
-    <p>Provides current status of the memory.</p>
+    <p>Provides the current status of the memory.</p>
     <h4>Parameters</h4>
     <div class="table-container">
       <table class="table is-bordered is-fullwidth">
@@ -48,12 +48,13 @@ toc: true
             <td>Optional</td>
             <td>Boolean</td>
             <td>
-              <p>Subscribe for notifications.&nbsp;Possible values are:</p>
+              <p>Subscribe for notifications.</p>
+              <p>Possible values are:</p>
               <ul>
-                <li><strong>true&nbsp;</strong>- Get notifications</li>
-                <li><strong>false&nbsp;</strong>- Notifications are not required</li>
+                <li><strong>true:&nbsp;</strong>Get notifications</li>
+                <li><strong>false:</strong>&nbsp;Notifications are not required</li>
               </ul>
-              <p>​<strong>Default value:</strong>&nbsp;false</p>
+              <p>Default:&nbsp;<strong>false</strong></p>
             </td>
           </tr>
         </tbody>
@@ -82,7 +83,7 @@ toc: true
             <td>Required</td>
             <td>Object array: <a href="#application"> application</a></td>
             <td>
-              <p>List of running applications.</p>
+              <p>Indicates the list of running applications.</p>
             </td>
           </tr>
           <tr>
@@ -90,7 +91,7 @@ toc: true
             <td>Required</td>
             <td>Object: <a href="#system"> system</a></td>
             <td>
-              <p>Current system information.</p>
+              <p>Indicates the current system information.</p>
             </td>
           </tr>
           <tr>
@@ -98,7 +99,7 @@ toc: true
             <td>Required</td>
             <td>Object: <a href="#threshold"> threshold</a></td>
             <td>
-              <p>Threshold values.</p>
+              <p>Indicates the threshold values.</p>
             </td>
           </tr>
           <tr>
@@ -106,10 +107,11 @@ toc: true
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates if&nbsp;subscribed to get notified.</p>
+              <p>Subscribe for notifications.</p>
+              <p>Possible values are:</p>
               <ul>
-                <li><strong>true&nbsp;</strong>- Subscribed for changes</li>
-                <li><strong>false&nbsp;</strong>- Not subscribed</li>
+                <li><strong>true:&nbsp;</strong>Get notifications</li>
+                <li><strong>false:</strong>&nbsp;Notifications are not required</li>
               </ul>
             </td>
           </tr>
@@ -118,10 +120,11 @@ toc: true
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <p>Indicates the status of the operation.</p>
+              <p>Possible values are:</p>
               <ul>
-                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check &quot;errorText&quot; field&nbsp;for details.</li>
+                <li><strong>true:&nbsp;</strong>Method execution is successful</li>
+                <li><strong>false:&nbsp;</strong>Method executed with errors. Check the errorCode and errorText for details.</li>
               </ul>
             </td>
           </tr>
@@ -146,36 +149,38 @@ toc: true
     </div>
     <h4>Example</h4>
     <div class="code-bg-grey">
-      <p># luna-send -f -i luna://com.webos.service.memorymanager/getMemoryStatus &#39;{ &quot;subscribe&quot;:true }&#39;</p>
-      <p>&nbsp;</p>
+      <p># luna-send -f -i luna://com.webos.service.memorymanager/getMemoryStatus &#39;{<br />
+        &nbsp; &nbsp;&quot;subscribe&quot;:true<br />
+        }&#39;</p>
       <p>Response:</p>
       <p>{<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&quot;applications&quot;: [<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;appId&quot;: &quot;com.webos.app.test.enact&quot;,<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;status&quot;: &quot;foreground&quot;,<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;pid&quot;: 2528,<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;time&quot;: 11147,<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;type&quot;: &quot;web&quot;<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;],<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&quot;system&quot;: {<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;free&quot;: 386,<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;total&quot;: 681,<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;level&quot;: &quot;normal&quot;<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;},<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&quot;threshold&quot;: {<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;low&quot;: {<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&quot;enter&quot;: 200,<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&quot;exit&quot;: 250<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;critical&quot;: {<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&quot;enter&quot;: 100,<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&quot;exit&quot;: 150<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;},<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&quot;subscribed&quot;: true<br />
+        &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp; &nbsp; &quot;system&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;level&quot;: &quot;normal&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;available&quot;: 5995,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;total&quot;: 7538<br />
+        &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &quot;threshold&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;low&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;enter&quot;: 250,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;exit&quot;: 280<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;critical&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;enter&quot;: 100,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;exit&quot;: 130<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &quot;applications&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;appId&quot;: &quot;com.webos.app.test.enact&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;instanceId&quot;: &quot;56a536ae-bf17-45f3-a255-4ba521b9081e1&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;pid&quot;: 2499,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;status&quot;: &quot;foreground&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;type&quot;: &quot;web&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;pss&quot;: &quot;0&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; ]<br />
         }</p>
     </div>
   </div>
@@ -207,9 +212,10 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Memory Manager Event Type.</p>
+            <p>Indicates the memory manager event type.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li>&#39;killing&#39; : application killing event when memory level is under &#39;low&#39;</li>
+              <li>killing: application killing event when memory level is under &#39;low&#39;</li>
             </ul>
           </td>
         </tr>
@@ -218,12 +224,12 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Subscribe for notifications.&nbsp;Possible values are:</p>
+            <p>Indicates if subscribed for notifications.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Get notifications</li>
-              <li><strong>false&nbsp;</strong>- Notifications are not required</li>
+              <li><strong>true:&nbsp;</strong>Subscribe for&nbsp;notifications</li>
+              <li><strong>false:&nbsp;</strong>Notifications are not required</li>
             </ul>
-            <p>​This is subscription API so value MUST <strong>true</strong>.</p>
           </td>
         </tr>
       </tbody>
@@ -252,10 +258,10 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates if&nbsp;subscribed to get notified.</p>
+            <p>Indicates if&nbsp;subscribed to get notifications.</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Subscribed for changes</li>
-              <li><strong>false&nbsp;</strong>- Not subscribed</li>
+              <li><strong>true:&nbsp;</strong>Subscribed for notifications</li>
+              <li><strong>false:&nbsp;</strong>Not subscribed</li>
             </ul>
           </td>
         </tr>
@@ -264,10 +270,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check &quot;errorText&quot; field&nbsp;for details.</li>
+              <li><strong>true:&nbsp;</strong>Method execution is successful</li>
+              <li><strong>false:&nbsp;</strong>Method executed with errors. Check the errorCode and errorText for details.</li>
             </ul>
           </td>
         </tr>
@@ -313,7 +320,8 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The app ID. The value exists only for &#39;killing&#39; type event.</p>
+            <p>Indicates the app ID.</p>
+            <p><strong>Note</strong>: The value exists only for &#39;killing&#39; type event.</p>
           </td>
         </tr>
         <tr>
@@ -332,10 +340,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check &quot;errorText&quot; field&nbsp;for details.</li>
+              <li><strong>true:&nbsp;</strong>Method execution is successful</li>
+              <li><strong>false:&nbsp;</strong>Method executed with errors. Check the errorCode and errorText for details.</li>
             </ul>
           </td>
         </tr>
@@ -344,11 +353,19 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates if&nbsp;subscribed to get notified.</p>
+            <p>Indicates if&nbsp;subscribed to get notifications.</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Subscribed for changes</li>
-              <li><strong>false&nbsp;</strong>- Not subscribed</li>
+              <li><strong>true:&nbsp;</strong>Subscribed for notifications</li>
+              <li><strong>false:&nbsp;</strong>Not subscribed</li>
             </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>instanceId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the instance&nbsp;ID.</p>
           </td>
         </tr>
       </tbody>
@@ -356,20 +373,22 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -f -i luna://com.webos.service.memorymanager/getManagerEvent &#39;{ &quot;type&quot;: &quot;killing&quot;, &quot;subscribe&quot;:true }&#39;</p>
-    <p>&nbsp;</p>
+    <p># luna-send -f -i luna://com.webos.service.memorymanager/getManagerEvent &#39;{<br />
+      &nbsp; &nbsp;&quot;type&quot;:&quot;killing&quot;,<br />
+      &nbsp; &nbsp;&quot;subscribe&quot;:true<br />
+      }&#39;</p>
     <p>Response:&nbsp;</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
       }</p>
-    <p><br />
-      Subscription Return:</p>
+    <p>Subscription response:</p>
     <p>{<br />
-      &nbsp; &nbsp; &quot;id&quot;: &quot;com.webos.app.test.enact&quot;,<br />
-      &nbsp; &nbsp; &quot;type&quot;: &quot;killing&quot;,<br />
       &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;instanceId&quot;: &quot;339164a1-2d8d-4d93-819b-427b5c12a75b1&quot;,<br />
+      &nbsp; &nbsp; &quot;id&quot;: &quot;com.webos.app.test.enact&quot;,<br />
+      &nbsp; &nbsp; &quot;type&quot;: &quot;killing&quot;<br />
       }</p>
   </div>
 </div>
@@ -377,7 +396,7 @@ toc: true
 <div>
   <h4>Description</h4>
   <p>Requests for the memory that is required to launch an application.</p>
-  <p><span style="color:#FF0000"><strong>Note: </strong></span>This method is called by SAM when it about to launch an application.</p>
+  <p><strong>Note:</strong><span style="color:#FF0000"><strong> </strong></span>This method is called by SAM when it about to launch an application.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -401,7 +420,7 @@ toc: true
           <td>Required</td>
           <td>Number</td>
           <td>
-            <p>Amount of memory required to launch the application.</p>
+            <p>Indicates the amount of memory required to launch the application.</p>
           </td>
         </tr>
       </tbody>
@@ -430,10 +449,11 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
             <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check &quot;errorText&quot; field&nbsp;for details.</li>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check &quot;errorText&quot; field&nbsp;for details.</li>
             </ul>
           </td>
         </tr>
@@ -458,18 +478,22 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -f -n 1 luna://com.webos.service.memorymanager/requireMemory &#39;{ &quot;requiredMemory&quot;: 120 }&#39;</p>
-    <p>&nbsp;</p>
+    <p># luna-send -f -n 1 luna://com.webos.service.memorymanager/requireMemory &#39;{<br />
+      &nbsp; &nbsp;&quot;requiredMemory&quot;:120<br />
+      }&#39;</p>
     <p>Response:</p>
     <p>{<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
       }</p>
   </div>
 </div>
-<h2>Objects</h2>
+<h3>sysInfo</h3>
 <div>
-  <h3>system</h3>
-  <p>Current&nbsp;memory information</p>
+  <h4>Description</h4>
+  <p>Provides a way to account for memory usage.</p>
+  <h4>Parameters</h4>
+  <p>None</p>
+  <h4>Call Returns</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
@@ -488,11 +512,180 @@ toc: true
           </th>
         </tr>
         <tr>
-          <td>free</td>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true:&nbsp;</strong>Method execution is successful</li>
+              <li><strong>false:&nbsp;</strong>Method executed with errors. Check the errorCode and errorText for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>API Error Codes Reference&quot;</strong>&nbsp;section for details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>System View</td>
+          <td>Required</td>
+          <td>Object array: <a href="#system_view"> system_view</a></td>
+          <td>
+            <p>Indicates the system level memory information.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>PSS View</td>
+          <td>Required</td>
+          <td>Object array: <a href="#pss_view"> pss_view</a></td>
+          <td>
+            <p>Indicates the PSS information of&nbsp;services and applications per session.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -f -n 1 &nbsp;luna://com.webos.service.memorymanager/sysInfo &#39;{ }&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;System View&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;Essential&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;BSP &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;: 669224 K&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;Custom Kernel &nbsp;: 513466 K&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;Kernel &nbsp; &nbsp; &nbsp; &nbsp; : 508892 K&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;System PSS &nbsp; &nbsp; : 750928 K&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;Foreground&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;Foreground PSS : 90490 K&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;Performance&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;Cached Kernel &nbsp;: 304672 K&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;Cached PSS &nbsp; &nbsp; : 0 K&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;Free&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : 5550936 K&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &quot;PSS View&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;driver0&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;System&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;55096 K: maliit-server.service (pid 2016)&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;39725 K: webapp-mgr.service (pid 1631)&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;...&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;297 K: maliit-server.service (pid 1995)&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;Foreground&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;30414 K: com.webos.app.firstuse (pid 1835)&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;guest0&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;System&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;54682 K: maliit-server.service (pid 1987)&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;45024 K: webapp-mgr.service (pid 1514)&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;...&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;291 K: maliit-server.service (pid 1957)&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;Foreground&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;30119 K: com.webos.app.firstuse (pid 1837)&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;guest1&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;System&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;54676 K: maliit-server.service (pid 2064)&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;42434 K: webapp-mgr.service (pid 1556)&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;...&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;285 K: maliit-server.service (pid 2030)&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;Foreground&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;29957 K: com.webos.app.firstuse (pid 1834)&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;host&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;System&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;43910 K: surface-manager-daemon.service (pid 1010)&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;5957 K: pulseaudio.service (pid 1040)&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;...&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;163 K: qrtr-ns.service (pid 477)&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; ]<br />
+      }</p>
+  </div>
+</div>
+<h2>Objects</h2>
+<div>
+  <h3>system</h3>
+  <p>Indicates the current&nbsp;memory information.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>available</td>
           <td>Required</td>
           <td>Number</td>
           <td>
-            <p>Free memory.&nbsp;</p>
+            <p>Indicates the available memory.</p>
           </td>
         </tr>
         <tr>
@@ -500,7 +693,7 @@ toc: true
           <td>Required</td>
           <td>Number</td>
           <td>
-            <p>Total memory.</p>
+            <p>Indicates the total memory.</p>
           </td>
         </tr>
         <tr>
@@ -508,7 +701,8 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Current memory status. Possible values are:</p>
+            <p>Indicates the current memory status.</p>
+            <p>Possible values are:</p>
             <ul>
               <li>normal</li>
               <li>low</li>
@@ -520,7 +714,7 @@ toc: true
     </table>
   </div>
   <h3>application</h3>
-  <p>application memory description.</p>
+  <p>Indicates the application memory description.</p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
@@ -543,7 +737,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Application ID.</p>
+            <p>Indicates the application ID.</p>
           </td>
         </tr>
         <tr>
@@ -551,7 +745,8 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Status of application. Possible values are:</p>
+            <p>Indicates the status of the application.</p>
+            <p>Possible values are:</p>
             <ul>
               <li>foreground</li>
               <li>background</li>
@@ -565,7 +760,7 @@ toc: true
           <td>Required</td>
           <td>Number</td>
           <td>
-            <p>Process ID.</p>
+            <p>Indicates the process ID.</p>
           </td>
         </tr>
         <tr>
@@ -573,7 +768,7 @@ toc: true
           <td>Required</td>
           <td>Number</td>
           <td>
-            <p>Timestamp about &#39;foreground&#39; apps.</p>
+            <p>Indicates the timestamp about &#39;foreground&#39; apps.</p>
           </td>
         </tr>
         <tr>
@@ -581,7 +776,8 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Application type. Possible values are:</p>
+            <p>Indicates the application type.</p>
+            <p>Possible values are:</p>
             <ul>
               <li>web</li>
               <li>native</li>
@@ -594,7 +790,7 @@ toc: true
     </table>
   </div>
   <h3>threshold</h3>
-  <p>memory level threshold</p>
+  <p>Indicates the memory level threshold.</p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
@@ -617,7 +813,7 @@ toc: true
           <td>Required</td>
           <td>Object: <a href="#threshold_item"> threshold_item</a></td>
           <td>
-            <p>Low threshold.</p>
+            <p>Indicates the low threshold.</p>
           </td>
         </tr>
         <tr>
@@ -625,14 +821,14 @@ toc: true
           <td>Required</td>
           <td>Object: <a href="#threshold_item"> threshold_item</a></td>
           <td>
-            <p>Critical threshold.</p>
+            <p>Indicates the critical threshold.</p>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
   <h3>threshold_item</h3>
-  <p>Threshold Item.</p>
+  <p>Indicates the threshold item.</p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
@@ -655,7 +851,7 @@ toc: true
           <td>Required</td>
           <td>Number</td>
           <td>
-            <p>Enter threshold.</p>
+            <p>Indicates the enter threshold.</p>
           </td>
         </tr>
         <tr>
@@ -663,7 +859,135 @@ toc: true
           <td>Required</td>
           <td>Number</td>
           <td>
-            <p>Exit threshold.</p>
+            <p>Indicates the exit threshold.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>system_view</h3>
+  <p>Provides system-level memory information.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>Essential</td>
+          <td>Required</td>
+          <td>String array</td>
+          <td>
+            <p>Indicates the essential memory to run the system.</p>
+            <p>Values are:</p>
+            <ul>
+              <li>BSP</li>
+              <li>Kernel</li>
+              <li>Custom Kernel</li>
+              <li>System PSS</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>Foreground</td>
+          <td>Required</td>
+          <td>String array</td>
+          <td>
+            <p>Indicates the memory of processes that interacts with users.</p>
+            <p>Value is:</p>
+            <ul>
+              <li>Foreground PSS</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>Free</td>
+          <td>Required</td>
+          <td>String array</td>
+          <td>
+            <p>Indicates the free memory.</p>
+            <p>Value&nbsp;is:</p>
+            <ul>
+              <li>Free</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>Performance</td>
+          <td>Required</td>
+          <td>String array</td>
+          <td>
+            <p>Indicates the memory that does not interact with users, but memory for performance improvement.</p>
+            <p>Values are:</p>
+            <ul>
+              <li>Cached Kernel</li>
+              <li>Cached PSS</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>pss_view</h3>
+  <p>PSS information of services and applications per session</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>host</td>
+          <td>Required</td>
+          <td>Object array</td>
+          <td>
+            <p>Indicates the PSS information on <strong>host</strong>&nbsp;session.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>driver0</td>
+          <td>Optional</td>
+          <td>Object array</td>
+          <td>
+            <p>Indicates the PSS information on <strong>driver0</strong>&nbsp;session.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>guest0</td>
+          <td>Optional</td>
+          <td>Object array</td>
+          <td>
+            <p>Indicates the PSS information on <strong>guest0</strong>&nbsp;session.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>guest1</td>
+          <td>Optional</td>
+          <td>Object array</td>
+          <td>
+            <p>Indicates the PSS information on <strong>guest1</strong>&nbsp;session.</p>
           </td>
         </tr>
       </tbody>
@@ -673,7 +997,7 @@ toc: true
 <div>
   <h2>Signals/Events</h2>
   <h3>levelChanged</h3>
-  <p>LS signal for memory level change. The signal is always sent whenever memory level is changed.</p>
+  <p>Indicates the LS signal for memory level change. The signal is always sent whenever memory level is changed.</p>
   <div>
     <h4>Call Returns</h4>
     <div class="table-container">
@@ -696,17 +1020,17 @@ toc: true
           <tr>
             <td>previous</td>
             <td>Required</td>
-            <td>Number</td>
+            <td>Object array</td>
             <td>
-              <p>Previous memory level.</p>
+              <p>Indicates the previous memory level.</p>
             </td>
           </tr>
           <tr>
             <td>current</td>
             <td>Required</td>
-            <td>Number</td>
+            <td>Object array</td>
             <td>
-              <p>Current memory level.</p>
+              <p>Indicates the current memory level.</p>
             </td>
           </tr>
         </tbody>

@@ -1,6 +1,6 @@
 ---
 title: "SDK Download"
-date: 2020-12-17
+date: 2021-01-13
 weight: 5
 file_download: true
 toc: true
@@ -14,7 +14,7 @@ Emulator is created as a virtual machine image when you build webOS OSE platform
 
 ## Command-Line Interface
 
-* Version: v2.0.2
+* Version: v2.0.3
 
 Command Line Interface (CLI) is installed using `npm`. For more information, see [CLI User Guide]({{< relref "cli-user-guide" >}}).
 

@@ -1,7 +1,7 @@
 ---
 title: User Guide
 display_title: Command-Line Interface User Guide
-date: 2020-12-28
+date: 2021-01-20
 weight: 10
 toc: true
 ---
@@ -120,8 +120,8 @@ The following table shows the available CLI commands.
 </thead>
 <tbody>
 <tr class="odd">
-<td><p>ares</p></td>
-<td><p>Provides the help menu for using the ares commands.</p></td>
+<td><p><a href="#ares">ares</a></p></td>
+<td><p>Provides the help menu for using the <code>ares</code> commands.</p></td>
 </tr>
 <tr class="even">
 <td><p><a href="#ares-generate">ares-generate</a></p></td>
@@ -170,9 +170,127 @@ The following table shows the available CLI commands.
 </tbody>
 </table></div>
 
+### ares
+
+This command provides the help menu for using the `ares` commands.
+
+#### History
+
+<div class="table-container"><table class="table is-bordered is-fullwidth">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: auto" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><p>Version</p></th>
+<th><p>Changes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>v1.6.4</p></td>
+<td><p>Added in.</p></td>
+</tr>
+</tbody>
+</table></div>
+
+#### Usages
+
+```shell
+ares
+
+ares [OPTION...]
+```
+
+#### Options
+
+<div class="table-container"><table class="table is-bordered is-fullwidth">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: auto" />
+<col style="width: auto" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><p>Option</p></th>
+<th><p>Parameter</p></th>
+<th><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>-l, --list</p></td>
+<td><p>None</p></td>
+<td><p>Lists all the <code>ares</code> commands.</p></td>
+</tr>
+<tr class="even">
+<td><p>--[COMMAND]</p></td>
+<td><p>None</p></td>
+<td><p>Displays the help menu of <code>COMMAND</code>.</p> 
+<p><code>COMMAND</code> is entered using postfix of the <code>ares</code> commands. For more details, see <a href="#examples">Examples</a>.</p></td>
+</tr>
+<tr class="odd">
+<td><p>-h, --help</p></td>
+<td><p>None</p></td>
+<td><p>Displays this help menu.</p></td>
+</tr>
+<tr class="even">
+<td><p>-V, --version</p></td>
+<td><p>None</p></td>
+<td><p>Displays the version of the CLI.</p></td>
+</tr>
+<tr class="odd">
+<td><p>-v</p></td>
+<td><p>None</p></td>
+<td><p>Displays the execution log.</p></td>
+</tr>
+</tbody>
+</table></div>
+
+#### Examples
+
+Here are some examples of the different uses:
+
+* Listing all the `ares` commands
+
+    ``` shell
+    ares -l
+    ```
+
+* Displaying the help menu for the `ares-install` command.
+
+    ``` shell
+    ares --install
+    ```
 ### ares-generate
 
 This command creates a webOS app or service from a template. `ares-generate` displays a list of available templates for a web app, JS services, and webOS configuration files.
+
+#### History
+
+<div class="table-container"><table class="table is-bordered is-fullwidth">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: auto" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><p>Version</p></th>
+<th><p>Changes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>v1.11.0</p></td>
+<td><p>Updates the properties of the <code>appinfo.json</code> file.</p></td>
+</tr>
+<tr class="even">
+<td><p>v1.6.4</p></td>
+<td><p>Added in.</p></td>
+</tr>
+</tbody>
+</table></div>
 
 #### Usages
 
@@ -372,9 +490,30 @@ Here are some examples of the different uses:
 
 This command packages an app and a JS service into a package file (`.ipk`) which is stored in a specified directory.
 
-{{< note >}}
-CLI no longer supports Enyo features since v1.12.0.
-{{< /note >}}
+#### History
+
+<div class="table-container"><table class="table is-bordered is-fullwidth">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: auto" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><p>Version</p></th>
+<th><p>Changes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>v1.12.0</p></td>
+<td><p>Stops to support Enyo features.</p></td>
+</tr>
+<tr class="even">
+<td><p>v1.6.4</p></td>
+<td><p>Added in.</p></td>
+</tr>
+</tbody>
+</table></div>
 
 #### Usages
 
@@ -521,6 +660,31 @@ Here are some examples of the different uses:
 ### ares-setup-device
 
 This command displays a list of registered target devices. You can add, modify, or remove them from the list. This command is mainly used to modify target's host address which is running on a remote host. If you execute the command without any options, the command runs in interactive mode.
+
+#### History
+
+<div class="table-container"><table class="table is-bordered is-fullwidth">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: auto" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><p>Version</p></th>
+<th><p>Changes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>v1.12.0</p></td>
+<td><p>Supports the <code>--default</code> option.</p></td>
+</tr>
+<tr class="even">
+<td><p>v1.6.4</p></td>
+<td><p>Added in.</p></td>
+</tr>
+</tbody>
+</table></div>
 
 #### Usages
 
@@ -818,6 +982,27 @@ Here are some examples of the different uses:
 
 This command installs the app for a specified app package file (`.ipk`) on the target device. You can also see the list of apps installed on the target device or remove them with this command.
 
+#### History
+
+<div class="table-container"><table class="table is-bordered is-fullwidth">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: auto" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><p>Version</p></th>
+<th><p>Changes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>v1.6.4</p></td>
+<td><p>Added in.</p></td>
+</tr>
+</tbody>
+</table></div>
+
 #### Usages
 
 ```shell
@@ -956,6 +1141,35 @@ Here are some examples of the different uses:
 ### ares-launch
 
 This command launches or terminates the application installed on the target device. This command can also display the list of applications running on the target device.
+
+#### History
+
+<div class="table-container"><table class="table is-bordered is-fullwidth">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: auto" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><p>Version</p></th>
+<th><p>Changes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>v1.12.0</p></td>
+<td><p>Supports the <code>--hosted</code> option.</p></td>
+</tr>
+<tr class="even">
+<td><p>v1.11.0</p></td>
+<td><p>Supports the <code>--display</code> option.</p></td>
+</tr>
+<tr class="odd">
+<td><p>v1.6.4</p></td>
+<td><p>Added in.</p></td>
+</tr>
+</tbody>
+</table></div>
 
 #### Usages
 
@@ -1146,6 +1360,31 @@ We highly recommend you to use the same version as Chrome/Chromium of webOS OSE.
 - To download old builds of Chrome/Chromium, visit the [Chromium Project website](https://www.chromium.org/getting-involved/download-chromium).
 {{< /caution >}}
 
+#### History
+
+<div class="table-container"><table class="table is-bordered is-fullwidth">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: auto" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><p>Version</p></th>
+<th><p>Changes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>v2.0.2</p></td>
+<td><p>Supports the <code>--display</code> option.</p></td>
+</tr>
+<tr class="even">
+<td><p>v1.6.4</p></td>
+<td><p>Added in.</p></td>
+</tr>
+</tbody>
+</table></div>
+
 #### Usages
 
 ```shell
@@ -1280,6 +1519,27 @@ Here are some examples of the different uses:
 
 This command runs a web server for testing a local file. The web server will run on the given path. You can terminate the web server by pressing **Control+C** on the shell prompt.
 
+#### History
+
+<div class="table-container"><table class="table is-bordered is-fullwidth">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: auto" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><p>Version</p></th>
+<th><p>Changes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>v1.6.4</p></td>
+<td><p>Added in.</p></td>
+</tr>
+</tbody>
+</table></div>
+
 #### Usages
 
 ```shell
@@ -1374,6 +1634,27 @@ Here are some examples of the different uses:
 ### ares-shell
 
 This command opens a shell of a target device and executes shell commands in the target device.
+
+#### History
+
+<div class="table-container"><table class="table is-bordered is-fullwidth">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: auto" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><p>Version</p></th>
+<th><p>Changes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>v1.6.4</p></td>
+<td><p>Added in.</p></td>
+</tr>
+</tbody>
+</table></div>
 
 #### Usages
 
@@ -1487,6 +1768,27 @@ Here are some examples of the different uses:
 ### ares-push
 
 This command pushes file(s) from a host machine to a target device.
+
+#### History
+
+<div class="table-container"><table class="table is-bordered is-fullwidth">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: auto" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><p>Version</p></th>
+<th><p>Changes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>v1.6.4</p></td>
+<td><p>Added in.</p></td>
+</tr>
+</tbody>
+</table></div>
 
 #### Usages
 
@@ -1606,6 +1908,27 @@ Here are some examples of the different uses:
 
 This command pulls file(s) from a target device to a host machine.
 
+#### History
+
+<div class="table-container"><table class="table is-bordered is-fullwidth">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: auto" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><p>Version</p></th>
+<th><p>Changes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>v1.6.4</p></td>
+<td><p>Added in.</p></td>
+</tr>
+</tbody>
+</table></div>
+
 #### Usages
 
 ```shell
@@ -1724,9 +2047,30 @@ Here are some examples of the different uses:
 
 This command displays the information of the target device.
 
-{{< note >}}
-Since CLI 2.0.0, `ares-device-info` is replaced by `ares-device`.
-{{< /note >}}
+#### History
+
+<div class="table-container"><table class="table is-bordered is-fullwidth">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: auto" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><p>Version</p></th>
+<th><p>Changes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>v2.0.0</p></td>
+<td><p><code>ares-device-info</code> is replaced by <code>ares-device</code>.</p></td>
+</tr>
+<tr class="even">
+<td><p>v1.13.0</p></td>
+<td><p>Added in.</p></td>
+</tr>
+</tbody>
+</table></div>
 
 #### Usages
 

@@ -1,12 +1,154 @@
 ---
 title: Release Notes
 display_title: Command-Line Interface Release Notes
-date: 2021-01-05
+date: 2021-01-19
 weight: 20
+file_download: true
 toc: true
 ---
 
 This page provides the summary of each Command-Line Interface (CLI) release for webOS Open Source Edition (OSE).
+
+## Compatibility
+
+The following table shows the compatibility between webOS OSE and CLI.
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <colgroup>
+      <col style="width: auto" />
+      <col style="width: auto" />
+    </colgroup>
+    <thead>
+      <tr class="header">
+        <th><p>CLI Ver.</p></th>
+        <th><p>webOS OSE Ver.</p></th>
+        <th><p>CLI Package Download</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="odd">
+        <td><p>2.0.3</p></td>
+        <td><p>2.9.0</p></td>
+        <td rowspan="2"><p>Since CLI v2.0.0, use <code>npm</code> to download the CLI packages. For more details, see <a href="/docs/tools/sdk/cli/cli-user-guide/#installing-cli">CLI User Guide</a>.</p></td>
+      </tr>
+      <tr class="even">
+        <td><p>2.0.2</p></td>
+        <td rowspan="2"><p>2.8.0</p></td>
+      </tr>
+      <tr class="odd">
+        <td><p>1.13.1</p></td>
+        <td>
+        <p>
+        <a href="javascript:" onclick="file_dn('CLI', 'Linux', 'ares-webos-cli-linux-1.13.1.tgz', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.13.1/ares-webos-cli-linux-1.13.1.tgz');"> Linux</a>, 
+        <a href="javascript:" onclick="file_dn('CLI', 'macOS', 'ares-webos-cli-mac-1.13.1.tgz', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.13.1/ares-webos-cli-mac-1.13.1.tgz');"> macOS</a>, 
+        <a href="javascript:" onclick="file_dn('CLI', 'Windows', 'ares-webos-cli-win-1.13.1.zip', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.13.1/ares-webos-cli-win-1.13.1.zip');"> Windows</a>
+        </p>
+        </td>
+      </tr>
+      <tr class="even">
+        <td><p>1.13.0</p></td>
+        <td><p>2.7.0</p></td>
+        <td>
+        <p>
+        <a href="javascript:" onclick="file_dn('CLI', 'Linux', 'ares-webos-cli-linux-1.13.0.tgz', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.13.0/ares-webos-cli-linux-1.13.0.tgz');"> Linux</a>, 
+        <a href="javascript:" onclick="file_dn('CLI', 'macOS', 'ares-webos-cli-mac-1.13.0.tgz', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.13.0/ares-webos-cli-mac-1.13.0.tgz');"> macOS</a>, 
+        <a href="javascript:" onclick="file_dn('CLI', 'Windows', 'ares-webos-cli-win-1.13.0.zip', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.13.0/ares-webos-cli-win-1.13.0.zip');"> Windows</a>
+        </p>
+        </td>
+      </tr>
+      <tr class="odd">
+        <td><p>1.12.0</p></td>
+        <td><p>2.6.0</p></td>
+        <td>
+        <p>
+        <a href="javascript:" onclick="file_dn('CLI', 'Linux', 'ares-webos-cli-linux-1.12.0.tgz', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.12.0/ares-webos-cli-linux-1.12.0.tgz');"> Linux</a>, 
+        <a href="javascript:" onclick="file_dn('CLI', 'macOS', 'ares-webos-cli-mac-1.12.0.tgz', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.12.0/ares-webos-cli-mac-1.12.0.tgz');"> macOS</a>, 
+        <a href="javascript:" onclick="file_dn('CLI', 'Windows', 'ares-webos-cli-win-1.12.0.zip', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.12.0/ares-webos-cli-win-1.12.0.zip');"> Windows</a>
+        </p>
+        </td>
+      </tr>
+      <tr class="even">
+        <td><p>1.11.1</p></td>
+        <td><p>2.5.0</p></td>
+        <td>
+        <p>
+        <a href="javascript:" onclick="file_dn('CLI', 'Linux', 'ares-webos-cli-linux-1.11.1.tgz', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.11.1/ares-webos-cli-linux-1.11.1.tgz');"> Linux</a>, 
+        <a href="javascript:" onclick="file_dn('CLI', 'macOS', 'ares-webos-cli-mac-1.11.1.tgz', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.11.1/ares-webos-cli-mac-1.11.1.tgz');"> macOS</a>, 
+        <a href="javascript:" onclick="file_dn('CLI', 'Windows', 'ares-webos-cli-win-1.11.1.zip', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.11.1/ares-webos-cli-win-1.11.1.zip');"> Windows</a>
+        </p>
+        </td>
+      </tr>
+      <tr class="odd">
+        <td><p>1.11.0</p></td>
+        <td><p>2.4.0</p></td>
+        <td>
+        <p>
+        <a href="javascript:" onclick="file_dn('CLI', 'Linux', 'ares-webos-cli-linux-1.11.0.tgz', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.11.0/ares-webos-cli-linux-1.11.0.tgz');"> Linux</a>, 
+        <a href="javascript:" onclick="file_dn('CLI', 'macOS', 'ares-webos-cli-mac-1.11.0.tgz', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.11.0/ares-webos-cli-mac-1.11.0.tgz');"> macOS</a>, 
+        <a href="javascript:" onclick="file_dn('CLI', 'Windows', 'ares-webos-cli-win-1.11.0.zip', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.11.0/ares-webos-cli-win-1.11.0.zip');"> Windows</a>
+        </p>
+        </td>
+      </tr>
+      <tr class="even">
+        <td><p>1.10.2</p></td>
+        <td><p>2.1.0</p></td>
+        <td>
+        <p>
+        <a href="javascript:" onclick="file_dn('CLI', 'Linux', 'ares-webos-cli-linux-1.10.2.tgz', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.10.2/ares-webos-cli-linux-1.10.2.tgz');"> Linux</a>, 
+        <a href="javascript:" onclick="file_dn('CLI', 'macOS', 'ares-webos-cli-mac-1.10.2.tgz', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.10.2/ares-webos-cli-mac-1.10.2.tgz');"> macOS</a>, 
+        <a href="javascript:" onclick="file_dn('CLI', 'Windows', 'ares-webos-cli-win-1.10.2.zip', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.10.2/ares-webos-cli-win-1.10.2.zip');"> Windows</a>
+        </p>
+        </td>
+      </tr>
+      <tr class="odd">
+        <td><p>1.10.1</p></td>
+        <td><p>2.0.0</p></td>
+        <td>
+        <p>
+        <a href="javascript:" onclick="file_dn('CLI', 'Linux', 'ares-webos-cli-linux-1.10.1.tgz', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.10.1/ares-webos-cli-linux-1.10.1.tgz');"> Linux</a>, 
+        <a href="javascript:" onclick="file_dn('CLI', 'macOS', 'ares-webos-cli-mac-1.10.1.tgz', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.10.1/ares-webos-cli-mac-1.10.1.tgz');"> macOS</a>, 
+        <a href="javascript:" onclick="file_dn('CLI', 'Windows', 'ares-webos-cli-win-1.10.1.zip', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.10.1/ares-webos-cli-win-1.10.1.zip');"> Windows</a>
+        </p>
+        </td>
+      </tr>
+      <tr class="even">
+        <td><p>1.9.4</p></td>
+        <td rowspan="3"><p>1.0.0</p></td>
+        <td>
+        <p>
+        <a href="javascript:" onclick="file_dn('CLI', 'Linux', 'ares-webos-cli-ose_sdk-linux.tgz', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.9.4/ares-webos-cli-ose_sdk-linux.tgz');"> Linux</a>, 
+        <a href="javascript:" onclick="file_dn('CLI', 'macOS', 'ares-webos-cli-ose_sdk-mac.tgz', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.9.4/ares-webos-cli-ose_sdk-mac.tgz');"> macOS</a>, 
+        <a href="javascript:" onclick="file_dn('CLI', 'Windows', 'ares-webos-cli-ose_sdk-win.zip', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.9.4/ares-webos-cli-ose_sdk-win.zip');"> Windows</a>
+        </p>
+        </td>
+      </tr>
+      <tr class="odd">
+        <td><p>1.8.1</p></td>
+        <td>
+        <p>
+        <a href="javascript:" onclick="file_dn('CLI', 'Linux', 'ares-webos-cli-ose_sdk-linux.tgz', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.8.1/ares-webos-cli-ose_sdk-linux.tgz');"> Linux</a>, 
+        <a href="javascript:" onclick="file_dn('CLI', 'macOS', 'ares-webos-cli-ose_sdk-mac.tgz', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.8.1/ares-webos-cli-ose_sdk-mac.tgz');"> macOS</a>, 
+        <a href="javascript:" onclick="file_dn('CLI', 'Windows', 'ares-webos-cli-ose_sdk-win.zip', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/cli/v1.8.1/ares-webos-cli-ose_sdk-win.zip');"> Windows</a>
+        </p>
+        </td>
+      </tr>
+      <tr class="even">
+        <td><p>1.6.4</p></td>
+        <td><p>This version is not provided.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+## v2.0.3 (January 2021)
+
+This version is compatible with **webOS OSE 2.9.0**. See below for the new and changed features in this release.
+
+### Changed features
+
+* Updated help message of the `ares` command.
+* Updated the README file.
 
 ## v2.0.2 (December 2020)
 
@@ -21,7 +163,7 @@ This version is compatible with **webOS OSE 2.8.0**. See below for the new and c
 ### Changed features
 
 * Supports Node.js v14.15.1.
-* Updated `README.md`.
+* Updated the README file.
 
 ### Fixed issues
 
@@ -47,7 +189,7 @@ This version is compatible with **webOS OSE 2.7.0**. See below for the new and c
 ### Changed features
 
 * Organized and unified error messages.
-* Updated README file.
+* Updated the README file.
 
 ### Removed features
 
