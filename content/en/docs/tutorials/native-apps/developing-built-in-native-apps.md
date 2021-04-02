@@ -1,6 +1,6 @@
 ---
 title: Developing Built-in Native Apps
-date: 2020-06-25
+date: 2021-03-23
 weight: 20
 toc: true
 ---
@@ -389,7 +389,7 @@ Apps are required to have metadata before they can be packaged. This metadata is
     "main": "nativeqt",
     "title": "Native qt App",
     "icon": "icon.png",
-    "requiredPermissions" : ["applications"],
+    "requiredPermissions" : ["application.operation"],
     "nativeLifeCycleInterfaceVersion": 2
 }
 ```
@@ -402,7 +402,7 @@ A brief explanation of the above file:
 - Line(6) : The executable file name.
 - Line(7) : The title to be shown on the Home Launcher app.
 - Line(8) : The icon to be shown on the Home Launcher app. Make sure the icon file is available in the project root directory. You can use your own icon.png (80*80) file or attached [icon.png](/images/docs/tutorials/icon.png).
-- Line(9) : Specify the group to which the external service's method called by the app belongs. Because SAM's `registerApp` method belongs to "applications" group, put "applications" in this property. To check the group of each method, use [`ls-monitor`]({{< relref "ls-monitor" >}}) command with "-i" option.
+- Line(9) : Specify the group to which the external service's method called by the app belongs. Because SAM's `registerApp` method belongs to "application.operation" group, put "application.operation" in this property. To check the group of each method, use [`ls-monitor`]({{< relref "ls-monitor" >}}) command with "-i" option.
 - Line(10) : This field is required to use SAM's `registerApp` method.
 
 For more details, see [appinfo.json]({{< relref "appinfo-json" >}}).

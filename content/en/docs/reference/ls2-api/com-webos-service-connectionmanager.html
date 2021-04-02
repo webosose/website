@@ -1,19 +1,16 @@
 ---
 title: com.webos.service.connectionmanager
-date: 2021-01-21
+date: 2021-03-24
 weight: 150
 toc: true
 ---
-
 <div>
   <h2>API Summary</h2>
-  <p>This API is used by webOS apps and services to manage wired and wireless network connections.</p>
+  <p>Manages wired and wireless network connections across&nbsp;webOS apps and services</p>
 </div>
 <h2>Overview of the API</h2>
 <div>
-  <p><u>About com.webos.service.connectionmanager API:</u><br />
-    ​​The connectionmanager API provides methods to get and set the overall network connection status including setting IPv4/IPv6 and DNS parameters.<br />
-    This API can be used for both wired and wireless interfaces.</p>
+  <p>Provides methods to get and set the overall network connection status including setting IPv4/IPv6 and DNS parameters. This API can be used for both wired and wireless interfaces.</p>
   <p><u>About webos-connman-adapter daemon:</u></p>
   <p><strong>webos-connman-adapter</strong> is a daemon which acts as an interface between a daemon for managing internet connections called <strong>connman</strong>, and the rest of the webOS world. The reason we need this wrapper daemon is because <strong>connman </strong>communicates via <strong>dbus </strong>whereas the webOS apps/services require <strong>luna-service2</strong>(LS2)<strong>&nbsp;</strong>for interprocess communication. So, internally <strong>webos-connman-adapter</strong> communicates to <strong>connman </strong>via <strong>dbus </strong>but provides the LS2 interface to all the webOS apps/services so that they can get all the network related information as well as manage the connections.</p>
 </div>
@@ -150,12 +147,14 @@ toc: true
       <p># luna-send -n 1 -f luna://com.webos.service.connectionmanager/findProxyForURL &#39;{<br />
         &nbsp; &nbsp; &nbsp; &quot;url&quot;:&quot;http://www.lge.com&quot;,<br />
         &nbsp; &nbsp; &nbsp; &quot;host&quot;:&quot;www.lge.com&quot;<br />
-        }&#39;</p>
+        }&#39;
+      </p>
       <p>Response:</p>
       <p>{<br />
         &nbsp;&nbsp;&nbsp; &quot;proxy&quot;: &quot;DIRECT&quot;,<br />
         &nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true<br />
-        }</p>
+        }
+      </p>
     </div>
   </div>
 </div>
@@ -192,7 +191,7 @@ toc: true
               <li><strong>true&nbsp;</strong>- Get notifications</li>
               <li><strong>false&nbsp;</strong>- Notifications are not required</li>
             </ul>
-            <p>​<strong>Default value:</strong>&nbsp;false</p>
+            <p><strong>Default value:</strong>&nbsp;false</p>
           </td>
         </tr>
       </tbody>
@@ -229,7 +228,7 @@ toc: true
           <td>Optional</td>
           <td>Object: <a href="#wiredinfo"> wiredInfo</a></td>
           <td>
-            <p style="text-align: left;">Information about the&nbsp;wired interface.&nbsp;<br></p>
+            <p style="text-align:left">Information about the&nbsp;wired interface.&nbsp;</p>
           </td>
         </tr>
         <tr>
@@ -367,7 +366,8 @@ toc: true
       &nbsp;&nbsp;&nbsp;&quot;wiredInfo&quot;:{&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;macAddress&quot;:&quot;E8:5B:5B:82:6D:3C&quot;<br />
       &nbsp;&nbsp;&nbsp;}<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>getStatus</h3>
@@ -637,13 +637,14 @@ toc: true
       &nbsp; &nbsp; },<br />
       &nbsp; &nbsp; &quot;subscribed&quot;: false,<br />
       &nbsp; &nbsp; &quot;isInternetConnectionAvailable&quot;: false<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>setdns</h3>
 <div>
   <h4>Description</h4>
-  <p>Changes the DNS servers for the network. If a SSID value is not provided in the request then the modifications are applied to the wired connection.</p>
+  <p>Changes the DNS servers for the network. If a SSID value is not provided in the request then the modifications are applied to the wired connection. If interface option is not provided operation will be performed on default interface</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -667,7 +668,7 @@ toc: true
           <td>Required</td>
           <td>String array</td>
           <td>
-            <p style="text-align: left;">The <strong>dns</strong> array contains the IP addresses of the DNS servers that need to be changed.&nbsp;<br></p>
+            <p style="text-align:left">Contains the IP addresses of the DNS servers that need to be changed.&nbsp;</p>
           </td>
         </tr>
         <tr>
@@ -675,7 +676,15 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p style="text-align: left;">The <strong>ssid</strong> parameter contains the SSID of the Wi-Fi connection to be modified.<br></p>
+            <p style="text-align:left">Indicates the SSID of the Wi-Fi connection to be modified.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>interfaceName</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Interface on which operation needs to be performed. If not provided operation will be performed on default interface</p>
           </td>
         </tr>
       </tbody>
@@ -724,7 +733,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes&quot;</strong>&nbsp;section of this method for details.</p>
           </td>
         </tr>
       </tbody>
@@ -773,22 +782,35 @@ toc: true
             <p>This message implies that there was an&nbsp;error because&nbsp;no network was found with the provided <strong>ssid</strong>.</p>
           </td>
         </tr>
+        <tr>
+          <td>301</td>
+          <td>Invalid Interface</td>
+          <td>
+            <p>This message implies that there was an error because passed interfaceName does not exist</p>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example response for a successful call:</p>
-    <p># luna-send -n 1 -f luna://com.webos.service.connectionmanager/setdns &#39;{&quot;dns&quot;:[&quot;192.45.67.128&quot;]}&#39;</p>
-    <p>{</p>
-    <p>&nbsp; &nbsp; &quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.connectionmanager/setdns &#39;{<br />
+      &nbsp; &nbsp;&quot;dns&quot;:[<br />
+      &nbsp; &nbsp; &nbsp; &quot;192.45.67.128&quot;<br />
+      &nbsp; &nbsp;]<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>setipv4</h3>
 <div>
   <h4>Description</h4>
-  <p>Modifies the parameters of an IPv4 connection (wired or Wi-Fi).&nbsp;If a SSID value is not provided in the request, the modifications are applied to the wired connection only.</p>
+  <p>Modifies the parameters of an IPv4 connection (wired or Wi-Fi).&nbsp;If a SSID value is not provided in the request, the modifications are applied to the wired connection only. If interface option is not provided operation will be performed on default interface.</p>
   <p><strong>Note:</strong>&nbsp;At least one of the following parameters must be provided: <strong>SSID</strong>, <strong>address</strong>, <strong>netmask</strong>&nbsp;or <strong>gateway</strong>.</p>
   <h4>Parameters</h4>
   <div class="table-container">
@@ -813,7 +835,8 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p style="text-align:left">The <strong>method </strong>parameter specifies the way the IPv4 parameter should be changed. The allowed values are:&nbsp;</p>
+            <p style="text-align:left">Specifies the way the IPv4 parameter should be changed.</p>
+            <p style="text-align:left">Possible values are:&nbsp;</p>
             <ul>
               <li style="text-align:left">dhcp&nbsp;</li>
               <li style="text-align:left">manual</li>
@@ -849,7 +872,15 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p style="text-align:left">The <strong>ssid</strong> parameter specifies the Wi-Fi connection to modify. If absent, the wired connection is changed.</p>
+            <p style="text-align:left">Specifies the Wi-Fi connection to modify. If absent, the wired connection is changed.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>interfaceName</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Interface on which operation needs to be performed. If not provided operation will be performed on default interface</p>
           </td>
         </tr>
       </tbody>
@@ -878,8 +909,8 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
-            <p>&nbsp;</p>
+            <p>Indicates the status of operation.</p>
+            <p>Possible values are:</p>
             <ul>
               <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
               <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details</li>
@@ -899,7 +930,7 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes&quot;</strong>&nbsp;section of this method for details.</p>
           </td>
         </tr>
       </tbody>
@@ -948,33 +979,49 @@ toc: true
             <p>This message implies that there was an&nbsp;error because&nbsp;the network with the given <strong>ssid</strong> was not found.</p>
           </td>
         </tr>
+        <tr>
+          <td>301</td>
+          <td>Invalid Interface</td>
+          <td>
+            <p>This message implies that there was an error because passed interfaceName does not exist</p>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example responses for a successful call:</p>
     <p># luna-send -n 1 -f luna://com.webos.service.connectionmanager/setipv4 &#39;{<br />
       &nbsp; &nbsp; &nbsp;&quot;ssid&quot;: &quot;MyTestAP&quot;,<br />
       &nbsp; &nbsp; &nbsp;&quot;method&quot;: &quot;manual&quot;,<br />
       &nbsp; &nbsp; &nbsp;&quot;address&quot;: &quot;192.168.1.42&quot;,<br />
       &nbsp; &nbsp; &nbsp;&quot;netmask&quot;: &quot;255.255.255.0&quot;,<br />
       &nbsp; &nbsp; &nbsp;&quot;gateway&quot;: &quot;192.168.1.1&quot;<br />
-      }&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
-    <p>&nbsp;</p>
-    <p># luna-send -n 1 -f luna://com.webos.service.connectionmanager/setipv4 &#39;{&quot;ssid&quot;: &quot;MyTestAP&quot;, &quot;method&quot;: &quot;dhcp&quot;}&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.connectionmanager/setipv4 &#39;{<br />
+      &nbsp; &nbsp;&quot;ssid&quot;:&quot;MyTestAP&quot;,<br />
+      &nbsp; &nbsp;&quot;method&quot;:&quot;dhcp&quot;<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>setipv6</h3>
 <div>
   <h4>Description</h4>
-  <p>Modifies the parameters of an IPv6 connection (wired or Wi-Fi).&nbsp;If a SSID value is not provided in the request then the modifications are applied to the wired connection only.</p>
+  <p>Modifies the parameters of an IPv6 connection (wired or Wi-Fi).&nbsp;If a SSID value is not provided in the request then the modifications are applied to the wired connection only. If interface option is not provided operation will be performed on default interface.</p>
   <p><strong>Note</strong>: At least one of the following parameters must be provided: <strong>method</strong>, <strong>address</strong>, <strong>prefixLength </strong>or <strong>gateway.</strong></p>
   <h4>Parameters</h4>
   <div class="table-container">
@@ -1035,7 +1082,15 @@ toc: true
           <td>Optional</td>
           <td>String</td>
           <td>
-            <p>The <strong>ssid</strong> parameter specifies the Wi-Fi connection to modify. If absent, the wired connection is changed.</p>
+            <p>Specifies the Wi-Fi connection to modify. If absent, the wired connection is changed.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>interfaceName</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Interface on which operation needs to be performed. If not provided operation will be performed on default interface.</p>
           </td>
         </tr>
       </tbody>
@@ -1133,25 +1188,41 @@ toc: true
             <p>This message implies that there was an&nbsp;error because a&nbsp;network with the given <strong>ssid</strong> was not found.</p>
           </td>
         </tr>
+        <tr>
+          <td>301</td>
+          <td>Invalid Interface</td>
+          <td>
+            <p>This message implies that there was an error because passed interfaceName does not exist</p>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example responses for successful calls:</p>
     <p># luna-send -n 1 -f luna://com.webos.service.connectionmanager/setipv6 &#39;{<br />
       &nbsp; &nbsp; &nbsp; &quot;ssid&quot;: &quot;MyTestAP&quot;,<br />
       &nbsp; &nbsp; &nbsp; &quot;method&quot;: &quot;manual&quot;,<br />
       &nbsp; &nbsp; &nbsp; &quot;address&quot;: &quot;2001:db8:85a3:8d3:1319:8a2e:370:7348&quot;<br />
-      }&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
-    <p>&nbsp;</p>
-    <p># luna-send -n 1 -f luna://com.webos.service.connectionmanager/setipv6 &#39;{&quot;ssid&quot;: &quot;MyTestAP&quot;, &quot;method&quot;: &quot;auto&quot;}&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
-    <p>}</p>
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.connectionmanager/setipv6 &#39;{<br />
+      &nbsp; &nbsp;&quot;ssid&quot;:&quot;MyTestAP&quot;,<br />
+      &nbsp; &nbsp;&quot;method&quot;:&quot;auto&quot;<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>setProxy</h3>
@@ -1325,40 +1396,47 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example 1: Proxy method is set to direct (no proxy):</p>
+    <p>Proxy method is set to direct (no proxy)</p>
     <p># luna-send -n 1 -f luna://com.webos.service.connectionmanager/setProxy &#39;{ &quot;method&quot;:&quot;direct&quot; }&#39;</p>
-    <p>Returns:</p>
-    <p>{</p>
-    <p>&nbsp; &nbsp; &quot;returnValue&quot;: true</p>
-    <p>}</p>
-    <p>&nbsp;</p>
-    <p>Example 2: Automatically set the proxy using an URL:</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+  </div>
+  <div class="code-bg-grey">
+    <p>Automatically set the proxy using an URL</p>
     <p># luna-send -n 1 -f luna://com.webos.service.connectionmanager/setProxy &#39;{<br />
       &nbsp; &nbsp; &nbsp; &quot;method&quot;: &quot;auto&quot;,<br />
       &nbsp; &nbsp; &nbsp; &quot;url&quot;:&quot;http://www.lge.com/proxy.pac&quot;<br />
-      }&#39;</p>
-    <p>Returns:</p>
-    <p>{</p>
-    <p>&nbsp; &nbsp; &quot;returnValue&quot;: true</p>
-    <p>}</p>
-    <p>&nbsp;</p>
-    <p>Example 3: Manually configure the proxy details:</p>
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+  </div>
+  <div class="code-bg-grey">
+    <p>Manually configure the proxy details</p>
     <p># luna-send -n 1 -f luna://com.webos.service.connectionmanager/setProxy &#39;{<br />
       &nbsp; &nbsp; &nbsp; &quot;method&quot;:&quot;manual&quot;,<br />
       &nbsp; &nbsp; &nbsp; &quot;servers&quot;:[&quot;10.10.10.10:8080&quot;],<br />
       &nbsp; &nbsp; &nbsp; &quot;excludes&quot; : [&quot;www.lge.com&quot;]<br />
-      }&#39;</p>
-    <p>Returns:</p>
-    <p>{</p>
-    <p>&nbsp; &nbsp; &quot;returnValue&quot;: true</p>
-    <p>}</p>
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
   </div>
 </div>
 <h3>setstate</h3>
 <div>
   <h4>Description</h4>
   <p style="text-align:left">Enables or disables the state of either or both the Wi-Fi and wired connections on the system.</p>
-  <p style="text-align:left">While all parameters are optional, at least one parameter is <strong>required</strong>, or the method will return error.</p>
+  <p style="text-align:left"><strong>Note</strong>: While all parameters are optional, at least one parameter is <strong>required</strong>, or the method will return error.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -1503,13 +1581,16 @@ toc: true
 <h3>setTechnologyState</h3>
 <div>
   <h4>Description</h4>
-  <p>Can be used to enable or disable the available connection interfaces which can be:</p>
+  <p>Enables or disables the available connection interfaces which can be:</p>
   <ul>
     <li>Wired (ethernet)</li>
     <li>Wi-Fi</li>
   </ul>
-  <p>If a technology is not available on the device, an error will be returned.</p>
-  <p>The current status of the connection interfaces are reported through the <strong>getStatus</strong> method.&nbsp;Only one&nbsp;of the listed properties is&nbsp;allowed to be specified.</p>
+  <p><strong>Note</strong>:</p>
+  <ul>
+    <li>If a technology is not available on the device, an error will be returned.</li>
+    <li>The current status of the connection interfaces are reported through the <strong>getStatus</strong> method.&nbsp;Only one&nbsp;of the listed properties is&nbsp;allowed to be specified.</li>
+  </ul>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -1633,7 +1714,8 @@ toc: true
           <td>
             <p>This message implies that technology exists, but&nbsp;enabling or disabling it is not supported on this platform.<br />
               Note: Getting this error does not mean that no technology changed its state.&nbsp;<br />
-              The list is processed in order and if the last one for example failed to get enabled/disabled, all of the others would have correctly been processed and switched to their state according to the request.</p>
+              The list is processed in order and if the last one for example failed to get enabled/disabled, all of the others would have correctly been processed and switched to their state according to the request.
+            </p>
           </td>
         </tr>
       </tbody>
@@ -1647,10 +1729,145 @@ toc: true
     <p>}</p>
   </div>
 </div>
+<h3>setDefaultInterface</h3>
+<div>
+  <h4>Description</h4>
+  <p>Allows to set the default interface.</p>
+  <p>This API allows to change the current default interface with another interface which is in connected state, for the same technology.</p>
+  <p>For example, ethernet has multiple interfaces like eth0, eth1, eth2. If currently eth0 is the default interface and eth1, eth2 have&nbsp;&#39;state&#39; field as &#39;connected&#39; in getStatus() method, then either eth1 and eth2 can be set as default interfaces.</p>
+  <p><strong>Note</strong>: Should be used only to change the current state&nbsp;of the interface. It does not retain/persist the interface state&nbsp;due to other events or action.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>ifName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Interface that is to be made as the default.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Indicates that the operation was successful.</li>
+              <li><strong>false</strong>: Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>102</td>
+          <td>Could not validate json message against schema</td>
+          <td>
+            <p>This message implies that there was an error because parameters passed to a method were not following the schema format.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>301</td>
+          <td>Invalid Interface</td>
+          <td>
+            <p>This message implies that there was an error because passed interface does not exist or interface state is not connected.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>302</td>
+          <td>Already default</td>
+          <td>
+            <p>This message implies that provided interface is already set as default.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna://com.webos.service.connectionmanager/setDefaultInterface &#39;{&quot;ifName&quot;:&quot;eth0&quot;}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+  </div>
+</div>
 <h2>Objects</h2>
 <div>
   <h3>wifi</h3>
-  <p>The <strong>wifi</strong> object provides details on the status of the Wi-Fi connection. If the Wi-Fi connection is available then all the fields of this object will contain relevant information. If the Wi-Fi connection is not available then the&nbsp;<strong>state</strong>​ field of this object will be set to&nbsp;<strong>disconnected</strong>, and is the only value that is returned to the calling app.</p>
+  <p>The <strong>wifi</strong> object provides details on the status of the Wi-Fi connection. If the Wi-Fi connection is available then all the fields of this object will contain relevant information. If the Wi-Fi connection is not available then the&nbsp;<strong>state&nbsp;</strong>field of this object will be set to&nbsp;<strong>disconnected</strong>, and is the only value that is returned to the calling app.</p>
   <p>An example object would look like this:</p>
   <p>{<br />
     &nbsp;&nbsp;&nbsp; &quot;netmask&quot;: &quot;255.255.255.0&quot;,<br />
@@ -1668,7 +1885,8 @@ toc: true
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;method&quot;: &quot;manual&quot;,<br />
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;excludes&quot;: [&quot;www.lge.com&quot;]<br />
     &nbsp;&nbsp;&nbsp; }<br />
-    }</p>
+    }
+  </p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
@@ -1742,7 +1960,7 @@ toc: true
           <td>
             <p style="text-align:left">The captive portal technique forces an HTTP client on a network to see a special web page (usually for authentication purposes) before using the Internet normally. Captive portals are used at most Wi-Fi hotspots.The <strong>onInternet</strong> will contain one of the following values:</p>
             <ul>
-              <li style="text-align:left"><strong>yes</strong>​ - indicating the Wi-Fi connection is connected to the Internet.</li>
+              <li style="text-align:left"><strong>yes</strong>&nbsp;- indicating the Wi-Fi connection is connected to the Internet.</li>
               <li style="text-align:left"><strong>no&nbsp;</strong>- indicating the Wi-Fi connection is not connected to the Internet.</li>
             </ul>
           </td>
@@ -1761,7 +1979,7 @@ toc: true
           <td>String</td>
           <td>
             <p style="text-align:left">If the W-iFi connection is available it will be set to <strong>connected</strong>.</p>
-            <p style="text-align:left">If the Wi-Fi connection is not available, it will be set to&nbsp;<strong>disconnected</strong>​.</p>
+            <p style="text-align:left">If the Wi-Fi connection is not available, it will be set to&nbsp;<strong>disconnected</strong>.</p>
           </td>
         </tr>
         <tr>
@@ -1780,7 +1998,8 @@ toc: true
   <p>An example object would like this:</p>
   <p>{<br />
     &nbsp; &quot;macAddress&quot;: &quot;aa:bb:cc:dd:ee&quot;<br />
-    }</p>
+    }
+  </p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
@@ -1812,7 +2031,8 @@ toc: true
   <h3>wired</h3>
   <p style="text-align:left">The <strong>wired</strong> object provides details on the status of the wired connections.<br />
     <br />
-    If the wired connection is available then all the fields of this object contain the relevant information. If the wired connection is not available then the&nbsp;<strong>state</strong>​ field of this object will be set to&nbsp;<strong>disconnected</strong>&nbsp;and is the only value that is returned to the calling app.&nbsp;</p>
+    If the wired connection is available then all the fields of this object contain the relevant information. If the wired connection is not available then the&nbsp;<strong>state&nbsp;</strong>field of this object will be set to&nbsp;<strong>disconnected</strong>&nbsp;and is the only value that is returned to the calling app.&nbsp;
+  </p>
   <p style="text-align:left">An example would look like:</p>
   <p style="text-align:left">{<br />
     &nbsp;&nbsp;&nbsp; &quot;netmask&quot;: &quot;255.255.255.0&quot;,<br />
@@ -1831,8 +2051,34 @@ toc: true
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;servers&quot;: [&quot;10.10.10.10:80&quot;],<br />
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;method&quot;: &quot;manual&quot;,<br />
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;excludes&quot;: [&quot;www.lge.com&quot;]<br />
-    &nbsp;&nbsp;&nbsp; }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;<br />
-    }</p>
+    &nbsp;&nbsp;&nbsp; }
+  </p>
+  <p style="text-align:left">&nbsp;&nbsp;&quot;interface&quot;:[<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br />
+    &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot; : &quot;eth0&quot;,<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;netmask&quot;: &quot;255.255.255.0&quot;,<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;dns1&quot;: &quot;192.168.100.10&quot;,<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;dns2&quot;: &quot;8.8.8.8&quot;,<br />
+    &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &quot;ipAddress&quot;: &quot;192.168.100.204&quot;,<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;dns3&quot;: &quot;8.8.4.4&quot;,<br />
+    &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &quot;onInternet&quot;: &quot;yes&quot;,<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;method&quot;: &quot;dhcp&quot;,<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;state&quot;: &quot;connected&quot;,<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;gateway&quot;: &quot;192.168.100.1&quot;,<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;interfaceName&quot;: &quot;eth0&quot;,<br />
+    &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &quot;plugged&quot;: true,<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;proxyInfo&quot; :<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;servers&quot;: [&quot;10.10.10.10:80&quot;],<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;method&quot;: &quot;manual&quot;,<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;excludes&quot;: [&quot;www.lge.com&quot;]<br />
+    &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+  </p>
+  <p style="text-align:left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;checkingInternet&quot;:false&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />
+    ] &nbsp;&nbsp;<br />
+    }
+  </p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
@@ -1915,7 +2161,7 @@ toc: true
           <td>
             <p style="text-align:left">The captive portal technique forces an HTTP client on a network to see a special web page (usually for authentication purposes) before using the Internet normally. Captive portals are used at most Wi-Fi hotspots.The&nbsp;<strong>onInternet</strong>&nbsp;will contain one of the following values:</p>
             <ul>
-              <li style="text-align:left"><strong>yes</strong>​ - indicating the Wired&nbsp;connection is connected to the Internet.</li>
+              <li style="text-align:left"><strong>yes&nbsp;</strong>- indicating the Wired&nbsp;connection is connected to the Internet.</li>
               <li style="text-align:left"><strong>no&nbsp;</strong>- indicating the Wired&nbsp;connection is not connected to the Internet.</li>
             </ul>
           </td>
@@ -1926,9 +2172,8 @@ toc: true
           <td>String</td>
           <td>
             <p style="text-align:left">If the wired connection is available it will be set to&nbsp;<strong>connected</strong>.</p>
-            <p style="text-align:left">If the wired connection is not available, it will be set to&nbsp;<strong>disconnected</strong>​.</p>
-            <ul>
-            </ul>
+            <p style="text-align:left">If the wired connection is not available, it will be set to&nbsp;<strong>disconnected</strong>.</p>
+            <ul></ul>
           </td>
         </tr>
         <tr>
@@ -1939,6 +2184,14 @@ toc: true
             <p>The actual system configuration of Proxy servers.</p>
           </td>
         </tr>
+        <tr>
+          <td>interfaces</td>
+          <td>Required</td>
+          <td>Object array: <a href="#interfaceinfo"> InterfaceInfo</a></td>
+          <td>
+            <p>Information about the interfaces</p>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -1946,8 +2199,20 @@ toc: true
   <p>The object containing the MAC address of the <strong>wired </strong>interface.</p>
   <p>An example would look like:</p>
   <p>{<br />
-    &nbsp; &quot;macAddress&quot;: &quot;aa:bb:cc:dd:ee&quot;<br />
-    }</p>
+    &nbsp; &quot;macAddress&quot;: &quot;aa:bb:cc:dd:ee&quot;
+  </p>
+  <p>&nbsp;&nbsp;</p>
+  <p>&nbsp;&quot;interfaces&quot;:[</p>
+  <p style="margin-left:40px">{</p>
+  <p style="margin-left:40px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;name&quot;:&quot;eth0&quot;,</p>
+  <p style="margin-left:40px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;macAddress&quot;:&quot;DC:A6:32:AF:7C:3B&quot;</p>
+  <p style="margin-left:40px">},</p>
+  <p style="margin-left:40px">{</p>
+  <p style="margin-left:40px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;name&quot;:&quot;eth1&quot;,</p>
+  <p style="margin-left:40px">&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &quot;macAddress&quot;:&quot;DC:A6:32:AF:7C:3C&quot;</p>
+  <p style="margin-left:40px">}</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ],</p>
+  <p>}</p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
@@ -1971,6 +2236,14 @@ toc: true
           <td>String</td>
           <td>MAC address of wired interface<br></td>
         </tr>
+        <tr>
+          <td>interfaces</td>
+          <td>Required</td>
+          <td>Object array: <a href="#interfacemacinfo"> InterfaceMacInfo</a></td>
+          <td>
+            <p>Information about the interfaces and its MAC address</p>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -1983,7 +2256,8 @@ toc: true
     &nbsp; &nbsp; &quot;address&quot;: &quot;192.168.100.204&quot;,<br />
     &nbsp; &nbsp; &quot;gateway&quot;: &quot;192.168.100.1&quot;,<br />
     &nbsp; &nbsp; &quot;interface&quot;: &quot;eth0&quot;<br />
-    }</p>
+    }
+  </p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
@@ -2051,7 +2325,8 @@ toc: true
     &nbsp;&nbsp;&nbsp; &quot;servers&quot;: [&quot;10.10.10.10:80&quot;],<br />
     &nbsp;&nbsp;&nbsp; &quot;method&quot;: &quot;manual&quot;,<br />
     &nbsp;&nbsp;&nbsp; &quot;excludes&quot;: [&quot;www.lge.com&quot;]<br />
-    }</p>
+    }
+  </p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
@@ -2108,6 +2383,203 @@ toc: true
           <td>
             <p>List of hosts which can be accessed directly.&nbsp;</p>
             <p><strong>Note: </strong>Used when method is set to&nbsp;&quot;manual&quot;.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>InterfaceMacInfo</h3>
+  <p>Provides interfaces MAC address and name</p>
+  <p>Sample InterfaceMacinfo object :</p>
+  <p>{</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;name&quot;:&quot;eth0&quot;,</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;macAddress&quot;:&quot;DC:A6:32:AF:7C:3B&quot;</p>
+  <p>}</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>name</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Name of the interface</p>
+          </td>
+        </tr>
+        <tr>
+          <td>macAddress</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Mac address</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>InterfaceInfo</h3>
+  <p>This object provides detailed information about the interfaces details</p>
+  <p>Sample &quot;InterfaceInfo&quot; object :</p>
+  <p>{<br />
+    &nbsp;&nbsp;&nbsp; &quot;name&quot; : &quot;eth0&quot;,<br />
+    &nbsp;&nbsp;&nbsp; &quot;netmask&quot;: &quot;255.255.255.0&quot;,<br />
+    &nbsp;&nbsp;&nbsp; &quot;dns1&quot;: &quot;192.168.100.10&quot;,<br />
+    &nbsp;&nbsp;&nbsp; &quot;dns2&quot;: &quot;8.8.8.8&quot;,<br />
+    &nbsp;&nbsp;&nbsp; &quot;ipAddress&quot;: &quot;192.168.100.204&quot;,<br />
+    &nbsp;&nbsp;&nbsp; &quot;dns3&quot;: &quot;8.8.4.4&quot;,<br />
+    &nbsp;&nbsp;&nbsp; &quot;onInternet&quot;: &quot;yes&quot;,<br />
+    &nbsp;&nbsp;&nbsp; &quot;method&quot;: &quot;dhcp&quot;,<br />
+    &nbsp;&nbsp;&nbsp; &quot;state&quot;: &quot;connected&quot;,<br />
+    &nbsp;&nbsp;&nbsp; &quot;gateway&quot;: &quot;192.168.100.1&quot;,<br />
+    &nbsp;&nbsp;&nbsp; &quot;interfaceName&quot;: &quot;eth0&quot;,<br />
+    &nbsp;&nbsp;&nbsp; &quot;plugged&quot;: true,<br />
+    &nbsp;&nbsp;&nbsp; &quot;proxyInfo&quot; :<br />
+    &nbsp;&nbsp;&nbsp; {<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;servers&quot;: [&quot;10.10.10.10:80&quot;],<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;method&quot;: &quot;manual&quot;,<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;excludes&quot;: [&quot;www.lge.com&quot;]<br />
+    &nbsp;&nbsp;&nbsp; }&nbsp;
+  </p>
+  <p>&nbsp;&nbsp; &quot;checkingInternet&quot;:false &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+    }
+  </p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>checkingInternet</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates whether Internet checking is going on or not.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>dns</td>
+          <td>Optional</td>
+          <td>String array</td>
+          <td>
+            <p>List of IP Addreses of the DNS servers for this wired connection.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>gateway</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The IP address of the network gateway.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>interfaceName</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Name of the wired Interface name in use. For example, eth0.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>ipAddress</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The IP address associated with the wired connection.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>method</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>If the IP address was assigned using the manual mode, method will contain Manual.<br />
+              If the IP Address was assigned through DHCP, method will contain dhcp.
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td>netmask</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The net mask value for the wired connection</p>
+          </td>
+        </tr>
+        <tr>
+          <td>onInternet</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The captive portal technique forces an HTTP client on a network to see a special web page (usually for authentication purposes) before using the Internet normally.<br />
+              Captive portals are used at most Wi-Fi hotspots.The onInternet will contain one of the following values:
+            </p>
+            <ul>
+              <li>yes - indicating the Wired connection is connected to the Internet.</li>
+              <li>no - indicating the Wired connection is not connected to the Internet.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>plugged</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>If Ethernet cable is plugged, plugged will contain true.<br />
+              If Ethernet cable is unplugged, plugged will contain false.
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td>proxyInfo</td>
+          <td>Optional</td>
+          <td>Object: <a href="#proxyinfo"> proxyInfo</a></td>
+          <td>
+            <p>The actual system configuration of Proxy servers.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>state</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>If the wired connection is available it will be set to connected.<br />
+              If the wired connection is not available, it will be set to disconnected.
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td>default</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>This field will be present only with the default interface and its value will be true</p>
           </td>
         </tr>
       </tbody>

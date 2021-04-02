@@ -1,0 +1,1968 @@
+---
+title: com.webos.service.storageaccess
+date: 2021-03-29
+weight: 298
+toc: true
+---
+
+<div>
+  <h2>API Summary</h2>
+  <p>Provides a unified interface to access contents in different storage systems:</p>
+  <ul>
+    <li>USB storage</li>
+    <li>Cloud&nbsp;storage provider (currently only Google Drive is supported)</li>
+    <li>Internal storage</li>
+  </ul>
+</div>
+<h2>Overview of the API</h2>
+<div>
+  <p>NA</p>
+</div>
+<h2>Methods</h2>
+<div>
+  <h3>device/copy</h3>
+  <div>
+    <h4>Description</h4>
+    <p>Copies a file or directory from the source location to the destination.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>srcStorageType</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the source storage provider.&nbsp;</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>cloud</strong></li>
+                <li><strong>usb</strong></li>
+                <li><strong>internal</strong></li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>srcDriveId</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the source drive ID.</p>
+              <p><strong>Note: </strong>The drive ID can be found by using the&nbsp;<strong>listStorageProviders&nbsp;</strong>method.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>srcPath</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the path of the source file or directory.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>destStorageType</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the destination storage provider.&nbsp;</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>cloud</strong></li>
+                <li><strong>usb</strong></li>
+                <li><strong>internal</strong></li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>destDriveId</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the destination drive ID.</p>
+              <p><strong>Note:&nbsp;</strong>The drive ID can be found by using the&nbsp;<strong>listStorageProviders&nbsp;</strong>method.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>destPath</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the path of the destination directory.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>overwrite</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates if destination file must be overwritten, if it already exists.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true</strong>: Overwrite existing copy.</li>
+                <li><strong>false</strong>: Do not overwrite exisitng copy.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>subscribe</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Subscribe to get notified on the progress of the copy operation.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Subscribed for notifications</li>
+                <li><strong>false&nbsp;</strong>- Not subscribed</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+              <ul>
+                <li><strong>true:</strong>&nbsp;Indicates that the operation was successful.</li>
+                <li><strong>false:</strong>&nbsp;Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>Indicates the error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;See the&nbsp;<strong>API&nbsp;Error Codes Reference</strong>&nbsp;section&nbsp;for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Subscription Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>progress</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>Indicates the progress of the copy operation in percentage.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.storageaccess/device/copy &#39;{<br />
+        &nbsp; &nbsp;&quot;srcStorageType&quot;:&quot;cloud&quot;,<br />
+        &nbsp; &nbsp;&quot;srcDriveId&quot;:&quot;ojydIxW8yBZUV8J3NiyNBvJn&quot;,<br />
+        &nbsp; &nbsp;&quot;destStorageType&quot;:&quot;cloud&quot;,<br />
+        &nbsp; &nbsp;&quot;destDriveId&quot;:&quot;ojydIxW8yBZUV8J4NiyNBvJn&quot;,<br />
+        &nbsp; &nbsp;&quot;srcPath&quot;:&quot;/SAF/SAF_DEMO/test1.PNG&quot;,<br />
+        &nbsp; &nbsp;&quot;destPath&quot;:&quot;/SAF&quot;<br />
+        }&#39;
+      </p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+    <div class="code-bg-grey">
+      <p>#&nbsp;luna-send -n 1 -f luna://com.webos.service.storageaccess/device/copy &#39;{<br />
+        &nbsp; &quot;srcStorageType&quot;: &quot;internal&quot;,<br />
+        &nbsp; &quot;srcDriveId&quot;: &quot;INTERNAL_STORAGE&quot;,<br />
+        &nbsp; &quot;destStorageType&quot;: &quot;internal&quot;,<br />
+        &nbsp; &quot;destDriveId&quot;: &quot;INTERNAL_STORAGE&quot;,<br />
+        &nbsp; &quot;srcPath&quot;: &quot;/home/guest0/source/srcfile.txt&quot;,<br />
+        &nbsp; &quot;destPath&quot;: &quot;/home/guest0/dest&quot;,<br />
+        &nbsp; &quot;overwrite&quot;: true,<br />
+        &nbsp; &quot;subscribe&quot;: true<br />
+        }&#39;
+      </p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+        }
+      </p>
+      <p>Subscription Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp; &nbsp; &quot;progress&quot;: 10<br />
+        }<br />
+        {<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp; &nbsp; &quot;progress&quot;: 40<br />
+        }<br />
+        {<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp; &nbsp; &quot;progress&quot;: 70<br />
+        }<br />
+        {<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp; &nbsp; &quot;progress&quot;: 100<br />
+        }
+      </p>
+    </div>
+  </div>
+</div>
+<h3>device/eject</h3>
+<div>
+  <h4>Description</h4>
+  <p>Ejects the storage device. In case of &quot;cloud&quot; storage type, it acts as a logout operation.</p>
+  <p><strong>Note:</strong> This operation is not applicable for &quot;internal&quot; storage type.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>storageType</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the storage provider.&nbsp;</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>cloud</strong></li>
+              <li><strong>usb</strong></li>
+              <li><strong>internal</strong></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>driveId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the drive ID.</p>
+            <p><strong>Note:&nbsp;</strong>The drive ID can be found by using the&nbsp;<strong>listStorageProviders&nbsp;</strong>method.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <ul>
+              <li><strong>true:</strong>&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false:</strong>&nbsp;Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the&nbsp;<strong>API&nbsp;Error Codes Reference</strong>&nbsp;section&nbsp;for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>#luna-send -n 1 -f luna://com.webos.service.storageaccess/device/eject &#39;{<br />
+      &nbsp; &nbsp;&quot;storageType&quot;:&quot;usb&quot;,<br />
+      &nbsp; &nbsp;&quot;driveId&quot;:&quot;4C531001600127113005-A7BE-1862&quot;<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>device/getProperties</h3>
+<div>
+  <h4>Description</h4>
+  <p>Gets properties of the given storage provider or the specified&nbsp;file or directory.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>storageType</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the storage provider.&nbsp;</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>cloud</strong></li>
+              <li><strong>usb</strong></li>
+              <li><strong>internal</strong></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>driveId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the drive ID.</p>
+            <p><strong>Note:&nbsp;</strong>The drive ID can be found by using the&nbsp;<strong>listStorageProviders&nbsp;</strong>method.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>path</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the path of the file or directory.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <ul>
+              <li><strong>true:</strong>&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false:</strong>&nbsp;Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>storageType</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the type of storage provider.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>writable</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>True if the device is writable.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>deletable</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>True if the device is deletable.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>totalSpace</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Total storage space</p>
+          </td>
+        </tr>
+        <tr>
+          <td>freeSpace</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Available free space</p>
+          </td>
+        </tr>
+        <tr>
+          <td>attributes</td>
+          <td>Optional</td>
+          <td>Object array</td>
+          <td>
+            <p>Array of key value pair.</p>
+            <p>Example: {&quot;noatime&quot;: true}</p>
+            <p><strong>Note:</strong>&nbsp;These is just an example format. It may vary depending on the file system.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>extAttributes</td>
+          <td>Optional</td>
+          <td>Object array</td>
+          <td>
+            <p>Array of key value pair.</p>
+            <p>Example: {&quot;user.comment&quot;: &quot;saf comment&quot;}</p>
+            <p><strong>Note:</strong>&nbsp;These is just an example format. It may vary depending on the file system.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Indicates the error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the&nbsp;<strong>API&nbsp;Error Codes Reference</strong>&nbsp;section&nbsp;for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -i -f luna://com.webos.service.storageaccess/device/getProperties &#39;{<br />
+      &nbsp; &nbsp;&quot;storageType&quot;:&quot;cloud&quot;,<br />
+      &nbsp; &nbsp;&quot;driveId&quot;:&quot;_4Z7KLy4uyH47NwJTB5FtIoT&quot;<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &nbsp;&quot;returnValue&quot;: true,<br />
+      &nbsp;&nbsp; &nbsp;&quot;deletable&quot;: false,<br />
+      &nbsp;&nbsp; &nbsp;&quot;writable&quot;: true,<br />
+      &nbsp;&nbsp; &nbsp;&quot;storageType&quot;: &quot;cloud&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&quot;totalSpace&quot;: 548145,<br />
+      &nbsp;&nbsp; &nbsp;&quot;freeSpace&quot;: 548145<br />
+      }
+    </p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -i -f luna://com.webos.service.storageaccess/device/getProperties &#39;{<br />
+      &nbsp; &nbsp;&quot;storageType&quot;:&quot;internal&quot;,<br />
+      &nbsp; &nbsp;&quot;driveId&quot;: &quot;INTERNAL_STORAGE&quot;,<br />
+      &nbsp; &nbsp;&quot;path&quot;:&quot;/tmp/internal/f1.txt&quot;<br />
+      }&#39;
+    </p>
+    <p>Response :</p>
+    <p>{<br />
+      &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &quot;attributes&quot;: [<br />
+      &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &quot;LastModTimeStamp&quot;: &quot;Fri Jan 23 23:34:02 -150875\n&quot;<br />
+      &nbsp; &nbsp; }<br />
+      &nbsp; ],<br />
+      &nbsp; &quot;deletable&quot;: false,<br />
+      &nbsp; &quot;writable&quot;: true,<br />
+      &nbsp; &quot;storageType&quot;: &quot;internal&quot;<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>device/handleExtraCommand</h3>
+<div>
+  <h4>Description</h4>
+  <p>Handles addtional operation related to various providers.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>storageType</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the source storage provider.&nbsp;</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>cloud</strong></li>
+              <li><strong>usb</strong></li>
+              <li><strong>internal</strong></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>driveId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the drive ID.</p>
+            <p><strong>Note:&nbsp;</strong>The drive ID can be found by using the&nbsp;<strong>listStorageProviders&nbsp;</strong>method.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>operation</td>
+          <td>Required</td>
+          <td>Object: <a href="#operation"> operation</a></td>
+          <td>
+            <p>Object consisting of type and payload.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <ul>
+              <li><strong>true:</strong>&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false:</strong>&nbsp;Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>responsePayload</td>
+          <td>Optional</td>
+          <td>Object: <a href="#operation"> operation</a></td>
+          <td>
+            <p>Response from the storage provider.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Indicates the error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the&nbsp;<strong>API&nbsp;Error Codes Reference</strong>&nbsp;section&nbsp;for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.storageaccess/device/handleExtraCommand&nbsp;&#39;{<br />
+      &nbsp; &nbsp;&quot;storageType&quot;:&quot;cloud&quot;,<br />
+      &nbsp; &nbsp;&quot;operation&quot;:{<br />
+      &nbsp; &nbsp; &nbsp; &quot;type&quot;:&quot;login&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;payload&quot;:{<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;clientId&quot;:&quot;22054195876-t6mo0ruhd0gb.apps.googleusercontent.com&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;clientSecret&quot;:&quot;3OVs_ttW39gu&quot;<br />
+      &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp;}<br />
+      }&#39;
+    </p>
+    <p>Response:&nbsp;</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp; &nbsp;&quot;responsePayload&quot;:[<br />
+      &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;payload&quot;:{<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;response&quot;:&quot;https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive&amp;redirect_uri=urn%3Aietfoauth%3A2.0%3Aoob&amp;response_type=code&amp;client_id=22054195876-t6mo0riocigrbs5d0gb.apps.googleusercontent.com&amp;access_type=offline&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;},<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;type&quot;:&quot;login&quot;<br />
+      &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp;]<br />
+      }
+    </p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.storageaccess/device/handleExtraCommand&nbsp;&#39;{<br />
+      &nbsp; &nbsp;&quot;storageType&quot;:&quot;cloud&quot;,<br />
+      &nbsp; &nbsp;&quot;driveId&quot;:&quot;3OVs_ttW39gu&quot;,<br />
+      &nbsp; &nbsp;&quot;operation&quot;:{<br />
+      &nbsp; &nbsp; &nbsp; &quot;type&quot;:&quot;authenticate&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;payload&quot;:{<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;secretToken&quot;:&quot;4/1AY0e-gmLYrDMo0affZ8&quot;<br />
+      &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp;}<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp; &nbsp;&quot;responsePayload&quot;:[<br />
+      &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;payload&quot;:{<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;response&quot;:&quot;1//0GmLTBDAi-abOi8amRQxLanOIj1Uwn_A3tsY&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;},<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;type&quot;:&quot;authenticate&quot;<br />
+      &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp;]<br />
+      }
+    </p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -i -f luna://com.webos.service.storageaccess/device/handleExtraCommand &#39;{<br />
+      &nbsp; &nbsp;&quot;storageType&quot;:&quot;CLOUD&quot;,<br />
+      &nbsp; &nbsp;&quot;operation&quot;:{<br />
+      &nbsp; &nbsp; &nbsp; &quot;type&quot;:&quot;token&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;payload&quot;:{<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;clientId&quot;:&quot;22054195876-t6mo0ruhd0gb.apps.googleusercontent.com&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;clientSecret&quot;:&quot;3OVs_ttW39gu&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;refreshToken&quot;:&quot;1//0GmLTBDAi-abOi8amRQxLanOIj1Uwn_A3tsY&quot;<br />
+      &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp;}<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>device/list</h3>
+<div>
+  <h4>Description</h4>
+  <p>Lists contents of the specified directory.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>storageType</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the source storage provider.&nbsp;</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>cloud</strong></li>
+              <li><strong>usb</strong></li>
+              <li><strong>internal</strong></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>driveId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the drive ID.</p>
+            <p><strong>Note:&nbsp;</strong>The drive ID can be found by using the&nbsp;<strong>listStorageProviders&nbsp;</strong>method.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>path</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the path of the directory.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>offset</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Indicates the index/offset from where to list the files or directories.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>limit</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Indicates the count of entries to be listed (1 - 100).</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <ul>
+              <li><strong>true:</strong>&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false:</strong>&nbsp;Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>files</td>
+          <td>Optional</td>
+          <td>Object array: <a href="#files"> files</a></td>
+          <td>
+            <p>Provides information of the files or directories.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>totalCount</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Total number of files or directories in the given path.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>fullPath</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Full path of this file or directory.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Indicates the error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the&nbsp;<strong>API&nbsp;Error Codes Reference</strong>&nbsp;section&nbsp;for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.storageaccess/device/list &#39;{<br />
+      &nbsp; &nbsp;&quot;storageType&quot;:&quot;cloud&quot;,<br />
+      &nbsp; &nbsp;&quot;driveId&quot;:&quot;ojydIxW8yBZUV8J3NiyNBvJn&quot;,<br />
+      &nbsp; &nbsp;&quot;path&quot;:&quot;/saf_demo_folder&quot;,<br />
+      &nbsp; &nbsp;&quot;limit&quot;:10,<br />
+      &nbsp; &nbsp;&quot;offset&quot;:1<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;totalCount&quot;: 2,<br />
+      &nbsp; &nbsp; &quot;fullPath&quot;: &quot;/saf_demo_folder&quot;,<br />
+      &nbsp; &nbsp; &quot;file&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;size&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;type&quot;: &quot;directory&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;mimeType&quot;: &quot;application/vnd.google-apps.folder&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;path&quot;: &quot;/saf_demo_folder/SAF&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;SAF&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;size&quot;: 548146,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;type&quot;: &quot;regular&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;mimeType&quot;: &quot;application/pdf&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;path&quot;: &quot;/saf_demo_folder/invoice.pdf&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;invoice.pdf&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; ]<br />
+      &nbsp;&nbsp; &nbsp;<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>device/move</h3>
+<div>
+  <h4>Description</h4>
+  <p>Moves a file or directory from the source location to the destination.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>srcStorageType</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the source storage provider.&nbsp;</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>cloud</strong></li>
+              <li><strong>usb</strong></li>
+              <li><strong>internal</strong></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>srcDriveId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the source drive ID.</p>
+            <p><strong>Note:&nbsp;</strong>The drive ID can be found by using the&nbsp;<strong>listStorageProviders&nbsp;</strong>method.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>destStorageType</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the destination storage provider.&nbsp;</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>cloud</strong></li>
+              <li><strong>usb</strong></li>
+              <li><strong>internal</strong></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>destDriveId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the destination drive ID.</p>
+            <p><strong>Note:&nbsp;</strong>The drive ID can be found by using the&nbsp;<strong>listStorageProviders&nbsp;</strong>method.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>srcPath</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the path of the source file or directory.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>destPath</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the path of the destination directory.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>overwrite</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if destination file must be overwritten, if it already exists.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Overwrite existing copy.</li>
+              <li><strong>false</strong>: Do not overwrite exisitng copy.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Subscribe to get notified on the progress of the copy operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Subscribed for notifications</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <ul>
+              <li><strong>true:</strong>&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false:</strong>&nbsp;Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Indicates the error code for the failed operation</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the&nbsp;<strong>API&nbsp;Error Codes Reference</strong>&nbsp;section&nbsp;for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Subscription Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <ul></ul>
+          </td>
+        </tr>
+        <tr>
+          <td>progress</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Indicates the progress of the copy operation in percentage.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.storageaccess/device/move &#39;{<br />
+      &nbsp; &nbsp;&quot;srcStorageType&quot;:&quot;cloud&quot;,<br />
+      &nbsp; &nbsp;&quot;srcDriveId&quot;:&quot;ojydIxW8yBZUV8J3NiyNBvJn&quot;,<br />
+      &nbsp; &nbsp;&quot;destStorageType&quot;:&quot;cloud&quot;,<br />
+      &nbsp; &nbsp;&quot;destDriveId&quot;:&quot;ojydIxW8yBZUV8J3NiyNBvJn&quot;,<br />
+      &nbsp; &nbsp;&quot;srcPath&quot;:&quot;/SAF/SAF_DEMO/test1.PNG&quot;,<br />
+      &nbsp; &nbsp;&quot;destPath&quot;:&quot;/SAF&quot;<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.storageaccess/device/move &#39;{<br />
+      &nbsp; &quot;srcStorageType&quot;: &quot;internal&quot;,<br />
+      &nbsp; &quot;srcDriveId&quot;: &quot;INTERNAL_STORAGE&quot;,<br />
+      &nbsp; &quot;destStorageType&quot;: &quot;internal&quot;,<br />
+      &nbsp; &quot;destDriveId&quot;: &quot;INTERNAL_STORAGE&quot;,<br />
+      &nbsp; &quot;srcPath&quot;: &quot;/home/guest0/source/srcfile.txt&quot;,<br />
+      &nbsp; &quot;destPath&quot;: &quot;/home/guest0/dest&quot;,<br />
+      &nbsp; &quot;overwrite&quot;: true,<br />
+      &nbsp; &quot;subscribe&quot;: true<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>Subscription Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;progress&quot;: 10<br />
+      }<br />
+      {<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;progress&quot;: 40<br />
+      }<br />
+      {<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;progress&quot;: 70<br />
+      }<br />
+      {<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;progress&quot;: 100<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>device/remove</h3>
+<div>
+  <h4>Description</h4>
+  <p>Deletes the specified file or directory.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>storageType</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the storage provider.&nbsp;</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>cloud</strong></li>
+              <li><strong>usb</strong></li>
+              <li><strong>internal</strong></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>driveId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the drive ID.</p>
+            <p><strong>Note:&nbsp;</strong>The drive ID can be found by using the&nbsp;<strong>listStorageProviders&nbsp;</strong>method.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>path</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Inddicates the path of the file or directory.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <ul>
+              <li><strong>true:</strong>&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false:</strong>&nbsp;Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the&nbsp;<strong>API&nbsp;Error Codes Reference</strong>&nbsp;section&nbsp;for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.storageaccess/device/remove &#39;{<br />
+      &nbsp; &quot;storageType&quot;: &quot;cloud&quot;,<br />
+      &nbsp; &quot;driveId&quot;: &quot;ojydIxW8yBZUV8J3NiyNBvJn&quot;,<br />
+      &nbsp; &quot;path&quot;: &quot;/SAF/test1.PNG&quot;<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>device/rename</h3>
+<div>
+  <h4>Description</h4>
+  <p>Renames the specified file or directory.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>storageType</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the storage provider.&nbsp;</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>cloud</strong></li>
+              <li><strong>usb</strong></li>
+              <li><strong>internal</strong></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>driveId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the drive ID.</p>
+            <p><strong>Note:&nbsp;</strong>The drive ID can be found by using the&nbsp;<strong>listStorageProviders&nbsp;</strong>method.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>path</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the path of the file or directory.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>newName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the new name.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <ul>
+              <li><strong>true:</strong>&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false:</strong>&nbsp;Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Indicates the error code for the failed operation</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the&nbsp;<strong>API&nbsp;Error Codes Reference</strong>&nbsp;section&nbsp;for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.storageaccess/device/rename &#39;{<br />
+      &nbsp; &nbsp;&quot;storageType&quot;:&quot;cloud&quot;,<br />
+      &nbsp; &nbsp;&quot;driveId&quot;:&quot;ojydIxW8yBZUV8J3NiyNBvJn&quot;,<br />
+      &nbsp; &nbsp;&quot;path&quot;:&quot;/SAF/test1.PNG&quot;,<br />
+      &nbsp; &nbsp;&quot;newName&quot;:&quot;17.PNG&quot;<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>listStorageProviders</h3>
+<div>
+  <h4>Description</h4>
+  <p>Provides a list of storages providers and the corresponding drive information.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Subscribe to get notifications.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Subscribed for notifications</li>
+              <li><strong>false&nbsp;</strong>- Not subscribed</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <ul>
+              <li><strong>true:</strong>&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false:</strong>&nbsp;Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if subscribed to get notifications.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>storageProviders</td>
+          <td>Optional</td>
+          <td>Object array: <a href="#storageproviders"> storageProviders</a></td>
+          <td>
+            <p>Provides information of the storage providers.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Indicates the error code for the failed operation</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the&nbsp;<strong>API&nbsp;Error Codes Reference</strong>&nbsp;section&nbsp;for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.storageaccess/listStorageProviders &#39;{&quot;subscribe&quot;: true}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp; &nbsp;&quot;storageProviders&quot;:[<br />
+      &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;usb&quot;:[<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;driveName&quot;:&quot;sdg2&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;driveId&quot;:&quot;4C531001600127113005-A7BE-1862&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;path&quot;:&quot;/tmp/usb_rse_right/sdg2&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;fileSystem&quot;:&quot;vfat&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;driveName&quot;:&quot;sdg1&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;driveId&quot;:&quot;4C531001600127113005-A6B3-2892&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;path&quot;:&quot;/tmp/usb_rse_right/sdg1&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;fileSystem&quot;:&quot;vfat&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;]<br />
+      &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;internal&quot;:[<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;driveName&quot;:&quot;INTERNAL&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;driveId&quot;:&quot;INTERNAL_STORAGE&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;path&quot;:&quot;/tmp/internal&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;]<br />
+      &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;cloud&quot;:[<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;driveName&quot;:&quot;GDRIVE&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;driveId&quot;:&quot;ojydIxW8yBZUV8J3NiyNBvJn&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;path&quot;:&quot;/&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;]<br />
+      &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp;]<br />
+      }
+    </p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -i -f luna://com.webos.service.storageaccess/listStorageProviders &#39;{&quot;subscribe&quot;: true}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &quot;storageProviders&quot;: [<br />
+      &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &quot;usb&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;path&quot;: &quot;/tmp/usb_guest0/sdg1&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;driveName&quot;: &quot;sdg1&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;driveId&quot;: &quot;4C531001460127113020-B23A-EBFD&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;fileSystem&quot;: &quot;vfat&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; &nbsp; ]<br />
+      &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &quot;internal&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;path&quot;: &quot;/tmp/internal&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;driveName&quot;: &quot;INTERNAL&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;driveId&quot;: &quot;INTERNAL_STORAGE&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; &nbsp; ]<br />
+      &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &quot;cloud&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;path&quot;: &quot;/&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;driveName&quot;: &quot;GDRIVE&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;driveId&quot;: &quot;ojydIxW8yBZUV8J4NiyNBvJn&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; &nbsp; ]<br />
+      &nbsp; &nbsp; }<br />
+      &nbsp; ]<br />
+      }
+    </p>
+    <p>Subscription Response:</p>
+    <p>{<br />
+      &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &quot;storageProviders&quot;: [<br />
+      &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &quot;usb&quot;: []<br />
+      &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &quot;internal&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;path&quot;: &quot;/tmp/internal&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;driveName&quot;: &quot;INTERNAL&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;driveId&quot;: &quot;INTERNAL_STORAGE&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; &nbsp; ]<br />
+      &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &quot;cloud&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;path&quot;: &quot;/&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;driveName&quot;: &quot;GDRIVE&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;driveId&quot;: &quot;ojydIxW8yBZUV8J4NiyNBvJn&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; &nbsp; ]<br />
+      &nbsp; &nbsp; }<br />
+      &nbsp; ]<br />
+      }
+    </p>
+  </div>
+</div>
+<h2>Objects</h2>
+<div>
+  <h3>storageProviders</h3>
+  <p>Provides information about the storage provider.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>driveId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the drive ID.</p>
+            <p><strong>Note: </strong>For internal storage the ID is&nbsp;INTERNAL_STORAGE.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>driveName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the drive&nbsp;name.</p>
+            <p><strong>Note:&nbsp;</strong>For internal storage the name is&nbsp;INTERNAL and for cloud currently only GDRIVE (Google Drive) is supported.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>path</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the path of the drive.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>fileSystem</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the&nbsp;file system type (only in case of USB).</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>files</h3>
+  <p>Provides information of the file or directory.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>name</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the file name.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>type</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates&nbsp;the type of file.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>directory</li>
+              <li>regular</li>
+              <li>linkfile</li>
+              <li>unknown</li>
+              <li>and so on</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>path</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Inidcates the path of the file or directory.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>size</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the size in bytes.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>mimeType</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the mime type of the file.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>operation</h3>
+  <p>Provides details of the operation.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>type</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the type of operation. For example, login,&nbsp;authenticate,&nbsp;token, adn so on.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>payload</td>
+          <td>Required</td>
+          <td>Object</td>
+          <td>
+            <p>Details of the operation.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<h2>API Error Codes Reference</h2>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <tbody>
+      <tr>
+        <th width="15%">
+          <p>Error Code</p>
+        </th>
+        <th width="30%">
+          <p>Error Text</p>
+        </th>
+        <th width="55%">
+          <p>Error Description</p>
+        </th>
+      </tr>
+      <tr>
+        <td>8013</td>
+        <td>Operation not permitted</td>
+        <td>
+          <p>Operation not permitted.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>6008</td>
+        <td>Already Authenticated</td>
+        <td>
+          <p>Already Authenticated</p>
+        </td>
+      </tr>
+      <tr>
+        <td>6006</td>
+        <td>Cloud Not Attached</td>
+        <td>
+          <p>Cloud Not Attached</p>
+        </td>
+      </tr>
+      <tr>
+        <td>8017</td>
+        <td>File exists</td>
+        <td>
+          <p>File exists</p>
+        </td>
+      </tr>
+      <tr>
+        <td>6010</td>
+        <td>File Not Supported</td>
+        <td>
+          <p>File Not Supported</p>
+        </td>
+      </tr>
+      <tr>
+        <td>8003</td>
+        <td>Invalid parameter</td>
+        <td>
+          <p>Invalid parameter</p>
+        </td>
+      </tr>
+      <tr>
+        <td>6009</td>
+        <td>Invalid URL</td>
+        <td>
+          <p>Invalid URL</p>
+        </td>
+      </tr>
+      <tr>
+        <td>8016</td>
+        <td>No such file or directory at Destination</td>
+        <td>
+          <p>No such file or directory at Destination</p>
+        </td>
+      </tr>
+      <tr>
+        <td>8015</td>
+        <td>No such file or directory at Source</td>
+        <td>
+          <p>No such file or directory at Source</p>
+        </td>
+      </tr>
+      <tr>
+        <td>8014</td>
+        <td>No such file or directory</td>
+        <td>
+          <p>No such file or directory</p>
+        </td>
+      </tr>
+      <tr>
+        <td>9004</td>
+        <td>No USB drive found</td>
+        <td>
+          <p>No USB drive found</p>
+        </td>
+      </tr>
+      <tr>
+        <td>9003</td>
+        <td>No USB Storage Exists with ID given</td>
+        <td>
+          <p>No USB Storage Exists with ID given</p>
+        </td>
+      </tr>
+      <tr>
+        <td>6007</td>
+        <td>Permission denied</td>
+        <td>
+          <p>Permission denied</p>
+        </td>
+      </tr>
+      <tr>
+        <td>8000</td>
+        <td>Unknown error</td>
+        <td>
+          <p>Unknown error</p>
+        </td>
+      </tr>
+      <tr>
+        <td>9002</td>
+        <td>USB Storage has more partition</td>
+        <td>
+          <p>USB Storage has more partition</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

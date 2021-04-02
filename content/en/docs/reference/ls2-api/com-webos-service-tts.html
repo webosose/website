@@ -1,9 +1,10 @@
 ---
 title: com.webos.service.tts
-date: 2020-11-09
+date: 2021-03-29
 weight: 330
 toc: true
 ---
+
 <div>
   <h2>API Summary</h2>
   <p>Converts the plain language text into speech output.&nbsp;The synthesized speech can be used by applications such as voice assistants.</p>
@@ -13,12 +14,15 @@ toc: true
   <p>Before using the service, you need to enable Google Cloud Text-to-speech API on the device.&nbsp;</p>
   <ol>
     <li>Log in to the <a href="https://accounts.google.com">Google Cloud Account</a>.&nbsp;</li>
-    <li>Go to the <a href="https://console.cloud.google.com">Google Cloud Console</a>&nbsp;and perform the following steps:
+    <li>
+      Go to the <a href="https://console.cloud.google.com">Google Cloud Console</a>&nbsp;and perform the following steps:
       <ol start="1" style="list-style-type:lower-alpha">
         <li>Create a new project.<br />
-          <strong>Note:</strong>&nbsp;You can also use an existing project&nbsp;to configure the API.&nbsp;</li>
+          <strong>Note:</strong>&nbsp;You can also use an existing project&nbsp;to configure the API.&nbsp;
+        </li>
         <li>Enable <strong>Cloud Text-to-Speech API</strong>. (<a href="https://cloud.google.com/apis/docs/enable-disable-apis">See instructions</a>.)</li>
-        <li>Create the credentials file.
+        <li>
+          Create the credentials file.
           <ol start="1" style="list-style-type:lower-roman">
             <li>From the APIs and Services page, click <strong>Credentials</strong>.&nbsp;</li>
             <li>Click <strong>Create Credentials</strong>, and select <strong>Service account key</strong>.&nbsp;</li>
@@ -29,9 +33,11 @@ toc: true
         </li>
       </ol>
     </li>
-    <li>Copy the credentials.json file to the target device.
+    <li>
+      Copy the credentials.json file to the target device.
       <ol start="1" style="list-style-type:lower-alpha">
-        <li>From the device terminal, run the following command:
+        <li>
+          From the device terminal, run the following command:
           <ul>
             <li><strong>mkdir&nbsp;/etc/google</strong></li>
           </ul>
@@ -100,7 +106,7 @@ toc: true
                 <li><strong>true: </strong>Subscribe for notifications</li>
                 <li><strong>false: </strong>Not subscribed</li>
               </ul>
-              <p>​Default:&nbsp;<strong>false</strong></p>
+              <p>Default:&nbsp;<strong>false</strong></p>
             </td>
           </tr>
           <tr>
@@ -302,47 +308,55 @@ toc: true
       <p># luna-send -n 1 -f luna://com.webos.service.tts/speak &#39;{<br />
         &nbsp;&nbsp; &quot;text&quot;:&quot;text to speech test&quot;,<br />
         &nbsp;&nbsp; &quot;clear&quot;:true<br />
-        }&#39;</p>
+        }&#39;
+      </p>
       <p>Response:</p>
       <p>{&nbsp;&nbsp;<br />
         &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-        }</p>
+        }
+      </p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -n 1 -f luna://com.webos.service.tts/speak &#39;{<br />
         &nbsp;&nbsp; &quot;text&quot;:&quot;English. TTS API test.&quot;,<br />
         &nbsp;&nbsp; &quot;language&quot;:&quot;en-US&quot;<br />
-        }&#39;</p>
+        }&#39;
+      </p>
       <p>Response:</p>
       <p>{&nbsp;&nbsp;<br />
         &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-        }</p>
+        }
+      </p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -n 1 -f luna://com.webos.service.tts/speak &#39;{<br />
         &nbsp;&nbsp; &quot;text&quot;:&quot;English. TTS API test.&quot;,<br />
         &nbsp;&nbsp; &quot;clear&quot;:true,<br />
         &nbsp;&nbsp; &quot;feedback&quot;:true<br />
-        }&#39;</p>
+        }&#39;
+      </p>
       <p>Response:</p>
       <p>{&nbsp;&nbsp;<br />
         &nbsp;&nbsp;&nbsp;&quot;msgID&quot;:&quot;47709fc00000&quot;,<br />
         &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-        }</p>
+        }
+      </p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -n 1 -f luna://com.webos.service.tts/speak &#39;{<br />
         &nbsp;&nbsp; &quot;text&quot;:&quot;English. TTS API test.&quot;,<br />
         &nbsp;&nbsp; &quot;feedback&quot;:true,<br />
         &nbsp;&nbsp; &quot;displayId&quot;:1<br />
-        }&#39;</p>
+        }&#39;
+      </p>
       <p>Response:</p>
       <p>{<br />
         &nbsp; &nbsp; &quot;subscribed&quot;: false,<br />
         &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
         &nbsp; &nbsp; &quot;msgID&quot;: &quot;qMihfwEXu6Az&quot;,<br />
         &nbsp; &nbsp; &quot;language&quot;: &quot;en-US&quot;<br />
-        }</p>
+        }
+      </p>
     </div>
   </div>
 </div>
@@ -476,116 +490,144 @@ toc: true
     <p>Response:</p>
     <p>{&nbsp;&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
   </div>
   <div class="code-bg-grey">
+    <p>Using appID</p>
     <p># luna-send -n 1 -f luna://com.webos.service.tts/stop &#39;{<br />
       &nbsp;&nbsp; &quot;appID&quot;:&quot;com.webos.app.tts&quot;,<br />
       &nbsp;&nbsp; &quot;fadeOut&quot;:true<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{&nbsp;&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
   </div>
   <div class="code-bg-grey">
+    <p>Using msgID</p>
     <p># luna-send -n 1 -f luna://com.webos.service.tts/stop &#39;{<br />
       &nbsp;&nbsp; &quot;msgID&quot;:&quot;2a487d800032&quot;,<br />
       &nbsp;&nbsp; &quot;fadeOut&quot;:true<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{&nbsp;&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
   </div>
   <div class="code-bg-grey">
+    <p>To stop messages from a particular app, when multiple appIDs are passed</p>
     <p>Consider that the following commands were entered previously:</p>
     <p># luna-send -n 1 -f luna://com.webos.service.tts/speak &#39;{<br />
       &nbsp;&nbsp; &quot;text&quot;:&quot;First test message.&quot;,<br />
       &nbsp;&nbsp; &quot;clear&quot;:false,<br />
       &nbsp;&nbsp; &quot;appID&quot;:&quot;TestEven&quot;<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p># luna-send -n 1 -f luna://com.webos.service.tts/speak &#39;{<br />
       &nbsp;&nbsp; &quot;text&quot;:&quot;Second test message.&quot;,<br />
       &nbsp;&nbsp; &quot;clear&quot;:false,<br />
       &nbsp;&nbsp; &quot;appID&quot;:&quot;TestOdd&quot;<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p># luna-send -n 1 -f luna://com.webos.service.tts/speak &#39;{<br />
       &nbsp;&nbsp; &quot;text&quot;:&quot;Third test message.&quot;,<br />
       &nbsp;&nbsp; &quot;clear&quot;:false,<br />
       &nbsp;&nbsp; &quot;appID&quot;:&quot;TestEven&quot;<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p># luna-send -n 1 -f luna://com.webos.service.tts/speak &#39;{<br />
       &nbsp;&nbsp; &quot;text&quot;:&quot;Fourth test message.&quot;,<br />
       &nbsp;&nbsp; &quot;clear&quot;:false,<br />
       &nbsp;&nbsp; &quot;appID&quot;:&quot;TestOdd&quot;<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p># luna-send -n 1 -f luna://com.webos.service.tts/speak &#39;{<br />
       &nbsp;&nbsp; &quot;text&quot;:&quot;Fifth test message&quot;,<br />
       &nbsp;&nbsp; &quot;clear&quot;:false,<br />
       &nbsp;&nbsp; &quot;appID&quot;:&quot;TestEven&quot;<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p># luna-send -n 1 -f luna://com.webos.service.tts/speak &#39;{<br />
       &nbsp;&nbsp; &quot;text&quot;:&quot;Sixth test message.&quot;,<br />
       &nbsp;&nbsp; &quot;clear&quot;:false,<br />
       &nbsp;&nbsp; &quot;appID&quot;:&quot;TestOdd&quot;<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p># luna-send -n 1 -f luna://com.webos.service.tts/speak &#39;{<br />
       &nbsp;&nbsp; &quot;text&quot;:&quot;Seventh test message.&quot;,<br />
       &nbsp;&nbsp; &quot;clear&quot;:false,<br />
       &nbsp;&nbsp; &quot;appID&quot;:&quot;TestEven&quot;<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Now, to stop messages from appID, &quot;TestOdd&quot;, use the command:</p>
     <p># luna-send -n 1 -f luna://com.webos.service.tts/stop &#39;{<br />
       &nbsp;&nbsp; &quot;appID&quot;:&quot;TestOdd&quot;,<br />
       &nbsp;&nbsp; &quot;fadeOut&quot;:true<br />
-      }&#39;&nbsp;</p>
+      }&#39;&nbsp;
+    </p>
     <p>Response:</p>
     <p>{&nbsp;&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
   </div>
   <div class="code-bg-grey">
+    <p>To stop a particular message, when multiple msgIDs are passed</p>
     <p>Consider that the following commands were entered previously and that they returned msgIDs for each command:</p>
     <p># luna-send -n 2 -f luna://com.webos.service.tts/speak &#39;{<br />
       &nbsp;&nbsp; &quot;text&quot;:&quot;It&#39;s the twelve test message.&quot;,<br />
       &nbsp;&nbsp; &quot;clear&quot;:false,<br />
       &nbsp;&nbsp; &quot;appID&quot;:&quot;TestOdd&quot;,<br />
       &nbsp;&nbsp; &quot;subscribe&quot;:true<br />
-      }&#39;&nbsp;</p>
+      }&#39;&nbsp;
+    </p>
     <p># luna-send -n 1 -f luna://com.webos.service.tts/speak &#39;{<br />
       &nbsp;&nbsp; &quot;text&quot;:&quot;It&#39;s the thirteenth test message.&quot;,<br />
       &nbsp;&nbsp; &quot;clear&quot;:false,<br />
       &nbsp;&nbsp; &quot;appID&quot;:&quot;TestEven&quot;<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Now, to stop the service&nbsp;using the returned msgID, use the command:</p>
     <p># luna-send -n 1 -f luna://com.webos.service.tts/stop &#39;{<br />
       &nbsp;&nbsp; &quot;msgID&quot;:&quot;2a487d800032&quot;,<br />
       &nbsp;&nbsp; &quot;fadeOut&quot;:true<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{&nbsp;&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
   </div>
   <div class="code-bg-grey">
+    <p>With displayId</p>
     <p># luna-send -n 1 -f luna://com.webos.service.tts/stop &#39;{<br />
       &nbsp;&nbsp; &quot;displayId&quot;:1<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{&nbsp;&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
   </div>
   <div class="code-bg-grey">
+    <p>To stop particular msgId from a display</p>
     <p># luna-send -n 1 -f luna://com.webos.service.tts/stop &#39;{<br />
       &nbsp;&nbsp; &quot;msgID&quot;:&quot;vSU2XwvwDODF&quot;,<br />
       &nbsp;&nbsp; &quot;displayId&quot;:1<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{&nbsp;&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>getAvailableLanguages</h3>
@@ -695,12 +737,15 @@ toc: true
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;en-US&quot;<br />
       &nbsp;&nbsp;&nbsp;],<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
   </div>
   <div class="code-bg-grey">
+    <p>With displayId</p>
     <p># luna-send -n 1 -f luna://com.webos.service.tts/getAvailableLanguages &#39;{<br />
       &nbsp;&nbsp; &quot;displayId&quot;:1<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
@@ -747,7 +792,8 @@ toc: true
       &nbsp; &nbsp; &nbsp; &nbsp; &quot;ta-IN&quot;,<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &quot;te-IN&quot;<br />
       &nbsp; &nbsp; ]<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>getStatus</h3>
@@ -861,12 +907,14 @@ toc: true
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;volume&quot;:75<br />
       &nbsp;&nbsp;&nbsp;},<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
   </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.tts/getStatus &#39;{<br />
       &nbsp;&nbsp; &quot;displayId&quot;:1<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;status&quot;: {<br />
@@ -878,7 +926,8 @@ toc: true
       &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 100<br />
       &nbsp; &nbsp; },<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h2>Objects</h2>

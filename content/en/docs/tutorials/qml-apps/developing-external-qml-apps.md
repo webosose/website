@@ -1,6 +1,6 @@
 ---
 title: Developing External QML Apps
-date: 2020-06-24
+date: 2021-03-25
 weight: 10
 toc: true
 ---
@@ -103,10 +103,7 @@ CLI provides the `appinfo.json` file template as below.
     "main": "main.qml",
     "title": "new app",
     "icon": "icon.png",
-    "requiredPermissions" : [
-        "time",
-        "applications"
-    ]
+    "requiredPermissions" : ["time.query", "applications.operation"]
 }
 ```
 {{< /code >}}

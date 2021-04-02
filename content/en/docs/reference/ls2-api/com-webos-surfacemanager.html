@@ -1,9 +1,10 @@
 ---
 title: com.webos.surfacemanager
-date: 2020-11-09
+date: 2021-03-29
 weight: 370
 toc: true
 ---
+
 <div>
   <h2>API Summary</h2>
   <p>Handles the UX, animations of windows. It manages all system and application input handling.</p>
@@ -20,7 +21,6 @@ toc: true
     <h4>Description</h4>
     <p>Close an application&#39;s surface with given appId.</p>
     <p>In most cases, closing the surface leads the application to quit. But with this method, the compositor doesn&#39;t discard its surface item (a container of the surface). It is useful when the compositor wants to keep the application&#39;s context from the compositor side even when the application is not running anymore. A typical use case of this method is to reclaim the memory by Memory Manager.</p>
-    <p><span style="color:#FF0000"><strong>NOTE: </strong>This method is deprecated in the Goldilocks release.</span></p>
     <h4>Parameters</h4>
     <div class="table-container">
       <table class="table is-bordered is-fullwidth">
@@ -129,7 +129,8 @@ toc: true
       <p>Response:</p>
       <p>{<br />
         &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
-        }</p>
+        }
+      </p>
     </div>
   </div>
 </div>
@@ -171,7 +172,7 @@ toc: true
               <li><strong>true:&nbsp;</strong>Subscribed for notifications.</li>
               <li><strong>false:&nbsp;</strong>Not subscribed.</li>
             </ul>
-            <p>​Default:&nbsp;<strong>false</strong></p>
+            <p>Default:&nbsp;<strong>false</strong></p>
           </td>
         </tr>
       </tbody>
@@ -228,7 +229,7 @@ toc: true
               <li><strong>true:&nbsp;</strong>Subscribed for notifications.</li>
               <li><strong>false:&nbsp;</strong>Not subscribed.</li>
             </ul>
-            <p>​Default:&nbsp;<strong>false</strong></p>
+            <p>Default:&nbsp;<strong>false</strong></p>
           </td>
         </tr>
       </tbody>
@@ -285,7 +286,7 @@ toc: true
               <li><strong>true:&nbsp;</strong>Subscribed for notifications.</li>
               <li><strong>false:&nbsp;</strong>Not subscribed.</li>
             </ul>
-            <p>​Default:&nbsp;<strong>false</strong></p>
+            <p>Default:&nbsp;<strong>false</strong></p>
           </td>
         </tr>
       </tbody>
@@ -293,6 +294,7 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
+    <p>Without subscription</p>
     <p># luna-send -n 1 luna://com.webos.surfacemanager/getForegroundAppInfo &#39;{}&#39;</p>
     <p>Response:</p>
     <p>{<br />
@@ -308,9 +310,11 @@ toc: true
       &nbsp; &nbsp; &nbsp; }<br />
       &nbsp; &nbsp;],<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
   </div>
   <div class="code-bg-grey">
+    <p>With subscription</p>
     <p># luna-send -f -i luna://com.webos.surfacemanager/getForegroundAppInfo &#39;{&quot;subscribe&quot;:true}&#39;</p>
     <p>Response:</p>
     <p>{<br />
@@ -327,9 +331,11 @@ toc: true
       &nbsp; &nbsp; &nbsp; }<br />
       &nbsp; &nbsp;],<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
   </div>
   <div class="code-bg-grey">
+    <p>Window-group response</p>
     <p># luna-send -n 1 -f luna://com.webos.applicationManager/launch &#39;{&quot;id&quot;:&quot;com.webos.app.test-windowgroupowner&quot;} &#39;</p>
     <p># luna-send -n 1 -f luna://com.webos.applicationManager/launch &#39;{&quot;id&quot;:&quot;com.webos.app.test-windowgroupclient&quot;} &#39;</p>
     <p># luna-send -n 1 -f luna://com.webos.surfacemanager/getForegroundAppInfo &#39;{}&#39;</p>
@@ -356,7 +362,8 @@ toc: true
       &nbsp; &nbsp; &nbsp; }<br />
       &nbsp; &nbsp;],<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>captureCompositorOutput</h3>
@@ -365,7 +372,7 @@ toc: true
   <p>Takes a screenshot of the content that the compositor generates. The content can be either a frame that contains the graphics composition result or an application surface that is being composited.</p>
   <p><strong>Note:</strong></p>
   <ul>
-    <li><strong>​</strong>This method can be used when a privileged webOS component wants to take a screenshot for its own purpose. It should not be allowed for public use since the screenshot may contain security-sensitive information.</li>
+    <li><strong></strong>This method can be used when a privileged webOS component wants to take a screenshot for its own purpose. It should not be allowed for public use since the screenshot may contain security-sensitive information.</li>
     <li>As this method is provided by LSM (Luna Surface Manager), the content is limited to what LSM is able to composite. It may not be possible to take video area with this method due to this technical limitation.</li>
     <li>Scaling is not supported.</li>
   </ul>
@@ -583,82 +590,96 @@ toc: true
       &nbsp; &nbsp;&quot;output&quot;:&quot;/tmp/test.bmp&quot;,<br />
       &nbsp; &nbsp;&quot;appId&quot;:&quot;com.webos.app.test&quot;,<br />
       &nbsp; &nbsp;&quot;format&quot;:&quot;BMP&quot;<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;format&quot;:&quot;BMP&quot;,<br />
       &nbsp; &nbsp;&quot;output&quot;:&quot;/tmp/test.bmp&quot;,<br />
       &nbsp; &nbsp;&quot;resolution&quot;:&quot;1920x1080&quot;,<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
     <p>#&nbsp;luna-send -n 1 luna://com.webos.surfacemanager/captureCompositorOutput &#39;{<br />
       &nbsp; &nbsp;&quot;output&quot;:&quot;/tmp/test.jpg&quot;,<br />
       &nbsp; &nbsp;&quot;appId&quot;:&quot;com.webos.app.test&quot;,<br />
       &nbsp; &nbsp;&quot;format&quot;:&quot;JPG&quot;<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{</p>
     <p>&nbsp; &nbsp;&quot;format&quot;:&quot;JPG&quot;,<br />
       &nbsp; &nbsp;&quot;output&quot;:&quot;/tmp/test.jpg&quot;,<br />
       &nbsp; &nbsp;&quot;resolution&quot;:&quot;1920x1080&quot;,<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
     <p># luna-send -n 1 luna://com.webos.surfacemanager/captureCompositorOutput &#39;{<br />
       &nbsp; &nbsp;&quot;output&quot;:&quot;/tmp/test.png&quot;,<br />
       &nbsp; &nbsp;&quot;appId&quot;:&quot;com.webos.app.test&quot;,<br />
       &nbsp; &nbsp;&quot;format&quot;:&quot;PNG&quot;<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;format&quot;:&quot;PNG&quot;,<br />
       &nbsp; &nbsp;&quot;output&quot;:&quot;/tmp/test.png&quot;,<br />
       &nbsp; &nbsp;&quot;resolution&quot;:&quot;1920x1080&quot;,<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
     <p># luna-send -n 1 luna://com.webos.surfacemanager/captureCompositorOutput &#39;{<br />
       &nbsp; &nbsp;&quot;output&quot;:&quot;/tmp/test.jpg&quot;,<br />
       &nbsp; &nbsp;&quot;appId&quot;:&quot;&quot;,<br />
       &nbsp; &nbsp;&quot;format&quot;:&quot;JPG&quot;<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;format&quot;:&quot;JPG&quot;,<br />
       &nbsp; &nbsp;&quot;output&quot;:&quot;/tmp/test.jpg&quot;,<br />
       &nbsp; &nbsp;&quot;resolution&quot;:&quot;1920x1080&quot;,<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
     <p># luna-send -n 1 luna://com.webos.surfacemanager/captureCompositorOutput &#39;{<br />
       &nbsp;&quot;output&quot;:&quot;/tmp/test.jpg&quot;,<br />
       &nbsp;&quot;format&quot;:&quot;JPG&quot;<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;format&quot;:&quot;JPG&quot;,<br />
       &nbsp; &nbsp;&quot;output&quot;:&quot;/tmp/test.jpg&quot;,<br />
       &nbsp; &nbsp;&quot;resolution&quot;:&quot;1920x1080&quot;,<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
     <p># luna-send -n 1 luna://com.webos.surfacemanager/captureCompositorOutput &#39;{<br />
       &nbsp; &nbsp;&quot;output&quot;:&quot;/tmp/test.bmp&quot;,<br />
       &nbsp; &nbsp;&quot;appId&quot;:&quot;com.webos.app.test&quot;<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;format&quot;:&quot;BMP&quot;,<br />
       &nbsp; &nbsp;&quot;output&quot;:&quot;/tmp/test.bmp&quot;,<br />
       &nbsp; &nbsp;&quot;resolution&quot;:&quot;1920x1080&quot;,<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
     <p># luna-send -n 1 luna://com.webos.surfacemanager/captureCompositorOutput &#39;{<br />
       &nbsp; &nbsp;&quot;output&quot;:&quot;/tmp/test.bmp&quot;<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:&nbsp;</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;format&quot;:&quot;BMP&quot;,<br />
       &nbsp; &nbsp;&quot;output&quot;:&quot;/tmp/test.bmp&quot;,<br />
       &nbsp; &nbsp;&quot;resolution&quot;:&quot;1920x1080&quot;,<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
   </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 luna://com.webos.surfacemanager/captureCompositorOutput &#39;{<br />
@@ -666,26 +687,30 @@ toc: true
       &nbsp; &nbsp;&quot;appId&quot;:&quot;com.webos.app.test&quot;,<br />
       &nbsp; &nbsp;&quot;format&quot;:&quot;BMP&quot;,<br />
       &nbsp; &nbsp;&quot;displayId&quot;:0<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;format&quot;:&quot;BMP&quot;,<br />
       &nbsp; &nbsp;&quot;output&quot;:&quot;/tmp/test.bmp&quot;,<br />
       &nbsp; &nbsp;&quot;resolution&quot;:&quot;1920x1080&quot;,<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
     <p># luna-send -n 1 luna://com.webos.surfacemanager/captureCompositorOutput &#39;{<br />
       &nbsp; &nbsp;&quot;output&quot;:&quot;/tmp/test.jpg&quot;,&nbsp;<br />
       &nbsp; &nbsp;&quot;format&quot;:&quot;JPG&quot;,<br />
       &nbsp; &nbsp;&quot;displayId&quot;:1<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;format&quot;:&quot;JPG&quot;,<br />
       &nbsp; &nbsp;&quot;output&quot;:&quot;/tmp/test.jpg&quot;,<br />
       &nbsp; &nbsp;&quot;resolution&quot;:&quot;1920x1080&quot;,<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>setAppMirroring</h3>
@@ -872,22 +897,26 @@ toc: true
       &nbsp; &nbsp;&quot;mirror&quot;:true,<br />
       &nbsp; &nbsp;&quot;from&quot;:0,<br />
       &nbsp; &nbsp;&quot;to&quot;:1<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
   </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.surfacemanager/setAppMirroring &#39;{<br />
       &nbsp; &nbsp;&quot;mirror&quot;:false,<br />
       &nbsp; &nbsp;&quot;from&quot;:0,<br />
       &nbsp; &nbsp;&quot;to&quot;:1<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:&nbsp;</p>
     <p>{&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>getAppMirroring</h3>
@@ -923,7 +952,7 @@ toc: true
               <li><strong>true:&nbsp;</strong>Subscribed for notifications.</li>
               <li><strong>false:&nbsp;</strong>Not subscribed.</li>
             </ul>
-            <p>​Default:&nbsp;<strong>false</strong></p>
+            <p>Default:&nbsp;<strong>false</strong></p>
           </td>
         </tr>
       </tbody>
@@ -1030,6 +1059,7 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
+    <p>Without subscription</p>
     <p># luna-send -n 1 -f luna://com.webos.surfacemanager/getAppMirroring &#39;{}&#39;</p>
     <p>Response:&nbsp;</p>
     <p>{<br />
@@ -1044,12 +1074,15 @@ toc: true
       &nbsp; &nbsp; &nbsp; }<br />
       &nbsp; &nbsp;],<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
   </div>
   <div class="code-bg-grey">
+    <p>With subscription</p>
     <p># luna-send -i -f luna://com.webos.surfacemanager/getAppMirroring &#39;{<br />
       &nbsp; &nbsp;&quot;subscribe&quot;:true<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:&nbsp;</p>
     <p>{&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&quot;mirroringInfo&quot;:[&nbsp;<br />
@@ -1064,7 +1097,8 @@ toc: true
       &nbsp;&nbsp;&nbsp;],<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
       &nbsp;&nbsp;&nbsp;&quot;subscribed&quot;:true<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h2>Objects</h2>

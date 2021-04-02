@@ -1,6 +1,6 @@
 ---
 title: Developing Built-in Native Services
-date: 2020-07-03
+date: 2021-03-23
 weight: 20
 toc: true
 ---
@@ -350,7 +350,7 @@ This file defines what groups are required for this component to function proper
 ``` json {linenos=table}
 {
     "com.example.service.native": [
-        "time"
+        "time.query"
     ]
 }
 ```
@@ -358,7 +358,7 @@ This file defines what groups are required for this component to function proper
 
 A brief explanation of the above file:
 
-- Line(3) : Since `com.example.service.native` calls systemservice's `getTime` method, add the method's group name "time" to the client permission file.
+- Line(3) : Since `com.example.service.native` calls systemservice's `getTime` method, add the method's group name "time.query" to the client permission file.
 
 #### API Permission File
 

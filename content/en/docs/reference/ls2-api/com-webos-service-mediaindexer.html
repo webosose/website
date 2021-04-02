@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.mediaindexer
-date: 2020-11-13
+date: 2021-03-29
 weight: 236
 toc: true
 ---
@@ -20,11 +20,11 @@ toc: true
 </div>
 <h2>Methods</h2>
 <div>
-  <h3>getAudioList</h3>
+  <h3>getDeviceList</h3>
   <div>
     <h4>Description</h4>
-    <p>Gets the available audio file list included in attached devices.</p>
-    <p><strong>Note</strong>:&nbsp;If the <strong>uri</strong>&nbsp;is specified, the audio file list for specified uri is provided. Else the audio file list for all attached devices is provided.</p>
+    <p>Gets the list of all the attached&nbsp;storage devices.</p>
+    <p><strong>Note</strong>: The list can contain devices that are currently attached or the devices attached in the past.</p>
     <h4>Parameters</h4>
     <div class="table-container">
       <table class="table is-bordered is-fullwidth">
@@ -44,37 +44,17 @@ toc: true
             </th>
           </tr>
           <tr>
-            <td>uri</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the uri of the device mounted on the target that contains the source path of the audio files.</p>
-              <p>The format is given as:&nbsp;&lt;protocol name&gt;://&lt;device uuid&gt;</p>
-              <p>Example: msc://D94A-BE4D</p>
-            </td>
-          </tr>
-          <tr>
             <td>subscribe</td>
-            <td>Optional</td>
+            <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates if subscribed to get notifications.</p>
+              <p>Indicates if subscribed to get the notifications.</p>
               <p>Possible values are:</p>
               <ul>
-                <li><strong>true:&nbsp;</strong>Subscribed for notifications</li>
-                <li><strong>false:&nbsp;</strong>Not subscribed</li>
+                <li><strong>true</strong>: Subscribe for notifications.</li>
+                <li><strong>false</strong>: Not subscribed</li>
               </ul>
-              <p>Default:&nbsp;<strong>false</strong></p>
-              <p><strong>Note</strong>: Notifications are not provided when an entry is removed from the list (physical devices are detached). In this case, the&nbsp;user is notified from other external service such as physical device manager.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>count</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>Limits the&nbsp;number of entries in the returned audio file list.</p>
-              <p>Default: <strong>500</strong></p>
+              <p>Default: <strong>false</strong></p>
             </td>
           </tr>
         </tbody>
@@ -99,11 +79,11 @@ toc: true
             </th>
           </tr>
           <tr>
-            <td>audioList</td>
-            <td>Optional</td>
-            <td>Object: <a href="#audiolist"> audioList</a></td>
+            <td>pluginList</td>
+            <td>Required</td>
+            <td>Object array: <a href="#pluginlist"> pluginList</a></td>
             <td>
-              <p>Indicates the&nbsp;supported device types.</p>
+              <p>Indicates the supported device types.</p>
             </td>
           </tr>
           <tr>
@@ -114,7 +94,7 @@ toc: true
               <p>Indicates the status of the operation.</p>
               <p>Possible values are:</p>
               <ul>
-                <li><strong>true</strong>:&nbsp;Indicates that the operation was successful.</li>
+                <li><strong>true</strong>: Indicates that the operation was successful.</li>
                 <li><strong>false</strong>: Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
               </ul>
             </td>
@@ -124,8 +104,7 @@ toc: true
             <td>Optional</td>
             <td>Number</td>
             <td>
-              <p>The error code for the operation.&nbsp;</p>
-              <p><strong>Note</strong>: Currently, it returns 0 even when the returnValue is true and returns -1 if JSON parsing fails.</p>
+              <p>The error code for the operation.</p>
             </td>
           </tr>
           <tr>
@@ -134,7 +113,6 @@ toc: true
             <td>String</td>
             <td>
               <p>Indicates the reason for the failure of the operation.</p>
-              <p><strong>Note</strong>: Currently, it returns &quot;No Error&quot; even when the returnValue is true. If JSON parsing fails, then errorText is updated accordingly.</p>
             </td>
           </tr>
           <tr>
@@ -172,6 +150,14 @@ toc: true
             </th>
           </tr>
           <tr>
+            <td>pluginList</td>
+            <td>Required</td>
+            <td>Object array: <a href="#pluginlist"> pluginList</a></td>
+            <td>
+              <p>Indicates the supported device types.</p>
+            </td>
+          </tr>
+          <tr>
             <td>returnValue</td>
             <td>Required</td>
             <td>Boolean</td>
@@ -179,18 +165,9 @@ toc: true
               <p>Indicates the status of the operation.</p>
               <p>Possible values are:</p>
               <ul>
-                <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
-                <li><strong>false:&nbsp;</strong>Indicates that the operation failed.&nbsp;Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+                <li><strong>true</strong>:&nbsp; Indicates that the operation was successful.</li>
+                <li><strong>false</strong>: Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
               </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation.</p>
-              <p><strong>Note</strong>: Currently, it returns &quot;No Error&quot; even when the returnValue is true. If JSON parsing fails, then errorText is updated accordingly.</p>
             </td>
           </tr>
           <tr>
@@ -199,15 +176,14 @@ toc: true
             <td>Number</td>
             <td>
               <p>The error code for the operation.</p>
-              <p><strong>Note</strong>: Currently, it returns 0 even when the returnValue is true and returns -1 if JSON parsing fails.</p>
             </td>
           </tr>
           <tr>
-            <td>audioList</td>
+            <td>errorText</td>
             <td>Optional</td>
-            <td>Object: <a href="#audiolist"> audioList</a></td>
+            <td>String</td>
             <td>
-              <p>Specifies supported device types.</p>
+              <p>Indicates the reason for the failure of the operation.</p>
             </td>
           </tr>
           <tr>
@@ -228,183 +204,62 @@ toc: true
     </div>
     <h4>Example</h4>
     <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.mediaindexer/getAudioList &#39;{}&#39;</p>
-      <p>Response:</p>
-      <p>{<br />
-        &nbsp; &nbsp;&quot;errorCode&quot;: 0,<br />
-        &nbsp; &nbsp;&quot;returnValue&quot;: true,<br />
-        &nbsp; &nbsp;&quot;errorText&quot;: &quot;No Error&quot;,<br />
-        &nbsp; &nbsp;&quot;audioList&quot;: {<br />
-        &nbsp; &nbsp; &nbsp; &quot;results&quot;: [<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;last_modified_date&quot;: &quot;Wed Jul 22 09:09:38 2020 GMT&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;duration&quot;: 348,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;file_path&quot;: &quot;file:///tmp/usb/sdh/sdh1/Sample-OGG-File.ogg&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;album&quot;: &quot;Ninja Tuna&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;genre&quot;: &quot;Electronic&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;artist&quot;: &quot;Mr. Scruff&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;title&quot;: &quot;Kalimba&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;uri&quot;: &quot;msc://B5E0-BBB2/tmp/usb/sdg/sdg1/Sample-OGG-File.ogg&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;file_size&quot;: 6984260,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;thumbnail&quot;: &quot;&quot;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;},<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;last_modified_date&quot;: &quot;Thu Jul 30 06:48:04 2020 GMT&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;duration&quot;: 10,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;file_path&quot;: &quot;file:///tmp/usb/sdh/sdh1/tagtest.ID3v2.4.mp3&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;album&quot;: &quot;Test Album&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;genre&quot;: &quot;Classical&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;artist&quot;: &quot;Test Artist&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;title&quot;: &quot;Test Name&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;uri&quot;: &quot;msc://D94A-BE4D/tmp/usb/sdh/sdh1/tagtest.ID3v2.4.mp3&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;file_size&quot;: 184861,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;thumbnail&quot;: &quot;/media/.thumbnail/D94A-BE4D/9513454098549223.jpg&quot;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}<br />
-        &nbsp; &nbsp; &nbsp; ],<br />
-        &nbsp; &nbsp; &nbsp; &quot;count&quot;: 2<br />
-        &nbsp; &nbsp;}<br />
-        }</p>
-    </div>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.mediaindexer/getAudioList &#39;{&quot;uri&quot;:&quot;msc://D94A-BE4D&quot;}&#39;</p>
-      <p>Response:</p>
-      <p>{<br />
-        &nbsp; &nbsp;&quot;errorCode&quot;: 0,<br />
-        &nbsp; &nbsp;&quot;returnValue&quot;: true,<br />
-        &nbsp; &nbsp;&quot;errorText&quot;: &quot;No Error&quot;,<br />
-        &nbsp; &nbsp;&quot;audioList&quot;: {<br />
-        &nbsp; &nbsp; &nbsp; &quot;results&quot;: [<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;last_modified_date&quot;: &quot;Thu Jul 30 06:48:04 2020 GMT&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;duration&quot;: 10,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;file_path&quot;: &quot;file:///tmp/usb/sdh/sdh1/tagtest.ID3v2.4.mp3&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;album&quot;: &quot;Test Album&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;genre&quot;: &quot;Classical&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;artist&quot;: &quot;Test Artist&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;title&quot;: &quot;Test Name&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;uri&quot;: &quot;msc://D94A-BE4D/tmp/usb/sdh/sdh1/tagtest.ID3v2.4.mp3&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;file_size&quot;: 184861,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;thumbnail&quot;: &quot;/media/.thumbnail/D94A-BE4D/9513454098549223.jpg&quot;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}<br />
-        &nbsp; &nbsp; &nbsp; ],<br />
-        &nbsp; &nbsp; &nbsp; &quot;uri&quot;: &quot;msc://D94A-BE4D&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &quot;count&quot;: 1<br />
-        &nbsp; &nbsp;}<br />
-        }</p>
-    </div>
-    <div class="code-bg-grey">
-      <p># luna-send -i -f luna://com.webos.service.mediaindexer/getAudioList &#39;{&quot;subscribe&quot;:true}&#39;</p>
-      <p>Response :</p>
-      <p>{<br />
-        &nbsp; &nbsp;&quot;subscribed&quot;: true,<br />
-        &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
-        }</p>
-      <p>Subscription response:&nbsp;</p>
-      <p>{<br />
-        &nbsp; &nbsp;&quot;errorCode&quot;: 0,<br />
-        &nbsp; &nbsp;&quot;returnValue&quot;: true,<br />
-        &nbsp; &nbsp;&quot;errorText&quot;: &quot;No Error&quot;,<br />
-        &nbsp; &nbsp;&quot;audioList&quot;: [<br />
-        &nbsp; &nbsp; &nbsp; {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;results&quot;: [<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;last_modified_date&quot;: &quot;Tue Nov 25 06:10:08 2014 GMT&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;duration&quot;: 260,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;dirty&quot;: false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;file_path&quot;: &quot;file:///tmp/usb/sdg/sdg1/MetaThumbnail/01_Jalsa.mp3&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;album&quot;: &quot;Jalsa - (2008)&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;genre&quot;: &quot;Telugu&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;artist&quot;: &quot;Baba Sehgal, Rita&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;uri&quot;: &quot;msc://D7FE-42B8/tmp/usb/sdg/sdg1/MetaThumbnail/01_Jalsa.mp3&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;title&quot;: &quot;[iSongs.info] 01 - Jalsa&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;file_size&quot;: 4243260,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;thumbnail&quot;: &quot;/media/.thumbnail/D7FE-42B8/8257472925753254.jpg&quot;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;last_modified_date&quot;: &quot;Mon Sep 14 05:53:28 2020 GMT&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;duration&quot;: 226,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;dirty&quot;: false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;file_path&quot;: &quot;file:///tmp/usb/sdg/sdg1/albumart/Miss_A.mp3&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;album&quot;: &quot;TestAlbum&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;genre&quot;: &quot;Telugu&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;artist&quot;: &quot;Miss A&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;uri&quot;: &quot;msc://D7FE-42B8/tmp/usb/sdg/sdg1/albumart/Miss_A.mp3&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;title&quot;: &quot;Good Bye Baby&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;file_size&quot;: 5453302,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;thumbnail&quot;: &quot;/media/.thumbnail/D7FE-42B8/1208322061333152.jpg&quot;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;],<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;count&quot;: 2<br />
-        &nbsp; &nbsp; &nbsp; }<br />
-        &nbsp; &nbsp;]<br />
-        }</p>
-    </div>
-    <div class="code-bg-grey">
-      <p>#&nbsp;luna-send -i -f luna://com.webos.service.mediaindexer/getAudioList &#39;{<br />
-        &nbsp; &nbsp;&quot;subscribe&quot;:true,<br />
-        &nbsp; &nbsp;&quot;count&quot;:1<br />
-        }&#39;</p>
+      <p>With subscription</p>
+      <p># luna-send -n 2 -f luna://com.webos.service.mediaindexer/getDeviceList &#39;{&quot;subscribe&quot;:true}&#39;</p>
       <p>Response:</p>
       <p>{<br />
         &nbsp; &nbsp;&quot;subscribed&quot;: true,<br />
         &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
-        }</p>
-      <p>Subscription response 1:</p>
+        }
+      </p>
+      <p>Subscription response:</p>
       <p>{<br />
-        &nbsp; &nbsp;&quot;errorCode&quot;: 0,<br />
-        &nbsp; &nbsp;&quot;returnValue&quot;: true,<br />
-        &nbsp; &nbsp;&quot;errorText&quot;: &quot;No Error&quot;,<br />
-        &nbsp; &nbsp;&quot;audioList&quot;: {<br />
-        &nbsp; &nbsp; &nbsp; &quot;results&quot;: [<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;last_modified_date&quot;: &quot;Tue Nov 25 06:10:08 2014 GMT&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;duration&quot;: 260,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;dirty&quot;: false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;file_path&quot;: &quot;file:///tmp/usb/sdg/sdg1/MetaThumbnail/01_Jalsa.mp3&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;album&quot;: &quot;Jalsa - (2008)&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;genre&quot;: &quot;Telugu&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;artist&quot;: &quot;Baba Sehgal, Rita&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;uri&quot;: &quot;msc://D7FE-42B8/tmp/usb/sdg/sdg1/MetaThumbnail/01_Jalsa.mp3&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;title&quot;: &quot;[iSongs.info] 01 - Jalsa&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;file_size&quot;: 4243260,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;thumbnail&quot;: &quot;/media/.thumbnail/D7FE-42B8/479067904926436.jpg&quot;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}<br />
-        &nbsp; &nbsp; &nbsp; ],<br />
-        &nbsp; &nbsp; &nbsp; &quot;count&quot;: 1<br />
-        &nbsp; &nbsp;}<br />
-        }</p>
-      <p>Subscription response 2:</p>
-      <p>{<br />
-        &nbsp; &nbsp;&quot;errorCode&quot;: 0,<br />
-        &nbsp; &nbsp;&quot;returnValue&quot;: true,<br />
-        &nbsp; &nbsp;&quot;errorText&quot;: &quot;No Error&quot;,<br />
-        &nbsp; &nbsp;&quot;audioList&quot;: {<br />
-        &nbsp; &nbsp; &nbsp; &quot;results&quot;: [<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;last_modified_date&quot;: &quot;Mon Sep 14 05:53:28 2020 GMT&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;duration&quot;: 226,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;dirty&quot;: false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;file_path&quot;: &quot;file:///tmp/usb/sdg/sdg1/albumart/Miss_A.mp3&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;album&quot;: &quot;TestAlbum&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;genre&quot;: &quot;Telugu&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;artist&quot;: &quot;Miss A&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;uri&quot;: &quot;msc://D7FE-42B8/tmp/usb/sdg/sdg1/albumart/Miss_A.mp3&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;title&quot;: &quot;Good Bye Baby&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;file_size&quot;: 5453302,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;thumbnail&quot;: &quot;/media/.thumbnail/D7FE-42B8/106457924970666.jpg&quot;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}<br />
-        &nbsp; &nbsp; &nbsp; ],<br />
-        &nbsp; &nbsp; &nbsp; &quot;count&quot;: 1<br />
-        &nbsp; &nbsp;}<br />
-        }</p>
+        &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp; &nbsp; &quot;pluginList&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;uri&quot;: &quot;msc&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;deviceList&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;videoCount&quot;: 14,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;available&quot;: true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;state&quot;: &quot;idle&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;audioCount&quot;: 17,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;SanDisk 3.2Gen1&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;description&quot;: &quot;SanDisk 3.2Gen1&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;imageCount&quot;: 6,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;uri&quot;: &quot;msc://4CA3-8283&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ],<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;active&quot;: true<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;uri&quot;: &quot;storage&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;deviceList&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;videoCount&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;available&quot;: true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;state&quot;: &quot;idle&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;audioCount&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;Media&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;description&quot;: &quot;Local Media Storage&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;imageCount&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;uri&quot;: &quot;storage:///media/multimedia&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ],<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;active&quot;: true<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; ]<br />
+        }<br />
+        &nbsp;
+      </p>
     </div>
   </div>
 </div>
-<h3>getDeviceList</h3>
+<h3>getAudioList</h3>
 <div>
   <h4>Description</h4>
-  <p>Gets the list of all the attached&nbsp;storage devices.</p>
-  <p><strong>Note</strong>: The list can contain devices that are currently attached or the devices attached in the past.</p>
+  <p>Gets the available audio file list included in attached devices.</p>
+  <p><strong>Note</strong>:&nbsp;If the <strong>uri</strong>&nbsp;is specified, the audio file list for specified uri is provided. Else the audio file list for all attached devices is provided.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -424,17 +279,37 @@ toc: true
           </th>
         </tr>
         <tr>
+          <td>uri</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the uri of the device mounted on the target that contains the source path of the audio files.</p>
+            <p>The format is given as:&nbsp;&lt;protocol name&gt;://&lt;device uuid&gt;</p>
+            <p>Example: msc://D94A-BE4D</p>
+          </td>
+        </tr>
+        <tr>
           <td>subscribe</td>
-          <td>Required</td>
+          <td>Optional</td>
           <td>Boolean</td>
           <td>
-            <p>Indicates if subscribed to get the notifications.</p>
+            <p>Indicates if subscribed to get notifications.</p>
             <p>Possible values are:</p>
             <ul>
-              <li><strong>true</strong>: Subscribe for notifications.</li>
-              <li><strong>false</strong>: Not subscribed</li>
+              <li><strong>true:&nbsp;</strong>Subscribed for notifications</li>
+              <li><strong>false:&nbsp;</strong>Not subscribed</li>
             </ul>
-            <p>Default: <strong>false</strong></p>
+            <p>Default:&nbsp;<strong>false</strong></p>
+            <p><strong>Note</strong>: Notifications are not provided when an entry is removed from the list (physical devices are detached). In this case, the&nbsp;user is notified from other external service such as physical device manager.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>count</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Limits the&nbsp;number of entries in the returned audio file list.</p>
+            <p>Default: <strong>500</strong></p>
           </td>
         </tr>
       </tbody>
@@ -459,11 +334,11 @@ toc: true
           </th>
         </tr>
         <tr>
-          <td>pluginList</td>
-          <td>Required</td>
-          <td>Object array: <a href="#pluginlist"> pluginList</a></td>
+          <td>audioList</td>
+          <td>Optional</td>
+          <td>Object: <a href="#audiolist"> audioList</a></td>
           <td>
-            <p>Indicates the supported device types.</p>
+            <p>Indicates the&nbsp;supported device types.</p>
           </td>
         </tr>
         <tr>
@@ -474,7 +349,7 @@ toc: true
             <p>Indicates the status of the operation.</p>
             <p>Possible values are:</p>
             <ul>
-              <li><strong>true</strong>: Indicates that the operation was successful.</li>
+              <li><strong>true</strong>:&nbsp;Indicates that the operation was successful.</li>
               <li><strong>false</strong>: Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
           </td>
@@ -484,7 +359,8 @@ toc: true
           <td>Optional</td>
           <td>Number</td>
           <td>
-            <p>The error code for the operation.</p>
+            <p>The error code for the operation.&nbsp;</p>
+            <p><strong>Note</strong>: Currently, it returns 0 even when the returnValue is true and returns -1 if JSON parsing fails.</p>
           </td>
         </tr>
         <tr>
@@ -493,6 +369,7 @@ toc: true
           <td>String</td>
           <td>
             <p>Indicates the reason for the failure of the operation.</p>
+            <p><strong>Note</strong>: Currently, it returns &quot;No Error&quot; even when the returnValue is true. If JSON parsing fails, then errorText is updated accordingly.</p>
           </td>
         </tr>
         <tr>
@@ -530,14 +407,6 @@ toc: true
           </th>
         </tr>
         <tr>
-          <td>pluginList</td>
-          <td>Required</td>
-          <td>Object array: <a href="#pluginlist"> pluginList</a></td>
-          <td>
-            <p>Indicates the supported device types.</p>
-          </td>
-        </tr>
-        <tr>
           <td>returnValue</td>
           <td>Required</td>
           <td>Boolean</td>
@@ -545,17 +414,9 @@ toc: true
             <p>Indicates the status of the operation.</p>
             <p>Possible values are:</p>
             <ul>
-              <li><strong>true</strong>:&nbsp; Indicates that the operation was successful.</li>
-              <li><strong>false</strong>: Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false:&nbsp;</strong>Indicates that the operation failed.&nbsp;Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
             </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>errorCode</td>
-          <td>Optional</td>
-          <td>Number</td>
-          <td>
-            <p>The error code for the operation.</p>
           </td>
         </tr>
         <tr>
@@ -564,6 +425,24 @@ toc: true
           <td>String</td>
           <td>
             <p>Indicates the reason for the failure of the operation.</p>
+            <p><strong>Note</strong>: Currently, it returns &quot;No Error&quot; even when the returnValue is true. If JSON parsing fails, then errorText is updated accordingly.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the operation.</p>
+            <p><strong>Note</strong>: Currently, it returns 0 even when the returnValue is true and returns -1 if JSON parsing fails.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>audioList</td>
+          <td>Optional</td>
+          <td>Object: <a href="#audiolist"> audioList</a></td>
+          <td>
+            <p>Specifies supported device types.</p>
           </td>
         </tr>
         <tr>
@@ -584,49 +463,187 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p># luna-send -n 2 -f luna://com.webos.service.mediaindexer/getDeviceList &#39;{&quot;subscribe&quot;:true}&#39;</p>
+    <p>With uri</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.mediaindexer/getAudioList &#39;{&quot;uri&quot;:&quot;msc://D94A-BE4D&quot;}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;errorCode&quot;: 0,<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp;&quot;errorText&quot;: &quot;No Error&quot;,<br />
+      &nbsp; &nbsp;&quot;audioList&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &quot;results&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;last_modified_date&quot;: &quot;Thu Jul 30 06:48:04 2020 GMT&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;duration&quot;: 10,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;file_path&quot;: &quot;file:///tmp/usb/sdh/sdh1/tagtest.ID3v2.4.mp3&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;album&quot;: &quot;Test Album&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;genre&quot;: &quot;Classical&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;artist&quot;: &quot;Test Artist&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;title&quot;: &quot;Test Name&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;uri&quot;: &quot;msc://D94A-BE4D/tmp/usb/sdh/sdh1/tagtest.ID3v2.4.mp3&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;file_size&quot;: 184861,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;thumbnail&quot;: &quot;/media/.thumbnail/D94A-BE4D/9513454098549223.jpg&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}<br />
+      &nbsp; &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &nbsp; &quot;uri&quot;: &quot;msc://D94A-BE4D&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;count&quot;: 1<br />
+      &nbsp; &nbsp;}<br />
+      }
+    </p>
+  </div>
+  <div class="code-bg-grey">
+    <p>With subscription</p>
+    <p># luna-send -i -f luna://com.webos.service.mediaindexer/getAudioList &#39;{&quot;subscribe&quot;:true}&#39;</p>
+    <p>Response :</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;subscribed&quot;: true,<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>Subscription response:&nbsp;</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;errorCode&quot;: 0,<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp;&quot;errorText&quot;: &quot;No Error&quot;,<br />
+      &nbsp; &nbsp;&quot;audioList&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;results&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;last_modified_date&quot;: &quot;Tue Nov 25 06:10:08 2014 GMT&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;duration&quot;: 260,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;dirty&quot;: false,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;file_path&quot;: &quot;file:///tmp/usb/sdg/sdg1/MetaThumbnail/01_Jalsa.mp3&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;album&quot;: &quot;Jalsa - (2008)&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;genre&quot;: &quot;Telugu&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;artist&quot;: &quot;Baba Sehgal, Rita&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;uri&quot;: &quot;msc://D7FE-42B8/tmp/usb/sdg/sdg1/MetaThumbnail/01_Jalsa.mp3&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;title&quot;: &quot;[iSongs.info] 01 - Jalsa&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;file_size&quot;: 4243260,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;thumbnail&quot;: &quot;/media/.thumbnail/D7FE-42B8/8257472925753254.jpg&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;last_modified_date&quot;: &quot;Mon Sep 14 05:53:28 2020 GMT&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;duration&quot;: 226,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;dirty&quot;: false,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;file_path&quot;: &quot;file:///tmp/usb/sdg/sdg1/albumart/Miss_A.mp3&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;album&quot;: &quot;TestAlbum&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;genre&quot;: &quot;Telugu&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;artist&quot;: &quot;Miss A&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;uri&quot;: &quot;msc://D7FE-42B8/tmp/usb/sdg/sdg1/albumart/Miss_A.mp3&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;title&quot;: &quot;Good Bye Baby&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;file_size&quot;: 5453302,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;thumbnail&quot;: &quot;/media/.thumbnail/D7FE-42B8/1208322061333152.jpg&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;],<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;count&quot;: 2<br />
+      &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp;]<br />
+      }
+    </p>
+  </div>
+  <div class="code-bg-grey">
+    <p>With subscription and count limitation</p>
+    <p>#&nbsp;luna-send -i -f luna://com.webos.service.mediaindexer/getAudioList &#39;{<br />
+      &nbsp; &nbsp;&quot;subscribe&quot;:true,<br />
+      &nbsp; &nbsp;&quot;count&quot;:1<br />
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;subscribed&quot;: true,<br />
       &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
-      }</p>
-    <p>Subscription response:</p>
+      }
+    </p>
+    <p>Subscription response 1:</p>
     <p>{<br />
-      &nbsp; &nbsp;&quot;pluginList&quot;: [<br />
-      &nbsp; &nbsp; &nbsp; {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;deviceList&quot;: [<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;name&quot;: &quot;Ultra&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;imageCount&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;uri&quot;: &quot;msc://B5E0-BBB2&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;videoCount&quot;: 1,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;available&quot;: true,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;icon&quot;: &quot;&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;audioCount&quot;: 34,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;description&quot;: &quot;Ultra&quot;<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;name&quot;: &quot;Cruzer Blade&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;imageCount&quot;: 33,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;uri&quot;: &quot;msc://D94A-BE4D&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;videoCount&quot;: 7,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;available&quot;: true,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;icon&quot;: &quot;&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;audioCount&quot;: 35,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;description&quot;: &quot;Cruzer Blade&quot;<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;],<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;active&quot;: true,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;uri&quot;: &quot;msc&quot;<br />
-      &nbsp; &nbsp; &nbsp; },<br />
-      &nbsp; &nbsp; &nbsp; {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;deviceList&quot;: [],<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;active&quot;: false,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;uri&quot;: &quot;storage&quot;<br />
-      &nbsp; &nbsp; &nbsp; }<br />
-      &nbsp; &nbsp;],<br />
-      &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
-      }</p>
+      &nbsp; &nbsp;&quot;errorCode&quot;: 0,<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp;&quot;errorText&quot;: &quot;No Error&quot;,<br />
+      &nbsp; &nbsp;&quot;audioList&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &quot;results&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;last_modified_date&quot;: &quot;Tue Nov 25 06:10:08 2014 GMT&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;duration&quot;: 260,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;dirty&quot;: false,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;file_path&quot;: &quot;file:///tmp/usb/sdg/sdg1/MetaThumbnail/01_Jalsa.mp3&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;album&quot;: &quot;Jalsa - (2008)&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;genre&quot;: &quot;Telugu&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;artist&quot;: &quot;Baba Sehgal, Rita&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;uri&quot;: &quot;msc://D7FE-42B8/tmp/usb/sdg/sdg1/MetaThumbnail/01_Jalsa.mp3&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;title&quot;: &quot;[iSongs.info] 01 - Jalsa&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;file_size&quot;: 4243260,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;thumbnail&quot;: &quot;/media/.thumbnail/D7FE-42B8/479067904926436.jpg&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}<br />
+      &nbsp; &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &nbsp; &quot;count&quot;: 1<br />
+      &nbsp; &nbsp;}<br />
+      }
+    </p>
+    <p>Subscription response 2:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;errorCode&quot;: 0,<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp;&quot;errorText&quot;: &quot;No Error&quot;,<br />
+      &nbsp; &nbsp;&quot;audioList&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &quot;results&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;last_modified_date&quot;: &quot;Mon Sep 14 05:53:28 2020 GMT&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;duration&quot;: 226,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;dirty&quot;: false,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;file_path&quot;: &quot;file:///tmp/usb/sdg/sdg1/albumart/Miss_A.mp3&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;album&quot;: &quot;TestAlbum&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;genre&quot;: &quot;Telugu&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;artist&quot;: &quot;Miss A&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;uri&quot;: &quot;msc://D7FE-42B8/tmp/usb/sdg/sdg1/albumart/Miss_A.mp3&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;title&quot;: &quot;Good Bye Baby&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;file_size&quot;: 5453302,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;thumbnail&quot;: &quot;/media/.thumbnail/D7FE-42B8/106457924970666.jpg&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}<br />
+      &nbsp; &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &nbsp; &quot;count&quot;: 1<br />
+      &nbsp; &nbsp;}<br />
+      }
+    </p>
+  </div>
+  <div class="code-bg-grey">
+    <p>Without uri</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.mediaindexer/getAudioList &#39;{}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;errorCode&quot;: 0,<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp;&quot;errorText&quot;: &quot;No Error&quot;,<br />
+      &nbsp; &nbsp;&quot;audioList&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &quot;results&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;last_modified_date&quot;: &quot;Wed Jul 22 09:09:38 2020 GMT&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;duration&quot;: 348,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;file_path&quot;: &quot;file:///tmp/usb/sdh/sdh1/Sample-OGG-File.ogg&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;album&quot;: &quot;Ninja Tuna&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;genre&quot;: &quot;Electronic&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;artist&quot;: &quot;Mr. Scruff&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;title&quot;: &quot;Kalimba&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;uri&quot;: &quot;msc://B5E0-BBB2/tmp/usb/sdg/sdg1/Sample-OGG-File.ogg&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;file_size&quot;: 6984260,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;thumbnail&quot;: &quot;&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;},<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;last_modified_date&quot;: &quot;Thu Jul 30 06:48:04 2020 GMT&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;duration&quot;: 10,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;file_path&quot;: &quot;file:///tmp/usb/sdh/sdh1/tagtest.ID3v2.4.mp3&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;album&quot;: &quot;Test Album&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;genre&quot;: &quot;Classical&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;artist&quot;: &quot;Test Artist&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;title&quot;: &quot;Test Name&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;uri&quot;: &quot;msc://D94A-BE4D/tmp/usb/sdh/sdh1/tagtest.ID3v2.4.mp3&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;file_size&quot;: 184861,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;thumbnail&quot;: &quot;/media/.thumbnail/D94A-BE4D/9513454098549223.jpg&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}<br />
+      &nbsp; &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &nbsp; &quot;count&quot;: 2<br />
+      &nbsp; &nbsp;}<br />
+      }
+    </p>
   </div>
 </div>
 <h3>getAudioMetadata</h3>
@@ -725,6 +742,7 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
+    <p>With uri</p>
     <p># luna://com.webos.service.mediaindexer/getAudioMetadata &#39;{&quot;uri&quot;:&quot;msc://D94A-BE4D/tmp/usb/sdh/sdh1/tagtest.ID3v2.4.mp3&quot;}&#39;</p>
     <p>Response:&nbsp;</p>
     <p>{<br />
@@ -756,7 +774,8 @@ toc: true
       &nbsp; &nbsp; &nbsp; &quot;lyric&quot;: &quot;&quot;<br />
       &nbsp; &nbsp;},<br />
       &nbsp; &nbsp;&quot;errorText&quot;: &quot;No Error&quot;<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>getVideoList</h3>
@@ -967,6 +986,7 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
+    <p>Without uri</p>
     <p># luna-send -n 1 -f luna://com.webos.service.mediaindexer/getVideoList &#39;{}&#39;</p>
     <p>Response:&nbsp;</p>
     <p>{<br />
@@ -1000,9 +1020,11 @@ toc: true
       &nbsp; &nbsp; &nbsp; &quot;count&quot;: 2<br />
       &nbsp; &nbsp;},<br />
       &nbsp; &nbsp;&quot;errorText&quot;: &quot;No Error&quot;<br />
-      }</p>
+      }
+    </p>
   </div>
   <div class="code-bg-grey">
+    <p>With uri</p>
     <p># luna-send -n 1 -f luna://com.webos.service.mediaindexer/getVideoList &#39;{&quot;uri&quot;:&quot;msc://D94A-BE4D&quot;}&#39;</p>
     <p>Response:</p>
     <p>{<br />
@@ -1026,15 +1048,18 @@ toc: true
       &nbsp; &nbsp; &nbsp; &quot;count&quot;: 1<br />
       &nbsp; &nbsp;},<br />
       &nbsp; &nbsp;&quot;errorText&quot;: &quot;No Error&quot;<br />
-      }</p>
+      }
+    </p>
   </div>
   <div class="code-bg-grey">
+    <p>With subscription</p>
     <p># luna-send -i -f luna://com.webos.service.mediaindexer/getVideoList &#39;{&quot;subscribe&quot;:true}&#39;</p>
     <p>Response :</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;subscribed&quot;: true,<br />
       &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
-      }</p>
+      }
+    </p>
     <p>Subscription response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;errorCode&quot;: 0,<br />
@@ -1071,18 +1096,22 @@ toc: true
       &nbsp; &nbsp; &nbsp; }<br />
       &nbsp; &nbsp;],<br />
       &nbsp; &nbsp;&quot;errorText&quot;: &quot;No Error&quot;<br />
-      }</p>
+      }
+    </p>
   </div>
   <div class="code-bg-grey">
+    <p>With subscription and count limitation</p>
     <p># luna-send -i -f luna://com.webos.service.mediaindexer/getVideoList &#39;{<br />
       &nbsp; &nbsp;&quot;subscribe&quot;:true,<br />
       &nbsp; &nbsp;&quot;count&quot;:1<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response :</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;subscribed&quot;: true,<br />
       &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
-      }</p>
+      }
+    </p>
     <p>Subscription response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;errorCode&quot;: 0,<br />
@@ -1105,7 +1134,8 @@ toc: true
       &nbsp; &nbsp; &nbsp; &quot;count&quot;: 1<br />
       &nbsp; &nbsp;},<br />
       &nbsp; &nbsp;&quot;errorText&quot;: &quot;No Error&quot;<br />
-      }</p>
+      }
+    </p>
     <p>Subscription response 2:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;errorCode&quot;: 0,<br />
@@ -1128,7 +1158,8 @@ toc: true
       &nbsp; &nbsp; &nbsp; &quot;count&quot;: 1<br />
       &nbsp; &nbsp;},<br />
       &nbsp; &nbsp;&quot;errorText&quot;: &quot;No Error&quot;<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>getVideoMetadata</h3>
@@ -1227,6 +1258,7 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
+    <p>With uri</p>
     <p># luna-send -n 1 -f luna://com.webos.service.mediaindexer/getVideoMetadata &#39;{&quot;uri&quot;:&quot;msc://D94A-BE4D/tmp/usb/sdh/sdh1/SampleVideofiles2.mp4&quot;}&#39;</p>
     <p>Response:</p>
     <p>{<br />
@@ -1252,7 +1284,8 @@ toc: true
       &nbsp; &nbsp; &nbsp; &quot;duration&quot;: 205<br />
       &nbsp; &nbsp;},<br />
       &nbsp; &nbsp;&quot;errorText&quot;: &quot;No Error&quot;<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>getImageList</h3>
@@ -1463,6 +1496,7 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
+    <p>Without uri</p>
     <p># luna-send -n 1 -f luna://com.webos.service.mediaindexer/getImageList &#39;{}&#39;</p>
     <p>Response:</p>
     <p>{<br />
@@ -1492,9 +1526,11 @@ toc: true
       &nbsp; &nbsp; &nbsp; ],<br />
       &nbsp; &nbsp; &nbsp; &quot;count&quot;: 2<br />
       &nbsp; &nbsp;}<br />
-      }</p>
+      }
+    </p>
   </div>
   <div class="code-bg-grey">
+    <p>With uri</p>
     <p># luna-send -n 1 -f luna://com.webos.service.mediaindexer/getImageList &#39;{&quot;uri&quot;:&quot;msc://D94A-BE4D&quot;}&#39;</p>
     <p>Response:</p>
     <p>{<br />
@@ -1516,15 +1552,18 @@ toc: true
       &nbsp; &nbsp; &nbsp; &quot;uri&quot;: &quot;msc://D94A-BE4D&quot;,<br />
       &nbsp; &nbsp; &nbsp; &quot;count&quot;: 1<br />
       &nbsp; &nbsp;}<br />
-      }</p>
+      }
+    </p>
   </div>
   <div class="code-bg-grey">
+    <p>With subscription</p>
     <p># luna-send -i -f luna://com.webos.service.mediaindexer/getImageList &#39;{&quot;subscribe&quot;:true}&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;subscribed&quot;: true,<br />
       &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
-      }</p>
+      }
+    </p>
     <p>Subscription response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;errorCode&quot;: 0,<br />
@@ -1557,18 +1596,22 @@ toc: true
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;count&quot;: 2<br />
       &nbsp; &nbsp; &nbsp; }<br />
       &nbsp; &nbsp;]<br />
-      }</p>
+      }
+    </p>
   </div>
   <div class="code-bg-grey">
+    <p>With subscription and count limitation</p>
     <p># luna-send -i -f luna://com.webos.service.mediaindexer/getImageList &#39;{<br />
       &nbsp; &nbsp;&quot;subscribe&quot;:true,<br />
       &nbsp; &nbsp;&quot;count&quot;:1<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response :</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;subscribed&quot;: true,<br />
       &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
-      }</p>
+      }
+    </p>
     <p>Subscription response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;errorCode&quot;: 0,<br />
@@ -1589,7 +1632,8 @@ toc: true
       &nbsp; &nbsp; &nbsp; ],<br />
       &nbsp; &nbsp; &nbsp; &quot;count&quot;: 1<br />
       &nbsp; &nbsp;}<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>getImageMetadata</h3>
@@ -1688,6 +1732,7 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
+    <p>With uri</p>
     <p># luna-send -n 1 -f luna://com.webos.service.mediaindexer/getImageMetadata &#39;{&quot;uri&quot;:&quot;msc://D94A-BE4D/tmp/usb/sdh/sdh1/SampleImage2.jpg&quot;}&#39;</p>
     <p>Response:</p>
     <p>{<br />
@@ -1712,7 +1757,8 @@ toc: true
       &nbsp; &nbsp; &nbsp; &quot;file_size&quot;: 199429<br />
       &nbsp; &nbsp;},<br />
       &nbsp; &nbsp;&quot;errorText&quot;: &quot;No Error&quot;<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>getMediaDbPermission</h3>
@@ -1800,20 +1846,24 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
+    <p>With serviceName</p>
     <p># luna-send -n 1 -f luna://com.webos.service.mediaindexer/getMediaDbPermission&nbsp;&#39;{&quot;serviceName&quot;:&quot;com.webos.mediaindexer.app.qml&quot;}&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
   </div>
   <div class="code-bg-grey">
+    <p>Without service name</p>
     <p># luna-send -n 1 -f luna://com.webos.service.mediaindexer/getMediaDbPermission &#39;{}&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;errorCode&quot;:-1,<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:false,<br />
       &nbsp; &nbsp;&quot;errorText&quot;:&quot;serviceName field is mandatory input&quot;<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h2>Objects</h2>
@@ -1960,6 +2010,19 @@ toc: true
           <td>String</td>
           <td>
             <p>Contains a human-readable device description.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>state</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the state of the connected device</p>
+            <ul>
+              <li><strong>inactive</strong>: Device is not available.</li>
+              <li><strong>scanning</strong>: Device is in initial scan mode.</li>
+              <li><strong>idle</strong>: Scan has been completed, not monitoring.</li>
+            </ul>
           </td>
         </tr>
       </tbody>

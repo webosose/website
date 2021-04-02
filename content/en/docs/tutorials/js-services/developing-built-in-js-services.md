@@ -1,6 +1,6 @@
 ---
 title: Developing Built-in JS Services
-date: 2020-09-18
+date: 2021-03-23
 weight: 20
 toc: true
 ---
@@ -235,7 +235,7 @@ This file defines what groups are required for this component to function proper
 ``` json {linenos=table}
 {
     "com.example.service.js": [
-        "settings.read", "activities.manage"
+        "time.query", "activity.operation"
     ]
 }
 ```
@@ -243,7 +243,7 @@ This file defines what groups are required for this component to function proper
 
 A brief explanation of the above file:
 
-- Line(3) : Since `com.example.service.js` calls settingsservice's `getSystemSettings` method, add the method's group name "settings.read" to the client permission file. When "webos-service" module is used, it calls activitymanager's `create` and `complete` methods to keep the dynamic service running for 5 seconds. So, add "activities.manage".
+- Line(3) : Since `com.example.service.js` calls settingsservice's `getSystemSettings` method, add the method's group name "time.query" to the client permission file. When "webos-service" module is used, it calls activitymanager's `create` and `complete` methods to keep the dynamic service running for 5 seconds. So, add "activity.operation".
 
 #### API Permission File
 

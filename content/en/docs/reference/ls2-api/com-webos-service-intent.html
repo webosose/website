@@ -1,14 +1,12 @@
 ---
 title: com.webos.service.intent
-date: 2021-01-21
+date: 2021-03-22
 weight: 225
 toc: true
 ---
-
 {{< note >}}
 `com.webos.service.intent` is available since webOS OSE 2.8.0.
 {{< /note >}}
-
 <div>
   <h2>API Summary</h2>
   <p>An intent is an abstract description of an operation to be performed. Intent manager is a native service to handle the intent.</p>
@@ -29,123 +27,133 @@ toc: true
   <p>When the requester calls the <strong>start</strong> API with an intent, intent manager finds the suitable handler in the handler&nbsp;pool. Normally, handler is an app, so intent manager calls the <strong>launch</strong> API in the SAM to launch the (handler) app. The <strong>intent</strong> object is passed to application through launch&nbsp;<strong>params</strong> object</p>
   <p>Sometimes, requester wants to get result from the handler. In such case, requester should subscribe to the <strong>start</strong> API to get the subscription message from the handler. Intent manager sends subscription message when the handler calls the&nbsp;<strong>sendResult</strong> API.</p>
   <p>Requester can subscribe to the result by using the <strong>subscribeResult </strong>API also.</p>
-  <p>&nbsp;</p>
   <p><strong>Steps to support intent - application</strong></p>
   <ol>
-    <li>Modify appinfo.json first to support intent. Here is a simple example for enact browser. Lines highlighted in the below json code are newly added.<br />
+    <li>
+      Modify appinfo.json first to support intent. Here is a simple example for enact browser. Lines highlighted in the below json code are newly added.
       <div class="code-bg-grey">
-      $ vi /usr/palm/applications/com.webos.app.enactbrowser/appinfo.json<br />
-      {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;....<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;mimeTypes&quot;: [ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; { &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;mime&quot;: &quot;text/html&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;extension&quot;: &quot;html&quot;, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;stream&quot;: true &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; { &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;scheme&quot;: &quot;http&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; { &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;scheme&quot;: &quot;https&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; } &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; ], &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
-      <span style="color:#FF0000">&nbsp; &nbsp; &nbsp; &nbsp;</span><strong> &quot;intentFilters&quot;: [ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
+        $ vi /usr/palm/applications/com.webos.app.enactbrowser/appinfo.json<br />
+        {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;....<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;mimeTypes&quot;: [ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; { &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;mime&quot;: &quot;text/html&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;extension&quot;: &quot;html&quot;, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;stream&quot;: true &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; { &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;scheme&quot;: &quot;http&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; { &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;scheme&quot;: &quot;https&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; } &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; ], &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
+        <span style="color:#FF0000">&nbsp; &nbsp; &nbsp; &nbsp;</span><strong> &quot;intentFilters&quot;: [ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; { &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;actions&quot;: [&quot;action_url&quot;, &quot;action_uri&quot;],<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;uris&quot;: [&quot;http://youtube.com&quot;, &quot;http://&quot;, &quot;https://&quot;]<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; } &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
         &nbsp; &nbsp; &nbsp; &nbsp; ],</strong><br />
-      &nbsp; &nbsp; &nbsp; &nbsp; ....<br />
-      }<br />
-      </div></li>
-    <li>To apply the changes, restart the SAM module and intent manager.<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; ....<br />
+        }<br />
+      </div>
+    </li>
+    <li>
+      To apply the changes, restart the SAM module and intent manager.
       <div class="code-bg-grey">
-      $ restart sam<br />
-      $ restart com.webos.service.intent<br />
-      </div></li>
-    <li>Verify the changes:<br />
+        $ restart sam<br />
+        $ restart com.webos.service.intent<br />
+      </div>
+    </li>
+    <li>
+      Verify the changes:
       <ul>
-        <li><strong>On the SAM module:</strong><br />
+        <li>
+          <strong>On the SAM module:</strong>
           <div class="code-bg-grey">
-          $ luna-send -f -n 1 luna://com.webos.service.applicationmanager/getAppInfo &#39;{ &quot;id&quot;: &quot;com.webos.app.enactbrowser&quot;}&#39;
-          <p>Response:</p>
-          <p>{<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&quot;appId&quot;: &quot;com.webos.app.enactbrowser&quot;,<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&quot;appInfo&quot;: {<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;....<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;intentFilters&quot;: [<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;uris&quot;: [<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;http://youtube.com&quot;,<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;http://&quot;,<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;https://&quot;<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;actions&quot;: [<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;action_url&quot;,<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;action_uri&quot;<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;....<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;}<br />
-            }</p>
+            $ luna-send -f -n 1 luna://com.webos.service.applicationmanager/getAppInfo &#39;{ &quot;id&quot;: &quot;com.webos.app.enactbrowser&quot;}&#39;
+            <p>Response:</p>
+            <p>{<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&quot;appId&quot;: &quot;com.webos.app.enactbrowser&quot;,<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&quot;appInfo&quot;: {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;....<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;intentFilters&quot;: [<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;uris&quot;: [<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;http://youtube.com&quot;,<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;http://&quot;,<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;https://&quot;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;actions&quot;: [<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;action_url&quot;,<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;action_uri&quot;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;....<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;}<br />
+              }
+            </p>
           </div>
         </li>
-        <li><strong>On intent manager:</strong><br />
+        <li>
+          <strong>On intent manager:</strong>
           <div class="code-bg-grey">
-          # luna-send -f -n 1 luna://com.webos.service.intent/query &#39;{ &quot;intent&quot;: { &quot;action&quot;: &quot;action_url&quot;, &quot;uri&quot;:&quot;http://google.com&quot;}}&#39;
-          <p>Response:</p>
-          <p>{<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&quot;handlers&quot;: [<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;name&quot;: &quot;com.webos.app.enactbrowser&quot;,<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;intentFilters&quot;: [<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;uris&quot;: [<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;http://youtube.com&quot;,<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;http://&quot;,<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;https://&quot;<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;actions&quot;: [<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;action_url&quot;,<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;action_uri&quot;<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;]<br />
-            }<br />
-            &nbsp;</p>
+            # luna-send -f -n 1 luna://com.webos.service.intent/query &#39;{ &quot;intent&quot;: { &quot;action&quot;: &quot;action_url&quot;, &quot;uri&quot;:&quot;http://google.com&quot;}}&#39;
+            <p>Response:</p>
+            <p>{<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&quot;handlers&quot;: [<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;name&quot;: &quot;com.webos.app.enactbrowser&quot;,<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;intentFilters&quot;: [<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;uris&quot;: [<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;http://youtube.com&quot;,<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;http://&quot;,<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;https://&quot;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;actions&quot;: [<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;action_url&quot;,<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;action_uri&quot;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;]<br />
+              }<br />
+              &nbsp;
+            </p>
           </div>
         </li>
       </ul>
     </li>
-    <li>Start &#39;intent&#39; and verify the handler.<br />
+    <li>
+      Start &#39;intent&#39; and verify the handler.
       <div class="code-bg-grey">
-      $ luna-send -f -n 1 luna://com.webos.service.intent/start &#39;{ &quot;intent&quot;: { &quot;action&quot;: &quot;action_url&quot;, &quot;uri&quot;:&quot;http://google.com&quot;}}&#39;
-      <p>Response:</p>
-      <p>{<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&quot;intentId&quot;: 10,<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true<br />
-        }</p>
+        $ luna-send -f -n 1 luna://com.webos.service.intent/start &#39;{ &quot;intent&quot;: { &quot;action&quot;: &quot;action_url&quot;, &quot;uri&quot;:&quot;http://google.com&quot;}}&#39;
+        <p>Response:</p>
+        <p>{<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&quot;intentId&quot;: 10,<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true<br />
+          }
+        </p>
       </div>
     </li>
   </ol>
-  <p style="margin-left:40px">&nbsp;</p>
   <p><a id="listofintents" name="listofintents"><strong>List of intents</strong></a></p>
   <p>For a list of supported intents, see the following webOS Intents table.</p>
   <p>Intents must be specified in the following form:</p>
   <div class="code-bg-grey">
-  <p>{<br />
-    &nbsp; &nbsp;&quot;action&quot;:&quot;{action}&quot;,<br />
-    &nbsp; &nbsp;&quot;uri&quot;:&quot;{uri}&quot;,<br />
-    &nbsp; &nbsp;&quot;extra&quot;:{<br />
-    &nbsp; &nbsp; &nbsp; ...<br />
-    &nbsp; &nbsp;}<br />
-    }</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;action&quot;:&quot;{action}&quot;,<br />
+      &nbsp; &nbsp;&quot;uri&quot;:&quot;{uri}&quot;,<br />
+      &nbsp; &nbsp;&quot;extra&quot;:{<br />
+      &nbsp; &nbsp; &nbsp; ...<br />
+      &nbsp; &nbsp;}<br />
+      }
+    </p>
   </div>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -167,21 +175,23 @@ toc: true
           <td>
             <p><strong>Example 1</strong>&nbsp;- Ability to view all URIs starting with http and https.</p>
             <div class="code-bg-grey">
-            <p>&quot;intentFilters&quot;:[<br />
-              &nbsp;&nbsp; {<br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;actions&quot;:[&quot;view&quot;],<br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;uris&quot;:[&quot;http://&quot;,&quot;https://&quot;]<br />
-              &nbsp;&nbsp; }<br />
-              ]</p>
+              <p>&quot;intentFilters&quot;:[<br />
+                &nbsp;&nbsp; {<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;actions&quot;:[&quot;view&quot;],<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;uris&quot;:[&quot;http://&quot;,&quot;https://&quot;]<br />
+                &nbsp;&nbsp; }<br />
+                ]
+              </p>
             </div>
             <p><strong>Example 2</strong>&nbsp;- Ability to view the 2 URIs mentioned below.</p>
             <div class="code-bg-grey">
-            <p>&quot;intentFilters&quot;:[<br />
-              &nbsp;&nbsp; {<br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;actions&quot;:[&quot;view&quot;],<br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;uris&quot;:[&quot;https://google.com&quot;, &quot;http://naver.com&quot;]<br />
-              &nbsp;&nbsp; }<br />
-              ]</p>
+              <p>&quot;intentFilters&quot;:[<br />
+                &nbsp;&nbsp; {<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;actions&quot;:[&quot;view&quot;],<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;uris&quot;:[&quot;https://google.com&quot;, &quot;http://naver.com&quot;]<br />
+                &nbsp;&nbsp; }<br />
+                ]
+              </p>
             </div>
           </td>
         </tr>
@@ -193,12 +203,13 @@ toc: true
           <td>
             <p><strong>Example 1</strong>&nbsp;- Ability to view all map locations.</p>
             <div class="code-bg-grey">
-            <p>&quot;intentFilters&quot;:[<br />
-              &nbsp;&nbsp; {<br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;actions&quot;:[&quot;view&quot;],<br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;uris&quot;:[&quot;geo://&quot;]<br />
-              &nbsp;&nbsp; }<br />
-              ]</p>
+              <p>&quot;intentFilters&quot;:[<br />
+                &nbsp;&nbsp; {<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;actions&quot;:[&quot;view&quot;],<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;uris&quot;:[&quot;geo://&quot;]<br />
+                &nbsp;&nbsp; }<br />
+                ]
+              </p>
             </div>
             <p><strong>Example 2</strong>&nbsp;- Examples of other uris:</p>
             <ul>
@@ -222,12 +233,13 @@ toc: true
           <td>
             <p><strong>Example</strong>&nbsp;- Ability to open specific page of settings app</p>
             <div class="code-bg-grey">
-            <p>&quot;intentFilters&quot;:[<br />
-              &nbsp;&nbsp; {<br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;actions&quot;:[&quot;view&quot;],<br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;uris&quot;:[&quot;app://com.palm.app.settings/Settings/Language&quot;]<br />
-              &nbsp;&nbsp; }<br />
-              ]</p>
+              <p>&quot;intentFilters&quot;:[<br />
+                &nbsp;&nbsp; {<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;actions&quot;:[&quot;view&quot;],<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;uris&quot;:[&quot;app://com.palm.app.settings/Settings/Language&quot;]<br />
+                &nbsp;&nbsp; }<br />
+                ]
+              </p>
             </div>
           </td>
         </tr>
@@ -242,14 +254,15 @@ toc: true
           <td>
             <p><strong>Example</strong>&nbsp;- Ability to play specific file (works with &#39;mimeTypes&#39; specified in appinfo.json file)</p>
             <div class="code-bg-grey">
-            <p>&quot;intentFilters&quot;:[<br />
-              &nbsp;&nbsp; {<br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;actions&quot;:[&quot;view&quot;],<br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;uris&quot;:[<br />
-              &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;file:///tmp/usb/sdg/sdg3/mediaIndexerContents/scan2/Miss_A.mp3&quot;<br />
-              &nbsp; &nbsp; &nbsp;&nbsp;]<br />
-              &nbsp; &nbsp;}<br />
-              ]</p>
+              <p>&quot;intentFilters&quot;:[<br />
+                &nbsp;&nbsp; {<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;actions&quot;:[&quot;view&quot;],<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;uris&quot;:[<br />
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;file:///tmp/usb/sdg/sdg3/mediaIndexerContents/scan2/Miss_A.mp3&quot;<br />
+                &nbsp; &nbsp; &nbsp;&nbsp;]<br />
+                &nbsp; &nbsp;}<br />
+                ]
+              </p>
             </div>
           </td>
         </tr>
@@ -369,14 +382,16 @@ toc: true
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
         &nbsp; &nbsp; &nbsp; &nbsp; }<br />
         &nbsp; &nbsp; ]<br />
-        }</p>
+        }
+      </p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -f -n 1 luna://com.webos.service.intent/query &#39;{<br />
         &nbsp;&nbsp; &quot;intent&quot;:{<br />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;name&quot;:&quot;bareapp&quot;<br />
         &nbsp;&nbsp; }<br />
-        }&#39;</p>
+        }&#39;
+      </p>
       <p>Response:</p>
       <p>{<br />
         &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
@@ -404,14 +419,16 @@ toc: true
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
         &nbsp; &nbsp; &nbsp; &nbsp; }<br />
         &nbsp; &nbsp; ]<br />
-        }</p>
+        }
+      </p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -f -n 1 luna://com.webos.service.intent/query &#39;{<br />
         &nbsp;&nbsp; &quot;intent&quot;:{<br />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;action&quot;:&quot;action_test&quot;<br />
         &nbsp;&nbsp; }<br />
-        }&#39;</p>
+        }&#39;
+      </p>
       <p>Response:</p>
       <p>{<br />
         &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
@@ -439,7 +456,8 @@ toc: true
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
         &nbsp; &nbsp; &nbsp; &nbsp; }<br />
         &nbsp; &nbsp; ]<br />
-        }</p>
+        }
+      </p>
     </div>
   </div>
 </div>
@@ -553,6 +571,8 @@ toc: true
       </tbody>
     </table>
   </div>
+  <h4>Example</h4>
+  <p>None</p>
 </div>
 <h3>subscribeResult</h3>
 <div>
@@ -756,13 +776,15 @@ toc: true
     <p># luna-send -i -f luna://com.webos.service.intent/subscribeResult &#39;{<br />
       &nbsp;&nbsp; &quot;intentId&quot;:14,<br />
       &nbsp;&nbsp; &quot;subscribe&quot;:true<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
       &nbsp; &nbsp; &quot;intentId&quot;: 14<br />
-      }</p>
+      }
+    </p>
     <p>Subscription response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
@@ -775,7 +797,8 @@ toc: true
       &nbsp; &nbsp; &quot;from&quot;: &quot;com.webos.lunasend-36099&quot;,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp; &quot;intentId&quot;: 14<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>sendResult</h3>
@@ -875,12 +898,14 @@ toc: true
     <p># luna-send -n 1 -f luna://com.webos.service.intent/sendResult &#39;{<br />
       &nbsp;&nbsp; &quot;intentId&quot;:33,<br />
       &nbsp;&nbsp; &quot;result&quot;:&quot;ok&quot;<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp; &quot;intentId&quot;: 33<br />
-      }</p>
+      }
+    </p>
   </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.intent/sendResult &#39;{<br />
@@ -891,12 +916,14 @@ toc: true
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;data&quot;:true<br />
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />
       &nbsp;&nbsp; }<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp; &quot;intentId&quot;: 33<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h2>Objects</h2>

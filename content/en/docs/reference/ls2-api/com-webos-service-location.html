@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.location
-date: 2021-01-21
+date: 2021-03-29
 weight: 230
 toc: true
 ---
@@ -8,8 +8,7 @@ toc: true
 <div>
   <h2>API Summary</h2>
   <p>Provides basic location services for single or multiple position fixes.&nbsp;This service connects to Luna bus to interact with other system components (e.g. apps, services) that require location services.</p>
-  <ul>
-  </ul>
+  <ul></ul>
 </div>
 <h2>Overview of the API</h2>
 <div>
@@ -29,8 +28,10 @@ toc: true
     <li>Follow steps to get&nbsp;<a href="https://developers.google.com/maps/documentation/geocoding/get-api-key" rel="nofollow">GeoCoding API key</a>.</li>
     <li>Encrypt generated GeoCoding key&nbsp;with base64 encoding, execute following command in terminal<br />
       $&nbsp;<strong>echo&nbsp;&quot;GEOCODING_KEY&quot;&nbsp;| base64</strong><br />
-      &lt;&lt;ENCRYPTED_GEOCODING_KEY&gt;&gt;</li>
-    <li>Write encrypted key in file&nbsp;<strong>/etc/location/wsp.conf</strong>&nbsp;present&nbsp;on your device. Create following file:
+      &lt;&lt;ENCRYPTED_GEOCODING_KEY&gt;&gt;
+    </li>
+    <li>
+      Write encrypted key in file&nbsp;<strong>/etc/location/wsp.conf</strong>&nbsp;present&nbsp;on your device. Create following file:
       <p>{<br />
         &nbsp; &nbsp;&nbsp;&quot;wpsName&quot;:&nbsp;&quot;google&quot;,<br />
         &nbsp; &nbsp;&nbsp;&quot;apiKey&quot;:&nbsp;&quot;ENCRYPTED_GEOCODING_KEY&quot;,<br />
@@ -40,7 +41,8 @@ toc: true
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;url&quot;:&nbsp;&quot;https://maps.googleapis.com/maps/api/geocode/json?&quot;<br />
         &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;}<br />
         &nbsp; &nbsp;&nbsp;]<br />
-        }</p>
+        }
+      </p>
     </li>
     <li>If the location service is already running, reboot the device.</li>
   </ol>
@@ -219,7 +221,8 @@ toc: true
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;name&quot;:&quot;network&quot;<br />
         &nbsp; &nbsp; &nbsp; }<br />
         &nbsp; &nbsp;]<br />
-        }</p>
+        }
+      </p>
     </div>
   </div>
 </div>
@@ -230,11 +233,13 @@ toc: true
   <p><strong><span style="color:rgb(93, 92, 92)">Important points:</span></strong></p>
   <ul>
     <li>Supports Google Geocoding API.</li>
-    <li>Prerequisite:
+    <li>
+      Prerequisite:
       <ul>
         <li>Set up the Geocoding API key as described in&nbsp;<a href="#overview-of-the-api">Overview</a>&nbsp;&gt; &quot;Google Geocoding API Key&quot;.&nbsp;</li>
         <li>Enable network location provider state by:<br />
-          # luna-send -f -n 1 luna://com.webos.service.location/<strong>setState </strong>&#39;{&quot;Handler&quot;:&quot;network&quot;,&quot;state&quot;:true}&#39;</li>
+          # luna-send -f -n 1 luna://com.webos.service.location/<strong>setState </strong>&#39;{&quot;Handler&quot;:&quot;network&quot;,&quot;state&quot;:true}&#39;
+        </li>
       </ul>
     </li>
     <li>For more details:&nbsp;<a href="https://developers.google.com/maps/documentation/geocoding/?hl=en" style="font-size: 10pt; line-height: 13pt; background-color: transparent;">https://developers.google.com/maps/documentation/geocoding/?hl=en</a>.</li>
@@ -364,7 +369,8 @@ toc: true
   <div class="code-bg-grey">
     <p>#&nbsp;luna-send -f -n 1 luna://com.webos.service.location/getGeoCodeLocation &#39;{<br />
       &nbsp; &nbsp;&quot;address&quot;:&quot;221-2, Yangjae 2-dong, Seocho-gu, Seoul, Korea&quot;<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;errorCode&quot;:0,<br />
@@ -450,7 +456,8 @@ toc: true
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}<br />
       &nbsp; &nbsp; &nbsp; ]<br />
       &nbsp; &nbsp;}<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>getGpsStatus</h3>
@@ -631,13 +638,15 @@ toc: true
       &nbsp; &nbsp;&quot;state&quot;:false,<br />
       &nbsp; &nbsp;&quot;errorCode&quot;:0,<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
     <p>Subscription response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;state&quot;:false,<br />
       &nbsp; &nbsp;&quot;errorCode&quot;:0,<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>getLocationHandlerDetails</h3>
@@ -794,7 +803,8 @@ toc: true
   <div class="code-bg-grey">
     <p># luna-send -f -n 1 luna://com.webos.service.location/getLocationHandlerDetails &#39;{<br />
       &nbsp; &nbsp;&quot;Handler&quot;:&quot;gps&quot;<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;requiresNetwork&quot;:false,<br />
@@ -804,7 +814,8 @@ toc: true
       &nbsp; &nbsp;&quot;errorCode&quot;:0,<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
       &nbsp; &nbsp;&quot;accuracy&quot;:1<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>getLocationUpdates</h3>
@@ -1130,7 +1141,8 @@ toc: true
   <div class="code-bg-grey">
     <p># luna-send -f -n 1 luna://com.webos.service.location/getLocationUpdates &#39;{<br />
       &nbsp; &nbsp;&quot;Handler&quot;:&quot;gps&quot;<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:&nbsp;Only subscription response is provided. This will be available only when location data is available.</p>
     <p>Subscription response:</p>
     <p>{<br />
@@ -1144,7 +1156,8 @@ toc: true
       &nbsp; &nbsp;&quot;timestamp&quot;:1410827340157,<br />
       &nbsp; &nbsp;&quot;altitude&quot;:-1,<br />
       &nbsp; &nbsp;&quot;latitude&quot;:37.460605<br />
-      }</p>
+      }
+    </p>
   </div>
   <div class="code-bg-grey">
     <p># luna-send -f -i luna://com.webos.service.location/getLocationUpdates &#39;{<br />
@@ -1152,7 +1165,8 @@ toc: true
       &nbsp; &nbsp;&quot;Handler&quot;:&quot;gps&quot;,<br />
       &nbsp; &nbsp;&quot;minimumDistance&quot;:100,<br />
       &nbsp; &nbsp;&quot;minimumInterval&quot;:20000<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:&nbsp;Only subscription response is provided. This will be available only when location data is available.</p>
     <p>Subscription response:</p>
     <p>{<br />
@@ -1178,7 +1192,8 @@ toc: true
       &nbsp; &nbsp;&quot;speed&quot;:-1,<br />
       &nbsp; &nbsp;&quot;horizAccuracy&quot;:21,<br />
       &nbsp; &nbsp;&quot;vertAccuracy&quot;:-1<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>getReverseLocation</h3>
@@ -1189,11 +1204,13 @@ toc: true
   <p><strong><span style="color:rgb(93, 92, 92)">Important points:</span></strong></p>
   <ul>
     <li>Supports Google Reverse Geocoding API.</li>
-    <li>Prerequisite:
+    <li>
+      Prerequisite:
       <ul>
-        <li>Set up the Geocoding API key as described in&nbsp;<a href="#overview-of-the-api">Overview</a>&nbsp;&gt; &quot;Google Geocoding API Key&quot;.&nbsp;</li>
+        <li>Set up the Geocoding API key as described in&nbsp;<a href="#com.webos.service.locationv1.0-OverviewoftheAPI">Overview</a>&nbsp;&gt; &quot;Google Geocoding API Key&quot;.&nbsp;</li>
         <li>Enable network location provider state by:<br />
-          # luna-send -f -n 1 luna://com.webos.service.location/<strong>setState&nbsp;</strong>&#39;{&quot;Handler&quot;:&quot;network&quot;,&quot;state&quot;:true}&#39;</li>
+          # luna-send -f -n 1 luna://com.webos.service.location/<strong>setState&nbsp;</strong>&#39;{&quot;Handler&quot;:&quot;network&quot;,&quot;state&quot;:true}&#39;
+        </li>
       </ul>
     </li>
     <li>For more details:&nbsp;<a href="https://developers.google.com/maps/documentation/geocoding/?hl=en" style="font-size: 10pt; line-height: 13pt; background-color: transparent;">https://developers.google.com/maps/documentation/geocoding/?hl=en</a>.</li>
@@ -1324,7 +1341,8 @@ toc: true
     <p># luna-send -f -n 1 luna://com.webos.service.location/getReverseLocation &#39;{<br />
       &nbsp; &nbsp;&quot;latitude&quot;:37.461192,<br />
       &nbsp; &nbsp;&quot;longitude&quot;:127.035238<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;errorCode&quot;:0,<br />
@@ -1953,7 +1971,8 @@ toc: true
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}<br />
       &nbsp; &nbsp; &nbsp; ]<br />
       &nbsp; &nbsp;}<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>getState</h3>
@@ -2142,7 +2161,8 @@ toc: true
       &nbsp; &nbsp;&quot;state&quot;:1,<br />
       &nbsp; &nbsp;&quot;errorCode&quot;:0,<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
     <p>Subscription responses:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;state&quot;:1,<br />
@@ -2153,7 +2173,8 @@ toc: true
       &nbsp; &nbsp;&quot;state&quot;:0,<br />
       &nbsp; &nbsp;&quot;errorCode&quot;:0,<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>setState</h3>
@@ -2262,12 +2283,14 @@ toc: true
     <p># luna-send -f -n 1 luna://com.webos.service.location/setState &#39;{<br />
       &nbsp; &nbsp;&quot;Handler&quot;:&quot;gps&quot;,<br />
       &nbsp; &nbsp;&quot;state&quot;:true<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;errorCode&quot;:0,<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>mock/enable</h3>
@@ -2362,12 +2385,14 @@ toc: true
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.location/mock/enable&nbsp;&#39;{<br />
       &nbsp; &nbsp;&quot;name&quot;:&quot;gps&quot;<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
       &nbsp; &nbsp;&quot;errorCode&quot;:0<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>mock/disable</h3>
@@ -2462,12 +2487,14 @@ toc: true
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.location/mock/disable&#39;{<br />
       &nbsp; &nbsp;&quot;name&quot;:&quot;gps&quot;<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
       &nbsp; &nbsp;&quot;errorCode&quot;:0<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>mock/setLocation</h3>
@@ -2582,12 +2609,14 @@ toc: true
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;altitude&quot;:-1,<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;latitude&quot;:37.460605<br />
       &nbsp; &nbsp; &nbsp; }<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
       &nbsp; &nbsp;&quot;errorCode&quot;:0<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h2>Objects</h2>

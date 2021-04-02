@@ -1,6 +1,6 @@
 ---
 title: Developing Built-in Web Apps
-date: 2020-06-24
+date: 2021-03-23
 weight: 20
 toc: true
 ---
@@ -261,7 +261,7 @@ Apps are required to have metadata before they can be packaged. This metadata is
     "main": "index.html",
     "title": "Web app sample",
     "icon": "icon.png",
-    "requiredPermissions": ["time"]
+    "requiredPermissions": ["time.query"]
 }
 ```
 {{< /code >}}
@@ -272,7 +272,7 @@ A brief explanation of the above file:
 - Line(5) : The type of the web app.
 - Line(7) : The title to be shown on the Home Launcher.
 - Line(8) : The icon to be shown on the Home Launcher. Make sure the icon file is available in the project root directory. You can use your own icon.png (80*80) file or attached [icon.png](/images/docs/tutorials/icon.png).
-- Line(9) : Specify the group to which the external service's method called by the app belongs. Because systemservice's `getTime` method belongs to "time" group, put "time" in this property. To check the group of each method, use [`ls-monitor`]({{< relref "ls-monitor" >}}) command with "-i" option.
+- Line(9) : Specify the group to which the external service's method called by the app belongs. Because systemservice's `getTime` method belongs to "time.query" group, put "time.query" in this property. To check the group of each method, use [`ls-monitor`]({{< relref "ls-monitor" >}}) command with "-i" option.
 
 For more details, see [appinfo.json]({{< relref "appinfo-json" >}}).
 

@@ -1,10 +1,9 @@
 ---
 title: com.webos.service.unifiedsearch
-date: 2021-01-21
+date: 2021-03-29
 weight: 340
 toc: true
 ---
-
 <div>
   <h2>API Summary</h2>
   <p>Searches various items (intents) by using keyword.</p>
@@ -17,10 +16,12 @@ toc: true
   <p><strong>Search Targets</strong></p>
   <ul>
     <li><strong>Application</strong>: Search&nbsp;by title<br />
-      &nbsp;</li>
+      &nbsp;
+    </li>
     <li><strong>Application contents</strong>: Search&nbsp;by string mapping what app has specified (e.g. Settings). See the &quot;Configuring Application Contents Search&quot; section below.<br />
       <strong>Note: </strong>Currently, only supports&nbsp;<strong>&quot;web&quot;</strong> type applications that follow the webOs i18n structure.&nbsp;<br />
-      &nbsp;</li>
+      &nbsp;
+    </li>
     <li><strong>Plugins</strong>: Search by plugin (e.g.&nbsp;audio, video, image, contact)&nbsp;</li>
   </ul>
   <p><strong>Note: </strong>The service has internal database (sqlite3&nbsp;FTS3)&nbsp;to index items of application and application&nbsp;contents. For plugins, the service generally searches items from the database (DB8) directly.</p>
@@ -41,8 +42,9 @@ toc: true
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;...<br />
         &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;]<br />
         &nbsp; &nbsp;&nbsp;}, ...]<br />
-        }</p>
-      </div>
+        }
+      </p>
+    </div>
     </li>
     <li>
       <p>In the appinfo.json file, specify the path of the mapping JSON file and the intentFilters.</p>
@@ -62,7 +64,8 @@ toc: true
         &nbsp; &nbsp; &nbsp; }<br />
         &nbsp; &nbsp;],<br />
         &nbsp; &nbsp;&quot;....&quot;<br />
-        }</p>
+        }
+      </p>
       </div>
     </li>
   </ol>
@@ -86,24 +89,29 @@ toc: true
   <p><strong>Developing plugins</strong></p>
   <p>We support the C++ implementation only. Please refer &quot;./plugins/media&quot; as a&nbsp; plugin template first.</p>
   <p>To implement yours,&nbsp;<strong>add &quot;com.webos.service.unifiedsearch&quot; to DEPENDS</strong> of your component recipe file.<br />
-    And place the result shared object (.so) file on&nbsp;<strong>/usr/lib/plugins/unifiedsearch</strong> folder.</p>
+    And place the result shared object (.so) file on&nbsp;<strong>/usr/lib/plugins/unifiedsearch</strong> folder.
+  </p>
   <p>The unified search core has following classes to implement plugin.<br />
-    <strong>You need to inherit at least 3 classes (bold items), and need to implement virtual functions.</strong></p>
+    <strong>You need to inherit at least 3 classes (bold items), and need to implement virtual functions.</strong>
+  </p>
   <ul>
-    <li>Object
+    <li>
+      Object
       <ul>
         <li>SearchItem (.h) : a common data format to save/load items</li>
         <li>Intent (.h) : a format to handle intent, and also display the items on screen</li>
       </ul>
     </li>
-    <li>Controller
+    <li>
+      Controller
       <ul>
         <li>LunaClient (.h) : to access LS2 as com.webos.service.unifiedsearch contact</li>
         <li><strong>Category</strong> (.h) : a&nbsp;set of item, generating &quot;Intent&quot; from &quot;SearchItem&quot;</li>
         <li><strong>DataSource</strong> (.h) : item store, store/search the &quot;SearchItem&quot; internally</li>
       </ul>
     </li>
-    <li>Bridge
+    <li>
+      Bridge
       <ul>
         <li>SearchSet (.h) : have a DataSource and multiple Category</li>
         <li><strong>Plugin</strong> (.h) : pass a SearchSet to the unified search service</li>
@@ -112,53 +120,65 @@ toc: true
   </ul>
   <p>- Plugin workflow<br />
     <img src="/images/docs/reference/com-webos-service-unifiedsearch-plugin-workflow.png" alt="plugin workflow"></p>
+  </p>
   <p>- Implementation steps</p>
   <ol>
-    <li>Inherit &amp; implement <strong>DataSource</strong> class
+    <li>
+      Inherit &amp; implement <strong>DataSource</strong> class
       <ul>
-        <li>override &quot;search&quot; function: search your datasource(e.g. DB8) and create SearchItem vector &amp; return it by using callback.
+        <li>
+          override &quot;search&quot; function: search your datasource(e.g. DB8) and create SearchItem vector &amp; return it by using callback.
           <ul>
             <li>Should return all category items that matched with &#39;searchKey&#39; as async<br />
-              (if you handle multiple categories on your plugin)</li>
+              (if you handle multiple categories on your plugin)
+            </li>
             <li>The callback:&nbsp;function&lt;void(string, vector&lt;SearchItemPtr&gt;)&gt;</li>
           </ul>
         </li>
       </ul>
     </li>
-    <li>Inherit &amp; implement <strong>Category</strong> class
+    <li>
+      Inherit &amp; implement <strong>Category</strong> class
       <ul>
-        <li>override &quot;generateIntent&quot; function to convert SearchItem to Intent
+        <li>
+          override &quot;generateIntent&quot; function to convert SearchItem to Intent
           <ul>
             <li>Generally, you will set &#39;Action&#39;, &#39;URI&#39; and &#39;Display&#39; on this stage.</li>
           </ul>
         </li>
       </ul>
     </li>
-    <li>Inherit &amp; implement <strong>Plugin</strong>&nbsp;class
+    <li>
+      Inherit &amp; implement <strong>Plugin</strong>&nbsp;class
       <ul>
         <li>create a DataSource and categories</li>
         <li>create a SearchSet with the DataSource and add created categories</li>
         <li>override &quot;getSearchSet&quot; to return upper SearchSet</li>
         <li>create &#39;extern &quot;C&quot; Plugin* create_plugin()&#39; function to return a pointer of your Plugin (as singleton)<br />
-          &nbsp;</li>
+          &nbsp;
+        </li>
       </ul>
     </li>
   </ol>
   <p>- Using LunaClient class to easy LS2 implementation</p>
   <ol>
-    <li>Inherit &amp; implement <strong>LunaClient&nbsp;</strong>class
+    <li>
+      Inherit &amp; implement <strong>LunaClient&nbsp;</strong>class
       <ul>
-        <li>It will use&nbsp;the context of &#39;com.webos.service.unifiedsearch&#39;.
+        <li>
+          It will use&nbsp;the context of &#39;com.webos.service.unifiedsearch&#39;.
           <ul>
             <li>So if you want to connect LS2 as another context, please re-implement your own LS2 class.</li>
             <li>And also, if you want to connect another ACG group, please contact &#39;jb.seo@lge.com&#39; to update client permissions.</li>
           </ul>
         </li>
-        <li>Create a function to get your data
+        <li>
+          Create a function to get your data
           <ul>
             <li>Use follow function to call, implement as async<br />
               LunaClient::call(string method, string payload,&nbsp;function&lt;bool(LSMessage&nbsp;*message)&gt; cb, bool subscribe)<br />
-              &nbsp;</li>
+              &nbsp;
+            </li>
           </ul>
         </li>
       </ul>
@@ -167,8 +187,10 @@ toc: true
   <p>- About the Async implementation</p>
   <ul>
     <li>The unifiedsearch&#39;s <strong>search </strong>API will response after all data sources&#39; search function were&nbsp;done.<br />
-      Because it requires some async targets (e.g. LS2)</li>
-    <li>It&#39;s designed&nbsp;
+      Because it requires some async targets (e.g. LS2)
+    </li>
+    <li>
+      It&#39;s designed&nbsp;
       <ol>
         <li>passing shared_ptr of some &#39;Task&#39; which has the callback to the lambda function as capture</li>
         <li>because of lambda holds the shared_ptr, it will keep the Task until the function ended</li>
@@ -341,7 +363,8 @@ toc: true
         &nbsp; &nbsp; &nbsp; }<br />
         &nbsp; &nbsp;],<br />
         &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-        }</p>
+        }
+      </p>
     </div>
   </div>
 </div>
@@ -403,6 +426,7 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
+    <p>Get list of categories</p>
     <p># luna-send -n 1 -f luna://com.webos.service.unifiedsearch/getCategories &#39;{ }&#39;</p>
     <p>Response:</p>
     <p>{<br />
@@ -423,7 +447,8 @@ toc: true
       &nbsp; &nbsp; &nbsp; }<br />
       &nbsp; &nbsp;],<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>updateCategory</h3>
@@ -585,15 +610,18 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
+    <p>Change rank of a category and verify in the category list</p>
     <p>1. Change the rank of a category.</p>
     <p># luna-send -n 1 -f luna://com.webos.service.unifiedsearch/updateCategory &#39;{<br />
       &nbsp; &nbsp;&nbsp;&quot;id&quot;:&quot;com.webos.app.avn.settings&quot;,<br />
       &nbsp; &nbsp; &quot;rank&quot;:1<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false<br />
-      }</p>
+      }
+    </p>
     <p>&nbsp;</p>
     <p>2. Get the list of categories.</p>
     <p># luna-send -n 1 -f luna://com.webos.service.unifiedsearch/getCategories &#39;{ }&#39;</p>
@@ -617,18 +645,22 @@ toc: true
       &nbsp; &nbsp; &nbsp; }<br />
       &nbsp; &nbsp;],<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
   </div>
   <div class="code-bg-grey">
+    <p>Disable a category and verify in the category list</p>
     <p>1. Disable a category.</p>
     <p># luna-send -n 1 -f luna://com.webos.service.unifiedsearch/updateCategory &#39;{<br />
       &nbsp; &nbsp;&nbsp;&quot;id&quot;:&quot;com.webos.app.avn.settings&quot;,<br />
       &nbsp; &nbsp; &quot;enabled&quot;:false<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false<br />
-      }</p>
+      }
+    </p>
     <p>&nbsp;</p>
     <p>2. Get the list of categories.</p>
     <p># luna-send -n 1 -f luna://com.webos.service.unifiedsearch/getCategories &#39;{}&#39;</p>
@@ -651,19 +683,23 @@ toc: true
       &nbsp; &nbsp; &nbsp; }<br />
       &nbsp; &nbsp;],<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
   </div>
   <div class="code-bg-grey">
+    <p>Enable a category with a rank 2 order and verify in the category list</p>
     <p>1. Enable a category with rank 2.</p>
     <p># luna-send -n 1 -f luna://com.webos.service.unifiedsearch/updateCategory &#39;{<br />
       &nbsp; &nbsp;&nbsp;&quot;id&quot;:&quot;com.webos.app.avn.settings&quot;,<br />
       &nbsp; &nbsp;&nbsp;&quot;enabled&quot;:true,<br />
       &nbsp; &nbsp;&nbsp;&quot;rank&quot;:2<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false<br />
-      }</p>
+      }
+    </p>
     <p>&nbsp;</p>
     <p>2. Get a list of categories.</p>
     <p># luna-send -n 1 -f luna://com.webos.service.unifiedsearch/getCategories &#39;{}&#39;</p>
@@ -687,7 +723,8 @@ toc: true
       &nbsp; &nbsp; &nbsp; }<br />
       &nbsp; &nbsp;],<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h2>Objects</h2>
@@ -730,7 +767,9 @@ toc: true
       </tbody>
     </table>
   </div>
-  <h3>item</h3>Provide a detailed description of the object. Limit to 2-3 paragraphs.<div class="table-container">
+  <h3>item</h3>
+  Provide a detailed description of the object. Limit to 2-3 paragraphs.
+  <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
         <tr>

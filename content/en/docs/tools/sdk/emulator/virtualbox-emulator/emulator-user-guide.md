@@ -1,7 +1,7 @@
 ---
 title: User Guide
 display_title: VirtualBox Emulator User Guide
-date: 2021-01-22
+date: 2021-04-01
 weight: 10
 toc: true
 ---
@@ -184,7 +184,7 @@ The screenshots below have been captured from Oracle VM VirtualBox v6.0.14 on Wi
     {{< figure src="/images/docs/tools/emulator/vbox_emulator_img10.png" alt="Configuring the display" class="align-left" >}}
 
     1. In **Video Memory**, set the amount of video memory you wish to allocate to the webos-image virtual machine. You can allocate up to 128 MB of memory.
-    2. In **Monitor Count**, set the count of monitor to 1 or 2. webOS OSE supports up to two monitors.
+    2. In **Monitor Count**, set the count of monitor to **1** or **2**. webOS OSE supports up to two monitors.
     3. From the **Graphics Controller** list, select **VMSVGA**.
     4. In **Acceleration**, ensure that **Enable 3D Acceleration** option is selected.
     5. On the navigation bar, click **Audio**.
@@ -234,22 +234,13 @@ The screenshots below have been captured from Oracle VM VirtualBox v6.0.14 on Wi
 
     Click **OK**. You will return to the **Adapter 1** section. On the navigation bar, click **Serial Ports**.
 
-13. The **Serial Port** section will be displayed. Ensure that the **Port1** tab is selected.
-
-    {{< figure src="/images/docs/tools/emulator/vbox_emulator_img14.png" alt="Configuring the serial port" class="align-left" >}}
-
-    1. In the **Port 1** tab, select **Enable Serial Port**.
-    2. From the **Port Mode** list, select **Raw File**.
-    3. In the **Path/Address** box, type **/dev/null** (on Ubuntu/macOS) or **null** (on Windows).
-    4. Click **OK**.
-
-14. Oracle VM VirtualBox Manager will return to the main screen and display the details of the virtual machine with updated information.
+13. Oracle VM VirtualBox Manager will return to the main screen and display the details of the virtual machine with updated information.
 
     Your virtual machine is ready for use. To start the virtual machine, ensure that the virtual machine you wish to run is selected. On the icon toolbar, click **Start**.
 
     {{< figure src="/images/docs/tools/emulator/vbox_emulator_img15.png" alt="Starting the virtual machine" class="align-left" >}}
 
-15. Oracle VM VirtualBox Manager will display the webos-image virtual machine window.
+14. Oracle VM VirtualBox Manager will display the webos-image virtual machine window.
 
     It will display the **VirtualBox - Information** dialog box. Click **OK**.
 
@@ -372,7 +363,7 @@ The following describes the steps to update the emulator image on the previously
 
 ## Connecting to the Emulator
 
-On the host machine, you can connect to the emulator from the shell or from the web browser.
+On the host machine, you can connect to the emulator in various ways.
 
 ### Connect from the Shell
 
@@ -397,3 +388,7 @@ Use a SSH client (for example, Putty) to connect to the emulator using SSH proto
 ### Connect from the Web Browser
 
 To connect to the emulator using Web Inspector, access `localhost:<PortNumber>` on a web browser (for example, Chrome). The port number must match the value configured for web-inspector (for example, 9998) in the port forwarding rules during the setup process.
+
+### Connect from the Serial Ports
+
+For more details on serial ports setup, visit [webOS Emulator Tips](https://github.com/webosose-emulator/build-webos/blob/master/webOS-Emulator-Tips.md#serial-setting)
