@@ -13,7 +13,7 @@ This version corresponds to the [GitHub releases](https://github.com/webosose/bu
 
 ### ACG Migration
 
-- Fixed crash issues related to GSlice memory problem.
+- Fixed crash issues related to the GSlice memory problem.
 - Modified trustLevel syntax.
 - Modified `.perm.json` files syntax.
 - Migrated bugreportd to ACG model.
@@ -29,7 +29,7 @@ This version corresponds to the [GitHub releases](https://github.com/webosose/bu
 
 #### SDK
 
-- Released Command-Line Interface (CLI) 2.0.3.
+- Released Command-Line Interface (CLI) 2.1.0.
 
 ### Manager & Services
 

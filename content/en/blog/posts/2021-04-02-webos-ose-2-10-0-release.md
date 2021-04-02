@@ -11,7 +11,7 @@ We're pleased to announce the release of webOS Open Source Edition (OSE) 2.10.0.
 The highlights of this release are as follows:
 
 - [Storage access framework](#storage-access-framework)
-- [Enabling cookie encrytion of Blink](#enabling-cookie-encrytion-of-blink)
+- [Enabling cookie encryption of Blink](#enabling-cookie-encryption-of-blink)
 - [Peripheral Manager service](#peripheral-manager-service)
 - [ACG enhancements](#acg-enhancements)
 
@@ -29,7 +29,7 @@ For now, Storage access framework supports the following storages:
 
 ## Enabling cookie encryption of Blink
 
-Cookies store information for login and session between client and server. Unencrypted cookies might give attackers a chance to steal or use the information. In this release, user can use cookie encryption which protects user data from a platform security point of view.
+Cookies store information for login and session between client and server. Unencrypted cookies might give attackers a chance to steal or use the information. In this release, users can use cookie encryption which protects user data from a platform security point of view.
 
 ## Peripheral Manager service
 
