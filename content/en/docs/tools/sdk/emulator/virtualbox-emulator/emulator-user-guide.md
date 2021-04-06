@@ -1,7 +1,7 @@
 ---
 title: User Guide
 display_title: VirtualBox Emulator User Guide
-date: 2021-04-01
+date: 2021-04-06
 weight: 10
 toc: true
 ---
@@ -232,7 +232,11 @@ The screenshots below have been captured from Oracle VM VirtualBox v6.0.14 on Wi
 
     {{< figure src="/images/docs/tools/emulator/vbox_emulator_img13.png" alt="Configuring the port forwarding rules 2" class="align-left" >}}
 
-    Click **OK**. You will return to the **Adapter 1** section. On the navigation bar, click **Serial Ports**.
+    Click **OK**. You will return to the **Adapter 1** section.
+
+    {{< figure src="/images/docs/tools/emulator/vbox_emulator_img14.png" alt="Finishing the virtual machine setup" class="align-left" >}}
+
+    Click **OK**.
 
 13. Oracle VM VirtualBox Manager will return to the main screen and display the details of the virtual machine with updated information.
 
