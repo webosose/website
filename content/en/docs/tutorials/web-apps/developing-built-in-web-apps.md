@@ -1,6 +1,6 @@
 ---
 title: Developing Built-in Web Apps
-date: 2021-06-22
+date: 2021-06-25
 weight: 20
 toc: true
 ---
@@ -32,17 +32,8 @@ Developing a built-in web app requires the following steps:
 
 - [Before you begin](#before-you-begin)
 - [Step 1: Implement the Web App](#step-1-implement-the-web-app)
-  - [Source Code](#source-code)
-    - [webOS OSE 2.0 or higher](#webos-ose-20-or-higher)
-    - [webOS OSE 1.x](#webos-ose-1x)
-  - [README.md](#readmemd)
 - [Step 2: Configure the Web App](#step-2-configure-the-web-app)
-  - [appinfo.json](#appinfojson)
-  - [CMakeLists.txt](#cmakeliststxt)
 - [Step 3: Build the Web App](#step-3-build-the-web-app)
-  - [Add the Recipe File](#add-the-recipe-file)
-  - [Configure the Local Source Directory](#configure-the-local-source-directory)
-  - [Build the App](#build-the-app)
 - [Step 4: Run and Verify the Web App](#step-4-run-and-verify-the-web-app)
 - [Step 5: Deploy the Web App](#step-5-deploy-the-web-app)
 
