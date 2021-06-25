@@ -1,0 +1,7052 @@
+---
+title: luna-service2 Library API Reference
+date: 2021-06-17
+toc: true
+---
+
+<h2>API Summary</h2>
+<p>Luna-service2 (LS2) provides a bus-based IPC mechanism used between components in webOS. It is composed of:</p>
+<ul>
+  <li>Client library -&nbsp;Provides APIs&nbsp;to register a service on the Luna bus. Also, provides APIs for services to communicate with other components.</li>
+  <li>Central hub daemon - Provides a central clearinghouse for all communication. It includes utilities for monitoring and debugging the bus.</li>
+</ul>
+<h2>Overview of the API</h2>
+<p><strong>Sample Client Usage (calling the &#39;listContacts()&#39; method from a registered service):</strong></p>
+<div class="code-bg-grey">
+<p><br />
+  <em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bool&nbsp;&nbsp;retVal;</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSError&nbsp;&nbsp;lserror;</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSErrorInit&nbsp;(&amp;lserror);</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSMessageToken&nbsp;&nbsp;token&nbsp;&nbsp;=&nbsp;&nbsp;LSMESSAGE_TOKEN_INVALID&nbsp;;</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSHandle&nbsp;&nbsp;*serviceHandle;</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retVal&nbsp;&nbsp;=&nbsp;&nbsp;LSRegister&nbsp;(NULL,&nbsp;&nbsp;&amp;serviceHandle,&nbsp;&nbsp;&amp;lserror);</em></p>
+<p>&nbsp;</p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;&nbsp;(!retVal)&nbsp;&nbsp;goto&nbsp;&nbsp;done;</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retVal&nbsp;&nbsp;=&nbsp;&nbsp;LSCallOneReply&nbsp;(serviceHandle,&nbsp;&nbsp;&quot;luna://com.webos.contacts/category/listContacts&quot;&nbsp;,</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;{&nbsp;&nbsp;\&quot;json&nbsp;&nbsp;payload\&quot;&nbsp;&nbsp;}&quot;&nbsp;,&nbsp;&nbsp;listContactsHandler,&nbsp;&nbsp;userData,&nbsp;&nbsp;&amp;token,&nbsp;&nbsp;&amp;lserror);</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;&nbsp;(!retVal)&nbsp;&nbsp;goto&nbsp;&nbsp;done;</em></p>
+<p>&nbsp;</p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSGmainAttach&nbsp;(serviceHandle,&nbsp;&nbsp;loop,&nbsp;&nbsp;&amp;lserror);</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g_main_loop_run(loop);</em></p>
+<p><br />
+</div>
+  <strong>Sample Service Usage</strong><br />
+<div class="code-bg-grey">
+  <em>&nbsp;//&nbsp;&nbsp;callback</em></p>
+<p><em>&nbsp;static&nbsp;&nbsp;bool</em></p>
+<p><em>&nbsp;listContacts(&nbsp;LSHandle&nbsp;&nbsp;*sh,&nbsp;&nbsp;LSMessage&nbsp;&nbsp;*message,&nbsp;&nbsp;void&nbsp;&nbsp;*categoryContext)</em></p>
+<p><em>&nbsp;{</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bool&nbsp;&nbsp;retVal;</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSError&nbsp;&nbsp;lserror;</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSErrorInit&nbsp;(&amp;lserror);</em></p>
+<p>&nbsp;</p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retVal&nbsp;&nbsp;=&nbsp;&nbsp;LSMessageReply&nbsp;(sh,&nbsp;&nbsp;message,&nbsp;&nbsp;&quot;{&nbsp;&nbsp;JSON&nbsp;&nbsp;REPLY&nbsp;&nbsp;PAYLOAD&nbsp;&nbsp;}&quot;&nbsp;,&nbsp;&nbsp;&amp;lserror);</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;&nbsp;(!retVal)</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSErrorPrint&nbsp;(&amp;lserror,&nbsp;&nbsp;stderr);</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSErrorFree&nbsp;(&amp;lserror);</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;&nbsp;retVal;</em></p>
+<p><em>&nbsp;}</em></p>
+<p>&nbsp;</p>
+<p><em>&nbsp;static&nbsp;&nbsp;LSMethod&nbsp;&nbsp;ipcMethods[]&nbsp;&nbsp;=&nbsp;&nbsp;{</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;&quot;listContacts&quot;&nbsp;,&nbsp;&nbsp;listContacts&nbsp;&nbsp;},</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;},</em></p>
+<p><em>&nbsp;};</em></p>
+<p><br />
+  <em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bool&nbsp;&nbsp;retVal;</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSError&nbsp;&nbsp;lserror;</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSErrorInit&nbsp;(&amp;lserror);</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSHandle&nbsp;&nbsp;*serviceHandle&nbsp;&nbsp;=&nbsp;&nbsp;NULL;</em></p>
+<p>&nbsp;</p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retVal&nbsp;&nbsp;=&nbsp;&nbsp;LSRegister&nbsp;(&nbsp;&quot;com.webos.contacts&quot;&nbsp;,&nbsp;&nbsp;&amp;serviceHandle,&nbsp;&nbsp;&amp;lserror);</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;&nbsp;(!retVal)&nbsp;&nbsp;goto&nbsp;&nbsp;error;</em></p>
+<p>&nbsp;</p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retVal&nbsp;&nbsp;=&nbsp;&nbsp;LSRegisterCategory&nbsp;(serviceHandle,&nbsp;&nbsp;&quot;/category&quot;&nbsp;,&nbsp;&nbsp;&nbsp;ipcMethods,&nbsp;&nbsp;NULL,&nbsp;&nbsp;NULL,&nbsp;&nbsp;&amp;lserror);</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;&nbsp;(!retVal)&nbsp;&nbsp;goto&nbsp;&nbsp;error;</em></p>
+<p>&nbsp;</p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retVal&nbsp;&nbsp;=&nbsp;&nbsp;LSCategorySetData&nbsp;(serviceHandle,&nbsp;&nbsp;&quot;/category&quot;&nbsp;,&nbsp;&nbsp;userData,&nbsp;&nbsp;&amp;lserror);</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;&nbsp;(!retVal)&nbsp;&nbsp;goto&nbsp;&nbsp;error;</em></p>
+<p>&nbsp;</p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retVal&nbsp;&nbsp;=&nbsp;&nbsp;LSGmainAttach&nbsp;(serviceHandle,&nbsp;&nbsp;mainLoop,&nbsp;&nbsp;&amp;lserror);</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;&nbsp;(!retVal)&nbsp;&nbsp;goto&nbsp;&nbsp;error;</em></p>
+<p>&nbsp;</p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g_main_loop_run(mainLoop);</em></p>
+<p>&nbsp;</p>
+<p><br />
+</div>
+  <strong>Storing a message for replying in another thread.</strong><br />
+<div class="code-bg-grey">
+  <br />
+  <em>&nbsp;Queue&nbsp;&nbsp;messageQueue;</em></p>
+<p><em>&nbsp;...</em></p>
+<p><em>&nbsp;static&nbsp;&nbsp;bool</em></p>
+<p><em>&nbsp;listContacts(&nbsp;LSHandle&nbsp;&nbsp;*sh,&nbsp;&nbsp;LSMessage&nbsp;&nbsp;*message)</em></p>
+<p><em>&nbsp;{</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bool&nbsp;&nbsp;retVal;</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSError&nbsp;&nbsp;lserror;</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSErrorInit&nbsp;(&amp;lserror);</em></p>
+<p>&nbsp;</p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSMessageRef&nbsp;(message);</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue(messageQueue,&nbsp;&nbsp;message);</em></p>
+<p><em>&nbsp;}</em></p>
+<p><em>&nbsp;...</em></p>
+<p><em>&nbsp;void&nbsp;SomeOtherThread()</em></p>
+<p><em>&nbsp;{</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSError&nbsp;&nbsp;lserror;</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSErrorInit&nbsp;(&amp;lserror);</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSMessage&nbsp;&nbsp;*message&nbsp;&nbsp;=&nbsp;&nbsp;dequeue(messageQueue);</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;&nbsp;(!&nbsp;LSMessageReply&nbsp;(sh,&nbsp;&nbsp;message,&nbsp;&nbsp;&quot;{PAYLOAD&nbsp;&nbsp;IN&nbsp;&nbsp;JSON}&quot;&nbsp;,&nbsp;&nbsp;lserror))</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSErrorLog&nbsp;(loggingCtx,&nbsp;&nbsp;msgId,&nbsp;&nbsp;&amp;lserror);</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSErrorFree&nbsp;(&amp;lserror);</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</em></p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;....</em></p>
+<p><em>&nbsp;}</em></p>
+</div>
+<h2>Type Definitions</h2>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="25%">
+          <p>Alias</p>
+        </th>
+        <th width="25%">
+          <p>Type Definition</p>
+        </th>
+        <th width="50%">
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>_LSTransport</td>
+        <td>struct LSTransport</td>
+        <td>
+          <p>Indicates the transport object</p>
+        </td>
+      </tr>
+      <tr>
+        <td>_LSTransportMessage</td>
+        <td>struct LSTransportMessage</td>
+        <td>
+          <p>Indicates the underlying transport message.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>LSMessageToken</td>
+        <td>unsigned long</td>
+        <td>
+          <p>Indicates the message token.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>LSHandle</td>
+        <td>struct LSHandle</td>
+        <td>
+          <p>Indicates the handle to service</p>
+        </td>
+      </tr>
+      <tr>
+        <td>LSPalmService</td>
+        <td>struct LSPalmService</td>
+        <td>
+          <p>Indicates the handle to public service.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>LSMethodFunction</td>
+        <td>bool(*)(LSHandle *sh, LSMessage *msg, void *category_context)</td>
+        <td>
+          <p>Table registration of callbacks.</p>
+          <ul>
+            <li><strong>sh:</strong> Indicates the handle to service</li>
+            <li><strong>msg:</strong> Indicates the message object</li>
+            <li><strong>category_context:</strong> Indicates the category context</li>
+            <li><strong>true:</strong> If message has been processed successfully.</li>
+            <li><strong>false:</strong> if some error has occurred and the user would like the callback to be called again later.</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>LSPropertyGetFunction</td>
+        <td>bool(*)(LSHandle *sh, LSMessage *msg, void *category_context)</td>
+        <td>
+          <p>Indicates the type for property get callback.</p>
+          <p>Returns same as LSMethodFunction()</p>
+          <ul>
+            <li><strong>sh<strong>:</strong> </strong>Indicates the handle to service</li>
+            <li><strong>msg:</strong> Indicates the message object</li>
+            <li><strong>category_context:</strong> Indicates the category context&nbsp;</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>LSPropertySetFunction</td>
+        <td>bool(*)(LSHandle *sh, LSMessage *msg, void *category_context)</td>
+        <td>
+          <p>Type for property set callback.</p>
+          <p>Returns Same as LSMethodFunction()</p>
+          <ul>
+            <li><strong>sh:</strong> Indicates the handle to service</li>
+            <li><strong>msg:</strong> Indicates the message object</li>
+            <li><strong>category_context:</strong> Indicates the&nbsp; category context</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>LSSubscriptionIter</td>
+        <td>struct LSSubscriptionIter</td>
+        <td>
+          <p>Iterator to iterate through the subscription for key</p>
+        </td>
+      </tr>
+      <tr>
+        <td>LSServerStatusFunc</td>
+        <td>bool(*)(LSHandle *sh, const char *serviceName, bool connected, void *ctx)</td>
+        <td>
+          <p>Function callback to be called when serviceName connects or disconnects.</p>
+          <p>Returns true on success, otherwise false</p>
+          <ul>
+            <li><strong>sh:</strong> Indicates the service handle(LSHandle)</li>
+            <li><strong>serviceName:</strong> Indicates the name of the service that was brought up/down.</li>
+            <li><strong>connected:</strong> Indicates the service that was brought up if true.</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>LSFilterFunc</td>
+        <td>bool(*)(LSHandle *sh, LSMessage *reply, void *ctx)</td>
+        <td>
+          <p>Callback function called on incoming message.</p>
+          <p>Returns true if message is handled.</p>
+          <ul>
+            <li><strong>sh:</strong> Indicates the service handle(LSHandle)</li>
+            <li><strong>reply:</strong> Indicates the incoming message</li>
+            <li><strong>void:</strong> * context</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>LSCancelNotificationFunc</td>
+        <td>bool(*)(LSHandle *sh, const char *uniqueToken, void *ctx)</td>
+        <td>
+          <p>Indicates the function will be called when call originator cancels a call.</p>
+          <p>Returns true if message is cancelled</p>
+          <ul>
+            <li><strong>sh: </strong>Indicates the service handle(LSHandle)</li>
+            <li><strong>uniqueToken: </strong>Indicates the token of cancelled message.</li>
+            <li><strong>ctx: </strong>Indicates the<strong> </strong>context for function callback.</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>LSDisconnectHandler</td>
+        <td>void(*)(LSHandle *sh, void *user_data)</td>
+        <td>
+          <p>Disconnection event observer</p>
+        </td>
+      </tr>
+      <tr>
+        <td>LSMessageToken</td>
+        <td>unsigned long</td>
+        <td>
+          <p>Indicates the message token.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>LSHandle</td>
+        <td>struct LSHandle</td>
+        <td>
+          <p>Indicates the handle to service.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>LSMethodFunction</td>
+        <td>bool(*)(LSHandle *sh, LSMessage *msg, void *category_context)</td>
+        <td>
+          <p>Table registration of callbacks.</p>
+          <ul>
+            <li><strong>sh:</strong> Indicates the handle to service</li>
+            <li><strong>msg:</strong> Indicates the message object</li>
+            <li><strong>category_context:</strong> Indicates the category context</li>
+            <li><strong>true:</strong> If message successfully processed.</li>
+            <li><strong>false:</strong> If some error occurred and you would like the callback to be called again later.</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>LSPropertyGetFunction</td>
+        <td>bool(*)(LSHandle *sh, LSMessage *msg, void *category_context)</td>
+        <td>
+          <p>Indicates the type for property get callback.</p>
+          <p>Returns same as LSMethodFunction()</p>
+          <ul>
+            <li><strong>sh:</strong> Indicates the handle to service</li>
+            <li><strong>msg:</strong> Indicates the message object</li>
+            <li><strong>category_context:</strong> Indicates the category context</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>LSPropertySetFunction</td>
+        <td>bool(*)(LSHandle *sh, LSMessage *msg, void *category_context)</td>
+        <td>
+          <p>Indicates the type for property set callback.</p>
+          <p>Returns same as LSMethodFunction()</p>
+          <ul>
+            <li><strong>sh:</strong> Indicates the handle to service</li>
+            <li><strong>msg:</strong> Indicates the message object</li>
+            <li><strong>category_context:</strong> Indicates the category context</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>LSServerStatusFunc</td>
+        <td>bool(*)(LSHandle *sh, const char *serviceName, bool connected, void *ctx)</td>
+        <td>
+          <p>Indicates the function callback to be called when serviceName connects or disconnects.</p>
+          <p>Returns true on success, otherwise false</p>
+          <ul>
+            <li><strong>sh:</strong> Service handle(LSHandle)</li>
+            <li><strong>serviceName:</strong> Name of the service that was brought up/down.</li>
+            <li><strong>connected:</strong> Service was brought up if true.</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>LSFilterFunc</td>
+        <td>bool(*)(LSHandle *sh, LSMessage *reply, void *ctx)</td>
+        <td>
+          <p>Indicates the callback function called on incoming message.</p>
+          <p>Returns true if message is handled.</p>
+          <ul>
+            <li><strong>sh:</strong> Indicates the service handle(LSHandle)</li>
+            <li><strong>reply:</strong> Indicates the incoming message</li>
+            <li><strong>void:</strong> * context</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>LSCancelNotificationFunc</td>
+        <td>bool(*)(LSHandle *sh, const char *uniqueToken, void *ctx)</td>
+        <td>
+          <p>The function will be called when call originator cancels a call.</p>
+          <p>Returns true if message is cancelled</p>
+          <ul>
+            <li><strong>sh:</strong> Indicates the service handle(LSHandle)</li>
+            <li><strong>uniqueToken</strong><strong>: </strong>Indicates the<strong> </strong>token of cancelled message.</li>
+            <li><strong>ctx:</strong> Indicates the context for function callback.</li>
+          </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h2>Enumerators</h2>
+<h3>LSMethodFlags</h3>
+Flags are used during method definition in a category.
+Can be used to enable incoming message validation against provided schema
+<h3>LSSignalFlags</h3>
+Flags are used during signal definition in a category.
+Can be used to mark signal as deprecated
+<h3>LSPropertyFlags</h3>
+Flags are used during property definition in a category.
+Can be used to mark property as deprecated
+<h3>LSMethodFlags</h3>
+Flags are used during method definition in a category.
+Can be used to enable incoming message validation against provided schema
+<h3>LSSignalFlags</h3>
+Flags are used during signal definition in a category.
+Can be used to mark signal as deprecated
+<h3>LSPropertyFlags</h3>
+Flags are used during property definition in a category.
+Can be used to mark property as deprecated
+<h2>Methods</h2>
+<h3>AddWatch</h3>
+<h4>Description</h4>
+<p>Adds a watch to a channel and attach it to the main context.</p>
+<h4>Syntax</h4>
+<pre><code>AddWatch(_LSTransportChannel * channel, GIOCondition condition, GMainContext * context, GIOFunc transport_cb, void * user_data, GDestroyNotify destroy_cb, GSource ** out_watch)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>channel</td>
+        <td>Required</td>
+        <td>_LSTransportChannel *</td>
+        <td>
+          IN channel to watch
+        </td>
+      </tr>
+      <tr>
+        <td>condition</td>
+        <td>Required</td>
+        <td>GIOCondition</td>
+        <td>
+          IN condition to watch
+        </td>
+      </tr>
+      <tr>
+        <td>context</td>
+        <td>Required</td>
+        <td>GMainContext *</td>
+        <td>
+          IN main context
+        </td>
+      </tr>
+      <tr>
+        <td>transport_cb</td>
+        <td>Required</td>
+        <td>GIOFunc</td>
+        <td>
+          IN callback when watch is triggered
+        </td>
+      </tr>
+      <tr>
+        <td>user_data</td>
+        <td>Required</td>
+        <td>void *</td>
+        <td>
+          IN context passed to callback
+        </td>
+      </tr>
+      <tr>
+        <td>destroy_cb</td>
+        <td>Required</td>
+        <td>GDestroyNotify</td>
+        <td>
+          IN callback when watch is destroyed
+        </td>
+      </tr>
+      <tr>
+        <td>out_watch</td>
+        <td>Required</td>
+        <td>GSource **</td>
+        <td>
+          OUT newly created watch
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+None
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSCall</h3>
+<h4>Description</h4>
+<p>Sends payload to service at the specified URI.</p>
+<p>Special signals usage:</p>
+<p>Register for any ServerStatus signals:</p>
+<p>LSCall(sh, &quot;luna://com.webos.service.bus/signal/registerServerStatus&quot;, &quot;{&quot;serviceName&quot;: &quot;com.webos.media&quot;}&quot;, callback, ctx, lserror);</p>
+<p>Register for any signals from (category, method):</p>
+<p>LSCall(sh, &quot;luna://com.webos.service.bus/signal/addmatch&quot;, &quot;{&quot;category&quot;: &quot;/com/palm/power&quot;,&quot; &quot; &quot;method&quot;: &quot;shutdown&quot;}&quot;, callback, ctx, lserror);</p>
+<p>Register for any signals from category:</p>
+<p>LSCall(sh, &quot;luna://com.webos.service.bus/signal/addmatch&quot;, &quot;{&quot;category&quot;: &quot;/com/palm/power&quot;}&quot;, callback, ctx, lserror);</p>
+<h4>Syntax</h4>
+<pre><code>LSCall(LSHandle * sh, const char * uri, const char * payload, LSFilterFunc callback, void * ctx, LSMessageToken * ret_token, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          IN handle to service
+        </td>
+      </tr>
+      <tr>
+        <td>uri</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          IN fully qualified path to service's method
+        </td>
+      </tr>
+      <tr>
+        <td>payload</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          IN some string, usually following json object semantics
+        </td>
+      </tr>
+      <tr>
+        <td>callback</td>
+        <td>Required</td>
+        <td>LSFilterFunc</td>
+        <td>
+          IN function callback to be called when responses arrive
+        </td>
+      </tr>
+      <tr>
+        <td>ctx</td>
+        <td>Required</td>
+        <td>void *</td>
+        <td>
+          IN user data to be passed to callback
+        </td>
+      </tr>
+      <tr>
+        <td>ret_token</td>
+        <td>Required</td>
+        <td>LSMessageToken *</td>
+        <td>
+          OUT token which identifies responses to this call
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success, false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSCallCancel</h3>
+<h4>Description</h4>
+Sends a cancel message to service to end call session and also unregisters any callback associated with call.
+<h4>Syntax</h4>
+<pre><code>LSCallCancel(LSHandle * sh, LSMessageToken token, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          IN handle to service
+        </td>
+      </tr>
+      <tr>
+        <td>token</td>
+        <td>Required</td>
+        <td>LSMessageToken</td>
+        <td>
+          IN message token
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success, false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSCallCancelNotificationAdd</h3>
+<h4>Description</h4>
+<p>Registers a callback to be called when remote service has&nbsp;canceled the call.</p>
+<p><strong>Note:</strong></p>
+<ul>
+  <li>The callback is called when the client cancels a call via LSCallCancel().</li>
+  <li>The callback is called irrespective of a call being&nbsp;added to the subscription catalog or not. This is useful for a case when a notification needs to be received without adding subscribers to the catalog.</li>
+  <li>Unique token of a message and user context is passed to a function callback as arguments.</li>
+  <li>Users can register multiple callbacks, which are called in order of registration.</li>
+</ul>
+<h4>Syntax</h4>
+<pre><code>LSCallCancelNotificationAdd(LSHandle * sh, LSCancelNotificationFunc cancelNotifyFunction, void * ctx, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          IN handle to service
+        </td>
+      </tr>
+      <tr>
+        <td>cancelNotifyFunction</td>
+        <td>Required</td>
+        <td>LSCancelNotificationFunc</td>
+        <td>
+          IN callback function
+        </td>
+      </tr>
+      <tr>
+        <td>ctx</td>
+        <td>Required</td>
+        <td>void *</td>
+        <td>
+          IN user data to be passed to callback
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success, false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSCallCancelNotificationAdd</h3>
+<h4>Description</h4>
+<p>Registers a callback to be called when remote service has&nbsp;canceled the call.</p>
+<p><strong>Note:</strong></p>
+<ul>
+  <li>The callback is called when the client cancels a call via LSCallCancel().</li>
+  <li>The callback is called irrespective of a call being&nbsp;added to the subscription catalog or not. This is useful for a case when a notification needs to be received without adding subscribers to the catalog.</li>
+  <li>Unique token of a message and user context is passed to a function callback as arguments.</li>
+  <li>Users can register multiple callbacks, which are called in order of registration.</li>
+</ul>
+<h4>Syntax</h4>
+<pre><code>LSCallCancelNotificationAdd(LSHandle * sh, LSCancelNotificationFunc cancelNotifyFunction, void * ctx, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          IN handle to service
+        </td>
+      </tr>
+      <tr>
+        <td>cancelNotifyFunction</td>
+        <td>Required</td>
+        <td>LSCancelNotificationFunc</td>
+        <td>
+          IN callback function
+        </td>
+      </tr>
+      <tr>
+        <td>ctx</td>
+        <td>Required</td>
+        <td>void *</td>
+        <td>
+          IN user data to be passed to callback
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success, false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSCallCancelNotificationRemove</h3>
+<h4>Description</h4>
+<p>Removes previously registered callback on call cancellation.</p>
+<p><strong>Note:</strong></p>
+<ul>
+  <li>Function callback is removed from the list without changing relative order of other elements.</li>
+  <li>Both function callback and context should be the same as for registration.</li>
+</ul>
+<h4>Syntax</h4>
+<pre><code>LSCallCancelNotificationRemove(LSHandle * sh, LSCancelNotificationFunc cancelNotifyFunction, void * ctx, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          IN handle to service
+        </td>
+      </tr>
+      <tr>
+        <td>cancelNotifyFunction</td>
+        <td>Required</td>
+        <td>LSCancelNotificationFunc</td>
+        <td>
+          IN callback function
+        </td>
+      </tr>
+      <tr>
+        <td>ctx</td>
+        <td>Required</td>
+        <td>void *</td>
+        <td>
+          IN user data to be passed to callback
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success, false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSCallCancelNotificationRemove</h3>
+<h4>Description</h4>
+<p>Removes previously registered callback on call cancellation.</p>
+<p><strong>Note:</strong></p>
+<ul>
+  <li>Function callback is removed from the list without changing the relative order of other elements.</li>
+  <li>Both function callback and context should be the same as for registration.</li>
+</ul>
+<h4>Syntax</h4>
+<pre><code>LSCallCancelNotificationRemove(LSHandle * sh, LSCancelNotificationFunc cancelNotifyFunction, void * ctx, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          IN handle to service
+        </td>
+      </tr>
+      <tr>
+        <td>cancelNotifyFunction</td>
+        <td>Required</td>
+        <td>LSCancelNotificationFunc</td>
+        <td>
+          IN callback function
+        </td>
+      </tr>
+      <tr>
+        <td>ctx</td>
+        <td>Required</td>
+        <td>void *</td>
+        <td>
+          IN user data to be passed to callback
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success, false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSCallFromApplication</h3>
+<h4>Description</h4>
+<p>A Special<strong> LSCall()</strong> that sends an application ID.</p>
+<h4>Syntax</h4>
+<pre><code>LSCallFromApplication(LSHandle * sh, const char * uri, const char * payload, const char * applicationID, LSFilterFunc callback, void * ctx, LSMessageToken * ret_token, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          IN handle to service
+        </td>
+      </tr>
+      <tr>
+        <td>uri</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          IN fully qualified path to service's method
+        </td>
+      </tr>
+      <tr>
+        <td>payload</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          IN some string, usually following json object semantics
+        </td>
+      </tr>
+      <tr>
+        <td>applicationID</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          <p>IN application ID.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>callback</td>
+        <td>Required</td>
+        <td>LSFilterFunc</td>
+        <td>
+          <p>IN function callback to be called when responses arrive.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>ctx</td>
+        <td>Required</td>
+        <td>void *</td>
+        <td>
+          <p>IN user data to be passed to callback.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>ret_token</td>
+        <td>Required</td>
+        <td>LSMessageToken *</td>
+        <td>
+          <p>OUT token which identifies responses to this call.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success, false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSCallFromApplicationOneReply</h3>
+<h4>Description</h4>
+<p>A special <strong>LSCallOneReply()</strong> that sends an application ID.</p>
+<h4>Syntax</h4>
+<pre><code>LSCallFromApplicationOneReply(LSHandle * sh, const char * uri, const char * payload, const char * applicationID, LSFilterFunc callback, void * ctx, LSMessageToken * ret_token, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          <p>IN handle to service</p>
+        </td>
+      </tr>
+      <tr>
+        <td>uri</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          <p>IN fully qualified path to service&#39;s method</p>
+        </td>
+      </tr>
+      <tr>
+        <td>payload</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          IN some string, usually following json object semantics
+        </td>
+      </tr>
+      <tr>
+        <td>applicationID</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          IN application id
+        </td>
+      </tr>
+      <tr>
+        <td>callback</td>
+        <td>Required</td>
+        <td>LSFilterFunc</td>
+        <td>
+          IN function callback to be called when responses arrive
+        </td>
+      </tr>
+      <tr>
+        <td>ctx</td>
+        <td>Required</td>
+        <td>void *</td>
+        <td>
+          IN user data to be passed to callback
+        </td>
+      </tr>
+      <tr>
+        <td>ret_token</td>
+        <td>Required</td>
+        <td>LSMessageToken *</td>
+        <td>
+          OUT token which identifies responses to this call
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success, false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSCallOneReply</h3>
+<h4>Description</h4>
+<p>Sends a message to service like LSCall().</p>
+<p><strong>Note:</strong> This method&nbsp;only accepts&nbsp;one response and does not need to be canceled via LSCallCancel().</p>
+<h4>Syntax</h4>
+<pre><code>LSCallOneReply(LSHandle * sh, const char * uri, const char * payload, LSFilterFunc callback, void * ctx, LSMessageToken * ret_token, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          <p>IN Handle to service.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>uri</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          <p>IN Fully qualified path to service&#39;s method.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>payload</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          <p>IN Some string, usually following json object semantics.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>callback</td>
+        <td>Required</td>
+        <td>LSFilterFunc</td>
+        <td>
+          <p>IN Function callback to be called when responses arrive.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>ctx</td>
+        <td>Required</td>
+        <td>void *</td>
+        <td>
+          <p>IN User data to be passed to the callback.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>ret_token</td>
+        <td>Required</td>
+        <td>LSMessageToken *</td>
+        <td>
+          <p>OUT Token which identifies responses to this call.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          <p>OUT Set on error.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success, false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSCallSetTimeout</h3>
+<h4>Description</h4>
+<p>Sets timeout for a method call.</p>
+<p><strong>Note:</strong> The call is canceled if no reply is received after the <strong>timeout_ms </strong>milliseconds.</p>
+<h4>Syntax</h4>
+<pre><code>LSCallSetTimeout(LSHandle * sh, LSMessageToken token, int timeout_ms, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          IN handle to service
+        </td>
+      </tr>
+      <tr>
+        <td>token</td>
+        <td>Required</td>
+        <td>LSMessageToken</td>
+        <td>
+          IN message token
+        </td>
+      </tr>
+      <tr>
+        <td>timeout_ms</td>
+        <td>Required</td>
+        <td>int</td>
+        <td>
+          IN timeout in ms
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success, false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSCancelServerStatus</h3>
+<h4>Description</h4>
+<p>Cancels receiving notifications about server status.</p>
+<p><strong>Note:</strong></p>
+<ul>
+  <li>If unlikely false is returned, the subscription hasn&#39;t been canceled, and the associated memory hasn&#39;t been freed yet. This can happen if the system suffers from low memory.</li>
+  <li>The call can be repeated until true is returned. Once that happens, the value of the cookie is invalid, and should not be used.</li>
+</ul>
+<h4>Syntax</h4>
+<pre><code>LSCancelServerStatus(LSHandle * sh, void * cookie, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          IN handle to service
+        </td>
+      </tr>
+      <tr>
+        <td>cookie</td>
+        <td>Required</td>
+        <td>void *</td>
+        <td>
+          IN token obtained during registration, can't be NULL
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success, false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSCancelServerStatus</h3>
+<h4>Description</h4>
+<p>Cancels receiving notifications about server status.</p>
+<p><strong>Note:</strong></p>
+<ul>
+  <li>If unlikely false is returned, the subscription hasn&#39;t been canceled, and the associated memory hasn&#39;t been freed yet. This can happen if the system suffers from low memory.</li>
+  <li>The call can be repeated until true is returned. Once that happens, the value of the cookie is invalid, and should not be used.</li>
+</ul>
+<h4>Syntax</h4>
+<pre><code>LSCancelServerStatus(LSHandle * sh, void * cookie, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          IN handle to service
+        </td>
+      </tr>
+      <tr>
+        <td>cookie</td>
+        <td>Required</td>
+        <td>void *</td>
+        <td>
+          IN token obtained during registration, can't be NULL
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success, false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSCategorySetData</h3>
+<h4>Description</h4>
+<p>Sets the user_data that is delivered to each callback registered to the category.</p>
+<p><strong>Note:</strong> If user_data is set using LSMethodSetData, it overrides category data.</p>
+<h4>Syntax</h4>
+<pre><code>LSCategorySetData(LSHandle * sh, const char * category, void * user_data, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          IN handle to service
+        </td>
+      </tr>
+      <tr>
+        <td>category</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          IN category name
+        </td>
+      </tr>
+      <tr>
+        <td>user_data</td>
+        <td>Required</td>
+        <td>void *</td>
+        <td>
+          IN user data to set
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success, false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSCategorySetDescription</h3>
+<h4>Description</h4>
+<p>Specifies&nbsp;meta information about the category.&nbsp;Sets JSON value that describes specified category. Provides validation schema for input params and replies. Gives some description for calls and so on.</p>
+<p><strong>Note:&nbsp;</strong>Services with dynamically registered methods may wish to call this function after each LSRegisterCategoryAppend.</p>
+<h4>Syntax</h4>
+<pre><code>LSCategorySetDescription(LSHandle * sh, const char * category, jvalue_ref description, LSError * error)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          <p>Indicates the handle that identifies the registered service on the bus.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>category</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          <p>Indicates the identifier of the category this information provided for.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>description</td>
+        <td>Required</td>
+        <td>jvalue_ref</td>
+        <td>
+          <p>Indicates information itself (no ownership transfer). See / category for example.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>error</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          <p>Indicates the output buffer for error description if applicable.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns false in case of error.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<strong>Example code</strong>
+<div class="code-bg-grey">
+  <p>{<br />
+    &nbsp;&nbsp; &nbsp; // &nbsp;probably &nbsp;the &nbsp;easiest &nbsp;way &nbsp;is &nbsp;to &nbsp;load &nbsp;whole &nbsp;json &nbsp;and &nbsp;use &nbsp;specific &nbsp;parts<br />
+    &nbsp;&nbsp; &nbsp; // &nbsp;for &nbsp;specific &nbsp;categories<br />
+    &nbsp;&nbsp; &nbsp; &quot;/&quot; &nbsp;: &nbsp;{<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;definitions&quot; : &nbsp;{<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;sender&quot; : &nbsp;{<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;type&quot; : &nbsp;&quot;object&quot; ,<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;properties&quot; : &nbsp;{<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;id&quot; : &nbsp;{ &nbsp;&quot;type&quot; : &nbsp;&quot;string&quot; &nbsp;},<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;name&quot; : &nbsp;{ &nbsp;&quot;type&quot; : &nbsp;&quot;string&quot; &nbsp;},<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;organization&quot; : &nbsp;{ &nbsp;&quot;type&quot; : &nbsp;&quot;string&quot; &nbsp;}<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; },<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;required&quot; : &nbsp;[ &quot;id&quot; ],<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;additionalProperties&quot; : &nbsp;false<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; },<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;messageInfo&quot; : &nbsp;{<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;type&quot; : &nbsp;&quot;object&quot; ,<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;properties&quot; : &nbsp;{<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;id&quot; : &nbsp;&quot;integer&quot; ,<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;sender&quot; : &nbsp;{ &nbsp;&quot;$ref&quot; : &nbsp;&quot;#/definitions/sender&quot; &nbsp;},<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;subject&quot; : &nbsp;{ &nbsp;&quot;type&quot; : &nbsp;&quot;string&quot; &nbsp;}<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; },<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;required&quot; : &nbsp;[ &quot;id&quot; ],<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;additionalProperties&quot; : &nbsp;false<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; }<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; },<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;methods&quot; : &nbsp;{<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;leaveMessage&quot; &nbsp;: &nbsp;{<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;call&quot; &nbsp;: &nbsp;{<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;type&quot; : &nbsp;&quot;object&quot; ,<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;properties&quot; : &nbsp;{<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;sender&quot; : &nbsp;{ &nbsp;&quot;$ref&quot; : &nbsp;&quot;#/definitions/sender&quot; &nbsp;},<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;subject&quot; : &nbsp;{ &nbsp;&quot;type&quot; : &nbsp;&quot;string&quot; &nbsp;},<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;body&quot; : &nbsp;{ &nbsp;&quot;type&quot; : &nbsp;&quot;string&quot; &nbsp;}<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; },<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;additionalProperties&quot; : &nbsp;false<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; },<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;reply&quot; : &nbsp;{ &nbsp;// &nbsp;since &nbsp;&quot;firstReply&quot; &nbsp;ommited &nbsp;&quot;reply&quot; &nbsp;used &nbsp;for &nbsp;all &nbsp;answers<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;type&quot; : &nbsp;&quot;integer&quot; ,<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;description&quot; : &nbsp;&quot;message &nbsp;id&quot;<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; }<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; },<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;unreadMessages&quot; &nbsp;: &nbsp;{<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;call&quot; : &nbsp;{<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;type&quot; : &nbsp;&quot;object&quot; ,<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;properties&quot; : &nbsp;{<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;lastId&quot; : &nbsp;{<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;type&quot; : &nbsp;&quot;integer&quot; ,<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;description&quot; : &nbsp;&quot;last &nbsp;read &nbsp;message &nbsp;id &nbsp;(0 &nbsp;if &nbsp;none)&quot; ,<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;default&quot; : &nbsp;0<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; }<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; },<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;additionalProperties&quot; : &nbsp;false<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; },<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;firstReply&quot; : &nbsp;{ &nbsp;// &nbsp;first &nbsp;reply &nbsp;consist &nbsp;of &nbsp;bunch &nbsp;of &nbsp;messages &nbsp;since &nbsp;last &nbsp;request<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;type&quot; : &nbsp;&quot;object&quot; ,<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;properties&quot; : &nbsp;{<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;unread&quot; : &nbsp;{<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;type&quot; : &nbsp;&quot;array&quot; ,<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;items&quot; : &nbsp;{ &nbsp;&quot;$ref&quot; : &nbsp;&quot;#/definitions/messageInfo&quot; &nbsp;}<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; },<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;lastId&quot; : &nbsp;{ &nbsp;&quot;type&quot; : &nbsp;&quot;integer&quot; &nbsp;}<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; }<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; },<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; // &nbsp;further &nbsp;subscription &nbsp;replies &nbsp;are &nbsp;simply &nbsp;messageInfo&#39;s<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &quot;reply&quot; : &nbsp;{ &nbsp;&quot;$ref&quot; : &nbsp;&quot;#/definitions/messageInfo&quot; &nbsp;},<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; }<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; }<br />
+    &nbsp;&nbsp; &nbsp; }<br />
+    &nbsp;}</p>
+</div>
+<h3>LSErrorFree</h3>
+<h4>Description</h4>
+<p>Frees the internal structures of LSError if an error has been handled.</p>
+<p><strong>Note:</strong>&nbsp;This method must be called on an error if set.</p>
+<h4>Syntax</h4>
+<pre><code>LSErrorFree(LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          IN LSError structure to free
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+None
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSErrorInit</h3>
+<h4>Description</h4>
+Initializes a LSError.
+<h4>Syntax</h4>
+<pre><code>LSErrorInit(LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          IN LSError structure to initialize
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success, false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSErrorIsSet</h3>
+<h4>Description</h4>
+<p>Checks the status of an LSError.</p>
+<h4>Syntax</h4>
+<pre><code>LSErrorIsSet(LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          IN LSError structure to check
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true if the LSError contains an error code/message.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSErrorLog</h3>
+<h4>Description</h4>
+<p>Logs an LSError with PmLogLib.</p>
+<h4>Syntax</h4>
+<pre><code>LSErrorLog(PmLogContext context, const char * message_id, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>context</td>
+        <td>Required</td>
+        <td>PmLogContext</td>
+        <td>
+          IN log context
+        </td>
+      </tr>
+      <tr>
+        <td>message_id</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          IN message id
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          IN LSError structure to log
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+None
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSErrorLogDefault</h3>
+<h4>Description</h4>
+<p>Logs an LSError by default.</p>
+<h4>Syntax</h4>
+<pre><code>LSErrorLogDefault(const char * message_id, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>message_id</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          IN message id
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          IN LSError structure to log
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+None
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSErrorPrint</h3>
+<h4>Description</h4>
+<p>Convenience function to print a LSError.</p>
+<h4>Syntax</h4>
+<pre><code>LSErrorPrint(LSError * lserror, FILE * out)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          IN LSError structure to print
+        </td>
+      </tr>
+      <tr>
+        <td>out</td>
+        <td>Required</td>
+        <td>FILE *</td>
+        <td>
+          IN handle to file
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+None
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSGmainAttach</h3>
+<h4>Description</h4>
+<p>Attaches a service to a Glib mainloop.</p>
+<h4>Syntax</h4>
+<pre><code>LSGmainAttach(LSHandle * sh, GMainLoop * mainLoop, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          IN handle to service
+        </td>
+      </tr>
+      <tr>
+        <td>mainLoop</td>
+        <td>Required</td>
+        <td>GMainLoop *</td>
+        <td>
+          IN loop to attach
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success, false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSGmainContextAttach</h3>
+<h4>Description</h4>
+<p>Attaches a service to a GLib mainloop.</p>
+<h4>Syntax</h4>
+<pre><code>LSGmainContextAttach(LSHandle * sh, GMainContext * mainContext, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          IN handle to service
+        </td>
+      </tr>
+      <tr>
+        <td>mainContext</td>
+        <td>Required</td>
+        <td>GMainContext *</td>
+        <td>
+          IN context
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success, false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSGmainDetach</h3>
+<h4>Description</h4>
+<p>Detaches a service from a GLib mainloop.</p>
+<p><strong>Note:</strong></p>
+<ul>
+  <li>Never&nbsp;use this function unless you are fork()&#39;ing without exec()&#39;ing.</li>
+  <li>This will perform nearly all the same cleanup as LSUnregister(), with the exception that it will not send out shutdown messages or flush any buffers.</li>
+  <li>It is intended to be used only when fork()&#39;ing so that your child process can continue without interfering with the parent&#39;s file descriptors, since open file descriptors are duplicated during a fork().</li>
+</ul>
+<h4>Syntax</h4>
+<pre><code>LSGmainDetach(LSHandle * sh, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          IN handle to service
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>true on success, otherwise false</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSGmainGetContext</h3>
+<h4>Description</h4>
+<p>Gets a GLib mainloop context for service.</p>
+<h4>Syntax</h4>
+<pre><code>LSGmainGetContext(LSHandle * sh, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          IN handle to service
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>GMainContext *</td>
+        <td>Required</td>
+        <td>GMainContext *</td>
+        <td>
+          <p>Indicates the GMainContextglib mainloop context.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSGmainSetPriority</h3>
+<h4>Description</h4>
+<p>Sets the priority level on the associated GSources for the service connection.</p>
+<p><strong>Note:</strong></p>
+<ul>
+  <li>This should be called after LSGmainAttach().</li>
+  <li>See GLib documentation for GSource priority levels.</li>
+</ul>
+<h4>Syntax</h4>
+<pre><code>LSGmainSetPriority(LSHandle * sh, int priority, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          IN handle to service
+        </td>
+      </tr>
+      <tr>
+        <td>priority</td>
+        <td>Required</td>
+        <td>int</td>
+        <td>
+          IN priority level
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success, false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSHandleGetName</h3>
+<h4>Description</h4>
+<p>Returns the name of a luna service handle.</p>
+<h4>Syntax</h4>
+<pre><code>LSHandleGetName(LSHandle * sh)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          <p>IN handle to service</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+None
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSIdleTimeout</h3>
+<h4>Description</h4>
+<p>Registers a callback that will be called after certain milliseconds of inactivity specified by the timeout parameter.</p>
+<p><strong>Note:</strong></p>
+<ul>
+  <li>Any stored LSMessage, active subscription (created by LSSubscriptionAdd) or message sent or received is considered as an activity. An exception is&nbsp;LSMessage marked as inactive with function LSMessageMarkInactive.</li>
+  <li>This function should be called before any LSRegister call.</li>
+  <li>This requirement is for ease of implementation and not enforced but strongly recommended.</li>
+</ul>
+<h4>Syntax</h4>
+<pre><code>LSIdleTimeout(unsigned int timeout, void(*)(void *) callback, void * userdata, GMainContext * context)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>timeout</td>
+        <td>Required</td>
+        <td>unsigned int</td>
+        <td>
+          IN time of inactivity (in ms) before callback invocation
+        </td>
+      </tr>
+      <tr>
+        <td>callback</td>
+        <td>Required</td>
+        <td>void(*)(void *)</td>
+        <td>
+          IN user callback
+        </td>
+      </tr>
+      <tr>
+        <td>userdata</td>
+        <td>Required</td>
+        <td>void *</td>
+        <td>
+          IN user provided data, that will be passed into callback
+        </td>
+      </tr>
+      <tr>
+        <td>context</td>
+        <td>Required</td>
+        <td>GMainContext *</td>
+        <td>
+          IN context, which will be used to hold timer
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+None
+<h4>Examples</h4>
+<strong>Example code</strong>
+<div class="code-bg-grey">
+  <p>void callBackFunc( void *data) { }<br />
+    <br />
+    LSIdleTimeout (TIMEOUT, callBackFunc, loop, gMainContext);<br />
+    <br />
+    LSRegister ( &quot;com.name.service&quot; , &amp;lsHandle, &amp;error);</p>
+</div>
+<h3>LSIsRunning</h3>
+<h4>Description</h4>
+<p>Checks if an instance of this executable is running.</p>
+<h4>Syntax</h4>
+<pre><code>LSIsRunning(const char * pid_dir, const char * lock_file_name)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>pid_dir</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          IN directory where the pid file should reside
+        </td>
+      </tr>
+      <tr>
+        <td>lock_file_name</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          <p>IN file to be checked</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Indicates the return value.</p>
+          <p>Possible values are:&nbsp;</p>
+          <ul>
+            <li><strong>true:</strong> Executable is running (matching pid file found).</li>
+            <li><strong>false:</strong> Executable is not running.</li>
+          </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSLockFile</h3>
+<h4>Description</h4>
+<p>Sets a lock on the specified file.</p>
+<h4>Syntax</h4>
+<pre><code>LSLockFile(int fd)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>fd</td>
+        <td>Required</td>
+        <td>int</td>
+        <td>
+          <p>Indicates the file descriptor.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success, false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSMessageAccessPayload</h3>
+<h4>Description</h4>
+<p>Gets the payload of this message.</p>
+<h4>Syntax</h4>
+<pre><code>LSMessageAccessPayload(LSMessage * message)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>message</td>
+        <td>Required</td>
+        <td>LSMessage *</td>
+        <td>
+          IN message
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>payload</td>
+        <td>Required</td>
+        <td>LSPayload *</td>
+        <td>
+          <p>Indicates the payload.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSMessageGetApplicationID</h3>
+<h4>Description</h4>
+<p>Obtains the application&nbsp;ID.</p>
+<p><strong>Note:</strong> This only applies to JS Applications&#39; LSCallFromApplication().</p>
+<h4>Syntax</h4>
+<pre><code>LSMessageGetApplicationID(LSMessage * message)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>message</td>
+        <td>Required</td>
+        <td>LSMessage *</td>
+        <td>
+          IN message
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>app_id</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          <p>Indicates the application ID.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSMessageGetCategory</h3>
+<h4>Description</h4>
+<p>Gets the category of this message.</p>
+<p><strong>Note:</strong> This method only applies to request messages on the service side like a method call, method cancel, signal call. It doesn&#39;t apply to response messages.</p>
+<h4>Syntax</h4>
+<pre><code>LSMessageGetCategory(LSMessage * message)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>message</td>
+        <td>Required</td>
+        <td>LSMessage *</td>
+        <td>
+          IN message
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>category</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          <p>Indicates the category name.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSMessageGetConnection</h3>
+<h4>Description</h4>
+<p>Returns a handle to the connection-to-bus through which the message was sent.</p>
+<h4>Syntax</h4>
+<pre><code>LSMessageGetConnection(LSMessage * message)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>message</td>
+        <td>Required</td>
+        <td>LSMessage *</td>
+        <td>
+          IN message
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          <p>Returns the handle to the connection-to-bus.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSMessageGetFd</h3>
+<h4>Description</h4>
+<p>Retrieves a message only if it contains an FD&nbsp;(file descriptor).</p>
+<h4>Syntax</h4>
+<pre><code>LSMessageGetFd(LSMessage * message)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>message</td>
+        <td>Required</td>
+        <td>LSMessage *</td>
+        <td>
+          IN message
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>int</td>
+        <td>Required</td>
+        <td>int</td>
+        <td>
+          <p>Returns file descriptor.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSMessageGetKind</h3>
+<h4>Description</h4>
+<p>Returns the kind of the message (category + method).</p>
+<h4>Syntax</h4>
+<pre><code>LSMessageGetKind(LSMessage * message)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>message</td>
+        <td>Required</td>
+        <td>LSMessage *</td>
+        <td>
+          IN message
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>message_kind</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          <p>Indicates the kind of the message.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSMessageGetMethod</h3>
+<h4>Description</h4>
+<p>Gets the method name of the message.</p>
+<p><strong>Note:</strong> This only applies to request messages on the service side like a method call, method cancel, signal call. It doesn&#39;t apply to response messages.</p>
+<h4>Syntax</h4>
+<pre><code>LSMessageGetMethod(LSMessage * message)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>message</td>
+        <td>Required</td>
+        <td>LSMessage *</td>
+        <td>
+          IN message
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>method</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          <p>Indicates the name of a method.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSMessageGetPayload</h3>
+<h4>Description</h4>
+<p>Gets the payload of the&nbsp;message.</p>
+<h4>Syntax</h4>
+<pre><code>LSMessageGetPayload(LSMessage * message)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>message</td>
+        <td>Required</td>
+        <td>LSMessage *</td>
+        <td>
+          IN message
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>payload</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          <p>Indicates the payload.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSMessageGetResponseToken</h3>
+<h4>Description</h4>
+<p>Gets the response token associated with the message that&nbsp;matches the LSMessageGetToken() of the original call.</p>
+<p><strong>Note:</strong> For signals, the response token is supplanted with the original token returned from LSSignalCall().</p>
+<h4>Syntax</h4>
+<pre><code>LSMessageGetResponseToken(LSMessage * reply)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>reply</td>
+        <td>Required</td>
+        <td>LSMessage *</td>
+        <td>
+          IN message
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>token</td>
+        <td>Required</td>
+        <td>LSMessageToken</td>
+        <td>
+          <p>Indicates the message token.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSMessageGetSender</h3>
+<h4>Description</h4>
+<p>Obtains a unique token identifying the sender.</p>
+<h4>Syntax</h4>
+<pre><code>LSMessageGetSender(LSMessage * message)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>message</td>
+        <td>Required</td>
+        <td>LSMessage *</td>
+        <td>
+          IN message
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>service_name</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          <p>Returns the sender&#39;s service_name.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSMessageGetSenderServiceName</h3>
+<h4>Description</h4>
+<p>Gets the name of the service that sent the message.</p>
+<p><strong>Note:</strong> This method returns NULL if the sender has not&nbsp;registered the&nbsp;service name.</p>
+<h4>Syntax</h4>
+<pre><code>LSMessageGetSenderServiceName(LSMessage * message)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>message</td>
+        <td>Required</td>
+        <td>LSMessage *</td>
+        <td>
+          IN message
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>service_name</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          <p>Returns the service_name if service sending the message has a name,&nbsp;NULL otherwise.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSMessageGetToken</h3>
+<h4>Description</h4>
+<p>Gets the unique serial of this message.</p>
+<p><strong>Note: </strong>Do not confuse with LSMessageGetResponseToken().</p>
+<h4>Syntax</h4>
+<pre><code>LSMessageGetToken(LSMessage * message)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>message</td>
+        <td>Required</td>
+        <td>LSMessage *</td>
+        <td>
+          IN message
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>token</td>
+        <td>Required</td>
+        <td>LSMessageToken</td>
+        <td>
+          <p>Indicates the message token.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSMessageGetUniqueToken</h3>
+<h4>Description</h4>
+Returns a string that uniquely represents this message.
+<h4>Syntax</h4>
+<pre><code>LSMessageGetUniqueToken(LSMessage * message)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>message</td>
+        <td>Required</td>
+        <td>LSMessage *</td>
+        <td>
+          IN message
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>token</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          <p>Indicates a unique token.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSMessageIsHubErrorMessage</h3>
+<h4>Description</h4>
+Returns true if the message is an error message from the hub.
+<h4>Syntax</h4>
+<pre><code>LSMessageIsHubErrorMessage(LSMessage * message)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>message</td>
+        <td>Required</td>
+        <td>LSMessage *</td>
+        <td>
+          IN message to chech
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true, if the error message is from the hub, false otherwise.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSMessageIsSubscription</h3>
+<h4>Description</h4>
+<p>Checks if the message has a subscription field with subscribe set as true.</p>
+<h4>Syntax</h4>
+<pre><code>LSMessageIsSubscription(LSMessage * message)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>message</td>
+        <td>Required</td>
+        <td>LSMessage *</td>
+        <td>
+          IN message
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>true if has subscribe=true, false otherwise</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSMessageMarkInactive</h3>
+<h4>Description</h4>
+<p>Marks specific message as &quot;weak&quot; (no activity associated with it).</p>
+<p><strong>Note: </strong></p>
+<ul>
+  <li>Marking the same LSMessage as inactive more than once is undefined behavior Message is treated as active by default.</li>
+  <li>Service with active messages(subscriptions) will not receive idle timeout callback.</li>
+  <li>Message marked as inactive does not prevent idle timeout from being called effectively prohibit treatment of this message presence as an activity on LS2 bus.</li>
+</ul>
+<h4>Syntax</h4>
+<pre><code>LSMessageMarkInactive(LSMessage * message)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>message</td>
+        <td>Required</td>
+        <td>LSMessage *</td>
+        <td>
+          IN message to mark it as &quot;weak&quot;
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+None
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSMessagePrint</h3>
+<h4>Description</h4>
+Convenience function to pretty print a message.
+<h4>Syntax</h4>
+<pre><code>LSMessagePrint(LSMessage * message, FILE * out)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>message</td>
+        <td>Required</td>
+        <td>LSMessage *</td>
+        <td>
+          IN message to print
+        </td>
+      </tr>
+      <tr>
+        <td>out</td>
+        <td>Required</td>
+        <td>FILE *</td>
+        <td>
+          IN file to print
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success, false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSMessageRef</h3>
+<h4>Description</h4>
+<p>Increments&nbsp;ref count on the message object.</p>
+<p><strong>Note:</strong></p>
+<ul>
+  <li>This method must be called only to store LSMessage internally.</li>
+  <li>A LSMessageRef() must&nbsp;be paired with a LSMessageUnref().</li>
+</ul>
+<h4>Syntax</h4>
+<pre><code>LSMessageRef(LSMessage * message)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>message</td>
+        <td>Required</td>
+        <td>LSMessage *</td>
+        <td>
+          IN message to ref
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+None
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSMessageReply</h3>
+<h4>Description</h4>
+<p>Sends a reply to a message using the bus identified by LSHandle.</p>
+<p><strong>Note:</strong> To use the same bus upon which the message arrived, it is recommended to use LSMessageRespond().</p>
+<h4>Syntax</h4>
+<pre><code>LSMessageReply(LSHandle * sh, LSMessage * lsmsg, const char * json, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          IN handle to service
+        </td>
+      </tr>
+      <tr>
+        <td>lsmsg</td>
+        <td>Required</td>
+        <td>LSMessage *</td>
+        <td>
+          IN message
+        </td>
+      </tr>
+      <tr>
+        <td>json</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          IN json as payload
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set one error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success, false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSMessageRespond</h3>
+<h4>Description</h4>
+<p>Sends a reply to the message using the same bus that had sent it.</p>
+<h4>Syntax</h4>
+<pre><code>LSMessageRespond(LSMessage * message, const char * json, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>message</td>
+        <td>Required</td>
+        <td>LSMessage *</td>
+        <td>
+          IN message
+        </td>
+      </tr>
+      <tr>
+        <td>json</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          IN payload to send
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success, false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSMessageRespondWithPayload</h3>
+<h4>Description</h4>
+<p>Sends a reply to the message with a payload.</p>
+<h4>Syntax</h4>
+<pre><code>LSMessageRespondWithPayload(LSMessage * message, LSPayload * payload, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>message</td>
+        <td>Required</td>
+        <td>LSMessage *</td>
+        <td>
+          IN message
+        </td>
+      </tr>
+      <tr>
+        <td>payload</td>
+        <td>Required</td>
+        <td>LSPayload *</td>
+        <td>
+          IN payload to send
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success, false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSMessageUnref</h3>
+<h4>Description</h4>
+<p>Decrements ref count on the message object.</p>
+<p><strong>Note: </strong>The object is freed if ref goes to zero.</p>
+<h4>Syntax</h4>
+<pre><code>LSMessageUnref(LSMessage * message)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>message</td>
+        <td>Required</td>
+        <td>LSMessage *</td>
+        <td>
+          IN message to unref
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+None
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSMethodSetData</h3>
+<h4>Description</h4>
+<p>Sets the userdata that is delivered to callback registered to the method.</p>
+<p><strong>Note:</strong>&nbsp;</p>
+<ul>
+  <li>It&#39;s recommended to set method user data before method registration, otherwise, if mainloop is running, there is a chance to get callback called with category data.</li>
+  <li>Overrides category data as callback context.</li>
+</ul>
+<h4>Syntax</h4>
+<pre><code>LSMethodSetData(LSHandle * sh, const char * category, const char * method, void * user_data, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          IN handle to service
+        </td>
+      </tr>
+      <tr>
+        <td>category</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          IN category name
+        </td>
+      </tr>
+      <tr>
+        <td>method</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          IN method name
+        </td>
+      </tr>
+      <tr>
+        <td>user_data</td>
+        <td>Required</td>
+        <td>void *</td>
+        <td>
+          IN user data to set
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success, false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSPayloadAttachFd</h3>
+<h4>Description</h4>
+<p>Attaches file descriptor to passed LSPayload.</p>
+<p><strong>Note:</strong> File descriptor should outlive created payload.</p>
+<h4>Syntax</h4>
+<pre><code>LSPayloadAttachFd(LSPayload * payload, int fd)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>payload</td>
+        <td>Required</td>
+        <td>LSPayload *</td>
+        <td>
+          <p>Indicates a&nbsp;new LSPayload structure.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>fd</td>
+        <td>Required</td>
+        <td>int</td>
+        <td>
+          <p>Indicates the file descriptor to be attached.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+None
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSPayloadFree</h3>
+<h4>Description</h4>
+<p>Contains LSPayloadFree()&nbsp;and its internal data.</p>
+<h4>Syntax</h4>
+<pre><code>LSPayloadFree(LSPayload * payload)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>payload</td>
+        <td>Required</td>
+        <td>LSPayload *</td>
+        <td>
+          <p>Indicates a new LSPayload structure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+None
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSPayloadFromData</h3>
+<h4>Description</h4>
+<p>Creates the LSPayload from the binary data.</p>
+<p><strong>Note:</strong> Binary data should outlive created payload.</p>
+<h4>Syntax</h4>
+<pre><code>LSPayloadFromData(const char * type, void * ptr, size_t size)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>type</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          <p>Indicates the string identifier of the binary data type.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>ptr</td>
+        <td>Required</td>
+        <td>void *</td>
+        <td>
+          <p>Indicates the data pointer.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>size</td>
+        <td>Required</td>
+        <td>size_t</td>
+        <td>
+          <p>Indicates the size of the binary data.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>LSPayload *</td>
+        <td>Required</td>
+        <td>LSPayload *</td>
+        <td>
+          <p>Indicates a&nbsp;new LSPayload structure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSPayloadFromJson</h3>
+<h4>Description</h4>
+<p>Creates the LSPayload from the string.</p>
+<p><strong>Note:</strong> String should outlive created payload.</p>
+<h4>Syntax</h4>
+<pre><code>LSPayloadFromJson(const char * json)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>json</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          <p>Indicates the string representation of the JSON.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>LSPayload *</td>
+        <td>Required</td>
+        <td>LSPayload *</td>
+        <td>
+          <p>Indicates a&nbsp;new LSPayload structure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSPayloadFromJValue</h3>
+<h4>Description</h4>
+<p>Creates an LSPayload from jvalue.</p>
+<p><strong>Note:</strong> jvalue should outlive created payload.</p>
+<h4>Syntax</h4>
+<pre><code>LSPayloadFromJValue(jvalue_ref value)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>value</td>
+        <td>Required</td>
+        <td>jvalue_ref</td>
+        <td>
+          <p>Indicates the pbnjson representation of the JSON.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>LSPayload *</td>
+        <td>Required</td>
+        <td>LSPayload *</td>
+        <td>
+          <p>Indicates a&nbsp;new LSPayload structure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSPayloadGetData</h3>
+<h4>Description</h4>
+<p>Gets the raw LSPayload data.</p>
+<h4>Syntax</h4>
+<pre><code>LSPayloadGetData(const LSPayload * payload, size_t * size)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>payload</td>
+        <td>Required</td>
+        <td>const LSPayload *</td>
+        <td>
+          <p>Indicates a&nbsp;new LSPayload structure.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>size</td>
+        <td>Required</td>
+        <td>size_t *</td>
+        <td>
+          <p>Indicates a pointer to size_t in which size of data will be stored.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>ptr</td>
+        <td>Required</td>
+        <td>void *</td>
+        <td>
+          <p>Pointer to data.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSPayloadGetDataType</h3>
+<h4>Description</h4>
+<p>Gets the string identifier of LSPayload data.</p>
+<h4>Syntax</h4>
+<pre><code>LSPayloadGetDataType(const LSPayload * payload)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>payload</td>
+        <td>Required</td>
+        <td>const LSPayload *</td>
+        <td>
+          <p>Indicates a&nbsp;new LSPayload structure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>const char *</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          <p>Indicates the string identifier.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSPayloadGetFd</h3>
+<h4>Description</h4>
+<p>Gets the file descriptor attached to passed LSPayload.</p>
+<h4>Syntax</h4>
+<pre><code>LSPayloadGetFd(const LSPayload * payload)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>payload</td>
+        <td>Required</td>
+        <td>const LSPayload *</td>
+        <td>
+          <p>Indicates a new LSPayload structure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>fd</td>
+        <td>Required</td>
+        <td>int</td>
+        <td>
+          <p>Returns file descriptor if attached or -1 if file descriptor is not attached.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSPayloadGetJson</h3>
+<h4>Description</h4>
+<p>Gets the string representation of JSON&nbsp;in LSPayload.</p>
+<h4>Syntax</h4>
+<pre><code>LSPayloadGetJson(const LSPayload * payload)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>payload</td>
+        <td>Required</td>
+        <td>const LSPayload *</td>
+        <td>
+          <p>Indicates a&nbsp;new LSPayload structure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>const char *</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          <p>Indicates that the&nbsp;JSON&nbsp;string or the NULL if string cannot be retrieved</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSPayloadGetJValue</h3>
+<h4>Description</h4>
+<p>Gets the&nbsp;jvalue_ref representation of JSON in LSPayload.</p>
+<h4>Syntax</h4>
+<pre><code>LSPayloadGetJValue(const LSPayload * payload)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>payload</td>
+        <td>Required</td>
+        <td>const LSPayload *</td>
+        <td>
+          <p>Indicates a&nbsp;new LSPayload structure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>jvalue_ref</td>
+        <td>Required</td>
+        <td>jvalue_ref</td>
+        <td>
+          <p>Indicates that the jvalue_ref or NULL if jvalue_ref cannot&nbsp;be retrieved.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSPushRole</h3>
+<h4>Description</h4>
+<p>Pushes a role file for this process.</p>
+<p><strong>Note:</strong> Once the role file has been pushed with this function, the process will be restricted to the constraints of the provided role file.</p>
+<h4>Syntax</h4>
+<pre><code>LSPushRole(LSHandle * sh, const char * role_path, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          IN handle (already connected with LSRegister())
+        </td>
+      </tr>
+      <tr>
+        <td>role_path</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          IN full path to role file
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success, false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSRegister</h3>
+<h4>Description</h4>
+<p>Registers a service on the private bus.</p>
+<p><strong>Note: </strong></p>
+<ul>
+  <li>Services may make outgoing service calls using LSCall() or handle incoming messages for handlers registered via LSRegisterCategory(), and send replies via LSMessageReply() or LSSubscriptionPost().</li>
+  <li>A traditional client may register with a NULL name if it never expects to be sent messages.</li>
+</ul>
+<h4>Syntax</h4>
+<pre><code>LSRegister(const char * name, LSHandle ** sh, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>name</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          IN service name
+        </td>
+      </tr>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle **</td>
+        <td>
+          <p>IN handle to service</p>
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success, false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSRegisterApplicationService</h3>
+<h4>Description</h4>
+<p>Registers a service on the private bus with the application ID.</p>
+<p>For details see LSRegister description.</p>
+<h4>Syntax</h4>
+<pre><code>LSRegisterApplicationService(const char * name, const char * app_id, LSHandle ** sh, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>name</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          IN service name
+        </td>
+      </tr>
+      <tr>
+        <td>app_id</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          IN application Id
+        </td>
+      </tr>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle **</td>
+        <td>
+          <p>IN handle to service</p>
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success, false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSRegisterCategory</h3>
+<h4>Description</h4>
+<p>Registers tables of callbacks associated with the message category.</p>
+<h4>Syntax</h4>
+<pre><code>LSRegisterCategory(LSHandle * sh, const char * category, LSMethod * methods, LSSignal * signals, LSProperty * properties, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          IN handle to service
+        </td>
+      </tr>
+      <tr>
+        <td>category</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          IN may be NULL for default '/' category.
+        </td>
+      </tr>
+      <tr>
+        <td>methods</td>
+        <td>Required</td>
+        <td>LSMethod *</td>
+        <td>
+          IN table of methods.
+        </td>
+      </tr>
+      <tr>
+        <td>signals</td>
+        <td>Required</td>
+        <td>LSSignal *</td>
+        <td>
+          IN table of signals.
+        </td>
+      </tr>
+      <tr>
+        <td>properties</td>
+        <td>Required</td>
+        <td>LSProperty *</td>
+        <td>
+          IN table of properties.
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success, false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSRegisterCategoryAppend</h3>
+<h4>Description</h4>
+<p>Appends methods to the category.&nbsp;Creates a category if needed.</p>
+<h4>Syntax</h4>
+<pre><code>LSRegisterCategoryAppend(LSHandle * sh, const char * category, LSMethod * methods, LSSignal * signals, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          IN handle to service
+        </td>
+      </tr>
+      <tr>
+        <td>category</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          IN category name
+        </td>
+      </tr>
+      <tr>
+        <td>methods</td>
+        <td>Required</td>
+        <td>LSMethod *</td>
+        <td>
+          IN array of methods
+        </td>
+      </tr>
+      <tr>
+        <td>signals</td>
+        <td>Required</td>
+        <td>LSSignal *</td>
+        <td>
+          IN array of signals
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success, false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSRegisterServerStatusEx</h3>
+<h4>Description</h4>
+<p>Registers a callback to be called when the server goes up or comes down.&nbsp;Performs LSCall(sh, &quot;luna://com.webos.service.bus/signal/registerServerStatus&quot;).</p>
+<p><strong>Note:</strong> Callback may be called in this context if the server is already up.</p>
+<h4>Syntax</h4>
+<pre><code>LSRegisterServerStatusEx(LSHandle * sh, const char * serviceName, LSServerStatusFunc func, void * ctxt, void ** cookie, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          IN handle to service
+        </td>
+      </tr>
+      <tr>
+        <td>serviceName</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          IN service name to monitor for connect/disconnect.
+        </td>
+      </tr>
+      <tr>
+        <td>func</td>
+        <td>Required</td>
+        <td>LSServerStatusFunc</td>
+        <td>
+          IN function callback
+        </td>
+      </tr>
+      <tr>
+        <td>ctxt</td>
+        <td>Required</td>
+        <td>void *</td>
+        <td>
+          <p>IN context</p>
+        </td>
+      </tr>
+      <tr>
+        <td>cookie</td>
+        <td>Required</td>
+        <td>void **</td>
+        <td>
+          OUT token to use for to unregister the callback
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success, false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSRegisterServerStatusEx</h3>
+<h4>Description</h4>
+<p>Registers a callback to be called when the server goes up or comes down.&nbsp;Performs LSCall(sh, &quot;luna://com.webos.service.bus/signal/registerServerStatus&quot;).</p>
+<p><strong>Note:</strong> Callback may be called in this context if the server is already up.</p>
+<h4>Syntax</h4>
+<pre><code>LSRegisterServerStatusEx(LSHandle * sh, const char * serviceName, LSServerStatusFunc func, void * ctx, void ** cookie, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          IN handle to service
+        </td>
+      </tr>
+      <tr>
+        <td>serviceName</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          IN service name to monitor for connect/disconnect.
+        </td>
+      </tr>
+      <tr>
+        <td>func</td>
+        <td>Required</td>
+        <td>LSServerStatusFunc</td>
+        <td>
+          IN function callback
+        </td>
+      </tr>
+      <tr>
+        <td>ctx</td>
+        <td>Required</td>
+        <td>void *</td>
+        <td>
+          IN user data to be passed to callback
+        </td>
+      </tr>
+      <tr>
+        <td>cookie</td>
+        <td>Required</td>
+        <td>void **</td>
+        <td>
+          OUT token to use for to unregister the callback
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success, false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSSetDisconnectHandler</h3>
+<h4>Description</h4>
+<p>Sets a function to be called if&nbsp;disconnected from the bus.</p>
+<h4>Syntax</h4>
+<pre><code>LSSetDisconnectHandler(LSHandle * sh, LSDisconnectHandler disconnect_handler, void * user_data, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          IN handle to service
+        </td>
+      </tr>
+      <tr>
+        <td>disconnect_handler</td>
+        <td>Required</td>
+        <td>LSDisconnectHandler</td>
+        <td>
+          IN function callback
+        </td>
+      </tr>
+      <tr>
+        <td>user_data</td>
+        <td>Required</td>
+        <td>void *</td>
+        <td>
+          IN user data to be passed to callback
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success, false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSSignalSend</h3>
+<h4>Description</h4>
+<p>Sends a signal.</p>
+<h4>Syntax</h4>
+<pre><code>LSSignalSend(LSHandle * sh, const char * uri, const char * payload, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          IN handle to service
+        </td>
+      </tr>
+      <tr>
+        <td>uri</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          IN fully qualified path to service's method
+        </td>
+      </tr>
+      <tr>
+        <td>payload</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          IN some string, usually following json object semantics
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success, false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSSubscriptionAcquire</h3>
+<h4>Description</h4>
+<p>Acquires an iterator to iterate through the subscription for &#39;key&#39;.</p>
+<h4>Syntax</h4>
+<pre><code>LSSubscriptionAcquire(LSHandle * sh, const char * key, LSSubscriptionIter ** ret_iter, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          IN handle to service
+        </td>
+      </tr>
+      <tr>
+        <td>key</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          IN key
+        </td>
+      </tr>
+      <tr>
+        <td>ret_iter</td>
+        <td>Required</td>
+        <td>LSSubscriptionIter **</td>
+        <td>
+          <p>OUT Iterator to iterate through the subscription for key</p>
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success, false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSSubscriptionAdd</h3>
+<h4>Description</h4>
+<p>Adds a subscription to a list associated with &#39;key&#39;.</p>
+<p><strong>Note:</strong> The call may fail if the client has been disconnected. However, if the call succeeds, the code can install callback to get notification about client&nbsp; &nbsp; &nbsp; &nbsp;<br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;disconnection or call cancel via LSSubscriptionSetCancelFunction().</p>
+<h4>Syntax</h4>
+<pre><code>LSSubscriptionAdd(LSHandle * sh, const char * key, LSMessage * message, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          IN handle to service
+        </td>
+      </tr>
+      <tr>
+        <td>key</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          IN key
+        </td>
+      </tr>
+      <tr>
+        <td>message</td>
+        <td>Required</td>
+        <td>LSMessage *</td>
+        <td>
+          IN message object
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success, false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSSubscriptionGetHandleSubscribersCount</h3>
+<h4>Description</h4>
+<p>Returns number of subscribers with name &#39;key&#39;.</p>
+<p><strong>Note:</strong></p>
+<ul>
+  <li>LSSubscriptionReply has no overhead for empty subscribers list.</li>
+  <li>Function can be used to avoid LSSubscriptionIter or payload creation.</li>
+</ul>
+<h4>Syntax</h4>
+<pre><code>LSSubscriptionGetHandleSubscribersCount(LSHandle * sh, const char * key)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          <p>IN handle to service</p>
+        </td>
+      </tr>
+      <tr>
+        <td>key</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          <p>IN key</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>subscriber_count</td>
+        <td>Required</td>
+        <td>unsigned int</td>
+        <td>
+          <p>Indicates unsigned int, number of subscribers.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSSubscriptionHasNext</h3>
+<h4>Description</h4>
+Returns whether there is a next item in subscription.
+<h4>Syntax</h4>
+<pre><code>LSSubscriptionHasNext(LSSubscriptionIter * iter)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>iter</td>
+        <td>Required</td>
+        <td>LSSubscriptionIter *</td>
+        <td>
+          IN Subscription iterator to check
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success,&nbsp;false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSSubscriptionNext</h3>
+<h4>Description</h4>
+<p>Obtains the next subscription message.</p>
+<h4>Syntax</h4>
+<pre><code>LSSubscriptionNext(LSSubscriptionIter * iter)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>iter</td>
+        <td>Required</td>
+        <td>LSSubscriptionIter *</td>
+        <td>
+          IN Subscription iterator to obtain from
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>LSMessage *</td>
+        <td>Required</td>
+        <td>LSMessage *</td>
+        <td>LSMessage subscription message</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSSubscriptionProcess</h3>
+<h4>Description</h4>
+<p>Adds the message to the subscription list using the default key &#39;/category/method&#39;, if the message contains subscribe: true.</p>
+<p><strong>Note:</strong> This is equivalent to LSSubscriptionAdd(sh, key, message, lserror) where the key is LSMessageGetKind(message).</p>
+<h4>Syntax</h4>
+<pre><code>LSSubscriptionProcess(LSHandle * sh, LSMessage * message, bool * subscribed, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          IN service handle
+        </td>
+      </tr>
+      <tr>
+        <td>message</td>
+        <td>Required</td>
+        <td>LSMessage *</td>
+        <td>
+          IN message object
+        </td>
+      </tr>
+      <tr>
+        <td>subscribed</td>
+        <td>Required</td>
+        <td>bool *</td>
+        <td>
+          <p>OUT flag to check if subscribed</p>
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success,&nbsp;false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSSubscriptionRelease</h3>
+<h4>Description</h4>
+Frees up resources for LSSubscriptionIter.
+<h4>Syntax</h4>
+<pre><code>LSSubscriptionRelease(LSSubscriptionIter * iter)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>iter</td>
+        <td>Required</td>
+        <td>LSSubscriptionIter *</td>
+        <td>
+          IN Subscription iterator to free
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+None
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSSubscriptionRemove</h3>
+<h4>Description</h4>
+<p>Removes the last subscription returned by LSSubscriptionNext().</p>
+<h4>Syntax</h4>
+<pre><code>LSSubscriptionRemove(LSSubscriptionIter * iter)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>iter</td>
+        <td>Required</td>
+        <td>LSSubscriptionIter *</td>
+        <td>
+          IN Subscription iterator
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+None
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSSubscriptionReply</h3>
+<h4>Description</h4>
+Sends a message to subscription list with name 'key'.
+<h4>Syntax</h4>
+<pre><code>LSSubscriptionReply(LSHandle * sh, const char * key, const char * payload, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          IN handle to service
+        </td>
+      </tr>
+      <tr>
+        <td>key</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          IN key
+        </td>
+      </tr>
+      <tr>
+        <td>payload</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          IN some string, usually following json object semantics
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success,&nbsp;false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSSubscriptionSetCancelFunction</h3>
+<h4>Description</h4>
+<p>Registers a callback to be called when the subscription is canceled.</p>
+<p><strong>Note: </strong></p>
+<ul>
+  <li>The callback service may be called when the client cancels subscription via LSCallCancel() or if the client drops off the bus.</li>
+  <li>The callback service will not&nbsp;be called if LSSubscriptionAdd() failed for any reason.</li>
+</ul>
+<h4>Syntax</h4>
+<pre><code>LSSubscriptionSetCancelFunction(LSHandle * sh, LSFilterFunc cancelFunction, void * ctx, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          IN handle to service
+        </td>
+      </tr>
+      <tr>
+        <td>cancelFunction</td>
+        <td>Required</td>
+        <td>LSFilterFunc</td>
+        <td>
+          IN callback function
+        </td>
+      </tr>
+      <tr>
+        <td>ctx</td>
+        <td>Required</td>
+        <td>void *</td>
+        <td>
+          IN user data to be passed to callback
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success,&nbsp;false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>LSUnregister</h3>
+<h4>Description</h4>
+<p>Unregisters a service.</p>
+<h4>Syntax</h4>
+<pre><code>LSUnregister(LSHandle * sh, LSError * lserror)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sh</td>
+        <td>Required</td>
+        <td>LSHandle *</td>
+        <td>
+          IN handle to service
+        </td>
+      </tr>
+      <tr>
+        <td>lserror</td>
+        <td>Required</td>
+        <td>LSError *</td>
+        <td>
+          OUT set on error
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>retVal</td>
+        <td>Required</td>
+        <td>bool</td>
+        <td>
+          <p>Returns true on success,&nbsp;false on failure.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Examples</h4>
+<p>None</p>
+<h3>RemoveWatch</h3>
+<h4>Description</h4>
+<p>Removes a watch from a channel.</p>
+<h4>Syntax</h4>
+<pre><code>RemoveWatch(_LSTransportChannel * channel, GSource ** out_watch)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>channel</td>
+        <td>Required</td>
+        <td>_LSTransportChannel *</td>
+        <td>
+          IN channel that watch is on
+        </td>
+      </tr>
+      <tr>
+        <td>out_watch</td>
+        <td>Required</td>
+        <td>GSource **</td>
+        <td>
+          IN/OUT watch (set to NULL after destroying)
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+None
+<h4>Examples</h4>
+<p>None</p>

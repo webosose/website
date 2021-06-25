@@ -1,6 +1,6 @@
 ---
 title: WebOSServiceBridge API Reference
-date: 2019-10-11
+date: 2021-06-21
 weight: 10
 toc: true
 ---
@@ -24,6 +24,10 @@ It is strongly recommended that you create a WebOSServiceBridge object once and 
 ## Property
 
 - `onservicecallback`: Registers the callback routine to handle the response.
+
+{{< note >}}
+For more information on the object received by callback, see the topic 'Call Returns' in each method of the LS2 APIs.
+{{< /note >}}
 
 ## Methods
 

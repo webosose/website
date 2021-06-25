@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.storageaccess
-date: 2021-03-29
+date: 2021-06-21
 weight: 298
 toc: true
 ---
@@ -10,7 +10,8 @@ toc: true
   <p>Provides a unified interface to access contents in different storage systems:</p>
   <ul>
     <li>USB storage</li>
-    <li>Cloud&nbsp;storage provider (currently only Google Drive is supported)</li>
+    <li>Cloud&nbsp;storage provider (only <strong>Google Drive</strong> is supported)</li>
+    <li>Network storage provider (<strong>SambaServer </strong>and <strong>UPnPMediaServer </strong>are supported)</li>
     <li>Internal storage</li>
   </ul>
 </div>
@@ -53,7 +54,9 @@ toc: true
                 <li><strong>cloud</strong></li>
                 <li><strong>usb</strong></li>
                 <li><strong>internal</strong></li>
+                <li><strong>network</strong></li>
               </ul>
+              <p><strong>Note:</strong> This&nbsp;method is not supported for UPnPmediaserver.</p>
             </td>
           </tr>
           <tr>
@@ -84,7 +87,9 @@ toc: true
                 <li><strong>cloud</strong></li>
                 <li><strong>usb</strong></li>
                 <li><strong>internal</strong></li>
+                <li><strong>network</strong></li>
               </ul>
+              <p><strong>Note:</strong> This&nbsp;method is not supported for UPnPmediaserver.</p>
             </td>
           </tr>
           <tr>
@@ -220,6 +225,9 @@ toc: true
       </table>
     </div>
     <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example : Copy a file from a cloud storage provider to another location within the same storage provider</b></p>
+    </div>
     <div class="code-bg-grey">
       <p># luna-send -n 1 -f luna://com.webos.service.storageaccess/device/copy &#39;{<br />
         &nbsp; &nbsp;&quot;srcStorageType&quot;:&quot;cloud&quot;,<br />
@@ -235,6 +243,9 @@ toc: true
         &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
         }
       </p>
+    </div>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example : Copy a file from within internal storage</b></p>
     </div>
     <div class="code-bg-grey">
       <p>#&nbsp;luna-send -n 1 -f luna://com.webos.service.storageaccess/device/copy &#39;{<br />
@@ -308,7 +319,9 @@ toc: true
               <li><strong>cloud</strong></li>
               <li><strong>usb</strong></li>
               <li><strong>internal</strong></li>
+              <li><strong>network</strong></li>
             </ul>
+            <p><strong>Note:</strong> This&nbsp;method is not supported for UPnPmediaserver.</p>
           </td>
         </tr>
         <tr>
@@ -373,6 +386,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : Eject USB drive</b></p>
+  </div>
   <div class="code-bg-grey">
     <p>#luna-send -n 1 -f luna://com.webos.service.storageaccess/device/eject &#39;{<br />
       &nbsp; &nbsp;&quot;storageType&quot;:&quot;usb&quot;,<br />
@@ -419,6 +435,7 @@ toc: true
               <li><strong>cloud</strong></li>
               <li><strong>usb</strong></li>
               <li><strong>internal</strong></li>
+              <li><strong>network</strong></li>
             </ul>
           </td>
         </tr>
@@ -552,6 +569,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : Get properties of a cloud storage provider</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -i -f luna://com.webos.service.storageaccess/device/getProperties &#39;{<br />
       &nbsp; &nbsp;&quot;storageType&quot;:&quot;cloud&quot;,<br />
@@ -568,6 +588,9 @@ toc: true
       &nbsp;&nbsp; &nbsp;&quot;freeSpace&quot;: 548145<br />
       }
     </p>
+  </div>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : Get properties of file</b></p>
   </div>
   <div class="code-bg-grey">
     <p># luna-send -i -f luna://com.webos.service.storageaccess/device/getProperties &#39;{<br />
@@ -624,6 +647,7 @@ toc: true
               <li><strong>cloud</strong></li>
               <li><strong>usb</strong></li>
               <li><strong>internal</strong></li>
+              <li><strong>network</strong></li>
             </ul>
           </td>
         </tr>
@@ -641,7 +665,7 @@ toc: true
           <td>Required</td>
           <td>Object: <a href="#operation"> operation</a></td>
           <td>
-            <p>Object consisting of type and payload.</p>
+            <p>Object consisting of details of the operation.</p>
           </td>
         </tr>
       </tbody>
@@ -680,7 +704,7 @@ toc: true
         <tr>
           <td>responsePayload</td>
           <td>Optional</td>
-          <td>Object: <a href="#operation"> operation</a></td>
+          <td>Object array</td>
           <td>
             <p>Response from the storage provider.</p>
           </td>
@@ -705,31 +729,8 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
-  <div class="code-bg-grey">
-    <p># luna-send -n 1 -f luna://com.webos.service.storageaccess/device/handleExtraCommand&nbsp;&#39;{<br />
-      &nbsp; &nbsp;&quot;storageType&quot;:&quot;cloud&quot;,<br />
-      &nbsp; &nbsp;&quot;operation&quot;:{<br />
-      &nbsp; &nbsp; &nbsp; &quot;type&quot;:&quot;login&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &quot;payload&quot;:{<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;clientId&quot;:&quot;22054195876-t6mo0ruhd0gb.apps.googleusercontent.com&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;clientSecret&quot;:&quot;3OVs_ttW39gu&quot;<br />
-      &nbsp; &nbsp; &nbsp; }<br />
-      &nbsp; &nbsp;}<br />
-      }&#39;
-    </p>
-    <p>Response:&nbsp;</p>
-    <p>{<br />
-      &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
-      &nbsp; &nbsp;&quot;responsePayload&quot;:[<br />
-      &nbsp; &nbsp; &nbsp; {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;payload&quot;:{<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;response&quot;:&quot;https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive&amp;redirect_uri=urn%3Aietfoauth%3A2.0%3Aoob&amp;response_type=code&amp;client_id=22054195876-t6mo0riocigrbs5d0gb.apps.googleusercontent.com&amp;access_type=offline&quot;<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;},<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;type&quot;:&quot;login&quot;<br />
-      &nbsp; &nbsp; &nbsp; }<br />
-      &nbsp; &nbsp;]<br />
-      }
-    </p>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : For type authenticate</b></p>
   </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.storageaccess/device/handleExtraCommand&nbsp;&#39;{<br />
@@ -757,6 +758,38 @@ toc: true
       }
     </p>
   </div>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : For type login</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.storageaccess/device/handleExtraCommand&nbsp;&#39;{<br />
+      &nbsp; &nbsp;&quot;storageType&quot;:&quot;cloud&quot;,<br />
+      &nbsp; &nbsp;&quot;operation&quot;:{<br />
+      &nbsp; &nbsp; &nbsp; &quot;type&quot;:&quot;login&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;payload&quot;:{<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;clientId&quot;:&quot;22054195876-t6mo0ruhd0gb.apps.googleusercontent.com&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;clientSecret&quot;:&quot;3OVs_ttW39gu&quot;<br />
+      &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp;}<br />
+      }&#39;
+    </p>
+    <p>Response:&nbsp;</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp; &nbsp;&quot;responsePayload&quot;:[<br />
+      &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;payload&quot;:{<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;response&quot;:&quot;https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive&amp;redirect_uri=urn%3Aietfoauth%3A2.0%3Aoob&amp;response_type=code&amp;client_id=22054195876-t6mo0riocigrbs5d0gb.apps.googleusercontent.com&amp;access_type=offline&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;},<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;type&quot;:&quot;login&quot;<br />
+      &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp;]<br />
+      }
+    </p>
+  </div>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : For type token</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -i -f luna://com.webos.service.storageaccess/device/handleExtraCommand &#39;{<br />
       &nbsp; &nbsp;&quot;storageType&quot;:&quot;CLOUD&quot;,<br />
@@ -773,6 +806,74 @@ toc: true
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : For type mountSambaServer</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.storageaccess/device/handleExtraCommand &#39;{<br />
+      &nbsp;&nbsp; &nbsp;&quot;storageType&quot;: &quot;network&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&quot;operation&quot;: {<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;type&quot;: &quot;mountSambaServer&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;payload&quot;: {<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;userName&quot;: &quot;ubuntu&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;password&quot;: &quot;lge123&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;ip&quot;: &quot;192.168.31.68&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;securityMode&quot;: &quot;ntlmv2&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;sharePath&quot;: &quot;ubuntu&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;mountFlag&quot;: &quot;rw&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;domain&quot;: &quot;workgroup&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;version&quot;: &quot;2.0&quot;<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />
+      &nbsp;&nbsp; &nbsp;}<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;responsePayload&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;payload&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;mountPath&quot;: &quot;/tmp/192.168.31.68_134&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;type&quot;: &quot;mountSambaServer&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : For type discoverUPnPMediaServer</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.storageaccess/device/handleExtraCommand &#39;{<br />
+      &nbsp;&nbsp; &nbsp;&quot;storageType&quot;: &quot;network&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&quot;operation&quot;: {<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;type&quot;: &quot;discoverUPnPMediaServer&quot;<br />
+      &nbsp;&nbsp; &nbsp;}<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &nbsp;&quot;responsePayload&quot;: [<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;{<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;payload&quot;: {<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;mediaServer&quot;: [<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;{<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;ip&quot;: &quot;192.168.31.68&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;port&quot;: 49152,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;descriptionUrl&quot;: &quot;http://192.168.31.68:49152/description.xml&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;name&quot;: &quot;MEDIA SERVER NAME&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;urn&quot;: &quot;urn:schemas-upnp-org:service:ContentDirectory:1&quot;<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;]<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;type&quot;: &quot;discoverUPnPMediaServer&quot;<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />
+      &nbsp;&nbsp; &nbsp;],<br />
+      &nbsp;&nbsp; &nbsp;&quot;returnValue&quot;: true<br />
       }
     </p>
   </div>
@@ -810,6 +911,7 @@ toc: true
               <li><strong>cloud</strong></li>
               <li><strong>usb</strong></li>
               <li><strong>internal</strong></li>
+              <li><strong>network</strong></li>
             </ul>
           </td>
         </tr>
@@ -923,6 +1025,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : List contents of a directory</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.storageaccess/device/list &#39;{<br />
       &nbsp; &nbsp;&quot;storageType&quot;:&quot;cloud&quot;,<br />
@@ -991,7 +1096,9 @@ toc: true
               <li><strong>cloud</strong></li>
               <li><strong>usb</strong></li>
               <li><strong>internal</strong></li>
+              <li><strong>network</strong></li>
             </ul>
+            <p><strong>Note:</strong> This&nbsp;method is not supported for UPnPmediaserver.</p>
           </td>
         </tr>
         <tr>
@@ -1014,7 +1121,9 @@ toc: true
               <li><strong>cloud</strong></li>
               <li><strong>usb</strong></li>
               <li><strong>internal</strong></li>
+              <li><strong>network</strong></li>
             </ul>
+            <p><strong>Note:</strong> This&nbsp;method is not supported for UPnPmediaserver.</p>
           </td>
         </tr>
         <tr>
@@ -1159,6 +1268,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : Move the file to another location</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.storageaccess/device/move &#39;{<br />
       &nbsp; &nbsp;&quot;srcStorageType&quot;:&quot;cloud&quot;,<br />
@@ -1174,6 +1286,9 @@ toc: true
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
       }
     </p>
+  </div>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : Move a file from within internal storage</b></p>
   </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.storageaccess/device/move &#39;{<br />
@@ -1245,7 +1360,9 @@ toc: true
               <li><strong>cloud</strong></li>
               <li><strong>usb</strong></li>
               <li><strong>internal</strong></li>
+              <li><strong>network</strong></li>
             </ul>
+            <p><strong>Note:</strong> This&nbsp;method is not supported for UPnPmediaserver.</p>
           </td>
         </tr>
         <tr>
@@ -1318,6 +1435,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : Remove a file from a cloud storage provider</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.storageaccess/device/remove &#39;{<br />
       &nbsp; &quot;storageType&quot;: &quot;cloud&quot;,<br />
@@ -1365,7 +1485,9 @@ toc: true
               <li><strong>cloud</strong></li>
               <li><strong>usb</strong></li>
               <li><strong>internal</strong></li>
+              <li><strong>network</strong></li>
             </ul>
+            <p><strong>Note:</strong> This&nbsp;method is not supported for UPnPmediaserver.</p>
           </td>
         </tr>
         <tr>
@@ -1446,6 +1568,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : Renames a file on a cloud storage provider</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.storageaccess/device/rename &#39;{<br />
       &nbsp; &nbsp;&quot;storageType&quot;:&quot;cloud&quot;,<br />
@@ -1565,6 +1690,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : Get a list of the storage providers available on the system</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.storageaccess/listStorageProviders &#39;{&quot;subscribe&quot;: true}&#39;</p>
     <p>Response:</p>
@@ -1608,6 +1736,9 @@ toc: true
       &nbsp; &nbsp;]<br />
       }
     </p>
+  </div>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : With subscription</b></p>
   </div>
   <div class="code-bg-grey">
     <p># luna-send -i -f luna://com.webos.service.storageaccess/listStorageProviders &#39;{&quot;subscribe&quot;: true}&#39;</p>
@@ -1828,7 +1959,15 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Indicates the type of operation. For example, login,&nbsp;authenticate,&nbsp;token, adn so on.</p>
+            <p>Indicates the type of operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>login</li>
+              <li>authenticate</li>
+              <li>token</li>
+              <li>mountSambaServer</li>
+              <li>discoverUPnPMediaServer</li>
+            </ul>
           </td>
         </tr>
         <tr>
@@ -1836,7 +1975,121 @@ toc: true
           <td>Required</td>
           <td>Object</td>
           <td>
-            <p>Details of the operation.</p>
+            <p>Details of the operation.&nbsp;The payload depends on the type specified.</p>
+            <p>For&nbsp;types:</p>
+            <ul>
+              <li><strong>login, authenticate, and token</strong> - Check the related example&nbsp;of the &quot;<strong>handleExtraCommand</strong>&quot; command.</li>
+              <li><strong>mountSambaServer </strong>- Check the Payload object below.</li>
+              <li><strong>discoverUPnPMediaServer </strong>-&nbsp;No payload required.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>payload</h3>
+  <p>Arguments required for the operation in the form of key value pair</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>userName</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>User name required for mounting network storage.</p>
+            <p><strong>Default :</strong>&nbsp;guest</p>
+          </td>
+        </tr>
+        <tr>
+          <td>sharePath</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Share path of samba server.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>password</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Password required for authentication.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>ip</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>IP address of network storage device.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>securityMode</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Type of security. For example:&nbsp;ntlmv2, ntlmv2i, none, and so on.</p>
+            <p><strong>Default :</strong>&nbsp;none</p>
+          </td>
+        </tr>
+        <tr>
+          <td>port</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Samba server port.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>mountFlag</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Mode of mounting. For&nbsp;example: ro (read-only), rw (read-write).</p>
+            <p><strong>Default :</strong>&nbsp;rw (read-write)</p>
+          </td>
+        </tr>
+        <tr>
+          <td>ioCharset</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Charset used to convert local path names. For example: utf8, and so on.</p>
+            <p><strong>Default :</strong>&nbsp;utf8</p>
+          </td>
+        </tr>
+        <tr>
+          <td>domain</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Domain used to indicate the group. For example: workgroup.</p>
+            <p><strong>Default :</strong>&nbsp;workgroup</p>
+          </td>
+        </tr>
+        <tr>
+          <td>version</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Samba version. For example: 1.0, 2.0, 3.0, and so on.</p>
+            <p><strong>Default :</strong>&nbsp;2.0</p>
           </td>
         </tr>
       </tbody>
@@ -1961,6 +2214,13 @@ toc: true
         <td>USB Storage has more partition</td>
         <td>
           <p>USB Storage has more partition</p>
+        </td>
+      </tr>
+      <tr>
+        <td>2001</td>
+        <td>Mount failed</td>
+        <td>
+          <p>Mount failed</p>
         </td>
       </tr>
     </tbody>

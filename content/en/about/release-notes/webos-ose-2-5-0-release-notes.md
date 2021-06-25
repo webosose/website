@@ -44,7 +44,7 @@ This version corresponds to the [GitHub releases](https://github.com/webosose/bu
 
 ## Fixed Issues
 
-  - Fixed the issue that video frames are not visible in RPi4 .
+  - Fixed the issue that video frames are not visible in RPi4.
   - Speeded up the ostree image booting time.
   - Changed `luna-init` to use Python 3 APIs instead, as Python 2.7 APIs are not supported anymore.
   - In qml-webos-framework, replaced `appId` with `LS2_NAME` and `displayAffinity` with `DISPLAY_ID` when launching qml-runner.

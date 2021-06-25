@@ -1,6 +1,6 @@
 ---
 title: Developing Built-in Web Apps
-date: 2021-03-23
+date: 2021-06-22
 weight: 20
 toc: true
 ---
@@ -30,12 +30,21 @@ web-apps/
 
 Developing a built-in web app requires the following steps:
 
-* [Prerequisites](#before-you-begin)
-* [Step 1: Implementation](#step-1-implement-the-web-app)
-* [Step 2: Configuration](#step-2-configure-the-web-app)
-* [Step 3: Build](#step-3-build-the-web-app)
-* [Step 4: Verification](#step-4-run-and-verify-the-web-app)
-* [Step 5: Deployment](#step-5-deploy-the-web-app)
+- [Before you begin](#before-you-begin)
+- [Step 1: Implement the Web App](#step-1-implement-the-web-app)
+  - [Source Code](#source-code)
+    - [webOS OSE 2.0 or higher](#webos-ose-20-or-higher)
+    - [webOS OSE 1.x](#webos-ose-1x)
+  - [README.md](#readmemd)
+- [Step 2: Configure the Web App](#step-2-configure-the-web-app)
+  - [appinfo.json](#appinfojson)
+  - [CMakeLists.txt](#cmakeliststxt)
+- [Step 3: Build the Web App](#step-3-build-the-web-app)
+  - [Add the Recipe File](#add-the-recipe-file)
+  - [Configure the Local Source Directory](#configure-the-local-source-directory)
+  - [Build the App](#build-the-app)
+- [Step 4: Run and Verify the Web App](#step-4-run-and-verify-the-web-app)
+- [Step 5: Deploy the Web App](#step-5-deploy-the-web-app)
 
 ## Before you begin
 
@@ -120,12 +129,12 @@ h1 {
 
 A brief explanation of the above file:
 
-  - Line(11) : Create a WebOSServiceBridge object.
-  - Line(12~13) : Set the URL of the method to call and the parameters in JSON string format
+  - Line(25) : Create a WebOSServiceBridge object.
+  - Line(26~27) : Set the URL of the method to call and the parameters in JSON string format.
       - `url`: URL of the LS2 API method
       - `params`: parameter for the method to invoke
-  - Line(15~23) : Define a callback function that can handle the response. If the response is successful, "UTC" value is printed on the logging file. For details on logging, refer to [Using PmLogLib in JavaScript]({{< relref "using-pmloglib-in-javascript" >}}).
-  - Line(25~26) : Set the callback to the WebOSServiceBridge object, and invoke the method with Luna call.
+  - Line(29~37) : Define a callback function that can handle the response. If the response is successful, "UTC" value is printed on the logging file. For details on logging, refer to [Using PmLogLib in JavaScript]({{< relref "using-pmloglib-in-javascript" >}}).
+  - Line(39~40) : Set the callback to the WebOSServiceBridge object, and invoke the method with Luna call.
 
 #### webOS OSE 1.x
 

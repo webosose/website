@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.bluetooth2
-date: 2021-03-24
+date: 2021-06-10
 weight: 110
 toc: true
 ---
@@ -23,6 +23,7 @@ toc: true
     <li><strong>hfp:</strong>&nbsp;Provides methods for using HFP profile. This category contains methods for both AG and HF.</li>
     <li><strong>pbap</strong>: Provides methods for using PBAP profile. This category contains methods for both roles of Phone Book Service Equipment (PSE) and Phone Book Client Equipment (PCE).&nbsp;PSE is the device that contains the source phone book objects and PCE is the device that retrieves phone book objects from the server equipment.</li>
     <li><strong>MAP</strong>: Provides methods for using the MAP profile.This category contains methods for&nbsp;Message Client Equipment (MCE).</li>
+    <li><strong>Mesh</strong>:&nbsp;Provides methods for using the BLE Mesh profile</li>
   </ul>
   <p>&nbsp;</p>
   <div style="display: none;"> <!-- The following section is not applicable to OSE. -->
@@ -33,7 +34,7 @@ toc: true
     <li><strong>Container sessions</strong>: Runs services specific to a particular display.</li>
   </ul>
   <p>Given this background, the bluetooth2 service assigns a different Bluetooth adapter for each of the container sessions. This means that applications running on each screen, use adapters that are pre-selected at system startup.</p>
-  <p>In such cases, when an API is called, by default, the pre-selected adapterAddress is used. Therefore, you must not specify an adapterAddress. Even if you specify an adapter, it will be dis-regarded in favor of the pre-selected adapter.</p>
+  <p>In such cases, when an API is called, by default, the pre-selected adapterAddress is used. Therefore, you must not specify an adapterAddress. Even if you specify an adapter, it will be disregarded in favor of the pre-selected adapter.</p>
   </div>
   <p><u><strong>Method Behavior</strong></u></p>
   <ul>
@@ -1390,7 +1391,7 @@ toc: true
   </ul>
   <p><strong>Note:</strong></p>
   <ul>
-    <li>If the client calls<strong>&nbsp;LSCallCancel()</strong>, any active incoming pairing request is canceled the same way as if the&nbsp;<strong>adapter/cancelPairing</strong> method had been called.</li>
+    <li>If the client calls<strong>&nbsp;LSCallCancel()</strong>, any active incoming pairing request is canceled the same way as if the&nbsp;<strong>adapter/cancelPairing&nbsp;</strong>method had been called.</li>
     <li>A remote device can only be paired to a single adapter.</li>
     <li>If it is ever possible to allow incoming pairing on adapters other than the default, an optional&nbsp;<strong>adapterAddress</strong>&nbsp;parameter will be added to the parameter list.</li>
   </ul>
@@ -2433,11 +2434,11 @@ toc: true
             <ul>
               <li><strong>displayPinCode:</strong>&nbsp;Displays&nbsp;<strong>pinCode&nbsp;</strong>until the&nbsp;<strong>endPairing</strong>&nbsp;response is sent by the service.</li>
               <li><strong>displayPasskey:</strong>&nbsp;Displays&nbsp;<strong>passkey</strong>&nbsp;until the&nbsp;<strong>endPairing</strong>&nbsp;response is sent by the service.</li>
-              <li><strong>confirmPasskey:&nbsp;</strong>Requests the user to confirm&nbsp;<strong>passkey;</strong> only used with devices supporting Simple Secure Pairing (SSP) and Bluetooth version 2.1 or later.&nbsp;</li>
+              <li><strong>confirmPasskey:&nbsp;</strong>Requests the user to confirm&nbsp;<strong>passkey;</strong> only used with devices supporting Simple Secure Pairing (SSP) and Bluetooth version 2.1 or later.</li>
               <li><strong>enterPinCode:</strong> Requests the user to enter a PIN code.</li>
               <li><strong>enterPasskey:&nbsp;</strong>Requests the user to enter a passkey.</li>
               <li><strong>continuePairing:&nbsp;</strong>Requests to cancel pairing from&nbsp;<strong>adapter/cancelPairing</strong>&nbsp;failed.</li>
-              <li><strong>endPairing</strong>&nbsp;- Indicates that the pairing process is complete;&nbsp;<strong>subscribed</strong><em>&nbsp;</em>will contain&nbsp;<strong>false</strong>&nbsp;and&nbsp;<strong>returnValue</strong>&nbsp;indicates whether pairing succeeded;&nbsp;<strong>errorCode</strong>&nbsp;and&nbsp;<strong>errorText</strong> will explain the failure.</li>
+              <li><strong>endPairing</strong>&nbsp;- Indicates that the pairing process is complete;&nbsp;<strong>subscribed</strong><em>&nbsp;</em>will contain&nbsp;<strong>false</strong>&nbsp;and&nbsp;<strong>returnValue</strong>&nbsp;indicates whether pairing succeeded;&nbsp;<strong>errorCode</strong>&nbsp;and&nbsp;<strong>errorText&nbsp;</strong>will explain the failure.</li>
             </ul>
           </td>
         </tr>
@@ -2843,7 +2844,7 @@ toc: true
             <p><strong>Note:</strong></p>
             <ul>
               <li>After <strong>discoveryTimeout</strong> seconds, the adapter&nbsp;will stop discovering remote Bluetooth devices.</li>
-              <li>A value of 0 means that the timeout is disabled and the adapter will run the discovery process until the&nbsp;<strong>adapter/cancelDiscovery</strong> method is called.</li>
+              <li>A value of 0 means that the timeout is disabled and the adapter will run the discovery process until the&nbsp;<strong>adapter/cancelDiscovery</strong>&nbsp;method is called.</li>
               <li>Negative values are not valid.</li>
             </ul>
           </td>
@@ -3045,7 +3046,7 @@ toc: true
   <p>Starts discovering the remote Bluetooth devices.&nbsp;</p>
   <p><strong>Note: </strong></p>
   <ul>
-    <li>Discovery&nbsp;continues until&nbsp;<strong>adapter/cancelDiscovery</strong> is called or for&nbsp;<strong>bluetooth2AdapterStatus.</strong><strong>discoveryTimeout</strong> seconds (if non-zero).</li>
+    <li>Discovery&nbsp;continues until&nbsp;<strong>adapter/cancelDiscovery</strong>&nbsp;is called or for&nbsp;<strong>bluetooth2AdapterStatus.</strong><strong>discoveryTimeout</strong>&nbsp;seconds (if non-zero).</li>
     <li>The Discovery of a specific Adapter can be invoked by passing the adapter address.</li>
     <li>To get the list of&nbsp;devices found, subscribe to&nbsp;<strong>device/getStatus</strong>.</li>
   </ul>
@@ -8501,7 +8502,7 @@ toc: true
 <h3>device/getStatus</h3>
 <div>
   <h4>Description</h4>
-  <p>Gets the current status of remote Bluetooth devices known to the system.<strong>&nbsp;</strong></p>
+  <p>Gets the current status of remote Bluetooth devices known to the system.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -15740,152 +15741,6 @@ toc: true
     </p>
   </div>
 </div>
-<h3>opp/cancelTransfer</h3>
-<div>
-  <h4>Description</h4>
-  <p>Cancel an ongoing file transfer. This method is available only for a push server. In a client side, <strong>LSCallCancel()</strong> is used to cancel the transfer.</p>
-  <h4>Parameters</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>requestId</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>The unique ID of a request.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Call Returns</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates the status of operation. Possible values are:</p>
-            <ul>
-              <li><strong>true&nbsp;</strong>-&nbsp;Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>-&nbsp;Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>errorText</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>Error Codes Reference</strong>&quot; section of this method for details.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>errorCode</td>
-          <td>Optional</td>
-          <td>Number</td>
-          <td>
-            <p>The error code for the failed operation.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Error Codes Reference</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Error Code</p>
-          </th>
-          <th width="30%">
-            <p>Error Text</p>
-          </th>
-          <th width="55%">
-            <p>Error Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>127, 143, 144</td>
-          <td>See API Error Codes Reference</td>
-          <td>
-            <p>See<strong> API Error Codes Reference</strong>.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>155</td>
-          <td>Transfers are currently not allowed</td>
-          <td>
-            <p>OPP file transfers from the remote Bluetooth device are currently not allowed.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>156</td>
-          <td>Required &#39;requestId&#39; parameter is not supplied</td>
-          <td>
-            <p>The <strong>requestId</strong> parameter is mandatory to this method, but was not supplied by the caller of the method.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>157</td>
-          <td>Failed to retrieve state for remote device</td>
-          <td>
-            <p>The confirmation of object push request from remote Bluetooth device failed.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>158</td>
-          <td>The requestId does not exist</td>
-          <td>
-            <p>The supplied requestId does not exist, hence the method cannot be completed.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Example</h4>
-  <div class="code-bg-grey">
-    <p># luna-send -n 1 -f luna://com.webos.service.bluetooth2/opp/cancelTransfer &#39;{ &quot;requestId&quot;:&quot;001&quot; }&#39;</p>
-    <p>&nbsp;</p>
-    <p>Response:</p>
-    <p>{&nbsp;&nbsp;<br />
-      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-      }
-    </p>
-  </div>
-</div>
 <h3>opp/awaitTransferRequest</h3>
 <div>
   <h4>Description</h4>
@@ -16065,6 +15920,152 @@ toc: true
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;fileName&quot;:&quot;20150411_162012.jpg&quot;,<br />
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;name&quot;:&quot;Jone&nbsp;Doe&#39;s&nbsp;G3&quot;<br />
       &nbsp;&nbsp;&nbsp;}<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>opp/cancelTransfer</h3>
+<div>
+  <h4>Description</h4>
+  <p>Cancel an ongoing file transfer. This method is available only for a push server. In a client side, <strong>LSCallCancel()</strong> is used to cancel the transfer.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>requestId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The unique ID of a request.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>-&nbsp;Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>-&nbsp;Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;<strong>Error Codes Reference</strong>&quot; section of this method for details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>127, 143, 144</td>
+          <td>See API Error Codes Reference</td>
+          <td>
+            <p>See<strong> API Error Codes Reference</strong>.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>155</td>
+          <td>Transfers are currently not allowed</td>
+          <td>
+            <p>OPP file transfers from the remote Bluetooth device are currently not allowed.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>156</td>
+          <td>Required &#39;requestId&#39; parameter is not supplied</td>
+          <td>
+            <p>The <strong>requestId</strong> parameter is mandatory to this method, but was not supplied by the caller of the method.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>157</td>
+          <td>Failed to retrieve state for remote device</td>
+          <td>
+            <p>The confirmation of object push request from remote Bluetooth device failed.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>158</td>
+          <td>The requestId does not exist</td>
+          <td>
+            <p>The supplied requestId does not exist, hence the method cannot be completed.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.bluetooth2/opp/cancelTransfer &#39;{ &quot;requestId&quot;:&quot;001&quot; }&#39;</p>
+    <p>&nbsp;</p>
+    <p>Response:</p>
+    <p>{&nbsp;&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
       }
     </p>
   </div>
@@ -26862,6 +26863,3332 @@ toc: true
     </p>
   </div>
 </div>
+<h3>mesh/createNetwork</h3>
+<div>
+  <h4>Description</h4>
+  <p>The first API called by the application to create a network and to become a provisioner. This is called once for every network and the token returned should be stored securely by the application.</p>
+  <p>This API should not be called if the local node is not acting as the provisioner.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter to be used.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>bearer</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The underlying bearer to use.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>PB-GATT</li>
+              <li>PB-ADV (default)</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>true: Operation is successful.</li>
+              <li>false: Operation has failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.&nbsp;See the &quot;<strong>Error Codes&quot;</strong>&nbsp;section of this method for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The reason for the failure of the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>networkId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The unique identifier for the local network.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>1, 6 , 17, 39, 101</td>
+          <td>See API Error Codes section for reference</td>
+          <td>
+            <p>See API Error Codes section for reference</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.bluetooth2/mesh/createNetwork &#39;{}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;adapterAddress&quot;: &quot;b8:27:eb:fa:92:76&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp;&quot;networkId&quot;: &quot;13062059374388537380&quot;<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>mesh/scanUnprovisionedDevices</h3>
+<div>
+  <h4>Description</h4>
+  <p>Scans for mesh devices to provision when the local node is provisioner.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter to be used.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>bearer</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The underlying bearer to use.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>PB-GATT</li>
+              <li>PB-ADV (default)</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>scanTimeout</td>
+          <td>Optional</td>
+          <td>Number (uint16_t)</td>
+          <td>
+            <p>Scan timeout in seconds. The scan continues until mesh/unprovisionedScanCancel is called or for scanTimeout seconds (if non-zero).</p>
+            <p>Default value: 20 sec</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Subscribe for notifications on changes.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Subscribed.</li>
+              <li><strong>false</strong>: Not subscribed.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Operation is successful.</li>
+              <li><strong>false</strong>: Operation has failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.&nbsp;See the &quot;<strong>Error Codes&quot;</strong>&nbsp;section of this method for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The reason for the failure of the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if subscribed to get notifications.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>devices</td>
+          <td>Required</td>
+          <td>Object array: <a href="#blemeshunprovisioneddevice"> BleMeshUnprovisionedDevice</a></td>
+          <td>
+            <p>Array of BLE Mesh devices that are known to the system and that are not yet provisioned by the system.</p>
+            <p><strong>Note</strong>: Contains information for all the devices known to the system.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>device</td>
+          <td>Required</td>
+          <td>Object: <a href="#blemeshunprovisioneddevice"> BleMeshUnprovisionedDevice</a></td>
+          <td>
+            <p>BLE Mesh device that is known to the system and that is not yet provisioned by the system.</p>
+            <p><strong>Note</strong>: Contains information of only a single device detected in scan environment during the mesh/scanUnprovisionedDevices API call.<br />
+              The device is listed for following reason:<br />
+              New device detected in the scan environment.
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Subscription Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The reason for the failure of the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if subscribed to get notifications.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>devices</td>
+          <td>Required</td>
+          <td>Object array: <a href="#blemeshunprovisioneddevice"> BleMeshUnprovisionedDevice</a></td>
+          <td>
+            <p>Array of BLE Mesh devices that are known to the system and that are not yet provisioned by the system.</p>
+            <p><strong>Note</strong>: Contains information for all the devices known to the system.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>device</td>
+          <td>Required</td>
+          <td>Object: <a href="#blemeshunprovisioneddevice"> BleMeshUnprovisionedDevice</a></td>
+          <td>
+            <p>BLE Mesh device that is known to the system and that is not yet provisioned by the system.</p>
+            <p><strong>Note</strong>: Contains information of only a single device detected in scan environment during the mesh/scanUnprovisionedDevices API call.<br />
+              The device is listed for following reason:<br />
+              New device detected in the scan environment.
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>1, 4, 6, 17, 38, 41,101, 103</td>
+          <td>See API Error Codes section for reference</td>
+          <td>
+            <p>See API Error Codes section for reference</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -i -f luna://com.webos.service.bluetooth2/mesh/scanUnprovisionedDevices &#39;{&quot;scanTimeout&quot;:10, &quot;subscribe&quot;:true}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;adapterAddress&quot;: &quot;b8:27:eb:fa:92:76&quot;,<br />
+      &nbsp; &nbsp; &quot;devices&quot;: [<br />
+      &nbsp; &nbsp; ]<br />
+      }
+    </p>
+    <p>Subscription Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;adapterAddress&quot;: &quot;b8:27:eb:fa:92:76&quot;,<br />
+      &nbsp; &nbsp; &quot;devices&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;uuid&quot;: &quot;1ef4354ffbbe43b5a8a7fbe94ec7746d&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;rssi&quot;: -32<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &quot;device&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;uuid&quot;: &quot;1ef4354ffbbe43b5a8a7fbe94ec7746d&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;rssi&quot;: -32<br />
+      &nbsp; &nbsp; }<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>mesh/unprovisionedScanCancel</h3>
+<div>
+  <h4>Description</h4>
+  <p>Cancels scanning for unprovisioned BLE mesh devices.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter to be used.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>bearer</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The underlying bearer to use.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>PB-GATT</li>
+              <li>PB-ADV (default)</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Operation is successful.</li>
+              <li><strong>false</strong>: Operation has failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.&nbsp;See the &quot;<strong>Error Codes&quot;</strong>&nbsp;section of this method for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The reason for the failure of the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>1, 6, 17, 38, 41, 101</td>
+          <td>See API Error Codes section for reference</td>
+          <td>
+            <p>See API Error Codes section for reference</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.bluetooth2/mesh/unprovisionedScanCancel &#39;{}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;adapterAddress&quot;: &quot;b8:27:eb:fa:92:76&quot;,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>mesh/provision</h3>
+<div>
+  <h4>Description</h4>
+  <p>Initiates provisioning of a device.</p>
+  <p>Once a mesh device is discovered using <strong>mesh/scanUnprovisionedDevices </strong>API, the discovered device can be provisioned using this method. After the provisioning, the device becomes a node in the mesh network.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter to be used.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>bearer</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The underlying bearer to use.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>PB-GATT</li>
+              <li>PB-ADV (default)</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>timeout</td>
+          <td>Optional</td>
+          <td>Number (uint16_t)</td>
+          <td>
+            <p>Provision request timeout in seconds.</p>
+            <p>Default value: 60 sec</p>
+            <p><strong>Note</strong>: Authentication data must be supplied in this interval if required<br />
+              <strong>eg.</strong>&nbsp;call mesh/supplyProvisioningOob API if request string is &quot;promptStatic&quot;
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Subscribe for notifications on changes.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Subscribed (Must be set to&nbsp;true. The caller must subscribe to this method).</li>
+              <li><strong>false</strong>: Not subscribed.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>uuid</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Device UUID for provisioning device. UUID is received as part of the subscription response of <strong>mesh/scanUnprovisionedDevices</strong> API.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Operation is successful.</li>
+              <li><strong>false</strong>: Operation has failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.&nbsp;See the &quot;<strong>Error Codes&quot;</strong>&nbsp;section of this method for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The reason for the failure of the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if subscribed to get notifications.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Subscription Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if subscribed to get notifications.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>request</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the type of user interaction required to complete provisioning.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>displayString</strong>: Display the string from &quot;stringToDisplay&quot; field and do not require any additional input locally. For instance: &quot;Enter &quot;ABCDE&quot; on remote device&quot;.</li>
+              <li><strong>displayNumeric</strong>: Display the number from &quot;numberToDisplay&quot; field in the way requested in &quot;numberDisplayType &quot; field.</li>
+              <li><strong>promptNumeric</strong>: Supply the decimal value between 1-99999999. Which decimal value to supply is indicated by &quot;promptType&quot; field. <strong>supplyProvisioningNumeric() </strong>API can be used to supply the required data.</li>
+              <li><strong>promptStatic</strong>: Supply 16 octet byte array, as an Out-of-Band authentication. <strong>supplyProvisioningOob()</strong> API can be used to supply the required data.</li>
+              <li><strong>endProvision</strong>: Indicates the end of provisioning.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>stringToDisplay</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The string to display to the user when &quot;request&quot;=&quot;displayString&quot;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>numberToDisplay</td>
+          <td>Optional</td>
+          <td>Number (uint32_t)</td>
+          <td>
+            <p>The number to display when &quot;request&quot;=&quot;displayNumeric&quot;.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>numberDisplayType</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates how the number should be displayed when &quot;request&quot;=&quot;displayNumeric&quot;.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>blink</strong>: Locally blink LED</li>
+              <li><strong>beep</strong>: Locally make a noise</li>
+              <li><strong>vibrate</strong>: Locally vibrate</li>
+              <li><strong>out-numeric</strong>: Display value to enter remotely</li>
+              <li><strong>push</strong>: Request pushes on remote button</li>
+              <li><strong>twist</strong>: Request twists on remote knob</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>promptType</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The input method (how the number to supply is shown) when &quot;request&quot;=&quot;promptNumeric&quot;.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>blink</strong>: Enter times remote LED blinked</li>
+              <li><strong>beep</strong>: Enter times remote device beeped</li>
+              <li><strong>vibrate</strong>: Enter times remote device vibrated</li>
+              <li><strong>in-numeric</strong>: Enter a remotely displayed value</li>
+              <li><strong>push</strong>: Push local button requested times</li>
+              <li><strong>twist</strong>: Twist local knob remotely requested times</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>unicastAddress</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The unicast address of the node provisioned when the provisioning is success and &quot;request&quot;=&quot;endProvision&quot;.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>uuid</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The uuid of the device.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>1, 6, 17, 31, 38, 41, 101, 103</td>
+          <td>See API Error Codes section for reference</td>
+          <td>
+            <p>See API Error Codes section for reference</p>
+          </td>
+        </tr>
+        <tr>
+          <td>314</td>
+          <td>uuid parameter missing</td>
+          <td>
+            <p>uuid parameter missing</p>
+          </td>
+        </tr>
+        <tr>
+          <td>32</td>
+          <td>Bad PDU</td>
+          <td>
+            <p>Bad PDU</p>
+          </td>
+        </tr>
+        <tr>
+          <td>33</td>
+          <td>Provision confirmation failed</td>
+          <td>
+            <p>Provision confirmation failed</p>
+          </td>
+        </tr>
+        <tr>
+          <td>34</td>
+          <td>Cannot assign addresses</td>
+          <td>
+            <p>Cannot assign addresses</p>
+          </td>
+        </tr>
+        <tr>
+          <td>35</td>
+          <td>Remote device not found</td>
+          <td>
+            <p>Remote device not found</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -i -f luna://com.webos.service.bluetooth2/mesh/provision &#39;{&quot;uuid&quot;:&quot;1ef4354ffbbe43b5a8a7fbe94ec7746d&quot;, &quot;subscribe&quot;:true}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;adapterAddress&quot;: &quot;b8:27:eb:fa:92:76&quot;<br />
+      }
+    </p>
+    <p>Subscription Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;uuid&quot;: &quot;1ef4354ffbbe43b5a8a7fbe94ec7746d&quot;,<br />
+      &nbsp; &nbsp; &quot;adapterAddress&quot;: &quot;b8:27:eb:fa:92:76&quot;,<br />
+      &nbsp; &nbsp; &quot;request&quot;: &quot;promptStatic&quot;<br />
+      }<br />
+      {<br />
+      &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;uuid&quot;: &quot;1ef4354ffbbe43b5a8a7fbe94ec7746d&quot;,<br />
+      &nbsp; &nbsp; &quot;adapterAddress&quot;: &quot;b8:27:eb:fa:92:76&quot;,<br />
+      &nbsp; &nbsp; &quot;request&quot;: &quot;endProvision&quot;,<br />
+      &nbsp; &nbsp; &quot;unicastAddress&quot;: 171<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>mesh/supplyProvisioningNumeric</h3>
+<div>
+  <h4>Description</h4>
+  <p>Provides decimal number for authentication during provisioning; when &quot;request&quot; = &quot;promptNumeric&quot; in the subscription response of mesh/provision API.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter to be used.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>bearer</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The underlying bearer to use.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>PB-GATT</li>
+              <li>PB-ADV (default)</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>number</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>The numeric data.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Operation is successful.</li>
+              <li><strong>false</strong>: Operation has failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.&nbsp;See the &quot;<strong>Error Codes&quot;</strong>&nbsp;section of this method for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The reason for the failure of the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>1, 6, 17, 41, 101</td>
+          <td>See API Error Codes section for reference</td>
+          <td>
+            <p>See API Error Codes section for reference</p>
+          </td>
+        </tr>
+        <tr>
+          <td>42</td>
+          <td>Provisioning not started</td>
+          <td>
+            <p>Provisioning not started</p>
+          </td>
+        </tr>
+        <tr>
+          <td>43</td>
+          <td>Provisioning authentication not started</td>
+          <td>
+            <p>Provisioning authentication not started</p>
+          </td>
+        </tr>
+        <tr>
+          <td>323</td>
+          <td>Required &#39;number&#39; parameter is missing</td>
+          <td>
+            <p>Required &#39;number&#39; parameter is missing</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.bluetooth2/mesh/supplyProvisioningNumeric &#39;{&quot;number&quot;:1234}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;adapterAddress&quot;: &quot;b8:27:eb:fa:92:76&quot;,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>mesh/supplyProvisioningOob</h3>
+<div>
+  <h4>Description</h4>
+  <p>Supplies&nbsp;the static OOB data required during provision; when &quot;request&quot; = &quot;promptStatic&quot; in the subscription response of mesh/provision API.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter to be used.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>bearer</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The underlying bearer to use.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>PB-GATT</li>
+              <li>PB-ADV (default)</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>oobData</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The static OOB data which is 16 octet byte array.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Operation is successful.</li>
+              <li><strong>false</strong>: Operation has failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.&nbsp;See the &quot;<strong>Error Codes&quot;</strong>&nbsp;section of this method for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The reason for the failure of the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>1, 6, 17, 41, 101</td>
+          <td>See API Error Codes section for reference</td>
+          <td>
+            <p>See API Error Codes section for reference</p>
+          </td>
+        </tr>
+        <tr>
+          <td>324</td>
+          <td>Required &#39;oobData&#39; parameter is missing</td>
+          <td>
+            <p>Required &#39;oobData&#39; parameter is missing</p>
+          </td>
+        </tr>
+        <tr>
+          <td>42</td>
+          <td>Provisioning not started</td>
+          <td>
+            <p>Provisioning not started</p>
+          </td>
+        </tr>
+        <tr>
+          <td>43</td>
+          <td>Provisioning authentication not started</td>
+          <td>
+            <p>Provisioning authentication not started</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.bluetooth2/mesh/supplyProvisioningOob &#39;{&quot;oobData&quot;:&quot;6E6F726469635F6578616D706C655F31&quot;}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;adapterAddress&quot;: &quot;b8:27:eb:fa:92:76&quot;,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>mesh/createAppKey</h3>
+<div>
+  <h4>Description</h4>
+  <p>Requests to generate a new application key.</p>
+  <p>This call affects the local key database only. To update the remote config server, use <strong>mesh/model/config/set</strong>.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter to be used.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>bearer</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The underlying bearer to use.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>PB-GATT</li>
+              <li>PB-ADV (default)</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>netKeyIndex</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The net key to be bound to the application key.</p>
+            <p><strong>Note</strong>: If netKeyIndex value is not passed the primary netKeyIndex (i.e. 000) is used.&nbsp;Call <strong>mesh/getMeshInfo </strong>to get the available netKeyIndexes.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>appKeyIndex</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The app key index to add.</p>
+            <p><strong>Note</strong>: If appKeyIndex value is not passed, Bluetooth service creates appKeyIndex.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Operation is successful.</li>
+              <li><strong>false</strong>: Operation has failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.&nbsp;See the &quot;<strong>Error Codes&quot;</strong>&nbsp;section of this method for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The reason for the failure of the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>netKeyIndex</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The net key index bound to application key.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>appKeyIndex</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The created app key index.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>1, 15, 17, 101, 28, 29,41</td>
+          <td>See API Error Codes section for reference</td>
+          <td>
+            <p>See API Error Codes section for reference</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.bluetooth2/mesh/createAppKey &#39;{&quot;bearer&quot;:&quot;PB-ADV&quot;, &quot;netKeyIndex&quot;:0, &quot;appKeyIndex&quot;:0}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;adapterAddress&quot;: &quot;b8:27:eb:e6:5b:e5&quot;,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;appKeyIndex&quot;: 0,<br />
+      &nbsp; &nbsp; &quot;netKeyIndex&quot;: 0<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>mesh/model/send</h3>
+<div>
+  <h4>Description</h4>
+  <p>Sends a message originated by a local model.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>bearer</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The underlying bearer to use.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>PB-GATT</li>
+              <li>PB-ADV (default)</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>srcAddress</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>The unicast address of the source element.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>destAddress</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>The destination unicast address or group address.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>appKeyIndex</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>The application key to use for encrypting the message. The appKeyIndex must be valid for that element</p>
+            <p><strong>Note:</strong>&nbsp;The application which has created the appKeyIndex will only receive messages belonging to that application</p>
+          </td>
+        </tr>
+        <tr>
+          <td>command</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The command that corresponds to the message being sent in the payload.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>passThrough</li>
+              <li>onOff</li>
+            </ul>
+            <p><strong>Note</strong>: webos-bluetooth-service&nbsp;with the help of the underlying stack&nbsp;just encrypts and sends the payload when the command is passThrough. The application sends the payload that is in the packet format as mentioned in the specification. The bluetooth service and the underlying stack do not do any processing of the payload.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>payload</td>
+          <td>Required</td>
+          <td>Object: <a href="#blemeshpayload - for &quot;passthrough&quot; command"> BleMeshPayload - for &quot;passthrough&quot; command</a></td>
+          <td>
+            <p>Payload object when &quot;command&quot; = &quot;passthrough&quot;.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>payload</td>
+          <td>Required</td>
+          <td>Object: <a href="#blemeshpayload - for &quot;onoff&quot; command"> BleMeshPayload - for &quot;onOff&quot; command</a></td>
+          <td>
+            <p>Payload object when &quot;command&quot; = &quot;onOff&quot;.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Operation is successful.</li>
+              <li><strong>false</strong>: Operation has failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.&nbsp;See the &quot;<strong>Error Codes&quot;</strong>&nbsp;section of this method for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The reason for the failure of the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>1,6, 17, 101, 311, 310, 312, 315, 321, 37, 38, 40, 41</td>
+          <td>See API Error Codes section for reference</td>
+          <td>
+            <p>See API Error Codes section for reference</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>#&nbsp;luna-send -n 1 -f luna://com.webos.service.bluetooth2/mesh/model/send &#39;{<br />
+      &nbsp; &nbsp;&quot;srcAddress&quot;:1,<br />
+      &nbsp; &nbsp;&quot;destAddress&quot;:170,<br />
+      &nbsp; &nbsp;&quot;appKeyIndex&quot;: 0,<br />
+      &nbsp; &nbsp;&quot;command&quot;:&quot;onOff&quot;,<br />
+      &nbsp; &nbsp;&quot;payload&quot;:{&quot;value&quot;:true}<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;adapterAddress&quot;: &quot;b8:27:eb:0a:fc:70&quot;,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+  <div class="code-bg-grey">
+    <p>#&nbsp;luna-send -n 1 -f luna://com.webos.service.bluetooth2/mesh/model/send &#39;{<br />
+      &nbsp; &nbsp;&quot;srcAddress&quot;:1,<br />
+      &nbsp;&nbsp; &quot;destAddress&quot;:170,<br />
+      &nbsp; &nbsp;&quot;appKeyIndex&quot;: 0,<br />
+      &nbsp; &nbsp;&quot;command&quot;:&quot;passThrough&quot;,<br />
+      &nbsp; &nbsp;&quot;payload&quot;:{&quot;value&quot;:[130,2,0,118]}<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;adapterAddress&quot;: &quot;b8:27:eb:0a:fc:70&quot;,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>mesh/model/receive</h3>
+<div>
+  <h4>Description</h4>
+  <p>Receives messages addressed to the application.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter to be used.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>bearer</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The underlying bearer to use.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>PB-GATT</li>
+              <li>PB-ADV (default)</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>appKeyIndex</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>The application key to be used for decrypting the message. The appKeyIndex must be valid for that element.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Subscribe for notifications on changes.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Subscribed (Must be set to true. The caller must subscribe to this method.)</li>
+              <li><strong>false</strong>: Not subscribed.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Operation is successful.</li>
+              <li><strong>false</strong>: Operation has failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.&nbsp;See the &quot;<strong>Error Codes&quot;</strong>&nbsp;section of this method for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The reason for the failure of the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if subscribed to get notifications.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Subscription Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if subscribed to get notifications.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>srcAddress</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>The unicast address of the remote node-element that sent the message.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>destAddress</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>The destination address of received message.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>data</td>
+          <td>Required</td>
+          <td>Number (uint8_t) array</td>
+          <td>
+            <p>The incoming message.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>1, 6 ,17, 41, 101, 103</td>
+          <td>See API Error Codes Reference</td>
+          <td>
+            <p>See API Error Codes Reference</p>
+          </td>
+        </tr>
+        <tr>
+          <td>310</td>
+          <td>Required &#39;appKeyIndex&#39; parameter missing</td>
+          <td>
+            <p>Required &#39;appKeyIndex&#39; parameter missing</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -i -f -a com.webos.service.test luna://com.webos.service.bluetooth2/mesh/model/receive&nbsp;&#39;{&quot;appKeyIndex&quot;: 0, &quot;subscribe&quot;:true}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;adapterAddress&quot;: &quot;b8:27:eb:fa:92:76&quot;<br />
+      }
+    </p>
+    <p>Subscription Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;data&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; 6,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; 0<br />
+      &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
+      &nbsp; &nbsp; &quot;srcAddress&quot;: 173,<br />
+      &nbsp; &nbsp; &quot;adapterAddress&quot;: &quot;b8:27:eb:fa:92:76&quot;,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;destAddress&quot;: 0<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>mesh/model/config/get</h3>
+<div>
+  <h4>Description</h4>
+  <p>Gets various configuration parameters provided by configuration model.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter to be used.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>bearer</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The underlying bearer to use.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>PB-GATT</li>
+              <li>PB-ADV (default)</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Subscribe for notifications on changes.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Subscribed (Must be set to true. The caller must subscribe to this method.)</li>
+              <li><strong>false</strong>: Not subscribed.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>destAddress</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>The unicast address of the destination.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>config</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The configurations to be retrieved.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>APPKEYINDEX</li>
+              <li>DEFAULT_TTL</li>
+              <li>GATT_PROXY</li>
+              <li>RELAY</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>netKeyIndex</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The index of the net key. This parameter is&nbsp;mandatory if config field is&nbsp;APPKEYINDEX and ignored for others.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Operation is successful.</li>
+              <li><strong>false</strong>: Operation has failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.&nbsp;See the &quot;<strong>Error Codes&quot;</strong>&nbsp;section of this method for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The reason for the failure of the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if subscribed to get notifications.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Subscription Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if subscribed to get notifications.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>config</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The configuration that is requested to be retrieved.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>appKeyIndexes</td>
+          <td>Optional</td>
+          <td>Number array</td>
+          <td>
+            <p>A list of AppKey indexes that are bound to the NetKey identified by netKeyIndex passed during API call.</p>
+            <p><strong>Note:</strong>&nbsp;This information will be sent when config is APPKEYINDEX</p>
+          </td>
+        </tr>
+        <tr>
+          <td>ttl</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The default TTL for the outgoing messages.</p>
+            <p>Values will be in the range: 0x00, 0x02&ndash;0x7F</p>
+            <p><strong>Note:</strong>&nbsp;This information will be sent when config is DEFAULT_TTL</p>
+          </td>
+        </tr>
+        <tr>
+          <td>gattProxyState</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The GATT proxy state.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>0x00 - The Proxy feature is supported and disabled</li>
+              <li>0x01 - The Proxy feature is supported and enabled</li>
+              <li>0x02 - The Proxy feature is not supported</li>
+            </ul>
+            <p><strong>Note:</strong>&nbsp;This information will be sent when config is GATT_PROXY</p>
+          </td>
+        </tr>
+        <tr>
+          <td>relayStatus</td>
+          <td>Optional</td>
+          <td>Object: <a href="#blemeshconfigrelaystatus"> BleMeshConfigRelayStatus</a></td>
+          <td>
+            <p>The Current Relay and Relay Retransmit states of a node.</p>
+            <p><strong>Note:</strong>&nbsp;This information will be sent when config is RELAY</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>1, 6, 17 ,31, 37 ,41, 101, 103</td>
+          <td>See API Error Codes Reference</td>
+          <td>
+            <p>See API Error Codes Reference</p>
+          </td>
+        </tr>
+        <tr>
+          <td>311</td>
+          <td>Required &#39;destAddress&#39; parameter missing</td>
+          <td>
+            <p>Required &#39;destAddress&#39; parameter missing</p>
+          </td>
+        </tr>
+        <tr>
+          <td>310</td>
+          <td>Required &#39;appKeyIndex&#39; parameter missing</td>
+          <td>
+            <p>Required &#39;appKeyIndex&#39; parameter missing</p>
+          </td>
+        </tr>
+        <tr>
+          <td>309</td>
+          <td>Required &#39;netKeyIndex&#39; parameter missing</td>
+          <td>
+            <p>Required &#39;netKeyIndex&#39; parameter missing</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -i -f luna://com.webos.service.bluetooth2/mesh/model/config/get &#39;{<br />
+      &nbsp; &nbsp;&quot;destAddress&quot;:173,<br />
+      &nbsp; &nbsp;&quot;config&quot;:&quot;GATT_PROXY&quot;,<br />
+      &nbsp; &nbsp;&quot;netKeyIndex&quot;: 0,<br />
+      &nbsp; &nbsp;&quot;subscribe&quot;:true<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;adapterAddress&quot;: &quot;b8:27:eb:fa:92:76&quot;,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;subscribed&quot;: true<br />
+      }
+    </p>
+    <p>Subscription Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;adapterAddress&quot;: &quot;b8:27:eb:fa:92:76&quot;,<br />
+      &nbsp; &nbsp; &quot;config&quot;: &quot;GATT_PROXY&quot;,<br />
+      &nbsp; &nbsp; &quot;gattProxyState&quot;: 1<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>mesh/model/config/set</h3>
+<div>
+  <h4>Description</h4>
+  <p>Seta various configuration parameters provided by the configuration model.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter to be used.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>bearer</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The underlying bearer to use.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>PB-GATT</li>
+              <li>PB-ADV (default)</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Subscribe for notifications on changes.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Subscribed (Must be set to true. The caller must subscribe to this method.)</li>
+              <li><strong>false</strong>: Not subscribed.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>destAddress</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>The unicast address of the destination.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>config</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The configuration to be set.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>APPKEY_ADD</li>
+              <li>APPKEY_UPDATE</li>
+              <li>APPKEY_BIND</li>
+              <li>DEFAULT_TTL</li>
+              <li>GATT_PROXY</li>
+              <li>RELAY</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>netKeyIndex</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The net key index.</p>
+            <p>Mandatory parameter if config is APPKEY_ADD or APPKEY_UPDATE.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>appKeyIndex</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The app key index.</p>
+            <p>Mandatory parameter if config is APPKEY_ADD or APPKEY_UPDATE or APPKEY_BIND.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>modelId</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>SIG Model ID or Vendor Model ID.</p>
+            <p>Mandatory parameter if config is APPKEY_BIND.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>ttl</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The default TTL to set for the outgoing message.</p>
+            <p>Values can be in the range: 0x00, 0x02&ndash;0x7F</p>
+            <p>Mandatory parameter if config is DEFAULT_TTL.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>gattProxyState</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The GATT proxy state to set.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>0x00 - The Proxy feature is supported and disabled</li>
+              <li>0x01 - The Proxy feature is supported and enabled</li>
+              <li>0x02 - The Proxy feature is not supported</li>
+            </ul>
+            <p>Mandatory parameter if config is GATT_PROXY.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>relayStatus</td>
+          <td>Optional</td>
+          <td>Object: <a href="#blemeshconfigrelaystatus"> BleMeshConfigRelayStatus</a></td>
+          <td>
+            <p>The Current Relay and Relay Retransmit states of a node.</p>
+            <p>Mandatory parameter if config is RELAY.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Operation is successful.</li>
+              <li><strong>false</strong>: Operation has failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.&nbsp;See the &quot;<strong>Error Codes&quot;</strong>&nbsp;section of this method for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The reason for the failure of the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if subscribed to get notifications.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Subscription Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if subscribed to get notifications.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>config</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The configuration which is updated.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>1, 6, 17, 31, 37, 41, 101, 103</td>
+          <td>See API Error Codes Reference</td>
+          <td>
+            <p>See API Error Codes Reference</p>
+          </td>
+        </tr>
+        <tr>
+          <td>311</td>
+          <td>Required &#39;destAddress&#39; parameter missing</td>
+          <td>
+            <p>Required &#39;destAddress&#39; parameter missing</p>
+          </td>
+        </tr>
+        <tr>
+          <td>310</td>
+          <td>Required &#39;appKeyIndex&#39; parameter missing</td>
+          <td>
+            <p>Required &#39;appKeyIndex&#39; parameter missing</p>
+          </td>
+        </tr>
+        <tr>
+          <td>309</td>
+          <td>Required &#39;netKeyIndex&#39; parameter missing</td>
+          <td>
+            <p>Required &#39;netKeyIndex&#39; parameter missing</p>
+          </td>
+        </tr>
+        <tr>
+          <td>316</td>
+          <td>Required &#39;modelId&#39; parameter missing</td>
+          <td>
+            <p>Required &#39;modelId&#39; parameter missing</p>
+          </td>
+        </tr>
+        <tr>
+          <td>317</td>
+          <td>Required &#39;ttl&#39; parameter missing</td>
+          <td>
+            <p>Required &#39;ttl&#39; parameter missing</p>
+          </td>
+        </tr>
+        <tr>
+          <td>318</td>
+          <td>Required &#39;gattProxyState&#39; parameter missing</td>
+          <td>
+            <p>Required &#39;gattProxyState&#39; parameter missing</p>
+          </td>
+        </tr>
+        <tr>
+          <td>321</td>
+          <td>errormessage3786</td>
+          <td>
+            <p>Required &#39;relayStatus&#39; parameter missing</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -i -f luna://com.webos.service.bluetooth2/mesh/model/config/set &#39;{<br />
+      &nbsp; &nbsp;&quot;destAddress&quot;:170,<br />
+      &nbsp; &nbsp;&quot;config&quot;:&quot;APPKEY_ADD&quot;,<br />
+      &nbsp; &nbsp;&quot;netKeyIndex&quot;: 0,<br />
+      &nbsp; &nbsp;&quot;appKeyIndex&quot;: 0,<br />
+      &nbsp; &nbsp;&quot;subscribe&quot;:true<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;adapterAddress&quot;: &quot;b8:27:eb:fa:92:76&quot;<br />
+      }
+    </p>
+    <p>Subscription Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;adapterAddress&quot;: &quot;b8:27:eb:fa:92:76&quot;,<br />
+      &nbsp; &nbsp; &quot;config&quot;: &quot;APPKEY_ADD&quot;<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>mesh/getMeshInfo</h3>
+<div>
+  <h4>Description</h4>
+  <p>Gets mesh network-related information.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter to be used.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>bearer</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The underlying bearer to use.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>PB-GATT</li>
+              <li>PB-ADV (default)</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Operation is successful.</li>
+              <li><strong>false</strong>: Operation has failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.&nbsp;See the &quot;<strong>Error Codes&quot;</strong>&nbsp;section of this method for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The reason for the failure of the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>meshInfo</td>
+          <td>Required</td>
+          <td>Object: <a href="#blemeshinfo"> BleMeshInfo</a></td>
+          <td>
+            <p>Details of the mesh network.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>1, 6, 41, 101, 103</td>
+          <td>See API Error Codes Reference</td>
+          <td>
+            <p>See the <strong>API Error Codes Reference</strong> section.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.bluetooth2/mesh/getMeshInfo &#39;{}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;adapterAddress&quot;: &quot;b8:27:eb:0a:fc:70&quot;,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;meshInfo&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;Mesh Network&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;provisioners&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;BLE Mesh&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;unicastAddress&quot;: 1<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;appKeys&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;boundNetKeyIndex&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;index&quot;: 0<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;netKeys&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;keyRefresh&quot;: false,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;index&quot;: 0<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+      &nbsp; &nbsp; }<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>mesh/model/config/getCompositionData</h3>
+<div>
+  <h4>Description</h4>
+  <p>Gets composition data of a mesh node. The composition data contains information about a node, the elements it includes, and the supported models.</p>
+  <p><strong>Note: </strong>The naming convention for this method is taken from the specification.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter to be used.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>bearer</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The underlying bearer to use.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>PB-GATT</li>
+              <li>PB-ADV (default)</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>destAddress</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>The destination address.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Subscribe for notifications on changes.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Subscribed (Must be set to true. The caller must subscribe to this method.)</li>
+              <li><strong>false</strong>: Not subscribed.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Operation is successful.</li>
+              <li><strong>false</strong>: Operation has failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.&nbsp;See the &quot;<strong>Error Codes&quot;</strong>&nbsp;section of this method for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The reason for the failure of the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if subscribed to get notifications.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Subscription Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if subscribed to get notifications.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>compositionData</td>
+          <td>Required</td>
+          <td>Object: <a href="#blemeshcompositiondata"> BleMeshCompositionData</a></td>
+          <td>
+            <p>Composition data information about a requested node.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>1, 6, 37, 31, 41, 101, 103, 311</td>
+          <td>See API Error Codes Reference</td>
+          <td>
+            <p>See the <strong>API Error Codes Reference</strong> section.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -i -f luna://com.webos.service.bluetooth2/mesh/model/config/getCompositionData &#39;{<br />
+      &nbsp; &nbsp;&quot;bearer&quot;:&quot;PB-ADV&quot;,<br />
+      &nbsp; &nbsp;&quot;destAddress&quot; : 170,<br />
+      &nbsp; &nbsp;&quot;subscribe&quot; : true<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;adapterAddress&quot;: &quot;b8:27:eb:0a:fc:70&quot;,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;subscribed&quot;: true<br />
+      }<br />
+      {<br />
+      &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;adapterAddress&quot;: &quot;b8:27:eb:0a:fc:70&quot;,<br />
+      &nbsp; &nbsp; &quot;compositionData&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;companyId&quot;: 89,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;numRplEnteries&quot;: 40,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;elements&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;numS&quot;: 6,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;sigModelIds&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 2,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 4096,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 4100,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 4611,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 4612<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;loc&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;numV&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;vendorModelIds&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;productId&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;versionId&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;features&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;proxy&quot;: true,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;relay&quot;: true,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;friend&quot;: true,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;lowPower&quot;: false<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; }<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>mesh/model/onOff/set</h3>
+<div>
+  <h4>Description</h4>
+  <p>Sets the on/off state of the remote node using a generic on-off model.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter to be used</p>
+          </td>
+        </tr>
+        <tr>
+          <td>bearer</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The underlying bearer to use.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>PB-GATT</li>
+              <li>PB-ADV (default)</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>destAddress</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>The destination address.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>appKeyIndex</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>The application key index to used for encoding.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>state</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>The state of the remote node.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: On</li>
+              <li><strong>false</strong>: Off</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Subscribe for notifications&nbsp;on changes.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Subscribed.</li>
+              <li><strong>false</strong>: Not subscribed (default).</li>
+            </ul>
+            <p><strong>Note: </strong>If not subscribed, unacknowledged on/off message is sent to the remote node, acknowledged message is sent otherwise.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.&nbsp;</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: Operation is successful.</li>
+              <li><strong>false</strong>: Operation has failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.&nbsp;See the &quot;<strong>Error Codes&quot;</strong>&nbsp;section of this method for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The reason for the failure of the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Subscription Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>adapterAddress</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The address of the adapter.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>onoFF</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>The state of the remote node.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if subscribed to get notifications.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>1, 6, 101, 311, 30, 31, 41</td>
+          <td>See API Error Codes Reference</td>
+          <td>
+            <p>See the <strong>API Error Codes Reference</strong> section.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>325</td>
+          <td>Required &#39;onoff&#39; parameter is missing</td>
+          <td>
+            <p>Required &#39;onoff&#39; parameter is missing</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p># luna-send -i -f -a com.webos.service.test luna://com.webos.service.bluetooth2/mesh/model/onOff/set &#39;{<br />
+      &nbsp; &nbsp;&quot;destAddress&quot;:170,<br />
+      &nbsp; &nbsp;&quot;appKeyIndex&quot;: 0,<br />
+      &nbsp; &nbsp;&quot;state&quot;: true,<br />
+      &nbsp; &nbsp;&quot;subscribe&quot;:false<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;adapterAddress&quot;: &quot;b8:27:eb:0a:fc:70&quot;,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -i -f -a com.webos.service.test luna://com.webos.service.bluetooth2/mesh/model/onOff/set &#39;{<br />
+      &nbsp; &nbsp;&quot;destAddress&quot;:170,<br />
+      &nbsp; &nbsp;&quot;appKeyIndex&quot;: 0,<br />
+      &nbsp; &nbsp;&quot;state&quot;: false,<br />
+      &nbsp; &nbsp;&quot;subscribe&quot;:true<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;adapterAddress&quot;: &quot;b8:27:eb:0a:fc:70&quot;,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+    <p>Subscription Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;onOFF&quot;: false,<br />
+      &nbsp; &nbsp; &quot;adapterAddress&quot;: &quot;b8:27:eb:0a:fc:70&quot;<br />
+      }
+    </p>
+  </div>
+</div>
 <h2>Objects</h2>
 <div>
   <h3>bluetooth2Adapter</h3>
@@ -26947,9 +30274,9 @@ toc: true
   <p>Contains the information about the status of the&nbsp;adapter identified by the adapterAddress parameter.</p>
   <p>The following values are read-only:&nbsp;</p>
   <ul>
-    <li><strong>Discovering.</strong></li>
-    <li><strong>Pairable.</strong></li>
-    <li><strong>Pairing</strong>.</li>
+    <li><strong>Discovering</strong></li>
+    <li><strong>Pairable</strong></li>
+    <li><strong>Pairing</strong></li>
   </ul>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -27027,7 +30354,7 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p><span style="display:none">&nbsp;</span>Indicates if the adapter can be discovered by remote devices.</p>
+            <p>&nbsp;Indicates if the adapter can be discovered by remote devices.</p>
             <p><strong>Note</strong>:</p>
             <ul>
               <li>If <strong>discoverableTimeout </strong>has a non-zero value, <strong>discoverable</strong>&nbsp;be set back to <strong>false </strong>that number of seconds after the call to&nbsp;<strong>adapter/setState</strong>&nbsp;set it to&nbsp;<strong>true.</strong></li>
@@ -29269,6 +32596,528 @@ toc: true
           <td>Boolean</td>
           <td>
             <p>Indicates the <strong>message </strong>priority flag.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>BleMeshPayload - for &quot;passthrough&quot; command</h3>
+  <p>Payload object structure when the command is &quot;passThrough&quot; in <strong>mesh/model/send</strong> API.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>value</td>
+          <td>Required</td>
+          <td>Number (uint8_t) array</td>
+          <td>
+            <p>Payload for passThrough command</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>BleMeshPayload - for &quot;onOff&quot; command</h3>
+  <p>Payload object structure when the command is &quot;onOff&quot; in <strong>mesh/model/send</strong> API.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>value</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Payload for onOff command</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>BleMeshUnprovisionedDevice</h3>
+  <p>Array of BLE Mesh devices that are known to the system and that are not yet provisioned by the system</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>rssi</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>RSSI Measurement of the signal strength of the received unprovisioned beacon</p>
+          </td>
+        </tr>
+        <tr>
+          <td>uuid</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Device uuid</p>
+          </td>
+        </tr>
+        <tr>
+          <td>name</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Device name</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>BleMeshConfigRelayStatus</h3>
+  <p>provide node relay information&nbsp;</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>relay</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Provide relay information&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>retransmitIntervalSteps</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Provide retransmitIntervalSteps information&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>retransmitCount</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>provide&nbsp;retransmitCount information&nbsp;</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>BleMeshInfo</h3>
+  <p>Object provides mesh network information</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>name</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The name of the mesh network.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>netKeys</td>
+          <td>Required</td>
+          <td>Object array: <a href="#blemeshnetkeys"> BleMeshNetKeys</a></td>
+          <td>
+            <p>Network key information.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>appKeys</td>
+          <td>Required</td>
+          <td>Object array: <a href="#blemeshappkeys"> BleMeshAppKeys</a></td>
+          <td>
+            <p>Application keys information.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>provisioners</td>
+          <td>Required</td>
+          <td>Object array: <a href="#blemeshprovisioner"> BleMeshProvisioner</a></td>
+          <td>
+            <p>Provisioner-related information, which includes the unicast address of the provisioner and the address range that the&nbsp;provisioner can use to assign unicast addresses to the nodes.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>BleMeshNetKeys</h3>
+  <p>Object provides the info related to network key</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>index</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Net key index</p>
+          </td>
+        </tr>
+        <tr>
+          <td>keyRefresh</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if the net key refresh is in progress.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>BleMeshAppKeys</h3>
+  <p>Object gives the info related to app-key used/created by the application</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>index</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>App key index</p>
+          </td>
+        </tr>
+        <tr>
+          <td>boundNetKeyIndex</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Net key index to which this app key is bound.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>BleMeshProvisioner</h3>
+  <p>Object provides provisioner related information</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>name</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Provisioner name</p>
+          </td>
+        </tr>
+        <tr>
+          <td>unicastAddress</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Unicast address of the provisioner</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>BleMeshCompositionData</h3>
+  <p>Provides composition data information about a requested node.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>companyId</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Company identifier assigned by the Bluetooth SIG</p>
+          </td>
+        </tr>
+        <tr>
+          <td>productId</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Vendor-assigned product identifier</p>
+          </td>
+        </tr>
+        <tr>
+          <td>versionId</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Vendor-assigned product version identifier</p>
+          </td>
+        </tr>
+        <tr>
+          <td>numRplEnteries</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Minimum number of replay protection list entries in a device</p>
+          </td>
+        </tr>
+        <tr>
+          <td>features</td>
+          <td>Required</td>
+          <td>Object: <a href="#blemeshfeature"> BleMeshFeature</a></td>
+          <td>
+            <p>Contains information indicating the device features</p>
+          </td>
+        </tr>
+        <tr>
+          <td>elements</td>
+          <td>Required</td>
+          <td>Object array: <a href="#blemeshelement"> BleMeshElement</a></td>
+          <td>
+            <p>Contains a sequence of element descriptions</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>BleMeshFeature</h3>
+  <p>Object information indicating the device features.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>relay</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Relay feature support. Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: feature is supported</li>
+              <li><strong>false</strong>: feature is not supported</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>proxy</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Proxy feature support. Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: feature is supported</li>
+              <li><strong>false</strong>: feature is not supported</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>friend</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Friend feature support.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: feature is supported</li>
+              <li><strong>false</strong>: feature is not supported</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>lowPower</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Low Power feature support.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>: feature is supported</li>
+              <li><strong>false</strong>: feature is not supported</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>BleMeshElement</h3>
+  <p>Object provides sequence of element descriptions</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>loc</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Location descriptor</p>
+          </td>
+        </tr>
+        <tr>
+          <td>numS</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Number of SIG Model IDs in this element</p>
+          </td>
+        </tr>
+        <tr>
+          <td>sigModelIds</td>
+          <td>Required</td>
+          <td>Number array</td>
+          <td>
+            <p>Sequence of SIG Model IDs</p>
+          </td>
+        </tr>
+        <tr>
+          <td>numV</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Number of Vendor Model IDs in this element</p>
+          </td>
+        </tr>
+        <tr>
+          <td>vendorModelIds</td>
+          <td>Required</td>
+          <td>Number array</td>
+          <td>
+            <p>Sequence of NumV Vendor Model IDs</p>
           </td>
         </tr>
       </tbody>

@@ -1,6 +1,6 @@
 ---
 title: Viewing Logs when journald is Enabled
-date: 2019-11-20
+date: 2021-06-11
 weight: 20
 toc: true
 ---
@@ -27,7 +27,11 @@ For more information, see the [official documentation](https://www.freedesktop.o
 
 ## Using journalctl to View Logs
 
-To view logs when journald is enabled, use the **`journalctl`** command.
+To view logs when journald is enabled, use the **`journalctl`** command. 
+
+{{< note >}}
+This page covers only a part of `journalctl`. For a full desrciption of the command, see the [journalctl documentation](https://www.freedesktop.org/software/systemd/man/journalctl.html).
+{{< /note >}}
 
 ### See All Messages
 
@@ -77,10 +81,10 @@ Aug 26 18:11:58 raspberrypi4 kernel:   HighMem zone: 262144 pages, LIFO batch:63
 
 ### View Messages in a Time Range
 
-To see messages logged within a specific time window, you can use the `--since` and `--until` options. The following command shows journal messages logged within the last one hour.
+To see messages logged within a specific time window, you can use the `-S` and `-U` options. The following command shows journal messages logged within the last one hour.
 
 ``` shell
-root@raspberrypi4:/# journalctl --since "1 hour ago"
+root@raspberrypi4:/# journalctl -S "1 hour ago"
 
 -- Logs begin at Mon 2019-08-26 18:11:58 PDT, end at Tue 2019-09-10 23:40:52 PDT. --
 Sep 10 22:58:08 raspberrypi4 LunaSysService[832]: [] [pmlog] LunaSysService TIMEZONE_TRANSITION {"Abbr":"PST","DST":"End","Year":2019,"Time":1572771600,"Offset":-28800}
@@ -94,7 +98,7 @@ Sep 10 22:58:08 raspberrypi4 sleepd[700]: [[0;1;39m[[0;1;31m[[0;1;39mCould not o
 The following command shows journal messages logged within the given time range.
 
 ``` shell
-root@raspberrypi4:/# journalctl --since "2019-09-10 23:40:00" --until "2019-09-10 23:43:00"
+root@raspberrypi4:/# journalctl -S "2019-09-10 23:40:00" -U "2019-09-10 23:43:00"
 
 -- Logs begin at Mon 2019-08-26 18:11:58 PDT, end at Tue 2019-09-10 23:40:52 PDT. --
 Sep 10 23:40:52 raspberrypi4 sleepd[700]: Could not open rtc driver. 2 2
@@ -108,7 +112,7 @@ Sep 10 23:40:52 raspberrypi4 sleepd[700]: Could not open rtc driver. 2 2
 Like the `tail` command, the `-n` option will print the specified number of most recent journal entries.
 
 ``` shell
-root@raspberrypi4:/# journalctl -n 10 --since "1 hour ago"
+root@raspberrypi4:/# journalctl -n 10 -S "1 hour ago"
 
 -- Logs begin at Mon 2019-08-26 18:11:58 PDT, end at Tue 2019-09-10 23:45:52 PDT. --
 Sep 10 22:58:08 raspberrypi4 LunaSysService[832]: [] [pmlog] LunaSysService TIMEZONE_TRANSITION {"Abbr":"PST","DST":"End","Year":2019,"Time":1572771600,"Offset":-28800d
@@ -170,6 +174,33 @@ To use a range of priority levels, provide the start and end levels in the form 
 
 ``` shell
 root@raspberrypi4:/# journalctl -p "alert".."crit"
+```
+
+### Change the Format of Log Messages
+
+To change the format of log messages, use the `-o` option. For more information, see the description of [`-o` option](https://www.freedesktop.org/software/systemd/man/journalctl.html#-o) in the official documentation.
+
+``` shell
+root@raspberrypi4:/# journalctl -o json-pretty
+
+__CURSOR=s=30a725fd9c054a66a0de5aee3b487afa;i=c4fe;b=6cf104d2c52d4397b4f52f53fa1
+{
+        "[[0;32m__MONOTONIC_TIMESTAMP[[0m" : "[[0;32m28192232542[[0m",
+        "[[0;32m_SOURCE_REALTIME_TIMESTAMP[[0m" : "[[0;32m1623243329968117[[0m",
+        "[[0;32m_UID[[0m" : "[[0;32m0[[0m",
+        "[[0;32m_GID[[0m" : "[[0;32m0[[0m",
+        "[[0;32mCODE_LINE[[0m" : "[[0;32m5805[[0m",
+        "[[0;32m_TRANSPORT[[0m" : "[[0;32mjournal[[0m",
+        "[[0;32m_SYSTEMD_CGROUP[[0m" : "[[0;32m/init.scope[[0m",
+        "[[0;32mSYSLOG_FACILITY[[0m" : "[[0;32m3[[0m",
+        "[[0;32mEXIT_STATUS[[0m" : "[[0;32m1[[0m",
+        "[[0;32mCOMMAND[[0m" : "[[0;32mExecStart[[0m",
+        "[[0;32mMESSAGE_ID[[0m" : "[[0;32m98e322203f7a4ed290d09fe03c09fe15[[0m",
+
+        ...
+}
+
+...
 ```
 
 ### Follow Logs

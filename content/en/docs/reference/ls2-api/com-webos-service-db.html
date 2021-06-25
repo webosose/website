@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.db
-date: 2021-03-22
+date: 2021-06-15
 weight: 170
 toc: true
 ---
@@ -10,28 +10,10 @@ toc: true
 </div>
 <h2>Overview of the API</h2>
 <div>
-  <p>
-    DB8 is a user space service that provides access to the webOS
-    database.&nbsp;Access to the database APIs is provided over the luna-service
-    bus.
-  </p>
-  <p>
-    Formally, a database refers to a set of related objects and the way it is
-    structured or organized. Access to these objects is usually provided by a
-    luna API that allows applications to interact with the database and one with
-    another. It also provides access to the objects in the database (although
-    there may be restrictions that grant or limit access to particular data).
-    DB8 provides various functions that allow to enter, store, and retrieve
-    large volumes of information as well as provides the interface to manage how
-    that information is organized.
-  </p>
-  <p><strong>Designing a database:</strong></p>
-  <p>
-    The first task of a database designer is to produce a conceptual model that
-    reflects the structure of data as it is going to be stored in a database. A
-    common approach to this is to develop a <strong>Kind </strong>that
-    implements the relevant data structures within the database.
-  </p>
+  <p>DB8 is a user-space service that provides access to the webOS database.&nbsp;Access to the database APIs is provided over the luna-service bus.</p>
+  <p>Formally, a database refers to a set of related objects and the way it is structured or organized. Access to these objects is usually provided by a luna API that allows applications to interact with the database and one with another. It also provides access to the objects in the database (although there may be restrictions that grant or limit access to particular data). DB8 provides various functions that allow to enter, store, and retrieve large volumes of information as well as provides the interface to manage how that information is organized.</p>
+  <p><strong>Designing a Database:</strong></p>
+  <p>The first task of a database designer is to produce a conceptual model that reflects the structure of data as it is going to be stored in a database. A common approach to this is to develop a <strong>Kind </strong>that implements the relevant data structures within the database.</p>
   <p>Example of <strong>Kind</strong> creation:</p>
   <div class="code-bg-grey">
     <p>
@@ -62,69 +44,18 @@ toc: true
       }&#39;
     </p>
   </div>
-  <p>
-    In the example above, we create a <strong>Kind</strong> with an ID:
-    &quot;com.webos.service.test:1&quot; (this is similar to a schema name).
-  </p>
-  <p>
-    The owner of this <strong>Kind</strong> service is
-    <strong>com.webos.service</strong><strong>.test</strong>. The owner of a
-    Kind has permissions to calculate quotas, grant permissions to modify or
-    delete a <strong>Kind</strong>, grant permissions to other services for
-    <strong>Kind</strong> data, etc.
-  </p>
-  <p>
-    We have also specified two indexes for the <strong>Kind</strong>. An index
-    is a data structure that allows data retrieval operations on a database at
-    the cost of additional writes and storage space to maintain the index data
-    structure. Indexes are used to quickly locate data without having to search
-    every row in a database every time a database is accessed. Indexes are
-    created using one or more columns of a database object, providing the basis
-    for both rapid random searches and efficient access of ordered records.
-  </p>
-  <p>
-    The number after the colon in the ID&nbsp;is the&nbsp;<strong>Kind Revision</strong>
-    number. When a service updates a <strong>Kind</strong>, the service should
-    increment its revision number to indicate that the schema has changed.
-  </p>
+  <p>In the example above, we create a <strong>Kind</strong> with an ID: &quot;com.webos.service.test:1&quot; (this is similar to a schema name).</p>
+  <p>The owner of this <strong>Kind</strong> service is <strong>com.webos.service</strong><strong>.test</strong>. The owner of a Kind has permissions to calculate quotas, grant permissions to modify or delete a <strong>Kind</strong>, grant permissions to other services for <strong>Kind</strong> data, and so on.</p>
+  <p>We have also specified two indexes for the <strong>Kind</strong>. An index is a data structure that allows data retrieval operations on a database at the cost of additional writes and storage space to maintain the index data structure. Indexes are used to quickly locate data without having to search every row in a database every time a database is accessed. Indexes are created using one or more columns of a database object, providing the basis for both rapid random searches and efficient access of ordered records.</p>
+  <p>The number after the colon in the ID&nbsp;is the&nbsp;<strong>Kind Revision</strong> number. When a service updates a <strong>Kind</strong>, the service should increment its revision number to indicate that the schema has changed.</p>
   <p><strong>Philosopher&#39;s stone (objects): </strong></p>
-  <p>
-    DB8 operates with objects. Objects have fields. Every object that is stored
-    within DB8 always has an&nbsp;<strong>ID </strong>and
-    a&nbsp;<strong>revision</strong>.
-  </p>
-  <p>
-    An object <strong>ID </strong>uniquely identifies an object within a
-    database. The object <strong>ID&nbsp;</strong>does not repeat within a
-    database.
-  </p>
+  <p>DB8 operates with objects. Objects have fields. Every object that is stored within DB8 always has an&nbsp;<strong>ID </strong>and a&nbsp;<strong>revision</strong>.</p>
+  <p>An object <strong>ID </strong>uniquely identifies an object within a database. The object <strong>ID&nbsp;</strong>does not repeat within a database.</p>
   <p><strong>Object revisions:</strong></p>
-  <p>
-    Object <strong>revision </strong>is a number, that determines &quot;version
-    of an object in the database&quot;. This number is required to avoid
-    collisions when two or more services simultaneously try to update an object
-    at the same time.
-  </p>
-  <p>
-    For all new objects, the database will append a <strong>_rev</strong> field,
-    which indicates the object revision. By default, the database will set
-    object revision <strong>_rev</strong> field to Database Revision (Number,
-    that atomically increments on any database modification).
-  </p>
-  <p>
-    If an object already exists in the database, the database engine will
-    automatically increment the object revision number on each
-    successful&nbsp;<strong>put/merge</strong> API call for this object.
-  </p>
-  <p>
-    Explanation by example: <em>com.</em>webos.service<em>.test</em> and
-    <em>com.</em>webos.service<em>.othertest</em>&nbsp;applications have access
-    for read/write to <strong>Kind</strong>
-    <em>com.</em>webos.service<em>.test:1</em>. Both applications, at the same
-    time, read an object from <em>com.</em>webos.service<em>.test:1</em> kind
-    object with ID&nbsp;<strong>++JZk1sXYW7lCdqU</strong> and revision
-    <strong>777</strong>.
-  </p>
+  <p>Object <strong>revision </strong>is a number, that determines &quot;version of an object in the database&quot;. This number is required to avoid collisions when two or more services simultaneously try to update an object at the same time.</p>
+  <p>For all new objects, the database will append a <strong>_rev</strong> field, which indicates the object revision. By default, the database will set object revision <strong>_rev</strong> field to Database Revision (Number, that atomically increments on any database modification).</p>
+  <p>If an object already exists in the database, the database engine will automatically increment the object revision number on each successful&nbsp;<strong>put/merge</strong> API call for this object.</p>
+  <p>Explanation by example: <em>com.</em>webos.service<em>.test</em> and <em>com.</em>webos.service<em>.othertest</em>&nbsp;applications have access for read/write to <strong>Kind</strong> <em>com.</em>webos.service<em>.test:1</em>. Both applications, at the same time, read an object from <em>com.</em>webos.service<em>.test:1</em> kind object with ID&nbsp;<strong>++JZk1sXYW7lCdqU</strong> and revision <strong>777</strong>.</p>
   <p>Both applications execute a merge command like the following:</p>
   <div class="code-bg-grey">
     <p>
@@ -140,12 +71,7 @@ toc: true
       }&#39;<br />
     </p>
   </div>
-  <p>
-    Following is the <strong>merge </strong>call response, that will be received
-    by&nbsp;<strong>one of</strong>&nbsp;the applications - (may be
-    <em>com.</em>webos.service<em>.test</em> or com.webos.service.othertest,
-    depends who is more lucky):
-  </p>
+  <p>Following is the <strong>merge </strong>call response, that will be received by&nbsp;<strong>one of</strong>&nbsp;the applications - (may be <em>com.</em>webos.service<em>.test</em> or com.webos.service.othertest, depends who is more lucky):</p>
   <div class="code-bg-grey">
     <p>
       {<br />
@@ -173,20 +99,10 @@ toc: true
       }
     </p>
   </div>
-  <p>
-    This error indicates that someone else has already updated this object.
-    After receiving this error, the application MUST execute the&nbsp;<strong>get </strong>method to get the object again with a new _rev, and then try to re-execute
-    the merge query.
-  </p>
+  <p>This error indicates that someone else has already updated this object. After receiving this error, the application MUST execute the&nbsp;<strong>get </strong>method to get the object again with a new _rev, and then try to re-execute the merge query.</p>
   <p><strong>Create:</strong></p>
-  <p>
-    To store an object in the database, a client can use
-    the&nbsp;<strong>put&nbsp;</strong>method.
-  </p>
-  <p>
-    Complexity guaranteed&nbsp;for a <strong>put&nbsp;</strong>API call
-    is&nbsp;<strong>log(n)</strong>.<strong>&nbsp;</strong>
-  </p>
+  <p>To store an object in the database, a client can use the&nbsp;<strong>put&nbsp;</strong>method.</p>
+  <p>Complexity guaranteed&nbsp;for a <strong>put&nbsp;</strong>API call is&nbsp;<strong>log(n)</strong>.<strong>&nbsp;</strong></p>
   <div class="code-bg-grey">
     <p>
       # luna-send -n 1 luna://com.webos.service.db/put &#39;{&nbsp;<br />
@@ -202,12 +118,7 @@ toc: true
     </p>
   </div>
   <p><strong>Update (replace):</strong></p>
-  <p>
-    The <strong>put </strong>method updates an object. Update by default will
-    replace the database object with the new one (in other words, if a new
-    object does not have some fields that were present in the old database
-    object, those old database fields will be removed)
-  </p>
+  <p>The <strong>put </strong>method updates an object. Update by default will replace the database object with the new one (in other words, if a new object does not have some fields that were present in the old database object, those old database fields will be removed)</p>
   <p>As an example, consider the following object in a database:</p>
   <div class="code-bg-grey">
     <p>
@@ -252,12 +163,7 @@ toc: true
     </p>
   </div>
   <p><strong>Update (Merge):</strong></p>
-  <p>
-    Sometimes a service does not need to replace an object in the database, but
-    simply needs to add a field to a database object. For this type of update, a
-    client can call the&nbsp;<strong>merge </strong>method instead of the
-    <strong>put </strong>method.
-  </p>
+  <p>Sometimes a service does not need to replace an object in the database, but simply needs to add a field to a database object. For this type of update, a client can call the&nbsp;<strong>merge </strong>method instead of the <strong>put </strong>method.</p>
   <p>For example, if we have an object:</p>
   <div class="code-bg-grey">
     <p>
@@ -302,20 +208,9 @@ toc: true
     </p>
   </div>
   <p><strong>Trick with put/merge and object revision:</strong></p>
-  <p>
-    The <strong>_rev</strong> object field shows the revision number of an
-    object. But what happens if an application wants to track updates to
-    specific field/fields? DB8 can do that.
-  </p>
-  <p>
-    The application should modify the <strong>Kind</strong> and add
-    <strong>revSets</strong>.
-  </p>
-  <p>
-    Revision set (<strong>revSets</strong>) is a set of object field names, that
-    the database should track for changes. If the tracked field(s) are modified,
-    the database will increment the number.
-  </p>
+  <p>The <strong>_rev</strong> object field shows the revision number of an object. But what happens if an application wants to track updates to specific field/fields? DB8 can do that.</p>
+  <p>The application should modify the <strong>Kind</strong> and add <strong>revSets</strong>.</p>
+  <p>Revision set (<strong>revSets</strong>) is a set of object field names, that the database should track for changes. If the tracked field(s) are modified, the database will increment the number.</p>
   <div class="code-bg-grey">
     <p>
       # luna-send -n 1 -f luna://com.webos.service.db/putKind &#39;{&nbsp;<br />
@@ -374,18 +269,10 @@ toc: true
       }&#39;
     </p>
   </div>
-  <p>
-    The above modification to the <strong>Kind</strong> tells DB8 to do the
-    following:
-  </p>
+  <p>The above modification to the <strong>Kind</strong> tells DB8 to do the following:</p>
   <ol>
-    <li>
-      Add the&nbsp;<strong>field1_rev</strong>&nbsp;field&nbsp;to each object
-    </li>
-    <li>
-      Increase its value when the <strong>field1</strong> object&nbsp;is
-      modified.
-    </li>
+    <li>Add the&nbsp;<strong>field1_rev</strong>&nbsp;field&nbsp;to each object</li>
+    <li>Increase its value when the <strong>field1</strong> object&nbsp;is modified.</li>
   </ol>
   <p>The default value of field1_rev will be the same as object _rev.</p>
   <p>Example:</p>
@@ -416,13 +303,8 @@ toc: true
       }&nbsp; &nbsp; &nbsp;
     </p>
   </div>
-  <p>
-    The database then adds the&nbsp;<strong>field1_rev</strong> field to the
-    object.<br />
-    <br />
-    When an application updates&nbsp;<strong>field1</strong>, DB8 will
-    automatically increment the&nbsp;<strong>field1_rev</strong> field:
-  </p>
+  <p>The database then adds the&nbsp;<strong>field1_rev</strong> field to the object.</p>
+  <p>When an application updates&nbsp;<strong>field1</strong>, DB8 will automatically increment the&nbsp;<strong>field1_rev</strong> field:</p>
   <div class="code-bg-grey">
     <p>
       # luna-send -n 1 luna://com.webos.service.db/merge &#39;{&nbsp;<br />
@@ -451,11 +333,7 @@ toc: true
       }&nbsp; &nbsp; &nbsp;
     </p>
   </div>
-  <p>
-    Now, if we update the&nbsp;<strong>field2&nbsp;</strong>only, the database
-    will not increment the&nbsp;<strong>field1_rev</strong> field, as it does
-    not track updates to field2.
-  </p>
+  <p>Now, if we update the&nbsp;<strong>field2&nbsp;</strong>only, the database will not increment the&nbsp;<strong>field1_rev</strong> field, as it does not track updates to field2.</p>
   <div class="code-bg-grey">
     <p>
       # luna-send -n 1luna://com.webos.service.db/merge &#39;{&nbsp;<br />
@@ -484,45 +362,20 @@ toc: true
     </p>
   </div>
   <p><strong>Queries:</strong></p>
-  <p>
-    DB8 guarantees complexity for all CRUD (create, read, update, delete) API
-    calls.
-  </p>
-  <p>
-    To retrieve data, a client can call either the&nbsp;<strong>get </strong>or
-    the&nbsp;<strong>find </strong>method.
-  </p>
+  <p>DB8 guarantees complexity for all CRUD (create, read, update, delete) API calls.</p>
+  <p>To retrieve data, a client can call either the&nbsp;<strong>get </strong>or the&nbsp;<strong>find </strong>method.</p>
   <ul>
-    <li>
-      The <strong>get </strong>method provides the ability to get an object by
-      the object id.<br />
+    <li>The <strong>get </strong>method provides the ability to get an object by the object id.<br />
       Complexity guaranteed for <strong>get </strong>API call is&nbsp;<strong>log(n)</strong>
     </li>
-    <li>
-      The <strong>find </strong>method provides the ability to get objects by
-      condition. The <strong>find&nbsp;</strong>query must use the index
-      fields&nbsp;of an object for searching.<br />
-      Complexity guaranteed for the&nbsp;<strong>find </strong>API call
-      is&nbsp;<strong>log(n)</strong>
+    <li>The <strong>find </strong>method provides the ability to get objects by condition. The <strong>find&nbsp;</strong>query must use the index fields&nbsp;of an object for searching.<br />
+      Complexity guaranteed for the&nbsp;<strong>find </strong>API call is&nbsp;<strong>log(n)</strong>
     </li>
-    <li>
-      The <strong>search </strong>method&nbsp;provides the ability to get
-      objects by condition. The <strong>search </strong>Query uses&nbsp;any
-      object field for searching.<br />
-      Complexity guaranteed&nbsp;for the <strong>search&nbsp;</strong>API call
-      is&nbsp;<strong>n.</strong>
+    <li>The <strong>search </strong>method&nbsp;provides the ability to get objects by condition. The <strong>search </strong>Query uses&nbsp;any object field for searching.<br />
+      Complexity guaranteed&nbsp;for the <strong>search&nbsp;</strong>API call is&nbsp;<strong>n.</strong>
     </li>
   </ul>
-  <p>
-    It may not be clear, why the&nbsp;<strong>find </strong>method does not
-    allow operations, like filter or sub-string search. Think about it this way:
-    DB8 always guarantees complexity for all&nbsp;of its API calls without
-    exception. An operation like the&nbsp;filter can search by object fields
-    that do not have indexes. In other words, DB8 would have to iterate over
-    <strong>n</strong> objects to process the resulting set. However, since DB8
-    guarantees a complexity of log(n) to the <strong>find </strong>call, it does
-    not allow the filtering operation.
-  </p>
+  <p>It may not be clear, why the&nbsp;<strong>find </strong>method does not allow operations, like filter or sub-string search. Think about it this way: DB8 always guarantees complexity for all&nbsp;of its API calls without exception. An operation like the&nbsp;filter can search by object fields that do not have indexes. In other words, DB8 would have to iterate over <strong>n</strong> objects to process the resulting set. However, since DB8 guarantees a complexity of log(n) to the <strong>find </strong>call, it does not allow the filtering operation.</p>
   <p>Some quick examples for <strong>find </strong>(with collate and limit):</p>
   <div class="code-bg-grey">
     <p>
@@ -560,21 +413,8 @@ toc: true
     </p>
   </div>
   <p><strong>Pages:</strong></p>
-  <p>
-    Processing of result sets that contain a lot of objects (thousands,
-    millions, etc) can consume all available memory. Assume that a database has
-    1 million objects and we need to build a JSON representation of those
-    objects on a target system that has only 1M of free RAM. How can that be
-    achieved?&nbsp;To handle such a scenario, DB8 will output result sets by
-    pages. Each page will have a limit on the maximum number of objects it can
-    contain. If an application does not specify a limit in
-    <strong>find/search</strong>, DB8 will add a default limit. On most
-    platforms, the default limit value is 500 objects per page, but this can be
-    reconfigured.<br />
-    <br />
-    For example, we retrieve data from a DB8 database on a Tamagochi device
-    (each page will contain only two objects):
-  </p>
+  <p>Processing of result sets that contain a lot of objects (thousands, millions, etc) can consume all available memory. Assume that a database has 1 million objects and we need to build a JSON representation of those objects on a target system that has only 1M of free RAM. How can that be achieved?&nbsp;To handle such a scenario, DB8 will output result sets by pages. Each page will have a limit on the maximum number of objects it can contain. If an application does not specify a limit in <strong>find/search</strong>, DB8 will add a default limit. On most platforms, the default limit value is 500 objects per page, but this can be reconfigured.</p>
+  <p>For example, we retrieve data from a DB8 database on a Tamagochi device (each page will contain only two objects):</p>
   <div class="code-bg-grey">
     <p>
       # luna-send -f -n 1 luna://com.webos.service.db/find &#39;{&nbsp;<br />
@@ -613,12 +453,7 @@ toc: true
       }
     </p>
   </div>
-  <p>
-    The next parameter in the response indicates the ID of the next page in the
-    result data set (internally, DB8 interprets this id as a very tricky
-    offset). To get the next object in the result data set, execute query with a
-    page&nbsp;parameter:
-  </p>
+  <p>The next parameter in the response indicates the ID of the next page in the result data set (internally, DB8 interprets this id as a very tricky offset). To get the next object in the result data set, execute query with a page&nbsp;parameter:</p>
   <div class="code-bg-grey">
     <p>
       # luna-send -f -n 1 luna://com.webos.service.db/find &#39;{&nbsp;<br />
@@ -656,17 +491,12 @@ toc: true
       }
     </p>
   </div>
-  <p>
-    If DB8 does not have any objects in the result set and the last retrieved
-    page contains the final objects from the result set, DB8 will not provide
-    the next&nbsp;parameter in the response.
-  </p>
+  <p>If DB8 does not have any objects in the result set and the last retrieved page contains the final objects from the result set, DB8 will not provide the next&nbsp;parameter in the response.</p>
   <p><strong>Complex Queries:</strong></p>
   <p>For this section we are using the following test <strong>Kind</strong>:</p>
   <div class="code-bg-grey">
     <p>
-      # luna-send -n 1 -a com.webos.service.configurator
-      luna://com.webos.service.db/putKind &#39;{&nbsp;<br />
+      # luna-send -n 1 -a com.webos.service.configurator luna://com.webos.service.db/putKind &#39;{&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&quot;id&quot;:&quot;com.webos.service.test:1&quot;,<br />
       &nbsp;&nbsp;&nbsp;&quot;owner&quot;:&quot;com.webos.service.test&quot;,<br />
       &nbsp;&nbsp;&nbsp;&quot;indexes&quot;:[&nbsp;<br />
@@ -758,10 +588,7 @@ toc: true
       }&#39;<br />
     </p>
   </div>
-  <p>
-    In the <strong>Queries</strong> section&nbsp;you can find how to create an
-    index for one field and execute some trivial queries, like:
-  </p>
+  <p>In the <strong>Queries</strong> section&nbsp;you can find how to create an index for one field and execute some trivial queries, like:</p>
   <div class="code-bg-grey">
     <p>
       &quot;where&quot;:[{&quot;prop&quot;:&quot;field1&quot;,&quot;op&quot;:&quot;=&quot;,
@@ -779,22 +606,12 @@ toc: true
       {&quot;prop&quot;:&quot;field2&quot;,&quot;op&quot;:&quot;=&quot;,&quot;val&quot;:&quot;b&quot;}]
     </p>
   </div>
-  <p>
-    DB8 will return &quot;Sorry, I don&#39;t know such index&quot;.&nbsp;This
-    error is returned because the DB8 Planner is not very intelligent and will
-    never try to guess the index.
-  </p>
-  <p>
-    An application developer should provide complex indexes for such complex
-    quires. To get an object using 2 fields (third object from example set):
-  </p>
+  <p>DB8 will return &quot;Sorry, I don&#39;t know such index&quot;.&nbsp;This error is returned because the DB8 Planner is not very intelligent and will never try to guess the index.</p>
+  <p>An application developer should provide complex indexes for such complex quires. To get an object using 2 fields (third object from example set):</p>
   <div class="code-bg-grey">
     <p>(field1 == b) &amp;&amp; (field2 == a)</p>
   </div>
-  <p>
-    The client should provide the <strong>Kind</strong> for such index like
-    following:
-  </p>
+  <p>The client should provide the <strong>Kind</strong> for such index like following:</p>
   <div class="code-bg-grey">
     <p>
       {&quot;name&quot;:&quot;field12&quot;,&quot;props&quot;:[
@@ -802,14 +619,8 @@ toc: true
       &quot;field2&quot;}] }
     </p>
   </div>
-  <p>
-    (See at top of this documentation section for full luna comand for kind
-    creation.)
-  </p>
-  <p>
-    After modification of the <strong>Kind</strong>, an application can execute
-    a query like this:
-  </p>
+  <p>(See at top of this documentation section for full luna comand for kind creation.)</p>
+  <p>After modification of the <strong>Kind</strong>, an application can execute a query like this:</p>
   <div class="code-bg-grey">
     <p>
       # luna-send -n 1 -f luna://com.webos.service.db/find &#39;{&nbsp;<br />
@@ -832,10 +643,7 @@ toc: true
     </p>
   </div>
   <p><strong>Complex Queries Tricks:</strong></p>
-  <p>
-    Imagine, that an application developer extends a <strong>Kind</strong> with
-    a complex index like the one below, and then tries to execute it:
-  </p>
+  <p>Imagine, that an application developer extends a <strong>Kind</strong> with a complex index like the one below, and then tries to execute it:</p>
   <div class="code-bg-grey">
     <p>(field1 &lt; b) &amp;&amp; (field2 == b)</p>
   </div>
@@ -860,15 +668,8 @@ toc: true
       }&#39;
     </p>
   </div>
-  <p>
-    DB8 will return &quot;Index not found&quot;, even if you have created a
-    complex index for <em>field1</em> and <em>field2</em>. In the example below,
-    the index has the name <em>field12</em>.
-  </p>
-  <p>
-    To work around this, you should also create a reverse index
-    <em>field21</em>:
-  </p>
+  <p>DB8 will return &quot;Index not found&quot;, even if you have created a complex index for <em>field1</em> and <em>field2</em>. In the example below, the index has the name <em>field12</em>.</p>
+  <p>To work around this, you should also create a reverse index <em>field21</em>:<br /></p>
   <div class="code-bg-grey">
     <p>
       {&quot;name&quot;:&quot;<em>field21</em>&quot;,&quot;props&quot;:[
@@ -924,18 +725,9 @@ toc: true
       }&#39;
     </p>
   </div>
-  <p>
-    After such a tricky index creation, DB8 can successfully search for data.
-  </p>
-  <p>
-    <br />
-    <strong>Watch:</strong>
-  </p>
-  <p>
-    Sometimes a client may want to be notified about an object in a database
-    that satisfies&nbsp;some condition. For this, the client can use
-    the&nbsp;<strong>watch </strong>method.
-  </p>
+  <p>After such a tricky index creation, DB8 can successfully search for data.</p>
+  <p><strong>Watch:</strong></p>
+  <p>Sometimes a client may want to be notified about an object in a database that satisfies&nbsp;some condition. For this, the client can use the&nbsp;<strong>watch </strong>method.</p>
   <p>Example:</p>
   <div class="code-bg-grey">
     <p>
@@ -955,22 +747,8 @@ toc: true
       }&#39;
     </p>
   </div>
-  <p>
-    If no object exists with the field <em>processed=false</em> for Kind
-    <em>com.</em>webos.service<em>.test:1</em>, the client will be blocked in
-    the&nbsp;<strong>watch </strong>method. The&nbsp;watch will be unblocked,
-    when an object that satisfies a query will appear in a database. In the
-    example above, the database will have object for
-    <em>com.</em>webos.service<em>.test:1</em> with field
-    <em>processed</em>=false (if someone will insert object or modify field for
-    existing object).
-  </p>
-  <p>
-    <strong>Note about blocking:</strong>&nbsp;For a blocking
-    <strong>watch</strong> API call, the caller cannot do anything until the
-    <strong>watch&nbsp;</strong>API call returns. It is very similar to system
-    calls blocks.&nbsp;
-  </p>
+  <p>If no object exists with the field <em>processed=false</em> for Kind <em>com.</em>webos.service<em>.test:1</em>, the client will be blocked in the&nbsp;<strong>watch </strong>method. The&nbsp;watch will be unblocked when an object that satisfies a query will appear in a database. In the example above, the database will have an object for <em>com.</em>webos.service<em>.test:1</em> with field <em>processed</em>=false (if someone will insert object or modify field for an existing object).</p>
+  <p><strong>Note about blocking:</strong>&nbsp;For a blocking <strong>watch</strong> API call, the caller cannot do anything until the <strong>watch&nbsp;</strong>API call returns. It is very similar to system calls blocks.&nbsp;</p>
   <p>Example of <strong>watch </strong>response, when it is unblocked:</p>
   <div class="code-bg-grey">
     <p>
@@ -980,87 +758,40 @@ toc: true
       }
     </p>
   </div>
-  <p>
-    The fired param in the response informs the client that DB8 contains one or
-    more objects that satisfy the watch query and that the client can retrieve
-    those objects.<br />
+  <p>The fired param in the response informs the client that DB8 contains one or more objects that satisfy the watch query and that the client can retrieve those objects.<br />
     <br />
     Sample workflow for the watch method:
   </p>
-  <p>
-    Assume that you are developing a chat application.<br />
-    The chat application creates a DB8 <strong>Kind</strong>
-    <em>com.chat.messages:1</em><br />
-    The chat application will have 2 independent threads: A&nbsp;<em>UI thread</em>
-    that shows messages and a&nbsp;<em>reader thread</em>, that receives
-    messages from the network.
+  <p>Assume that you are developing a chat application.<br />
+    The chat application creates a DB8 <strong>Kind</strong> <em>com.chat.messages:1</em><br />
+    The chat application will have 2 independent threads: A&nbsp;<em>UI thread</em> that shows messages and a&nbsp;<em>reader thread</em>, that receives messages from the network.
   </p>
   <ol>
-    <li>
-      <strong>Phase</strong>: Application startup<br />
-      <em>UI thread</em> reads all objects from
-      <em>com.chat.messages:1</em> Kind and shows the messages to the end user.
+    <li><strong>Phase</strong>: Application startup<br />
+      <em>UI thread</em> reads all objects from <em>com.chat.messages:1</em> Kind and shows the messages to the end-user.
     </li>
-    <li>
-      <strong>Phase</strong>: UI Blocks till new message arrive<br />
-      <em>UI thread</em> calls DB8 watch method&nbsp;with query:
-      <em>processed=false</em>. If the database does not have such objects,
-      the&nbsp;UI thread&nbsp;is blocked in the&nbsp;<strong>watch</strong> API
-      call.
+    <li><strong>Phase</strong>: UI Blocks till new message arrive<br />
+      <em>UI thread</em> calls DB8 watch method&nbsp;with the query: <em>processed=false</em>. If the database does not have such objects, the&nbsp;UI thread&nbsp;is blocked in the&nbsp;<strong>watch</strong> API call.
     </li>
-    <li>
-      <strong>Phase</strong>: <em>reader thread</em> receives a new message<br />
-      The<em> reader thread</em> receives messages over the network, stores
-      those messages into <em>com.chat.messages:1</em> with set field
-      <em>processed=false.</em>
+    <li><strong>Phase</strong>: <em>reader thread</em> receives a new message<br />
+      The<em> reader thread</em> receives messages over the network, stores those messages into <em>com.chat.messages:1</em> with set field <em>processed=false.</em>
     </li>
-    <li>
-      <em><strong>Phase</strong>: UI thread</em> unblocked<br />
-      The Database unblocks <strong>watch</strong> API call (UI thread was
-      blocked in <strong>watch </strong>API call on step 2), the UI executes the
-      query <strong>find</strong> with parameter <em>processed=false</em>
+    <li><em><strong>Phase</strong>: UI thread</em> unblocked<br />
+      The Database unblocks <strong>watch</strong> API call (UI thread was blocked in <strong>watch </strong>API call on step 2), the UI executes the query <strong>find</strong> with parameter <em>processed=false</em>
     </li>
-    <li>
-      <strong>Phase</strong>: <em>UI thread </em>processes the new message<br />
-      For each new object in the result set, the UI thread shows those object to
-      the end user. To indicate, that each new object was processed and shown to
-      the end user by the UI, UI thread set field <em>processed=false</em> and
-      merge each object into database.
+    <li><strong>Phase</strong>: <em>UI thread </em>processes the new message<br />
+      For each new object in the result set, the UI thread shows those object to the end-user. To indicate, that each new object was processed and shown to the end-user by the UI, UI thread set field <em>processed=false</em> and merge each object into the database.
     </li>
-    <li>
-      <strong>Phase: </strong><em>UI thread</em>&nbsp;is blocked again<br />
+    <li><strong>Phase: </strong><em>UI thread</em>&nbsp;is blocked again<br />
       UI go to step 2.
     </li>
   </ol>
   <p><strong>Collation:</strong></p>
-  <p>
-    Information is displayed in sorted order to enable users to easily find the
-    items they are looking for. However, users of different languages might have
-    very different expectations of what a &quot;sorted&quot; list should look
-    like. Not only does the alphabetical order vary from one language to
-    another, but it also can vary from document to document within the same
-    language. For example, phone book ordering might be different than
-    dictionary ordering. String comparison is one of the basic functions most
-    applications require, and yet implementations often do not match local
-    conventions. Collation provides string comparison capability with support
-    for appropriate sort orderings for each of the locales needed by a client.
-  </p>
+  <p>Information is displayed in sorted order to enable users to easily find the items they are looking for. However, users of different languages might have very different expectations of what a &quot;sorted&quot; list should look like. Not only does the alphabetical order vary from one language to another, but it also can vary from document to document within the same language. For example, phone book ordering might be different than dictionary ordering. String comparison is one of the basic functions most applications require, and yet implementations often do not match local conventions. Collation provides string comparison capability with support for appropriate sort orderings for each of the locales needed by a client.</p>
   <p>Collation rule:</p>
-  <p>
-    <span style="background-color: transparent">A RuleBasedCollator is built from a rule string that changes the</span><span style="background-color: transparent">&nbsp;sort order of some characters and strings relative to the default
-    order. An empty string (or one with only white space and comments) results
-    in a collator that behaves like the root collator.</span>
-  </p>
-  <p>
-    Customization is specified via a string containing a set of
-    rules.&nbsp;<span style="background-color: transparent">ICU implements the (CLDR)&nbsp;</span>For more details see
-    <a href="http://www.unicode.org/reports/tr35/tr35-collation.html#Rules">LDML collation rule syntax</a>.
-  </p>
-  <p>
-    <span style="background-color: transparent">Each rule contains a string of ordered characters that starts with an </span><strong>anchor point </strong><span style="background-color: transparent">or a </span><strong>reset value</strong><span style="background-color: transparent">.</span><span style="background-color: transparent">&nbsp;For example, &quot;&amp;a &lt; g&quot;, places &quot;g&quot; after
-    &quot;a&quot; and before &quot;b&quot;, and the &quot;a&quot; does not
-    change place. This rule has the following sorting consequences:</span>
-  </p>
+  <p><span style="background-color:transparent">A RuleBasedCollator is built from a rule string that changes the</span><span style="background-color:transparent">&nbsp;sort order of some characters and strings relative to the default order. An empty string (or one with only white space and comments) results in a collator that behaves like the root collator.</span></p>
+  <p>Customization is specified via a string containing a set of rules.&nbsp;<span style="background-color:transparent">ICU implements the (CLDR)&nbsp;</span>For more details see <a href="http://www.unicode.org/reports/tr35/tr35-collation.html#Rules">LDML collation rule syntax</a>.</p>
+  <p><span style="background-color:transparent">Each rule contains a string of ordered characters that starts with an </span><strong>anchor point </strong><span style="background-color:transparent">or a </span><strong>reset value</strong><span style="background-color:transparent">.</span><span style="background-color:transparent">&nbsp;For example, &quot;&amp;a &lt; g&quot;, places &quot;g&quot; after &quot;a&quot; and before &quot;b&quot;, and the &quot;a&quot; does not change place. This rule has the following sorting consequences:</span></p>
   <table class="table is-bordered is-fullwidth">
     <thead>
       <tr>
@@ -1095,28 +826,12 @@ toc: true
       </tr>
     </tbody>
   </table>
-  <p>
-    <strong>Note:&nbsp;</strong>Only the word that starts with &quot;g&quot; has
-    changed place. All the words sorted after &quot;a&quot; and &quot;A&quot;
-    are sorted after &quot;g&quot;.
-  </p>
-  <p>
-    This is a non-complex example of a custom rule. Custom rules consist of zero
-    or more rules and zero or more options. There must be at least one rule or
-    at least one option. The rule syntax is discussed in more detail in the
-    following sections.
-  </p>
-  <p>
-    <strong>Note:</strong> The custom rules override the UCA ordering. In
-    addition, if a character is reordered, it automatically reorders any other
-    equivalent characters. For example, if the rule &quot;&amp;e&lt;a&quot; is
-    used to reorder &quot;a&quot; in the list, &quot;&aacute;&quot; is also
-    greater than &quot;&eacute;&quot;.
-  </p>
+  <p><strong>Note:&nbsp;</strong>Only the word that starts with &quot;g&quot; has changed place. All the words sorted after &quot;a&quot; and &quot;A&quot; are sorted after &quot;g&quot;.</p>
+  <p>This is a non-complex example of a custom rule. Custom rules consist of zero or more rules and zero or more options. There must be at least one rule or at least one option. The rule syntax is discussed in more detail in the following sections.</p>
+  <p><strong>Note:</strong> The custom rules override the UCA ordering. In addition, if a character is reordered, it automatically reorders any other equivalent characters. For example, if the rule &quot;&amp;e&lt;a&quot; is used to reorder &quot;a&quot; in the list, &quot;&aacute;&quot; is also
+    greater than &quot;&eacute;&quot;.</p>
   <p>Syntax:</p>
-  <p>
-    The following table summarizes the basic syntax necessary for most usages:
-  </p>
+  <p>The following table summarizes the basic syntax necessary for most usages:</p>
   <table class="table is-bordered is-fullwidth">
     <thead>
       <tr>
@@ -1180,21 +895,11 @@ toc: true
   </table>
   <p>For more information, see:</p>
   <ul>
-    <li>
-      <a href="http://userguide.icu-project.org/collation">http://userguide.icu-project.org/collation</a>
-    </li>
-    <li>
-      <a href="http://userguide.icu-project.org/collation/customization">http://userguide.icu-project.org/collation/customization</a>
-    </li>
+    <li><a href="http://userguide.icu-project.org/collation">http://userguide.icu-project.org/collation</a></li>
+    <li><a href="http://userguide.icu-project.org/collation/customization">http://userguide.icu-project.org/collation/customization</a></li>
   </ul>
-  <p>
-    Collation can be specified in the&nbsp;<strong>putKind </strong>or
-    the&nbsp;<strong>find </strong>method.
-  </p>
-  <p>
-    Example of using collator with <strong>putKind </strong>- set default
-    collation for kind:
-  </p>
+  <p>Collation can be specified in the&nbsp;<strong>putKind </strong>or the&nbsp;<strong>find </strong>method.</p>
+  <p>Example of using collator with <strong>putKind </strong>- set default collation for kind:</p>
   <div class="code-bg-grey">
     <p>
       # luna-send -n 1 luna://com.webos.service.db/putKind &#39;{&nbsp;<br />
@@ -1225,98 +930,43 @@ toc: true
       }&#39;
     </p>
   </div>
-  <p>
-    Internally, DB8 process strings via ICU. All ICU documentation about strings
-    somewhat applies to DB8 string processing.
-  </p>
+  <p>Internally, DB8 processes strings via ICU. All ICU documentation about strings somewhat applies to DB8 string processing.</p>
   <p><strong>Permissions:</strong></p>
-  <p>
-    DB8 is the central storage for applications. Every application can not only
-    store/retrieve data by itself, but it can also share and interact with other
-    applications.
-  </p>
-  <p>
-    Application can share kind and grant permissions for any CRUD operator. For
-    more information, see
-    <a href="#putpermissions">putPermissions</a> method.
-  </p>
+  <p>DB8 is the central storage for applications. Every application can not only store/retrieve data by itself, but it can also share and interact with other applications.</p>
+  <p>The application can share kind and grant permissions for any CRUD operator. For more information, see <a href="#putpermissions"><u>putPermissions</u><strong> </strong></a>method.</p>
   <p><strong>Quotas:</strong></p>
-  <p>
-    The function of quotas is to allocate limited disk space in a reasonable way
-    for target device. Those limits are set by product developers via DB8
-    configuration files.
-  </p>
-  <p>
-    In other words, quotas limit the amount of disk space that can be used by a
-    certain application.<br />
+  <p>The function of quotas is to allocate limited disk space in a reasonable way for target device. Those limits are set by product developers via DB8 configuration files.</p>
+  <p>In other words, quotas limit the amount of disk space that can be used by a certain application.<br />
     Every process can see its quota usage by using the&nbsp;<strong>quotaStats </strong>method.
   </p>
   <p><strong>Encoding:</strong></p>
-  <p>
-    When the DB8 daemon starts, it uses UTF8 en_US.en_US encoding which is its
-    default encoding.
-  </p>
-  <p>
-    DB8 subscribes for <em>com.webos.service.systemservice</em>/<em>getPreferences</em>
-    <em>&#39;{ &quot;keys&quot; : &quot;locale&quot;}&#39;</em> . If the
-    systemservice does not exist on the platform or returns an error, DB8 will
-    continue use UTF8 en_US.en_US encoding by default.
-  </p>
+  <p>When the DB8 daemon starts, it uses UTF8 en_US.en_US encoding which is its default encoding.</p>
+  <p>DB8 subscribes for <em>com.webos.service.systemservice</em>/<em>getPreferences</em> <em>&#39;{ &quot;keys&quot; : &quot;locale&quot;}&#39;</em> . If the systemservice does not exist on the platform or returns an error, DB8 will continue use UTF8 en_US.en_US encoding by default.</p>
   <p><strong>Disk Storage Logic:</strong></p>
   <p>When DB8 starts, it creates 2 activities in Activity Manager:</p>
   <ul>
     <li>Scheduled space check</li>
     <li>Garbage collector (<strong>purge</strong>)</li>
   </ul>
-  <p>
-    Activity for space check will check for available storage space. If the free
-    storage space is too low, DB8 will reject all new CRUD API calls with quota
-    exceeded error. If the storage has enough free space, then on the next
-    scheduled space check DB8 will continue to process CRUD API calls.<br />
+  <p>Activity for space check will check for available storage space. If the free storage space is too low, DB8 will reject all new CRUD API calls with quota exceeded error. If the storage has enough free space, then on the next scheduled space check DB8 will continue to process CRUD API calls.<br />
     <br />
     <strong>Garbage collector:</strong>
   </p>
-  <p>
-    By default, DB8 does not remove objects from its database, it only marks it
-    <em>for future delete</em>. DB8 use this logic, as an update operation takes
-    less resources compared with delete. Physical objects are removed when
-    processed by the DB8 <em>garbage collector</em>.
-  </p>
-  <p>
-    The garbage collector can be called in 2 ways: by ActivityManager or
-    directly by service.<br />
+  <p>By default, DB8 does not remove objects from its database, it only marks it <em>for future delete</em>. DB8 use this logic, as an update operation takes less resources compared with delete. Physical objects are removed when processed by the DB8 <em>garbage collector</em>.</p>
+  <p>The garbage collector can be called in 2 ways: by ActivityManager or directly by service.<br />
     <br />
-    On startup, DB8 dynamically registers an activity to call the garbage
-    collector.
+    On startup, DB8 dynamically registers an activity to call the garbage collector.
   </p>
-  <p>
-    If the&nbsp;client wants to delete an object and immediately free storage
-    space, the client can specify the&nbsp;<strong>purge</strong> option in
-    the&nbsp;<strong>del </strong>method. The <strong>del</strong> API
-    call<strong>&nbsp;</strong>with the <strong>purge</strong> parameter can be
-    potentially slow.
-  </p>
-  <p>
-    Complexity for garbage collector:<strong> m*log(n)</strong>, where
-    <strong>m</strong> - count of objects marked for removal.
-  </p>
+  <p>If the&nbsp;client wants to delete an object and immediately free storage space, the client can specify the&nbsp;<strong>purge</strong> option in the&nbsp;<strong>del </strong>method. The <strong>del</strong> API call<strong>&nbsp;</strong>with the <strong>purge</strong> parameter can be potentially slow.</p>
+  <p>Complexity for garbage collector:<strong> m*log(n)</strong>, where <strong>m</strong> - count of objects marked for removal.</p>
   <p><strong>Error handling:</strong></p>
-  <p>
-    If DB8 cannot process method calls (internal error, bad params, no
-    resources, etc) it always returns error in the following format:
-  </p>
+  <p>If DB8 cannot process method calls (internal error, bad params, no resources, etc) it always returns an error in the following format:</p>
   <ul>
-    <li>
-      returnValue - If an error occurs, it &nbsp;will contain <em>false</em>
-    </li>
+    <li>returnValue - If an error occurs, it &nbsp;will contain <em>false</em></li>
     <li>errorCode - Code that indicates the cause of &nbsp;the error</li>
     <li>errorText&nbsp;&nbsp; -&nbsp; Text representation of the error code</li>
   </ul>
-  <p>
-    Error codes and descriptions are provided for each method call. For example,
-    if the client calls the&nbsp;<strong>load </strong>method with a bad
-    parameter:
-  </p>
+  <p>Error codes and descriptions are provided for each method call. For example, if the client calls the&nbsp;<strong>load </strong>method with a bad parameter:</p>
   <div class="code-bg-grey">
     <p>
       # luna-send -n 1 -f -m com.webos.service.configurator
@@ -1335,14 +985,8 @@ toc: true
   <p>The above response indicates, that:</p>
   <ul>
     <li><em>returnValue:&nbsp;false </em>- method call failed</li>
-    <li>
-      <em>errorCode</em>:&nbsp;<em>2</em>&nbsp;- See the&nbsp;<a href="#load">load</a> method for more details on
-      error code 2
-    </li>
-    <li>
-      <em>errorText: No such file or directory</em> - A quick textual
-      explanation of the error
-    </li>
+    <li><em>errorCode</em>:&nbsp;<em>2</em>&nbsp;- See the&nbsp;<u><a href="#load">load</a></u><strong>&nbsp;</strong>method<strong>&nbsp;</strong>for more details on error code 2</li>
+    <li><em>errorText: No such file or directory</em> - A quick textual explanation of the error</li>
   </ul>
   <p><strong>Basic API functions</strong>:</p>
   <p>It provides the following data management functions:</p>
@@ -1704,9 +1348,9 @@ toc: true
           <td>Optional</td>
           <td>Boolean</td>
           <td>
-            <p style="text-align: left;">The default value of the <strong>purge </strong>parameter is <strong>false</strong>.</p>
+            <p style="text-align:left">The default value of the <strong>purge </strong>parameter is <strong>false</strong>.</p>
             <ul>
-              <li style="text-align: left;">If the <strong>purge </strong>parameter is set to <strong>false</strong>, the target objects will only be marked for deletion. Objects marked for deletion can still be restored. They will be purged permanently only when an administrative purge operation is run.</li>
+              <li style="text-align:left">If the <strong>purge </strong>parameter is set to <strong>false</strong>, the target objects will only be marked for deletion. Objects marked for deletion can still be restored. They will be purged permanently only when an administrative purge operation is run.</li>
               <li style="text-align:left">If the&nbsp;<strong>purge&nbsp;</strong>parameter is set to <strong>true</strong>, the target objects will be deleted permanently immediately.&nbsp;</li>
             </ul>
           </td>
@@ -2936,7 +2580,7 @@ toc: true
           <td>Optional</td>
           <td>Object</td>
           <td>
-            <p style="text-align: left;">The <strong>props</strong> parameter is an object with key/value pairs that specify the set of properties to be merged into the existing object(s) specified in the <strong>query&nbsp;</strong>parameter. If the app specifies the properties in the&nbsp;<strong>prop</strong>&nbsp;parameter, the&nbsp;<strong>query</strong> is required.</p>
+            <p style="text-align:left">The <strong>props</strong> parameter is an object with key/value pairs that specify the set of properties to be merged into the existing object(s) specified in the <strong>query&nbsp;</strong>parameter. If the app specifies the properties in the&nbsp;<strong>prop</strong>&nbsp;parameter, the&nbsp;<strong>query</strong> is required.</p>
           </td>
         </tr>
         <tr>

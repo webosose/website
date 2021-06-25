@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.wifi
-date: 2021-03-29
+date: 2021-06-16
 weight: 360
 toc: true
 ---
@@ -171,7 +171,7 @@ toc: true
 <div>
   <h4>Description</h4>
   <p>Connects to a given SSID, which can be an open network requiring no passphrase (i.e no <strong>security</strong> field in its argument), hidden network(requiring <strong>wasCreatedWithJoinOther</strong> field set to true in its argument), secure networks (authenticating with the specified passphrase), or enterprise networks(currently supported EAP methods are: PEAP, TLS and TTLS).</p>
-  <p>Upon successful connection, the Wi-Fi <strong>profile </strong>is saved on the system along with its SSID and security details. On the other hand if the connection is unsuccessful but the parameter <strong>storeProfile</strong> is set to <strong>true </strong>then the&nbsp;Wi-Fi <strong>profile </strong>is still saved on the system along with the&nbsp;<strong>connman</strong> .config file, which enables <strong>connman</strong> to connect to this network once it is available.&nbsp;To connect to an already known network i.e a saved&nbsp;<strong>profile</strong>, the&nbsp;<strong>profileId</strong>&nbsp;parameter should be set.&nbsp;</p>
+  <p>Upon successful connection, the Wi-Fi <strong>profile </strong>is saved on the system along with its SSID and security details. On the other hand, if the connection is unsuccessful but the parameter <strong>storeProfile</strong> is set to <strong>true </strong>then the&nbsp;Wi-Fi <strong>profile </strong>is still saved on the system along with the&nbsp;<strong>connman</strong> .config file, which enables <strong>connman</strong> to connect to this network once it is available.&nbsp;To connect to an already known network i.e a saved&nbsp;<strong>profile</strong>, the&nbsp;<strong>profileId</strong>&nbsp;parameter should be set.&nbsp;</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -5649,6 +5649,149 @@ toc: true
     <p style="margin-left: 40px;">&quot;returnValue&quot;: false,</p>
     <p style="margin-left: 40px;">&quot;errorText&quot;: &quot;WiFi technology unavailable&quot;</p>
     <p>}</p>
+  </div>
+</div>
+<h3>p2p/setgointent</h3>
+<div>
+  <h4>Description</h4>
+  <p>Changes the group owner intent value used&nbsp;by Miracast service.&nbsp;Miracast service uses this API when TV needs to change the role in the P2P (Peer-to-Peer) group.</p>
+  <p><span style="color:#FF0000"><strong>Note: </strong>Subscription is not supported in this API.</span></p>
+  <p><span style="color:#FF0000"><strong>Prerequisite: </strong>WiFi and P2P must be enabled to use this method.</span></p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>GOIntent</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>The intent value to be set.</p>
+            <ul>
+              <li>webOS device&nbsp;becomes&nbsp;GO (Group Owner) when its intent value is higher than the peer device.</li>
+              <li>webOS device becomes&nbsp;GC (Group Client) when its intent value is lower than the peer device.</li>
+            </ul>
+            <p>Default value of the webOS TV is 1.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Connman service unavailable</td>
+          <td>
+            <p>Error when webos-connman-adapter is not able to communicate with the&nbsp;<strong>connman</strong>&nbsp;daemon.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>WiFi technology unavailable</td>
+          <td>
+            <p>Error when the Wi-Fi technology is not available. This could happen either because the&nbsp;<strong>wpa-supplicant</strong>&nbsp;daemon is not running, or&nbsp;<strong>connman</strong>&nbsp;is not able to communicate with&nbsp;<strong>wpa-supplicant</strong>&nbsp;or the device does not have Wi-Fi support.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>114</td>
+          <td>P2P is not enabled</td>
+          <td>
+            <p>Wi-Fi Direct is not enabled on the system.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>206</td>
+          <td>Error in changing go intent value</td>
+          <td>
+            <p>Error when changing the go intent value fails.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div class="code-bg-grey">
+    <p>#&nbsp;luna-send -n 1 luna://com.webos.service.wifi/p2p/setgointent &#39;{<br />
+      &nbsp; &nbsp; &nbsp;&quot;goIntent&quot;:10<br />
+      }&#39;
+    </p>
   </div>
 </div>
 <h3>scan</h3>

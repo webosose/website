@@ -1,7 +1,7 @@
 ---
 title: Release Notes
 display_title: Command-Line Interface Release Notes
-date: 2021-03-25
+date: 2021-06-10
 weight: 20
 file_download: true
 toc: true
@@ -27,20 +27,24 @@ The following table shows the compatibility between webOS OSE and CLI.
       </tr>
     </thead>
     <tbody>
-      <tr class="odd">
+      <tr>
+        <td><p>2.2.0</p></td>
+        <td><p>2.11.0</p></td>
+        <td rowspan="4"><p>Since CLI v2.0.0, use <code>npm</code> to download the CLI packages. For more details, see <a href="/docs/tools/sdk/cli/cli-user-guide/#installing-cli">CLI User Guide</a>.</p></td>
+      </tr>
+      <tr>
         <td><p>2.1.0</p></td>
         <td><p>2.10.0</p></td>
-        <td rowspan="3"><p>Since CLI v2.0.0, use <code>npm</code> to download the CLI packages. For more details, see <a href="/docs/tools/sdk/cli/cli-user-guide/#installing-cli">CLI User Guide</a>.</p></td>
       </tr>
-      <tr class="even">
+      <tr>
         <td><p>2.0.3</p></td>
         <td><p>2.9.0</p></td>
       </tr>
-      <tr class="odd">
+      <tr>
         <td><p>2.0.2</p></td>
         <td rowspan="2"><p>2.8.0</p></td>
       </tr>
-      <tr class="even">
+      <tr>
         <td><p>1.13.1</p></td>
         <td>
         <p>
@@ -50,7 +54,7 @@ The following table shows the compatibility between webOS OSE and CLI.
         </p>
         </td>
       </tr>
-      <tr class="odd">
+      <tr>
         <td><p>1.13.0</p></td>
         <td><p>2.7.0</p></td>
         <td>
@@ -61,7 +65,7 @@ The following table shows the compatibility between webOS OSE and CLI.
         </p>
         </td>
       </tr>
-      <tr class="even">
+      <tr>
         <td><p>1.12.0</p></td>
         <td><p>2.6.0</p></td>
         <td>
@@ -72,7 +76,7 @@ The following table shows the compatibility between webOS OSE and CLI.
         </p>
         </td>
       </tr>
-      <tr class="odd">
+      <tr>
         <td><p>1.11.1</p></td>
         <td><p>2.5.0</p></td>
         <td>
@@ -83,7 +87,7 @@ The following table shows the compatibility between webOS OSE and CLI.
         </p>
         </td>
       </tr>
-      <tr class="even">
+      <tr>
         <td><p>1.11.0</p></td>
         <td><p>2.4.0</p></td>
         <td>
@@ -94,7 +98,7 @@ The following table shows the compatibility between webOS OSE and CLI.
         </p>
         </td>
       </tr>
-      <tr class="odd">
+      <tr>
         <td><p>1.10.2</p></td>
         <td><p>2.1.0</p></td>
         <td>
@@ -105,7 +109,7 @@ The following table shows the compatibility between webOS OSE and CLI.
         </p>
         </td>
       </tr>
-      <tr class="even">
+      <tr>
         <td><p>1.10.1</p></td>
         <td><p>2.0.0</p></td>
         <td>
@@ -116,7 +120,7 @@ The following table shows the compatibility between webOS OSE and CLI.
         </p>
         </td>
       </tr>
-      <tr class="odd">
+      <tr>
         <td><p>1.9.4</p></td>
         <td rowspan="3"><p>1.0.0</p></td>
         <td>
@@ -127,7 +131,7 @@ The following table shows the compatibility between webOS OSE and CLI.
         </p>
         </td>
       </tr>
-      <tr class="even">
+      <tr>
         <td><p>1.8.1</p></td>
         <td>
         <p>
@@ -137,13 +141,28 @@ The following table shows the compatibility between webOS OSE and CLI.
         </p>
         </td>
       </tr>
-      <tr class="odd">
+      <tr>
         <td><p>1.6.4</p></td>
         <td><p>This version is not provided.</p></td>
       </tr>
     </tbody>
   </table>
 </div>
+
+## v2.2.0 (June 2021)
+
+This version is compatible with **webOS OSE 2.11.0**. See below for the new and changed features in this release.
+
+### New features
+
+* Added a new command, `ares-log`. For more details, see [CLI User Guide]({{< relref "cli-user-guide#ares-log">}}).
+
+### Changed features
+
+* Categorized error messages and added user tips for each error message.
+* Updated the naming rule for the `DEVICE_NAME` parameter in the `ares-setup-device` command.
+* Enhanced the readability of the `-–listfull` option in the `ares-install` command.
+* Enhanced the consistency for the `-v` option of all `ares` commands.
 
 ## v2.1.0 (April 2021)
 

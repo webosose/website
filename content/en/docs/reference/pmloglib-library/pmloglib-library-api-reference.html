@@ -1,6 +1,6 @@
 ---
 title: pmloglib Library API Reference
-date: 2021-01-21
+date: 2021-06-17
 toc: true
 ---
 
@@ -32,6 +32,7 @@ toc: true
 <p>The messages are formatted on the <strong>key - value</strong> basis. The key serves as a tag, by using which it is possible to get all messages that are marked by a certain key.</p>
 <p>&nbsp;</p>
 <p><u><strong>Example usage:</strong></u></p>
+<div class="code-bg-grey">
 <p><br />
   <em>&nbsp;&nbsp;&nbsp; PmLogContext&nbsp;&nbsp; &nbsp;gMyContext;<br />
     <br />
@@ -54,7 +55,9 @@ toc: true
     &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }<br />
     &nbsp;&nbsp;&nbsp;&nbsp; }</em></p>
 <p>&nbsp;</p>
+</div>
 <p><u><strong><em>Below are the list of functions which are exported :</em></strong></u></p>
+<div class="code-bg-grey">
 <p><em># Exported functions<br />
     {<br />
     global:<br />
@@ -89,6 +92,7 @@ toc: true
     local:<br />
     &nbsp;&nbsp; &nbsp;*;<br />
     };</em></p>
+</div>
 <h2>Enumerators</h2>
 <h3>PmLogErr</h3>
 <p>&nbsp;Type&nbsp;definition&nbsp;for&nbsp;error&nbsp;codes&nbsp;returned&nbsp;by&nbsp;this&nbsp;module&#39;s&nbsp;methods.</p>
@@ -469,7 +473,7 @@ toc: true
       <tr>
         <td>context</td>
         <td>Required</td>
-        <td>struct PmLogContextInfo</td>
+        <td>struct PmLogContext</td>
         <td>
           <ul>
             <li>Returns PmLogContext handle if it succeeds.</li>
@@ -1688,7 +1692,7 @@ Logs the specified formatted text to the specified context.
 <h4>Description</h4>
 <p>Logs&nbsp;the&nbsp;specified&nbsp;key-value&nbsp;pair(s)&nbsp;and&nbsp;formatted&nbsp;text&nbsp;tagged&nbsp;at&nbsp;given&nbsp;level,&nbsp;to&nbsp;the&nbsp;specified&nbsp;context.</p>
 <h4>Syntax</h4>
-<pre><code>_PmLogMsgKV(struct PmLogContextInfo context, enum PmLogLevel level, unsigned int flags, const char * msgid, size_t kv_count, const char * check_keywords, const char * check_formats, const char * fmt, [char variable no of arguments])</code></pre>
+<pre><code>_PmLogMsgKV(struct PmLogContext context, enum PmLogLevel level, unsigned int flags, const char * msgid, size_t kv_count, const char * check_keywords, const char * check_formats, const char * fmt, [char variable no of arguments])</code></pre>
 <h4>Parameters</h4>
 <div class="table-container">
   <table class="table is-bordered is-fullwidth">
@@ -1712,7 +1716,7 @@ Logs the specified formatted text to the specified context.
       <tr>
         <td>context</td>
         <td>Required</td>
-        <td>struct PmLogContextInfo</td>
+        <td>struct PmLogContext</td>
         <td>
           <p>Type&nbsp;definition&nbsp;for&nbsp;the&nbsp;logging&nbsp;context&nbsp;as&nbsp;returned by&nbsp;<strong>PmLogGetContext</strong> method.&nbsp;This&nbsp;is&nbsp;a&nbsp;read-only&nbsp;data&nbsp;view.</p>
           <p>Clients&nbsp;should&nbsp;treat&nbsp;this&nbsp;as&nbsp;an&nbsp;opaque&nbsp;structure,&nbsp;however&nbsp;it&nbsp;is&nbsp;referenced&nbsp;by&nbsp;the&nbsp;macro/inline&nbsp;functions&nbsp;here.</p>
@@ -1827,38 +1831,9 @@ Logs the specified formatted text to the specified context.
 <h4>Description</h4>
 <p>Returns the context of the process loading the library. This method&nbsp;may be used by shared libraries instead of <strong>PmLogGetContext</strong>&nbsp;method. That is, libraries do not setup their own context, but make this&nbsp;call to invoke the context of the calling process. This makes it easier for processes to control the logging level&nbsp;of library messages and direct them to specified file as needed.</p>
 <h4>Syntax</h4>
-<pre><code>PmLogGetLibContext(void void)</code></pre>
+<pre><code>PmLogGetLibContext()</code></pre>
 <h4>Parameters</h4>
-<div class="table-container">
-  <table class="table is-bordered is-fullwidth">
-    <thead>
-      <tr class="header">
-        <th width="15%">
-          <p>Name</p>
-        </th>
-        <th width="15%">
-          <p>Required</p>
-        </th>
-        <th width="15%">
-          <p>Type</p>
-        </th>
-        <th>
-          <p>Description</p>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>void</td>
-        <td>Required</td>
-        <td>void</td>
-        <td>
-          <p>No input parameter</p>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+None
 <h4>Returns</h4>
 <div class="table-container">
   <table class="table is-bordered is-fullwidth">
@@ -1880,9 +1855,9 @@ Logs the specified formatted text to the specified context.
     </thead>
     <tbody>
       <tr>
-        <td>libProcessContext</td>
+        <td>PmLogContext </td>
         <td>Required</td>
-        <td>struct PmLogContextInfo</td>
+        <td>struct PmLogContext</td>
         <td>
           <p>Returns the library context information.</p>
         </td>
@@ -1900,7 +1875,7 @@ Logs the specified formatted text to the specified context.
 <h4>Description</h4>
 <p>Sets PmLog context.</p>
 <h4>Syntax</h4>
-<pre><code>PmLogSetLibContext(struct PmLogContextInfo libContext)</code></pre>
+<pre><code>PmLogSetLibContext([struct PmLogContext libContext])</code></pre>
 <h4>Parameters</h4>
 <div class="table-container">
   <table class="table is-bordered is-fullwidth">
@@ -1923,8 +1898,8 @@ Logs the specified formatted text to the specified context.
     <tbody>
       <tr>
         <td>libContext</td>
-        <td>Required</td>
-        <td>struct PmLogContextInfo</td>
+        <td>Optional</td>
+        <td>struct PmLogContext</td>
         <td>
           <p>PmLog context information</p>
         </td>
@@ -1933,36 +1908,7 @@ Logs the specified formatted text to the specified context.
   </table>
 </div>
 <h4>Returns</h4>
-<div class="table-container">
-  <table class="table is-bordered is-fullwidth">
-    <thead>
-      <tr class="header">
-        <th width="15%">
-          <p>Name</p>
-        </th>
-        <th width="15%">
-          <p>Required</p>
-        </th>
-        <th width="15%">
-          <p>Type</p>
-        </th>
-        <th>
-          <p>Description</p>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>void</td>
-        <td>Optional</td>
-        <td>void</td>
-        <td>
-          <p>No return parameter</p>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+None
 <h4>Examples</h4>
 <strong>Example code</strong>
 <div class="code-bg-grey">

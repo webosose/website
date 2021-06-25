@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.systemservice
-date: 2021-03-29
+date: 2021-06-16
 weight: 310
 toc: true
 ---
@@ -2381,7 +2381,7 @@ toc: true
               <li><strong>true&nbsp;</strong>- Get notifications</li>
               <li><strong>false&nbsp;</strong>- Notifications are not required</li>
             </ul>
-            <p>â€‹<strong>Default value:</strong>&nbsp;false</p>
+            <p><strong>Default value:</strong>&nbsp;false</p>
           </td>
         </tr>
       </tbody>
@@ -2657,7 +2657,7 @@ toc: true
           <td>Boolean</td>
           <td>
             <p style="text-align: left;">If the app wants to&nbsp;<span style="text-align: justify;">receive notifications when the time zone changes and/or the system time changes by a system-defined threshold, it should set&nbsp;<strong>subscribe</strong><strong></strong>&nbsp;to <strong>true.</strong>&nbsp;The current system-defined threshold is 5 minutes.&nbsp;</span></p>
-            <p style="text-align: left;"><span style="text-align: justify;">If the app does not wish to receive notifications of change in time zone and/or the system time changes, it should set&nbsp;<strong>subscribe&nbsp;</strong>â€‹ to <strong>false</strong>.</span><br></p>
+            <p style="text-align: left;"><span style="text-align: justify;">If the app does not wish to receive notifications of change in time zone and/or the system time changes, it should set&nbsp;<strong>subscribe&nbsp;</strong> to <strong>false</strong>.</span><br></p>
           </td>
         </tr>
       </tbody>
@@ -2968,7 +2968,7 @@ toc: true
 <h3>time/getSystemTimezoneFile</h3>
 <div>
   <h4>Description</h4>
-  <p>The <strong>getSystemTimezoneFile</strong> method&nbsp;returns the path to Linux time-zone information file for the currently set zone. This file contains the list of rules that define switching to and from the daylight saving time. In particular, the time-zone information file defines when the time shift occurs in each particular year.</p>
+  <p>Returns the path to Linux time-zone information file for the currently set zone. This file contains the list of rules that define switching to and from daylight saving time. In particular, the time-zone information file defines when the time shift occurs in each particular year.</p>
   <p><strong>Note:</strong> A call to this method always succeeds. This method does not return <strong>returnValue.</strong></p>
   <h4>Parameters</h4>
   <p>None</p>
@@ -3012,7 +3012,6 @@ toc: true
   <h4>Example</h4>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/time/getSystemTimezoneFile &#39;{}&#39;</p>
-    <p>&nbsp;</p>
     <p>Response:</p>
     <p>{&nbsp;&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&quot;subscribed&quot;:false,<br />
@@ -3024,7 +3023,7 @@ toc: true
 <h3>time/getSystemUptime</h3>
 <div>
   <h4>Description</h4>
-  <p>The <strong>getSystemUptime</strong> method returns the number of seconds since the last system boot. This method uses the Linux-specific <strong>sysinfo</strong>&nbsp;function.</p>
+  <p>Returns the number of seconds since the last system boot. This method uses the Linux-specific <strong>sysinfo</strong>&nbsp;function.</p>
   <h4>Parameters</h4>
   <p>None</p>
   <h4>Call Returns</h4>
@@ -3112,26 +3111,19 @@ toc: true
   </div>
   <h4>Example</h4>
   <div class="code-bg-grey">
-    <p>Example of a successful call:</p>
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/time/getSystemUptime &#39;{}&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: true,</p>
-    <p style="margin-left:40px">&quot;uptime&quot;: 5185</p>
-    <p>}</p>
-    <p>&nbsp;</p>
-    <p>Example of a failed call:</p>
-    <p># luna-send -n 1 -f luna://com.webos.service.systemservice/time/getSystemUptime &#39;{}&#39;</p>
-    <p>{</p>
-    <p style="margin-left:40px">&quot;returnValue&quot;: false,</p>
-    <p style="margin-left:40px">&quot;errorCode&quot;: 14,</p>
-    <p style="margin-left:40px">&quot;errorText&quot;: &quot;Bad address&quot;</p>
-    <p>}</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp;&nbsp;&quot;uptime&quot;: 5185<br />
+      }
+    </p>
   </div>
 </div>
 <h3>time/launchTimeChangeApps</h3>
 <div>
   <h4>Description</h4>
-  <p>The <strong>launchTimeChangeApps</strong>&nbsp;method executes all methods listed in the&nbsp;<strong>timeChangeLaunch</strong> list (value of the <strong>timeChangeLaunch</strong>&nbsp;preference).</p>
+  <p>Executes all methods listed in the&nbsp;<strong>timeChangeLaunch</strong> list (value of the <strong>timeChangeLaunch</strong>&nbsp;preference).</p>
   <p>The&nbsp;<strong>timeChangeLaunch</strong> list contains all applications that must be executed when the switching to/from the daylight saving time occurs. These applications are executed automatically, you should not call the <strong>launchTimeChangeApps</strong> method. However, if for some reason you need to execute these applications apart from the schedule, you can call the&nbsp;the <strong>launchTimeChangeApps</strong> method.</p>
   <p><strong>Note:</strong> This method call always succeeds.</p>
   <h4>Parameters</h4>
@@ -3159,7 +3151,7 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p><strong>subscribed</strong> will always contain <strong>false</strong>.</p>
+            <p>Always returns&nbsp;<strong>false</strong>.</p>
           </td>
         </tr>
         <tr>
@@ -3167,9 +3159,7 @@ toc: true
           <td>Required</td>
           <td>Boolean</td>
           <td>
-            <p><strong>returnValue</strong> will always contain <strong>true.</strong><br />
-              &nbsp;
-            </p>
+            <p>Always&nbsp;returns <strong>true.</strong></p>
           </td>
         </tr>
       </tbody>
@@ -3190,7 +3180,7 @@ toc: true
 <h3>time/setBroadcastTime</h3>
 <div>
   <h4>Description</h4>
-  <p>The <strong>setBroadcastTime</strong>&nbsp;method sets the broadcast time which is in the broadcast signal. The system service will be notified that the broadcast time must be changed.</p>
+  <p>Sets the broadcast time which is in the broadcast signal. The system service will be notified that the broadcast time must be changed.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
