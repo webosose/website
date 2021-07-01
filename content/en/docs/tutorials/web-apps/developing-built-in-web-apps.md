@@ -1,6 +1,6 @@
 ---
 title: Developing Built-in Web Apps
-date: 2021-06-25
+date: 2021-06-30
 weight: 20
 toc: true
 ---
@@ -72,23 +72,23 @@ For the sample web app (`com.example.app.web`), `index.html` file exists in the 
 <head>
 <title>Example Web App</title>
 <style type="text/css">
-body {
-    width: 100%;
-    height: 100%;
-    background-color: #202020;
-}
-div {
-    position:absolute;
-    height:100%;
-    width:100%;
-    display: table;
-}
-h1 {
-    display: table-cell;
-    vertical-align: middle;
-    text-align:center;
-    color: #FFFFFF;
-}
+    body {
+        width: 100%;
+        height: 100%;
+        background-color:#202020;
+    }
+    div {
+        position:absolute;
+        height:100%;
+        width:100%;
+        display: table;
+    }
+    h1 {
+        display: table-cell;
+        vertical-align: middle;
+        text-align:center;
+        color:#FFFFFF;
+    }
 </style>
 <script type="text/javascript">
     var bridge = new WebOSServiceBridge();
@@ -105,6 +105,7 @@ h1 {
         }
     }
 
+    bridge.url = url;
     bridge.onservicecallback = callback;
     bridge.call(url, params);
 </script>
@@ -125,7 +126,7 @@ A brief explanation of the above file:
       - `url`: URL of the LS2 API method
       - `params`: parameter for the method to invoke
   - Line(29~37) : Define a callback function that can handle the response. If the response is successful, "UTC" value is printed on the logging file. For details on logging, refer to [Using PmLogLib in JavaScript]({{< relref "using-pmloglib-in-javascript" >}}).
-  - Line(39~40) : Set the callback to the WebOSServiceBridge object, and invoke the method with Luna call.
+  - Line(39~41) : Set the callback to the WebOSServiceBridge object, and invoke the method with Luna call.
 
 #### webOS OSE 1.x
 

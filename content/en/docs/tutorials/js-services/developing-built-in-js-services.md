@@ -1,6 +1,6 @@
 ---
 title: Developing Built-in JS Services
-date: 2021-03-23
+date: 2021-07-01
 weight: 20
 toc: true
 ---
@@ -69,19 +69,18 @@ var service = new Service("com.example.service.js");
 
 // A method that always returns the same value
 service.register("hello", function(message) {
+    console.log("[com.example.service.js]", "SERVICE_METHOD_CALLED:hello");
     message.respond({
         answer: "Hello, JS Service!!"
     });
 });
 
 // Call another service
-service.register("locale", function(message) {
-    service.call("luna://com.webos.settingsservice/getSystemSettings", {"key":"localeInfo"}, function(m2) {
-        console.log("LOCALE_CALLBACK, SERVICE_NAME: exampleJSService, get locale response");
-        var response = "You appear to have your locale set to: " + m2.payload.settings.localeInfo.locales.UI;
-        message.respond({
-            message: response
-        });
+service.register("time", function(message) {
+    service.call("luna://com.webos.service.systemservice/clock/getTime", {}, function(m2) {
+        console.log("[com.example.service.js]", "SERVICE_METHOD_CALLED:com.webos.service.systemservice/clock/getTime");
+        const response = "You appear to have your UTC set to: " + m2.payload.utc;
+        message.respond({message: response});
     });
 });
 ```
@@ -91,8 +90,8 @@ A brief explanation of the above file:
 
 - Line(1) : Load the webos-service module. For more details about webos-service, see [webos-service Library API Reference.]({{< relref "webos-service-library-api-reference" >}})
 - Line(4) : Register the JS Service.
-- Line(7~11) : Register the `hello` method which responds to a request with a "Hello, JS Service!!" message
-- Line(14~22) : Register the `locale` method. This method gets the value of locale information from the response received by calling settingsservice's `getSystemSettings` method.
+- Line(7~12) : Register the `hello` method which responds to a request with a "Hello, JS Service!!" message
+- Line(15~21) : Register the `locale` method. This method gets the value of locale information from the response received by calling settingsservice's `getSystemSettings` method.
 
 ### README.md
 

@@ -1,6 +1,6 @@
 ---
 title: Developing Built-in Native Apps
-date: 2021-03-23
+date: 2021-07-01
 weight: 20
 toc: true
 ---
@@ -69,8 +69,8 @@ Define `MyOpenGLWindow` class member functions.
 {{< code "MyOpenGLWindow.cpp" >}}
 ``` cpp {linenos=table}
 ...
-MyOpenGLWindow::MyOpenGLWindow(QWindow *parent)
-    : QWindow(parent)
+MyOpenGLWindow::MyOpenGLWindow(QRect rect)
+    : m_windowRect(rect)
     , m_device(nullptr)
 {
     setSurfaceType(QWindow::OpenGLSurface);
@@ -139,11 +139,12 @@ static std::string convertJsonToString(const pbnjson::JValue json)
     return pbnjson::JGenerator::serialize(json, pbnjson::JSchemaFragment("{}"));
 }
 
-ServiceRequest::ServiceRequest(std::string appId)
+ServiceRequest::ServiceRequest(std::string appId, QWindow &window)
     : m_mainLoop(g_main_loop_new(nullptr, false))
     , m_serviceHandle(nullptr)
 {
     m_appId = appId;
+    m_window = &window;
     m_serviceHandle = acquireHandle();
 }
 
@@ -189,7 +190,7 @@ void ServiceRequest::clearHandle()
     }
 }
 
-static bool registerAppCallback(LSHandle* sh, LSMessage* msg, void* ctx)
+static bool registerAppCallback(LSHandle* sh, LSMessage* msg, void* context)
 {
     PmLogInfo(getPmLogContext(), "REGISTER_CALLBACK", 1, PMLOGJSON("payload", LSMessageGetPayload(msg)),  " ");
 
@@ -206,6 +207,11 @@ static bool registerAppCallback(LSHandle* sh, LSMessage* msg, void* ctx)
         }
         else if (event == "relaunch")
         {
+            //relaunch screen
+            if (context != nullptr)
+            {
+                ((ServiceRequest*)context)->m_window->showFullScreen();
+            }
             //handle "relaunch" event
             if (response.hasKey("parameters"))
             {
@@ -242,7 +248,7 @@ void ServiceRequest::registerApp()
                 "luna://com.webos.service.applicationmanager/registerApp",
                 "{}",
                 registerAppCallback,
-                NULL,
+                this,
                 NULL,
                 &lserror))
     {
@@ -255,13 +261,15 @@ void ServiceRequest::registerApp()
 A brief explanation of the above file:
 
 - Line(3~18) : Create pbnjson utility functions, which convert String to Json and Json to String based on pbnjson library. pbnjson is a JSON engine, implemented as a pair of libraries with APIs for easier C and C++ abstraction.
-- Line(20~37) : Define constructor and destructor of `ServiceRequest` class.
-- Line(39~68) : Define functions to register and unregister `com.example.app.nativeqt` to and from luna-service. For more details about luna-service functions, see the [luna-service2 Library API Reference]({{< relref "luna-service2-library-api-reference" >}}).
-- Line(70~106) : Implement the callback function of `registerApp`.
-    - Line(81~84) : When the app first calls the method, the value of event in response is "registered".
-    - Line(85~94) : When the app is already running and SAM’s `launch` method is called, the value of event comes up as "relaunch". If the user gives a parameter of params when calling `launch`, the app can get the value of params with the property "parameters" in response.
-    - Line(95~98) : When the app is closed by SAM's `closeByAppId` method, the value of event comes up as "close".
-- Line(108~129) : Call the `registerApp` method of SAM.
+- Line(20~38) : Define constructor and destructor of `ServiceRequest` class.
+- Line(40~69) : Define functions to register and unregister `com.example.app.nativeqt` to and from luna-service. For more details about luna-service functions, see the [luna-service2 Library API Reference]({{< relref "luna-service2-library-api-reference" >}}).
+- Line(71~112) : Implement the callback function of `registerApp`.
+    - Line(82~85) : When the app first calls the method, the value of event in response is "registered".
+    - Line(86~100) : When the app is already running and SAM’s `launch` method is called, the value of event comes up as "relaunch". 
+        - Line(89~92) : Call the `showFullScreen` function to change the app's state from background to foreground.
+        - Line(94~99) : If the user gives a parameter of params when calling `launch`, the app can get the value of params with the property "parameters" in response.
+    - Line(101~104) : When the app is closed by SAM's `closeByAppId` method, the value of event comes up as "close".
+- Line(114~135) : Call the `registerApp` method of SAM.
 
 #### main.cpp
 
@@ -284,11 +292,11 @@ int main(int argc, char **argv)
 
     QScreen *screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
-    MyOpenGLWindow window;
+    MyOpenGLWindow window(screenGeometry);
     window.resize(screenGeometry.width(), screenGeometry.height());
     window.show();
 
-    ServiceRequest s_request("com.example.app.nativeqt");
+    ServiceRequest s_request("com.example.app.nativeqt", window);
     s_request.registerApp();
 
     QGuiApplication::platformNativeInterface()->setWindowProperty(window.handle(), "appId", "com.example.app.nativeqt");
