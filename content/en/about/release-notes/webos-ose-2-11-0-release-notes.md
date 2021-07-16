@@ -70,12 +70,6 @@ This version corresponds to the [GitHub releases](https://github.com/webosose/bu
 - audiod
   - Fixed Bluetooth audio issues.
 
-#### Display
-
-- LSM
-  - Upgraded Qt to 6.0.
-  - Updated ilib-qml-plugin for Qt6.
-
 #### Connectivity
 
 - Bluetooth
