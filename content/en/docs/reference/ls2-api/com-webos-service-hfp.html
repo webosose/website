@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.hfp
-date: 2021-06-11
+date: 2021-08-03
 weight: 220
 toc: true
 ---
@@ -23,28 +23,32 @@ toc: true
   <p>Before calling any method&nbsp;provided in the &#39;com.webos.service.hfp&#39; service, you must do the following:</p>
   <ol>
     <li>Get a list of the available adapter addresses.<br />
-      # luna-send -i -f luna://com.webos.service.bluetooth2/adapter/getStatus &#39;{&quot;subscribe&quot;: true}&#39;<br />
+      <div class="code-bg-grey">
+      <p># luna-send -i -f luna://com.webos.service.bluetooth2/adapter/getStatus &#39;{&quot;subscribe&quot;: true}&#39;<br /></p>
+      </div>
       <strong>Note: </strong>This step is needed only&nbsp;when default adapter address is not going to be used.<br />
-      &nbsp;
     </li>
     <li>Power on your Bluetooth device, and put it in the pairing mode.<br />
-      &nbsp;
     </li>
     <li>Start discovering devices that are available for connection to that adapter.<br />
-      # luna-send -n 1 -f luna://com.webos.service.bluetooth2/adapter/startDiscovery &#39;{&quot;adapterAddress&quot;: &quot;00:1a:7d:da:71:0a&quot;}&#39;<br />
-      &nbsp;
+      <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.bluetooth2/adapter/startDiscovery &#39;{&quot;adapterAddress&quot;: &quot;00:1a:7d:da:71:0a&quot;}&#39;<br /></p>
+      </div>
     </li>
     <li>Get a list of available bluetooth devices and note down the address of the required device.<br />
-      # luna-send -i -f luna://com.webos.service.bluetooth2/device/getStatus &#39;{&quot;adapterAddress&quot;: &quot;00:1a:7d:da:71:0a&quot;,&quot;subscribe&quot;: true}&#39;<br />
-      &nbsp;
+      <div class="code-bg-grey">
+      <p># luna-send -i -f luna://com.webos.service.bluetooth2/device/getStatus &#39;{&quot;adapterAddress&quot;: &quot;00:1a:7d:da:71:0a&quot;,&quot;subscribe&quot;: true}&#39;<br /></p>
+      </div>
     </li>
     <li>Pair to selected bluetooth device (HFP).<br />
-      # luna-send -i -f luna://com.webos.service.bluetooth2/adapter/pair &#39;{ &quot;adapterAddress&quot;: &quot;00:1a:7d:da:71:0a&quot;,&quot;address&quot;: &quot;98:09:cf:15:4e:67&quot;, &quot;subscribe&quot;:true}&#39;<br />
-      &nbsp;
+      <div class="code-bg-grey">
+      <p># luna-send -i -f luna://com.webos.service.bluetooth2/adapter/pair &#39;{ &quot;adapterAddress&quot;: &quot;00:1a:7d:da:71:0a&quot;,&quot;address&quot;: &quot;98:09:cf:15:4e:67&quot;, &quot;subscribe&quot;:true}&#39;<br /></p>
+      </div>
     </li>
     <li>Connect the HFP device.<br />
-      # luna-send -i -f luna://com.webos.service.bluetooth2/hfp/connect &nbsp;&#39;{ &quot;adapterAddress&quot;: &quot;00:1a:7d:da:71:0a&quot;,&quot;address&quot;: &quot;98:09:cf:15:4e:67&quot;, &quot;subscribe&quot;:true}&#39;<br />
-      &nbsp;
+      <div class="code-bg-grey">
+      <p># luna-send -i -f luna://com.webos.service.bluetooth2/hfp/connect &nbsp;&#39;{ &quot;adapterAddress&quot;: &quot;00:1a:7d:da:71:0a&quot;,&quot;address&quot;: &quot;98:09:cf:15:4e:67&quot;, &quot;subscribe&quot;:true}&#39;<br /></p>
+      </div>
     </li>
     <li>Call any one of the HFP API.</li>
   </ol>
@@ -54,6 +58,7 @@ toc: true
 <div>
   <h3>hf/getStatus</h3>
   <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>bluetooth.query</b></span></div>
     <h4>Description</h4>
     <p>Returns the current status of the connected <strong>AG</strong> devices.&nbsp;</p>
     <h4>Parameters</h4>
@@ -259,6 +264,9 @@ toc: true
       </table>
     </div>
     <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+    </div>
     <div class="code-bg-grey">
       <p>Check prerequisites in the &#39;Overview of the API&#39;&nbsp;section.</p>
       <p># luna-send -n 1 -f luna://com.webos.service.hfp/hf/getStatus &#39;{<br />
@@ -308,6 +316,7 @@ toc: true
 </div>
 <h3>hf/answerCall</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>bluetooth.management</b></span></div>
   <h4>Description</h4>
   <p>Answers the incoming call from the given AG.&nbsp;</p>
   <h4>Parameters</h4>
@@ -435,6 +444,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p>Check prerequisites in the &#39;Overview of the API&#39;&nbsp;section.</p>
     <p># luna-send -n 1 -f luna://com.webos.service.hfp/hf/answerCall &#39;{</p>
@@ -450,6 +462,7 @@ toc: true
 </div>
 <h3>hf/terminateCall</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>bluetooth.management</b></span></div>
   <h4>Description</h4>
   <p>Terminates the active call with the given AG.&nbsp;</p>
   <h4>Parameters</h4>
@@ -585,6 +598,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p>Check prerequisites in the &#39;Overview of the API&#39;&nbsp;section.</p>
     <p># luna-send -n 1 -f luna://com.webos.service.hfp/hf/terminateCall &#39;{</p>
@@ -602,6 +618,7 @@ toc: true
 </div>
 <h3>hf/releaseHeldCalls</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>bluetooth.management</b></span></div>
   <h4>Description</h4>
   <p>Releases all the held calls of the given AG.&nbsp;</p>
   <h4>Parameters</h4>
@@ -722,6 +739,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p>Check prerequisites in the &#39;Overview of the API&#39;&nbsp;section.</p>
     <p># luna-send -n 1 -f luna://com.webos.service.hfp/hf/releaseHeldCalls &#39;{<br />
@@ -737,6 +757,7 @@ toc: true
 </div>
 <h3>hf/releaseActiveCalls</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>bluetooth.management</b></span></div>
   <h4>Description</h4>
   <p>Releases all the active and&nbsp;answers the waiting call&nbsp;of the given AG.&nbsp;</p>
   <h4>Parameters</h4>
@@ -857,6 +878,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p>Check prerequisites in the &#39;Overview of the API&#39;&nbsp;section.</p>
     <p># luna-send -n 1 -f luna://com.webos.service.hfp/hf/releaseHeldCalls &#39;{<br />
@@ -872,6 +896,7 @@ toc: true
 </div>
 <h3>hf/holdActiveCalls</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>bluetooth.management</b></span></div>
   <h4>Description</h4>
   <p>Places all the active calls (if any exist) on hold and answers another (held or waiting) call.</p>
   <h4>Parameters</h4>
@@ -1008,6 +1033,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p>Check prerequisites in the &#39;Overview of the API&#39;&nbsp;section.</p>
     <p># luna-send -n 1 -f luna://com.webos.service.hfp/hf/holdActiveCalls &#39;{<br />
@@ -1024,6 +1052,7 @@ toc: true
 </div>
 <h3>hf/mergeCall</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>bluetooth.management</b></span></div>
   <h4>Description</h4>
   <p>Adds a held call to the conversation ( merging calls into a conference call ).</p>
   <h4>Parameters</h4>
@@ -1144,6 +1173,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p>Check prerequisites in the &#39;Overview of the API&#39;&nbsp;section.</p>
     <p># luna-send -n 1 -f luna://com.webos.service.hfp/hf/mergeCall &#39;{<br />
@@ -1159,6 +1191,7 @@ toc: true
 </div>
 <h3>hf/call</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>bluetooth.management</b></span></div>
   <h4>Description</h4>
   <p>Dials the previous&nbsp;phone number (stored after the previous call)&nbsp;using the memory dialing.</p>
   <p><strong>Memory dialing</strong>:&nbsp;A telephone feature that allows placing a call by accessing a previously stored number.</p>
@@ -1301,6 +1334,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p>Check prerequisites in the &#39;Overview of the API&#39;&nbsp;section.</p>
     <p># luna-send -n 1 -f luna://com.webos.service.hfp/hf/call &#39;{<br />
@@ -1316,6 +1352,7 @@ toc: true
 </div>
 <h3>hf/setVolume</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>bluetooth.management</b></span></div>
   <h4>Description</h4>
   <p>Sets the <strong>SCO</strong> volume level.</p>
   <h4>Parameters</h4>
@@ -1445,6 +1482,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p>Check prerequisites in the &#39;Overview of the API&#39;&nbsp;section.</p>
     <p># luna-send -n 1 -f luna://com.webos.service.hfp/hf/setVolume &#39;{<br />

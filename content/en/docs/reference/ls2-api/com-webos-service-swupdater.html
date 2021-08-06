@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.swupdater
-date: 2021-06-16
+date: 2021-08-03
 weight: 300
 toc: true
 ---
@@ -15,55 +15,46 @@ toc: true
   <p>Before using this service, you need to setup the&nbsp;<strong>hawkBit server</strong>. For instructions, see&nbsp;<a href="https://www.eclipse.org/hawkbit/" rel="nofollow">hawkBit</a>.</p>
   <p>Additionally, few configurations specific to&nbsp;webOS are listed below.&nbsp;</p>
   <ul>
-    <li>
-      <strong>Set hawkBit server information</strong>
+    <li><strong>Set&nbsp;hawkBit server information</strong>
       <ul>
-        <li>
-          The hawkBit server to which swupdater connects can be configured at build time. Here, HAWKBIT_TOKEN means the gateway security token.
+        <li>The hawkBit server to which swupdater connects can be configured at build time. Here, HAWKBIT_TOKEN means the gateway security token.
           <ol>
-            <li><em>$ cd</em>&nbsp;<em>meta-lg-webos/meta-webos/recipes-webos/com.webos.service.swupdater/com.webos.service.swupdater.bb</em></li>
-            <li><em>$&nbsp;vi&nbsp;com.webos.service.swupdater.bb</em></li>
-            <li><em>EXTRA_OECMAKE = &quot; \<br />
-              &nbsp; &nbsp; -DHAWKBIT_ADDRESS=http://&lt;hawkBit server IP address&gt;:&lt;port number&gt;&nbsp;\<br />
-              &nbsp; &nbsp; -DHAWKBIT_TOKEN=377b83e10b9f894883e98351875151cb \&quot;</em>
-            </li>
+            <li><div class="code-bg-grey"><em>$ cd</em>&nbsp;<em>meta-lg-webos/meta-webos/recipes-webos/com.webos.service.swupdater/com.webos.service.swupdater.bb</em></div></li>
+            <li><div class="code-bg-grey"><em>$&nbsp;vi&nbsp;com.webos.service.swupdater.bb</em></div></li>
+            <li><div class="code-bg-grey"><em>EXTRA_OECMAKE = &quot; \<br />
+                &nbsp; &nbsp; -DHAWKBIT_ADDRESS=http://&lt;hawkBit server IP address&gt;:&lt;port number&gt;&nbsp;\<br />
+                &nbsp; &nbsp; -DHAWKBIT_TOKEN=377b83e10b9f894883e98351875151cb \&quot;</em></div></li>
           </ol>
         </li>
       </ul>
     </li>
-    <li>
-      <strong>Generate OS upgrade file</strong>
+    <li><strong>Generate OS upgrade file</strong>
       <ol>
-        <li>
-          Check the hash value of&nbsp;<a href="http://ostree.readthedocs.io/" rel="nofollow">libostree&nbsp;</a>commits.
+        <li>Check the hash value of&nbsp;<a href="http://ostree.readthedocs.io/" rel="nofollow">libostree&nbsp;</a>commits.
           <div class="code-bg-grey">
-            <p><em>$ ostree log --repo={OSTREE_REPO} webos-image-master<br />
-              (e.g.)</em>
-            </p>
-            <p><em>commit 0d107dfaeadd49b38b11d277b84cf7dea44d00cb4d80522d323f4dedbd26fbd2<br />
+          <p><em>$ ostree log --repo={OSTREE_REPO} webos-image-master<br />
+              (e.g.)</em></p>
+          <p><em>commit 0d107dfaeadd49b38b11d277b84cf7dea44d00cb4d80522d323f4dedbd26fbd2<br />
               ContentChecksum: &nbsp;405bddcc7ad6499c6b68582c014e2b305bd5e966e26fea1cead7e042703885ee<br />
-              Date: &nbsp;2019-09-02 14:39:47 +0000</em>
-            </p>
-            <p><em>&nbsp; &nbsp; webos-image-master-20190902143110</em></p>
-            <p><em>commit 76e074ffdba5ee211679e011be71ccc23bd81139bdc6f72cad2791d2458100d4<br />
+              Date: &nbsp;2019-09-02 14:39:47 +0000</em></p>
+          <p><em>&nbsp; &nbsp; webos-image-master-20190902143110</em></p>
+          <p><em>commit 76e074ffdba5ee211679e011be71ccc23bd81139bdc6f72cad2791d2458100d4<br />
               ContentChecksum: &nbsp;dfc7690cda5e59565f5c00099ae3b423571eb0bd1e5408ce408e1702d3137bed<br />
-              Date: &nbsp;2019-09-02 13:19:12 +0000</em>
-            </p>
-            <p><em>&nbsp; &nbsp; webos-image-master-20190902131250</em></p>
+              Date: &nbsp;2019-09-02 13:19:12 +0000</em></p>
+          <p><em>&nbsp; &nbsp; webos-image-master-20190902131250</em></p>
           </div>
         </li>
         <li>
           <p>Generate static-delta between two commits.</p>
-          <div class="code-bg-grey"> 
-            <p><em>$ ostree static-delta generate \<br />
+          <div class="code-bg-grey">
+          <p><em>$ ostree static-delta generate \<br />
               &nbsp; &nbsp; --from=76e074ffdba5ee211679e011be71ccc23bd81139bdc6f72cad2791d2458100d4 \<br />
               &nbsp; &nbsp; --to=0d107dfaeadd49b38b11d277b84cf7dea44d00cb4d80522d323f4dedbd26fbd2 \<br />
               &nbsp; &nbsp; --inline \<br />
               &nbsp; &nbsp; --min-fallback-size=0 \<br />
               &nbsp; &nbsp; --filename=ostree-76e074ff-0d107dfa.delta</em><br />
-            </p>
+            <strong>Note:&nbsp;</strong>Use the filename format :&nbsp;<strong>ostree-{FROM}-{TO}.delta</strong></p>
           </div>
-          <strong>Note:&nbsp;</strong>Use the filename format :&nbsp;<strong>ostree-{FROM}-{TO}.delta</strong>
         </li>
       </ol>
     </li>
@@ -77,6 +68,7 @@ toc: true
 <div>
   <h3>getStatus</h3>
   <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>softwareupdate.operation</b></span></div>
     <h4>Description</h4>
     <p>Notifies when there is a change in the state of the software updater service. It adds the caller to the subscriber list.</p>
     <h4>Parameters</h4>
@@ -305,6 +297,9 @@ toc: true
       </table>
     </div>
     <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+    </div>
     <div class="code-bg-grey">
       <p># luna-send -i -f luna://com.webos.service.swupdater/getStatus &#39;{&quot;subscribe&quot;: true}&#39;</p>
       <p>&nbsp;</p>
@@ -354,13 +349,13 @@ toc: true
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
         &nbsp; &nbsp; &nbsp; &nbsp; }<br />
         &nbsp; &nbsp; ]<br />
-        }
-      </p>
+        }</p>
     </div>
   </div>
 </div>
 <h3>startDownload</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>softwareupdate.operation</b></span></div>
   <h4>Description</h4>
   <p>Starts downloading&nbsp;the artifacts in the software modules.</p>
   <h4>Parameters</h4>
@@ -415,18 +410,21 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.swupdater/startDownload &#39;{ }&#39;</p>
     <p>&nbsp;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>cancelDownload</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>softwareupdate.operation</b></span></div>
   <h4>Description</h4>
   <p>Cancels the download which is currently in progress.&nbsp;</p>
   <h4>Parameters</h4>
@@ -481,18 +479,21 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.swupdater/cancelDownload &#39;{ }&#39;</p>
     <p>&nbsp;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>pauseDownload</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>softwareupdate.operation</b></span></div>
   <h4>Description</h4>
   <p>Pauses the download which is currently in progress.&nbsp;</p>
   <h4>Parameters</h4>
@@ -547,18 +548,21 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.swupdater/pauseDownload &#39;{ }&#39;</p>
     <p>&nbsp;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>resumeDownload</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>softwareupdate.operation</b></span></div>
   <h4>Description</h4>
   <p>Resumes the download that is paused.&nbsp;</p>
   <h4>Parameters</h4>
@@ -613,18 +617,21 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.swupdater/resumeDownload &#39;{ }&#39;</p>
     <p>&nbsp;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>startInstall</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>softwareupdate.operation</b></span></div>
   <h4>Description</h4>
   <p>Installs the downloaded software modules.</p>
   <h4>Parameters</h4>
@@ -679,18 +686,21 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.swupdater/startInstall &#39;{ }&#39;</p>
     <p>&nbsp;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>cancelInstall</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>softwareupdate.operation</b></span></div>
   <h4>Description</h4>
   <p>Cancels the installation which is in progress.&nbsp;</p>
   <h4>Parameters</h4>
@@ -745,15 +755,16 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.swupdater/cancelInstall &#39;{ }&#39;</p>
     <p><br />
-      Response:
-    </p>
+      Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h2>Objects</h2>

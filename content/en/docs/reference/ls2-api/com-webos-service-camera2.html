@@ -1,9 +1,10 @@
 ---
 title: com.webos.service.camera2
-date: 2021-06-10
+date: 2021-08-06
 weight: 120
 toc: true
 ---
+
 <div>
   <h2>API Summary</h2>
   <p style="text-align:justify">Provides an interface to capture and stream images from a camera that is connected to a webOS device.</p>
@@ -26,6 +27,7 @@ toc: true
 <div>
   <h3>getCameraList</h3>
   <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>camera.query</b></span></div>
     <h4>Description</h4>
     <p>Gets the list of cameras connected to the webOS device.&nbsp;Returns IDs for each of the cameras connected to the device.</p>
     <h4>Parameters</h4>
@@ -90,6 +92,9 @@ toc: true
       </table>
     </div>
     <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+    </div>
     <div class="code-bg-grey">
       <p># luna-send -n 1 -f luna://com.webos.service.camera2/getCameraList &#39;{}&#39;</p>
       <p>Response:</p>
@@ -100,13 +105,13 @@ toc: true
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
         &nbsp;&nbsp;&nbsp;],<br />
         &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-        }
-      </p>
+        }</p>
     </div>
   </div>
 </div>
 <h3>open</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>camera.operation</b></span></div>
   <h4>Description</h4>
   <p>Establishes a connection between a camera and the webOS device. Returns the device handle for this connection instance.&nbsp;</p>
   <h4>Parameters</h4>
@@ -215,48 +220,52 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : Open command with no mode</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.camera2/open &#39;{<br />
       &nbsp; &nbsp;&quot;id&quot;:&quot;camera1&quot;<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
       &nbsp; &nbsp;&quot;handle&quot;:9383<br />
-      }
-    </p>
+      }</p>
+  </div>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : Open command with the mode set to primary</b></p>
   </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.camera2/open &#39;{<br />
       &nbsp; &nbsp;&quot;id&quot;:&quot;camera1&quot;,<br />
       &nbsp; &nbsp;&quot;mode&quot;:&quot;primary&quot;<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
       &nbsp; &nbsp;&quot;handle&quot;:886<br />
-      }
-    </p>
+      }</p>
+  </div>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : Error case - Open command with mode as primary (when an application has already opened with mode as primary)</b></p>
   </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.camera2/open &#39;{<br />
       &nbsp; &nbsp;&quot;id&quot;:&quot;camera1&quot;,<br />
       &nbsp; &nbsp;&quot;mode&quot;:&quot;primary&quot;<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;errorCode&quot;:44,<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:false,<br />
       &nbsp; &nbsp;&quot;errorText&quot;:&quot;Already another device opened as primary&quot;<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>startPreview</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>camera.operation</b></span></div>
   <h4>Description</h4>
   <p>Starts the preview stream on the camera and writes live data to the shared memory (SystemV or POSIX).</p>
   <p>The method returns a&nbsp;key for accessing the shared memory, which is required for applications to access data from the shared memory.</p>
@@ -361,6 +370,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : System V shared memory</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.camera2/startPreview &#39;{<br />
       &nbsp; &nbsp;&quot;handle&quot;:9383,<br />
@@ -368,14 +380,15 @@ toc: true
       &nbsp; &nbsp; &nbsp; &quot;type&quot;:&quot;sharedmemory&quot;,<br />
       &nbsp; &nbsp; &nbsp; &quot;source&quot;:&quot;0&quot;<br />
       &nbsp; &nbsp;}<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
       &nbsp; &nbsp;&quot;key&quot;:7011<br />
-      }
-    </p>
+      }</p>
+  </div>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : Posix Shared Memory</b></p>
   </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.camera2/startPreview &#39;{<br />
@@ -384,21 +397,21 @@ toc: true
       &nbsp; &nbsp; &nbsp; &quot;type&quot;:&quot;posixshm&quot;,<br />
       &nbsp; &nbsp; &nbsp; &quot;source&quot;:&quot;0&quot;<br />
       &nbsp; &nbsp;}<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
       &nbsp; &nbsp;&quot;key&quot;:9<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>stopPreview</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>camera.operation</b></span></div>
   <h4>Description</h4>
   <p>Stops the preview stream.</p>
-  <ul></ul>
+  <ul>
+  </ul>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -479,20 +492,22 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.camera2/stopPreview &#39;{<br />
       &nbsp; &nbsp;&quot;handle&quot;:9383<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>startCapture</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>camera.operation</b></span></div>
   <h4>Description</h4>
   <p>Starts capturing images using the camera.&nbsp;The captured images are stored as separate files at the location given by the &quot;path&quot; parameter.</p>
   <p>The default file name is of the format <em>PictureDDMMYYYY-HHMMSS, </em>where&nbsp;<em>DDMMYYYY-HHMMSS</em><em><strong> </strong></em>is current date and time.</p>
@@ -595,6 +610,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : Without specifying the location</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.camera2/startCapture &#39;{<br />
       &nbsp; &nbsp; &nbsp;&quot;handle&quot;: 9383,<br />
@@ -606,13 +624,14 @@ toc: true
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;mode&quot;:&quot;MODE_BURST&quot;,<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;nimage&quot;:2<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-      }
-    </p>
+      }</p>
+  </div>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : With location specified</b></p>
   </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.camera2/startCapture &#39;{<br />
@@ -626,13 +645,14 @@ toc: true
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;nimage&quot;:2<br />
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
       &nbsp;&nbsp;&nbsp;&nbsp; &quot;path&quot;:&quot;/tmp/&quot;<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-      }
-    </p>
+      }</p>
+  </div>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : Error case - With read-only location specified</b></p>
   </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.camera2/startCapture &#39;{<br />
@@ -646,22 +666,22 @@ toc: true
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;nimage&quot;:2<br />
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
       &nbsp;&nbsp;&nbsp;&nbsp; &quot;path&quot;:&quot;/sys/&quot;<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;errorCode&quot;: 45,<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
       &nbsp; &nbsp; &quot;errorText&quot;: &quot;Cannot write at specified location&quot;<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>stopCapture</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>camera.operation</b></span></div>
   <h4>Description</h4>
   <p>Stops camera from capturing images in the continuous mode. Continuous mode&nbsp;captures frames in succession till the stopCapture() method is called.&nbsp;</p>
-  <ul></ul>
+  <ul>
+  </ul>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -742,20 +762,22 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.camera2/stopCapture &#39;{<br />
       &nbsp; &nbsp;&quot;handle&quot;:9383<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>close</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>camera.operation</b></span></div>
   <h4>Description</h4>
   <p>Closes the connection between the camera and the webOS device.</p>
   <h4>Parameters</h4>
@@ -838,23 +860,26 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.camera2/close &#39;{<br />
       &nbsp; &nbsp;&quot;handle&quot;:886<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>getInfo</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>camera.query</b></span></div>
   <h4>Description</h4>
   <p>Gets&nbsp;information about a camera that is connected to the webOS device.&nbsp;</p>
-  <ul></ul>
+  <ul>
+  </ul>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -943,11 +968,13 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.camera2/getInfo &#39;{<br />
       &nbsp; &nbsp;&quot;id&quot;:&quot;camera1&quot;<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;info&quot;:{<br />
@@ -969,12 +996,12 @@ toc: true
       &nbsp; &nbsp; &nbsp; &quot;name&quot;:&quot;Logitech, Inc.&quot;<br />
       &nbsp; &nbsp;},<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>getProperties</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>camera.operation</b></span></div>
   <h4>Description</h4>
   <p>Gets the current settings of the connected camera device.</p>
   <h4>Parameters</h4>
@@ -1073,12 +1100,13 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example: With handle</b></p>
+  </div>
   <div class="code-bg-grey">
-    <p>With handle</p>
     <p>#&nbsp;&nbsp;luna-send -n 1 -f luna://com.webos.service.camera2/getProperties &#39;{<br />
       &nbsp; &nbsp;&quot;handle&quot;:9383<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>Response:</p>
     <p>{&nbsp;&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
@@ -1129,19 +1157,19 @@ toc: true
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
       &nbsp;&nbsp;&nbsp;}<br />
-      }
-    </p>
+      }</p>
+  </div>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example: With handle and params</b></p>
   </div>
   <div class="code-bg-grey">
-    <p>With handle and params</p>
     <p># luna-send -n 1 -f luna://com.webos.service.camera2/getProperties &#39;{<br />
       &nbsp; &nbsp;&quot;handle&quot;:9383,<br />
       &nbsp; &nbsp;&quot;params&quot;:[<br />
       &nbsp; &nbsp; &nbsp; &quot;frequency&quot;,<br />
       &nbsp; &nbsp; &nbsp; &quot;saturation&quot;<br />
       &nbsp; &nbsp;]<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
@@ -1149,12 +1177,12 @@ toc: true
       &nbsp; &nbsp; &nbsp; &quot;frequency&quot;:2,<br />
       &nbsp; &nbsp; &nbsp; &quot;saturation&quot;:128<br />
       &nbsp; &nbsp;}<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>setProperties</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>camera.operation</b></span></div>
   <h4>Description</h4>
   <p>Sets the properties of the connected camera device.</p>
   <h4>Parameters</h4>
@@ -1246,6 +1274,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.camera2/setProperties &#39;{<br />
       &nbsp; &nbsp; &nbsp;&quot;handle&quot;: 9383,<br />
@@ -1253,17 +1284,16 @@ toc: true
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;contrast&quot;: 100<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;}<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>setFormat</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>camera.operation</b></span></div>
   <h4>Description</h4>
   <p>Sets the size and format of the preview stream. This includes the height and width of the frame and the format in which data is to be written to the shared buffer.</p>
   <h4>Parameters</h4>
@@ -1354,6 +1384,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.camera2/setFormat &#39;{<br />
       &nbsp; &nbsp;&quot;handle&quot;:9383,<br />
@@ -1363,17 +1396,16 @@ toc: true
       &nbsp; &nbsp; &nbsp; &quot;format&quot;:&quot;JPEG&quot;,<br />
       &nbsp; &nbsp; &nbsp; &quot;fps&quot;:30<br />
       &nbsp; &nbsp;}<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>getEventNotification</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>camera.operation</b></span></div>
   <h4>Description</h4>
   <p>Gets a notification&nbsp;when there is a change in any of the camera properties&nbsp;and formats.</p>
   <h4>Parameters</h4>
@@ -1499,17 +1531,17 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example: With subscription</b></p>
+  </div>
   <div class="code-bg-grey">
-    <p>With subscription</p>
     <p># luna-send -n 1 -f luna://com.webos.service.camera2/getEventNotification &#39;{<br />
       &nbsp; &nbsp;&quot;subscribe&quot;:true<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>Response (If no event received):&nbsp;</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }
-    </p>
+      }</p>
     <p>Response (If properties are changed) :</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;id&quot;:&quot;camera1&quot;,<br />
@@ -1526,8 +1558,7 @@ toc: true
       &nbsp; &nbsp; &nbsp; &quot;backlightCompensation&quot;:true,<br />
       &nbsp; &nbsp; &nbsp; &quot;sharpness&quot;:255<br />
       &nbsp; &nbsp;}<br />
-      }
-    </p>
+      }</p>
     <p>Response (If format changed to JPEG) :</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;id&quot;:&quot;camera1&quot;,<br />
@@ -1536,12 +1567,12 @@ toc: true
       &nbsp; &nbsp;&quot;formatInfo&quot;:{<br />
       &nbsp; &nbsp; &nbsp; &quot;format&quot;:&quot;JPEG&quot;<br />
       &nbsp; &nbsp;}<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>getFd</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>camera.operation</b></span></div>
   <h4>Description</h4>
   <p>Provides the FD (File Descriptor) for the POSIX shared memory.</p>
   <p><strong>Note: </strong>It returns the FD d by attaching it using LS2 attach fd interface to the client.</p>
@@ -1625,13 +1656,15 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.camera2/getFd &#39;{&quot;handle&quot;: 886}&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-      }
-    </p>
+      }</p>
     <p>&nbsp;</p>
     <p>Sample for fetching the fd from getFd response:</p>
     <p>getFdCb(LSHandle *lsHandle, LSMessage *message, void *user_data)<br />
@@ -1641,8 +1674,7 @@ toc: true
       &nbsp;LS::PayloadRef payload_ref&nbsp;= ls_message.accessPayload();<br />
       &nbsp;fd = payload_ref.getFd();<br />
       &nbsp;...<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h2>Objects</h2>

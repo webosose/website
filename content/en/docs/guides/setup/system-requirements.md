@@ -1,6 +1,6 @@
 ---
 title: System Requirements
-date: 2020-10-06
+date: 2021-08-06
 weight: 10
 toc: true
 ---
@@ -54,7 +54,8 @@ A **build system** is a computer that builds an image from webOS OSE source code
 webOS OSE can be built on the 64-bit version of Ubuntu Long Term Support (LTS) releases, including:
 
 * Ubuntu 16.04 LTS (Xenial Xerus) 64-bit
-* Ubuntu 18.04 LTS (Bionic Beaver) 64-bit (Recommended)
+* Ubuntu 18.04 LTS (Bionic Beaver) 64-bit
+* Ubuntu 20.04 LTS (Focal Fossa) 64-bit
 
 {{< caution >}}
 * We strongly advise you NOT to use a Linux virtual machine on Windows or macOS for building webOS OSE, as it may cause unexpected issues.

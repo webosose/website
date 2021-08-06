@@ -38,10 +38,10 @@ This version corresponds to the [GitHub releases](https://github.com/webosose/bu
 #### Connectivity
 
 - ConnMan
-    - Fixed bug related to p2p/findservice.
+    - Fixed bug related to `p2p/findservice`.
 
-## Known Issues.
+## Known Issues
 
 - "Google page" icon is not displayed in omnibox.
 - VKB disappears when ENG button touches input.
-- Launcher App has not appeared on the screen.
+- The Launcher App doesn't appear on the screen when running the Launcher by using a USB mouse.

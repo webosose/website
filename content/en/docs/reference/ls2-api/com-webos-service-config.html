@@ -1,27 +1,25 @@
 ---
 title: com.webos.service.config
-date: 2021-06-11
+date: 2021-08-06
 weight: 130
 toc: true
 ---
+
 <div>
   <h2>API Summary</h2>
   <p>A static service in the system that provides product specific configurations to webOS components.</p>
   <p>This service provides simple <strong>get/set</strong> interfaces to access the configurations.</p>
   <p><span style="color:#0000FF"><strong>[Terminology]</strong></span></p>
   <ul>
-    <li>
-      <strong>config : </strong>It consists of &#39;key&#39; and &#39;value&#39;. Following is an example of config.
+    <li><strong>config : </strong>It consists of &#39;key&#39; and &#39;value&#39;. Following is an example of config.
       <ul>
         <li>{ &#39;language&#39; : &#39;KOR&#39;&nbsp;} // configName is &#39;language&#39;. configValue is &#39;KOR&#39;</li>
       </ul>
     </li>
-    <li>
-      <strong>configs &amp; configs.json : </strong>&#39;configs&#39; is a set of configs. We called a file which describes the set as &#39;configs.json&#39;. Normally, the file name is url name
+    <li><strong>configs &amp; configs.json : </strong>&#39;configs&#39; is a set of configs. We called a file which describes the set as &#39;configs.json&#39;. Normally, the file name is url name
       <ul>
         <li><strong>com.webos.service.surfacemanager.json</strong> : configs.json file&nbsp;for lsm(luna surface manager)</li>
-        <li>
-          <strong>layer &amp; selector &amp; selection</strong> : &#39;layer&#39; is a set of &#39;configs.json&#39; files. It means layer is same with directory.&nbsp;
+        <li><strong>layer &amp; selector &amp; selection</strong> : &#39;layer&#39; is a set of &#39;configs.json&#39; files. It means layer is same with directory.&nbsp;
           <ul>
             <li><strong>basedir&nbsp;</strong>in layer :It is a parent dir of others. Basically directories could be there.</li>
             <li><strong>selection </strong>in layer<strong>&nbsp;</strong>:It is leaf dir name. All &#39;configs.json&#39; files should be in&nbsp;<strong>&#39;basedir&#39; + &#39;selection&#39;</strong>.&nbsp;If the layer type is &quot;none&quot; and there is no selection, configs.json files would be in basedir.</li>
@@ -30,8 +28,7 @@ toc: true
         </li>
       </ul>
     </li>
-    <li>
-      <strong>configuration &amp;&nbsp;reconfiguration</strong>
+    <li><strong>configuration &amp;&nbsp;reconfiguration</strong>
       <ul>
         <li><strong>configuration </strong>is a set of layer. Actually, higher layer can overwrite lower layer&#39;s configs.</li>
         <li><strong>reconfiguration</strong>&nbsp;is a process to make configuration again. If selector can be changed, reconfiguration process is needed. Please refer below sections for more information.</li>
@@ -114,12 +111,12 @@ toc: true
 <div>
   <h3>getConfigs</h3>
   <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>configd, configd.internal, settings</b></span></div>
     <h4>Description</h4>
     <p>It returns the requested&nbsp;<strong>configs</strong><strong>&nbsp;</strong>which is<strong>&nbsp;</strong>the pairs of key-value&nbsp;as a JSON object&nbsp;and also supports a subscription.</p>
     <p>configd provides asterisk but configNames should starts feature&nbsp;file name. For example, to get all configs for com.webos.surfacemanager, configNames should be&nbsp;&quot;com.webos.surfacemanager.*&quot;. Note that&nbsp;&quot;com.webos.*&quot; or &quot;com.webos.surfacemanager*&quot; is not supported.&nbsp;&nbsp;</p>
     <p>If subscribe is true and multiple configs are requested,&nbsp;configd only returns changed config. ( from the second return)<br />
-      (But missingConfigs would be returned everytime&nbsp;even missingConfigs is not changed)
-    </p>
+      (But missingConfigs would be returned everytime&nbsp;even missingConfigs is not changed)</p>
     <p>If a config is limited for defined services, only permitted services can get Configs, if the requester doesn&#39;t &nbsp;have rights, the configd would be in missingConfigs</p>
     <h4>Parameters</h4>
     <div class="table-container">
@@ -294,6 +291,9 @@ toc: true
       </table>
     </div>
     <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+    </div>
     <div class="code-bg-grey">
       <p># luna-send -f -i luna://com.webos.service.config/getConfigs &#39;{&quot;configNames &quot;:[&quot;com.webos.surfacemanager.compositorGeometry&quot;]}&#39;</p>
       <p>Response:</p>
@@ -303,12 +303,10 @@ toc: true
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;com.webos.surfacemanager.compositorGeometry&quot;: &quot;1920x1080+0+0r0&quot;<br />
         &nbsp;&nbsp;&nbsp; },<br />
         &nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true<br />
-        }&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-      </p>
+        }&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</p>
       <p>&nbsp; &nbsp;</p>
       <p># luna-send -f -i luna://com.webos.service.config/getConfigs &#39;{<br />
-        &nbsp; &nbsp;&nbsp;&quot;configNames&quot;:[&quot;com.webos.test.missingConfigs&quot;, &quot;com.webos.surfacemanager.missingForegroundApp&quot;]}&#39;
-      </p>
+        &nbsp; &nbsp;&nbsp;&quot;configNames&quot;:[&quot;com.webos.test.missingConfigs&quot;, &quot;com.webos.surfacemanager.missingForegroundApp&quot;]}&#39;</p>
       <p>Response:</p>
       <p>{<br />
         &nbsp;&nbsp;&nbsp; &quot;missingConfigs&quot;: [<br />
@@ -317,13 +315,13 @@ toc: true
         &nbsp;&nbsp;&nbsp; ],<br />
         &nbsp;&nbsp;&nbsp; &quot;subscribed&quot;: false,<br />
         &nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true<br />
-        }
-      </p>
+        }</p>
     </div>
   </div>
 </div>
 <h3>reconfigure</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>configd.internal</b></span></div>
   <h4>Description</h4>
   <p>Configd parses all configuration files again and regenerates the values of <strong>configs</strong>.</p>
   <h4>Parameters</h4>
@@ -378,12 +376,16 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 luna://com.webos.service.config/reconfigure &#39;{}&#39;</p>
   </div>
 </div>
 <h3>setConfigs</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>activities.callbacks</b></span></div>
   <h4>Description</h4>
   <p>Overrides current settings of the <strong>configs</strong>.</p>
   <p>The&nbsp;overridden values will be kept until rebooting or returning back in any future queries for the config. It is useful for changing configuration in factory test process.</p>
@@ -467,6 +469,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p>// Single config</p>
     <p># luna-send -n 1 -f luna://com.webos.service.config/setConfigs &#39;{ &quot;configs&quot;: {&quot;com.webos.surfacemanager.testSetConfigs&quot;: true}}&#39;</p>
@@ -479,8 +484,7 @@ toc: true
     <p># luna-send -n 1 -f luna://com.webos.service.config/setConfigs &#39;{<br />
       &nbsp; &nbsp;&nbsp;&quot;configs&quot;: {<br />
       &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;com.webos.surfacemanager.testSetConfigs&quot;: true,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;com.webos.surfacemanager.testSetConfigsArray&quot;: [&quot;com.webos.app.test1&quot;, &quot;com.webos.app.test2&quot;]}}&#39;
-    </p>
+      &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;com.webos.surfacemanager.testSetConfigsArray&quot;: [&quot;com.webos.app.test1&quot;, &quot;com.webos.app.test2&quot;]}}&#39;</p>
     <p>Response:</p>
     <p>{</p>
     <p>&nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true</p>

@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.settings
-date: 2021-06-16
+date: 2021-08-03
 weight: 290
 toc: true
 ---
@@ -11,13 +11,13 @@ toc: true
   <p>Settings Service manages different values according to dimension, such as country and external input, under the same setting. When the dimension has changed, it sends a necessary subscription message.</p>
 </div>
 <h2>Overview of the API</h2>
-<div>
-  <table class="confluenceTable tablesorter">
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
     <tbody>
       <tr>
-        <td><strong>Method</strong></td>
-        <td><strong>Description</strong></td>
-        <td><strong>Subscription</strong></td>
+        <th><strong>Method</strong></th>
+        <th><strong>Description</strong></th>
+        <th><strong>Subscription</strong></th>
       </tr>
       <tr>
         <td>
@@ -181,23 +181,21 @@ toc: true
       </tr>
     </tbody>
   </table>
-  <p>&nbsp;</p>
 </div>
 <h2>Methods</h2>
 <div>
   <h3>batch</h3>
   <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>settings.management</b></span></div>
     <h4>Description</h4>
     <p>Runs more than one Settings Service&nbsp;method at once.</p>
     <ul>
-      <li>
-        Remarks
+      <li>Remarks
         <ul>
           <li>Subscription&nbsp;is supported only when all the methods in <strong>operations</strong>&nbsp;input parameter support subscription.</li>
         </ul>
       </li>
-      <li>
-        Exception
+      <li>Exception
         <ul>
           <li>Atomicity is not supported.</li>
         </ul>
@@ -236,9 +234,8 @@ toc: true
             <td>
               <p>Indicates whether to subscribe for related events.</p>
               <ul>
-                <li>true: Subscribe</li>
-                <li>false: Do not subscribe</li>
-                <li>default value: false</li>
+                <li><strong>true</strong>: Subscribe</li>
+                <li><strong>false</strong>: Do not subscribe (default)</li>
               </ul>
               <p>Should be set to true if any of the batchOperation`s params have a &#39;subscribe&#39; option&nbsp;set to true</p>
             </td>
@@ -279,10 +276,6 @@ toc: true
             <td>boolean</td>
             <td>
               <p>Indicates the current subscription status.</p>
-              <ul>
-                <li>true: Subscription is ON</li>
-                <li>false: Subscription is OFF</li>
-              </ul>
             </td>
           </tr>
           <tr>
@@ -292,8 +285,8 @@ toc: true
             <td>
               <p>Indicates whether the execution succeeded.</p>
               <ul>
-                <li>true: Success</li>
-                <li>false: Failure</li>
+                <li><strong>true</strong>: Success</li>
+                <li><strong>false</strong>: Failure</li>
               </ul>
             </td>
           </tr>
@@ -355,6 +348,9 @@ toc: true
       </table>
     </div>
     <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+    </div>
     <div class="code-bg-grey">
       <p>Run luna-send command:</p>
       <p># luna-send -n 1 luna://com.webos.service.settings/batch &#39;{<br />
@@ -381,8 +377,7 @@ toc: true
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}<br />
         &nbsp; &nbsp; &nbsp; &nbsp;],<br />
         &nbsp; &nbsp; &nbsp;&nbsp;&quot;subscribe&quot;: true<br />
-        }&#39;
-      </p>
+        }&#39;</p>
       <p>&nbsp;</p>
       <p>Example response for a successful call:</p>
       <p>{</p>
@@ -459,17 +454,16 @@ toc: true
 </div>
 <h3>deleteSystemSettings</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>settings.management</b></span></div>
   <h4>Description</h4>
   <p>Deletes settings item(s). Factory default value is also deleted.</p>
   <ul>
-    <li>
-      Remarks
+    <li>Remarks
       <ul>
         <li>In case there is a subscriber for the deleted item, error text will be sent.</li>
       </ul>
     </li>
-    <li>
-      Exception
+    <li>Exception
       <ul>
         <li>Errors occur when using undefined dimension.</li>
       </ul>
@@ -559,7 +553,19 @@ toc: true
           <td>Required</td>
           <td>boolean</td>
           <td>
-            <p><strong>returnValue</strong> will <strong>always</strong> contain <strong>true</strong>.</p>
+            <p>Indicates whether the execution succeeded.</p>
+            <ul>
+              <li><strong>true</strong>: Success</li>
+              <li><strong>false</strong>: Failure</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the&nbsp;&quot;Error Codes&quot;&nbsp;section of this method for details.</p>
           </td>
         </tr>
       </tbody>
@@ -582,44 +588,53 @@ toc: true
         </tr>
         <tr>
           <td>N/A</td>
-          <td>N/A</td>
+          <td>invalid key array</td>
           <td>
-            <p>It is OK to delete non-existent keys. It doesn&#39;t return any error.</p>
+            <p>It throws error for invalid key or empty key&nbsp;as&nbsp;invalid key array</p>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 luna://com.webos.service.settings/deleteSystemSettings &#39;{<br />
       &nbsp; &nbsp; &nbsp; &quot;category&quot;: &quot;option&quot;,<br />
       &nbsp; &nbsp; &nbsp; &quot;keys&quot;: [<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;zipcode&quot;<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;]<br />
-      }&#39; -f
-    </p>
+      }&#39; -f</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;method&quot;: &quot;deleteSystemSettings&quot;,<br />
-      &nbsp; &nbsp;&quot;returnValue&quot;: true
-    </p>
+      &nbsp; &nbsp;&quot;returnValue&quot;: true</p>
     <p>}</p>
+    <p>&nbsp;</p>
+    <p>Example of the failed case:</p>
+    <p># luna-send -n 1 luna://com.webos.service.settings/deleteSystemSettings &#39;{ &quot;category&quot;: &quot;option&quot;, &quot;keys&quot;: [ ]}&#39; -f</p>
+    <p>{</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: false,</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;errorText&quot;: &quot;invalid key array&quot;,</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;method&quot;: &quot;deleteSystemSettings&quot;</p>
+    <p>}</p>
+    <p>&nbsp;</p>
   </div>
 </div>
 <h3>getCurrentSettings</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>settings.query</b></span></div>
   <h4>Description</h4>
   <p>Looks up the settings item, and returns the settings for the current foreground app only unlike the <strong>setSystemSettings</strong> method.</p>
   <ul>
-    <li>
-      Remarks
+    <li>Remarks
       <ul>
         <li>Even though the foreground app is converted, the subscription message for the changed app settings will not be sent.</li>
       </ul>
     </li>
-    <li>
-      Exception
+    <li>Exception
       <ul>
         <li>Errors occur when using undefined dimensions.</li>
       </ul>
@@ -674,9 +689,8 @@ toc: true
           <td>
             <p>Indicates whether to subscribe for related events.</p>
             <ul>
-              <li>true: Subscribe</li>
-              <li>false: Do not subscribe</li>
-              <li>default value: false</li>
+              <li><strong>true</strong>: Subscribe</li>
+              <li><strong>false</strong>: Do not subscribe (false)</li>
             </ul>
           </td>
         </tr>
@@ -747,10 +761,6 @@ toc: true
           <td>boolean</td>
           <td>
             <p>Indicates the current subscription status.</p>
-            <ul>
-              <li>true: Subscription is ON</li>
-              <li>false: Subscription is OFF</li>
-            </ul>
           </td>
         </tr>
         <tr>
@@ -760,8 +770,8 @@ toc: true
           <td>
             <p>Indicates whether the execution succeeded.</p>
             <ul>
-              <li>true: Success</li>
-              <li>false: Failure</li>
+              <li><strong>true</strong>: Success</li>
+              <li><strong>false</strong>: Failure</li>
             </ul>
           </td>
         </tr>
@@ -840,10 +850,6 @@ toc: true
           <td>Boolean</td>
           <td>
             <p>Indicates whether the execution succeeded.</p>
-            <ul>
-              <li>true: Success</li>
-              <li>false: Failure</li>
-            </ul>
           </td>
         </tr>
         <tr>
@@ -883,6 +889,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p>Run luna-send command:</p>
     <p># luna-send -n 1 luna://com.webos.service.settings/getCurrentSettings &#39;{<br />
@@ -890,8 +899,7 @@ toc: true
       &nbsp; &nbsp; &nbsp; &nbsp;&quot;keys&quot;: [<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;applockPerApp&quot;<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;]<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>Example response for a successful call:</p>
     <p>{</p>
     <p style="margin-left:40px">&quot;settings&quot;: {</p>
@@ -914,11 +922,11 @@ toc: true
 </div>
 <h3>getSystemSettingDesc</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>settings.query</b></span></div>
   <h4>Description</h4>
   <p>Retrieves detailed information on the settings.</p>
   <ul>
-    <li>
-      Exception
+    <li>Exception
       <ul>
         <li>The request for nonexistent keys will be processed as an error.</li>
       </ul>
@@ -994,9 +1002,8 @@ toc: true
           <td>
             <p>Indicates whether to subscribe for related events.</p>
             <ul>
-              <li>true: Subscribe</li>
-              <li>false: Do not subscribe</li>
-              <li>default value: false</li>
+              <li><strong>true</strong>: Subscribe</li>
+              <li><strong>false</strong>: Do not subscribe (false)</li>
             </ul>
           </td>
         </tr>
@@ -1122,8 +1129,8 @@ toc: true
           <td>
             <p>Indicates whether the execution succeeded.</p>
             <ul>
-              <li>true: Success</li>
-              <li>false: Failure</li>
+              <li><strong>true</strong>: Success</li>
+              <li><strong>false</strong>: Failure</li>
             </ul>
           </td>
         </tr>
@@ -1141,10 +1148,6 @@ toc: true
           <td>Boolean</td>
           <td>
             <p>Indicates the current subscription status.</p>
-            <ul>
-              <li>true: Subscription is ON</li>
-              <li>false: Subscription is OFF</li>
-            </ul>
           </td>
         </tr>
       </tbody>
@@ -1268,10 +1271,6 @@ toc: true
           <td>Boolean</td>
           <td>
             <p>Indicates whether the execution succeeded.</p>
-            <ul>
-              <li>true: Success</li>
-              <li>false: Failure</li>
-            </ul>
           </td>
         </tr>
       </tbody>
@@ -1303,6 +1302,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p>Run luna-send command:</p>
     <p># luna-send -n 1 luna://com.webos.service.settings/getSystemSettingDesc &#39;{&quot;category&quot;:&quot;picture&quot;, &quot;keys&quot;:[&quot;brightness&quot;]}&#39; -f</p>
@@ -1351,18 +1353,17 @@ toc: true
 </div>
 <h3>getSystemSettingFactoryValue</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>settings.query</b></span></div>
   <h4>Description</h4>
   <p>Retrieves the factory default value of the setting item. Method of use is the same as <strong>getSystemSettings</strong>.</p>
   <ul>
-    <li>
-      Remarks
+    <li>Remarks
       <ul>
         <li>Dimension is applied in the same way as getSystemSettings.</li>
         <li>Subscription is not supported.</li>
       </ul>
     </li>
-    <li>
-      Exception
+    <li>Exception
       <ul>
         <li>If undefined dimension is used, errors will occur.</li>
       </ul>
@@ -1454,8 +1455,8 @@ toc: true
           <td>
             <p>Indicates whether the execution succeeded.</p>
             <ul>
-              <li>true: Success</li>
-              <li>false: Failure</li>
+              <li><strong>true</strong>: Success</li>
+              <li><strong>false</strong>: Failure</li>
             </ul>
           </td>
         </tr>
@@ -1528,6 +1529,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p>Run luna-send command:</p>
     <p># luna-send -n 1 luna://com.webos.service.settings/getSystemSettingFactoryValue &#39;{&quot;category&quot;:&quot;picture&quot;, &quot;key&quot;:&quot;brightness&quot;}&#39; -f</p>
@@ -1560,6 +1564,7 @@ toc: true
 </div>
 <h3>getSystemSettings</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>settings.query</b></span></div>
   <h4>Description</h4>
   <p>Retrieves values from system settings with keys or category&nbsp;which are specified in array as parameter. Following keys are available in public bus.</p>
   <table border="1" cellpadding="1" cellspacing="0" style="height:178px; width:642px">
@@ -1620,14 +1625,12 @@ toc: true
     </tbody>
   </table>
   <ul>
-    <li>
-      Remarks
+    <li>Remarks
       <ul>
         <li>There is additional feature named &#39;Dimension&#39;. We can store different settings values with a KEY using different dimension. Imagine array. Using dimension, we can keep different settings values simultaneously, and categorize settings into some groups. Dimension is index by other keys settingsservice has. For example, Brightness key has 3 dimensions, input, 3dmode, and pictureMode. You can store different brightness value according to 3 different settings, input, 3dmode, and pictureMode.</li>
       </ul>
     </li>
-    <li>
-      Exception
+    <li>Exception
       <ul>
         <li>If <strong>getSystemSettings</strong> is called with undefined category and key, it will return error.</li>
       </ul>
@@ -1715,8 +1718,8 @@ toc: true
           <td>
             <p>Indicates whether to subscribe for related events.</p>
             <ul>
-              <li>true: Subscribe</li>
-              <li>false: Do not subscribe</li>
+              <li><strong>true</strong>: Subscribe</li>
+              <li><strong>false</strong>: Do not subscribe</li>
             </ul>
           </td>
         </tr>
@@ -1787,10 +1790,6 @@ toc: true
           <td>boolean</td>
           <td>
             <p>Indicates the current subscription status.</p>
-            <ul>
-              <li>true: Subscription is ON</li>
-              <li>false: Subscription is OFF</li>
-            </ul>
           </td>
         </tr>
         <tr>
@@ -1800,8 +1799,8 @@ toc: true
           <td>
             <p>Indicates whether the execution succeeded.</p>
             <ul>
-              <li>true: Success</li>
-              <li>false: Failure</li>
+              <li><strong>true</strong>: Success</li>
+              <li><strong>false</strong>: Failure</li>
             </ul>
           </td>
         </tr>
@@ -1880,10 +1879,6 @@ toc: true
           <td>String</td>
           <td>
             <p>Indicates whether the execution succeeded.</p>
-            <ul>
-              <li>true: Success</li>
-              <li>false: Failure</li>
-            </ul>
           </td>
         </tr>
         <tr>
@@ -1923,13 +1918,15 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p>Example 1:</p>
     <p># luna-send -f -n 1 luna://com.webos.service.settings/getSystemSettings &#39;{<br />
       &nbsp; &nbsp;&nbsp;&quot;category&quot;:&quot;option&quot;,<br />
       &nbsp; &nbsp;&nbsp;&quot;keys&quot;:[&quot;country&quot;, &quot;smartServiceCountryCode2&quot;]<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&nbsp;&quot;category&quot;: &quot;option&quot;,<br />
@@ -1939,8 +1936,7 @@ toc: true
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;country&quot;: &quot;FRA&quot;<br />
       &nbsp; &nbsp;&nbsp;},<br />
       &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: true<br />
-      }
-    </p>
+      }</p>
     <p>&nbsp;</p>
     <p>Example 2:</p>
     <p># luna-send -f -n 1 luna://com.webos.service.settings/getSystemSettings &#39;{&quot;keys&quot;:[&quot;localeInfo&quot;]}&#39;</p>
@@ -1963,24 +1959,22 @@ toc: true
       &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;}<br />
       &nbsp; &nbsp;&nbsp;},<br />
       &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: true<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>getSystemSettingValues</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>settings.query</b></span></div>
   <h4>Description</h4>
   <p>Retrives possible items to be set</p>
   <ul>
-    <li>
-      Remarks
+    <li>Remarks
       <ul>
         <li>The return type varies depending on the keys.</li>
         <li>Use&nbsp;<strong>getSystemSettingDesc</strong> method for the retrieval of additional info other than configurable valid conditions</li>
       </ul>
     </li>
-    <li>
-      Exception
+    <li>Exception
       <ul>
         <li>Errors will occur when retrieving the undefined keys.</li>
       </ul>
@@ -2035,9 +2029,8 @@ toc: true
           <td>
             <p>Indicates whether to subscribe for related events.</p>
             <ul>
-              <li>true: Subscribe</li>
-              <li>false: Do not subscribe</li>
-              <li>default value: false</li>
+              <li><strong>true</strong>: Subscribe</li>
+              <li><strong>false</strong>: Do not subscribe (default)</li>
             </ul>
           </td>
         </tr>
@@ -2093,8 +2086,8 @@ toc: true
           <td>
             <p>Indicates whether the execution succeeded.</p>
             <ul>
-              <li>true: Success</li>
-              <li>false: Failure</li>
+              <li><strong>true</strong>: Success</li>
+              <li><strong>false</strong>: Failure</li>
             </ul>
           </td>
         </tr>
@@ -2112,10 +2105,6 @@ toc: true
           <td>Boolean</td>
           <td>
             <p>Indicates the current subscription status.</p>
-            <ul>
-              <li>true: Subscription is ON</li>
-              <li>false: Subscription is OFF</li>
-            </ul>
           </td>
         </tr>
       </tbody>
@@ -2169,10 +2158,6 @@ toc: true
           <td>Boolean</td>
           <td>
             <p>Indicates whether the execution succeeded.</p>
-            <ul>
-              <li>true: Success</li>
-              <li>false: Failure</li>
-            </ul>
           </td>
         </tr>
         <tr>
@@ -2181,10 +2166,6 @@ toc: true
           <td>Boolean</td>
           <td>
             <p>Indicates the current subscription status.</p>
-            <ul>
-              <li>true: Subscription is ON</li>
-              <li>false: Subscription is OFF</li>
-            </ul>
           </td>
         </tr>
       </tbody>
@@ -2216,6 +2197,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 luna://com.webos.service.settings/getSystemSettingValues &#39;{&quot;category&quot;:&quot;picture&quot;, &quot;key&quot;:&quot;brightness&quot;}&#39; -f</p>
     <p>Response for a successful call:</p>
@@ -2231,19 +2215,18 @@ toc: true
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;min&quot;: 0<br />
       &nbsp; &nbsp; &nbsp;&nbsp;}<br />
       &nbsp; &nbsp;}<br />
-      }
-    </p>
+      }</p>
     <p>Response for a failed call:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;error&quot;: &quot;no result in DB&quot;,<br />
       &nbsp; &nbsp;&quot;method&quot;: &quot;getSystemSettingValues&quot;,<br />
       &nbsp; &nbsp;&quot;returnValue&quot;: false<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>internal/getCurrentSubscriptions</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>settings.devutility</b></span></div>
   <h4>Description</h4>
   <p>Returns the information of the services which currently subscribe&nbsp;to the Settings Service.&nbsp;</p>
   <h4>Parameters</h4>
@@ -2273,8 +2256,8 @@ toc: true
           <td>
             <p>Indicates whether the execution succeeded.</p>
             <ul>
-              <li>true: Success</li>
-              <li>false: Failure</li>
+              <li><strong>true</strong>: Success</li>
+              <li><strong>false</strong>: Failure</li>
             </ul>
           </td>
         </tr>
@@ -2337,6 +2320,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p>Run luna-send command: (Create log)</p>
     <p># luna-send -n 1 -f luna://com.webos.service.settings/internal/getCurrentSubscriptions &#39;{}&#39;</p>
@@ -2356,11 +2342,11 @@ toc: true
 </div>
 <h3>internal/instrument</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>settings.devutility</b></span></div>
   <h4>Description</h4>
   <p>Generates log for debug and changes current app.</p>
   <ul>
-    <li>
-      Remarks
+    <li>Remarks
       <ul>
         <li>Generates logs for every luna call</li>
         <li>Changes current&nbsp;app id</li>
@@ -2429,8 +2415,8 @@ toc: true
           <td>
             <p>Indicates whether the execution succeeded.</p>
             <ul>
-              <li>true: Success</li>
-              <li>false: Failure</li>
+              <li><strong>true</strong>: Success</li>
+              <li><strong>false</strong>: Failure</li>
             </ul>
           </td>
         </tr>
@@ -2487,37 +2473,40 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : Create log</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.settings/internal/instrument &#39;{&quot;control&quot;:&quot;start&quot;}&#39;</p>
     <p>Response for a successful call:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;instrumentStatus&quot;: &quot;started&quot;,<br />
       &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
-      }
-    </p>
+      }</p>
     <p>Response for a failed call:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;returnValue&quot;: false,<br />
       &nbsp; &nbsp;&quot;errorText&quot;: &quot;unexpected request on PrefsInternalCategory::handleMethodInstrument&quot;<br />
-      }
-    </p>
+      }</p>
+  </div>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : Change current app</b></p>
   </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.settings/internal/instrument &#39;{&quot;control&quot;:&quot;changeApp&quot;,&quot;params&quot;:{&quot;app_id&quot;:&quot;com.webos.app.live&quot;}}&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>resetSystemSettingDesc</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>settings.management</b></span></div>
   <h4>Description</h4>
   <p>Initializes the settings item information to the factory default value.</p>
   <ul>
-    <li>
-      Exception
+    <li>Exception
       <ul>
         <li>Error&nbsp;occurs when requesting to delete nonexistent keys.</li>
       </ul>
@@ -2599,7 +2588,19 @@ toc: true
           <td>Required</td>
           <td>boolean</td>
           <td>
-            <p><strong>returnValue</strong> will <strong>always</strong> contain <strong>true</strong>.</p>
+            <p>Indicates whether the execution succeeded.</p>
+            <ul>
+              <li><strong>true</strong>: Success</li>
+              <li><strong>false</strong>: Failure</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;Error Codes&quot; section of this method for details.</p>
           </td>
         </tr>
       </tbody>
@@ -2622,39 +2623,48 @@ toc: true
         </tr>
         <tr>
           <td>N/A</td>
-          <td>N/A</td>
+          <td>no keys specified</td>
           <td>
-            <p>Always succeed. Even though undefined keys are requested, error will not be returned.</p>
+            <p>It will throw error for failed cases as&nbsp;no keys specified</p>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -a com.webos.setting luna://com.webos.service.settings/resetSystemSettingDesc &#39;{&quot;category&quot;:&quot;support&quot;}&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;method&quot;: &quot;resetSystemSettingDesc&quot;<br />
       &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
-      }
-    </p>
+      }</p>
+    <p>&nbsp;</p>
+    <p>Example of failed case</p>
+    <p>luna-send -f -n 1 -a com.webos.setting luna://com.webos.service.settings/resetSystemSettingDesc &#39;{&quot;category&quot;:&quot;support&quot;}&#39;</p>
+    <p>{</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: false,</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;errorText&quot;: &quot;no keys specified&quot;,</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;method&quot;: &quot;resetSystemSettingDesc&quot;</p>
+    <p>}</p>
   </div>
 </div>
 <h3>resetSystemSettings</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>settings.management</b></span></div>
   <h4>Description</h4>
   <p>&nbsp;Initializes the setting items to the factory default values.</p>
   <ul>
-    <li>
-      Remarks
+    <li>Remarks
       <ul>
         <li>For the given category, when changing setting items, other items can be initialized according to the dimension.</li>
         <li>For the key with &#39;E&#39; dbtype, the values of ExceptionApp list will be equally changed.</li>
       </ul>
     </li>
-    <li>
-      Exception
+    <li>Exception
       <ul>
         <li>Error&nbsp;occurs&nbsp;when using undefined dimension.</li>
       </ul>
@@ -2718,8 +2728,7 @@ toc: true
             <p>Indicates whether to reset the settings for all dimensions.</p>
             <ul>
               <li>true: Reset</li>
-              <li>false: Do not reset</li>
-              <li>default value: false</li>
+              <li>false: Do not reset (default)</li>
             </ul>
           </td>
         </tr>
@@ -2757,7 +2766,19 @@ toc: true
           <td>Required</td>
           <td>boolean</td>
           <td>
-            <p><strong>returnValue</strong>&nbsp;will&nbsp;<strong>always</strong>&nbsp;contain&nbsp;<strong>true</strong>.</p>
+            <p>Indicates whether the execution succeeded.</p>
+            <ul>
+              <li><strong>true</strong>: Success</li>
+              <li><strong>false</strong>: Failure</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the &quot;Error Codes&quot; section of this method for details.</p>
           </td>
         </tr>
       </tbody>
@@ -2780,31 +2801,40 @@ toc: true
         </tr>
         <tr>
           <td>N/A</td>
-          <td>N/A</td>
+          <td>invalid key array</td>
           <td>
-            <p>Always succeed. Even though undefined keys are requested, error will not be returned.</p>
+            <p>It throws error for invalid key as&nbsp;invalid key array</p>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -a com.webos.setting luna://com.webos.service.settings/resetSystemSettings &#39;{&quot;category&quot;:&quot;support&quot;, &quot;keys&quot;:[&quot;automaticUpdate&quot;]}&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
-      }
-    </p>
+      }</p>
+    <p>Example of failed call</p>
+    <p>luna-send -f -n 1 -a com.webos.setting luna://com.webos.service.settings/resetSystemSettings &#39;{&quot;category&quot;:&quot;support&quot;, &quot;keys&quot;:[]}&#39;</p>
+    <p>{</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: false,</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;errorText&quot;: &quot;invalid key array&quot;,</p>
+    <p>&nbsp;&nbsp;&nbsp; &quot;method&quot;: &quot;resetSystemSettings&quot;</p>
+    <p>}</p>
   </div>
 </div>
 <h3>setSystemSettingDesc</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>settings.management</b></span></div>
   <h4>Description</h4>
   <p>Changes detailed information of the settings.</p>
   <ul>
-    <li>
-      Exception
+    <li>Exception
       <ul>
         <li>Category, key, dimension, dbtype, volatile attributes cannot be changed during runtime.</li>
       </ul>
@@ -2956,8 +2986,8 @@ toc: true
           <td>
             <p>Indicates whether the execution succeeded.</p>
             <ul>
-              <li>true: Success</li>
-              <li>false: Failure</li>
+              <li><strong>true</strong>: Success</li>
+              <li><strong>false</strong>: Failure</li>
             </ul>
           </td>
         </tr>
@@ -2998,6 +3028,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -f -n 1 -a com.webos.service.settings luna://com.webos.service.settings/setSystemSettingDesc &#39;{<br />
       &nbsp; &nbsp;&quot;key&quot;: &quot;brightness&quot;,<br />
@@ -3007,37 +3040,33 @@ toc: true
       &nbsp; &nbsp; &nbsp; &quot;active&quot;: true,<br />
       &nbsp; &nbsp; &nbsp; &quot;widget&quot;: &quot;None&quot;<br />
       &nbsp; &nbsp;}<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>Response for a successful call:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;method&quot;: &quot;setSystemSettingDesc&quot;,&nbsp;<br />
       &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
-      }
-    </p>
+      }</p>
     <p>Response for a failed call:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;method&quot;: &quot;setSystemSettingDesc&quot;,<br />
       &nbsp; &nbsp;&quot;returnValue&quot;: false,<br />
       &nbsp; &nbsp;&quot;errorText&quot;: &quot;The format of value is wrong. &#39;value&#39;:{$ref:&#39;VaildValues&#39;}. $ref is one of &#39;array&#39;, &#39;range&#39;, or &#39;date&#39;&quot;<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>setSystemSettingFactoryDesc</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>settings.management</b></span></div>
   <h4>Description</h4>
   <p>Sets the default value when reset by <strong>resetSystemSettingDesc</strong>.</p>
   <p>It is the same type as&nbsp;<strong>setSystemSettingDesc</strong>&nbsp;method, and it can change the factory default values of the settings info.</p>
   <ul>
-    <li>
-      Remarks
+    <li>Remarks
       <ul>
         <li>Settings item info is in JSON&nbsp;type, and includes the following.</li>
       </ul>
     </li>
-    <li>
-      Exception
+    <li>Exception
       <ul>
         <li>Category, key, dimension, dbtype, volatile attributes cannot be changed during runtime.</li>
       </ul>
@@ -3189,8 +3218,8 @@ toc: true
           <td>
             <p>Indicates whether the execution succeeded.</p>
             <ul>
-              <li>true: Success</li>
-              <li>false: Failure</li>
+              <li><strong>true</strong>: Success</li>
+              <li><strong>false</strong>: Failure</li>
             </ul>
           </td>
         </tr>
@@ -3231,6 +3260,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p>Run luna-send command:</p>
     <p># luna-send -f -n 1 -a com.webos.service.settings luna://com.webos.service.settings/setSystemSettingFactoryDesc &#39;{<br />
@@ -3241,37 +3273,33 @@ toc: true
       &nbsp; &nbsp; &nbsp; &quot;active&quot;: true,<br />
       &nbsp; &nbsp; &nbsp; &quot;widget&quot;: &quot;None&quot;<br />
       &nbsp; &nbsp;}<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>Response for a successful call:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp;&quot;method&quot;: &quot;setSystemSettingFactoryDesc&quot;<br />
-      }
-    </p>
+      }</p>
     <p>Response for a failed call:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;method&quot;: &quot;setSystemSettingFactoryDesc&quot;,<br />
       &nbsp; &nbsp;&quot;returnValue&quot;: false,<br />
       &nbsp; &nbsp;&quot;errorText&quot;: &quot;The format of value is wrong. &#39;value&#39;:{$ref:&#39;VaildValues&#39;}. $ref is one of &#39;array&#39;, &#39;range&#39;, or &#39;date&#39;&quot;<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>setSystemSettingFactoryValue</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>settings.management</b></span></div>
   <h4>Description</h4>
   <p>Changes the factory default of the setting item. The using method is same as <strong>setSystemSettings</strong> method.</p>
   <p>It can set the default value when <strong>resetSystemSettings</strong>&nbsp;method&nbsp;is called.</p>
   <ul>
-    <li>
-      Remarks
+    <li>Remarks
       <ul>
         <li>In case of the following specific categories, when changing settings, it can store different values according to conditions such as dimension.</li>
       </ul>
     </li>
-    <li>
-      Exception
+    <li>Exception
       <ul>
         <li>When using undefined dimension, errors will occur.</li>
       </ul>
@@ -3384,8 +3412,8 @@ toc: true
           <td>
             <p>Indicates whether the execution succeeded.</p>
             <ul>
-              <li>true: Success</li>
-              <li>false: Failure</li>
+              <li><strong>true</strong>: Success</li>
+              <li><strong>false</strong>: Failure</li>
             </ul>
           </td>
         </tr>
@@ -3461,23 +3489,25 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -f -n 1 luna://com.webos.service.settings/setSystemSettingFactoryValue &#39;{<br />
       &nbsp; &nbsp;&quot;category&quot;:&quot;picture&quot;,<br />
       &nbsp; &nbsp;&quot;dimension&quot;:{&quot;input&quot;:&quot;hdmi2&quot;, &quot;pictureMode&quot;:&quot;vivid&quot;, &quot;_3dStatus&quot;:&quot;2d&quot;},<br />
       &nbsp; &nbsp;&quot;settings&quot;:{&quot;brightness&quot;:30, &quot;contrast&quot;:44}<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>Response for a successful call:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;method&quot;: &quot;setSystemSettingFactoryValue&quot;,<br />
       &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>setSystemSettings</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>settings.management</b></span></div>
   <h4>Description</h4>
   <p>Changes settings. It is available only for the keys open to public when called through Public Luna bus. The permission setting is as follow.</p>
   <table border="1" cellpadding="1" cellspacing="0" style="height:60px; width:642px">
@@ -3497,15 +3527,13 @@ toc: true
     </tbody>
   </table>
   <ul>
-    <li>
-      Remarks
+    <li>Remarks
       <ul>
         <li>In case of the following specific categories, when changing settings, it can store different values according to the dimension.</li>
         <li>For the keys with &#39;E&#39; dbtype, the values of ExceptionApp list will be equally changed.</li>
       </ul>
     </li>
-    <li>
-      Exception
+    <li>Exception
       <ul>
         <li>When an undefined dimension is used, errors will occur.</li>
       </ul>
@@ -3659,7 +3687,19 @@ toc: true
           <td>Required</td>
           <td>boolean</td>
           <td>
-            <p><strong>returnValue</strong>&nbsp;will&nbsp;<strong>always</strong>&nbsp;contain&nbsp;<strong>true</strong>.</p>
+            <p>Indicates whether the execution succeeded.</p>
+            <ul>
+              <li><strong>true</strong>: Success</li>
+              <li><strong>false</strong>: Failure</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the&nbsp;<strong>&quot;Error Codes&quot;</strong>&nbsp;section of this method for details.</p>
           </td>
         </tr>
       </tbody>
@@ -3682,37 +3722,45 @@ toc: true
         </tr>
         <tr>
           <td>N/A</td>
-          <td>N/A</td>
+          <td>&#39;Key&#39; shouldn&#39;t be NULL&quot;</td>
           <td>
-            <p>Always succeed. Even though undefined keys are requested, error will not be returned.</p>
+            <p>Parameter validation: settings shouldn&#39;t be empty.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>N/A</td>
+          <td>Error checking access rights</td>
+          <td>
+            <p>When the Sender or SenderServiceName is empty or NULL</p>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send \-n 1 luna://com.webos.service.settings/setSystemSettings &#39;{<br />
       &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;category&quot;:&quot;picture&quot;,<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &quot;dimension&quot;:{&quot;input&quot;:&quot;hdmi2&quot;, &quot;pictureMode&quot;:&quot;vivid&quot;, &quot;_3dStatus&quot;:&quot;2d&quot;},<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &quot;settings&quot;:{&quot;brightness&quot;:30, &quot;contrast&quot;:44}<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;method&quot;: &quot;setSystemSettings&quot;,<br />
       &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>setSystemSettingValues</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>settings.management</b></span></div>
   <h4>Description</h4>
   <p>Changes the formats of the configurable values. It can change detailed information using <strong>setSystemSettingDesc</strong> method.</p>
   <ul>
-    <li>
-      Exception
+    <li>Exception
       <ul>
         <li>When undefined keys are requested to change settings, errors will occur.</li>
       </ul>
@@ -3812,8 +3860,8 @@ toc: true
           <td>
             <p>Indicates whether the execution succeeded.</p>
             <ul>
-              <li>true: Success</li>
-              <li>false: Failure</li>
+              <li><strong>true</strong>: Success</li>
+              <li><strong>false</strong>: Failure</li>
             </ul>
           </td>
         </tr>
@@ -3861,6 +3909,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.settings/setSystemSettingValues &#39;{<br />
       &nbsp; &nbsp;&quot;category&quot;:&quot;sampleCategory&quot;,<br />
@@ -3876,14 +3927,12 @@ toc: true
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}<br />
       &nbsp; &nbsp; &nbsp; ]<br />
       &nbsp; &nbsp;}<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp;&nbsp;&nbsp; &quot;method&quot;: &quot;setSystemSettingValues&quot;,<br />
       &nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h2>Objects</h2>
@@ -4014,16 +4063,15 @@ toc: true
   <h3>values</h3>
   <p>Specify the properties of the&nbsp;<strong>values</strong>&nbsp;object according to&nbsp;<strong>vtype</strong>. It is the information that is used for the validation of configurable values.</p>
   <p>The format for the value of each vtype is:</p>
-  <ul></ul>
   <ul>
-    <li>
-      array
+  </ul>
+  <ul>
+    <li>array
       <p>{</p>
       <p>&nbsp; array: [ string, string, ...]</p>
       <p>}</p>
     </li>
-    <li>
-      arrayExt
+    <li>arrayExt
       <p>{</p>
       <p>&nbsp; arrayExt: [ object, object, ...]</p>
       <p>}</p>
@@ -4034,8 +4082,7 @@ toc: true
       <p>&nbsp;&nbsp; value: string</p>
       <p>}</p>
     </li>
-    <li>
-      range
+    <li>range
       <p>{</p>
       <p>&nbsp; range: {</p>
       <p>&nbsp;&nbsp;&nbsp; max: integer</p>

@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.systemservice
-date: 2021-06-16
+date: 2021-08-03
 weight: 310
 toc: true
 ---
@@ -60,6 +60,7 @@ toc: true
 <div>
   <h3>backup/postRestore</h3>
   <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>systemsettings.management</b></span></div>
     <h4>Description</h4>
     <p>Restores the platform-specific environment settings from the dump file, previously created by the <strong>preBackup</strong> method call.</p>
     <p>Call this method after executing the restore procedure in order to restore platform-specific settings.</p>
@@ -176,22 +177,24 @@ toc: true
       </table>
     </div>
     <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+    </div>
     <div class="code-bg-grey">
       <p># luna-send -n 1 -f luna://com.webos.service.systemservice/backup/postRestore &#39;{<br />
         &nbsp; &nbsp; &nbsp; &nbsp;&quot;tempDir&quot;: &quot;/tmp/&quot;,<br />
         &nbsp; &nbsp; &nbsp; &nbsp;&quot;files&quot;: [&quot;/var/luna/preferences/systemprefs_backup.db&quot;]<br />
-        }&#39;
-      </p>
+        }&#39;</p>
       <p>Response:</p>
       <p>{<br />
         &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: true<br />
-        }
-      </p>
+        }</p>
     </div>
   </div>
 </div>
 <h3>backup/preBackup</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>systemsettings.management</b></span></div>
   <h4>Description</h4>
   <p>The <strong>preBackup</strong> method creates dump files containing platform-specific environment settings. Call this method before executing the backup procedure in order to save these settings.</p>
   <p>The dump files are saved into the directory specified by the <strong>temp_dir</strong> parameter or <strong>&#39;${localstatedir}/preferences&#39;</strong>.</p>
@@ -203,8 +206,7 @@ toc: true
     &nbsp;&nbsp; &nbsp;&quot;timeChangeLaunch&quot;,<br />
     &nbsp;&nbsp; &nbsp;&quot;showcontactmatch&quot;,<br />
     &nbsp; &nbsp; &quot;x_webos_virtualkeyboard_prefs&quot;<br />
-    ]
-  </p>
+    ]</p>
   <p>If any of the method parameters is not specified or specified incorrectly, the method will use the default values.</p>
   <p>This method is internal, only system applications can use it. It is not available to third-party applications.</p>
   <h4>Parameters</h4>
@@ -301,6 +303,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p>Example response for a successful call:</p>
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/backup/preBackup &#39;{}&#39;</p>
@@ -315,6 +320,7 @@ toc: true
 </div>
 <h3>clock/getTime</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>time.query</b></span></div>
   <h4>Description</h4>
   <p>The <strong>getTime</strong> method gets the current time for a specific time source.</p>
   <p>There are several time data sources on the system: Linux system time, user time, network-broadcast time and more.&nbsp;When calling this method, you can specify the desired time data source in the <strong>source</strong> parameter.&nbsp;The complete list of the data sources is listed in the&nbsp;<strong>source</strong>&nbsp;parameter description below.&nbsp;</p>
@@ -343,8 +349,7 @@ toc: true
           <td>String</td>
           <td>
             <p>Time-source to access (default &quot;system&quot;)<br />
-              Supported sources:
-            </p>
+              Supported sources:</p>
             <ul>
               <li><strong>system</strong>&nbsp;- Linux system-wide time (always available)</li>
               <li><strong>manual</strong> - Last time set manually by user</li>
@@ -519,6 +524,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p>Example of a successful call:</p>
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/clock/getTime &#39;{}&#39;</p>
@@ -541,6 +549,7 @@ toc: true
 </div>
 <h3>clock/setTime</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>time.management, systemsettings.management</b></span></div>
   <h4>Description</h4>
   <p>The <strong>setTime</strong> method is used to set the time. By calling this method you can update any time data source, including Linux system time, network-broadcasted time, user time and others.</p>
   <p>Any application can use this method.</p>
@@ -579,8 +588,7 @@ toc: true
           <td>
             <p>Time source associated with time info update (default &quot;manual&quot;).</p>
             <p>Only those sources that are listed in the <strong>timeSources</strong> Preference key can be set.<br />
-              &nbsp;
-            </p>
+              &nbsp;</p>
           </td>
         </tr>
         <tr>
@@ -689,12 +697,16 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/clock/setTime &#39;{&quot;utc&quot;:1448556562}&#39;</p>
   </div>
 </div>
 <h3>deviceInfo/query</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>systemsettings.query</b></span></div>
   <h4>Description</h4>
   <p>The <strong>query</strong> method to get the device system information such as product Id, system number, hardware information, Wi-FI address, battery status and others. Please refer to the return values table below for a complete list of the system parameters.</p>
   <p><strong>Note:</strong> This method must not be used by 3rd-party applications.</p>
@@ -1031,12 +1043,16 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : General invocation</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/deviceInfo/query &#39;{}&#39;</p>
   </div>
 </div>
 <h3>getPreferences</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>systemsettings.query</b></span></div>
   <h4>Description</h4>
   <p>The <strong>getPreferences</strong> method retrieves the values for keys specified in a passed array. If subscribe is set to true, then <strong>getPreferences</strong> sends an update if the key values change. This method queries system preference values and custom user values.</p>
   <h4>Parameters</h4>
@@ -1200,6 +1216,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send&nbsp;-n 1 -f luna://com.webos.service.systemservice/getPreferences &#39;{&quot;keys&quot;: [&quot;locale&quot;]}&#39;</p>
     <p>&nbsp;</p>
@@ -1215,12 +1234,12 @@ toc: true
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;countryCode&quot;:&quot;us&quot;<br />
       &nbsp;&nbsp;&nbsp;},<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>getPreferenceValues</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>systemsettings.query</b></span></div>
   <h4>Description</h4>
   <p>Retrieves a list of valid values for the specified key. If the key is of a type that takes one of a discrete set of valid values, it&nbsp;returns that set.&nbsp;Otherwise, it&nbsp;returns nothing for the key.</p>
   <h4>Parameters</h4>
@@ -1377,6 +1396,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/getPreferenceValues &#39;{&quot;key&quot;: &quot;useNetworkTime&quot; }&#39;</p>
     <p>Response:</p>
@@ -1386,8 +1408,10 @@ toc: true
       &nbsp; &nbsp; &nbsp; false<br />
       &nbsp; &nbsp;],<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }
-    </p>
+      }</p>
+  </div>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
   </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/getPreferenceValues &#39;{ &quot;key&quot;: &quot;timeFormat&quot; }&#39;</p>
@@ -1398,12 +1422,12 @@ toc: true
       &nbsp; &nbsp; &nbsp; &quot;HH24&quot;<br />
       &nbsp; &nbsp;],<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>osInfo/query</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>systemsettings.query</b></span></div>
   <h4>Description</h4>
   <p>The <strong>query</strong> method returns operating system information. This method may be used to display the operating system version, API version, build name and date and so on.</p>
   <p>This method is available for both internal and third-party applications.</p>
@@ -1643,6 +1667,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send&nbsp;-n 1 -f luna://com.webos.service.systemservice/osInfo/query &#39;{<br />
       &nbsp; &nbsp;&quot;parameters&quot;:[<br />
@@ -1650,20 +1677,19 @@ toc: true
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;webos_release&quot;,<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;webos_build_id&quot;<br />
       &nbsp; &nbsp;]<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>Response:</p>
     <p>{&nbsp;&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&quot;webos_release&quot;:&quot;1.0.p&quot;,<br />
       &nbsp;&nbsp;&nbsp;&quot;webos_build_id&quot;:&quot;4&quot;,<br />
       &nbsp;&nbsp;&nbsp;&quot;webos_name&quot;:&quot;webOS&nbsp;OSE&quot;,<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>ringtone/addRingtone</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>systemsettings.management</b></span></div>
   <h4>Description</h4>
   <p>Adds a new ringtone on devices that use ringtones.</p>
   <p><strong>Note: </strong>This method is public. It can be used both by the system and third-party applications.</p>
@@ -1794,18 +1820,21 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p>// Copy the ringtone file(.mp3) to desired location. For example, &quot;/usr/palm/sounds/&quot;</p>
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/ringtone/addRingtone &#39;{&quot;filePath&quot;: &quot;/usr/palm/sounds/ringtone.mp3&quot; }&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>ringtone/deleteRingtone</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>systemsettings.management</b></span></div>
   <h4>Description</h4>
   <p>Deletes a ringtone.&nbsp;</p>
   <p><strong>Note: </strong>This method is public. It can be used both by the system and third-party applications.</p>
@@ -1921,18 +1950,21 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p>// The ringtone file must be present in&nbsp;&quot;/media/internal/ringtones/&quot;</p>
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/ringtone/deleteRingtone &#39;{&quot;filePath&quot;: &quot;/media/internal/ringtones/ringtone.mp3&quot; }&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>setPreferences</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>systemsettings.management</b></span></div>
   <h4>Description</h4>
   <p>The <strong>setPreferences</strong> method sets preference keys to specified values. The values are specified by pair:&nbsp;key - value&nbsp;in JSON format. See the example below.</p>
   <p><strong>Note: </strong>This method is public. It can be used both by the system and third-party applications.</p>
@@ -2045,12 +2077,16 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/setPreferences &#39;{ &quot;timeZone&quot;: {&quot;ZoneID&quot;:&quot;Europe/Kiev&quot;}, &quot;timeFormat&quot;: &quot;HH12&quot; }&#39;</p>
   </div>
 </div>
 <h3>time/convertDate</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>time.management</b></span></div>
   <h4>Description</h4>
   <p>The <strong>convertDate</strong> method converts the given date from one timezone to another.</p>
   <h4>Parameters</h4>
@@ -2187,14 +2223,16 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p>Example of a successful call:</p>
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/time/convertDate &#39;{<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;date&quot;: &quot;1982-12-06 17:25:33&quot;,<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;source_tz&quot;: &quot;America/Los_Angeles&quot;,<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;dest_tz&quot;:&quot;America/New_York&quot;<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>{</p>
     <p style="margin-left:40px">&quot;returnValue&quot;: true,</p>
     <p style="margin-left:40px">&quot;date&quot;: &quot;Mon Dec 6 19:25:33 1982&quot;</p>
@@ -2205,8 +2243,7 @@ toc: true
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;date&quot;: &quot;1982-12-06 17:25:33&quot;,<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;source_tz&quot;: &quot;America/Los_Angeles&quot;,<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;dest_tz&quot;:&quot;America/New_York1&quot;<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>{</p>
     <p style="margin-left:40px">&quot;returnValue&quot;: false,</p>
     <p style="margin-left:40px">&quot;errorText&quot;: &quot;timezone not found: &#39;America/New_York1&#39;&quot;</p>
@@ -2215,6 +2252,7 @@ toc: true
 </div>
 <h3>time/getBroadcastTime</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>time.query</b></span></div>
   <h4>Description</h4>
   <p>The <strong>getBroadcastTime</strong> method returns the broadcast time.</p>
   <h4>Parameters</h4>
@@ -2326,6 +2364,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p>Example of a successful call:</p>
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/time/getBroadcastTime &#39;{}&#39;</p>
@@ -2351,6 +2392,7 @@ toc: true
 </div>
 <h3>time/getEffectiveBroadcastTime</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>time.query</b></span></div>
   <h4>Description</h4>
   <p>The <strong>getEffectiveBroadcastTime</strong> method&nbsp;returns the <strong>effective</strong>&nbsp;broadcast time. If no broadcast time info update has been received since boot, the&nbsp;Linux system-wide time is returned.</p>
   <h4>Parameters</h4>
@@ -2509,6 +2551,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/time/getEffectiveBroadcastTime &#39;{}&#39;</p>
     <p>&nbsp;</p>
@@ -2531,12 +2576,12 @@ toc: true
       &nbsp;&nbsp;&nbsp;&quot;local&quot;:1448528209,<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
       &nbsp;&nbsp;&nbsp;&quot;systemTimeSource&quot;:&quot;sdp&quot;<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>time/getNTPTime</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>time.query</b></span></div>
   <h4>Description</h4>
   <p>The <strong>getNTPTime</strong> returns the fresh NTP time (the time data transferred by the Network Time Protocol).</p>
   <h4>Parameters</h4>
@@ -2624,12 +2669,16 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/time/getNTPTime &#39;{ }&#39;</p>
   </div>
 </div>
 <h3>time/getSystemTime</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>time.query</b></span></div>
   <h4>Description</h4>
   <p>The <strong>time/getSystemTime</strong> method gets the system time and time zone information. Apps can susbcribe to this method and&nbsp;receive notifications when the time zone changes and/or the system time changes by a significant amount (currently 5 min.).</p>
   <p>This method does not generate errors, however if the <strong>LSSubscriptionAdd</strong> method, which is used inside the&nbsp;<strong>getSystemTime</strong> method, returns an error, this error is reported.</p>
@@ -2935,6 +2984,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/time/getSystemTime &#39;{}&#39;</p>
     <p>&nbsp;</p>
@@ -2961,12 +3013,12 @@ toc: true
       &nbsp;&nbsp;&nbsp;&quot;timeZoneFile&quot;:&quot;/var/luna/preferences/localtime&quot;,<br />
       &nbsp;&nbsp;&nbsp;&quot;offset&quot;:-480,<br />
       &nbsp;&nbsp;&nbsp;&quot;isDST&quot;:true<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>time/getSystemTimezoneFile</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>time.query</b></span></div>
   <h4>Description</h4>
   <p>Returns the path to Linux time-zone information file for the currently set zone. This file contains the list of rules that define switching to and from daylight saving time. In particular, the time-zone information file defines when the time shift occurs in each particular year.</p>
   <p><strong>Note:</strong> A call to this method always succeeds. This method does not return <strong>returnValue.</strong></p>
@@ -3010,18 +3062,21 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/time/getSystemTimezoneFile &#39;{}&#39;</p>
     <p>Response:</p>
     <p>{&nbsp;&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&quot;subscribed&quot;:false,<br />
       &nbsp;&nbsp;&nbsp;&quot;timeZoneFile&quot;:&quot;/var/luna/preferences/localtime&quot;<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>time/getSystemUptime</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>time.query</b></span></div>
   <h4>Description</h4>
   <p>Returns the number of seconds since the last system boot. This method uses the Linux-specific <strong>sysinfo</strong>&nbsp;function.</p>
   <h4>Parameters</h4>
@@ -3110,18 +3165,21 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/time/getSystemUptime &#39;{}&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp;&nbsp;&quot;uptime&quot;: 5185<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>time/launchTimeChangeApps</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>time.management</b></span></div>
   <h4>Description</h4>
   <p>Executes all methods listed in the&nbsp;<strong>timeChangeLaunch</strong> list (value of the <strong>timeChangeLaunch</strong>&nbsp;preference).</p>
   <p>The&nbsp;<strong>timeChangeLaunch</strong> list contains all applications that must be executed when the switching to/from the daylight saving time occurs. These applications are executed automatically, you should not call the <strong>launchTimeChangeApps</strong> method. However, if for some reason you need to execute these applications apart from the schedule, you can call the&nbsp;the <strong>launchTimeChangeApps</strong> method.</p>
@@ -3166,6 +3224,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/time/launchTimeChangeApps &#39;{}&#39;</p>
     <p>&nbsp;</p>
@@ -3173,12 +3234,12 @@ toc: true
     <p>{&nbsp;&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&quot;subscribed&quot;:false,<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>time/setBroadcastTime</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>time.management</b></span></div>
   <h4>Description</h4>
   <p>Sets the broadcast time which is in the broadcast signal. The system service will be notified that the broadcast time must be changed.</p>
   <h4>Parameters</h4>
@@ -3308,12 +3369,16 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/time/setBroadcastTime &#39;{&quot;utc&quot;: 1418745990, &quot;local&quot;: 1418727638 }&#39;</p>
   </div>
 </div>
 <h3>time/setSystemNetworkTime</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>time.management</b></span></div>
   <h4>Description</h4>
   <p>The <strong>setSystemNetworkTime</strong> method is&nbsp;used to send a NITZ messages to Luna System Service. A NITZ message contains the&nbsp;local time and date, time zone and DST offset, as well as network provider identity.&nbsp;NITZ can be used to update the system clock of network devices.</p>
   <p>This method is&nbsp;called by the service, which receives the time data from the service provider.</p>
@@ -3540,6 +3605,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p>Example of a successful call:</p>
     <p># luna-send -f -n 1 luna://com.webos.service.systemservice/time/setSystemNetworkTime &#39;{<br />
@@ -3558,8 +3626,7 @@ toc: true
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;mnc&quot;:&quot;26&quot;,<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;tilIgnore&quot;:true,<br />
       &nbsp; &nbsp; &nbsp; &quot;timestamp&quot;:&quot;123&quot;<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>{</p>
     <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
     <p>}</p>
@@ -3567,6 +3634,7 @@ toc: true
 </div>
 <h3>time/setSystemTime</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>time.management</b></span></div>
   <h4>Description</h4>
   <p>The <strong>setSystemTime</strong> method&nbsp;sets the Linux system-wide time effectively overriding any previous synchronization with any time source.</p>
   <p>Note: this API might not change system time returned by <strong>getSystemTime</strong>.<strong>&nbsp;</strong>It depends on <strong>manualOverride</strong> and <strong>useNetworkTime </strong>preferences.</p>
@@ -3689,12 +3757,16 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/time/setSystemTime &#39;{&quot;utc&quot;: 1418745990 }&#39;</p>
   </div>
 </div>
 <h3>time/setTimeChangeLaunch</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>time.management</b></span></div>
   <h4>Description</h4>
   <p>The <strong>setTimeChangeLaunch</strong>&nbsp;method adds an application to, or removes it from the <strong>timeChangeLaunch</strong> list.</p>
   <p>The&nbsp;<strong>timeChangeLaunch list</strong> contains the applications that are automatically executed by the system when the switch to or from the daylight saving time occurs.</p>
@@ -3825,14 +3897,16 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p>Example of a successful call:</p>
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/time/setTimeChangeLaunch &#39;{<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;appId&quot;: &quot;com.webos.app.someApp&quot;,<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;active&quot;: true,<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;parameters&quot;: { &quot;param1&quot;: &quot;foo&quot;, &quot;param2&quot;: &quot;bar&quot; }<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>{</p>
     <p style="margin-left:40px">&quot;subscribed&quot;: false,</p>
     <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
@@ -3841,6 +3915,7 @@ toc: true
 </div>
 <h3>time/setTimeWithNTP</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>time.management</b></span></div>
   <h4>Description</h4>
   <p>The <strong>setTimeWithNTP</strong>&nbsp;methods synchronizes the system time with the NTP.</p>
   <p><strong>Note: </strong>This method call always succeeds.</p>
@@ -3876,6 +3951,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p>Example of a successful call:</p>
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/time/setTimeWithNTP &#39;{}&#39;</p>
@@ -3886,6 +3964,7 @@ toc: true
 </div>
 <h3>timezone/getTimeZoneFromEasData</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>time.query</b></span></div>
   <h4>Description</h4>
   <p>Gets the time-zone that matches the provided EAS data. This method enables you to determine the time zone by the specified time stamp.</p>
   <h4>Parameters</h4>
@@ -3974,8 +4053,7 @@ toc: true
           <td>
             <p>The timezone matching the given parameters.</p>
             <p><strong>Note: </strong>When there are multiple locations that match the specified &quot;bias&quot;, the entry that first appears in the preferences is returned. For example, Gibraltar and Brussles, both have offset from UTC as 60. So, if bias is given as &quot;-60&quot;, the API returns timezone as &quot;Gibraltar&quot; since it appears before &quot;Brussels&quot;. This order can be checked in the output of the following command:<br />
-              #&nbsp;luna-send -n 1 -f luna://com.webos.service.systemservice/getPreferenceValues &#39;{&quot;key&quot;: &quot;timeZone&quot; }&#39;
-            </p>
+              #&nbsp;luna-send -n 1 -f luna://com.webos.service.systemservice/getPreferenceValues &#39;{&quot;key&quot;: &quot;timeZone&quot; }&#39;</p>
           </td>
         </tr>
         <tr>
@@ -4056,12 +4134,16 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/timezone/getTimeZoneFromEasData &#39;{ &quot;bias&quot;: 0 }&#39;</p>
   </div>
 </div>
 <h3>timezone/getTimeZoneRules</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>time.query</b></span></div>
   <h4>Description</h4>
   <p>The <strong>getTimeZoneRules</strong> method&nbsp;requests rules for specific time-zone for the specified years. By calling this method you can get the rules of when and how the daylight time switching occurs at the specified year.</p>
   <h4>Parameters</h4>
@@ -4197,6 +4279,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p>Example of a successful call:</p>
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/timezone/getTimeZoneRules &#39;[ {&quot;tz&quot;: &quot;Europe/Helsinki&quot;, &quot;years&quot;: [2012, 2010]} ]&#39;</p>
@@ -4227,6 +4312,7 @@ toc: true
 </div>
 <h3>timezone/createTimeZoneFromEasData</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>time.management, systemsettings.management</b></span></div>
   <h4>Description</h4>
   <p>Create a manual timezone named &quot;<strong>Etc/Manual</strong>&quot;&nbsp;and specify details of this&nbsp;timezone.</p>
   <p>After creating the timezone, enable it by using the&nbsp;following command:&nbsp;</p>
@@ -4380,6 +4466,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/timezone/createTimeZoneFromEasData &#39;{<br />
       &nbsp; &nbsp; &nbsp; &quot;standardDate&quot;:<br />
@@ -4396,12 +4485,12 @@ toc: true
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;week&quot;: 1,<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;hour&quot;: 0<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}<br />
-      }&#39;
-    </p>
+      }&#39;</p>
   </div>
 </div>
 <h3>wallpaper/convert</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>systemsettings.management</b></span></div>
   <h4>Description</h4>
   <p>The <strong>convert</strong> method converts an image. The type, scaling and centering of the image may be changed. If the resulting image is smaller than the original, black is added to the edges so that the resulting image is the same size as the original. If the resulting image would be bigger than the original, the image is cropped.</p>
   <p>JPG, PNG and BMP files are supported.</p>
@@ -4613,13 +4702,15 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/wallpaper/convert &#39;{<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;source&quot;: &quot;/mnt/lg/tvservice/res/lgres/bootani/light_open.png&quot;,<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;dest&quot;:&quot;/tmp/test.jpg&quot;,<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;destType&quot; : &quot;jpg&quot;<br />
-      }&#39;
-    </p>
+      }&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;returnValue&quot;: true,<br />
@@ -4628,12 +4719,12 @@ toc: true
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;source&quot;: &quot;//mnt/lg/tvservice/res/lgres/bootani/light_open.png&quot;,<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;destType&quot;: &quot;jpg&quot;<br />
       &nbsp; &nbsp;}<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>wallpaper/deleteWallpaper</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>systemsettings.management</b></span></div>
   <h4>Description</h4>
   <p>The <strong>deleteWallpaper</strong> method deletes the specified wallpaper from the list of available wallpapers on the device.</p>
   <h4>Parameters</h4>
@@ -4777,6 +4868,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/wallpaper/deleteWallpaper &#39;{ &quot;wallpaperName&quot;: &quot;record-large.png&quot; }&#39;</p>
     <p>Response:</p>
@@ -4785,12 +4879,12 @@ toc: true
       &nbsp; &nbsp;&quot;wallpaper&quot;: {<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;wallpaperName&quot;: &quot;record-large.png&quot;<br />
       &nbsp; &nbsp;}<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h3>wallpaper/importWallpaper</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>systemsettings.management</b></span></div>
   <h4>Description</h4>
   <p>The <strong>importWallpaper</strong>&nbsp;method is used to convert the specified image into a device&nbsp;wallpaper. To convert into a wallpaper the image is either re-centered and cropped, or scaled.&nbsp;Once the image has been converted, the wallpaper is stored in the internal list of wallpapers on the device, and is available until deleted using&nbsp;<strong>deleteWallpaper&nbsp;</strong>method.</p>
   <table align="left" border="" cellpadding="0" cellspacing="1">
@@ -5047,6 +5141,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/wallpaper/importWallpaper &#39;{ &quot;target&quot;: &quot;/media/internal/.wallpapers/flowers.png&quot; }&#39;</p>
     <p>{</p>
@@ -5061,6 +5158,7 @@ toc: true
 </div>
 <h3>wallpaper/info</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>systemsettings.management</b></span></div>
   <h4>Description</h4>
   <p>The <strong>info</strong> method retrieves a wallpaper object using either the <strong>wallpaperName </strong>or <strong>wallpaperFile</strong> parameter.</p>
   <h4>Parameters</h4>
@@ -5198,6 +5296,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/wallpaper/info &#39;{ &quot;wallpaperFile&quot;: &quot;/media/internal/.wallpapers/flowers.png&quot; }&#39;</p>
     <p>{</p>
@@ -5212,6 +5313,7 @@ toc: true
 </div>
 <h3>wallpaper/refresh</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>systemsettings.management</b></span></div>
   <h4>Description</h4>
   <p>The <strong>refresh</strong> method refreshes the internal list of available wallpapers. Under normal circumstances, there is no need to call refresh directly.</p>
   <p><strong>Note:</strong> This method call always succeeds.</p>
@@ -5247,12 +5349,16 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/wallpaper/refresh &#39;{}&#39;</p>
   </div>
 </div>
 <h3>time/getCurrentTimeZoneByLocale</h3>
 <div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>None</b></span></div>
   <h4>Description</h4>
   <p>Returns the locale info matching the requested locale settings. In particular, the name of the city is returned on the language for which the code is specified in the <strong>locale </strong>request parameter.</p>
   <h4>Parameters</h4>
@@ -5360,6 +5466,9 @@ toc: true
     </table>
   </div>
   <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/time/getCurrentTimeZoneByLocale &#39;{&quot;locale&quot;:&quot;ko&quot;}&#39;</p>
     <p>Response:</p>
@@ -5367,7 +5476,7 @@ toc: true
       &nbsp; &nbsp;&quot;timeZone&quot;:{<br />
       &nbsp; &nbsp; &nbsp; &quot;supportDST&quot;:0,<br />
       &nbsp; &nbsp; &nbsp; &quot;offsetFromUTC&quot;:-480,<br />
-      &nbsp; &nbsp; &nbsp; &quot;City&quot;:&quot;로스앤젤레스&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;City&quot;:&quot;Los Angeles&quot;,<br />
       &nbsp; &nbsp; &nbsp; &quot;CountryCode&quot;:&quot;US&quot;,<br />
       &nbsp; &nbsp; &nbsp; &quot;Description&quot;:&quot;Pacific Time&quot;,<br />
       &nbsp; &nbsp; &nbsp; &quot;Country&quot;:&quot;United States of America&quot;,<br />
@@ -5375,8 +5484,7 @@ toc: true
       &nbsp; &nbsp; &nbsp; &quot;preferred&quot;:true<br />
       &nbsp; &nbsp;},<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }
-    </p>
+      }</p>
   </div>
 </div>
 <h2>Objects</h2>
