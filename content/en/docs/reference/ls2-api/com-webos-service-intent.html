@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.intent
-date: 2021-08-03
+date: 2021-08-30
 weight: 225
 toc: true
 ---
@@ -29,46 +29,53 @@ toc: true
   <p>Requester can subscribe to the result by using the <strong>subscribeResult </strong>API also.</p>
   <p><strong>Steps to support intent - application</strong></p>
   <ol>
-    <li>Modify appinfo.json first to support intent. Here is a simple example for enact browser. Lines highlighted in the below json code are newly added.
+    <li>
+      Modify appinfo.json first to support intent. Here is a simple example for enact browser. Lines highlighted in the below json code are newly added.
       <div class="code-bg-grey">
-        $ vi /usr/palm/applications/com.webos.app.enactbrowser/appinfo.json<br />
-        {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;....<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;mimeTypes&quot;: [ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; { &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;mime&quot;: &quot;text/html&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;extension&quot;: &quot;html&quot;, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;stream&quot;: true &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; { &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;scheme&quot;: &quot;http&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; { &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;scheme&quot;: &quot;https&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; } &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; ], &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
-        <span style="color:#FF0000">&nbsp; &nbsp; &nbsp; &nbsp;</span><strong> &quot;intentFilters&quot;: [ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; { &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;actions&quot;: [&quot;action_url&quot;, &quot;action_uri&quot;],<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;uris&quot;: [&quot;http://youtube.com&quot;, &quot;http://&quot;, &quot;https://&quot;]<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; } &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; ],</strong><br />
-        &nbsp; &nbsp; &nbsp; &nbsp; ....<br />
-        }<br />
+        <p>
+          $ vi /usr/palm/applications/com.webos.app.enactbrowser/appinfo.json<br />
+          {<br />
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;....<br />
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;mimeTypes&quot;: [ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; { &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;mime&quot;: &quot;text/html&quot;,<br />
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;extension&quot;: &quot;html&quot;, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;stream&quot;: true &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; { &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;scheme&quot;: &quot;http&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; { &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;scheme&quot;: &quot;https&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; } &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
+          &nbsp; &nbsp; &nbsp; &nbsp; ], &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
+          <span style="color:#FF0000">&nbsp; &nbsp; &nbsp; &nbsp;</span><strong> &quot;intentFilters&quot;: [ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; { &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;actions&quot;: [&quot;action_url&quot;, &quot;action_uri&quot;],<br />
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;uris&quot;: [&quot;http://youtube.com&quot;, &quot;http://&quot;, &quot;https://&quot;]<br />
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; } &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
+          &nbsp; &nbsp; &nbsp; &nbsp; ],</strong><br />
+          &nbsp; &nbsp; &nbsp; &nbsp; ....<br />
+          }<br />
+        </p>
       </div>
     </li>
-    <li>To apply the changes, restart the SAM module and intent manager.
+    <li>
+      To apply the changes, restart the SAM module and intent manager.
       <div class="code-bg-grey">
-        $ restart sam<br />
-        $ restart com.webos.service.intent<br />
+        <p>
+          $ restart sam<br />
+          $ restart com.webos.service.intent
+        </p>
       </div>
     </li>
-    <li>Verify the changes:
+    <li>
+      Verify the changes:
       <ul>
         <li>
           <strong>On the SAM module:</strong>
           <div class="code-bg-grey">
-            $ luna-send -f -n 1 luna://com.webos.service.applicationmanager/getAppInfo &#39;{ &quot;id&quot;: &quot;com.webos.app.enactbrowser&quot;}&#39;
+            <p>$ luna-send -f -n 1 luna://com.webos.service.applicationmanager/getAppInfo &#39;{ &quot;id&quot;: &quot;com.webos.app.enactbrowser&quot;}&#39;</p>
             <p>Response:</p>
             <p>{<br />
               &nbsp;&nbsp;&nbsp;&nbsp;&quot;appId&quot;: &quot;com.webos.app.enactbrowser&quot;,<br />
@@ -97,7 +104,7 @@ toc: true
         <li>
           <strong>On intent manager:</strong>
           <div class="code-bg-grey">
-            # luna-send -f -n 1 luna://com.webos.service.intent/query &#39;{ &quot;intent&quot;: { &quot;action&quot;: &quot;action_url&quot;, &quot;uri&quot;:&quot;http://google.com&quot;}}&#39;
+            <p># luna-send -f -n 1 luna://com.webos.service.intent/query &#39;{ &quot;intent&quot;: { &quot;action&quot;: &quot;action_url&quot;, &quot;uri&quot;:&quot;http://google.com&quot;}}&#39;</p>
             <p>Response:</p>
             <p>{<br />
               &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
@@ -119,16 +126,16 @@ toc: true
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
               &nbsp;&nbsp;&nbsp;&nbsp;]<br />
-              }<br />
-              &nbsp;
+              }
             </p>
           </div>
         </li>
       </ul>
     </li>
-    <li>Start &#39;intent&#39; and verify the handler.
+    <li>
+      Start &#39;intent&#39; and verify the handler.
       <div class="code-bg-grey">
-        $ luna-send -f -n 1 luna://com.webos.service.intent/start &#39;{ &quot;intent&quot;: { &quot;action&quot;: &quot;action_url&quot;, &quot;uri&quot;:&quot;http://google.com&quot;}}&#39;
+        <p>$ luna-send -f -n 1 luna://com.webos.service.intent/start &#39;{ &quot;intent&quot;: { &quot;action&quot;: &quot;action_url&quot;, &quot;uri&quot;:&quot;http://google.com&quot;}}&#39;</p>
         <p>Response:</p>
         <p>{<br />
           &nbsp;&nbsp;&nbsp;&nbsp;&quot;intentId&quot;: 10,<br />
@@ -151,119 +158,116 @@ toc: true
       }
     </p>
   </div>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <thead>
-        <tr>
-          <th scope="row"><strong>Intent</strong></th>
-          <th scope="col"><strong>Action</strong></th>
-          <th scope="col"><strong>URI (format)</strong></th>
-          <th scope="col"><strong>Extra</strong></th>
-          <th scope="col"><strong>Examples (snippet of &#39;appinfo.json&#39; file)</strong></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>View URI (browser)</td>
-          <td>view</td>
-          <td>http://{url}</td>
-          <td>&nbsp;</td>
-          <td>
-            <p><strong>Example 1</strong>&nbsp;- Ability to view all URIs starting with http and https.</p>
-            <div class="code-bg-grey">
-              <p>&quot;intentFilters&quot;:[<br />
-                &nbsp;&nbsp; {<br />
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;actions&quot;:[&quot;view&quot;],<br />
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;uris&quot;:[&quot;http://&quot;,&quot;https://&quot;]<br />
-                &nbsp;&nbsp; }<br />
-                ]
-              </p>
-            </div>
-            <p><strong>Example 2</strong>&nbsp;- Ability to view the 2 URIs mentioned below.</p>
-            <div class="code-bg-grey">
-              <p>&quot;intentFilters&quot;:[<br />
-                &nbsp;&nbsp; {<br />
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;actions&quot;:[&quot;view&quot;],<br />
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;uris&quot;:[&quot;https://google.com&quot;, &quot;http://naver.com&quot;]<br />
-                &nbsp;&nbsp; }<br />
-                ]
-              </p>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>View map (navigation)</td>
-          <td>view</td>
-          <td>geo://</td>
-          <td>&nbsp;</td>
-          <td>
-            <p><strong>Example 1</strong>&nbsp;- Ability to view all map locations.</p>
-            <div class="code-bg-grey">
-              <p>&quot;intentFilters&quot;:[<br />
-                &nbsp;&nbsp; {<br />
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;actions&quot;:[&quot;view&quot;],<br />
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;uris&quot;:[&quot;geo://&quot;]<br />
-                &nbsp;&nbsp; }<br />
-                ]
-              </p>
-            </div>
-            <p><strong>Example 2</strong>&nbsp;- Examples of other uris:</p>
-            <ul>
-              <li>geo:323482,4306480</li>
-              <li>geo:37.786971,-122.399677</li>
-              <li>geo:37.786971,-122.399677;u=35</li>
-              <li>geo:323482,4306480;crs=EPSG:32618;u=20</li>
-              <li>geo:37.786971,-122.399677;crs=Moon-2011;u=35</li>
-              <li>geo:0.0?q=Home</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <p>View specific page (application)</p>
-          </td>
-          <td>view</td>
-          <td>app://{appId}/{path}</td>
-          <td>&nbsp;</td>
-          <td>
-            <p><strong>Example</strong>&nbsp;- Ability to open specific page of settings app</p>
-            <div class="code-bg-grey">
-              <p>&quot;intentFilters&quot;:[<br />
-                &nbsp;&nbsp; {<br />
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;actions&quot;:[&quot;view&quot;],<br />
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;uris&quot;:[&quot;app://com.palm.app.settings/Settings/Language&quot;]<br />
-                &nbsp;&nbsp; }<br />
-                ]
-              </p>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <p>Play media (video/audio)</p>
-          </td>
-          <td>view</td>
-          <td>file://{absolute_path}</td>
-          <td>&nbsp;</td>
-          <td>
-            <p><strong>Example</strong>&nbsp;- Ability to play specific file (works with &#39;mimeTypes&#39; specified in appinfo.json file)</p>
-            <div class="code-bg-grey">
-              <p>&quot;intentFilters&quot;:[<br />
-                &nbsp;&nbsp; {<br />
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;actions&quot;:[&quot;view&quot;],<br />
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;uris&quot;:[<br />
-                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;file:///tmp/usb/sdg/sdg3/mediaIndexerContents/scan2/Miss_A.mp3&quot;<br />
-                &nbsp; &nbsp; &nbsp;&nbsp;]<br />
-                &nbsp; &nbsp;}<br />
-                ]
-              </p>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <p>&nbsp;</p>
-  </div>
+</div>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <tbody>
+      <tr>
+        <th scope="row"><strong>Intent</strong></th>
+        <th scope="col"><strong>Action</strong></th>
+        <th scope="col"><strong>URI (format)</strong></th>
+        <th scope="col"><strong>Extra</strong></th>
+        <th scope="col"><strong>Examples (snippet of &#39;appinfo.json&#39; file)</strong></th>
+      </tr>
+      <tr>
+        <td>View URI (browser)</td>
+        <td>view</td>
+        <td>http://{url}</td>
+        <td>&nbsp;</td>
+        <td>
+          <p><strong>Example 1</strong>&nbsp;- Ability to view all URIs starting with http and https.</p>
+          <div class="code-bg-grey">
+            <p>&quot;intentFilters&quot;:[<br />
+              &nbsp;&nbsp; {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;actions&quot;:[&quot;view&quot;],<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;uris&quot;:[&quot;http://&quot;,&quot;https://&quot;]<br />
+              &nbsp;&nbsp; }<br />
+              ]
+            </p>
+          </div>
+          <p><strong>Example 2</strong>&nbsp;- Ability to view the 2 URIs mentioned below.</p>
+          <div class="code-bg-grey">
+            <p>&quot;intentFilters&quot;:[<br />
+              &nbsp;&nbsp; {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;actions&quot;:[&quot;view&quot;],<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;uris&quot;:[&quot;https://google.com&quot;, &quot;http://naver.com&quot;]<br />
+              &nbsp;&nbsp; }<br />
+              ]
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>View map (navigation)</td>
+        <td>view</td>
+        <td>geo://</td>
+        <td>&nbsp;</td>
+        <td>
+          <p><strong>Example 1</strong>&nbsp;- Ability to view all map locations.</p>
+          <div class="code-bg-grey">
+            <p>&quot;intentFilters&quot;:[<br />
+              &nbsp;&nbsp; {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;actions&quot;:[&quot;view&quot;],<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;uris&quot;:[&quot;geo://&quot;]<br />
+              &nbsp;&nbsp; }<br />
+              ]
+            </p>
+          </div>
+          <p><strong>Example 2</strong>&nbsp;- Examples of other uris:</p>
+          <ul>
+            <li>geo:323482,4306480</li>
+            <li>geo:37.786971,-122.399677</li>
+            <li>geo:37.786971,-122.399677;u=35</li>
+            <li>geo:323482,4306480;crs=EPSG:32618;u=20</li>
+            <li>geo:37.786971,-122.399677;crs=Moon-2011;u=35</li>
+            <li>geo:0.0?q=Home</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>View specific page (application)</p>
+        </td>
+        <td>view</td>
+        <td>app://{appId}/{path}</td>
+        <td>&nbsp;</td>
+        <td>
+          <p><strong>Example</strong>&nbsp;- Ability to open specific page of settings app</p>
+          <div class="code-bg-grey">
+            <p>&quot;intentFilters&quot;:[<br />
+              &nbsp;&nbsp; {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;actions&quot;:[&quot;view&quot;],<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;uris&quot;:[&quot;app://com.palm.app.xxxx/Settings/Language&quot;]<br />
+              &nbsp;&nbsp; }<br />
+              ]
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>Play media (video/audio)</p>
+        </td>
+        <td>view</td>
+        <td>file://{absolute_path}</td>
+        <td>&nbsp;</td>
+        <td>
+          <p><strong>Example</strong>&nbsp;- Ability to play specific file (works with &#39;mimeTypes&#39; specified in appinfo.json file)</p>
+          <div class="code-bg-grey">
+            <p>&quot;intentFilters&quot;:[<br />
+              &nbsp;&nbsp; {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;actions&quot;:[&quot;view&quot;],<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;uris&quot;:[<br />
+              &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;file:///tmp/usb/sdg/sdg3/mediaIndexerContents/scan2/Miss_A.mp3&quot;<br />
+              &nbsp; &nbsp; &nbsp;&nbsp;]<br />
+              &nbsp; &nbsp;}<br />
+              ]
+            </p>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 <h2>Methods</h2>
 <div>

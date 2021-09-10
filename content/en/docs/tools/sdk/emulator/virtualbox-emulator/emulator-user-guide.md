@@ -1,7 +1,7 @@
 ---
 title: User Guide
 display_title: VirtualBox Emulator User Guide
-date: 2021-04-06
+date: 2021-09-06
 weight: 10
 toc: true
 ---
@@ -38,8 +38,9 @@ The emulator requires the following environments.
     * 4 GB or higher
 * Operating system
     * Ubuntu Linux
-        * 16.04 (64-bit)
-        * 18.04 (64-bit)
+        * 16.04 LTS (64-bit)
+        * 18.04 LTS (64-bit)
+        * 20.04 LTS (64-bit)
     * macOS
         * macOS Sierra (10.12) or higher (64-bit)
     * Windows
