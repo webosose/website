@@ -22,14 +22,19 @@ This version corresponds to the [GitHub releases](https://github.com/webosose/bu
 
 #### Display
 
-  - LSM
-    - Added support for linux-dmabuf protocol in RPi4
+- LSM
+  - Added support for linux-dmabuf protocol in RPi4
 
 #### Media
 
-  - audiod
-    - Enabled audio routing through second display in OSE
+- audiod
+  - Enabled audio routing through second display in OSE
 
+#### Diagnostics
+
+- rdxd
+  - `com.webos.rdxd` API has been retired.
+  
 #### Connectivity
 
 - Bluetooth Manager
