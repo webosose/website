@@ -1,6 +1,6 @@
 ---
 title: Using LS2 API in Web Apps
-date: 2019-10-21
+date: 2021-10-22
 weight: 30
 toc: true
 ---
@@ -20,6 +20,10 @@ This section describes how you can call LS2 API methods by platform version.
 
   - [webOS OSE 2.0 or higher](#webos-ose-2-0-or-higher)
   - [webOS OSE 1.x](#webos-ose-1-x)
+
+{{< note >}}
+The Enact framework includes a webOS support module for interfacing with LS2. To call LS2 API in the Enact framework, please refer to the [Luna Service API](https://enactjs.com/docs/developer-guide/webos/luna-service-api/) in the Enact documentation.
+{{< /note >}}
 
 ### webOS OSE 2.0 or higher
 

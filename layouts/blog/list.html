@@ -41,12 +41,21 @@
                     <a href="{{ .Permalink }}">
                       <div class=" ">
                         {{ if eq .Params.posttype "release" }}
+                        {{ if isset .Params "thumbnail" }}
+                        <div class="card-image thumbnail">
+                          <figure class="image is-4by3">
+                            <img src="{{ print "/images/blog/thumbnails/" .Params.thumbnail | relURL }}"
+                              alt="{{ .Params.title }}">
+                          </figure>
+                        </div>
+                        {{ else }}
                         <div class="card-image thumbnail">
                           <figure class="image is-4by3">
                             <img src="{{ "/images/blog/thumbnails/th-release.png" | relURL }}"
                               alt="{{ .Params.title }}">
                           </figure>
                         </div>
+                        {{ end }}
                         {{ else if eq .Params.posttype "news" }}
                         {{ if isset .Params "thumbnail" }}
                         <div class="card-image thumbnail">

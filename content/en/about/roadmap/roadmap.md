@@ -1,6 +1,6 @@
 ---
 title: Roadmap
-date: 2020-06-17
+date: 2021-10-22
 weight: 10
 toc: false
 ---
@@ -37,28 +37,40 @@ The following shows a roadmap of webOS Open Source Edition (OSE).
 <li>Yocto Upgrade</li>
 </ul></td>
 <td><ul>
-<li>Qt Upgrade to 5.12</li>
+<li>Qt Upgrade to 6.2</li>
 <li>FOTA</li>
 <li>Dual-Display Support</li>
 <li>Smack Integration</li>
 <li>SoftAP</li>
-<li>Chromium Upgrade to 72</li>
-<li>Chromium Upgrade to 79</li>
+<li>Chromium Upgrade to 87</li>
 <li>journald</li>
-<li>IoT profile support</li>
+<li>IoT profile Support</li>
 <li>Nyx GPS Module</li>
 <li>Hardware Acceleration (Graphics)</li>
 <li>Enable dual audio output</li>
+<li>Enact Upgrade to 4.0.3</li>
+<li>Yocto Upgrade to latest revision</li>
+<li>Improved Enact Browser</li>
+<li>Media Indexer</li>
+<li>Peripheral Manager</li>
+<li>Storage Access</li>
+<li>Unified Search</li>
+<li>Intent Manager</li>
+<li>Bluetooth Audio (Multi)</li>
+<li>AVRCP (Autio/Video Remote Control Profile) Support</li>
+<li>HFP (Hands Free Profile) Support</li>
+<li>App Mirroring</li>
+<li>Multi User Environment Support</li>
+<li>Location Service</li>
+<li>UWB (Ultra Wideband) Service</li>
 </ul></td>
 <td><ul>
-<li>Bluetooth Audio (Multi)</li>
-<li>Improve Enact Browser</li>
-<li>Intent Manager</li>
 <li>Media Index Service</li>
 <li>Improve reference UI/UX</li>
 <li>Chromium Upgrade</li>
 <li>Yocto Upgrade</li>
 <li>Qt Upgrade</li>
+<li>Sample Apps</li>
 </ul></td>
 </tr>
 </tbody>
