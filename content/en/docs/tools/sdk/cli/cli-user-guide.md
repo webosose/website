@@ -1,7 +1,7 @@
 ---
 title: User Guide
 display_title: Command-Line Interface User Guide
-date: 2021-06-22
+date: 2021-09-09
 weight: 10
 toc: true
 ---
@@ -45,10 +45,6 @@ Required version for each operating system are as follows:
 
 <div class="table-container">
   <table class="table is-bordered is-fullwidth">
-    <colgroup>
-      <col style="width: auto" />
-      <col style="width: auto" />
-    </colgroup>
     <thead>
       <tr class="header">
         <th><p>OS</p></th>

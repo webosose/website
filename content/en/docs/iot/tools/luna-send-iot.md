@@ -1,9 +1,13 @@
 ---
 title: luna-send Usage Guide
-date: 2020-03-06
+date: 2021-11-05
 weight: 10
 toc: true
 ---
+
+{{< caution >}}
+webOS IoT is supported by webOS OSE 2.4.0.
+{{< /caution >}}
 
 `luna-send` is a command-line tool accessible through a shell on a device. `luna-send` is mainly used to test calls to services accessible on the system bus through the LS2 (Luna Bus).
 

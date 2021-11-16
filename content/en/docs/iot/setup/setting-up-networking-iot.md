@@ -1,6 +1,6 @@
 ---
 title: Network Setup
-date: 2020-03-18
+date: 2021-09-13
 weight: 40
 toc: true
 ---
@@ -59,7 +59,7 @@ Basically, a driver for the cable is already included in Linux kernel. But if yo
 
 Follow the steps below to set up a serial terminal. Make sure that the target device is turned off beforehand.
 
-1. Install PuTTY.
+1. Install PuTTY on the host machine.
 
     ``` shell
     $ sudo apt update
@@ -78,7 +78,7 @@ Follow the steps below to set up a serial terminal. Make sure that the target de
 3. Check that tty device is set successfully.
 
     ``` shell
-    $ ls /dev/ttyUSB<X> # Use <X> from step 1
+    $ ls /dev/ttyUSB<X> # Use <X> from step 2
     /dev/ttyUSB<X>
     ```
 

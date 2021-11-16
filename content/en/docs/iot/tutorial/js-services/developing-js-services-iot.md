@@ -1,9 +1,13 @@
 ---
 title: Developing JS Services
-date: 2019-11-14
+date: 2021-11-05
 weight: 20
 toc: true
 ---
+
+{{< caution >}}
+webOS IoT is supported by webOS OSE 2.4.0.
+{{< /caution >}}
 
 To create a JS service, you must write the source code and prepare the required configuration files.
 

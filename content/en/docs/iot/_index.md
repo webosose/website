@@ -1,22 +1,22 @@
 ---
 title: IoT
 section_main: true
-date: 2020-03-12
+date: 2021-11-05
 weight: 60
 ---
 
 This section provides documentation for **webOS IoT**, the IoT profile of webOS Open Source Edition (OSE).
 
-{{< note >}}
+{{< caution >}}
 webOS IoT is supported by webOS OSE 2.4.0.
-{{< /note >}}
+{{< /caution >}}
 
-* [Overview](#overview)
-* [Setup](#setup)
-* [Development](#development)
-* [Tutorial](#tutorial)
-* [Reference](#reference)
-* [Tools](#tools)
+- [Overview](#overview)
+- [Setup](#setup)
+- [Development](#development)
+- [Tutorial](#tutorial)
+- [Reference](#reference)
+- [Tools](#tools)
 
 ## Overview
 

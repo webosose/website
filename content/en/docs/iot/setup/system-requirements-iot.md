@@ -1,9 +1,13 @@
 ---
 title: System Requirements
-date: 2020-03-17
+date: 2021-11-05
 weight: 10
 toc: true
 ---
+
+{{< caution >}}
+webOS IoT is supported by webOS OSE 2.4.0.
+{{< /caution >}}
 
 Before you set up an environment for webOS IoT development, make sure that you prepare the target device and systems that meet the following requirements.
 

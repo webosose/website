@@ -1,9 +1,13 @@
 ---
 title: Overview
-date: 2020-03-10
+date: 2021-11-05
 weight: 10
 toc: true
 ---
+
+{{< caution >}}
+webOS IoT is supported by webOS OSE 2.4.0.
+{{< /caution >}}
 
 This page explains general concepts related to JavaScript services (JS services) for webOS IoT.
 

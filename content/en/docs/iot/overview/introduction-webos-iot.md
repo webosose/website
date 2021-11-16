@@ -1,9 +1,13 @@
 ---
 title: Introduction
-date: 2020-02-19
+date: 2021-11-05
 weight: 10
 toc: true
 ---
+
+{{< caution >}}
+webOS IoT is supported by webOS OSE 2.4.0.
+{{< /caution >}}
 
 **webOS IoT** is an IoT profile of webOS Open Source Edition (OSE), which can be used for devices without a display. webOS IoT image is built by aggregating the subset of webOS OSE components in order to support connectivity-related features while excluding display and multimedia capabilities.
 
