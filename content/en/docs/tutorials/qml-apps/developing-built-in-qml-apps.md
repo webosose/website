@@ -1,6 +1,6 @@
 ---
 title: Developing Built-in QML Apps
-date: 2021-03-23
+date: 2021-11-24
 weight: 20
 toc: true
 ---
@@ -386,31 +386,31 @@ After building the app, you must verify its functionality.
     ├── com.example.app.qml.pro
     ├── icon.png
     ├── main.qml
-    ├── oe-logs -> /home/username/build/build-webos/BUILD/work/raspberrypi4-webos-linux-gnueabi/com.example.app.qml/1.0.0-r0.local0/temp
-    └── oe-workdir -> /home/username/build/build-webos/BUILD/work/raspberrypi4-webos-linux-gnueabi/com.example.app.qml/1.0.0-r0.local0
+    ├── oe-logs -> /home/username/build/build-webos/BUILD/work/raspberrypi4_64-webos-linux-gnueabi/com.example.app.qml/1.0.0-r0.local0/temp
+    └── oe-workdir -> /home/username/build/build-webos/BUILD/work/raspberrypi4_64-webos-linux-gnueabi/com.example.app.qml/1.0.0-r0.local0
     ```
 
-    If you go to `oe-workdir/deploy-ipks/raspberrypi4`, you can see `com.example.app.qml_1.0.0-r0.local0_raspberrypi4.ipk` file.
+    If you go to `oe-workdir/deploy-ipks/raspberrypi4_64`, you can see `com.example.app.qml_1.0.0-r0.local0_raspberrypi4_64.ipk` file.
 
     ``` bash
-    com.example.app.qml/oe-workdir/deploy-ipks/raspberrypi4$
-    └── com.example.app.qml_1.0.0-r0.local0_raspberrypi4.ipk
+    com.example.app.qml/oe-workdir/deploy-ipks/raspberrypi4_64$
+    └── com.example.app.qml_1.0.0-r0.local0_raspberrypi4_64.ipk
     ```
 
     Copy the IPK file to the target device using the `scp` command.
 
     ``` bash
-    ~/project/com.example.app.qml/oe-workdir/deploy-ipks/raspberrypi4$ scp com.example.app.qml_1.0.0-r0.local0_raspberrypi4.ipk root@<target IP address>:/media/internal/downloads/
+    ~/project/com.example.app.qml/oe-workdir/deploy-ipks/raspberrypi4_64$ scp com.example.app.qml_1.0.0-r0.local0_raspberrypi4_64.ipk root@<target IP address>:/media/internal/downloads/
     ```
 
 2.  **Install the app on the target.**
 
-    Connect to the target using the `ssh` command and install `com.example.app.qml_1.0.0-r0.local0_raspberrypi4.ipk`.
+    Connect to the target using the `ssh` command and install `com.example.app.qml_1.0.0-r0.local0_raspberrypi4_64.ipk`.
 
     ``` bash
     $ ssh root@<target IP address>
-    root@raspberrypi4:/sysroot/home/root# cd /media/internal/downloads/
-    root@raspberrypi4:/media/internal/downloads# opkg install com.example.app.qml_1.0.0-r0.local0_raspberrypi4.ipk
+    root@raspberrypi4-64:/sysroot/home/root# cd /media/internal/downloads/
+    root@raspberrypi4-64:/media/internal/downloads# opkg install com.example.app.qml_1.0.0-r0.local0_raspberrypi4_64.ipk
     Installing com.example.app.qml (1.0.0) on root.
     Configuring com.example.app.qml.
     ```
@@ -420,7 +420,7 @@ After building the app, you must verify its functionality.
     To make LS2 daemon scan the LS2 configuration files of the app, use the `ls-control` command as follows.
 
     ``` bash
-    root@raspberrypi4:/media/internal/downloads# ls-control scan-services
+    root@raspberrypi4-64:/media/internal/downloads# ls-control scan-services
       telling hub to reload setting and rescan all directories
     ```
 
@@ -433,7 +433,7 @@ After building the app, you must verify its functionality.
     To make System and Application Manager (SAM) scan the app, restart SAM using the `systemctl` command. This step is required so that the app can be added to the app list, which in turn makes the app appear on the Home Launcher.
 
     ``` bash
-    root@raspberrypi4:/# systemctl restart sam
+    root@raspberrypi4-64:/# systemctl restart sam
     ```
 
     {{< note >}}
@@ -459,7 +459,7 @@ After building the app, you must verify its functionality.
         You can check whether the app is running by using SAM. For more SAM methods, see [com.webos.service.applicationmanager]({{< relref "com-webos-service-applicationmanager" >}}).
 
         ``` bash
-        root@raspberrypi4:/# luna-send -i -f luna://com.webos.service.applicationmanager/running '{"subscribe":true}'
+        root@raspberrypi4-64:/# luna-send -i -f luna://com.webos.service.applicationmanager/running '{"subscribe":true}'
         {
             "subscribed": true,
             "running": [
@@ -488,36 +488,15 @@ After building the app, you must verify its functionality.
 
         You can use the `journalctl` command on the target for debugging the QML app. For details on how to use the command, see [Viewing Logs]({{< relref "viewing-logs-journald#using-journalctl-to-view-logs" >}}).
 
-        - When the app is first launched on launcher
+        ``` bash
+        root@raspberrypi4-64:/# journalctl | grep UTC
 
-            The app is launched and registered to SAM by qml-runner. The app gets the `params` value from qml-runner. As the app is in the foreground, windowState value is "4".
-
-            ``` plaintext
-            Nov 13 21:44:56 raspberrypi4 qml-runner[1406]: [] [pmlog] QMLApp LAUNCH_PARAMS {"params": {}}
-            Nov 13 21:44:56 raspberrypi4 qml-runner[1406]: [] [pmlog] QMLApp WINDOW_CHANGED {"status": 4}
-            ```
-
-        - When the app gs to the background by launching another app, windowState is changed to "1".
-
-            ``` plaintext
-            Nov 13 21:49:24 raspberrypi4 qml-runner[1406]: [] [pmlog] QMLApp WINDOW_CHANGED {"status": 1}
-            ```
-
-        - When relaunching the app while the app is in the foreground and running
-
-            Specify the `params` parameter to pass specific values to the app via SAM, as follows:
-
-            ``` bash
-            root@raspberrypi4:/# luna-send -n 1 luna://com.webos.service.applicationmanager/launch '{"id":"com.example.app.qml", "params" : {"test":"key1"}}'
-            ```
-
-            See the log.
-
-            ``` plaintext
-            Nov 13 21:54:06 raspberrypi4 qml-runner[1406]: [] [pmlog] QMLApp LAUNCH_PARAMS {"params": {"test": "key1"}}
-            Nov 13 21:54:06 raspberrypi4 qml-runner[1406]: [] [pmlog] QMLApp WINDOW_CHANGED {"status": 4}
-            ```
-
+        Nov 22 00:05:00 raspberrypi4-64 qml-runner[2446]: [] [pmlog] QMLApp LAUNCH_PARAMS {"params":{"displayAffinity":0}}
+        Nov 22 00:05:00 raspberrypi4-64 qml-runner[2446]: [] [pmlog] QMLApp LAUNCH_PARAMS {"params":{}}
+        Nov 22 00:05:00 raspberrypi4-64 qml-runner[2446]: [] [pmlog] QMLApp WINDOW_CHANGED {"status":4}
+        Nov 22 00:05:01 raspberrypi4-64 qml-runner[2446]: [] [pmlog] QMLApp GETTIME {"utc":1637568301}
+        ```
+        
 ## Step 5: Deploy the QML App
 
 You are now ready to build the webOS image including the QML app and flash it to the target device.
@@ -548,16 +527,16 @@ Perform the following steps:
 2.  Build the webOS image using the following commands:
 
     ``` bash
-    build-webos$ source -init-build-env
+    build-webos$ source oe-init-build-env
     build-webos$ bitbake webos-image
     ```
 
 3.  Flash the generated webOS image to the SD card.
 
-    - **Path to image:** `build-webos/BUILD/deploy/images/raspberrypi4/webos-image-raspberrypi4-master-yyyymmddhhmmss.wic`
+    - **Path to image:** `build-webos/BUILD/deploy/images/raspberrypi4-64/webos-image-raspberrypi4-64.rootfs.wic`
 
     ``` bash
-    build-webos/BUILD/deploy/images/raspberrypi4$ sudo dd bs=4M if=webos-image-raspberrypi4-master-yyyymmddhhmmss.wic of=/dev/sdc
+    build-webos/BUILD/deploy/images/raspberrypi4-64$ sudo dd bs=4M if=webos-image-raspberrypi4-64.rootfs.wic of=/dev/sdc
     ```
 
     For more details, see the [Flashing webOS OSE]({{< relref "flashing-webos-ose#linux" >}}) page.

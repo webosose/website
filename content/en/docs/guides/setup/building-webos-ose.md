@@ -1,7 +1,7 @@
 ---
 title: Building webOS OSE
 display_title: Building webOS Open Source Edition
-date: 2019-10-24
+date: 2021-11-24
 weight: 20
 toc: true
 ---
@@ -83,9 +83,16 @@ $ ./mcf -p <number of physical CPU cores / 2> -b <number of physical CPU cores /
 
 Currently, the available `<target-device-name>` are as follows:
 
-* `raspberrypi4` (for webOS OSE 2.0 or higher)
-* `raspberrypi3` (for webOS OSE 1.x version)
-* `qemux86` (for emulator)
+* `raspberrypi4` (for 32-bit webOS OSE 2.0 or higher)
+* `raspberrypi4-64` (for 64-bit webOS OSE 2.0 or higher)
+* `raspberrypi3` (for 32-bit webOS OSE 1.x version)
+* `raspberrypi3-64` (for 64-bit webOS OSE 1.x version)
+* `qemux86` (for 32-bit emulator)
+* `qemux86-64` (for 64-bit emulator)
+
+{{< note >}}
+64-bit emulator is supported by webOS OSE 2.14.0 or higher.
+{{< /note >}}
 
 ## Building the Image
 
@@ -142,9 +149,15 @@ $ bitbake webos-image-devel
 
 To see if the image has been created successfully, check the following files:
 
-* For Raspberry Pi 4, the resulting image will be created at `BUILD/deploy/images/raspberrypi4/webos-image-raspberrypi4.rootfs.wic`.
-* For Raspberry Pi 3, the resulting image will be created at `BUILD/deploy/images/raspberrypi3/webos-image-raspberrypi3.rootfs.rpi-sdimg`.
-* For the emulator, the resulting image will be created at `BUILD/deploy/images/qemux86/webos-image-qemux86-master-*-wic.vmdk`.
+* For Raspberry Pi 4, the resulting image will be created at
+  * 32-bit: `BUILD/deploy/images/raspberrypi4/webos-image-raspberrypi4.rootfs.wic`.
+  * 64-bit: `BUILD/deploy/images/raspberrypi4-64/webos-image-raspberrypi4-64.rootfs.wic`.
+* For Raspberry Pi 3, the resulting image will be created at
+  * 32-bit: `BUILD/deploy/images/raspberrypi3/webos-image-raspberrypi3.rootfs.rpi-sdimg`.
+  * 64-bit: `BUILD/deploy/images/raspberrypi3-64/webos-image-raspberrypi3-64.rootfs.rpi-sdimg`.
+* For the emulator, the resulting image will be created at
+  * 32-bit: `BUILD/deploy/images/qemux86/webos-image-qemux86-master-*-wic.vmdk`.
+  * 64-bit: `BUILD/deploy/images/qemux86-64/webos-image-qemux86-64-master-*-wic.vmdk`.
 
 Once you checked the image file, move on to the [Next Steps]({{< relref "#next-steps" >}}).
 

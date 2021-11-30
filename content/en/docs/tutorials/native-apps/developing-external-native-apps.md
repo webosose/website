@@ -1,6 +1,6 @@
 ---
 title: Developing External Native Apps
-date: 2020-07-03
+date: 2021-11-24
 weight: 10
 toc: true
 ---
@@ -150,7 +150,7 @@ set(SRC_LIST
         ${CMAKE_SOURCE_DIR}/src/wayland_egl.c
 )
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/pkg_$ENV{ARCH}/")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/pkg_$ENV{OECORE_TARGET_ARCH}/")
 add_executable(${BIN_NAME} ${SRC_LIST})
 set_target_properties(${BIN_NAME} PROPERTIES LINKER_LANGUAGE C)
 
@@ -221,10 +221,10 @@ To package the native app, use the `ares-package` command. The packaged file is 
 
 ``` bash
 $ cd ..
-$ ares-package pkg_arm
+$ ares-package pkg_aarch64
 ```
 
-In the above command, `pkg_arm` is the native app directory. You can use an absolute or relative path. Also, you can package the app with a service. For more details on using `ares-package`, see [ares-package]({{< relref "cli-user-guide#ares-package" >}}).
+In the above command, `pkg_aarch64` is the native app directory. You can use an absolute or relative path. Also, you can package the app with a service. For more details on using `ares-package`, see [ares-package]({{< relref "cli-user-guide#ares-package" >}}).
 
 ## Step 5: Install the Native App
 
@@ -236,13 +236,13 @@ In the above command, `pkg_arm` is the native app directory. You can use an abso
 To install the native app on the target device, execute the following command:
 
 ``` bash
-$ ares-install ./com.sample.waylandegl_0.0.1_arm.ipk -d <TARGET_DEVICE>
+$ ares-install ./com.sample.waylandegl_0.0.1_aarch64.ipk -d <TARGET_DEVICE>
 ```
 
 In the above command:
 
 - `<TARGET_DEVICE>` is the name of the target device.
-- `./com.sample.waylandegl_0.0.1_arm.ipk` is the name of the IPK file that is generated after packaging the app in the previous step.
+- `./com.sample.waylandegl_0.0.1_aarch64.ipk` is the name of the IPK file that is generated after packaging the app in the previous step.
 
 If the installation is successful, a `Success` message will appear.
 

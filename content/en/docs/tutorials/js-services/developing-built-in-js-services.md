@@ -1,6 +1,6 @@
 ---
 title: Developing Built-in JS Services
-date: 2021-07-01
+date: 2021-11-24
 weight: 20
 toc: true
 ---
@@ -10,7 +10,7 @@ To create a built-in JS service, you must write the source code and prepare the 
 For easier understanding, the process to create a built-in JS service is explained using using a sample service in [Sample Code Repository](https://github.com/webosose/samples). The sample service has the following methods:
 
 - **`hello`** - Calling this method on the target gives response as "Hello, JS Service!!".
-- **`locale`** - Calls methods of another service and gets a value from it.
+- **`time`** - Calls methods of another service and gets a value from it.
 
 The directory structure of the sample service must be as follows:
 
@@ -91,7 +91,7 @@ A brief explanation of the above file:
 - Line(1) : Load the webos-service module. For more details about webos-service, see [webos-service Library API Reference.]({{< relref "webos-service-library-api-reference" >}})
 - Line(4) : Register the JS Service.
 - Line(7~12) : Register the `hello` method which responds to a request with a "Hello, JS Service!!" message
-- Line(15~21) : Register the `locale` method. This method gets the value of locale information from the response received by calling settingsservice's `getSystemSettings` method.
+- Line(15~21) : Register the `time` method. This method gets the value of UTC information from the response received by calling settingsservice's `getSystemSettings` method.
 
 ### README.md
 
@@ -409,31 +409,31 @@ After building the service, you must verify its functionality.
     │   └── com.example.service.js.service.in
     ├── com_example_service_js.js
     ├── package.json
-    ├── oe-logs -> /home/username/build/build-webos/BUILD/work/raspberrypi4-webos-linux/com.example.service.js/0.0.1-r0.local0/temp
-    ├── oe-workdir -> /home/username/build/build-webos/BUILD/work/raspberrypi4-webos-linux/com.example.service.js/0.0.1-r0.local0
+    ├── oe-logs -> /home/username/build/build-webos/BUILD/work/raspberrypi4_64-webos-linux/com.example.service.js/0.0.1-r0.local0/temp
+    ├── oe-workdir -> /home/username/build/build-webos/BUILD/work/raspberrypi4_64-webos-linux/com.example.service.js/0.0.1-r0.local0
     ```
 
-    If you go to `oe-workdir/deploy-ipks/raspberrypi4`, you can see `com.example.service.js_0.0.1-r0.local0_raspberrypi4.ipk` file.
+    If you go to `oe-workdir/deploy-ipks/raspberrypi4_64`, you can see `com.example.service.js_0.0.1-r0.local0_raspberrypi4_64.ipk` file.
 
     ``` bash
-    com.example.service.js/oe-workdir/deploy-ipks/raspberrypi4
-    └── com.example.service.js_0.0.1-r0.local0_raspberrypi4.ipk
+    com.example.service.js/oe-workdir/deploy-ipks/raspberrypi4_64
+    └── com.example.service.js_0.0.1-r0.local0_raspberrypi4_64.ipk
     ```
 
     Copy the IPK file to the target device using the `scp` command.
 
     ``` bash
-    com.example.service.js/oe-workdir/deploy-ipks/raspberrypi4$ scp com.example.service.js_0.0.1-r0.local0_raspberrypi4.ipk root@<target IP address>:/media/internal/downloads
+    com.example.service.js/oe-workdir/deploy-ipks/raspberrypi_64$ scp com.example.service.js_0.0.1-r0.local0_raspberrypi4_64.ipk root@<target IP address>:/media/internal/downloads
     ```
 
 2.  **Install the service on the target.**
 
-    Connect to the target using the `ssh` command and install `com.example.service.js_0.0.1-r0.local0_raspberrypi4.ipk`.
+    Connect to the target using the `ssh` command and install `com.example.service.js_0.0.1-r0.local0_raspberrypi4_64.ipk`.
 
     ``` bash
     $ ssh root@<target IP address>
-    root@raspberrypi4:/sysroot/home/root# cd /media/internal/downloads/
-    root@raspberrypi4:/media/internal/downloads# opkg install com.example.service.js_0.0.1-r0.local0_raspberrypi4.ipk
+    root@raspberrypi4-64:/sysroot/home/root# cd /media/internal/downloads/
+    root@raspberrypi4-64:/media/internal/downloads# opkg install com.example.service.js_0.0.1-r0.local0_raspberrypi4_64.ipk
 
     Installing com.example.service.js (0.0.1) on root.
     Configuring com.example.service.js.
@@ -444,7 +444,7 @@ After building the service, you must verify its functionality.
     To make LS2 daemon scan the LS2 configuration files of the service, use the `ls-control` command as follows.
 
     ``` bash
-    root@raspberrypi4:/media/internal/downloads# ls-control scan-services
+    root@raspberrypi4-64:/media/internal/downloads# ls-control scan-services
 
     telling hub to reload setting and rescan all directories
     ```
@@ -460,20 +460,20 @@ After building the service, you must verify its functionality.
     Calling the **`hello`** method:
 
     ``` bash
-    root@raspberrypi4:/# luna-send -n 1 -f luna://com.example.service.js/hello '{}'
+    root@raspberrypi4-64:/# luna-send -n 1 -f luna://com.example.service.js/hello '{}'
     {
         "answer": "Hello, JS Service!!",
         "returnValue": true
     }
     ```
 
-    Calling the **`locale`** method:
+    Calling the **`time`** method:
 
     ``` bash
-    root@raspberrypi4:/# luna-send -n 1 -f luna://com.example.service.js/locale '{}'
+    root@raspberrypi4-64:/# luna-send -n 1 -f luna://com.example.service.js/time '{}'
     {
-        "message": "You appear to have your locale set to: en-US",
-        "returnValue": true
+        "returnValue": true,
+        "message": "You appear to have your UTC set to: 1637558075"
     }
     ```
 
@@ -482,22 +482,22 @@ After building the service, you must verify its functionality.
     You can use the `journalctl` command on the target for debugging the js service. For details on how to use the command, see [Viewing Logs]({{< relref "viewing-logs-journald#using-journalctl-to-view-logs" >}}).
 
     ``` bash
-    root@raspberrypi4:/# journalctl | grep exampleJSService
+    root@raspberrypi4-64:/# journalctl | grep com.example.service.js
 
-    Nov 13 21:05:59 raspberrypi4 le.service.js[1300]: [] [pmlog] exampleJSService LOCALE_CALLBACK {"SERVICE_NAME":"exampleJSService"} get locale response
+    Nov 21 20:52:53 raspberrypi4-64 ls-hubd[2191]: [com.example.service.js] SERVICE_METHOD_CALLED:hello
     ```
 
     If you check the result of `ls-monitor` immediately after calling the **`com.example.service.js/hello`** method, you can see that the service is executed dynamically.
 
     ``` bash
-    root@raspberrypi4:/# ls-monitor -l | grep example
+    root@raspberrypi4-64:/# ls-monitor -l | grep example
     868           com.example.service.js            /usr/bin/node                          dynamic                 K4Nuvsrx
     ```
 
     If the service is not used for 5 seconds, it is terminated. Run the `ls-monitor` command again after about 5 seconds, and you will see that the service has been terminated.
 
     ``` bash
-    root@raspberrypi4:/# ls-monitor -l | grep example
+    root@raspberrypi4-64:/# ls-monitor -l | grep example
     ```
 
 ## Step 5: Deploy the JS Service
@@ -538,10 +538,10 @@ build-webos$ bitbake webos-image
 
 Flash the updated webOS image to the SD card.
 
-**Path of webOS image :** `build-webos/BUILD/deploy/images/raspberrypi4/webos-image-raspberrypi4-master-yyyymmddhhmmss.wic`
+**Path of webOS image :** `build-webos/BUILD/deploy/images/raspberrypi4-64/webos-image-raspberrypi4-64.rootfs.wic`
 
 ``` bash
-build-webos/BUILD/deploy/images/raspberrypi4$ sudo dd bs=4M if=webos-image-raspberrypi4-master-yyyymmddhhmmss.wic of=/dev/sdc
+build-webos/BUILD/deploy/images/raspberrypi4-64$ sudo dd bs=4M if=webos-image-raspberrypi4-64.rootfs.wic of=/dev/sdc
 ```
 
 For more details, see the [Flashing webOS OSE]({{< relref "flashing-webos-ose#linux" >}}) page.
@@ -549,11 +549,11 @@ For more details, see the [Flashing webOS OSE]({{< relref "flashing-webos-ose#li
 After booting the target device, connect to target with SSH and call `com.example.service.js` and check `ls-monitor`. You will see that the service is executed as a dynamic type.
 
 ``` bash
-root@raspberrypi4:/# luna-send -n 1 -f luna://com.example.service.js/hello '{}'
+root@raspberrypi4-64:/# luna-send -n 1 -f luna://com.example.service.js/hello '{}'
 {
     "answer": "Hello, JS Service!!",
     "returnValue": true
 }
-root@raspberrypi4:/# ls-monitor -l | grep example
+root@raspberrypi4-64:/# ls-monitor -l | grep example
 931           com.example.service.js            /usr/bin/node                          dynamic                 MUe02Jj1
 ```

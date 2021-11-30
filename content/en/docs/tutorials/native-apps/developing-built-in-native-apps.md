@@ -1,6 +1,6 @@
 ---
 title: Developing Built-in Native Apps
-date: 2021-07-01
+date: 2021-11-24
 weight: 20
 toc: true
 ---
@@ -566,34 +566,34 @@ After building the app, you must verify its functionality.
     ├── main.cpp
     ├── MyOpenGLWindow.cpp
     ├── MyOpenGLWindow.h
-    ├── oe-logs -> /home/username/build/build-webos/BUILD/work/raspberrypi4-webos-linux-gnueabi/com.example.app.nativeqt/1.0.0-r0.local0/temp
-    ├── oe-workdir -> /home/username/build/build-webos/BUILD/work/raspberrypi4-webos-linux-gnueabi/com.example.app.nativeqt/1.0.0-r0.local0
+    ├── oe-logs -> /home/username/build/build-webos/BUILD/work/raspberrypi4_64-webos-linux-gnueabi/com.example.app.nativeqt/1.0.0-r0.local0/temp
+    ├── oe-workdir -> /home/username/build/build-webos/BUILD/work/raspberrypi4_64-webos-linux-gnueabi/com.example.app.nativeqt/1.0.0-r0.local0
     ├── .md
     ├── ServiceRequest.cpp
     └── ServiceRequest.h
     ```
 
-    If you go to `oe-workdir/deploy-ipks/raspberrypi4`, you can see `com.example.app.nativeqt_1.0.0-r0.local0_raspberrypi4.ipk` file.
+    If you go to `oe-workdir/deploy-ipks/raspberrypi4_64`, you can see `com.example.app.nativeqt_1.0.0-r0.local0_raspberrypi4_64.ipk` file.
 
     ``` bash
-    com.example.app.nativeqt/oe-workdir/deploy-ipks/raspberrypi4$
-    └── com.example.app.nativeqt_1.0.0-r0.local0_raspberrypi4.ipk
+    com.example.app.nativeqt/oe-workdir/deploy-ipks/raspberrypi4_64$
+    └── com.example.app.nativeqt_1.0.0-r0.local0_raspberrypi4_64.ipk
     ```
 
     Copy the IPK file to the target device using the `scp` command.
 
     ``` bash
-    com.example.app.nativeqt/oe-workdir/deploy-ipks/raspberrypi4$ scp com.example.app.nativeqt_1.0.0-r0.local0_raspberrypi4.ipk root@<target IP address>:/media/internal/downloads/
+    com.example.app.nativeqt/oe-workdir/deploy-ipks/raspberrypi4_64$ scp com.example.app.nativeqt_1.0.0-r0.local0_raspberrypi4_64.ipk root@<target IP address>:/media/internal/downloads/
     ```
 
 2.  **Install the app on the target.**
 
-    Connect to the target using the `ssh` command and install `com.example.app.nativeqt_1.0.0-r0.local0_raspberrypi4.ipk`.
+    Connect to the target using the `ssh` command and install `com.example.app.nativeqt_1.0.0-r0.local0_raspberrypi4_64.ipk`.
 
     ``` bash
     $ ssh root@<target IP address>
-        root@raspberrypi4:/sysroot/home/root# cd /media/internal/downloads/
-        root@raspberrypi4:/media/internal/downloads# opkg install com.example.app.nativeqt_1.0.0-r0.local0_raspberrypi4.ipk
+        root@raspberrypi4-64:/sysroot/home/root# cd /media/internal/downloads/
+        root@raspberrypi4-64:/media/internal/downloads# opkg install com.example.app.nativeqt_1.0.0-r0.local0_raspberrypi4_64.ipk
         Installing com.example.app.nativeqt (1.0.0) on root.
         Configuring com.example.app.nativeqt.
     ```
@@ -603,7 +603,7 @@ After building the app, you must verify its functionality.
     To make LS2 daemon scan the LS2 configuration files of the app, use the `ls-control` command as follows.
 
     ``` bash
-    root@raspberrypi4:/media/internal/downloads# ls-control scan-services
+    root@raspberrypi4-64:/media/internal/downloads# ls-control scan-services
 
         telling hub to reload setting and rescan all directories
     ```
@@ -617,7 +617,7 @@ After building the app, you must verify its functionality.
     To make System and Application Manager (SAM) scan the app, restart SAM using the `systemctl` command. This step is required so that the app can be added to the app list, which in turn makes the app appear on the Home Launcher.
 
     ``` bash
-    root@raspberrypi4:/# systemctl restart sam
+    root@raspberrypi4-64:/# systemctl restart sam
     ```
 
     {{< note >}}
@@ -643,7 +643,7 @@ After building the app, you must verify its functionality.
         You can check whether the app is running by using SAM. For more SAM methods, see [com.webos.service.applicationmanager]({{< relref "com-webos-service-applicationmanager" >}}).
 
         ``` bash
-        root@raspberrypi4:/# luna-send -i -f luna://com.webos.service.applicationmanager/running '{"subscribe":true}'
+        root@raspberrypi4-64:/# luna-send -i -f luna://com.webos.service.applicationmanager/running '{"subscribe":true}'
         {
             "subscribed": true,
             "running": [
@@ -666,55 +666,21 @@ After building the app, you must verify its functionality.
 
         You can use the `journalctl` command on the target for debugging the native app.
 
-        - When the app is first launched
+        Launch the app when the app is in the foreground, and the “relaunch” event is received.
+        
+        ``` bash
+        root@raspberrypi4-64:/# luna-send -n 1 -f luna://com.webos.service.applicationmanager/launch '{"id":"com.example.app.nativeqt", "params":{"test":"key2"}}
+        ```
 
-            When the app is first launched by SAM's `launch` method with "params", arguments passed from SAM is printed on the logging file.
+        See the log file.
 
-            ``` bash
-            root@raspberrypi4:/# luna-send -n 1 -f luna://com.webos.service.applicationmanager/launch '{"id":"com.example.app.nativeqt", "params":{"test":"key1"}}'
-            ```
+        ``` bash
+        root@raspberrypi4-64:/#journalctl | grep NativeQtApp
 
-            See the log file.
-
-            ``` bash
-            Nov 18 21:05:47 raspberrypi4 nativeqt[1791]: [] [pmlog] NativeQtApp MAIN_ARGV1 {"argv":{"event":"launch","reason":"","appId":"com.example.app.nativeqt","interfaceVersion":2,"parameters":{"test":"key1"},"interfaceMethod":"registerApp","@system_native_app":true}}
-            ```
-
-        - When the app is registered by SAM successfully, it gets the "registered" event in response from SAM.
-
-            See the log file.
-
-            ``` bash
-            Nov 18 21:05:47 raspberrypi4 nativeqt[1791]: [] [pmlog] NativeQtApp REGISTER_CALLBACK {"payload":{"event":"registered","returnValue":true}}
-            Nov 18 21:05:47 raspberrypi4 nativeqt[1791]: [] [pmlog] NativeQtApp REGISTER_CALLBACK {"event":"registered"}
-            ```
-
-        - Launch the app when the app is in the foreground, and the "relaunch" event is received.
-
-            ``` bash
-            root@raspberrypi4:/# luna-send -n 1 -f luna://com.webos.service.applicationmanager/launch '{"id":"com.example.app.nativeqt", "params":{"test":"key2"}}
-            ```
-
-            See the log file.
-
-            ``` bash
-            Nov 18 21:07:40 raspberrypi4 nativeqt[1791]: [] [pmlog] NativeQtApp REGISTER_CALLBACK {"payload":{"event":"relaunch","reason":"","appId":"com.example.app.nativeqt","parameters":{"test":"key2"},"returnValue":true}}
-            Nov 18 21:07:40 raspberrypi4 nativeqt[1791]: [] [pmlog] NativeQtApp REGISTER_CALLBACK {"event":"relaunch"}
-            Nov 18 21:07:40 raspberrypi4 nativeqt[1791]: [] [pmlog] NativeQtApp REGISTER_CALLBACK {"parameters":{"test":"key2"}}
-            ```
-
-        - Close the app via SAM's `closeByAppId` method, and the "close" event is received.
-
-            ``` bash
-            root@raspberrypi4:/# luna-send -n 1 -f luna://com.webos.service.applicationmanager/closeByAppId '{"id":"com.example.app.nativeqt"}'
-            ```
-
-            See the log file.
-
-            ``` bash
-            Nov 18 21:08:48 raspberrypi4 nativeqt[1791]: [] [pmlog] NativeQtApp REGISTER_CALLBACK {"payload":{"event":"close","reason":"undefined","returnValue":true}}
-            Nov 18 21:08:48 raspberrypi4 nativeqt[1791]: [] [pmlog] NativeQtApp REGISTER_CALLBACK {"event":"close"}
-            ```
+        Dec 31 16:00:35 raspberrypi4-64 nativeqt[1538]: [] [pmlog] NativeQtApp REGISTER_CALLBACK {"payload":{"event":"relaunch","returnValue":true,"appId":"com.example.app.nativeqt","message":"relaunch","parameters":{"test":"key2","displayAffinity":0},"reason":"com.webos.lunasend-1552"}}
+        Dec 31 16:00:35 raspberrypi4-64 nativeqt[1538]: [] [pmlog] NativeQtApp REGISTER_CALLBACK {"event":"relaunch"}
+        Dec 31 16:00:35 raspberrypi4-64 nativeqt[1538]: [] [pmlog] NativeQtApp REGISTER_CALLBACK {"parameters":{"test":"key2","displayAffinity":0}}
+        ```
 
 ## Step 5: Deploy the Native App
 
@@ -750,10 +716,10 @@ Perform the following steps:
 
 3.  Flash the generated webOS image to the SD card.
 
-    **Path to image:** `build-webos/BUILD/deploy/images/raspberrypi4/webos-image-raspberrypi4-master-yyyymmddhhmmss.wic`
+    **Path to image:** `build-webos/BUILD/deploy/images/raspberrypi4-64/webos-image-raspberrypi4-64.rootfs.wic`
 
     ``` bash
-    build-webos/BUILD/deploy/images/raspberrypi4$ sudo dd bs=4M if=webos-image-raspberrypi4-master-yyyymmddhhmmss.wic of=/dev/sdc
+    build-webos/BUILD/deploy/images/raspberrypi4-64$ sudo dd bs=4M if=webos-image-raspberrypi4-64.rootfs.wic of=/dev/sdc
     ```
 
     For more details, see the [Flashing webOS OSE]({{< relref "flashing-webos-ose#linux" >}}) page.

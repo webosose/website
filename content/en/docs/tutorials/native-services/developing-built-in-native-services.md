@@ -1,6 +1,6 @@
 ---
 title: Developing Built-in Native Services
-date: 2021-03-23
+date: 2021-11-24
 weight: 20
 toc: true
 ---
@@ -582,31 +582,31 @@ After building the service, you must verify its functionality.
     │   └── systemd
     │       └── com.example.service.native.service.in
     ├── main.cpp
-    ├── oe-logs -> /home/username/build/build-webos/BUILD/work/raspberrypi4-webos-linux/com.example.service.native/0.0.1-r0.local0/temp
-    ├── oe-workdir -> /home/username/build/build-webos/BUILD/work/raspberrypi4-webos-linux/com.example.service.native/0.0.1-r0.local0
+    ├── oe-logs -> /home/username/build/build-webos/BUILD/work/raspberrypi4_64-webos-linux/com.example.service.native/0.0.1-r0.local0/temp
+    ├── oe-workdir -> /home/username/build/build-webos/BUILD/work/raspberrypi4_64-webos-linux/com.example.service.native/0.0.1-r0.local0
     ```
 
-    If you go to `oe-workdir/deploy-ipks/raspberrypi4`, you can see `com.example.service.native_0.0.1-r0.local0_raspberrypi4.ipk` file.
+    If you go to `oe-workdir/deploy-ipks/raspberrypi4_64`, you can see `com.example.service.native_0.0.1-r0.local0_raspberrypi4_64.ipk` file.
 
     ``` bash
-    com.example.service.native/oe-workdir/deploy-ipks/raspberrypi4
-    └── com.example.service.native_0.0.1-r0.local0_raspberrypi4.ipk
+    com.example.service.native/oe-workdir/deploy-ipks/raspberrypi4_64
+    └── com.example.service.native_0.0.1-r0.local0_raspberrypi4_64.ipk
     ```
 
     Copy the IPK file to the target device using the `scp` command.
 
     ``` bash
-    com.example.service.native/oe-workdir/deploy-ipks/raspberrypi4$ scp com.example.service.native_0.0.1-r0.local0_raspberrypi4.ipk root@<target IP address>:/media/internal/downloads
+    com.example.service.native/oe-workdir/deploy-ipks/raspberrypi4_64$ scp com.example.service.native_0.0.1-r0.local0_raspberrypi4_64.ipk root@<target IP address>:/media/internal/downloads
     ```
 
 2.  **Install the service on the target.**
 
-    Connect to the target using the `ssh` command and install `com.example.service.native_0.0.1-r0.local0_raspberrypi4.ipk`.
+    Connect to the target using the `ssh` command and install `com.example.service.native_0.0.1-r0.local0_raspberrypi4_64.ipk`.
 
     ``` bash
     $ ssh root@<target IP address>
-    root@raspberrypi4:/sysroot/home/root# cd /media/internal/downloads/
-    root@raspberrypi4:/media/internal/downloads# opkg install com.example.service.native_0.0.1-r0.local0_raspberrypi4.ipk
+    root@raspberrypi4-64:/sysroot/home/root# cd /media/internal/downloads/
+    root@raspberrypi4-64:/media/internal/downloads# opkg install com.example.service.native_0.0.1-r0.local0_raspberrypi4_64.ipk
 
     Installing com.example.service.native (0.0.1) on root.
     Configuring com.example.service.native.
@@ -617,7 +617,7 @@ After building the service, you must verify its functionality.
     To make LS2 daemon scan the LS2 configuration files of the service, use the `ls-control` command as follows.
 
     ``` bash
-    root@raspberrypi4:/media/internal/downloads# ls-control scan-services
+    root@raspberrypi4-64:/media/internal/downloads# ls-control scan-services
 
     telling hub to reload setting and rescan all directories
     ```
@@ -627,7 +627,7 @@ After building the service, you must verify its functionality.
     You can run the **`com.example.service.native`** using the `systemctl` command.
 
     ``` bash
-    root@raspberrypi4:/# systemctl start com.example.service.native
+    root@raspberrypi4-64:/# systemctl start com.example.service.native
     ```
 
 5.  **Verify the execution of the service.**
@@ -645,27 +645,16 @@ After building the service, you must verify its functionality.
                    └─3264 /usr/sbin/com.example.service.native
         ```
 
-    - Using `ls-monitor`
-
-        You can use `ls-monitor` to check whether the service is successfully registered. It also shows the methods available in the service. For more detail about ls-monitor, see [ls-monitor]({{< relref "ls-monitor" >}}).
-
-        ``` bash
-        root@raspberrypi4:/#ls-monitor -i com.example.service.native
-
-          "/":
-              "hello": {"provides":["all","com.example.service.native.group"]}
-        ```
-
     - Using the log file
 
         You can use the `journalctl` command on the target for debugging the native service. For details on how to use the command, see [Viewing Logs]({{< relref "viewing-logs-journald#using-journalctl-to-view-logs" >}}).
 
         ``` bash
-        root@raspberrypi4:/# journalctl -f | grep NativeService
+        root@raspberrypi4-64:/# journalctl -f | grep NativeService
 
-        Nov 13 23:26:28 raspberrypi4 com.example.service.native[1306]: [] [pmlog] NativeService SERVICE_MAIN {} start com.example.service.native
-        Nov 13 23:26:28 raspberrypi4 com.example.service.native[1306]: [] [pmlog] NativeService GETTIME_CALLBACK {"payload":{"source":"system","offset":{"source":"system","value":0},"timestamp":{"source":"monotonic","sec":394,"nsec":730441134},"utc":1573716388,"returnValue":true,"systemTimeSource":"ntp"}}
-        Nov 13 23:26:28 raspberrypi4 com.example.service.native[1306]: [] [pmlog] NativeService GETTIME_CALLBACK {"UTC : ":1573716388}
+        Nov 22 15:56:50 raspberrypi4-64 com.example.service.native[1767]: [] [pmlog] NativeService SERVICE_MAIN {} start com.example.service.native
+        Nov 22 15:56:50 raspberrypi4-64 com.example.service.native[1767]: [] [pmlog] NativeService GETTIME_CALLBACK {"payload":{"source":"system","returnValue":true,"offset":{"source":"system","value":0},"utc":1637625410,"systemTimeSource":"ntp","timestamp":{"source":"monotonic","sec":10844,"nsec":109477350}}}
+        Nov 22 15:56:50 raspberrypi4-64 com.example.service.native[1767]: [] [pmlog] NativeService GETTIME_CALLBACK {"UTC":1637625410}
         ```
 
 6.  **Verify the Output.**
@@ -673,7 +662,7 @@ After building the service, you must verify its functionality.
     Verify the output of the `hello` Method. You can call a method by using the `luna-send` command:
 
     ``` bash
-    root@raspberrypi4:/# luna-send -n 1 -f luna://com.example.service.native/hello '{}'
+    root@raspberrypi4-64:/# luna-send -n 1 -f luna://com.example.service.native/hello '{}'
     {
         "answer": "Hello, Native Service!!",
         "returnValue": true
@@ -686,7 +675,7 @@ After building the service, you must verify its functionality.
     If `com.example.service.native` is not registered successfully, you will see a return message as below.
 
     ``` bash
-    root@raspberrypi4:/# luna-send -n 1 -f luna://com.example.service.native/hello '{}'
+    root@raspberrypi4-64:/# luna-send -n 1 -f luna://com.example.service.native/hello '{}'
     {
         "errorCode": -1,
         "returnValue": false,
@@ -806,7 +795,7 @@ Modify the **`webos-initscripts`** component which is responsible for systemd co
 2.  Flash the generated webos-image to SD card.
 
     ``` bash
-    build-webos/BUILD/deploy/images/raspberrypi4$ sudo dd bs=4M if=webos-image-raspberrypi4-master-yyyymmddhhmmss.wic of=/dev/sdc
+    build-webos/BUILD/deploy/images/raspberrypi4-64$ sudo dd bs=4M if=webos-image-raspberrypi4-64.rootfs.wic of=/dev/sdc
     ```
 
     For more details, see the [Flashing webOS OSE]({{< relref "flashing-webos-ose#linux" >}}) page.
@@ -817,6 +806,6 @@ Modify the **`webos-initscripts`** component which is responsible for systemd co
 
     ``` bash
     $ ssh root@<target IP address>
-    root@raspberrypi4:/sysroot/home/root# ls-monitor -l | grep example
+    root@raspberrypi4-64:/sysroot/home/root# ls-monitor -l | grep example
     542           com.example.service.native        /usr/sbin/com.example.service.native    static                  4dTPKKQI
     ```

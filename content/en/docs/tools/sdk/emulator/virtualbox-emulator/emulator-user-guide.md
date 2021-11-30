@@ -1,7 +1,7 @@
 ---
 title: User Guide
 display_title: VirtualBox Emulator User Guide
-date: 2021-09-06
+date: 2021-11-26
 weight: 10
 toc: true
 ---
@@ -10,10 +10,11 @@ webOS Open Source Edition (OSE) provides an emulator that enables you to develop
 
 The emulator runs as a virtual machine on VirtualBox and supports host platforms including Ubuntu Linux, macOS, and Windows.
 
-{{< note >}}
-* The VirtualBox-based emulator is supported by webOS OSE 1.10.0 or higher.
-* webOS OSE emulator requires VirtualBox version 6.0 or higher, which can be installed on 64-bit host platforms only.
-{{< /note >}}
+{{< caution >}}
+* The VirtualBox-based emulator (64-bit) is supported by webOS OSE 2.14.0 or higher.
+* webOS OSE emulator requires VirtualBox version 6.1 or higher, which can be installed on 64-bit host platforms only.
+* Make sure that Intel® Virtualization Technology (Intel® VT) is enabled in the host PC.
+{{< /caution >}}
 
 ## Key Features
 
@@ -24,15 +25,11 @@ Key characteristics of the emulator are as follows:
 * Provides graphics functionality with host PC’s GPU H/W acceleration
 * Supports webOS OSE CLI tool for application and service development
 
-### Known Issues
-
-* Since webOS OSE 2.7.0, Ubuntu 20.04 build system and additional patches are needed to build the VirtualBox Emulator. For more details on how to build and patch, visit [webOS OSE emulator GitHub](https://github.com/webosose-emulator/build-webos).
-
 ## System Requirements
 
 The emulator requires the following environments.
 
-* VirtualBox v6.0 or higher
+* VirtualBox v6.1 or higher
     * For requirements to install and run VirtualBox, see its [end-user documentation](https://www.virtualbox.org/wiki/End-user_documentation) page.
 * System memory
     * 4 GB or higher
@@ -104,7 +101,7 @@ Download the same version of Extension Pack as your installed version of Virtual
 Build the webOS OSE image for the emulator in [Building webOS OSE]({{< relref "building-webos-ose" >}}).
 
 * Make sure you set up the build for the emulator at the [configuration step]({{< relref "building-webos-ose#configuring-the-build-for-the-target-device" >}}).
-* After the build is completed, check that the resulting image (`webos-image-qemux86-master-*.wic.vmdk`) has been created properly.
+* After the build is completed, check that the resulting image (`webos-image-qemux86-64-master-*.wic.vmdk`) has been created properly.
 
 ## Setting Up the Virtual Machine in VirtualBox
 
@@ -131,7 +128,7 @@ The screenshots below have been captured from Oracle VM VirtualBox v6.0.14 on Wi
 
     1. In the **Name** box, type **webos-image**.
     2. From the **Type** list, select **Linux**.
-    3. From the **Version** list, select **Other Linux (32-bit)**.
+    3. From the **Version** list, select **Other Linux (64-bit)**.
     4. Click **Next**.
 
 4.  In the **Memory size** section, set the amount of memory you wish to allocate to the webos-image virtual machine.
@@ -176,9 +173,9 @@ The screenshots below have been captured from Oracle VM VirtualBox v6.0.14 on Wi
 
     {{< figure src="/images/docs/tools/emulator/vbox_emulator_img09.png" alt="Configuring the processor" class="align-left" >}}
 
-    Type the number of processors you wish to allocate, in the box to the right of the **Processor(s)** slider.
-
-    On the navigation bar, click **Display**.
+    1. Type the number of processors you wish to allocate, in the box to the right of the **Processor(s)** slider.
+    2. Clear a checkbox on **Enable PAE/NX**.
+    3. On the navigation bar, click **Display**.
 
 9.  The **Display** section will be displayed.
 
@@ -221,15 +218,11 @@ The screenshots below have been captured from Oracle VM VirtualBox v6.0.14 on Wi
 
     You will see the rules table. Set the rules by typing the following values in the appropriate column:
 
-    | Column name | SSH            | Web Inspector          |
-    | ----------- | -------------- | ---------------------- |
-    | Name        | Type **ssh**   | Type **web-inspector** |
-    | Protocol    | Select **TCP** | Select **TCP**         |
-    | Host IP     | Leave it blank | Leave it blank         |
-    | Host Port   | Type **6622**  | Type **9998**          |
-    | Guest IP    | Leave it blank | Leave it blank         |
-    | Guest Port  | Type **22**    | Type **9998**          |
-
+    | Name                        | Protocol | Host Port | Guest Port |
+    | --------------------------- | -------- | --------- | ---------- |
+    | ssh                         | TCP      | 6622      | 22         |
+    | web-inspector               | TCP      | 9998      | 9998       |
+    | enact-browser-web-inspector | TCP      | 9223      | 9223       |
 
     {{< figure src="/images/docs/tools/emulator/vbox_emulator_img13.png" alt="Configuring the port forwarding rules 2" class="align-left" >}}
 
@@ -277,13 +270,14 @@ The following example shows commands used to create and set up a webos-image vir
 
 {{< code "A command-line example to create a virtual machine on Ubuntu Linux" true >}}
 ```shell
-vboxmanage createvm --ostype Linux --register --name webos-image
+vboxmanage createvm --ostype Linux_64 --register --name webos-image
 vboxmanage modifyvm webos-image --memory 2048 --vram 128 --ioapic on --cpus 2
 vboxmanage modifyvm webos-image --graphicscontroller vmsvga
 vboxmanage modifyvm webos-image --accelerate3d on
 vboxmanage modifyvm webos-image --audio pulse --audioout on --audioin on
 vboxmanage modifyvm webos-image --nic1 nat --nictype1 82540EM --natpf1 ssh,tcp,,6622,,22
 vboxmanage modifyvm webos-image --natpf1 web-inspector,tcp,,9998,,9998
+vboxmanage modifyvm webos-image --natpf1 enact-browser-web-inspector,tcp,,9223,,9999
 vboxmanage modifyvm webos-image --mouse usbtablet
 vboxmanage modifyvm webos-image --uart1 0x3f8 4 --uartmode1 file /dev/null
 vboxmanage storagectl webos-image --add ide --name webos-image
@@ -308,7 +302,7 @@ vboxmanage setextradata webos-auto-image GUI/ScaleFactor <scale_factor>
 To attach the webOS OSE emulator image (`.vmdk`) to the virtual machine, type:
 
 ```shell
-vboxmanage storageattach webos-image --storagectl webos-image --type hdd --port 0 --device 0 --medium </path/to/image/webos-image-qemux86-master-**.wic.vmdk>
+vboxmanage storageattach webos-image --storagectl webos-image --type hdd --port 0 --device 0 --medium </path/to/image/webos-image-qemux86-64-master-**.wic.vmdk>
 ```
 
 To launch the virtual machine, type the following in a command shell:
@@ -397,3 +391,37 @@ To connect to the emulator using Web Inspector, access `localhost:<PortNumber>` 
 ### Connect from the Serial Ports
 
 For more details on serial ports setup, visit [webOS Emulator Tips](https://github.com/webosose-emulator/build-webos/blob/master/webOS-Emulator-Tips.md#serial-setting)
+
+## Trouble Shooting
+
+### Kernel Module Re-compiling When VirtualBox Is Not Work Properly in Ubuntu
+
+If you reinstall VirtualBox or upgrade Ubuntu packages, these might cause unexpected errors on VirtualBox. In this case, you should recompile host side kernel modules related to VirtualBox:
+
+``` bash
+sudo rmmod vboxnetadp vboxnetflt vboxdrv
+sudo /sbin/vboxconfig
+```
+
+### Emulator Does not Boot Properly in Ubuntu Host PC with NVIDIA GPU
+
+1. Execute the **Software & Updates** app.
+2. In the **Additional Drivers** tab, select the "X.Org" related driver.
+
+    {{< figure src="/images/docs/tools/emulator/vbox_emulator_select_xorg.png" alt="Selecting X.Org driver" class="align-left" >}}
+
+3. Click **Apply Changes**.
+
+### VirtualBox Cannot Detect USB
+
+In this case, enter the followings:
+
+``` bash
+sudo adduser $USER vboxusers
+sudo usermod -aG vboxusers $USER
+```
+
+#### References
+
+- https://superuser.com/questions/956622/no-usb-devices-available-in-virtualbox
+- https://help.ubuntu.com/community/VirtualBox/USB

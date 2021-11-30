@@ -1,22 +1,26 @@
 ---
 title: "SDK Download"
-date: 2021-10-06
+date: 2021-11-25
 weight: 5
 file_download: true
 toc: true
 ---
 
-This page provides the package download links for webOS Open Source Edition (OSE) SDK.
-
-## Emulator 
-
-Emulator is created as a virtual machine image when you build webOS OSE platform source code with `qemux86` option configured. For more information, see [Building webOS Open Source Edition]({{< relref "building-webos-ose" >}}).
+This page describes how to install webOS Open Source Edition (OSE) SDKs.
 
 ## Command-Line Interface
 
 * Version: v2.2.0
 
 Command Line Interface (CLI) is installed using `npm`. For more information, see [CLI User Guide]({{< relref "cli-user-guide" >}}).
+
+## Visual Studio Code Extension
+
+Visual Studio (VS) Code Extension is installed using the Extensions view. For more information, see [VS Code User Guide](https://code.visualstudio.com/docs/editor/extension-marketplace#_install-an-extension) or [How to Install]({{< relref "vs-code-extension-overview#how-to-install" >}}).
+
+## Emulator 
+
+Emulator is created as a virtual machine image when you build webOS OSE platform source code with `qemux86` option configured. For more information, see [Building webOS Open Source Edition]({{< relref "building-webos-ose" >}}).
 
 ## Beanviser
 

@@ -1,6 +1,6 @@
 ---
 title: Developing External Native Services
-date: 2020-06-25
+date: 2021-11-24
 weight: 10
 toc: true
 ---
@@ -171,7 +171,7 @@ set(SRC_LIST
     ${CMAKE_SOURCE_DIR}/src/main.c
 )
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/pkg_$ENV{ARCH}/")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/pkg_$ENV{OECORE_TARGET_ARCH}/")
 add_executable(${BIN_NAME} ${SRC_LIST})
 
 # ignore shared library
@@ -234,10 +234,10 @@ To package the native service, use the `ares-package` command. The packaged file
 
 ``` bash
 $ cd ..
-$ ares-package ../com.sample.echo ./pkg_arm
+$ ares-package ../com.sample.echo ./pkg_aarch64
 ```
 
-In the above command, `../com.sample.echo` is the dummy app directory and `./pkg_arm` is the native service directory which contains `services.json` file. You can use an absolute or relative path. For more details on using `ares-package`, see [ares-package]({{< relref "cli-user-guide#ares-package" >}}).
+In the above command, `../com.sample.echo` is the dummy app directory and `./pkg_aarch64` is the native service directory which contains `services.json` file. You can use an absolute or relative path. For more details on using `ares-package`, see [ares-package]({{< relref "cli-user-guide#ares-package" >}}).
 
 {{< note >}}
 You can use any type of dummy app (web, QML, native) for packaging an external native service.
@@ -256,7 +256,7 @@ If the native service is successfully installed, you can try running the native 
 To run the native service, use the following command on the target device's terminal:
 
 ``` bash
-root@raspberrypi4:/sysroot/home/root# luna-send -f -n 1 luna://com.sample.echo.service/echo '{"input":"Hello, webOS OSE!"}'
+root@raspberrypi4-64:/sysroot/home/root# luna-send -f -n 1 luna://com.sample.echo.service/echo '{"input":"Hello, webOS OSE!"}'
 ```
 
 The response will be:

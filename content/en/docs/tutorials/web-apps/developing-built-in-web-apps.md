@@ -1,6 +1,6 @@
 ---
 title: Developing Built-in Web Apps
-date: 2021-06-30
+date: 2021-11-24
 weight: 20
 toc: true
 ---
@@ -433,8 +433,8 @@ After building the app, you must verify its functionality.
 
     ``` bash
     $ ssh root@<target IP address>
-    root@raspberrypi4:/sysroot/home/root# cd /media/internal/downloads/
-    root@raspberrypi4:/media/internal/downloads# opkg install com.example.app.web_1.0.0-r0.local0_all.ipk
+    root@raspberrypi4-64:/sysroot/home/root# cd /media/internal/downloads/
+    root@raspberrypi4-64:/media/internal/downloads# opkg install com.example.app.web_1.0.0-r0.local0_all.ipk
 
     Installing com.example.app.web (1.0.0) on root.
     Configuring com.example.app.web.
@@ -446,7 +446,7 @@ After building the app, you must verify its functionality.
     To make LS2 daemon scan the LS2 configuration files of the app, use the `ls-control` command as follows.
 
     ``` bash
-    root@raspberrypi4:/media/internal/downloads# ls-control scan-services
+    root@raspberrypi4-64:/media/internal/downloads# ls-control scan-services
 
     telling hub to reload setting and rescan all directories
     ```
@@ -460,7 +460,7 @@ After building the app, you must verify its functionality.
     To make System and Application Manager (SAM) scan the app, restart SAM using the `systemctl` command. This step is required so that the app can be added to the app list, which in turn makes the app appear on the Home Launcher.
 
     ``` bash
-    root@raspberrypi4:/# systemctl restart sam
+    root@raspberrypi4-64:/# systemctl restart sam
     ```
 
     {{< note >}}
@@ -486,7 +486,7 @@ After building the app, you must verify its functionality.
         You can check whether the app is running by using SAM. For more SAM methods, see [com.webos.service.applicationmanager]({{< relref "com-webos-service-applicationmanager" >}}).
 
         ``` bash
-        root@raspberrypi4:/# luna-send -i -f luna://com.webos.service.applicationmanager/running '{"subscribe":true}'
+        root@raspberrypi4-64:/# luna-send -i -f luna://com.webos.service.applicationmanager/running '{"subscribe":true}'
         {
             "subscribed": true,
             "running": [
@@ -510,9 +510,9 @@ After building the app, you must verify its functionality.
         You can use the `journalctl` command on the target for debugging the app. For details on how to use the command, see [Viewing Logs]({{< relref "viewing-logs-journald#using-journalctl-to-view-logs" >}}).
 
         ``` bash
-        root@raspberrypi4:/# journalctl | grep UTC
+        root@raspberrypi4-64:/# journalctl | grep UTC
 
-        Nov 18 17:02:25 raspberrypi4 WebAppMgr[383]: [] [pmlog] com.example.app.web GETTIME_SUCCESS {"APP_NAME": "example web app"} UTC : 1574125345
+        Nov 21 20:07:14 raspberrypi4-64 WebAppMgr[915]: [] [pmlog] com.example.app.web GETTIME_SUCCESS {"APP_NAME": "example web app"} UTC : 1637554034
         ```
 
 ## Step 5: Deploy the Web App
@@ -553,10 +553,10 @@ Perform the following steps:
 
 3.  Flash the generated webOS image to the SD card.
 
-    **Path to image:** `build-webos/BUILD/deploy/images/raspberrypi4/webos-image-raspberrypi4-master-yyyymmddhhmmss.wic`
+    **Path to image:** `build-webos/BUILD/deploy/images/raspberrypi4-64/webos-image-raspberrypi4-64.rootfs.wic`
 
     ``` bash
-    build-webos/BUILD/deploy/images/raspberrypi4$ sudo dd bs=4M if=webos-image-raspberrypi4-master-yyyymmddhhmmss.wic of=/dev/sdc
+    build-webos/BUILD/deploy/images/raspberrypi4-64$ sudo dd bs=4M if=webos-image-raspberrypi4-64.rootfs.wic of=/dev/sdc
     ```
 
     For more details, see the [Flashing webOS OSE]({{< relref "flashing-webos-ose#linux" >}}) page.
