@@ -19,31 +19,27 @@ This version corresponds to the [GitHub releases](https://github.com/webosose/bu
 
 ### Managers & Services
 
-#### PDM
-
-  - Fixed the `productName` property of `nonStorageDeviceList` to return proper device names
-
 #### Connectivity
 
   - Network Manager
     - Fixed the wpa-supplicant service to get started on RPi4
 
+#### EXternal Device
+
+  - PDM
+    - Fixed the `productName` property of `nonStorageDeviceList` to return proper device names
+
 ### Base Components
-
-#### Connectivity
-
-  - Added occlientbasicops and ocserverbasicops binaries in qemux86 image
-  - Updated udev rules for LGE UWB Module
 
 #### Media
 
   - g-camera-pipeline
     - Enhanced recording functionality with audio in appsrc 
 
-#### Web Engine 
+#### Connectivity
 
-  - Chromium
-    - Switched to Chromium 91 as the default web runtime
+  - Added occlientbasicops and ocserverbasicops binaries in qemux86 image
+  - Updated udev rules for LGE UWB Module
 
 ### Build System & SCM
 
