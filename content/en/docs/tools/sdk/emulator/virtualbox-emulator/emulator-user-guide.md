@@ -1,7 +1,7 @@
 ---
 title: User Guide
 display_title: VirtualBox Emulator User Guide
-date: 2021-11-26
+date: 2021-12-22
 weight: 10
 toc: true
 ---
@@ -32,7 +32,7 @@ The emulator requires the following environments.
 * VirtualBox v6.1 or higher
     * For requirements to install and run VirtualBox, see its [end-user documentation](https://www.virtualbox.org/wiki/End-user_documentation) page.
 * System memory
-    * 4 GB or higher
+    * 8 GB or higher
 * Operating system
     * Ubuntu Linux
         * 16.04 LTS (64-bit)
@@ -133,7 +133,7 @@ The screenshots below have been captured from Oracle VM VirtualBox v6.0.14 on Wi
 
 4.  In the **Memory size** section, set the amount of memory you wish to allocate to the webos-image virtual machine.
 
-    We recommend that you allocate at least 2 GB (2048 MB) of memory for stable performance. It is also recommended that the memory configured for the virtual machine should be less than 50% of the system memory.
+    We recommend that you allocate at least 4 GB (4096 MB) of memory for stable performance. It is also recommended that the memory configured for the virtual machine should be less than 50% of the system memory.
 
     {{< figure src="/images/docs/tools/emulator/vbox_emulator_img03.png" alt="Configuring the memory size" class="align-left" >}}
 
@@ -264,14 +264,14 @@ vboxmanage setextradata webos-image GUI/ScaleFactor 0.7
 
 ### Using the Commands
 
-To create a virtual machine from the command line, the `vboxmanage` command of VirtualBox is used.
+To create a virtual machine from the command line, [VBoxManage](https://www.virtualbox.org/manual/UserManual.html#vboxmanage) is used.
 
 The following example shows commands used to create and set up a webos-image virtual machine for a Ubuntu Linux host with a similar setting of the GUI example above. Type the following commands sequentially in a command shell:
 
 {{< code "A command-line example to create a virtual machine on Ubuntu Linux" true >}}
 ```shell
 vboxmanage createvm --ostype Linux_64 --register --name webos-image
-vboxmanage modifyvm webos-image --memory 2048 --vram 128 --ioapic on --cpus 2
+vboxmanage modifyvm webos-image --memory 4096 --vram 128 --ioapic on --cpus 2
 vboxmanage modifyvm webos-image --graphicscontroller vmsvga
 vboxmanage modifyvm webos-image --accelerate3d on
 vboxmanage modifyvm webos-image --audio pulse --audioout on --audioin on

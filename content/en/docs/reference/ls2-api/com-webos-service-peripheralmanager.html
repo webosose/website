@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.peripheralmanager
-date: 2021-08-03
+date: 2021-12-23
 weight: 255
 toc: true
 ---
@@ -1101,6 +1101,14 @@ toc: true
             <p>ID of the UART interface.</p>
           </td>
         </tr>
+        <tr>
+          <td>config</td>
+          <td>Optional</td>
+          <td>Object: <a href="#config"> config</a></td>
+          <td>
+            <p>The configurations to be set for the opened UART Interface.</p>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -1155,10 +1163,21 @@ toc: true
   </div>
   <h4>Example</h4>
   <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-    <p style="color:white;margin:5.0px;"><b>Uart open</b></p>
+    <p style="color:white;margin:5.0px;"><b>Example : Open the UART interface</b></p>
   </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.peripheralmanager/uart/open &#39;{&quot;interfaceId&quot;:&quot;UART1&quot;}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : Set configs for opened UART interface</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.peripheralmanager/uart/open &#39;{&quot;interfaceId&quot;:&quot;ttyACM0&quot;, &quot;config&quot;:{&quot;canonical&quot; : true}}&#39;</p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
@@ -1512,6 +1531,14 @@ toc: true
           </td>
         </tr>
         <tr>
+          <td>dataType</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The format of data to be returned.</p>
+          </td>
+        </tr>
+        <tr>
           <td>size</td>
           <td>Optional</td>
           <td>Number</td>
@@ -1584,31 +1611,20 @@ toc: true
             <p>Type of data in the data field.</p>
           </td>
         </tr>
-        <tr>
-          <td>bytes_read</td>
-          <td>Required</td>
-          <td>Number</td>
-          <td>
-            <p>Size of the read data.</p>
-          </td>
-        </tr>
       </tbody>
     </table>
   </div>
   <h4>Example</h4>
   <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-    <p style="color:white;margin:5.0px;"><b>read</b></p>
+    <p style="color:white;margin:5.0px;"><b>Example : Read data from the UART interface</b></p>
   </div>
   <div class="code-bg-grey">
-    <p># luna-send -n 1 -f luna://com.webos.service.peripheralmanager/uart/read &#39;{&quot;interfaceId&quot;:&quot;UART1&quot;,&quot;size&quot;:9}&#39;</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.peripheralmanager/uart/read &#39;{&quot;interfaceId&quot;:&quot;ttyACM0&quot;, &quot;dataType&quot;:&quot;text&quot;}&#39;</p>
     <p>Response:</p>
     <p>{<br />
-      &nbsp; &nbsp;&quot;bytes_read&quot;:0,<br />
-      &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
-      &nbsp; &nbsp;&quot;data&quot;:[<br />
-      &nbsp; &nbsp; &nbsp;&nbsp;<br />
-      &nbsp; &nbsp;],<br />
-      &nbsp; &nbsp;&quot;dataType&quot;:&quot;&quot;<br />
+      &nbsp; &nbsp; &quot;data&quot;: &quot;Temperature(Celcius)\&quot;:30.6598,\&quot;Humidity(%rH)\&quot;:71.40324,\&quot;GasResistance(Ohms)\&quot;:659577,\&quot;sensorName\&quot;:\&quot;Arduino_BME680\&quot;}}\r\n&quot;,<br />
+      &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp;&nbsp;&quot;dataType&quot;: &quot;text&quot;<br />
       }
     </p>
   </div>
@@ -1662,7 +1678,7 @@ toc: true
         </tr>
         <tr>
           <td>size</td>
-          <td>Optional</td>
+          <td>Required</td>
           <td>String</td>
           <td>
             <p>Size of the data passed to be written.</p>
@@ -1730,14 +1746,20 @@ toc: true
   </div>
   <h4>Example</h4>
   <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-    <p style="color:white;margin:5.0px;"><b>write</b></p>
+    <p style="color:white;margin:5.0px;"><b>Example : Write to the UART interface</b></p>
   </div>
   <div class="code-bg-grey">
-    <p># luna-send -n 1 -f luna://com.webos.service.peripheralmanager/uart/write &#39;{&quot;interfaceId&quot;:&quot;UART1&quot;, &quot;data&quot;: [&#39;1&#39;,&#39;2&#39;,&#39;3&#39;,&#39;4&#39;,&#39;5&#39;,&#39;6&#39;,&#39;7&#39;,&#39;8&#39;,&#39;9&#39;], &quot;dataType&quot;:&quot;string&quot; , &quot;size&quot;:9}&#39;</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.peripheralmanager/uart/write &#39;{<br />
+      &nbsp; &nbsp;&nbsp;&quot;interfaceId&quot;:&quot;ttyACM0&quot;,<br />
+      &nbsp; &nbsp;&nbsp;&quot;data&quot;: &quot;xyzabc&quot;,<br />
+      &nbsp; &nbsp;&nbsp;&quot;dataType&quot;:&quot;text&quot;,<br />
+      &nbsp; &nbsp;&nbsp;&quot;size&quot;:6<br />
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;size&quot;: 0<br />
+      &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp;&nbsp;&quot;size&quot;: 6<br />
       }
     </p>
   </div>
@@ -1844,7 +1866,34 @@ toc: true
   <h4>Description</h4>
   <p>Provides the list of available I2C buses.</p>
   <h4>Parameters</h4>
-  <p>None</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>verbose</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Provide a list of I2C&nbsp;buses with slaveAddress and more details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   <h4>Call Returns</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -1897,6 +1946,7 @@ toc: true
           <td>String array</td>
           <td>
             <p>List of I2C buses.</p>
+            <p>If <strong>verbose </strong>input parameter is set, also returns the&nbsp;slave address.</p>
           </td>
         </tr>
       </tbody>
@@ -1904,7 +1954,7 @@ toc: true
   </div>
   <h4>Example</h4>
   <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-    <p style="color:white;margin:5.0px;"><b>list</b></p>
+    <p style="color:white;margin:5.0px;"><b>Example : List of available I2C buses without verbose</b></p>
   </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.peripheralmanager/i2c/list &#39;{}&#39;</p>
@@ -1912,7 +1962,35 @@ toc: true
     <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp; &quot;i2cBusList&quot;: [<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;I2C1&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;I2C1&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;I2C4&quot;<br />
+      &nbsp; &nbsp; ]<br />
+      }
+    </p>
+  </div>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : List of available I2C buses with verbose</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.peripheralmanager/i2c/list &#39;{&quot;verbose&quot;:true}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;i2cBusList&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;slaveAddress&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;66&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;77&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;I2C1&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;slaveAddress&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;66&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;77&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;I2C4&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; }<br />
       &nbsp; &nbsp; ]<br />
       }
     </p>
@@ -4451,6 +4529,74 @@ toc: true
           <td>String</td>
           <td>
             <p>Interface ID as maintained by the service.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>config</h3>
+  <p>Configurations to be set for the opened UART Interface.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>canonical</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Enable or disable canonical mode for the opened UART interface.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>i2cBusList</h3>
+  <p>List of I2C buses and the slave address.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>slaveAddress</td>
+          <td>Optional</td>
+          <td>String array</td>
+          <td>
+            <p>Address of I2C slaves.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>name</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>I2C bus name.</p>
           </td>
         </tr>
       </tbody>
