@@ -1,7 +1,7 @@
 ---
 title: User Guide
 display_title: VirtualBox Emulator User Guide
-date: 2021-12-22
+date: 2022-01-11
 weight: 10
 toc: true
 ---
@@ -286,7 +286,7 @@ vboxmanage storagectl webos-image --add ide --name webos-image
 vboxmanage modifyvm webos-image --monitorcount 2
 
 # To adjust the scale of display resolution
-vboxmanage setextradata webos-auto-image GUI/ScaleFactor <scale_factor>
+vboxmanage setextradata webos-image GUI/ScaleFactor <scale_factor>
 ```
 {{< /code >}}
 
