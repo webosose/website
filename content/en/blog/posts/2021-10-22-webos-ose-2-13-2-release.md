@@ -4,7 +4,7 @@ date: 2021-10-22
 slug: webos-ose-2-13-2-release
 posttype: release
 toc: true
-thumbnail: th-ose-qt62-support.png
+thumbnail: th-release-2-13-2-ose-qt62-support.png
 ---
 
 We're pleased to announce the release of webOS Open Source Edition (OSE) 2.13.2.

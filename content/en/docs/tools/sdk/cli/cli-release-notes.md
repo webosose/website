@@ -1,7 +1,7 @@
 ---
 title: Release Notes
 display_title: Command-Line Interface Release Notes
-date: 2021-12-29
+date: 2022-02-11
 weight: 20
 file_download: true
 toc: true
@@ -24,9 +24,13 @@ The following table shows the compatibility between webOS OSE and CLI.
     </thead>
     <tbody>
       <tr>
+        <td><p>2.3.1</p></td>
+        <td><p>2.15.0</p></td>
+        <td rowspan="11"><p>Since CLI v2.0.0, use <code>npm</code> to download the CLI packages. For more details, see <a href="/docs/tools/sdk/cli/cli-user-guide/#installing-cli">CLI User Guide</a>.</p></td>
+      </tr>
+      <tr>
         <td rowspan="7"><p>2.2.0</p></td>
         <td><p>2.14.1</p></td>
-        <td rowspan="10"><p>Since CLI v2.0.0, use <code>npm</code> to download the CLI packages. For more details, see <a href="/docs/tools/sdk/cli/cli-user-guide/#installing-cli">CLI User Guide</a>.</p></td>
       </tr>
       <tr>
         <td><p>2.14.0</p></td>
@@ -162,6 +166,29 @@ The following table shows the compatibility between webOS OSE and CLI.
     </tbody>
   </table>
 </div>
+
+## v2.3.1 (February 2022)
+
+This version is compatible with **webOS OSE 2.15.0**. See below for the new and changed features in this release.
+
+### New features
+
+* Supports to look up pmlog messages of the target device in `ares-log`.
+* Supports to monitor resource usage of the target device in `ares-device`.
+* Supports to analyze the package file (`.ipk`) in `ares-package`.
+* Added a feature to print the progress when the command takes a long time to execute.
+* Added a feature to print information of the connected target device.
+* Supports to show level-applied logs using the `--level` option of each command.
+
+### Changed features
+
+* Updated the minimum supported node version from v8.12.0 to v10.24.1.
+
+### Fixed issues
+
+* Fixed a bug that prevented opening the browser specified in the environment variables when using `ares-inspect --open`.
+* Fixed a bug related to the callback function error when using `ares-package`.
+* Fixed a bug related to the directory permission when using `ares-device --capture-screen`.
 
 ## v2.2.0 (June 2021)
 

@@ -7,14 +7,14 @@
     {{ partial "header.html" . }}
     <!--{{ partialCached "hero.html" . .Section }}-->
     <div class="container is-fluid">
-      <div class="blog-home-wrapper columns verticals is-centered">
-        <div class="blog-home-container column is-full">
+      <div class="filter-home-wrapper columns verticals is-centered">
+        <div class="filter-home-container column is-full">
           <div class="intro column is-8 is-offset-2">
             <h1 class="title">Blog</h1>
             <span class="dash-line"></span>
             <p class="subtitle">Find out the latest news, articles, and video posts.</p>
           </div>
-          <div class="blog-filter-box">
+          <div class="filter-box">
             <div class="columns field is-vcentered">
               <div class="field-label is-normal">
                 <!--<label class="label">Category Filter</label>-->
@@ -35,96 +35,73 @@
           <div class="card-wrap">
             <div id="search-results">
               <div class="line">
-                <div class="blog-home-content list">
+                <div class="filter-home-content list">
                   {{ range .Pages }}
-                  <div class="card">
-                    <a href="{{ .Permalink }}">
-                      <div class=" ">
-                        {{ if eq .Params.posttype "release" }}
-                        {{ if isset .Params "thumbnail" }}
-                        <div class="card-image thumbnail">
-                          <figure class="image is-4by3">
-                            <img src="{{ print "/images/blog/thumbnails/" .Params.thumbnail | relURL }}"
-                              alt="{{ .Params.title }}">
-                          </figure>
-                        </div>
-                        {{ else }}
-                        <div class="card-image thumbnail">
-                          <figure class="image is-4by3">
-                            <img src="{{ "/images/blog/thumbnails/th-release.png" | relURL }}"
-                              alt="{{ .Params.title }}">
-                          </figure>
-                        </div>
-                        {{ end }}
-                        {{ else if eq .Params.posttype "news" }}
-                        {{ if isset .Params "thumbnail" }}
-                        <div class="card-image thumbnail">
-                          <figure class="image is-4by3">
-                            <img src="{{ print "/images/blog/thumbnails/" .Params.thumbnail | relURL }}"
-                              alt="{{ .Params.title }}">
-                          </figure>
-                        </div>
-                        {{ else }}
-                        <div class="card-image thumbnail">
-                          <figure class="image is-4by3">
-                            <img src="{{ "/images/blog/thumbnails/th-news.jpg" | relURL }}" alt="{{ .Params.title }}">
-                          </figure>
-                        </div>
-                        {{ end }}
-                        {{ else if eq .Params.posttype "video" }}
-                        <div class="card-image thumbnail">
-                          <figure class="image is-4by3">
-                            {{ if hasPrefix .Params.thumbnail "http" }}
-                            <img src="{{ .Params.thumbnail }}" alt="{{ .Params.title }}">
+                    <div class="card">
+                      <a href="{{ .Permalink }}">
+                        <div class=" ">
+                          <div class="card-image thumbnail">
+                            <figure class="image is-4by3">
+                              {{ if eq .Params.posttype "release" }}
+                                {{ if isset .Params "thumbnail" }}
+                                  {{ if hasPrefix .Params.thumbnail "http" }}
+                                    <img class="obj-fit" src="{{ .Params.thumbnail }}" alt="{{ .Params.title }}">
+                                  {{ else }}
+                                    <img src="{{ print "/images/blog/thumbnails/" .Params.thumbnail | relURL }}" alt="{{ .Params.title }}">
+                                  {{ end }}
+                                {{ else }}
+                                  <img src="{{ "/images/blog/thumbnails/th-release.png" | relURL }}" alt="{{ .Params.title }}">
+                                {{ end }}
+                              {{ else if eq .Params.posttype "news" }}
+                                {{ if isset .Params "thumbnail" }}
+                                  {{ if hasPrefix .Params.thumbnail "http" }}
+                                    <img class="obj-fit" src="{{ .Params.thumbnail }}" alt="{{ .Params.title }}">
+                                  {{ else }}
+                                    <img src="{{ print "/images/blog/thumbnails/" .Params.thumbnail | relURL }}" alt="{{ .Params.title }}">
+                                  {{ end }}
+                                {{ else }}
+                                  <img src="{{ "/images/blog/thumbnails/th-news.jpg" | relURL }}" alt="{{ .Params.title }}">
+                                {{ end }}
+                              {{ else if eq .Params.posttype "video" }}
+                                {{ if hasPrefix .Params.thumbnail "http" }}
+                                  <img class="obj-fit" src="{{ .Params.thumbnail }}" alt="{{ .Params.title }}">
+                                {{ else }}
+                                  <img src="{{ print "/images/blog/thumbnails/" .Params.thumbnail | relURL }}" alt="{{ .Params.title }}">
+                                {{ end }}
+                              {{ else if eq .Params.posttype "article" }}
+                                {{ if isset .Params "thumbnail" }}
+                                  {{ if hasPrefix .Params.thumbnail "http" }}
+                                    <img class="obj-fit" src="{{ .Params.thumbnail }}" alt="{{ .Params.title }}">
+                                  {{ else }}
+                                    <img src="{{ print "/images/blog/thumbnails/" .Params.thumbnail | relURL }}" alt="{{ .Params.title }}">
+                                  {{ end }}
+                                {{ else }}
+                                  <img src="{{ "/images/blog/thumbnails/th-article.png" | relURL }}" alt="{{ .Params.title }}">
+                                {{ end }}
+                              {{ else }}
+                                <img src="{{ "/images/blog/thumbnails/th-news.jpg" | relURL }}" alt="{{ .Params.title }}">
+                              {{ end }}
+                            </figure>
+                          </div>
+                          <div class="card-content card-info">
+                            <!--tag class type-->
+                            {{ with .Params.posttype }}
+                              {{ if eq . "release"}}
+                                <span class="tag news">News</span>
+                              {{ else }}
+                                <span class="tag {{ . }}">{{ . | humanize }}</span>
+                              {{ end }}
                             {{ else }}
-                            <img src="{{ print "/images/blog/thumbnails/" .Params.thumbnail | relURL }}"
-                              alt="{{ .Params.title }}">
+                              <span class="tag news">News</span>
                             {{ end }}
-                          </figure>
+                            <!--tag class type-->
+                            <h2 class="title">{{ .Title }}</h2>
+                            <p class="date">
+                              {{ .Date.Format .Site.Params.time_format }}</p>
+                          </div>
                         </div>
-                        {{ else if eq .Params.posttype "article" }}
-                        {{ if isset .Params "thumbnail" }}
-                        <div class="card-image thumbnail">
-                          <figure class="image is-4by3">
-                            <img src="{{ print "/images/blog/thumbnails/" .Params.thumbnail | relURL }}"
-                              alt="{{ .Params.title }}">
-                          </figure>
-                        </div>
-                        {{ else }}
-                        <div class="card-image thumbnail">
-                          <figure class="image is-4by3">
-                            <img src="{{ "/images/blog/thumbnails/th-article.png" | relURL }}"
-                              alt="{{ .Params.title }}">
-                          </figure>
-                        </div>
-                        {{ end }}
-                        {{ else }}
-                        <div class="card-image thumbnail">
-                          <figure class="image is-4by3">
-                            <img src="{{ "/images/blog/thumbnails/th-news.jpg" | relURL }}" alt="{{ .Params.title }}">
-                          </figure>
-                        </div>
-                        {{ end }}
-
-                        <div class="card-content card-info">
-                          <!--tag class type-->
-                          {{ with .Params.posttype }}
-                          {{ if eq . "release"}}
-                          <span class="tag news">News</span>
-                          {{ else }}
-                          <span class="tag {{ . }}">{{ . | humanize }}</span>
-                          {{ end }}
-                          {{ else }}
-                          <span class="tag news">News</span>
-                          {{ end }}
-                          <!--tag class type-->
-                          <h2 class="title">{{ .Title }}</h2>
-                          <p class="date">
-                            {{ .Date.Format .Site.Params.time_format }}</p>
-                        </div>
-                      </div>
-                    </a>
-                  </div>
+                      </a>
+                    </div>
                   {{ end }}
                 </div>
               </div>

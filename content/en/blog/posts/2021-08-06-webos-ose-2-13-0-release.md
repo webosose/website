@@ -4,6 +4,7 @@ date: 2021-08-06
 slug: webos-ose-2-13-0-release
 posttype: release
 toc: false
+thumbnail: th-release-2-13-0-focal-fossa.png
 ---
 
 We're pleased to announce the release of webOS Open Source Edition (OSE) 2.13.0.

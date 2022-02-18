@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.audio
-date: 2022-01-24
+date: 2022-02-07
 weight: 100
 toc: true
 ---
@@ -4623,6 +4623,392 @@ toc: true
     </p>
   </div>
 </div>
+<h3>registerTrack</h3>
+<div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>audio.operation</b></span></div>
+  <h4>Description</h4>
+  <p>Registers a playback by an application/service and returns a track ID.</p>
+  <p>The track ID must be used to control the volume of that&nbsp;particular playback by using <strong>setTrackVolume()</strong>.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>streamType</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Type of the audio stream. Possible values are:</p>
+            <ul>
+              <li>palerts</li>
+              <li>pfeedback</li>
+              <li>pringtones</li>
+              <li>pmedia</li>
+              <li>pdefaultapp</li>
+              <li>peffects</li>
+              <li>pvoicerecognition</li>
+              <li>ptts</li>
+              <li>default1</li>
+              <li>default2</li>
+              <li>tts1</li>
+              <li>tts2</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are: </p>
+            <ul>
+              <li><strong>true:</strong> Operation is successful.</li>
+              <li><strong>false:</strong> Operation has failed. Check the 'errorCode' and 'errorText' fields.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The reason for the failure of the operation. See the 'API Error Codes Reference' section for details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>trackId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Track ID of the registered playback.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>streamType</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Type of the audio stream.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : Register a track</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/registerTrack &#39;{&quot;streamType&quot;:&quot;default1&quot;}</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;trackId&quot;: &quot;_OOWR1nOw9&quot;,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>unregisterTrack</h3>
+<div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>audio.operation</b></span></div>
+  <h4>Description</h4>
+  <p>Unregisters a playback by an application/service.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>trackId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Track ID of the registered playback.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are: </p>
+            <ul>
+              <li><strong>true:</strong> Operation is successful.</li>
+              <li><strong>false:</strong> Operation has failed. Check the 'errorCode' and 'errorText' fields.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The reason for the failure of the operation. See the 'API Error Codes Reference' section for details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>trackId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Track ID that is unregistered.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : Unregister a registered track</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/unregisterTrack &#39;{&quot;trackId&quot;:&quot;_OOWR1nOw9&quot;}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;trackId&quot;: &quot;_OOWR1nOw9&quot;<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>setTrackVolume</h3>
+<div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>audio.operation</b></span></div>
+  <h4>Description</h4>
+  <p>Sets the volume for a specific playback that is identified by the track ID (obtained by using <strong>registerTrack()</strong>).</p>
+  <p>The effective playback volume is calculated as a percentage of the stream volume of the corresponding track.</p>
+  <p>Example 1:&nbsp;</p>
+  <ul>
+    <li>Stream volume: 100</li>
+    <li>Track (playback) volume set using <strong>setTrackVolume()</strong>: 100</li>
+    <li>Effective volume of the track: 100 * 100/100 = 100</li>
+  </ul>
+  <p>Example 2:&nbsp;</p>
+  <ul>
+    <li>Stream volume: 80</li>
+    <li>Track (playback) volume set using <strong>setTrackVolume()</strong>: 100</li>
+    <li>Effective volume of the track: 80 * 100/100 = 80</li>
+  </ul>
+  <p>Example 3:</p>
+  <ul>
+    <li>Stream Volume:&nbsp;40</li>
+    <li>Track (playback) volume set using <strong>setTrackVolume()</strong>:&nbsp;50</li>
+    <li>Effective volume of the playback: 40 * 50/100 = 20</li>
+  </ul>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>trackId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Track ID of the registered playback.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>volume</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Volume level to be set. The valid volume range is 0-100</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are: </p>
+            <ul>
+              <li><strong>true:</strong> Operation is successful.</li>
+              <li><strong>false:</strong> Operation has failed. Check the 'errorCode' and 'errorText' fields.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The reason for the failure of the operation. See the 'API Error Codes Reference' section for details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>trackId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Track ID for which the volume is set.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>volume</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Volume level that is set.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>streamType</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Type of audio stream.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : Set the playback volume</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.audio/setTrackVolume &#39;{&quot;trackId&quot;:&quot;_rKjYAlq3r&quot;,&quot;volume&quot;:50}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;trackId&quot;: &quot;_rKjYAlq3r&quot;,<br />
+      &nbsp; &nbsp; &quot;volume&quot;: 50,<br />
+      &nbsp; &nbsp; &quot;streamType&quot;: &quot;default1&quot;<br />
+      }
+    </p>
+  </div>
+</div>
 <h2>Objects</h2>
 <div>
   <h3>audio</h3>
@@ -5124,6 +5510,20 @@ toc: true
         <td>Not a valid json message</td>
         <td>
           <p>Wrong JSON message format</p>
+        </td>
+      </tr>
+      <tr>
+        <td>17</td>
+        <td>Audiod Unknown Stream</td>
+        <td>
+          <p>Error occurs due to Wrong streamType requested</p>
+        </td>
+      </tr>
+      <tr>
+        <td>25</td>
+        <td>Audiod Unknown trackId</td>
+        <td>
+          <p>Error occurs due to Wrong trackId passed</p>
         </td>
       </tr>
     </tbody>

@@ -35,6 +35,21 @@
       <meta property="og:image" content="{{ "/images/webOS_OSE_logo.jpg" | relURL }}">
       {{ end }}
     {{ end }}
+  {{ else if eq .Section "samples" }}
+    {{ with findRE "<img.*?>" .Content 1 }}
+    <meta property="og:image" content="{{ index . 0 | replaceRE ".*src=\"(.+?)\".*" "$1" }}">
+    {{ else }}
+      {{ if isset .Params "thumbnail" }}
+        {{ if hasPrefix .Params.thumbnail "http" }}
+        <!--<meta property="og:image" content="{{ .Params.thumbnail }}">-->
+        <meta property="og:image" content="{{ "/images/webOS_OSE_logo.jpg" | relURL }}">
+        {{ else }}
+        <meta property="og:image" content="{{ print "/images/samples/thumbnails/" .Params.thumbnail | relURL }}">
+        {{ end }}
+      {{ else }}
+      <meta property="og:image" content="{{ "/images/webOS_OSE_logo.jpg" | relURL }}">
+      {{ end }}
+    {{ end }}
   {{ else }}
     <meta property="og:image" content="{{ "/images/webOS_OSE_logo.jpg" | relURL }}">
   {{ end }}

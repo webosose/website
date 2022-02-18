@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.pdm
-date: 2021-08-03
+date: 2022-02-07
 weight: 250
 toc: true
 ---
@@ -46,7 +46,7 @@ toc: true
 <div>
   <h3>eject</h3>
   <div>
-    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>devices</b></span></div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>physicaldevice.management</b></span></div>
     <h4>Description</h4>
     <p>Unmounts all drives of the storage device for safe removal.</p>
     <p><strong>Prerequisite:</strong>&nbsp;The storage device must be connected.</p>
@@ -146,7 +146,7 @@ toc: true
 </div>
 <h3>format</h3>
 <div>
-  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>devices</b></span></div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>physicaldevice.management</b></span></div>
   <h4>Description</h4>
   <p>Formats the connected drive.</p>
   <h4>Parameters</h4>
@@ -283,7 +283,7 @@ toc: true
 </div>
 <h3>fsck</h3>
 <div>
-  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>devices</b></span></div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>physicaldevice.management</b></span></div>
   <h4>Description</h4>
   <p>Checks the file system by performing fsck (File System Check) of the corresponding connected drive.</p>
   <p><strong>Note</strong>: On connecting a USB device with a large number of files, the PDM service prompts for &ldquo;Check &amp; Repair&rdquo; and &ldquo;Open Now&rdquo;. The fsck() API will do the file system checking when &ldquo;Check &amp; Repair&rdquo; is selected.</p>
@@ -382,7 +382,7 @@ toc: true
 </div>
 <h3>getAttachedDeviceStatus</h3>
 <div>
-  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>devices</b></span></div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>physicaldevice.query</b></span></div>
   <h4>Description</h4>
   <p>Gets the status&nbsp;information of connected device(s).</p>
   <h4>Parameters</h4>
@@ -574,7 +574,7 @@ toc: true
 </div>
 <h3>getAttachedNonStorageDeviceList</h3>
 <div>
-  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>devices</b></span></div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>physicaldevice.query</b></span></div>
   <h4>Description</h4>
   <p>Gets the status&nbsp;information of connected non-storage device(s).</p>
   <h4>Parameters</h4>
@@ -617,6 +617,18 @@ toc: true
               <li>Audio</li>
               <li>Video</li>
               <li>Net</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>groupSubDevices</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates grouping of sub devices. Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>&nbsp;-&nbsp;Groups sub-devices into subDeviceList which is part of videoDeviceList.</li>
+              <li><strong>false</strong>&nbsp;(default) - Provides videoDeviceList without subDeviceList (backward compatible).</li>
             </ul>
           </td>
         </tr>
@@ -773,7 +785,7 @@ toc: true
         </tr>
         <tr>
           <td>nonStorageDeviceList</td>
-          <td>Required</td>
+          <td>Optional</td>
           <td>Object: <a href="#nonstoragedevicelist"> nonStorageDeviceList</a></td>
           <td>
             <p>An array containing the information about the non-storage device that is currently connected.</p>
@@ -847,27 +859,6 @@ toc: true
     </p>
   </div>
   <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-    <p style="color:white;margin:5.0px;"><b>Example: To view all non-storage (video) devices attached</b></p>
-  </div>
-  <div class="code-bg-grey">
-    <p># luna-send -n 1 -f luna://com.webos.service.pdm/getAttachedNonStorageDeviceList &#39;{ &quot;subscribe&quot; : true, &quot;category&quot; : &quot;Video&quot; }&#39;</p>
-    <p>Response:</p>
-    <p>{<br />
-      &nbsp; &nbsp; &quot;powerStatus&quot;: &quot;normal&quot;,<br />
-      &nbsp; &nbsp; &quot;videoDeviceList&quot;: [<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;KERNEL&quot;: &quot;video0&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;SUBSYSTEM&quot;: &quot;video4linux&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;vendorName&quot;: &quot;Logitech, Inc.&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;productName&quot;: &quot;081b&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;devSpeed&quot;: &quot;HIGH&quot;<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; }<br />
-      &nbsp; &nbsp; ],<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
-  </div>
-  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
     <p style="color:white;margin:5.0px;"><b>Example: To view all non-storage (audio) devices attached</b></p>
   </div>
   <div class="code-bg-grey">
@@ -912,10 +903,44 @@ toc: true
       }
     </p>
   </div>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : To view information about connected video device(s)</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna://com.webos.service.pdm/getAttachedNonStorageDeviceList &#39;{ &quot;subscribe&quot; : true, &quot;category&quot; : &quot;Video&quot;, &quot;groupSubDevices&quot; : true&nbsp;}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;videoDeviceList&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;subDeviceList&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;productName&quot;: &quot;C270 HD WEBCAM&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;capabilities&quot;: &quot;:capture:&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;version&quot;: &quot;2&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;devPath&quot;: &quot;/dev/video0&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;productName&quot;: &quot;C270 HD WEBCAM&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;capabilities&quot;: &quot;:&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;version&quot;: &quot;2&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;devPath&quot;: &quot;/dev/video1&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;productName&quot;: &quot;C270 HD WEBCAM&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;devSpeed&quot;: &quot;HIGH&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;deviceType&quot;: &quot;CAM&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;vendorName&quot;: &quot;Logitech, Inc.&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &quot;powerStatus&quot;: &quot;normal&quot;<br />
+      }
+    </p>
+  </div>
 </div>
 <h3>getAttachedStorageDeviceList</h3>
 <div>
-  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>devices</b></span></div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>physicaldevice.query</b></span></div>
   <h4>Description</h4>
   <p>Gets status&nbsp;information of connected storage device(s).</p>
   <h4>Parameters</h4>
@@ -1127,7 +1152,7 @@ toc: true
 </div>
 <h3>getSpaceInfo</h3>
 <div>
-  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>devices</b></span></div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>physicaldevice.query</b></span></div>
   <h4>Description</h4>
   <p>Gets the space information of the connected drive.</p>
   <p><strong>Note</strong>: The drive must be mounted.</p>
@@ -1250,7 +1275,7 @@ toc: true
 </div>
 <h3>isWritableDrive</h3>
 <div>
-  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>devices</b></span></div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>physicaldevice.query</b></span></div>
   <h4>Description</h4>
   <p>Checks the file system attribute of the drive and returns whether it is writable.&nbsp;</p>
   <h4>Parameters</h4>
@@ -1359,7 +1384,7 @@ toc: true
 </div>
 <h3>setVolumeLabel</h3>
 <div>
-  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>devices</b></span></div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>physicaldevice.management</b></span></div>
   <h4>Description</h4>
   <p>Sets the volume label of the drive. It is supported only when file system type is FAT.</p>
   <h4>Parameters</h4>
@@ -1464,7 +1489,7 @@ toc: true
 </div>
 <h3>umountAllDrive</h3>
 <div>
-  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>devices</b></span></div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>physicaldevice.management</b></span></div>
   <h4>Description</h4>
   <p>Unmounts all drives.&nbsp;</p>
   <h4>Parameters</h4>
@@ -1796,30 +1821,6 @@ toc: true
           </th>
         </tr>
         <tr>
-          <td>KERNEL</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Device name</p>
-          </td>
-        </tr>
-        <tr>
-          <td>SUBSYSTEM</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Device driver</p>
-          </td>
-        </tr>
-        <tr>
-          <td>vendorName</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Name of the vendor</p>
-          </td>
-        </tr>
-        <tr>
           <td>productName</td>
           <td>Required</td>
           <td>String</td>
@@ -1832,12 +1833,48 @@ toc: true
           <td>Required</td>
           <td>String</td>
           <td>
-            <p>Speed of the device. Possible values are:</p>
-            <ul>
-              <li>LOW</li>
-              <li>HIGH</li>
-              <li>SUPER</li>
-            </ul>
+            <p>Speed of the device</p>
+          </td>
+        </tr>
+        <tr>
+          <td>deviceType</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Type of the USB device</p>
+          </td>
+        </tr>
+        <tr>
+          <td>vendorName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Name of the vendor</p>
+          </td>
+        </tr>
+        <tr>
+          <td>subDeviceList</td>
+          <td>Optional</td>
+          <td>Object array: <a href="#subdevicelist"> subDeviceList</a></td>
+          <td>
+            <p>Contains info of sub-devices</p>
+            <p><strong>Note: </strong>Sub-devices are multiple camera devices inside single camera.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>SUBSYSTEM</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates SUBSYSTEM of device.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>KERNEL</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates KERNEL of the device.</p>
           </td>
         </tr>
       </tbody>
@@ -2216,6 +2253,61 @@ toc: true
           <td>String</td>
           <td>
             <p>Absolute path of the drive in the device where mounted</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>subDeviceList</h3>
+  <p>Contains info of sub-devices</p>
+  <p><strong>Note: </strong>Sub-devices are multiple camera devices inside single camera.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>productName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Name of the product</p>
+          </td>
+        </tr>
+        <tr>
+          <td>capabilities</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Device capability attribute</p>
+          </td>
+        </tr>
+        <tr>
+          <td>version</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Version of the product</p>
+          </td>
+        </tr>
+        <tr>
+          <td>devPath</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Path of the device</p>
           </td>
         </tr>
       </tbody>

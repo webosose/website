@@ -4,6 +4,7 @@ date: 2021-11-30
 slug: webos-ose-2-14-0-release
 posttype: release
 toc: false
+thumbnail: th-release-2-14-0-vs-code-extension.png
 ---
 
 We're pleased to announce the release of webOS Open Source Edition (OSE) 2.14.0.

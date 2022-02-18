@@ -4,6 +4,7 @@ date: 2020-01-23
 slug: webos-ose-2-3-0-release
 posttype: release
 toc: false
+thumbnail: th-enact.png
 ---
 
 We're delighted to announce the release of webOS Open Source Edition (OSE) 2.3.0.

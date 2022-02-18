@@ -1,12 +1,28 @@
 ---
 title: Release Notes
 display_title: Beanviser Release Notes
-date: 2020-09-25
+date: 2022-02-18
 weight: 20
 toc: true
 ---
 
 This page provides the summary of each Beanviser release for webOS Open Source Edition (OSE).
+
+## v2.0.6 (February 18, 2022)
+
+### Changed features
+
+  - Added the ACG permission
+  - Updated the node module version
+  - Updated the CLI version
+
+### Fixed issues
+
+  - Removed the EULA checking step from the launcher command
+
+### Known Issues
+
+  - This release might not work in certain OSE build versions ranging from #420 to #432 due to lack of necessary permission.
 
 ## v2.0.3 (September 29, 2020)
 

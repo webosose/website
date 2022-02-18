@@ -1,6 +1,6 @@
 ---
 title: Google Assistant Setup
-date: 2020-03-06
+date: 2022-02-16
 weight: 60
 toc: true
 ---
@@ -179,7 +179,7 @@ Now you register an ID for device model that you created in [Registering the Dev
 1.  Enter the command:
 
     ```bash
-    $ vi /etc/systemd/system.conf.d/ai.conf
+    $ vi /etc/systemd/system.conf.d/googleassistant.conf
     ```
 
 2.  Modify the fields:

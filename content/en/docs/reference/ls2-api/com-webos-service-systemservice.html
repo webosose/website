@@ -1,10 +1,9 @@
 ---
 title: com.webos.service.systemservice
-date: 2021-12-24
+date: 2022-02-07
 weight: 310
 toc: true
 ---
-
 <div>
   <h2>API Summary</h2>
   <p>Provides access to the webOS system settings such as:</p>
@@ -16,7 +15,9 @@ toc: true
     <li>Wallpaper</li>
     <li>Local formats</li>
   </ul>
-  <p><strong>Note: </strong>This service can be used by&nbsp;both&nbsp;internal system services and third-party components.&nbsp;However, third-party components cannot access and modify all system-critical settings. These methods are marked as &quot;<strong>private</strong>&quot;.</p>
+  {{< note >}}
+  This service can be used by both internal system services and third-party components. However, third-party components cannot access and modify all system-critical settings. These methods are marked as "<strong>private</strong>".
+  {{< /note >}}
 </div>
 <h2>Overview of the API</h2>
 <div>
@@ -28,6 +29,7 @@ toc: true
     <li><strong>deviceInfo </strong>- query device information</li>
     <li><strong>erase </strong>- options to erase specified partition</li>
     <li><strong>osInfo </strong>- query OS information</li>
+    <li><strong>softwareInfo </strong>- query software information</li>
     <li><strong>time </strong>- manage time settings</li>
     <li><strong>ringtone </strong>- options to add or delete ringtones</li>
     <li><strong>wallpaper </strong>- manage wallpaper settings</li>
@@ -184,11 +186,13 @@ toc: true
       <p># luna-send -n 1 -f luna://com.webos.service.systemservice/backup/postRestore &#39;{<br />
         &nbsp; &nbsp; &nbsp; &nbsp;&quot;tempDir&quot;: &quot;/tmp/&quot;,<br />
         &nbsp; &nbsp; &nbsp; &nbsp;&quot;files&quot;: [&quot;/var/luna/preferences/systemprefs_backup.db&quot;]<br />
-        }&#39;</p>
+        }&#39;
+      </p>
       <p>Response:</p>
       <p>{<br />
         &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: true<br />
-        }</p>
+        }
+      </p>
     </div>
   </div>
 </div>
@@ -206,7 +210,8 @@ toc: true
     &nbsp;&nbsp; &nbsp;&quot;timeChangeLaunch&quot;,<br />
     &nbsp;&nbsp; &nbsp;&quot;showcontactmatch&quot;,<br />
     &nbsp; &nbsp; &quot;x_webos_virtualkeyboard_prefs&quot;<br />
-    ]</p>
+    ]
+  </p>
   <p>If any of the method parameters is not specified or specified incorrectly, the method will use the default values.</p>
   <p>This method is internal, only system applications can use it. It is not available to third-party applications.</p>
   <h4>Parameters</h4>
@@ -318,6 +323,164 @@ toc: true
     <p>}</p>
   </div>
 </div>
+<h3>clock/setTime</h3>
+<div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>time.management, systemsettings.management</b></span></div>
+  <h4>Description</h4>
+  <p>The <strong>setTime</strong> method is used to set the time. By calling this method you can update any time data source, including Linux system time, network-broadcasted time, user time and others.</p>
+  <p>Any application can use this method.</p>
+  <p>After this method is called, the system services receives a notification about the time update.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>utc</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Seconds since epoch in UTC time-zone.&nbsp;</p>
+            <p><strong>Note: </strong>Either <strong>utc</strong>&nbsp;field or <strong>available</strong>&nbsp;field is mandatory.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>source</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Time source associated with time info update (default &quot;manual&quot;).</p>
+            <p>Only those sources that are listed in the <strong>timeSources</strong> Preference key can be set.<br />
+              &nbsp;
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td>available</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Availability flag. Set to false to specify that source is not available.</p>
+            <p><strong>Note: </strong>Either <strong>available</strong>&nbsp;field or <strong>utc</strong> field is mandatory.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>timestamp</td>
+          <td>Optional</td>
+          <td>Object: <a href="#timestamp"> Timestamp</a></td>
+          <td>
+            <p><strong>Monotonic</strong> timestamp. If set, will&nbsp;be used to calculate a delay between sending and receipt&nbsp;of this request over luna-bus and add that to <strong>utc</strong>&nbsp;field.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check&nbsp; &quot;errorText&quot; field&nbsp;for details</li>
+            </ul>
+            <p>. The <strong>clock/setTime</strong> method may fail because:</p>
+            <ul>
+              <li>Requested clock is not registered.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Error Code Number</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Could not validate json message against schema</td>
+          <td>
+            <p>The request data is invalid.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>Requested clock is not registered</td>
+          <td>
+            <p>Time source is not among list of available ones (&quot;timeSources&quot;).</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.systemservice/clock/setTime &#39;{&quot;utc&quot;:1448556562}&#39;</p>
+  </div>
+</div>
 <h3>clock/getTime</h3>
 <div>
   <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>time.query</b></span></div>
@@ -349,7 +512,8 @@ toc: true
           <td>String</td>
           <td>
             <p>Time-source to access (default &quot;system&quot;)<br />
-              Supported sources:</p>
+              Supported sources:
+            </p>
             <ul>
               <li><strong>system</strong>&nbsp;- Linux system-wide time (always available)</li>
               <li><strong>manual</strong> - Last time set manually by user</li>
@@ -547,166 +711,9 @@ toc: true
     <p>}</p>
   </div>
 </div>
-<h3>clock/setTime</h3>
-<div>
-  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>time.management, systemsettings.management</b></span></div>
-  <h4>Description</h4>
-  <p>The <strong>setTime</strong> method is used to set the time. By calling this method you can update any time data source, including Linux system time, network-broadcasted time, user time and others.</p>
-  <p>Any application can use this method.</p>
-  <p>After this method is called, the system services receives a notification about the time update.</p>
-  <h4>Parameters</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>utc</td>
-          <td>Required</td>
-          <td>Number</td>
-          <td>
-            <p>Seconds since epoch in UTC time-zone.&nbsp;</p>
-            <p><strong>Note: </strong>Either <strong>utc</strong>&nbsp;field or <strong>available</strong>&nbsp;field is mandatory.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>source</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Time source associated with time info update (default &quot;manual&quot;).</p>
-            <p>Only those sources that are listed in the <strong>timeSources</strong> Preference key can be set.<br />
-              &nbsp;</p>
-          </td>
-        </tr>
-        <tr>
-          <td>available</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Availability flag. Set to false to specify that source is not available.</p>
-            <p><strong>Note: </strong>Either <strong>available</strong>&nbsp;field or <strong>utc</strong> field is mandatory.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>timestamp</td>
-          <td>Optional</td>
-          <td>Object: <a href="#timestamp"> Timestamp</a></td>
-          <td>
-            <p><strong>Monotonic</strong> timestamp. If set, will&nbsp;be used to calculate a delay between sending and receipt&nbsp;of this request over luna-bus and add that to <strong>utc</strong>&nbsp;field.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Call Returns</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
-            <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check&nbsp; &quot;errorText&quot; field&nbsp;for details</li>
-            </ul>
-            <p>. The <strong>clock/setTime</strong> method may fail because:</p>
-            <ul>
-              <li>Requested clock is not registered.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>errorText</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>errorCode</td>
-          <td>Optional</td>
-          <td>Number</td>
-          <td>
-            <p>Error Code Number</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Error Codes Reference</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Error Code</p>
-          </th>
-          <th width="30%">
-            <p>Error Text</p>
-          </th>
-          <th width="55%">
-            <p>Error Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td>Could not validate json message against schema</td>
-          <td>
-            <p>The request data is invalid.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>Requested clock is not registered</td>
-          <td>
-            <p>Time source is not among list of available ones (&quot;timeSources&quot;).</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Example</h4>
-  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
-  </div>
-  <div class="code-bg-grey">
-    <p># luna-send -n 1 -f luna://com.webos.service.systemservice/clock/setTime &#39;{&quot;utc&quot;:1448556562}&#39;</p>
-  </div>
-</div>
 <h3>deviceInfo/query</h3>
 <div>
-  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>systemsettings.query</b></span></div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>arescli.interface</b></span></div>
   <h4>Description</h4>
   <p>The <strong>query</strong> method to get the device system information such as product Id, system number, hardware information, Wi-FI address, battery status and others. Please refer to the return values table below for a complete list of the system parameters.</p>
   <p><strong>Note:</strong> This method must not be used by 3rd-party applications.</p>
@@ -1234,7 +1241,8 @@ toc: true
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;countryCode&quot;:&quot;us&quot;<br />
       &nbsp;&nbsp;&nbsp;},<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>getPreferenceValues</h3>
@@ -1408,7 +1416,8 @@ toc: true
       &nbsp; &nbsp; &nbsp; false<br />
       &nbsp; &nbsp;],<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
   </div>
   <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
     <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
@@ -1422,12 +1431,13 @@ toc: true
       &nbsp; &nbsp; &nbsp; &quot;HH24&quot;<br />
       &nbsp; &nbsp;],<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>osInfo/query</h3>
 <div>
-  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>systemsettings.query</b></span></div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>arescli.interface</b></span></div>
   <h4>Description</h4>
   <p>The <strong>query</strong> method returns operating system information. This method may be used to display the operating system version, API version, build name and date and so on.</p>
   <p>This method is available for both internal and third-party applications.</p>
@@ -1677,14 +1687,16 @@ toc: true
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;webos_release&quot;,<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;webos_build_id&quot;<br />
       &nbsp; &nbsp;]<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{&nbsp;&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&quot;webos_release&quot;:&quot;1.0.p&quot;,<br />
       &nbsp;&nbsp;&nbsp;&quot;webos_build_id&quot;:&quot;4&quot;,<br />
       &nbsp;&nbsp;&nbsp;&quot;webos_name&quot;:&quot;webOS&nbsp;OSE&quot;,<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>ringtone/addRingtone</h3>
@@ -1829,7 +1841,8 @@ toc: true
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>ringtone/deleteRingtone</h3>
@@ -1959,7 +1972,8 @@ toc: true
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>setPreferences</h3>
@@ -2232,7 +2246,8 @@ toc: true
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;date&quot;: &quot;1982-12-06 17:25:33&quot;,<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;source_tz&quot;: &quot;America/Los_Angeles&quot;,<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;dest_tz&quot;:&quot;America/New_York&quot;<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>{</p>
     <p style="margin-left:40px">&quot;returnValue&quot;: true,</p>
     <p style="margin-left:40px">&quot;date&quot;: &quot;Mon Dec 6 19:25:33 1982&quot;</p>
@@ -2243,7 +2258,8 @@ toc: true
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;date&quot;: &quot;1982-12-06 17:25:33&quot;,<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;source_tz&quot;: &quot;America/Los_Angeles&quot;,<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;dest_tz&quot;:&quot;America/New_York1&quot;<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>{</p>
     <p style="margin-left:40px">&quot;returnValue&quot;: false,</p>
     <p style="margin-left:40px">&quot;errorText&quot;: &quot;timezone not found: &#39;America/New_York1&#39;&quot;</p>
@@ -2423,7 +2439,7 @@ toc: true
               <li><strong>true&nbsp;</strong>- Get notifications</li>
               <li><strong>false&nbsp;</strong>- Notifications are not required</li>
             </ul>
-            <p>â€‹<strong>Default value:</strong>&nbsp;false</p>
+            <p>​<strong>Default value:</strong>&nbsp;false</p>
           </td>
         </tr>
       </tbody>
@@ -2576,7 +2592,8 @@ toc: true
       &nbsp;&nbsp;&nbsp;&quot;local&quot;:1448528209,<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
       &nbsp;&nbsp;&nbsp;&quot;systemTimeSource&quot;:&quot;sdp&quot;<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>time/getNTPTime</h3>
@@ -2706,7 +2723,7 @@ toc: true
           <td>Boolean</td>
           <td>
             <p style="text-align: left;">If the app wants to&nbsp;<span style="text-align: justify;">receive notifications when the time zone changes and/or the system time changes by a system-defined threshold, it should set&nbsp;<strong>subscribe</strong><strong></strong>&nbsp;to <strong>true.</strong>&nbsp;The current system-defined threshold is 5 minutes.&nbsp;</span></p>
-            <p style="text-align: left;"><span style="text-align: justify;">If the app does not wish to receive notifications of change in time zone and/or the system time changes, it should set&nbsp;<strong>subscribe&nbsp;</strong>â€‹ to <strong>false</strong>.</span><br></p>
+            <p style="text-align: left;"><span style="text-align: justify;">If the app does not wish to receive notifications of change in time zone and/or the system time changes, it should set&nbsp;<strong>subscribe&nbsp;</strong>​ to <strong>false</strong>.</span><br></p>
           </td>
         </tr>
       </tbody>
@@ -3013,7 +3030,8 @@ toc: true
       &nbsp;&nbsp;&nbsp;&quot;timeZoneFile&quot;:&quot;/var/luna/preferences/localtime&quot;,<br />
       &nbsp;&nbsp;&nbsp;&quot;offset&quot;:-480,<br />
       &nbsp;&nbsp;&nbsp;&quot;isDST&quot;:true<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>time/getSystemTimezoneFile</h3>
@@ -3071,7 +3089,8 @@ toc: true
     <p>{&nbsp;&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&quot;subscribed&quot;:false,<br />
       &nbsp;&nbsp;&nbsp;&quot;timeZoneFile&quot;:&quot;/var/luna/preferences/localtime&quot;<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>time/getSystemUptime</h3>
@@ -3174,7 +3193,8 @@ toc: true
     <p>{<br />
       &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp;&nbsp;&quot;uptime&quot;: 5185<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>time/launchTimeChangeApps</h3>
@@ -3234,7 +3254,8 @@ toc: true
     <p>{&nbsp;&nbsp;<br />
       &nbsp;&nbsp;&nbsp;&quot;subscribed&quot;:false,<br />
       &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>time/setBroadcastTime</h3>
@@ -3626,7 +3647,8 @@ toc: true
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;mnc&quot;:&quot;26&quot;,<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;tilIgnore&quot;:true,<br />
       &nbsp; &nbsp; &nbsp; &quot;timestamp&quot;:&quot;123&quot;<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>{</p>
     <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
     <p>}</p>
@@ -3906,7 +3928,8 @@ toc: true
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;appId&quot;: &quot;com.webos.app.someApp&quot;,<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;active&quot;: true,<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;parameters&quot;: { &quot;param1&quot;: &quot;foo&quot;, &quot;param2&quot;: &quot;bar&quot; }<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>{</p>
     <p style="margin-left:40px">&quot;subscribed&quot;: false,</p>
     <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
@@ -4053,7 +4076,8 @@ toc: true
           <td>
             <p>The timezone matching the given parameters.</p>
             <p><strong>Note: </strong>When there are multiple locations that match the specified &quot;bias&quot;, the entry that first appears in the preferences is returned. For example, Gibraltar and Brussles, both have offset from UTC as 60. So, if bias is given as &quot;-60&quot;, the API returns timezone as &quot;Gibraltar&quot; since it appears before &quot;Brussels&quot;. This order can be checked in the output of the following command:<br />
-              #&nbsp;luna-send -n 1 -f luna://com.webos.service.systemservice/getPreferenceValues &#39;{&quot;key&quot;: &quot;timeZone&quot; }&#39;</p>
+              #&nbsp;luna-send -n 1 -f luna://com.webos.service.systemservice/getPreferenceValues &#39;{&quot;key&quot;: &quot;timeZone&quot; }&#39;
+            </p>
           </td>
         </tr>
         <tr>
@@ -4485,7 +4509,8 @@ toc: true
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;week&quot;: 1,<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;hour&quot;: 0<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}<br />
-      }&#39;</p>
+      }&#39;
+    </p>
   </div>
 </div>
 <h3>wallpaper/convert</h3>
@@ -4707,19 +4732,21 @@ toc: true
   </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/wallpaper/convert &#39;{<br />
-      &nbsp; &nbsp; &nbsp;&nbsp;&quot;source&quot;: &quot;/mnt/lg/tvservice/res/lgres/bootani/light_open.png&quot;,<br />
-      &nbsp; &nbsp; &nbsp;&nbsp;&quot;dest&quot;:&quot;/tmp/test.jpg&quot;,<br />
+      &nbsp; &nbsp; &nbsp;&nbsp;&quot;source&quot;: &quot;/var/rootdirs/home/root/Capture.PNG&quot;,<br />
+      &nbsp; &nbsp; &nbsp;&nbsp;&quot;dest&quot;:&quot;/var/rootdirs/home/root/test.jpg&quot;,<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;destType&quot; : &quot;jpg&quot;<br />
-      }&#39;</p>
+      }&#39;
+    </p>
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;returnValue&quot;: true,<br />
       &nbsp; &nbsp;&quot;conversionResult&quot;: {<br />
-      &nbsp; &nbsp; &nbsp;&nbsp;&quot;dest&quot;: &quot;//tmp/test.jpg&quot;,<br />
-      &nbsp; &nbsp; &nbsp;&nbsp;&quot;source&quot;: &quot;//mnt/lg/tvservice/res/lgres/bootani/light_open.png&quot;,<br />
+      &nbsp; &nbsp; &nbsp;&nbsp;&quot;dest&quot;: &quot;//var/rootdirs/home/root/test.jpg&quot;,<br />
+      &nbsp; &nbsp; &nbsp;&nbsp;&quot;source&quot;: &quot;//var/rootdirs/home/root/Capture.PNG&quot;,<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;destType&quot;: &quot;jpg&quot;<br />
       &nbsp; &nbsp;}<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>wallpaper/deleteWallpaper</h3>
@@ -4879,7 +4906,8 @@ toc: true
       &nbsp; &nbsp;&quot;wallpaper&quot;: {<br />
       &nbsp; &nbsp; &nbsp;&nbsp;&quot;wallpaperName&quot;: &quot;record-large.png&quot;<br />
       &nbsp; &nbsp;}<br />
-      }</p>
+      }
+    </p>
   </div>
 </div>
 <h3>wallpaper/importWallpaper</h3>
@@ -5473,18 +5501,185 @@ toc: true
     <p># luna-send -n 1 -f luna://com.webos.service.systemservice/time/getCurrentTimeZoneByLocale &#39;{&quot;locale&quot;:&quot;ko&quot;}&#39;</p>
     <p>Response:</p>
     <p>{<br />
-      &nbsp; &nbsp; &quot;timeZone&quot;: {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;Country&quot;: &quot;United States of America&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;Description&quot;: &quot;Pacific Time&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;offsetFromUTC&quot;: -480,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;supportDST&quot;: 0,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;CountryCode&quot;: &quot;US&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;City&quot;: &quot;Los Angeles&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;ZoneID&quot;: &quot;America/Los_Angeles&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;preferred&quot;: true<br />
-      &nbsp; &nbsp; },<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }</p>
+      &nbsp; &nbsp;&quot;timeZone&quot;:{<br />
+      &nbsp; &nbsp; &nbsp; &quot;supportDST&quot;:0,<br />
+      &nbsp; &nbsp; &nbsp; &quot;offsetFromUTC&quot;:-480,<br />
+      &nbsp; &nbsp; &nbsp; &quot;City&quot;:&quot;로스앤젤레스&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;CountryCode&quot;:&quot;US&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;Description&quot;:&quot;Pacific Time&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;Country&quot;:&quot;United States of America&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;ZoneID&quot;:&quot;America/Los_Angeles&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;preferred&quot;:true<br />
+      &nbsp; &nbsp;},<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+  </div>
+</div>
+<h3>softwareInfo/query</h3>
+<div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>software.query, arescli.interface</b></span></div>
+  <h4>Description</h4>
+  <p>Returns details of software deployed on the webOS device.</p>
+  <p><strong>Note: </strong>Currently, returns only the nodejs version.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>parameters</td>
+          <td>Optional</td>
+          <td>String array</td>
+          <td>
+            <p>List of requested parameters.</p>
+            <p>Possible values:</p>
+            <ul>
+              <li>nodejs_versions</li>
+            </ul>
+            <p><strong>Note:</strong> If no value is specified, all available parameters are returned:</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are: </p>
+            <ul>
+              <li><strong>true:</strong> Operation is successful.</li>
+              <li><strong>false:</strong> Operation has failed. Check the 'errorCode' and 'errorText' fields.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The reason for the failure of the operation. See the &#39;Error Codes&#39; section of this method for details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>nodejs_versions</td>
+          <td>Optional</td>
+          <td>String array</td>
+          <td>
+            <p>Versions of nodejs that are available on the webOS device.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>Invalid parameter: +</td>
+          <td>
+            <p>The&nbsp;<strong>&lt;parameter name&gt;</strong>&nbsp;specified in the request is invalid.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>&#39;parameters&#39; needs to be an array</td>
+          <td>
+            <p>The &#39;<strong>parameters&#39;</strong>&nbsp;parameter must be provided as&nbsp;an array.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>Invalid message payload</td>
+          <td>
+            <p>The request JSON payload contains invalid data.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>Could not validate json message against schema</td>
+          <td>
+            <p>Anything other than parameters is passed.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : Querying the nodejs version</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.systemservice/softwareInfo/query &#39;{<br />
+      &nbsp; &nbsp;&quot;parameters&quot;:[<br />
+      &nbsp; &nbsp; &nbsp; &quot;nodejs_versions&quot;<br />
+      &nbsp; &nbsp;]<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>&nbsp;{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;nodejs_versions&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;v8.17.0&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;v6.17.1&quot;<br />
+      &nbsp; &nbsp; ]<br />
+      }&nbsp;
+    </p>
   </div>
 </div>
 <h2>Objects</h2>

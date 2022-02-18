@@ -1,7 +1,7 @@
 ---
 title: User Guide
 display_title: Command-Line Interface User Guide
-date: 2021-09-09
+date: 2022-02-18
 weight: 10
 toc: true
 ---
@@ -12,30 +12,34 @@ toc: true
 
 CLI provides the following key features:
 
-  - **App and Service Creation**
+  - **Creating Apps and Services**
     - Provides standard templates for webOS OSE apps and services
     - Provides a list of available templates
     - Generates an app or a service and configures basic information
-  - **App and Service Packaging**
+  - **Packaging Apps and Services**
     - Packages the source code and generates a package file (`.ipk`) to run on the target device
     - Provides a feature to exclude sample and test code directories from an app or a service
-  - **Target Device Management**
+  - **Managing Target Devices**
     - Provides a list of target devices
     - Adds, modifies, and removes target devices
-  - **App and Service Installation**
+  - **Installing Apps and Services**
     - Installs the app and service on the target device
     - Provides a list of apps installed on the target device
     - Removes selected apps from the target device
-  - **App Launching and Closing**
+  - **Launching and Closing Apps**
     - Launches selected apps
     - Closes apps that are running
     - Provides the list of apps running on the target device
-  - **App and Service Debugging**
+  - **Debugging Apps and Services**
     - Enables Web Inspector for debugging web apps
     - Enables Node's Inspector for debugging JavaScript services
     - Provides web app information
     - Provides JavaScript service information
     - Shows or saves logs of webOS OSE apps and services
+  - **Providing Target Device Information**
+    - Provides system information
+    - Provides screen capture
+    - Supports monitoring device's resource usage
 
 ## System Requirements
 
@@ -70,7 +74,7 @@ Required version for each operating system are as follows:
 
 ### Software Tools
 
-* Node.js (Use v8.12.0 to v14.15.1.)
+* Node.js (Use v10.24.1 to v14.15.1.)
 * npm
 
 ## Installing CLI
@@ -104,72 +108,70 @@ For step-by-step instructions to create web apps and JS service using CLI comman
 
 The following table shows the available CLI commands.
 
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: auto" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Commands</p></th>
-<th><p>Descriptions</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p><a href="#ares">ares</a></p></td>
-<td><p>Provides the help menu for using the <code>ares</code> commands.</p></td>
-</tr>
-<tr>
-<td><p><a href="#ares-generate">ares-generate</a></p></td>
-<td><p>Creates a webOS OSE app or service from templates.</p></td>
-</tr>
-<tr>
-<td><p><a href="#ares-package">ares-package</a></p></td>
-<td><p>Packages the app or services into a package file.</p></td>
-</tr>
-<tr>
-<td><p><a href="#ares-setup-device">ares-setup-device</a></p></td>
-<td><p>Manages the target devices.</p></td>
-</tr>
-<tr>
-<td><p><a href="#ares-install">ares-install</a></p></td>
-<td><p>Installs the app or service on the target device.</p></td>
-</tr>
-<tr>
-<td><p><a href="#ares-launch">ares-launch</a></p></td>
-<td><p>Launches or terminates the app.</p></td>
-</tr>
-<tr>
-<td><p><a href="#ares-log">ares-log</a></p></td>
-<td><p>Shows or saves logs of webOS OSE apps or services.</p></td>
-</tr>
-<tr>
-<td><p><a href="#ares-inspect">ares-inspect</a></p></td>
-<td><p>Enables Web Inspector or Node's Inspector for debugging web app or JS service.</p></td>
-</tr>
-<tr>
-<td><p><a href="#ares-server">ares-server</a></p></td>
-<td><p>Runs the Web server for testing local app file.</p></td>
-</tr>
-<tr>
-<td><p><a href="#ares-shell">ares-shell</a></p></td>
-<td><p>Executes shell commands in the target device.</p></td>
-</tr>
-<tr>
-<td><p><a href="#ares-push">ares-push</a></p></td>
-<td><p>Pushes file(s) from a host machine to a target device.</p></td>
-</tr>
-<tr>
-<td><p><a href="#ares-pull">ares-pull</a></p></td>
-<td><p>Pulls file(s) from a target device to a host machine.</p></td>
-</tr>
-<tr>
-<td><p><a href="#ares-device">ares-device</a></p></td>
-<td><p>Displays the device information.</p></td>
-</tr>
-</tbody>
-</table></div>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th><p>Commands</p></th>
+        <th><p>Descriptions</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p><a href="#ares">ares</a></p></td>
+        <td><p>Provides the help menu for using the <code>ares</code> commands.</p></td>
+      </tr>
+      <tr>
+        <td><p><a href="#ares-generate">ares-generate</a></p></td>
+        <td><p>Creates a webOS OSE app or service from templates.</p></td>
+      </tr>
+      <tr>
+        <td><p><a href="#ares-package">ares-package</a></p></td>
+        <td><p>Packages the app or services into a package file.</p></td>
+      </tr>
+      <tr>
+        <td><p><a href="#ares-setup-device">ares-setup-device</a></p></td>
+        <td><p>Manages the target devices.</p></td>
+      </tr>
+      <tr>
+        <td><p><a href="#ares-install">ares-install</a></p></td>
+        <td><p>Installs the app or service on the target device.</p></td>
+      </tr>
+      <tr>
+        <td><p><a href="#ares-launch">ares-launch</a></p></td>
+        <td><p>Launches or terminates the app.</p></td>
+      </tr>
+      <tr>
+        <td><p><a href="#ares-inspect">ares-inspect</a></p></td>
+        <td><p>Enables Web Inspector or Node's Inspector for debugging web app or JS service.</p></td>
+      </tr>
+      <tr>
+        <td><p><a href="#ares-server">ares-server</a></p></td>
+        <td><p>Runs the Web server for testing local app file.</p></td>
+      </tr>
+      <tr>
+        <td><p><a href="#ares-shell">ares-shell</a></p></td>
+        <td><p>Executes shell commands on the target device.</p></td>
+      </tr>
+      <tr>
+        <td><p><a href="#ares-push">ares-push</a></p></td>
+        <td><p>Pushes file(s) from a host machine to a target device.</p></td>
+      </tr>
+      <tr>
+        <td><p><a href="#ares-pull">ares-pull</a></p></td>
+        <td><p>Pulls file(s) from a target device to a host machine.</p></td>
+      </tr>
+      <tr>
+        <td><p><a href="#ares-device">ares-device</a></p></td>
+        <td><p>Displays the device information.</p></td>
+      </tr>
+      <tr>
+        <td><p><a href="#ares-log-journal">ares-log</a></p></td>
+        <td><p>Shows or saves logs of webOS OSE apps or services.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 ### ares
 
@@ -177,24 +179,26 @@ This command provides the help menu for using the `ares` commands.
 
 #### History
 
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: 15%" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Version</p></th>
-<th><p>Changes</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>v1.6.4</p></td>
-<td><p>Added in.</p></td>
-</tr>
-</tbody>
-</table></div>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th style="width:15%"><p>Version</p></th>
+        <th><p>Changes</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>v2.3.1</p></td>
+        <td><p>Supports the <code>--level</code> option.</p></td>
+      </tr>
+      <tr>
+        <td><p>v1.6.4</p></td>
+        <td><p>Added in.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 #### Usages
 
@@ -202,52 +206,78 @@ This command provides the help menu for using the `ares` commands.
 ares
 
 ares [OPTION...]
+
+ares --version|-V
+
+ares --help|-h
 ```
 
 #### Options
 
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: 15%" />
-<col style="width: auto" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Option</p></th>
-<th><p>Parameter</p></th>
-<th><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>-l, --list</p></td>
-<td><p>None</p></td>
-<td><p>Lists all the <code>ares</code> commands.</p></td>
-</tr>
-<tr>
-<td><p>--[COMMAND]</p></td>
-<td><p>None</p></td>
-<td><p>Displays the help menu of <code>COMMAND</code>.</p> 
-<p><code>COMMAND</code> is entered using postfix of the <code>ares</code> commands. For more details, see <a href="#examples">Examples</a>.</p></td>
-</tr>
-<tr>
-<td><p>-h, --help</p></td>
-<td><p>None</p></td>
-<td><p>Displays this help menu.</p></td>
-</tr>
-<tr>
-<td><p>-V, --version</p></td>
-<td><p>None</p></td>
-<td><p>Displays the version of the CLI.</p></td>
-</tr>
-<tr>
-<td><p>-v</p></td>
-<td><p>None</p></td>
-<td><p>Displays the execution log.</p></td>
-</tr>
-</tbody>
-</table></div>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th style="width:15%"><p>Option</p></th>
+        <th><p>Parameter</p></th>
+        <th><p>Description</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>-l, --list</p></td>
+        <td><p>None</p></td>
+        <td><p>Lists all the <code>ares</code> commands.</p></td>
+      </tr>
+      <tr>
+        <td><p>--[COMMAND]</p></td>
+        <td><p>None</p></td>
+        <td>
+          <p>Prints help messages of <code>COMMAND</code>.</p> 
+          <p><code>COMMAND</code> is entered using postfix of the <code>ares</code> commands. For more details, see <a href="#examples">Examples</a>.</p></td>
+      </tr>
+      <tr>
+        <td><p>-h, --help</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints help messages.</p></td>
+      </tr>
+      <tr>
+        <td><p>-V, --version</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints the version of CLI.</p></td>
+      </tr>
+      <tr>
+        <td><p>-v</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints verbose output.</p></td>
+      </tr>
+      <tr>
+        <td><p>--level</p></td>
+        <td><p>LEVEL</p></td>
+        <td><p>Sets the level of logs as <code>LEVEL</code> and prints the logs.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+#### Parameters
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th><p>Parameter</p></th>
+        <th><p>Description</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>LEVEL</p></td>
+        <td><p>A priority of logs (e.g., silly, verbose, info, warn, error)</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 #### Examples
 
@@ -270,37 +300,39 @@ This command creates a webOS OSE app or service from a template. `ares-generate`
 
 #### History
 
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: 15%" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Version</p></th>
-<th><p>Changes</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>v2.1.0</p></td>
-<td>
-<p>Updates <code>requiresPermissions</code> in the <code>appinfo.json</code> file.</p>
-    {{< caution >}}
-    Template files generated by CLI v2.0.3 or older are not compatible with webOS OSE 2.10.0 or higher.
-    {{< /caution >}}
-</td>
-</tr>
-<tr>
-<td><p>v1.11.0</p></td>
-<td><p>Updates the properties of the <code>appinfo.json</code> file.</p></td>
-</tr>
-<tr>
-<td><p>v1.6.4</p></td>
-<td><p>Added in.</p></td>
-</tr>
-</tbody>
-</table></div>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th style="width:15%"><p>Version</p></th>
+        <th><p>Changes</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>v2.3.1</p></td>
+        <td><p>Supports the <code>--level</code> option.</p></td>
+      </tr>
+      <tr>
+        <td><p>v2.1.0</p></td>
+        <td>
+          <p>Updates <code>requiresPermissions</code> in the <code>appinfo.json</code> file.</p>
+          {{< caution >}}
+          Template files generated by CLI v2.0.3 or older are not compatible with webOS OSE 2.10.0 or higher.
+          {{< /caution >}}
+        </td>
+      </tr>
+      <tr>
+        <td><p>v1.11.0</p></td>
+        <td><p>Updates the properties of the <code>appinfo.json</code> file.</p></td>
+      </tr>
+      <tr>
+        <td><p>v1.6.4</p></td>
+        <td><p>Added in.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 #### Usages
 
@@ -318,145 +350,174 @@ ares-generate --help|-h
 
 #### Options
 
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: 20%" />
-<col style="width: auto" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Option</p></th>
-<th><p>Parameter</p></th>
-<th><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>-t, --template</p></td>
-<td><p>TEMPLATE</p></td>
-<td><p>Uses the specified template. Available templates are:</p>
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: auto" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p><strong>Template Name</strong></p></th>
-<th><p><strong>Brief Description</strong></p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>webapp</p></td>
-<td><p>(Default) web app template for webOS</p></td>
-</tr>
-<tr>
-<td><p>hosted_webapp</p></td>
-<td><p>Hosted web app template for webOS</p></td>
-</tr>
-<tr>
-<td><p>webappinfo</p></td>
-<td><p>Creates an <code>appinfo.json</code> file for web apps.</p></td>
-</tr>
-<tr>
-<td><p>js_service</p></td>
-<td><p>JS service template for webOS</p></td>
-</tr>
-<tr>
-<td><p>jsserviceinfo</p></td>
-<td><p>Creates a <code>services.json</code> and <code>package.json</code> file for JS services.</p></td>
-</tr>
-<tr>
-<td><p>icon</p></td>
-<td><p>Creates an app icon file. [80x80]</p></td>
-</tr>
-<tr>
-<td><p>qmlapp</p></td>
-<td><p>	QML app template for webOS</p></td>
-</tr>
-<tr>
-<td><p>qmlappinfo</p></td>
-<td><p>Creates an <code>appinfo.json</code> for QML app.</p></td>
-</tr>
-</tbody>
-</table></div></td>
-</tr>
-<tr>
-<td><p>-p, --property</p></td>
-<td><p>PROPERTY</p></td>
-<td><p>Sets the properties of webOS OSE configuration files.</p></td>
-</tr>
-<tr>
-<td><p>-s, --servicename</p></td>
-<td><p>SERVICE_NAME</p></td>
-<td><p>Specifies the JS Service ID.</p></td>
-</tr>
-<tr>
-<td><p>-f, --overwrite</p></td>
-<td><p>None</p></td>
-<td><p>Allows overwriting of existing files.</p></td>
-</tr>
-<tr>
-<td><p>-l, --list</p></td>
-<td><p>None</p></td>
-<td><p>Lists the available templates. See description of the <code>-t</code> option above.</p></td>
-</tr>
-<tr>
-<td><p>-h, --help</p></td>
-<td><p>None</p></td>
-<td><p>Displays the help of the <code>ares-generate</code> command</p></td>
-</tr>
-<tr>
-<td><p>-V, --version</p></td>
-<td><p>None</p></td>
-<td><p>Displays the version of the CLI.</p></td>
-</tr>
-<tr>
-<td><p>-v</p></td>
-<td><p>None</p></td>
-<td><p>Displays the execution log.</p></td>
-</tr>
-</tbody>
-</table></div>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th style="width:20%"><p>Option</p></th>
+        <th><p>Parameter</p></th>
+        <th><p>Description</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>-t, --template</p></td>
+        <td><p>TEMPLATE</p></td>
+        <td>
+          <p>Sets the template to be created. Available templates are as follows:</p>
+          <ul>
+            <li>webapp (default)</li>
+            <li>hosted_webapp</li>
+            <li>webappinfo</li>
+            <li>js_service</li>
+            <li>jsserviceinfo</li>
+            <li>icon</li>
+            <li>qmlapp</li>
+            <li>qmlappinfo</li>
+          </ul>
+          <p>For more information about each template, see <a href="#parameters">Parameters</a>.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>-l, --list</p></td>
+        <td><p>None</p></td>
+        <td><p>Lists the available templates.</p></td>
+      </tr>
+      <tr>
+        <td><p>-p, --property</p></td>
+        <td><p>PROPERTY</p></td>
+        <td><p>Sets the properties of webOS OSE configuration files.</p></td>
+      </tr>
+      <tr>
+        <td><p>-s, --servicename</p></td>
+        <td><p>SERVICE_NAME</p></td>
+        <td><p>Specifies the JS service ID.</p></td>
+      </tr>
+      <tr>
+        <td><p>-f, --overwrite</p></td>
+        <td><p>None</p></td>
+        <td><p>Allows overwriting the existing files.</p></td>
+      </tr>
+      <tr>
+        <td><p>-h, --help</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints help messages.</p></td>
+      </tr>
+      <tr>
+        <td><p>-V, --version</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints the version of CLI.</p></td>
+      </tr>
+      <tr>
+        <td><p>-v</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints verbose output.</p></td>
+      </tr>
+      <tr>
+        <td><p>--level</p></td>
+        <td><p>LEVEL</p></td>
+        <td><p>Sets the level of logs as <code>LEVEL</code> and prints the logs.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 #### Parameters
 
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: auto" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Parameter</p></th>
-<th><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>APP_DIR</p></td>
-<td><p>Specifies the app directory. If the directory does not exist, the directory will be created while executing the command.</p></td>
-</tr>
-<tr>
-<td><p>SERVICE_DIR</p></td>
-<td><p>Specifies the service directory. If the specified directory does not exist, the directory will be created while executing the command.</p></td>
-</tr>
-<tr>
-<td><p>PROPERTY</p></td>
-<td><p>Specifies the app information. It is entered using JSON-type strings in the format of <code>"key=value"</code> or <code>"{'key1':'value1', 'key2':'value2', ...}"</code>.</p></td>
-</tr>
-<tr>
-<td><p>TEMPLATE</p></td>
-<td><p>Specifies the template to use when creating an app or a service. The default value is <code>webapp</code>.</p></td>
-</tr>
-<tr>
-<td><p>SERVICE_NAME</p></td>
-<td><p>ID of the service you are creating. The service ID should be a sub-domain of the ID of the app which the service belongs to.</p></td>
-</tr>
-</tbody>
-</table></div>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th><p>Parameter</p></th>
+        <th><p>Description</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>APP_DIR</p></td>
+        <td>
+          <p>A directory to store the created app</p>
+          <p>If the directory doesn't exist, the directory will be created while executing the command.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>SERVICE_DIR</p></td>
+        <td>
+          <p>A directory to store the created service</p>
+          <p>If the directory doesn't exist, the directory will be created while executing the command.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>PROPERTY</p></td>
+        <td>
+          <p>Properties in the format of <code>"key=value"</code> or a JSON-type string: <code>"{'key1':'value1', 'key2':'value2', ...}"</code></p>
+          <p>For more details, see <a href="/docs/guides/development/configuration-files/appinfo-json/">appinfo.json</a> and <a href="/docs/guides/development/configuration-files/services-json/">services.json</a>.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>TEMPLATE</p></td>
+        <td>
+          <p>A template to use when creating an app or a service (default value: <code>webapp</code>)</p>
+          <div class="table-container">
+            <table class="table is-bordered is-fullwidth">
+              <thead>
+                <tr class="header">
+                  <th><p><strong>Template Name</strong></p></th>
+                  <th><p><strong>Brief Description</strong></p></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><p>webapp (Default)</p></td>
+                  <td><p>Web app template for webOS OSE</p></td>
+                </tr>
+                <tr>
+                  <td><p>hosted_webapp</p></td>
+                  <td><p>Hosted web app template for webOS OSE</p></td>
+                </tr>
+                <tr>
+                  <td><p>webappinfo</p></td>
+                  <td><p>Creates an <code>appinfo.json</code> file for a web app.</p></td>
+                </tr>
+                <tr>
+                  <td><p>js_service</p></td>
+                  <td><p>JS service template for webOS OSE</p></td>
+                </tr>
+                <tr>
+                  <td><p>jsserviceinfo</p></td>
+                  <td><p>Creates a <code>services.json</code> and <code>package.json</code> file for a JS service.</p></td>
+                </tr>
+                <tr>
+                  <td><p>icon</p></td>
+                  <td><p>Creates an app icon file. Required size is 80 x 80 (pixels).</p></td>
+                </tr>
+                <tr>
+                  <td><p>qmlapp</p></td>
+                  <td><p>QML app template for webOS OSE</p></td>
+                </tr>
+                <tr>
+                  <td><p>qmlappinfo</p></td>
+                  <td><p>Creates an <code>appinfo.json</code> file for a QML app.</p></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td><p>SERVICE_NAME</p></td>
+        <td>
+          <p>The ID of a service</p> 
+          <p>This ID should be a sub-domain of the app ID to which the service belongs. For more details, see <a href="#examples-1">Examples</a>.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>LEVEL</p></td>
+        <td><p>A priority of logs (e.g., silly, verbose, info, warn, error)</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 #### Examples
 
@@ -468,62 +529,64 @@ Here are some examples of the different uses:
     ares-generate -l
     ```
 
-* Creating a web application with the default template in `./sampleApp` directory
+* Creating a web application using the default template in the `./sampleApp` directory
 
     ```shell
-    ares-generate sampleApp
+    ares-generate ./sampleApp
     ```
 
-* Creating a web application with a custom app ID in `./sampleApp` directory
+* Creating a web application with a custom app ID in the `./sampleApp` directory
 
     ```shell
-    ares-generate -p "id=com.example.sampleapp" sampleApp
+    ares-generate -p "id=com.example.sampleapp" ./sampleApp
     ```
 
-* Creating a JS Service with a custom service ID in `./sampleService` directory
+* Creating a JS service with a custom service ID in the `./sampleService` directory (App ID: `com.example.sampleapp`)
 
     ```shell
-    ares-generate -t js_service -s com.example.sampleapp.sampleservice sampleService
+    ares-generate -t js_service -s com.example.sampleapp.sampleservice ./sampleService
     ```
 
     {{< note >}}
-    The service ID should be a sub-domain of the ID of the app which the service belongs to.
+    The service ID should be a sub-domain of the app ID to which the service belongs.
     {{< /note >}}
 
-* Creating a web app in the `./sampleApp` and setting properties with JSON string
+* Creating a web app in the `./sampleApp` and setting properties with a JSON-type string
 
     ```shell
-    ares-generate -p "{'id':'com.example.sampleapp', 'version':'1.0.0', 'icon':'icon.png', 'type':'web', 'title':'Sample App', 'main':'index.html'}" sampleApp
+    ares-generate -p "{'id':'com.example.sampleapp', 'version':'1.0.0', 'icon':'icon.png', 'type':'web', 'title':'Sample App', 'main':'index.html'}" ./sampleApp
     ```
 
 ### ares-package
 
-This command packages an app and a JS service into a package file (`.ipk`) which is stored in a specified directory.
+This command packages an app or a JS service into a package file (`.ipk`) which is stored in a specified directory. This command also analyzes the package file.
 
 #### History
 
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: 15%" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Version</p></th>
-<th><p>Changes</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>v1.12.0</p></td>
-<td><p>Stops to support Enyo features.</p></td>
-</tr>
-<tr>
-<td><p>v1.6.4</p></td>
-<td><p>Added in.</p></td>
-</tr>
-</tbody>
-</table></div>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th style="width:15%"><p>Version</p></th>
+        <th><p>Changes</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>v2.3.1</p></td>
+        <td><p>Supports the <code>--info</code>, <code>--info-detail</code>, and <code>--level</code> options.</p></td>
+      </tr>
+      <tr>
+        <td><p>v1.12.0</p></td>
+        <td><p>Stops to support Enyo features.</p></td>
+      </tr>
+      <tr>
+        <td><p>v1.6.4</p></td>
+        <td><p>Added in.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 #### Usages
 
@@ -537,109 +600,147 @@ ares-package --help|-h
 
 #### Options
 
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: 20%" />
-<col style="width: auto" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Option</p></th>
-<th><p>Parameter</p></th>
-<th><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>-o, --outdir</p></td>
-<td><p>OUT_DIR</p></td>
-<td><p>Specifies a directory where the package file is created.</p></td>
-</tr>
-<tr>
-<td><p>-c, --check</p></td>
-<td><p>None</p></td>
-<td><p>Checks whether the application's <code>appinfo.json</code> file exists or not. This option does not make package file. If <code>appinfo.json</code> file does not exist, warning messages appear.</p></td>
-</tr>
-<tr>
-<td><p>-e, --app-exclude</p></td>
-<td><p>EX_DIR</p></td>
-<td><p>Lists the directories to exclude in the package file.</p></td>
-</tr>
-<tr>
-<td><p>-r, --rom</p></td>
-<td><p>None</p></td>
-<td><p>Proceeds up to the stage just before creating package file phase.</p></td>
-</tr>
-<tr>
-<td><p>-h, --help</p></td>
-<td><p>None</p></td>
-<td><p>Displays the help of the <code>ares-package</code> command.</p></td>
-</tr>
-<tr>
-<td><p>-V, --version</p></td>
-<td><p>None</p></td>
-<td><p>Displays the version of the CLI.</p></td>
-</tr>
-<tr>
-<td><p>-v</p></td>
-<td><p>None</p></td>
-<td><p>Displays the execution log.</p></td>
-</tr>
-</tbody>
-</table></div>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th style="width:20%"><p>Option</p></th>
+        <th><p>Parameter</p></th>
+        <th><p>Description</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>-c, --check</p></td>
+        <td><p>None</p></td>
+        <td>
+          <p>Checks whether the <code>appinfo.json</code> file exists or not.</p>
+          <p>If the <code>appinfo.json</code> file does not exist, warning messages appear. This option does not make the package file.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>-o, --outdir</p></td>
+        <td><p>OUT_DIR</p></td>
+        <td><p>Specifies a directory where the package file is created.</p></td>
+      </tr>
+      <tr>
+        <td><p>-e, --app-exclude</p></td>
+        <td><p>EX_DIR</p></td>
+        <td><p>Excludes directories or files when you package the source code. For more details on how to use this option, see <a href="#examples-2">Examples</a>.</p></td>
+      </tr>
+      <tr>
+        <td><p>-r, --rom</p></td>
+        <td><p>None</p></td>
+        <td>
+          <p>Previews a directory hierarchy of an app when the app is installed.</p>
+          <p>This option creates a <code>usr</code> directory in the current directory rather than an <code>.ipk</code> file. The hierarchy of the <code>usr</code> directory is the same as the hierarchy when the <code>.ipk</code> file is actually installed on the target device.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>--info</p></td>
+        <td><p>PACKAGE_FILE</p></td>
+        <td>
+          <p>Analyzes the package.</p>
+          <p>This option cannot be used in conjunction with other options.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>--info-detail</p</td>
+        <td><p>PACKAGE_FILE</p></td>
+        <td>
+          <p>Analyzes the package with more details.</p>
+          <p>This option cannot be used in conjunction with other options.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>-h, --help</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints help messages.</p></td>
+      </tr>
+      <tr>
+        <td><p>-V, --version</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints the version of CLI.</p></td>
+      </tr>
+      <tr>
+        <td><p>-v</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints verbose output.</p></td>
+      </tr>
+      <tr>
+        <td><p>--level</p></td>
+        <td><p>LEVEL</p></td>
+        <td><p>Sets the level of logs as <code>LEVEL</code> and prints the logs.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 #### Parameters
 
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: auto" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Parameter</p></th>
-<th><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>APP_DIR</p></td>
-<td><p>Specifies the directory where the application's <code>appinfo.json</code> file is located.</p></td>
-</tr>
-<tr>
-<td><p>SERVICE_DIR</p></td>
-<td><p>Specifies the directory where the service's <code>services.json</code></a> file is located.</p></td>
-</tr>
-<tr>
-<td><p>OUT_DIR</p></td>
-<td><p>Specifies the directory where the package file is to be created. If the directory is not entered, the package file is created in the same directory as the command.</p></td>
-</tr>
-<tr>
-<td><p>EX_DIR</p></td>
-<td><p>Specifies the name of directories and files to exclude from the application when packaging the package file. You should enter directories used for samples and tests. All subdirectories and files in the specified directory are excluded. And specified files also are excluded.</p>
-<p>To exclude multiple directories, enter as <code>-e subdir -e filename</code>. You can use common pattern expression such as wildcard (*).</p></td>
-</tr>
-</tbody>
-</table></div>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th><p>Parameter</p></th>
+        <th><p>Description</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>APP_DIR</p></td>
+        <td><p>The directory where the app's <code>appinfo.json</code> file is located</p></td>
+      </tr>
+      <tr>
+        <td><p>SERVICE_DIR</p></td>
+        <td><p>The directory where the service's <code>services.json</code></a> file is located</p></td>
+      </tr>
+      <tr>
+        <td><p>OUT_DIR</p></td>
+        <td>
+          <p>The directory where the package file (<code>.ipk</code>) is to be created</p>
+          <p>If this parameter is not specified, the package file is created in the current directory.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>EX_DIR</p></td>
+        <td>
+          <p>A directory or file to be excluded from the package file (<code>.ipk</code>)</p>
+          <p>You can use common pattern expression such as wildcard (*).</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>PACKAGE_FILE</p></td>
+        <td>
+          <p>A webOS package file (<code>.ipk</code>)</p>
+          <p>This package file must be packaged with CLI beforehand.</p>
+        </td>
+      <tr>
+      <tr>
+        <td><p>LEVEL</p></td>
+        <td><p>A priority of logs (e.g., silly, verbose, info, warn, error)</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 #### Examples
 
 Here are some examples of the different uses:
 
-* Creating a package file from `./sampleApp` directory and outputting it in the working directory
+* Creating a package file from the `./sampleApp` directory and outputting it in the working directory
 
     ```shell
     ares-package sampleApp
     ```
 
-* Creating a package file from the `./sampleApp` directory and outputting it in `./output` directory
+* Creating a package file from the `./sampleApp` directory and outputting it in the `./output` directory
 
     ```shell
     ares-package -o output sampleApp
     ```
 
-* Creating a package file except for `testCode1` sub-directory, `README.md` file and all text file (`.txt`)
+* Creating a package file except for the `testCode1` directory (includes its subdirectories), `README.md`, and all `.txt` files
 
     ```shell
     ares-package -e "testCode1" -e "README.md" -e "*.txt" samplePrj
@@ -667,38 +768,52 @@ Here are some examples of the different uses:
     ares-package ~/samples/sampleApp ~/samples/sampleService
     ```
 
+* Analyzing the package file
+
+    ``` shell
+    ares-package -i ~/projects/packages/com.examples.app_1.0_all.ipk
+    ```
+
+* Analyzing the package file with more details
+
+    ``` shell
+    ares-package -I ~/projects/packages/com.examples.app_1.0_all.ipk
+    ```
+
 ### ares-setup-device
 
-This command displays a list of registered target devices. You can add, modify, or remove them from the list. This command is mainly used to modify target's host address which is running on a remote host. If you execute the command without any options, the command runs in interactive mode.
+This command displays a list of registered target devices. You can add, modify, or remove them from the list. This command is mainly used to modify target's host address which is running on a remote host. Without any option, this command runs in the interactive mode.
 
 #### History
 
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: 15%" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Version</p></th>
-<th><p>Changes</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>v2.2.0</p></td>
-<td><p>Updates a naming rule for the <code>DEVICE_NAME</code> parameter.</p></td>
-</tr>
-<tr>
-<td><p>v1.12.0</p></td>
-<td><p>Supports the <code>--default</code> option.</p></td>
-</tr>
-<tr>
-<td><p>v1.6.4</p></td>
-<td><p>Added in.</p></td>
-</tr>
-</tbody>
-</table></div>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th style="width:15%"><p>Version</p></th>
+        <th><p>Changes</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>v2.3.1</p></td>
+        <td><p>Supports the <code>--level</code> option.</p></td>
+      </tr>
+      <tr>
+        <td><p>v2.2.0</p></td>
+        <td><p>Updates a naming rule for the <code>DEVICE_NAME</code> parameter.</p></td>
+      </tr>
+      <tr>
+        <td><p>v1.12.0</p></td>
+        <td><p>Supports the <code>--default</code> option.</p></td>
+      </tr>
+      <tr>
+        <td><p>v1.6.4</p></td>
+        <td><p>Added in.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 #### Usages
 
@@ -726,139 +841,149 @@ ares-setup-device --help|-h
 
 #### Options
 
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: 15%" />
-<col style="width: auto" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Option</p></th>
-<th><p>Parameter</p></th>
-<th><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>-a, --add</p></td>
-<td><p>TARGET_NAME</p></td>
-<td><p>Adds a target device with the specified information.</p></td>
-</tr>
-<tr>
-<td><p>-m, --modify</p></td>
-<td><p>TARGET_NAME</p></td>
-<td><p>Modifies a target device's information. You can change the information of the target device except for its name.</p></td>
-</tr>
-<tr>
-<td><p>-i, --info</p></td>
-<td><p>DEVICE_INFO</p></td>
-<td><p>Sets information for the target device.</p></td>
-</tr>
-<tr>
-<td><p>-r, --remove</p></td>
-<td><p>TARGET_NAME</p></td>
-<td><p>Deletes a target device that matches the device name you enter.</p></td>
-</tr>
-<tr>
-<td><p>-f, --default</p></td>
-<td><p>TARGET_NAME</p></td>
-<td><p>Sets a default target device.</p><p>If you don't set a target device, the default target device is used as the target device.</p></td>
-</tr>
-<tr>
-<td><p>-R, --reset</p></td>
-<td><p>None</p></td>
-<td><p>Initializes the list of registered target devices.</p></td>
-</tr>
-<tr>
-<td><p>-l, --list</p></td>
-<td><p>None</p></td>
-<td><p>Lists registered target devices.</p></td>
-</tr>
-<tr>
-<td><p>-F, --listfull</p></td>
-<td><p>None</p></td>
-<td><p>Lists registered target devices' information with more detail (JSON string).</p></td>
-</tr>
-<tr>
-<td><p>-h, --help</p></td>
-<td><p>None</p></td>
-<td><p>Displays the help of the <code>ares-setup-device</code> command.</p></td>
-</tr>
-<tr>
-<td><p>-V, --version</p></td>
-<td><p>None</p></td>
-<td><p>Displays the version of the CLI.</p></td>
-</tr>
-<tr>
-<td><p>-v</p></td>
-<td><p>None</p></td>
-<td><p>Displays the execution log.</p></td>
-</tr>
-</tbody>
-</table></div>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th><p>Option</p></th>
+        <th><p>Parameter</p></th>
+        <th><p>Description</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>-a, --add</p></td>
+        <td><p>TARGET_NAME</p></td>
+        <td><p>Adds a target device with the specified information. For more details, see <a href="#examples-3">Examples</a>.</p></td>
+      </tr>
+      <tr>
+        <td><p>-m, --modify</p></td>
+        <td><p>TARGET_NAME</p></td>
+        <td><p>Modifies target device's information except a target device's name. For more details, see <a href="#examples-3">Examples</a>.</p></td>
+      </tr>
+      <tr>
+        <td><p>-i, --info</p></td>
+        <td><p>DEVICE_INFO</p></td>
+        <td><p>Sets information for the target device. For more details on <code>DEVICE_INFO</code>, see <a href="#parameter-2">Parameters</a>.</p></td>
+      </tr>
+      <tr>
+        <td><p>-r, --remove</p></td>
+        <td><p>TARGET_NAME</p></td>
+        <td><p>Deletes a registered target device.</p></td>
+      </tr>
+      <tr>
+        <td><p>-f, --default</p></td>
+        <td><p>TARGET_NAME</p></td>
+        <td><p>Sets a default target device. If you don't set a target device, the default target device is used as the target device.</p></td>
+      </tr>
+      <tr>
+        <td><p>-R, --reset</p></td>
+        <td><p>None</p></td>
+        <td><p>Initializes the list of registered target devices.</p></td>
+      </tr>
+      <tr>
+        <td><p>-l, --list</p></td>
+        <td><p>None</p></td>
+        <td><p>Lists registered target devices.</p></td>
+      </tr>
+      <tr>
+        <td><p>-F, --listfull</p></td>
+        <td><p>None</p></td>
+        <td><p>Lists registered target devices' information with more details in the JSON format.</p></td>
+      </tr>
+      <tr>
+        <td><p>-h, --help</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints help messages.</p></td>
+      </tr>
+      <tr>
+        <td><p>-V, --version</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints the version of CLI.</p></td>
+      </tr>
+      <tr>
+        <td><p>-v</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints verbose output.</p></td>
+      </tr>
+      <tr>
+        <td><p>--level</p></td>
+        <td><p>LEVEL</p></td>
+        <td><p>Sets the level of logs as <code>LEVEL</code> and prints the logs.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 #### Parameters
 
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: auto" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Parameter</p></th>
-<th><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>DEVICE_INFO</p></td>
-<td><p>Specifies the information of the target device. It can be entered using strings in the format of <code>"key=value"</code> or JSON-type such as <code>"{'key1':'value1', 'key2':'value2', ...}"</code>. You can use the following items as key for the target device:</p>
-<ul>
-<li><p><strong>name</strong>: Target device name</p>
-<ul>
-<li><p>The target device name should consist of letters, numbers, hyphen (<code>-</code>), underscore (<code>_</code>), and number sign (<code>#</code>) and start with letters or underscore (<code>_</code>).</p></li>
-</ul>
-</li>
-<li><p><strong>description</strong>: Target device description</p></li>
-<li><p><strong>host</strong>: Target device host address</p></li>
-<li><p><strong>port</strong>: Target device port number</p></li>
-<li><p><strong>username</strong>: Username for accessing the target device. Possible values:</p>
-<ul>
-<li><p>root (default) – To be used by internal users only.</p></li>
-</ul></li>
-<li><p><strong>password:</strong> Password for authenticating the <strong>root</strong> user.</p>
-<ul>
-<li><p>By default the password for root user is blank.</p></li>
-<li><p>If the password was previously set for a root user, then enter it here.</p></li>
-</ul></li>
-<li><p><strong>privatekey</strong>: Filename of SSH private key.</p>
-<ul>
-<li><p>Not applicable to the root user.</p></li>
-<li><p>For the device, do not enter anything, leave it blank. The value will be auto-generated by using the passphrase provided by the user.</p></li>
-</ul></li>
-<li><p><strong>passphrase</strong>: Passphrase for using the SSH private key file.</p></li>
-<li><p><strong>default</strong>: Setting a default device.</p>
-<ul><li><p>Enter <code>true</code> to set a default device. Default value is <code>false</code>.</p></li>
-<li><p>This key must be used with <code>--add</code> option.</p></li></ul>
-</li>
-</ul>
-<p> </p>
-<p>When using CLI in interactive mode, take care when entering the required values or choosing to use the default values, otherwise you might not be able to use the device.</p></td>
-</tr>
-<tr>
-<td><p>TARGET_NAME</p></td>
-<td><p>Specifies the name of the target device.</p></td>
-</tr>
-</tbody>
-</table></div>
-
-The following example shows a `DEVICE_INFO` written in JSON format:
-
-```shell
-"{'host':'127.0.0.1', 'port':'22'}"
-```
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th><p>Parameter</p></th>
+        <th><p>Description</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>DEVICE_INFO</p></td>
+        <td>
+          <p>Information of the target device in the format of <code>"key=value"</code> or a JSON-type string: <code>"{'key1':'value1', 'key2':'value2', ...}"</code>. For more details, see <a href="#examples-3">Examples</a>.</p>
+          <p>The available keys are as follows:</p>
+          <ul>
+            <li>
+              <p><strong>name</strong>: Target device name</p>
+              <ul>
+               <li><p>The target device name should consist of letters, numbers, hyphen (<code>-</code>), underscore (<code>_</code>), and number sign (<code>#</code>) and start with letters or underscore (<code>_</code>).</p></li>
+              </ul>
+            </li>
+            <li><p><strong>description</strong>: Target device description</p></li>
+            <li><p><strong>host</strong>: Target device host address</p></li>
+            <li><p><strong>port</strong>: Target device port number</p></li>
+            <li>
+              <p><strong>username</strong>: Username for accessing the target device</p>
+              <ul>
+                <li><p>root (default) – To be used by internal users only.</p></li>
+              </ul>
+            </li>
+            <li>
+              <p><strong>password:</strong> Password for authenticating the <strong>root</strong> user</p>
+              <ul>
+                <li><p>By default the password for root user is blank.</p></li>
+                <li><p>If the password was previously set for a root user, then enter it here.</p></li>
+              </ul>
+            </li>
+            <li>
+            <p><strong>privatekey</strong>: Filename of SSH private key</p>
+              <ul>
+                <li><p>Not applicable to the root user.</p></li>
+                <li><p>For the device, do not enter anything, leave it blank. The value will be auto-generated by using the passphrase provided by the user.</p></li>
+              </ul>
+            </li>
+            <li><p><strong>passphrase</strong>: Passphrase for using the SSH private key file</p></li>
+            <li>
+              <p><strong>default</strong>: Setting a default device</p>
+              <ul>
+                <li><p>Enter <code>true</code> to set a default device. Default value is <code>false</code>.</p></li>
+                <li><p>This key must be used with <code>--add</code> option.</p></li>
+              </ul>
+            </li>
+            </ul>
+          <p>When using CLI in interactive mode, take care when entering the required values or choosing to use the default values, otherwise you might not be able to use the device.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>TARGET_NAME</p></td>
+        <td><p>The name of a target device</p></td>
+      </tr>
+      <tr>
+        <td><p>LEVEL</p></td>
+        <td><p>A priority of logs (e.g., silly, verbose, info, warn, error)</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 #### Examples
 
@@ -900,19 +1025,19 @@ Here are some examples of the different uses:
     ]
     ```
 
-* Adding the target device as a default device (target device name: `target`, host address: `10.123.45.67`, port number: `22`, user: `root`)
+* Adding a target device as the default device (target device name: `target`, host address: `10.123.45.67`, port number: `22`, user: `root`)
 
     ```shell
     ares-setup-device --add target -i "host=10.123.45.67" -i "port=22" -i "username=root" -i "default=true"
     ```
 
-* Adding the target device with JSON format (target device name: `target`, host address: `10.123.45.67`, port number: `22`, user: `root`)
+* Adding a target device with a JSON-type string (target device name: `target`, host address: `10.123.45.67`, port number: `22`, user: `root`)
 
     ```shell
     ares-setup-device --add target --info "{'host':'10.123.45.67', 'port':'22', 'username':'root', 'default':true}"
     ```
 
-* Adding the target device with interactive mode (target device name: `target`, host address: `10.123.45.67`, port number: `22`, user: `root`)
+* Adding a target device with interactive mode (target device name: `target`, host address: `10.123.45.67`, port number: `22`, user: `root`)
 
     ```shell
     ares-setup-device
@@ -940,16 +1065,16 @@ Here are some examples of the different uses:
     ```
 
     {{< note >}}
-    If you want to input default value or set empty, press the enter key without any value.
+    If you want to use the default values or an empty value, press the **Enter** key without any input.
     {{< /note >}}
 
-* Modifying the target device (target device name: `target`, port number: `9922`)
+* Modifying a target device (target device name: `target`, port number: `9922`)
 
     ```shell
     ares-setup-device --modify target -i "port=9922"
     ```
 
-* Modifying the target device with interactive mode (target device name: `target`, port number: `9922`)
+* Modifying a target device with interactive mode (target device name: `target`, port number: `9922`)
 
     ```shell
     ares-setup-device
@@ -977,49 +1102,47 @@ Here are some examples of the different uses:
     ```
 
     {{< note >}}
-    If you want to keep the previous value, press the enter key without any value.
+    If you want to use the preset values, press the **Enter** key without any input.
     {{< /note >}}
 
-* Setting the default device (target device name: `target`)
+* Setting a target device as the default device
 
     ``` shell
     ares-setup-device --default target
     ```
 
-* Removing the target device (target device name: `target`)
+* Removing a target device
 
     ```shell
     ares-setup-device --remove target
     ```
 
-    {{< note >}}
-    To remove or set a target device, you only need to enter the name of the target device following the command.
-    {{< /note >}}
-
 ### ares-install
 
-This command installs the app for a specified app package file (`.ipk`) on the target device. You can also see the list of apps installed on the target device or remove them with this command.
+This command installs an packaged app on the target device. You can also check the list of installed apps or remove them with this command.
 
 #### History
 
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: 15%" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Version</p></th>
-<th><p>Changes</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>v1.6.4</p></td>
-<td><p>Added in.</p></td>
-</tr>
-</tbody>
-</table></div>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th style="width:15%"><p>Version</p></th>
+        <th><p>Changes</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>v2.3.1</p></td>
+        <td><p>Supports the <code>--level</code> option.</p></td>
+      </tr>
+      <tr>
+        <td><p>v1.6.4</p></td>
+        <td><p>Added in.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 #### Usages
 
@@ -1041,92 +1164,99 @@ ares-install --help|-h
 
 #### Options
 
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: 20%" />
-<col style="width: auto" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Option</p></th>
-<th><p>Parameter</p></th>
-<th><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>-d, --device</p></td>
-<td><p>TARGET_DEVICE</p></td>
-<td><p>Specifies the target device. Unless specified, it will be set to the default target device.</p>
-</td>
-</tr>
-<tr>
-<td><p>-l, --list</p></td>
-<td><p>None</p></td>
-<td><p>Lists the installed apps on the specified target device. Use this option in conjunction with <code>-d</code>, <code>--device</code> option.</p></td>
-</tr>
-<tr>
-<td><p>-F, --listfull</p></td>
-<td><p>None</p></td>
-<td><p>Lists installed applications with more detail. Use this option in conjunction with <code>-d</code>, <code>--device</code> option.</p></td>
-</tr>
-<tr>
-<td><p>-D, --device-list</p></td>
-<td><p>None</p></td>
-<td><p>Lists all the available devices.</p></td>
-</tr>
-<tr>
-<td><p>-r, --remove </p></td>
-<td><p>APP_ID</p></td>
-<td><p>Removes the specified app from the device.</p></td>
-</tr>
-<tr>
-<td><p>-h, --help</p></td>
-<td><p>None</p></td>
-<td><p>Displays the help of the <code>ares-install</code> command.</p></td>
-</tr>
-<tr>
-<td><p>-V, --version</p></td>
-<td><p>None</p></td>
-<td><p>Displays the version of the CLI.</p></td>
-</tr>
-<tr>
-<td><p>-v</p></td>
-<td><p>None</p></td>
-<td><p>Displays the execution log.</p></td>
-</tr>
-</tbody>
-</table></div>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th style="width:20%"><p>Option</p></th>
+        <th><p>Parameter</p></th>
+        <th><p>Description</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>-d, --device</p></td>
+        <td><p>TARGET_DEVICE</p></td>
+        <td>
+          <p>Specifies a target device to connect.</p>
+          <p>If this option is not specified, the default target device is connected.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>-D, --device-list</p></td>
+        <td><p>None</p></td>
+        <td><p>Lists all the target devices.</p></td>
+      </tr>
+      <tr>
+        <td><p>-l, --list</p></td>
+        <td><p>None</p></td>
+        <td><p>Lists installed applications on the target device.</p></td>
+      </tr>
+      <tr>
+        <td><p>-F, --listfull</p></td>
+        <td><p>None</p></td>
+        <td><p>Lists the installed applications on the target device with more details.</p></td>
+      </tr>
+      <tr>
+        <td><p>-r, --remove </p></td>
+        <td><p>APP_ID</p></td>
+        <td><p>Removes an application on the target device.</p></td>
+      </tr>
+      <tr>
+        <td><p>-h, --help</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints help messages.</p></td>
+      </tr>
+      <tr>
+        <td><p>-V, --version</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints the version of CLI.</p></td>
+      </tr>
+      <tr>
+        <td><p>-v</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints verbose output.</p></td>
+      </tr>
+      <tr>
+        <td><p>--level</p></td>
+        <td><p>LEVEL</p></td>
+        <td><p>Sets the level of logs as <code>LEVEL</code> and prints the logs.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
 
 #### Parameters
 
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: auto" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Parameter</p></th>
-<th><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>PKG_FILE</p></td>
-<td><p>Specifies the path of the app package file.</p></td>
-</tr>
-<tr>
-<td><p>APP_ID</p></td>
-<td><p>ID of the app to remove from the device.</p></td>
-</tr>
-<tr>
-<td><p>TARGET_DEVICE</p></td>
-<td><p>Specifies the target device for installing or removing the app or viewing the list of installed apps.</p></td>
-</tr>
-</tbody>
-</table></div>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th><p>Parameter</p></th>
+        <th><p>Description</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>PKG_FILE</p></td>
+        <td><p>The path of the package file (<code>.ipk</code>)</p></td>
+      </tr>
+      <tr>
+        <td><p>APP_ID</p></td>
+        <td><p>The ID of an app (ex. <code>com.webos.exampleapp</code>)</p></td>
+      </tr>
+      <tr>
+        <td><p>TARGET_DEVICE</p></td>
+        <td><p>The name of a target device</p></td>
+      </tr>
+      <tr>
+        <td><p>LEVEL</p></td>
+        <td><p>A priority of logs (e.g., silly, verbose, info, warn, error)</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 #### Examples
 
@@ -1138,19 +1268,19 @@ Here are some examples of the different uses:
     ares-install --device-list
     ```
 
-* Installing the app on the target device
+* Installing an app on the target device
 
     ```shell
     ares-install --device target com.example.sampleapp_1.0.0_all.ipk
     ```
 
-* Listing apps which are installed on the target device
+* Listing apps installed on the target device
 
     ```shell
     ares-install --device target --list
     ```
 
-* Removing the app from the target device
+* Removing an app from the target device
 
     ```shell
     ares-install --device target --remove com.example.sampleapp
@@ -1162,32 +1292,34 @@ This command launches or terminates the application installed on the target devi
 
 #### History
 
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: 15%" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Version</p></th>
-<th><p>Changes</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>v1.12.0</p></td>
-<td><p>Supports the <code>--hosted</code> option.</p></td>
-</tr>
-<tr>
-<td><p>v1.11.0</p></td>
-<td><p>Supports the <code>--display</code> option.</p></td>
-</tr>
-<tr>
-<td><p>v1.6.4</p></td>
-<td><p>Added in.</p></td>
-</tr>
-</tbody>
-</table></div>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th style="width:15%"><p>Version</p></th>
+        <th><p>Changes</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>v2.3.1</p></td>
+        <td><p>Supports the <code>--level</code> option.</p></td>
+      </tr>
+      <tr>
+        <td><p>v1.12.0</p></td>
+        <td><p>Supports the <code>--hosted</code> option.</p></td>
+      </tr>
+      <tr>
+        <td><p>v1.11.0</p></td>
+        <td><p>Supports the <code>--display</code> option.</p></td>
+      </tr>
+      <tr>
+        <td><p>v1.6.4</p></td>
+        <td><p>Added in.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 #### Usages
 
@@ -1207,112 +1339,126 @@ ares-launch --help|-h
 
 #### Options
 
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: auto" />
-<col style="width: auto" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Option</p></th>
-<th><p>Parameter</p></th>
-<th><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>-d, --device</p></td>
-<td><p>TARGET_DEVICE</p></td>
-<td><p>Specifies the target device. Unless specified, it will be set to the default target device.</p>
-</td>
-</tr>
-<tr>
-<td><p>--close</p></td>
-<td><p>APP_ID</p></td>
-<td><p>Terminates application on the target device.</p></td>
-</tr>
-<tr>
-<td><p>-r, --running</p></td>
-<td><p>None</p></td>
-<td><p>Lists applications that are running on the target device.</p></td>
-</tr>
-<tr>
-<td><p>-p, --params</p></td>
-<td><p>PARAMS</p></td>
-<td><p>Launches an application with specified parameters.</p></td>
-</tr>
-<tr>
-<td><p>-dp, --display</p></td>
-<td><p>DISPLAY_ID</p></td>
-<td><p>Launches an application on a specified display.</p></td>
-</tr>
-<tr>
-<td><p>-D, --device-list</p></td>
-<td><p>None</p></td>
-<td><p>Lists all the available devices.</p></td>
-</tr>
-<tr>
-<td><p>-H, --hosted</p></td>
-<td><p>APP_DIR</p></td>
-<td><p>Runs an app without installation</p></td>
-</tr>
-<tr>
-<td><p>-h, --help</p></td>
-<td><p>None</p></td>
-<td><p>Displays the help of the <code>ares-launch</code> command.</p></td>
-</tr>
-<tr>
-<td><p>-V, --version</p></td>
-<td><p>None</p></td>
-<td><p>Displays the version of the CLI.</p></td>
-</tr>
-<tr>
-<td><p>-v</p></td>
-<td><p>None</p></td>
-<td><p>Displays the execution log.</p></td>
-</tr>
-</tbody>
-</table></div>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th><p>Option</p></th>
+        <th><p>Parameter</p></th>
+        <th><p>Description</p></th>
+      </tr>
+    </thead>
+    <tbody>
+        <td><p>-d, --device</p></td>
+        <td><p>TARGET_DEVICE</p></td>
+        <td>
+          <p>Specifies a target device to connect.</p>
+          <p>If this option is not specified, the default target device is connected.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>-D, --device-list</p></td>
+        <td><p>None</p></td>
+        <td><p>Lists all the target devices.</p></td>
+      </tr>
+      <tr>
+        <td><p>--close</p></td>
+        <td><p>APP_ID</p></td>
+        <td><p>Terminates an application on the target device.</p></td>
+      </tr>
+      <tr>
+        <td><p>-r, --running</p></td>
+        <td><p>None</p></td>
+        <td><p>Lists applications that are running on the target device.</p></td>
+      </tr>
+      <tr>
+        <td><p>-dp, --display</p></td>
+        <td><p>DISPLAY_ID</p></td>
+        <td><p>Launches an application on a specified display.</p></td>
+      </tr>
+      <tr>
+        <td><p>-p, --params</p></td>
+        <td><p>PARAMS</p></td>
+        <td><p>Launches an application with specified parameters. For more details, see <code>PARAMS</code> in <a href="#parameters-4">Parameters</a> and <a href="#examples-5">Examples</a>.</p></td>
+      </tr>
+      <tr>
+        <td><p>-H, --hosted</p></td>
+        <td><p>APP_DIR</p></td>
+        <td>
+          <p>Runs an app without installing it.</p>
+          <p>This option launches a dummy app (ID: <code>com.sdk.ares.hostedapp</code>) on the target device. To close this app, use the <code>--close</code> option with <code>com.sdk.ares.hostedapp</code> as an app ID.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>-h, --help</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints help messages.</p></td>
+      </tr>
+      <tr>
+        <td><p>-V, --version</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints the version of CLI.</p></td>
+      </tr>
+      <tr>
+        <td><p>-v</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints verbose output.</p></td>
+      </tr>
+      <tr>
+        <td><p>--level</p></td>
+        <td><p>LEVEL</p></td>
+        <td><p>Sets the level of logs as <code>LEVEL</code> and prints the logs.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 #### Parameters
 
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: auto" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Parameter</p></th>
-<th><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>APP_ID</p></td>
-<td><p>ID of the application to launch or terminate.</p></td>
-</tr>
-<tr>
-<td><p>APP_DIR</p></td>
-<td><p>Working directory of an app.</p>
-<p>If <code>--hosted</code> option is used with a directory path, an app (ID: <code>com.sdk.ares.hostedapp</code>) is launched on the target device. The launched opens the files in the <code>APP_DIR</code> directory.</p>
-<p>To close this app, use <code>--close</code> option with <code>com.sdk.ares.hostedapp</code> as an <code>APP_ID</code>.</p></td>
-</tr>
-<tr>
-<td><p>DISPLAY_ID</p></td>
-<td><p>ID of the display to launch an app. It should be an integer type. (Use <code>0</code> for primary display and <code>1</code> for secondary display.)</p></td>
-</tr>
-<tr>
-<td><p>TARGET_DEVICE</p></td>
-<td><p>Specifies the target device on which the application is installed.</p></td>
-</tr>
-<tr>
-<td><p>PARAMS</p></td>
-<td><p>Specifies the parameters which are used on application launching. It is entered using JSON-type strings in the format <code>"{'param1':'value1', 'param2':'value2 which contains spaces', ...}"</code>.</p></td>
-</tr>
-</tbody>
-</table></div>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th><p>Parameter</p></th>
+        <th><p>Description</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>APP_ID</p></td>
+        <td><p>The ID of an app (ex. <code>com.webos.exampleapp</code>)</p></td>
+      </tr>
+      <tr>
+        <td><p>APP_DIR</p></td>
+        <td>
+          <p>An app directory to preview</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>DISPLAY_ID</p></td>
+        <td>
+          <p>The ID of a display to launch</p>
+          <p>It should be an integer type. (Use <code>0</code> for the primary display and <code>1</code> for the secondary display.)</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>TARGET_DEVICE</p></td>
+        <td><p>The name of a target device</p></td>
+      </tr>
+      <tr>
+        <td><p>PARAMS</p></td>
+        <td>
+          <p>Parameters which are used on application launching</p>
+          <p>This parameters should be a JSON-type string: <code>"{'param1':'value1', 'param2':'value2 which contains spaces', ...}"</code>. See also <code>params</code> in the <a href="/docs/reference/ls2-api/com-webos-service-applicationmanager/#launch">launch</a> method.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>LEVEL</p></td>
+        <td><p>A priority of logs (e.g., silly, verbose, info, warn, error)</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 #### Examples
 
@@ -1331,7 +1477,7 @@ Here are some examples of the different uses:
     ```
 
     {{< note >}}
-    When you use a parameter, the web app will receive the parameter with the `webOSLaunch` event. For more detailed information on the `webOSLaunch` event, see [Web App Lifecycle]({{< relref "web-app-lifecycle" >}}).
+    When you use parameters on a web app, the web app will receive the parameters through the `webOSLaunch` event. For more detailed information on the `webOSLaunch` event, see [Web App Lifecycle]({{< relref "web-app-lifecycle" >}}).
     {{< /note >}}
 
 * Launching the application on the primary display
@@ -1364,30 +1510,1016 @@ Here are some examples of the different uses:
     ares-launch --device target --hosted sampleApp
     ```
 
-### ares-log
+### ares-inspect
 
-This command shows and saves logs of webOS OSE apps and services using journald. For more details on journald, see [Viewing Logs when journald is Enabled]({{< relref "viewing-logs-journald" >}}).
+This command enables Web Inspector or Node's Inspector. Each inspector displays the run-time information of a web application or a JS service, respectively.
+
+{{< caution >}}
+We highly recommend you to use the same version as Chrome/Chromium of webOS OSE. Using other versions might cause unexpected errors.
+
+- To check the Chromium version of your target device, do one of the following:
+    - Execute the `ares-device -i` command. In this case, make sure `username` of the target device is set as `root`. Otherwise the Chromium version won't be displayed. For more details on how to set up the `username`, see [DEVICE_INFO](#parameters-2) of `ares-setup-device`.
+    - Execute the `Web Browser` app and go to http://useragentstring.com.
+    - Visit the [webOS OSE GitHub](https://github.com/webosose?q=chromium&type=&language=) and find a Chromium repository of the latest version. Then see `src/chrome/VERSION` file.
+- To download old builds of Chrome/Chromium, visit the [Chromium Project website](https://www.chromium.org/getting-involved/download-chromium).
+{{< /caution >}}
 
 #### History
 
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: 15%" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Version</p></th>
-<th><p>Changes</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>v2.2.0</p></td>
-<td><p>Added in.</p></td>
-</tr>
-</tbody>
-</table></div>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th style="width:15%"><p>Version</p></th>
+        <th><p>Changes</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>v2.3.1</p></td>
+        <td><p>Supports the <code>--level</code> option.</p></td>
+      </tr>
+      <tr>
+        <td><p>v2.0.2</p></td>
+        <td><p>Supports the <code>--display</code> option.</p></td>
+      </tr>
+      <tr>
+        <td><p>v1.6.4</p></td>
+        <td><p>Added in.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+#### Usages
+
+```shell
+ares-inspect [OPTION...] [--app|-a] APP_ID
+
+ares-inspect [OPTION...] --service|-s SERVICE_ID
+
+ares-inspect --device-list|-D
+
+ares-inspect --version|-V
+
+ares-inspect --help|-h
+```
+
+#### Options
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th style="width:15%"><p>Option</p></th>
+        <th><p>Parameter</p></th>
+        <th><p>Description</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>-a, --app</p></td>
+        <td><p>APP_ID</p></td>
+        <td><p>Specifies the application to debug with Web Inspector.</p></td>
+      </tr>
+      <tr>
+        <td><p>-s, --service</p></td>
+        <td><p>SERVICE_ID</p></td>
+        <td><p>Specifies the JS service to debug with Node's Inspector.</p></td>
+      </tr>
+      <tr>
+        <td><p>-o, --open</p></td>
+        <td><p>None</p></td>
+        <td>
+          <p>Opens the default browser of the host machine. This option is only available for Web Inspector, thus can be used with the <code>-a, --app</code> option only.<p>
+          <p>Web Inspector works in the Blink-based web browsers (e.g., Chrome or Opera) only. If your default browser is not the Blink-based browsers, such as Safari or Internet Explorer, you must re-open the inspector page in the Blink-based browsers.</p>
+          {{< note >}}
+          To connect to Node's Inspector, you should use one of the Node's Inspector clients, such as Chrome DevTools or Visual Studio Code. For more information, see <a href="https://nodejs.org/en/docs/guides/debugging-getting-started/#inspector-clients">Inspector Clients</a>.
+          {{< /note >}}
+        </td>
+      </tr>
+      <tr>
+        <td><p>-d, --device</p></td>
+        <td><p>TARGET_DEVICE</p></td>
+        <td>
+          <p>Specifies a target device to connect.</p>
+          <p>If this option is not specified, the default target device is connected.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>-D, --device-list</p></td>
+        <td><p>None</p></td>
+        <td><p>Lists all the target devices.</p></td>
+      </tr>
+      <tr>
+        <td><p>-dp, --display</p></td>
+        <td><p>DISPLAY_ID</p></td>
+        <td><p>Launches an application and opens Web Inspector on a specified display.</p></td>
+      </tr>
+      <tr>
+        <td><p>-h, --help</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints help messages.</p></td>
+      </tr>
+      <tr>
+        <td><p>-V, --version</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints the version of CLI.</p></td>
+      </tr>
+      <tr>
+        <td><p>-v</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints verbose output.</p></td>
+      </tr>
+      <tr>
+        <td><p>--level</p></td>
+        <td><p>LEVEL</p></td>
+        <td><p>Sets the level of logs as <code>LEVEL</code> and prints the logs.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+#### Parameters
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th><p>Parameter</p></th>
+        <th><p>Description</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>APP_ID</p></td>
+        <td><p>The ID of an app (ex. <code>com.webos.exampleapp</code>)</p></td>
+      </tr>
+      <tr>
+        <td><p>SERVICE_ID</p></td>
+        <td><p>The ID of a JS service (ex. <code>com.webos.exampleapp.service</code>)</p></td>
+      </tr>
+      <tr>
+        <td><p>TARGET_DEVICE</p></td>
+        <td><p>The name of a target device</p></td>
+      </tr>
+      <tr>
+        <td><p>LEVEL</p></td>
+        <td><p>A priority of logs (e.g., silly, verbose, info, warn, error)</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+#### Examples
+
+Here are some examples of the different uses:
+
+* Running the Web Inspector for an application
+
+    ```shell
+    ares-inspect --device target --app com.example.sampleapp
+    ```
+
+* Running the Node's Inspector for a JS service
+
+    ```shell
+    ares-inspect --device target --service com.example.sampleapp.sampleservice
+    ```
+
+### ares-server
+
+This command runs a web server for testing local files. The web server will run on the given path. You can terminate the web server by pressing **Control+C** on the shell prompt.
+
+#### History
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th style="width:15%"><p>Version</p></th>
+        <th><p>Changes</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>v2.3.1</p></td>
+        <td><p>Supports the <code>--level</code> option.</p></td>
+      </tr>
+      <tr>
+        <td><p>v1.6.4</p></td>
+        <td><p>Added in.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+#### Usages
+
+```shell
+ares-server [OPTION...] APP_DIR
+
+ares-server --version|-V
+
+ares-server --help|-h
+```
+
+#### Options
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th><p>Option</p></th>
+        <th><p>Parameter</p></th>
+        <th><p>Description</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>-p, --port</p></td>
+        <td><p>PORT</p></td>
+        <td><p>Specifies the port to be used. (Default: random)</td>
+      </tr>
+      <tr>
+        <td><p>-o, --open</p></td>
+        <td><p>None</p></td>
+        <td><p>Opens the default browser of the host machine.</p></td>
+      </tr>
+      <tr>
+        <td><p>-h, --help</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints help messages.</p></td>
+      </tr>
+      <tr>
+        <td><p>-V, --version</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints the version of CLI.</p></td>
+      </tr>
+      <tr>
+        <td><p>-v</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints verbose output.</p></td>
+      </tr>
+      <tr>
+        <td><p>--level</p></td>
+        <td><p>LEVEL</p></td>
+        <td><p>Sets the level of logs as <code>LEVEL</code> and prints the logs.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+#### Parameters
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th><p>Parameter</p></th>
+        <th><p>Description</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>APP_DIR</p></td>
+        <td><p>The directory where the application's <code>appinfo.json</code> file is located</p></td>
+      </tr>
+      <tr>
+        <td><p>LEVEL</p></td>
+        <td><p>A priority of logs (e.g., silly, verbose, info, warn, error)</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+#### Examples
+
+Here are some examples of the different uses:
+
+* Running the web server in a source directory
+
+    ```shell
+    ares-server ./source
+    ```
+
+* Running the web server with the default browser
+
+    ```shell
+    ares-server ./source --open
+    ```
+
+### ares-shell
+
+This command runs a shell prompt of the target device and executes shell commands in the shell prompt.
+
+#### History
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th style="width:15%"><p>Version</p></th>
+        <th><p>Changes</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>v2.3.1</p></td>
+        <td><p>Supports the <code>--level</code> option.</p></td>
+      </tr>
+      <tr>
+        <td><p>v1.6.4</p></td>
+        <td><p>Added in.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+#### Usages
+
+```shell
+ares-shell -d TARGET_DEVICE
+
+ares-shell -d TARGET_DEVICE -r CMD
+
+ares-shell --device-list|-D
+
+ares-shell --version
+
+ares-shell --help|-h
+```
+
+#### Options
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th><p>Option</p></th>
+        <th><p>Parameter</p></th>
+        <th><p>Description</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>-d, --device</p></td>
+        <td><p>TARGET_DEVICE</p></td>
+        <td>
+          <p>Specifies a target device to connect.</p>
+          <p>If this option is not specified, the default target device is connected.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>-r, --run</p></td>
+        <td><p>CMD</p></td>
+        <td><p>Executes shell commands on the target device.</p></td>
+      </tr>
+      <tr>
+        <td><p>-D, --device-list</p></td>
+        <td><p>None</p></td>
+        <td><p>Lists all the target devices.</p></td>
+      </tr>
+      <tr>
+        <td><p>-h, --help</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints help messages.</p></td>
+      </tr>
+      <tr>
+        <td><p>-V, --version</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints the version of CLI.</p></td>
+      </tr>
+      <tr>
+        <td><p>-v</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints verbose output.</p></td>
+      </tr>
+      <tr>
+        <td><p>--level</p></td>
+        <td><p>LEVEL</p></td>
+        <td><p>Sets the level of logs as <code>LEVEL</code> and prints the logs.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+#### Parameters
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th><p>Parameter</p></th>
+        <th><p>Description</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>CMD</p></td>
+        <td><p>Shell commands to be executed on the target device</p></td>
+      </tr>
+      <tr>
+        <td><p>TARGET_DEVICE</p></td>
+        <td><p>The name of a target device</p></td>
+      </tr>
+      <tr>
+        <td><p>LEVEL</p></td>
+        <td><p>A priority of logs (e.g., silly, verbose, info, warn, error)</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+#### Examples
+
+Here are some examples of the different uses:
+
+* Opening a shell of the target device
+
+    ```shell
+    ares-shell --device target
+    ```
+
+* Executing a command inside the shell of the target device
+
+    ```shell
+    ares-shell --device target -r "pwd"
+    ```
+
+    ```shell
+    ares-shell --device target -r "echo hello webOS"
+    ```
+
+### ares-push
+
+This command pushes files from a host machine to a target device.
+
+#### History
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th style="width:15%"><p>Version</p></th>
+        <th><p>Changes</p>
+      </th>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>v2.3.1</p></td>
+        <td><p>Supports the <code>--level</code> option.</p></td>
+      </tr>
+      <tr>
+        <td><p>v1.6.4</p></td>
+        <td><p>Added in.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+#### Usages
+
+```shell
+ares-push [OPTION...] SOURCE DESTINATION
+
+ares-push --device-list|-D
+
+ares-push --version|-V
+
+ares-push --help|-h
+```
+
+#### Options
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th><p>Option</p></th>
+        <th><p>Parameter</p></th>
+        <th><p>Description</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>-d, --device</p></td>
+        <td><p>TARGET_DEVICE</p></td>
+        <td>
+          <p>Specifies a target device to connect.</p>
+          <p>If this option is not specified, the default target device is connected.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>-D, --device-list</p></td>
+        <td><p>None</p></td>
+        <td><p>Lists all the target devices.</p></td>
+      </tr>
+      <tr>
+        <td><p>-h, --help</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints help messages.</p></td>
+      </tr>
+      <tr>
+        <td><p>-V, --version</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints the version of CLI.</p></td>
+      </tr>
+      <tr>
+        <td><p>-i, --ignore</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints the short version of output messages.</p></td>
+      </tr>
+      <tr>
+        <td><p>-v</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints verbose output.</p></td>
+      </tr>
+      <tr>
+        <td><p>--level</p></td>
+        <td><p>LEVEL</p></td>
+        <td><p>Sets the level of logs as <code>LEVEL</code> and prints the logs.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+#### Parameters
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th><p>Parameter</p></th>
+        <th><p>Description</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>SOURCE</p></td>
+        <td><p>A file/directory path of the host machine</p></td>
+      </tr>
+      <tr>
+        <td><p>DESTINATION</p></td>
+        <td><p>A file/directory path of the target device</p></td>
+      </tr>
+      <tr>
+        <td><p>TARGET_DEVICE</p></td>
+        <td><p>The name of a target device</p></td>
+      </tr>
+      <tr>
+        <td><p>LEVEL</p></td>
+        <td><p>A priority of logs (e.g., silly, verbose, info, warn, error)</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+#### Examples
+
+Here are some examples of the different uses:
+
+* Listing available target devices
+
+    ```shell
+    ares-push --device-list
+    ```
+
+* Pushing a directory from the host machine to the target device
+
+    ```shell
+    ares-push --device target /host/directory/ /target/directory/
+    ```
+
+* Pushing a file from the host machine to the target device
+
+    ```shell
+    ares-push --device target /host/directory/file.txt /target/directory/file.txt
+    ```
+
+### ares-pull
+
+This command pulls the files from a target device to a host machine.
+
+#### History
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th style="width:15%"><p>Version</p></th>
+        <th><p>Changes</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>v2.3.1</p></td>
+        <td><p>Supports the <code>--level</code> option.</p></td>
+      </tr>
+      <tr>
+        <td><p>v1.6.4</p></td>
+        <td><p>Added in.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+#### Usages
+
+```shell
+ares-pull [OPTION...] SOURCE DESTINATION
+
+ares-pull --device-list|-D
+
+ares-pull --version|-V
+
+ares-pull --help|-h
+```
+
+#### Options
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th><p>Option</p></th>
+        <th><p>Parameter</p></th>
+        <th><p>Description</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>-d, --device</p></td>
+        <td><p>TARGET_DEVICE</p></td>
+        <td>
+          <p>Specifies a target device to connect.</p>
+          <p>If this option is not specified, the default target device is connected.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>-D, --device-list</p></td>
+        <td><p>None</p></td>
+        <td><p>Lists all the target devices.</p></td>
+      </tr>
+      <tr>
+        <td><p>-h, --help</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints help messages.</p></td>
+      </tr>
+      <tr>
+        <td><p>-V, --version</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints the version of CLI.</p></td>
+      </tr>
+      <tr>
+        <td><p>-i, --ignore</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints the short version of output messages.</p></td>
+      </tr>
+      <tr>
+        <td><p>-v</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints verbose output.</p></td>
+      </tr>
+      <tr>
+        <td><p>--level</p></td>
+        <td><p>LEVEL</p></td>
+        <td><p>Sets the level of logs as <code>LEVEL</code> and prints the logs.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+#### Parameters
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th><p>Parameter</p></th>
+        <th><p>Description</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>SOURCE</p></td>
+        <td><p>A file/directory path of the target device</p></td>
+      </tr>
+      <tr>
+        <td><p>DESTINATION</p></td>
+        <td><p>A file/directory path of the host machine</p></td>
+      </tr>
+      <tr>
+        <td><p>TARGET_DEVICE</p></td>
+        <td><p>The name of a target device</p></td>
+      </tr>
+      <tr>
+        <td><p>LEVEL</p></td>
+        <td><p>A priority of logs (e.g., silly, verbose, info, warn, error)</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+#### Examples
+
+Here are some examples of the different uses:
+
+* Listing available target devices
+
+    ```shell
+    ares-pull --device-list
+    ```
+
+* Pulling a directory from the target device to the host machine
+
+    ```shell
+    ares-pull --device target /target/directory/ /host/directory/
+    ```
+
+* Pulling a file from the target device to the host machine
+
+    ```shell
+    ares-pull --device target /target/directory/file.txt /host/directory/file.txt
+    ```
+
+### ares-device
+
+This command displays the information of the target device.
+
+#### History
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th style="width:15%"><p>Version</p></th>
+        <th><p>Changes</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>v2.3.1</p></td>
+        <td><p>Supports the <code>--resource-monitor</code> and the <code>--level</code> options.</p></td>
+      </tr>
+      <tr>
+        <td><p>v2.1.0</p></td>
+        <td><p>Supports the <code>--capture-screen</code> option.</p></td>
+      </tr>
+      <tr>
+        <td><p>v2.0.0</p></td>
+        <td><p><code>ares-device-info</code> is replaced by <code>ares-device</code>.</p></td>
+      </tr>
+      <tr>
+        <td><p>v1.13.0</p></td>
+        <td><p>Added in.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+#### Usages
+
+``` shell
+ares-device [OPTION...] [TARGET_DEVICE]
+
+ares-device --device-list|-D
+
+ares-device --version|-V
+
+ares-device --help|-h
+```
+
+#### Options
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th style="width:20%" colspan="2"><p>Option</p></th>
+        <th><p>Parameter</p></th>
+        <th><p>Description</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td colspan="2"><p>-i, --system-info</p></td>
+        <td><p>None</p></td>
+        <td><p>Displays the device system information.</p></td>
+      </tr>
+      <tr>
+        <td colspan="2"><p>-r, --resource-monitor</p></td>
+        <td><p>None</p></td>
+        <td><p>Monitors resource usage.</p></td>
+      </tr>
+      <tr>
+        <td><p></p></td>
+        <td><p>-l, --list</p></td>
+        <td><p>None</p></td>
+        <td>
+          <p>Monitors resource usage of running apps and services.</p>
+          <p>Use this option in conjunction with the <code>-r, --resource-monitor</code> option.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p></p></td>
+        <td><p>-id, --id-filter</p></td>
+        <td><p>ID</p></td>
+        <td>
+          <p>Monitors resource usage of an app or service.</p>
+          <p>Use this option in conjunction with the <code>-r, --resource-monitor</code> option.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p></p></td>
+        <td><p>-t, --time-interval</p></td>
+        <td><p>SECONDS</p></td>
+        <td>
+          <p>Sets the monitoring interval (seconds).</p>
+          <p>Use this option in conjunction with the <code>-r, --resource-monitor</code> option.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p></p></td>
+        <td><p>-s, --save </p></td>
+        <td><p>CSV_FILE</p></td>
+        <td>
+          <p>Saves resource usage data to <code>CSV_FILE</code>.</p>
+          <p>Use this option in conjunction with the <code>-r, --resource-monitor</code> option.</p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2"><p>-c, --capture-screen</p></td>
+        <td><p>OUTPUT_PATH</p></td>
+        <td><p>Captures screen and saves the captured image to the host machine.</p></td>
+      </tr>
+      <tr>
+        <td><p></p></td>
+        <td><p>-dp, --display</p></td>
+        <td><p>DISPLAY_ID</p></td>
+        <td>
+          <p>Specifies DISPLAY_ID.</p>
+          <p>Use this option in conjunction with the <code>-c, --capture-screen</code> option.</p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2"><p>-d, --device</p></td>
+        <td><p>TARGET_DEVICE</p></td>
+        <td>
+          <p>Specifies a target device to connect.</p>
+          <p>If this option is not specified, the default target device is connected.</p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2"><p>-D, --device-list</p></td>
+        <td><p>None</p></td>
+        <td><p>Lists all the target devices.</p></td>
+      </tr>
+      <tr>
+        <td colspan="2"><p>-h, --help</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints help messages.</p></td>
+      </tr>
+      <tr>
+        <td colspan="2"><p>-V, --version</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints the version of CLI.</p></td>
+      </tr>
+      <tr>
+        <td colspan="2"><p>-v</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints verbose output.</p></td>
+      </tr>
+      <tr>
+        <td colspan="2"><p>--level</p></td>
+        <td><p>LEVEL</p></td>
+        <td><p>Sets the level of logs as <code>LEVEL</code> and prints the logs.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+#### Parameters
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th><p>Parameter</p></th>
+        <th><p>Description</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>TARGET_DEVICE</p></td>
+        <td><p>The name of a target device</p></td>
+      </tr>
+      <tr>
+        <td><p>ID</p></td>
+        <td><p>The ID of an app or service whose resource usage be displayed</p></td>
+      <tr>
+      <tr>
+        <td><p>SECONDS</p></td>
+        <td><p>A period for monitoring the resource usage (seconds)</p></td>
+      <tr>
+      <tr>
+        <td><p>CSV_FILE</p></td>
+        <td>
+          <p>A file name or path to save the resource usage data</p>
+          <p>The file format can be only <code>.csv</code>.</p>
+        </td>
+      <tr>
+        <td><p>OUTPUT_PATH</p></td>
+        <td><p>A file or directory path of the host machine to save captured file</p></td>
+      </tr>
+      <tr>
+        <td><p>DISPLAY_ID</p></td>
+        <td>
+          <p>The ID of a display to be captured</p>
+          <p>It should be an integer type. (Use <code>0</code> for the primary display and <code>1</code> for the secondary display.)</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>LEVEL</p></td>
+        <td><p>A priority of logs (e.g., silly, verbose, info, warn, error)</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+#### Examples
+
+Here are some examples of the different uses:
+
+* Displaying the system information of the target device
+
+    ``` shell
+    ares-device --system-info --device target
+    ```
+
+* Displaying resource usage
+
+    ``` shell
+    ares-device --resource-device --device target
+    ```
+
+* Displaying resource usage periodically and saving them to a CSV file
+
+    ``` shell
+    ares-device --resource-device --save resource.csv --time-interval 1 --device target
+    ```
+
+* Displaying resource usage of running apps and services
+
+    ``` shell
+    ares-device --resource-device --list --time-interval 3 --device target
+    ```
+
+* Displaying resource usage of specified running app
+
+    ``` shell
+    ares-device --resource-device --id-filter com.examples.app --time-interval 5 --device target
+    ```
+
+* Capturing the display `1` and saves it as `screen.png`
+
+    ``` shell
+    ares-device --capture-screen screen.png --display 1 --device target
+    ```
+
+
+### ares-log (journal)
+
+This command shows, filters, and saves logs collected by journald.
+
+{{< note >}}
+To display logs and help messages properly, you must set the logging daemon of CLI to same as that of the target device. For more details on how to check and change the logging daemon, see `--current-daemon` and `--switch-daemon` in [Options](#options-12).
+{{</ note >}}
+
+For more information about analyzing journal logs, see [Viewing Logs when journald is Enabled]({{< relref "viewing-logs-journald" >}}).
+
+#### History
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th style="width:15%"><p>Version</p></th>
+        <th><p>Changes</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>v2.3.1</p></td>
+        <td><p>Supports <code>--current-daemon</code>, <code>--switch-daemon</code>, and <code>--level</code> options.</p></td>
+      </tr>
+      <tr>
+        <td><p>v2.2.0</p></td>
+        <td><p>Added in.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 #### Usages
 
@@ -1418,7 +2550,272 @@ ares-log [OPTION...] --unit|-u UNIT
 
 ares-log [OPTION...] --file-list|-fl
 
-ares-log [OPTION...] --file|-f JOURNAL_FILE
+ares-log [OPTION...] --file|-file JOURNAL_FILE
+
+ares-log --device-list|-D
+
+ares-log --version|-V
+
+ares-log --help|-h
+```
+
+#### Options
+ 		
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th style="width:20%"><p>Option</p></th>
+        <th><p>Parameter</p></th>
+        <th><p>Description</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>-cd, --current-daemon</p></td>
+        <td><p>None</p></td>
+        <td><p>Checks the current logging daemon of CLI and the target device.</p></td>
+      </tr>
+      <tr>
+        <td><p>-sd, --switch-daemon</p></td>
+        <td><p>LOGGING_DAEMON</p></td>
+        <td><p>Changes the current logging daemon of CLI.</p></td>
+      </tr>
+      <tr>
+        <td><p>-o, --output</p></td>
+        <td><p>OUTPUT_MODE</p></td>
+        <td><p>Changes the log format.</p></td>
+      </tr>
+      <tr>
+        <td><p>-s, --save</p></td>
+        <td><p>SAVED_FILE</p></td>
+        <td><p>Saves logs into a file.</p></td>
+      </tr>
+      <tr>
+        <td><p>-dp, --display</p></td>
+        <td><p>DISPLAY_ID</p></td>
+        <td>
+          <p>Selects the display to show logs.</p> 
+          <p>Use this option in conjunction with the <code>unit</code> and <code>unit-list</code> options.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>-d, --device</p></td>
+        <td><p>TARGET_DEVICE</p></td>
+        <td>
+          <p>Specifies a target device to connect.</p>
+          <p>If this option is not specified, the default target device is connected.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>-D, --device-list</p></td>
+        <td><p>None</p></td>
+        <td><p>Lists all the target devices.</p></td>
+      </tr>
+      <tr>
+        <td><p>-h, --help</p></td>
+        <td><p>None</p></td>
+        <td>
+          <p>Prints help messages.</p>
+          <p>
+          {{< note >}}
+          Help messages vary depending on the current logging daemon of CLI. Before using this option, make sure you set the right daemon you want.
+          {{</ note >}}
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>-V, --version</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints the version of CLI.</p></td>
+      </tr>
+      <tr>
+        <td><p>-v</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints verbose output.</p></td>
+      </tr>
+      <tr>
+        <td><p>--level</p></td>
+        <td><p>LEVEL</p></td>
+        <td><p>Sets the level of logs as <code>LEVEL</code> and prints the logs.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+ 		
+#### Parameters
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th><p>Parameter</p></th>
+        <th><p>Description</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>LINE</p></td>
+        <td><p>The number of lines to show</p></td>
+      </tr>
+      <tr>
+        <td><p>PRIORITY</p></td>
+        <td>
+          <p>A priority level of logs</p>
+          <p>For more details, see <a href="/docs/guides/development/logging/viewing-logs/viewing-logs-journald/#filter-messages-by-priority">Filter Messages by Priority</a>.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>PID</p></td>
+        <td><p>The ID of a process to check logs</p></td>
+      </tr>
+      <tr>
+        <td><p>DATE</p></td>
+        <td><p>A timestamp in the format: <code>YYYY-MM-DD hh:mm:ss</code></p></td>
+      </tr>
+      <tr>
+        <td><p>UNIT</p></td>
+        <td>
+          <p>Unit name to check logs</p>
+          <p>To get the list of available <code>UNIT</code> values, use the <code>--unit-list</code> option.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>JOURNAL_FILE</p></td>
+        <td>
+          <p>The name of a journal files</p>
+          <p>To get the list of available <code>JOURNAL_FILE</code> values, use the <code>--file-list</code> option.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>LOGGING_DAEMON</p></td>
+        <td><p>A name of the logging daemon (e.g., journald, pmlogd)</p></td>
+      </tr>
+      <tr>
+        <td><p>OUTPUT_MODE</p></td>
+        <td>
+          <p>A format of log messages</p>
+          <p>For more details, see <a href="/docs/guides/development/logging/viewing-logs/viewing-logs-journald/#format-logs">Format Logs</a>.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>SAVED_FILE</p></td>
+        <td><p>A file name or path to save logs</p></td>
+      </tr>
+      <tr>
+        <td><p>DISPLAY_ID</p></td>
+        <td>
+          <p>The ID of a display to check logs</p>
+          <p>It should be an integer type. (Use <code>0</code> for the primary display and <code>1</code> for the secondary display.)</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>TARGET_DEVICE</p></td>
+        <td><p>The name of a target device</p></td>
+      </tr>
+      <tr>
+        <td><p>LEVEL</p></td>
+        <td><p>A priority of logs (e.g., silly, verbose, info, warn, error)</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+#### Examples
+
+Here are some examples of the different uses:
+
+* Checking the current logging daemon
+
+    ``` shell
+    ares-log -cd -d DEVICE
+    ```
+
+*  Changing the current logging daemon to pmlogd
+
+    ``` shell
+    ares-log -sd pmlogd -d DEVICE
+    ```
+
+* Following the journals
+
+    ``` shell
+    ares-log -f -d DEVICE
+    ```
+
+* Displaying the number of journal entries to show
+
+    ``` shell
+    ares-log -n 10 -d DEVICE
+    ```
+
+* Displaying logs between the two `DATE`s
+
+    ``` shell
+    ares-log -S 2021-03-18 21:38:00 --until 2021-03-18 21:39:00 -d DEVICE
+    ```
+
+* Displaying a list of the stored journal files
+
+    ``` shell
+    ares-log -fl -d DEVICE
+    ```
+
+* Displaying stored logs from `system.journal` in the JSON format
+
+    ``` shell
+    ares-log -file system.journal -o json -d DEVICE
+    ```
+
+* Displaying logs of the specified process ID and saving them to a log file
+
+    ``` shell
+    ares-log -pid 1735 -s pid_1735.log -d DEVICE
+    ```
+
+* Displaying logs of the specified unit
+
+    ``` shell
+    ares-log -u sam -d DEVICE
+    ```
+
+### ares-log (pmlog)
+
+This command shows, filters, and saves logs collected by pmlogd.
+
+{{< note >}}
+To print logs and help messages properly, you must set the logging daemon of CLI to same as that of the target device. For more details on how to check and change the logging daemon, see `--current-daemon` and `--switch-daemon` in [Options](#options-13).
+{{</ note >}}
+
+For more information about analyzing pmlog logs, see [Viewing Logs when pmlogd is Enabled]({{< relref "viewing-logs-pmlogd" >}}).
+
+#### History
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th style="width:15%"><p>Version</p></th>
+        <th><p>Changes</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>v2.3.1</p></td>
+        <td><p>Added in.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+#### Usages
+
+```shell
+ares-log [OPTION...] 
+
+ares-log [OPTION...] --follow|-f
+
+ares-log [OPTION...] --lines|-n LINE
 
 ares-log --device-list|-D
 
@@ -1429,1018 +2826,187 @@ ares-log --help|-h
 
 #### Options
 
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: 20%" />
-<col style="width: auto" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Option</p></th>
-<th><p>Parameter</p></th>
-<th><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>-o, --output</p></td>
-<td><p>OUTPUT_MODE</p></td>
-<td><p>Changes logs to the specified format. Must use with the options outputting logs.</p>
-</td>
-</tr>
-<tr>
-<td><p>-s, --save</p></td>
-<td><p>SAVED_FILE</p></td>
-<td><p>Saves logs to the file. Must use with the options outputting logs.</p></td>
-</tr>
-<tr>
-<td><p>-dp, --display</p></td>
-<td><p>DISPLAY_ID</p></td>
-<td><p>Selects the display to check logs. Must use with the <code>unit</code> and <code>unit-list</code> options.</p></td>
-</tr>
-<tr>
-<td><p>-d, --device</p></td>
-<td><p>TARGET_DEVICE</p></td>
-<td><p>Specifies the target device. Unless specified, it will be set to the default target device.</p></td>
-</tr>
-<tr>
-<td><p>-D, --device-list</p></td>
-<td><p>None</p></td>
-<td><p>Lists all the available devices.</p></td>
-</tr>
-<tr>
-<td><p>-h, --help</p></td>
-<td><p>None</p></td>
-<td><p>Displays the help of the <code>ares-log</code> command.</p></td>
-</tr>
-<tr>
-<td><p>-V, --version</p></td>
-<td><p>None</p></td>
-<td><p>Displays the version of the CLI.</p></td>
-</tr>
-<tr>
-<td><p>-v</p></td>
-<td><p>None</p></td>
-<td><p>Displays the execution log.</p></td>
-</tr>
-</tbody>
-</table></div>
-
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th style="width:20%"><p>Option</p></th>
+        <th><p>Parameter</p></th>
+        <th><p>Description</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>-cd, --current-daemon</p></td>
+        <td><p>None</p></td>
+        <td><p>Checks the current logging daemon of CLI and the target device.</p></td>
+      </tr>
+      <tr>
+        <td><p>-sd, --switch-daemon</p></td>
+        <td><p>LOGGING_DAEMON</p></td>
+        <td><p>Changes the current logging daemon of CLI.</p></td>
+      </tr>
+      <tr>
+        <td><p>-id, --id-filter</p></td>
+        <td><p>ID</p></td>
+        <td><p>Shows logs from a app or service of ID.</p></td>
+      </tr>
+      <tr>
+        <td><p>-s, --save</p></td>
+        <td><p>SAVED_FILE</p></td>
+        <td><p>Saves logs into a file.</p></td>
+      </tr>
+      <tr>
+        <td><p>-cl, --context-list</p></td>
+        <td><p>None</p></td>
+        <td><p>Lists the contexts and those log level.</p></td>
+      </tr>
+      <tr>
+        <td><p>-sl, --set-level</p></td>
+        <td><p>CONTEXT CONTEXT_LEVEL</p></td>
+        <td><p>Sets the log level of <code>CONTEXT</code> to <code>CONTEXT_LEVEL</code>.</p></td>
+      </tr>
+      <tr>
+        <td><p>-d, --device</p></td>
+        <td><p>TARGET_DEVICE</p></td>
+        <td>
+          <p>Specifies a target device to connect.</p>
+          <p>If this option is not specified, the default target device is connected.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>-D, --device-list</p></td>
+        <td><p>None</p></td>
+        <td><p>Lists all the available devices.</p></td>
+      </tr>
+      <tr>
+        <td><p>-h, --help</p></td>
+        <td><p>None</p></td>
+        <td>
+          <p>Prints help messages.</p>
+          <p>
+          {{< note >}}
+          Help messages vary depending on the current logging daemon of CLI. Before using this option, make sure you set the right daemon you want.
+          {{</ note >}}
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>-V, --version</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints the version of CLI.</p></td>
+      </tr>
+      <tr>
+        <td><p>-v</p></td>
+        <td><p>None</p></td>
+        <td><p>Displays the verbose logs.</p></td>
+      </tr>
+      <tr>
+        <td><p>--level</p></td>
+        <td><p>LEVEL</p></td>
+        <td><p>Sets the level of logs as <code>LEVEL</code> and prints the logs.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+ 		
 #### Parameters
 
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: auto" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Parameter</p></th>
-<th><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>LINE</p></td>
-<td><p>Number of lines.</p></td>
-</tr>
-<tr>
-<td><p>PRIORITY</p></td>
-<td><p>Priority level of logs. For more details on available <code>PRIORITY</code> values, see <a href="/docs/guides/development/logging/viewing-logs/viewing-logs-journald/#filter-messages-by-priority">Filter Messages by Priority</a>.</p></td>
-</tr>
-<tr>
-<td><p>PID</p></td>
-<td><p>Process ID to check logs.</p></td>
-</tr>
-<tr>
-<td><p>DATE</p></td>
-<td><p>Timestamp in the format: <code>YYYY-MM-DD hh:mm:ss</code>.</p></td>
-</tr>
-<tr>
-<td><p>UNIT</p></td>
-<td><p>Unit name to check logs. To get the list of available <code>UNIT</code> values, use the <code>--unit-list</code> option.</p></td>
-</tr>
-<tr>
-<td><p>JOURNAL_FILE</p></td>
-<td><p>Journal file name.  To get the list of available <code>JOURNAL_FILE</code> values, use the <code>--file-list</code> option.</p></td>
-</tr>
-<tr>
-<td><p>OUTPUT_MODE</p></td>
-<td><p>Format of log messages. For more details, see <a href="/docs/guides/development/logging/viewing-logs/viewing-logs-journald/#format-logs">Format Logs</a>.</p></td>
-</tr>
-<tr>
-<td><p>SAVED_FILE</p></td>
-<td><p>File name or path to save logs.</p></td>
-</tr>
-<tr>
-<td><p>DISPLAY_ID</p></td>
-<td><p>ID of the display to check logs. It should be an integer type. (Use 0 for primary display and 1 for secondary display.)</p></td>
-</tr>
-<tr>
-<td><p>TARGET_DEVICE</p></td>
-<td><p>Specifies the target device for saving or showing logs.</p></td>
-</tr>
-</tbody>
-</table></div>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th><p>Parameter</p></th>
+        <th><p>Description</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>LINE</p></td>
+        <td><p>The number of lines to show</p></td>
+      </tr>
+      <tr>
+        <td><p>LOGGING_DAEMON</p></td>
+        <td><p>A name of the logging daemon (e.g., journald, pmlogd)</p></td>
+      </tr>
+      <tr>
+        <td><p>ID</p></td>
+        <td><p>The ID of an app or service</p></td>
+      </tr>
+      <tr>
+        <td><p>SAVED_FILE</p></td>
+        <td><p>A file name or path to save logs</p></td>
+      </tr>
+      <tr>
+        <td><p>CONTEXT</p></td>
+        <td><p>Name of context</p></td>
+      </tr>
+      <tr>
+        <td><p>CONTEXT_LEVEL</p></td>
+        <td><p>A priority of specific context logs (e.g., info, notice, warning, err)</p></td>
+      </tr>
+      <tr>
+        <td><p>LEVEL</p></td>
+        <td><p>A priority of logs (e.g., silly, verbose, info, warn, error)</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 #### Examples
 
 Here are some examples of the different uses:
 
-* Following the journals.
+* Checking the current logging daemon
+
+    ``` shell
+    ares-log -cd -d DEVICE
+    ```
+
+* Changing the current logging daemon to journald
+
+    ``` shell
+    ares-log -sd journald-d DEVICE
+    ```
+
+* Following pmlog
 
     ``` shell
     ares-log -f -d DEVICE
     ```
 
-* Displaying the number of journal entries to show.
+* Setting the number of pmlog entries to show
 
     ``` shell
     ares-log -n 10 -d DEVICE
     ```
 
-* Displaying logs between the two `DATE`s.
+* Following logs and saving them to a log file
 
     ``` shell
-    ares-log -S 2021-03-18 21:38:00 --until 2021-03-18 21:39:00 -d DEVICE
+    ares-log -f -s follow.log -d DEVICE
     ```
 
-* Displaying a list of the stored journal files.
+* Following logs of an app
 
     ``` shell
-    ares-log -fl -d DEVICE
+    ares-log -f -id com.examples.app -d DEVICE
     ```
 
-* Displaying stored logs from `system.journal` in the JSON format.
+* Following logs of a service and saving them to a log file
 
     ``` shell
-    ares-log -file system.journal -o json -d DEVICE
+    ares-log -f -id com.examples.app.service -s service.log -d DEVICE
     ```
 
-* Displaying logs of the specified process ID and saving them to a log file.
+* Showing context list of the target device
 
     ``` shell
-    ares-log -pid 1735 -s pid_1735.log -d DEVICE
+    ares-log -cl -d DEVICE
     ```
 
-* Displaying logs of the specified unit.
+* Setting the log level for a specific context to debug
 
     ``` shell
-    ares-log -u sam -d DEVICE
-    ```
-
-### ares-inspect
-
-This command enables Web Inspector or Node's Inspector. Each inspector displays the run-time information of a web application or a JS service, respectively.
-
-{{< caution >}}
-We highly recommend you to use the same version as Chrome/Chromium of webOS OSE. Using other versions might cause unexpected errors.
-
-- To check the Chromium version of your target device, do one of the following:
-    - Execute the `ares-device -i` command. In this case, make sure `username` of the target device is set as `root`. Otherwise the Chromium version won't be displayed. For more details, see [DEVICE_INFO](#parameters-2) of `ares-setup-device`.
-    - Execute the `Web Browser` app and go to http://useragentstring.com.
-    - Visit the [webOS OSE GitHub](https://github.com/webosose?q=chromium&type=&language=) and find a Chromium repository of the latest version. Then see `src/chrome/VERSION` file.
-- To download old builds of Chrome/Chromium, visit the [Chromium Project website](https://www.chromium.org/getting-involved/download-chromium).
-{{< /caution >}}
-
-#### History
-
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: 15%" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Version</p></th>
-<th><p>Changes</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>v2.0.2</p></td>
-<td><p>Supports the <code>--display</code> option.</p></td>
-</tr>
-<tr>
-<td><p>v1.6.4</p></td>
-<td><p>Added in.</p></td>
-</tr>
-</tbody>
-</table></div>
-
-#### Usages
-
-```shell
-ares-inspect [OPTION...] [--app|-a] APP_ID
-
-ares-inspect [OPTION...] --service|-s SERVICE_ID
-
-ares-inspect --device-list|-D
-
-ares-inspect --version|-V
-
-ares-inspect --help|-h
-```
-
-#### Options
-
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: 15%" />
-<col style="width: auto" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Option</p></th>
-<th><p>Parameter</p></th>
-<th><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>-d, --device</p></td>
-<td><p>TARGET_DEVICE</p></td>
-<td><p>Specifies the target device. Unless specified, it will be set to the default target device.</p>
-</td>
-</tr>
-<tr>
-<td><p>-a, --app</p></td>
-<td><p>APP_ID</p></td>
-<td><p>Specifies the application to debug with Web Inspector.</p></td>
-</tr>
-<tr>
-<td><p>-s, --service</p></td>
-<td><p>SERVICE_ID</p></td>
-<td><p>Specifies the JS service to debug with Node's Inspector.</p></td>
-</tr>
-<tr>
-<td><p>-o, --open</p></td>
-<td><p>None</p></td>
-<td><p>Opens the default browser of the host machine.</p>
-{{< note >}}
-<p>This option is only available for Web Inspector, thus can be used with <code>--app|-a</code> option only.<p>
-<p>Web Inspector works in the Blink-based web browsers (e.g. Chrome or Opera) only. You have to re-open the inspector page in one of those browsers if another browser is your default web browser (e.g. Safari or Internet Explorer).</p>
-<p>To connect to Node's Inspector, you need to use one of the Node's Inspector clients, such as Chrome DevTools and Visual Studio Code. For more information, see <a href="https://nodejs.org/en/docs/guides/debugging-getting-started/#inspector-clients">Inspector Clients</a>.</p>
-{{< /note >}}
-</td>
-</tr>
-<tr>
-<td><p>-D, --device-list</p></td>
-<td><p>None</p></td>
-<td><p>Lists all the available devices.</p></td>
-</tr>
-<tr>
-<td><p>-dp, --display</p></td>
-<td><p>DISPLAY_ID</p></td>
-<td><p>Launches an application and opens Web Inspector on a specified display.</p></td>
-</tr>
-<tr>
-<td><p>-h, --help</p></td>
-<td><p>None</p></td>
-<td><p>Displays the help of the <code>ares-inspect</code> command.</p></td>
-</tr>
-<tr>
-<td><p>-V, --version</p></td>
-<td><p>None</p></td>
-<td><p>Displays the version of the CLI.</p></td>
-</tr>
-<tr>
-<td><p>-v</p></td>
-<td><p>None</p></td>
-<td><p>Displays the execution log.</p></td>
-</tr>
-</tbody>
-</table></div>
-
-#### Parameters
-
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: auto" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Parameter</p></th>
-<th><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>APP_ID</p></td>
-<td><p>ID of the application whose information is to be viewed using the Web Inspector.</p></td>
-</tr>
-<tr>
-<td><p>SERVICE_ID</p></td>
-<td><p>ID of the JS Service whose information is to be viewed using the Node's Inspector.</p></td>
-</tr>
-<tr>
-<td><p>TARGET_DEVICE</p></td>
-<td><p>Specifies the target device on which the application is installed.</p></td>
-</tr>
-</tbody>
-</table></div>
-
-#### Examples
-
-Here are some examples of the different uses:
-
-* Running the Web Inspector for an application
-
-    ```shell
-    ares-inspect --device target --app com.example.sampleapp
-    ```
-
-* Running the Node's Inspector for a JS service
-
-    ```shell
-    ares-inspect --device target --service com.example.sampleapp.sampleservice
-    ```
-
-### ares-server
-
-This command runs a web server for testing a local file. The web server will run on the given path. You can terminate the web server by pressing **Control+C** on the shell prompt.
-
-#### History
-
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: 15%" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Version</p></th>
-<th><p>Changes</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>v1.6.4</p></td>
-<td><p>Added in.</p></td>
-</tr>
-</tbody>
-</table></div>
-
-#### Usages
-
-```shell
-ares-server [OPTION...] APP_DIR
-
-ares-server --version|-V
-
-ares-server --help|-h
-```
-
-#### Options
-
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: auto" />
-<col style="width: auto" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Option</p></th>
-<th><p>Parameter</p></th>
-<th><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>-p, --port</p></td>
-<td><p>PORT</p></td>
-<td><p>Specifies the port to be used. (Default: random)</td>
-</tr>
-<tr>
-<td><p>-o, --open</p></td>
-<td><p>None</p></td>
-<td><p>Opens the default browser of the host machine.</p></td>
-</tr>
-<tr>
-<td><p>-h, --help</p></td>
-<td><p>None</p></td>
-<td><p>Displays the help of the <code>ares-server</code> command.</p></td>
-</tr>
-<tr>
-<td><p>-V, --version</p></td>
-<td><p>None</p></td>
-<td><p>Displays the version of the CLI.</p></td>
-</tr>
-<tr>
-<td><p>-v</p></td>
-<td><p>None</p></td>
-<td><p>Displays the execution log.</p></td>
-</tr>
-</tbody>
-</table></div>
-
-#### Parameters
-
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: auto" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Parameter</p></th>
-<th><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>APP_DIR</p></td>
-<td><p>Specifies the directory where the application's <code>appinfo.json</code> file is located.</p></td>
-</tr>
-</tbody>
-</table></div>
-
-#### Examples
-
-Here are some examples of the different uses:
-
-* Running the web server in a source directory
-
-    ```shell
-    ares-server ./source
-    ```
-
-* Running the web server with a browser
-
-    ```shell
-    ares-server ./source --open
-    ```
-
-### ares-shell
-
-This command opens a shell of a target device and executes shell commands in the target device.
-
-#### History
-
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: 15%" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Version</p></th>
-<th><p>Changes</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>v1.6.4</p></td>
-<td><p>Added in.</p></td>
-</tr>
-</tbody>
-</table></div>
-
-#### Usages
-
-```shell
-ares-shell -d TARGET_DEVICE
-
-ares-shell -d TARGET_DEVICE -r CMD
-
-ares-shell --device-list|-D
-
-ares-shell --version
-
-ares-shell --help|-h
-```
-
-#### Options
-
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: auto" />
-<col style="width: auto" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Option</p></th>
-<th><p>Parameter</p></th>
-<th><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>-d, --device</p></td>
-<td><p>TARGET_DEVICE</p></td>
-<td><p>Specifies the target device. Unless specified, it will be set to the default target device.</p>
-</td>
-</tr>
-<tr>
-<td><p>-r, --run</p></td>
-<td><p>CMD</p></td>
-<td><p>Specifies a command executed in the target device.</p></td>
-</tr>
-<tr>
-<td><p>-D, --device-list</p></td>
-<td><p>None</p></td>
-<td><p>Lists available target devices.</p></td>
-</tr>
-<tr>
-<td><p>-h, --help</p></td>
-<td><p>None</p></td>
-<td><p>Displays the help of the <code>ares-shell</code> command.</p></td>
-</tr>
-<tr>
-<td><p>-V, --version</p></td>
-<td><p>None</p></td>
-<td><p>Displays the version of the CLI.</p></td>
-</tr>
-<tr>
-<td><p>-v</p></td>
-<td><p>None</p></td>
-<td><p>Displays the execution log.</p></td>
-</tr>
-</tbody>
-</table></div>
-
-#### Parameters
-
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: auto" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Parameter</p></th>
-<th><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>CMD</p></td>
-<td><p>Specifies a command executed in the target device.</p></td>
-</tr>
-<tr>
-<td><p>TARGET_DEVICE</p></td>
-<td><p>Specifies the target device on which the shell is executed.</p></td>
-</tr>
-</tbody>
-</table></div>
-
-#### Examples
-
-Here are some examples of the different uses:
-
-* Opening the remote shell of the target device
-
-    ```shell
-    ares-shell --device target
-    ```
-
-* Executing a command inside the shell of the target device
-
-    ```shell
-    ares-shell --device target -r "pwd"
-    ```
-
-    ```shell
-    ares-shell --device target -r "echo hello webOS"
-    ```
-
-### ares-push
-
-This command pushes file(s) from a host machine to a target device.
-
-#### History
-
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: 15%" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Version</p></th>
-<th><p>Changes</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>v1.6.4</p></td>
-<td><p>Added in.</p></td>
-</tr>
-</tbody>
-</table></div>
-
-#### Usages
-
-```shell
-ares-push [OPTION...] SOURCE DESTINATION
-
-ares-push --device-list|-D
-
-ares-push --version|-V
-
-ares-push --help|-h
-```
-
-#### Options
-
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: auto" />
-<col style="width: auto" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Option</p></th>
-<th><p>Parameter</p></th>
-<th><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>-d, --device</p></td>
-<td><p>TARGET_DEVICE</p></td>
-<td><p>Specifies the target device that you want to copy the file(s) to.</p>
-<p>Unless specified, it will be set to the default target device.</p>
-</td>
-</tr>
-<tr>
-<td><p>-D, --device-list</p></td>
-<td><p>None</p></td>
-<td><p>Lists available target devices.</p></td>
-</tr>
-<tr>
-<td><p>-h, --help</p></td>
-<td><p>None</p></td>
-<td><p>Displays the help of the <code>ares-push</code> command.</p></td>
-</tr>
-<tr>
-<td><p>-V, --version</p></td>
-<td><p>None</p></td>
-<td><p>Displays the version of the CLI.</p></td>
-</tr>
-<tr>
-<td><p>-i, --ignore</p></td>
-<td><p>None</p></td>
-<td><p>Does not display detailed messages of the <code>ares-push</code> result.</p></td>
-</tr>
-<tr>
-<td><p>-v</p></td>
-<td><p>None</p></td>
-<td><p>Displays the execution log.</p></td>
-</tr>
-</tbody>
-</table></div>
-
-#### Parameters
-
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: auto" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Parameter</p></th>
-<th><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>SOURCE</p></td>
-<td><p>Specifies the file/directory path of the host machine.</p></td>
-</tr>
-<tr>
-<td><p>DESTINATION</p></td>
-<td><p>Specifies the file/directory path of the target device.</p></td>
-</tr>
-<tr>
-<td><p>TARGET_DEVICE</p></td>
-<td><p>Specifies the target device that you want to copy the file(s) to.</p></td>
-</tr>
-</tbody>
-</table></div>
-
-#### Examples
-
-Here are some examples of the different uses:
-
-* Listing available targets
-
-    ```shell
-    ares-push --device-list
-    ```
-
-* Pushing contents of a specific directory from the host machine to the target device
-
-    ```shell
-    ares-push --device target <hostPath>/tmpDir <targetPath>/tmpDir
-    ```
-
-* Pushing a file from the host machine to the target device
-
-    ```shell
-    ares-push --device target <hostPath>/foo.txt <targetPath>/foo.txt
-    ```
-
-### ares-pull
-
-This command pulls file(s) from a target device to a host machine.
-
-#### History
-
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: 15%" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Version</p></th>
-<th><p>Changes</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>v1.6.4</p></td>
-<td><p>Added in.</p></td>
-</tr>
-</tbody>
-</table></div>
-
-#### Usages
-
-```shell
-ares-pull [OPTION...] SOURCE DESTINATION
-
-ares-pull --device-list|-D
-
-ares-pull --version|-V
-
-ares-pull --help|-h
-```
-
-#### Options
-
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: auto" />
-<col style="width: auto" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Option</p></th>
-<th><p>Parameter</p></th>
-<th><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>-d, --device</p></td>
-<td><p>TARGET_DEVICE</p></td>
-<td><p>Specifies the target device that you want to copy the file(s) from.</p>
-<p>Unless specified, it will be set to the default target device.</p>
-</td>
-</tr>
-<tr>
-<td><p>-D, --device-list</p></td>
-<td><p>None</p></td>
-<td><p>Lists available target devices.</p></td>
-</tr>
-<tr>
-<td><p>-h, --help</p></td>
-<td><p>None</p></td>
-<td><p>Displays the help of the <code>ares-pull</code> command.</p></td>
-</tr>
-<tr>
-<td><p>-V, --version</p></td>
-<td><p>None</p></td>
-<td><p>Displays the version of the CLI.</p></td>
-</tr>
-<tr>
-<td><p>-i, --ignore</p></td>
-<td><p>None</p></td>
-<td><p>Does not display detailed messages of the <code>ares-pull</code> result.</p></td>
-</tr>
-<tr>
-<td><p>-v</p></td>
-<td><p>None</p></td>
-<td><p>Displays the execution log.</p></td>
-</tr>
-</tbody>
-</table></div>
-
-#### Parameters
-
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: auto" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Parameter</p></th>
-<th><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>SOURCE</p></td>
-<td><p>Specifies the file/directory path of the target device.</p></td>
-</tr>
-<tr>
-<td><p>DESTINATION</p></td>
-<td><p>Specifies the file/directory path of the host machine.</p></td>
-</tr>
-<tr>
-<td><p>TARGET_DEVICE</p></td>
-<td><p>Specifies the target device that you want to copy the file(s) from.</p></td>
-</tr>
-</tbody>
-</table></div>
-
-#### Examples
-
-Here are some examples of the different uses:
-
-* Listing available target devices
-
-    ```shell
-    ares-pull --device-list
-    ```
-
-* Pulling contents of a specific directory from the target device to the host machine
-
-    ```shell
-    ares-pull --device target <targetPath>/tmpDir <hostPath>/tmpDir
-    ```
-
-* Pulling a file from the target device to the host machine
-
-    ```shell
-    ares-pull --device target <targetPath>/foo.txt <hostPath>/foo.txt
-    ```
-
-### ares-device
-
-This command displays the information of the target device.
-
-#### History
-
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: 15%" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Version</p></th>
-<th><p>Changes</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>v2.1.0</p></td>
-<td><p>Supports screen capture using the <code>--capture-screen</code> option.</p></td>
-</tr>
-<tr>
-<td><p>v2.0.0</p></td>
-<td><p><code>ares-device-info</code> is replaced by <code>ares-device</code>.</p></td>
-</tr>
-<tr>
-<td><p>v1.13.0</p></td>
-<td><p>Added in.</p></td>
-</tr>
-</tbody>
-</table></div>
-
-#### Usages
-
-``` shell
-ares-device [OPTION...] [TARGET_DEVICE]
-
-ares-device --device-list|-D
-
-ares-device --version|-V
-
-ares-device --help|-h
-```
-
-#### Options
-
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: 20%" />
-<col style="width: auto" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Option</p></th>
-<th><p>Parameter</p></th>
-<th><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>-i, --system-info</p></td>
-<td><p>None</p></td>
-<td><p>Displays the device system information.</p></td>
-</tr>
-<tr>
-<td><p>-s, --session-info</p></td>
-<td><p>None</p></td>
-<td><p>Displays the device session information.</p>
-{{< note >}}
-This option is not supported in webOS OSE.
-{{< /note >}}
-</td>
-</tr>
-<tr>
-<td><p>-c, --capture-screen</p></td>
-<td><p>OUTPUT_PATH</p></td>
-<td><p>Capture screen and save the file to the host machine.</p></td>
-</tr>
-<tr>
-<td><p>-dp, --display</p></td>
-<td><p>DISPLAY_ID</p></td>
-<td><p>Specify DISPLAY_ID. Use it with capture screen option.</p></td>
-</tr>
-<tr>
-<td><p>-d, --device</p></td>
-<td><p>TARGET_DEVICE</p></td>
-<td><p>Specifies the target device. Unless specified, it will be set to the default target device.</p></td>
-</tr>
-<tr>
-<td><p>-D, --device-list</p></td>
-<td><p>None</p></td>
-<td><p>Lists all the available devices.</p></td>
-</tr>
-<tr>
-<td><p>-h, --help</p></td>
-<td><p>None</p></td>
-<td><p>Displays the help of the <code>ares-device</code> command.</p></td>
-</tr>
-<tr>
-<td><p>-V, --version</p></td>
-<td><p>None</p></td>
-<td><p>Displays the version of the CLI.</p></td>
-</tr>
-<tr>
-<td><p>-v</p></td>
-<td><p>None</p></td>
-<td><p>Displays the execution log.</p></td>
-</tr>
-</tbody>
-</table></div>
-
-#### Parameters
-
-<div class="table-container"><table class="table is-bordered is-fullwidth">
-<colgroup>
-<col style="width: auto" />
-<col style="width: auto" />
-</colgroup>
-<thead>
-<tr class="header">
-<th><p>Parameter</p></th>
-<th><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>TARGET_DEVICE</p></td>
-<td><p>Specifies the target device. Unless specified, it will be set to the default target device.</p></td>
-</tr>
-<tr>
-<td><p>OUTPUT_PATH</p></td>
-<td><p>Specifies the file/directory path of the host machine to save captured file.</p></td>
-</tr>
-<tr>
-<td><p>DISPLAY_ID</p></td>
-<td><p>ID of the display to be captured. It should be an integer type. (Use <code>0</code> for primary display and <code>1</code> for secondary display.)</p></td>
-</tr>
-</tbody>
-</table></div>
-
-#### Examples
-
-Here are some examples of the different uses:
-
-* Displaying the system information of the target device (target device name: `target`)
-
-    ``` shell
-    ares-device --system-info --device target
-    ```
-
-* Capture the display `1` as `screen.png` (target device name: `target`)
-
-    ``` shell
-    ares-device --capture-screen screen.png --display 1 --device target
+    ares-log -sl WAM debug -d DEVICE
     ```

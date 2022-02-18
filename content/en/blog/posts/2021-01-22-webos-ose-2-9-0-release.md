@@ -4,6 +4,7 @@ date: 2021-01-22
 slug: webos-ose-2-9-0-release
 posttype: release
 toc: false
+thumbnail: th-release-2-9-0-chromium-84.png
 ---
 
 We're pleased to announce the release of webOS Open Source Edition (OSE) 2.9.0.

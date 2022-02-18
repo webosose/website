@@ -1,6 +1,6 @@
 ---
 title: appinfo.json
-date: 2020-03-06
+date: 2022-01-18
 weight: 10
 toc: true
 ---
@@ -51,7 +51,7 @@ Here are little tips that might help you with JSON syntax:
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><p>id</p></td>
 <td><p>Required</p></td>
 <td><p>string</p></td>
@@ -64,13 +64,13 @@ Here are little tips that might help you with JSON syntax:
 </ul>
 </td>
 </tr>
-<tr class="even">
+<tr>
 <td><p>title</p></td>
 <td><p>Required</p></td>
 <td><p>string</p></td>
 <td><p>The title of the app as shown in Home Launcher and the app window. The app title is unique; once set, it cannot be changed after publishing the app.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td><p>main</p></td>
 <td><p>Required</p></td>
 <td><p>string</p></td>
@@ -82,7 +82,7 @@ Here are little tips that might help you with JSON syntax:
 </ul>
 </td>
 </tr>
-<tr class="even">
+<tr>
 <td><p>icon</p></td>
 <td><p>Required</p></td>
 <td><p>string</p></td>
@@ -91,7 +91,7 @@ Here are little tips that might help you with JSON syntax:
 <li><p><strong>Default Value</strong>: &quot;icon.png&quot;</p></li>
 </ul></td>
 </tr>
-<tr class="odd">
+<tr>
 <td><p>type</p></td>
 <td><p>Required</p></td>
 <td><p>string</p></td>
@@ -103,19 +103,19 @@ Here are little tips that might help you with JSON syntax:
 </ul>
 </td>
 </tr>
-<tr class="even">
+<tr>
 <td><p>largeIcon</p></td>
 <td><p>Optional</p></td>
 <td><p>string</p></td>
 <td><p>Large app icon. The icon should be in PNG format. </p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td><p>vendor</p></td>
 <td><p>Optional</p></td>
 <td><p>string</p></td>
 <td><p>Provides the information of the app owner. This is used in Home Launcher and deviceinfo dialogs.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td><p>version</p></td>
 <td><p>Optional</p></td>
 <td><p>string</p></td>
@@ -128,13 +128,13 @@ Each version number (major, minor, and revision) cannot exceed 9 digits and cann
 <li><strong>Default value</strong>: &quot;1.0.0&quot;</li>
 </ul></td>
 </tr>
-<tr class="odd">
+<tr>
 <td><p>appDescription</p></td>
 <td><p>Optional</p></td>
 <td><p>string</p></td>
 <td><p>Provides brief information of the app, like a short tagline for the app. It cannot exceed 60 characters.</p></td>
 </tr>
-<tr class="even">
+<tr>
 <td><p>resolution</p></td>
 <td><p>Optional</p></td>
 <td><p>string</p></td>
@@ -148,7 +148,7 @@ webOS OSE does not support UHD resolution for web apps.
 {{< /note >}}
 </td>
 </tr>
-<tr class="odd">
+<tr>
 <td><p>iconColor</p></td>
 <td><p>Optional</p></td>
 <td><p>string</p></td>
@@ -157,13 +157,13 @@ webOS OSE does not support UHD resolution for web apps.
 <li><p><strong>Default value</strong>: &quot;white&quot;</p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr>
 <td><p>splashBackground</p></td>
 <td><p>Optional</p></td>
 <td><p>string</p></td>
 <td><p>Path for a background image to be shown while the app is loading. The file path must be relative to the project root directory. The file should be in PNG format and the image size should be 1920 x 1080.</p></td>
 </tr>
-<tr class="odd">
+<tr>
 <td><p>transparent</p></td>
 <td><p>Optional</p></td>
 <td><p>boolean</p></td>
@@ -173,18 +173,18 @@ webOS OSE does not support UHD resolution for web apps.
 <li><p><strong>Default value</strong>: false</p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr>
 <td><p>requiredMemory</p></td>
 <td><p>Optional</p></td>
 <td><p>number</p></td>
 <td><p>Indicates the minimum amount of memory in megabytes required to run the app.</p></td>
 </tr>
 </tr>
-<tr class="odd">
+<tr>
 <td><p>requiredPermissions</p></td>
 <td><p>Optional</p></td>
 <td><p>string array</p></td>
-<td><p>Specifies the security groups required to run the application.</p></td>
+<td><p>Specifies the required <a href="/docs/guides/development/configuration-files/acg-usage-guide/">Access Control Group (ACG)</a> names associated with the LS2 API methods used in the app. The ACG names associated with each method can be found in their respective <a href="/docs/reference/ls2-api/ls2-api-index/">LS2 API Reference</a>.</p></td>
 </tr>
 </tbody>
 </table>
