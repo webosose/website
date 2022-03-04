@@ -11,91 +11,94 @@ toc: true
 <p>A bus-based Inter Process Communication (IPC) mechanism for components in the webOS. The Luna Service is composed of a client library and of a central hub daemon. The client library provides the API support to register on the bus and communicate with other components. The hub provides a central clearing house for all communication. Utilities for monitoring and debugging the bus are included. After having registered on the Luna Service Bus, services and applications can call public methods of other services and applications registered on the Luna Service Bus. The Luna Service API offers the mechanism that enables sending and receiving data within a single device. Both third-party and internal services can use Luna Service Bus. The operations that a service can perform on the Luna Service Bus are limited by the assigned security permissions.</p>
 <p>Example for asynchronous client usage:</p>
 <div class="code-bg-grey">
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;try</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auto&nbsp;&nbsp;client&nbsp;&nbsp;=&nbsp;&nbsp;LS::registerService(&nbsp;nullptr&nbsp;);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;client.attachToLoop(mainLoop);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auto&nbsp;&nbsp;call&nbsp;&nbsp;=&nbsp;&nbsp;client.callOneReply(&nbsp;&quot;luna://com.palm.contacts/category/listContacts&quot;&nbsp;,</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;{&nbsp;&nbsp;\&quot;json&nbsp;&nbsp;payload\&quot;&nbsp;&nbsp;}&quot;&nbsp;);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;call.setTimeout(1000);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;call.continueWith(listContactsHandler,&nbsp;&nbsp;userData);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g_main_loop_run(mainLoop);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;catch&nbsp;&nbsp;(&nbsp;const&nbsp;&nbsp;LS::Error&nbsp;&nbsp;&amp;e)</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cerr&nbsp;&nbsp;&lt;&lt;&nbsp;&nbsp;e&nbsp;&nbsp;&lt;&lt;&nbsp;&nbsp;endl;</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;;</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</em></p>
+  <p>try</p>
+  <p>{</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;auto  client  =  LS::registerService( nullptr );</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;client.attachToLoop(mainLoop);</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;auto  call  =  client.callOneReply( "luna://com.palm.contacts/category/listContacts" ,"{  \"json  payload\"  }" );</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;call.setTimeout(1000);</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;call.continueWith(listContactsHandler,  userData);</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;g_main_loop_run(mainLoop);</p>
+  <p>}</p>
+  <p>catch  ( const  LS::Error  &e)</p>
+  <p>{</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;cerr  <<  e  <<  endl;</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;throw;</p>
+  <p>}</p>
 </div>
 <p>Example for service usage:</p>
 <div class="code-bg-grey">
-  <p><em>&nbsp;namespace&nbsp;&nbsp;{</em></p>
-  <p><em>&nbsp;//&nbsp;&nbsp;callback</em></p>
-  <p><em>&nbsp;bool&nbsp;&nbsp;listContacts(LSHandle&nbsp;&nbsp;*sh,&nbsp;&nbsp;LSMessage&nbsp;&nbsp;*raw_message,&nbsp;&nbsp;void&nbsp;&nbsp;*categoryContext)</em></p>
-  <p><em>&nbsp;{</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LS::Message&nbsp;&nbsp;message{raw_message};</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;try</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;message.respond(&nbsp;&quot;{&nbsp;&nbsp;JSON&nbsp;&nbsp;REPLY&nbsp;&nbsp;PAYLOAD&nbsp;&nbsp;}&quot;&nbsp;);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;catch&nbsp;&nbsp;(&nbsp;const&nbsp;&nbsp;LS::Error&nbsp;&nbsp;&amp;e)</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cerr&nbsp;&nbsp;&lt;&lt;&nbsp;&nbsp;e&nbsp;&nbsp;&lt;&lt;&nbsp;&nbsp;endl;</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;&nbsp;false&nbsp;;</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;&nbsp;true&nbsp;;</em></p>
-  <p><em>&nbsp;}</em></p>
-  <p><em>&nbsp;static&nbsp;&nbsp;LSMethod&nbsp;&nbsp;ipcMethods[]&nbsp;&nbsp;=&nbsp;&nbsp;{</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;&quot;listContacts&quot;&nbsp;,&nbsp;&nbsp;listContacts&nbsp;&nbsp;},</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;},</em></p>
-  <p><em>&nbsp;};</em></p>
-  <p><em>&nbsp;}&nbsp;&nbsp;//namespace</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;try</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auto&nbsp;&nbsp;service&nbsp;&nbsp;=&nbsp;&nbsp;LS::registerService(&nbsp;&quot;com.palm.contacts&quot;&nbsp;);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;service.registerCategory(&nbsp;&quot;/category&quot;&nbsp;,&nbsp;&nbsp;ipcMethods,&nbsp;&nbsp;nullptr&nbsp;,&nbsp;&nbsp;nullptr&nbsp;);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;service.setCategoryData(&nbsp;&quot;/category&quot;&nbsp;,&nbsp;&nbsp;userData);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;service.attachToLoop(mainLoop);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g_main_loop_run(mainLoop);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;catch&nbsp;&nbsp;(&nbsp;const&nbsp;&nbsp;LS::Error&nbsp;&nbsp;&amp;e)</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cerr&nbsp;&nbsp;&lt;&lt;&nbsp;&nbsp;e&nbsp;&nbsp;&lt;&lt;&nbsp;&nbsp;endl;</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;;</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</em></p>
+  <p>namespace  {</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;//  callback</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;bool  listContacts(LSHandle  *sh,  LSMessage  *raw_message,  void  *categoryContext)</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;{</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LS::Message  message{raw_message};</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;try</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;message.respond( "{  JSON  REPLY  PAYLOAD  }" );</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;catch  ( const  LS::Error  &e)</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cerr  <<  e  <<  endl;</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return  false;</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return  true ;</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;static  LSMethod  ipcMethods[]  =  {</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{  "listContacts" ,  listContacts  },</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{  },</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;};</p>
+  <p>}  //namespace</p>
+  <p>&nbsp;</p>
+  <p>try</p>
+  <p>{</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;auto  service  =  LS::registerService( "com.palm.contacts" );</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;service.registerCategory( "/category" ,  ipcMethods,  nullptr ,  nullptr );</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;service.setCategoryData( "/category" ,  userData);</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;service.attachToLoop(mainLoop);</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;g_main_loop_run(mainLoop);</p>
+  <p>}</p>
+  <p>catch  ( const  LS::Error  &e)</p>
+  <p>{</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;cerr  <<  e  <<  endl;</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;throw ;</p>
+  <p>}</p>
 </div>
 <p>Example C++ service usage:</p>
 <div class="code-bg-grey">
-  <p><em>&nbsp;class&nbsp;&nbsp;Category</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;private&nbsp;&nbsp;LS::Handle</em></p>
-  <p><em>&nbsp;{</em></p>
-  <p><em>&nbsp;public&nbsp;:</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Category(GMainLoop&nbsp;&nbsp;*mainLoop)</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;LS::Handle(LS::registerService(&nbsp;&quot;com.palm.contacts&quot;&nbsp;))</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;attachToLoop&nbsp;(mainLoop);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LS_CATEGORY_BEGIN(Category,&nbsp;&nbsp;&quot;/category&quot;&nbsp;)</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LS_CATEGORY_METHOD(listContacts)</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LS_CATEGORY_END</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</em></p>
-  <p><em>private:</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bool&nbsp;&nbsp;listContacts(LSMessage&nbsp;&nbsp;&amp;message)</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LS::Message&nbsp;&nbsp;request(&amp;message);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;request.respond(&nbsp;&quot;{&nbsp;&nbsp;JSON&nbsp;&nbsp;REPLY&nbsp;&nbsp;PAYLOAD&nbsp;&nbsp;}&quot;&nbsp;);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;&nbsp;true&nbsp;;</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</em></p>
-  <p><em>&nbsp;};</em></p>
-  <p><em>try</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Category&nbsp;&nbsp;category(mainLoop);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g_main_loop_run(mainLoop);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;catch&nbsp;&nbsp;(&nbsp;const&nbsp;&nbsp;LS::Error&nbsp;&nbsp;&amp;e)</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cerr&nbsp;&nbsp;&lt;&lt;&nbsp;&nbsp;e&nbsp;&nbsp;&lt;&lt;&nbsp;&nbsp;endl;</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;;</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</em></p>
+  <p>class  Category</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;:  private  LS::Handle</p>
+  <p>{</p>
+  <p>&nbsp;</p>
+  <p>public :</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;Category(GMainLoop  *mainLoop)</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  LS::Handle(LS::registerService( "com.palm.contacts" ))</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;{</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;attachToLoop (mainLoop);</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LS_CATEGORY_BEGIN(Category,  "/category" )</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LS_CATEGORY_METHOD(listContacts)</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LS_CATEGORY_END</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+  <p>&nbsp;</p>
+  <p>private:</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;bool  listContacts(LSMessage  &message)</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;{</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LS::Message  request(&message);</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;request.respond( "{  JSON  REPLY  PAYLOAD  }" );</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return true ;</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+  <p>};</p>
+  <p>&nbsp;</p>
+  <p>try</p>
+  <p>{</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;Category  category(mainLoop);</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;g_main_loop_run(mainLoop);</p>
+  <p>}</p>
+  <p>catch  ( const  LS::Error  &e)</p>
+  <p>{</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;cerr  <<  e  <<  endl;</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;throw;</p>
+  <p>}</p>
 </div>
 <h2>LS::PayloadRef</h2>
 <p>A Reference wrapper for LSPayload, that does not own it.</p>
@@ -1118,44 +1121,6 @@ None
     </tbody>
   </table>
 </div>
-<h3>getSessionID</h3>
-<h4>Description</h4>
-<p>Returns the session ID of the message.</p>
-<h4>Syntax</h4>
-<pre><code>getSessionID ()</code></pre>
-<h4>Parameters</h4>
-None
-<h4>Returns</h4>
-<div class="table-container">
-  <table class="table is-bordered is-fullwidth">
-    <thead>
-      <tr class="header">
-        <th width="15%">
-          <p>Name</p>
-        </th>
-        <th width="15%">
-          <p>Required</p>
-        </th>
-        <th width="15%">
-          <p>Type</p>
-        </th>
-        <th>
-          <p>Description</p>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>sessionID</td>
-        <td>Required</td>
-        <td>const char *</td>
-        <td>
-          <p>Indicates the sessionID.</p>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
 <h3>respond</h3>
 <h4>Description</h4>
 <p>Responds with payload via LS2. Throws an exception on failure.</p>
@@ -2149,7 +2114,7 @@ None
       <tr>
         <td>Call</td>
         <td>Required</td>
-        <td>Call</td>
+        <td>class LS::Call</td>
         <td>
           <p>Indicates the Call control object.</p>
         </td>
@@ -2248,7 +2213,7 @@ None
       <tr>
         <td>Call</td>
         <td>Required</td>
-        <td>Call</td>
+        <td>class LS::Call</td>
         <td>
           <p>Indicates the Call handler object.</p>
         </td>
@@ -2332,7 +2297,7 @@ None
       <tr>
         <td>Call</td>
         <td>Required</td>
-        <td>Call</td>
+        <td>class LS::Call</td>
         <td>
           <p>Indicates the Call handler object.</p>
         </td>
@@ -2431,7 +2396,7 @@ None
       <tr>
         <td>Call</td>
         <td>Required</td>
-        <td>Call</td>
+        <td>class LS::Call</td>
         <td>
           <p>Indicates the Call handler object.</p>
         </td>
@@ -2522,7 +2487,7 @@ Call a signal to a specific category.
       <tr>
         <td>Call</td>
         <td>Required</td>
-        <td>Call</td>
+        <td>class LS::Call</td>
         <td>
           <p>Inidicates the Call handler object.</p>
         </td>
@@ -2636,7 +2601,7 @@ Call a signal to a specific category.
         <td>Required</td>
         <td>const char *</td>
         <td>
-          <p>IN absolute exe path of callee, if callee is service else NULL</p>
+          <p>Absolute exe path of callee, if callee is service else NULL</p>
         </td>
       </tr>
       <tr>
@@ -2644,7 +2609,7 @@ Call a signal to a specific category.
         <td>Required</td>
         <td>const char *</td>
         <td>
-          <p>IN app_id of the callee, if callee is app else NULL</p>
+          <p>app_id of the callee, if callee is app else NULL</p>
         </td>
       </tr>
       <tr>
@@ -2652,7 +2617,7 @@ Call a signal to a specific category.
         <td>Required</td>
         <td>const char *</td>
         <td>
-          <p>IN service name of the callee, NULL not accepted</p>
+          <p>Service name of the callee, NULL not accepted</p>
         </td>
       </tr>
       <tr>
@@ -2660,7 +2625,7 @@ Call a signal to a specific category.
         <td>Required</td>
         <td>const char *</td>
         <td>
-          <p>IN fully qualified path to service&#39;s method</p>
+          <p>Fully qualified path to service&#39;s method</p>
         </td>
       </tr>
       <tr>
@@ -2668,7 +2633,7 @@ Call a signal to a specific category.
         <td>Required</td>
         <td>const char *</td>
         <td>
-          <p>IN some string, usually following JSON object semantics</p>
+          <p>Some string, usually following JSON object semantics</p>
         </td>
       </tr>
       <tr>
@@ -2676,7 +2641,7 @@ Call a signal to a specific category.
         <td>Required</td>
         <td>char</td>
         <td>
-          <p>IN function callback to be called when responses arrive</p>
+          <p>Function callback to be called when responses arrive</p>
           <p>Datatype is LSFIlterFunc.</p>
         </td>
       </tr>
@@ -2685,7 +2650,7 @@ Call a signal to a specific category.
         <td>Required</td>
         <td>void *</td>
         <td>
-          <p>IN user data to be passed to callback</p>
+          <p>User data to be passed to callback</p>
         </td>
       </tr>
       <tr>
@@ -2693,7 +2658,7 @@ Call a signal to a specific category.
         <td>Required</td>
         <td>const char *</td>
         <td>
-          <p>IN application ID</p>
+          <p>Application ID</p>
         </td>
       </tr>
     </tbody>
@@ -2760,7 +2725,7 @@ Call a signal to a specific category.
         <td>Required</td>
         <td>const char *</td>
         <td>
-          <p>IN absolute exe path of callee, if callee is service else NULL</p>
+          <p>Absolute exe path of callee, if callee is service else NULL</p>
         </td>
       </tr>
       <tr>
@@ -2768,7 +2733,7 @@ Call a signal to a specific category.
         <td>Required</td>
         <td>const char *</td>
         <td>
-          <p>IN app_id of the callee, if callee is app else NULL</p>
+          <p>app_id of the callee, if callee is app else NULL</p>
         </td>
       </tr>
       <tr>
@@ -2776,7 +2741,7 @@ Call a signal to a specific category.
         <td>Required</td>
         <td>const char *</td>
         <td>
-          <p>IN service name of the callee, NULL not accepted</p>
+          <p>Service name of the callee, NULL not accepted</p>
         </td>
       </tr>
       <tr>
@@ -2784,7 +2749,7 @@ Call a signal to a specific category.
         <td>Required</td>
         <td>const char *</td>
         <td>
-          <p>IN fully qualified path to service&#39;s method</p>
+          <p>Fully qualified path to service&#39;s method</p>
         </td>
       </tr>
       <tr>
@@ -2792,7 +2757,7 @@ Call a signal to a specific category.
         <td>Required</td>
         <td>const char *</td>
         <td>
-          <p>IN some string, usually following JSON object semantics</p>
+          <p>Some string, usually following JSON object semantics</p>
         </td>
       </tr>
       <tr>
@@ -2800,7 +2765,7 @@ Call a signal to a specific category.
         <td>Required</td>
         <td>char</td>
         <td>
-          <p>IN function callback to be called when responses arrive.</p>
+          <p>Function callback to be called when responses arrive.</p>
           <p>Datatype is LSFIlterFunc.</p>
         </td>
       </tr>
@@ -2809,7 +2774,7 @@ Call a signal to a specific category.
         <td>Required</td>
         <td>void *</td>
         <td>
-          <p>IN user data to be passed to callback</p>
+          <p>User data to be passed to callback</p>
         </td>
       </tr>
       <tr>
@@ -2817,7 +2782,7 @@ Call a signal to a specific category.
         <td>Required</td>
         <td>const char *</td>
         <td>
-          <p>IN application ID</p>
+          <p>Application ID</p>
         </td>
       </tr>
     </tbody>

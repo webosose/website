@@ -1,6 +1,6 @@
 ---
 title: appinfo.json
-date: 2022-01-18
+date: 2022-03-02
 weight: 10
 toc: true
 ---
@@ -12,8 +12,8 @@ webOS device uses `appinfo.json` to identify the app, its icon, and other inform
 {{< note >}}
 Here are little tips that might help you with JSON syntax:
 
-  - Do not include any comments (/* or //) in JSON files.
-  - Use double quotes around the properties---no single quotes.
+- Do not include any comments (/* or //) in JSON files.
+- Use double quotes around the properties---no single quotes.
 {{< /note >}}
 
 ## Schema
@@ -245,7 +245,7 @@ webOS OSE does not support UHD resolution for web apps.
     "splashBackground": "AppName_Splash.png",
     "transparent": false,
     "requiredMemory": 20,
-    "requiredPermissions": ["time", "media"]
+    "requiredPermissions": ["time.query", "media.operation"]
 }
 ```
 {{< /code >}}

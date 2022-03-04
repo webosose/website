@@ -12,94 +12,85 @@ toc: true
 <h2>Overview of the API</h2>
 <p><strong>Sample Client Usage (calling the &#39;listContacts()&#39; method from a registered service):</strong></p>
 <div class="code-bg-grey">
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bool&nbsp;&nbsp;retVal;</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSError&nbsp;&nbsp;lserror;</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSErrorInit&nbsp;(&amp;lserror);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSMessageToken&nbsp;&nbsp;token&nbsp;&nbsp;=&nbsp;&nbsp;LSMESSAGE_TOKEN_INVALID&nbsp;;</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSHandle&nbsp;&nbsp;*serviceHandle;</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retVal&nbsp;&nbsp;=&nbsp;&nbsp;LSRegister&nbsp;(NULL,&nbsp;&nbsp;&amp;serviceHandle,&nbsp;&nbsp;&amp;lserror);</em></p>
-  <p>&nbsp;</p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;&nbsp;(!retVal)&nbsp;&nbsp;goto&nbsp;&nbsp;done;</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retVal&nbsp;&nbsp;=&nbsp;&nbsp;LSCallOneReply&nbsp;(serviceHandle,&nbsp;&nbsp;&quot;luna://com.webos.contacts/category/listContacts&quot;&nbsp;,</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;{&nbsp;&nbsp;\&quot;json&nbsp;&nbsp;payload\&quot;&nbsp;&nbsp;}&quot;&nbsp;,&nbsp;&nbsp;listContactsHandler,&nbsp;&nbsp;userData,&nbsp;&nbsp;&amp;token,&nbsp;&nbsp;&amp;lserror);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;&nbsp;(!retVal)&nbsp;&nbsp;goto&nbsp;&nbsp;done;</em></p>
-  <p>&nbsp;</p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSGmainAttach&nbsp;(serviceHandle,&nbsp;&nbsp;loop,&nbsp;&nbsp;&amp;lserror);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g_main_loop_run(loop);</em></p>
-  <p><br />
+  <p><em>bool retVal;</em></p>
+  <p><em>LSError lserror;</em></p>
+  <p><em>LSErrorInit (&amp;lserror);</em></p>
+  <p><em>LSMessageToken token = LSMESSAGE_TOKEN_INVALID;</em></p>
+  <p><em>LSHandle *serviceHandle;</em></p>
+  <p><em>retVal = LSRegister (NULL, &amp;serviceHandle, &amp;lserror);</em></p>
+  <p><em>if (!retVal) goto done;</em></p>
+  <p><em>retVal = LSCallOneReply (serviceHandle, &quot;luna://com.webos.contacts/category/listContacts&quot;,&quot;{\&quot;json payload\&quot;}&quot;, listContactsHandler, userData, &amp;token, &amp;lserror);</em></p>
+  <p><em>if (!retVal) goto done;</em></p>
+  <p><em>LSGmainAttach (serviceHandle, loop, &amp;lserror);</em></p>
+  <p><em>g_main_loop_run(loop);</em></p>
 </div>
 <strong>Sample Service Usage</strong>
 <div class="code-bg-grey">
-  <p><em>&nbsp;//&nbsp;&nbsp;callback</em></p>
-  <p><em>&nbsp;static&nbsp;&nbsp;bool</em></p>
-  <p><em>&nbsp;listContacts(&nbsp;LSHandle&nbsp;&nbsp;*sh,&nbsp;&nbsp;LSMessage&nbsp;&nbsp;*message,&nbsp;&nbsp;void&nbsp;&nbsp;*categoryContext)</em></p>
-  <p><em>&nbsp;{</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bool&nbsp;&nbsp;retVal;</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSError&nbsp;&nbsp;lserror;</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSErrorInit&nbsp;(&amp;lserror);</em></p>
+  <p><em>//callback</em></p>
+  <p><em>static bool listContacts( LSHandle *sh, LSMessage *message, void *categoryContext)</em></p>
+  <p><em>{</em></p>
+  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;bool retVal;</em></p>
+  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;LSError lserror;</em></p>
+  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;LSErrorInit (&amp;lserror);</em></p>
+  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;retVal = LSMessageReply (sh, message, &quot;{JSON REPLY PAYLOAD}&quot; , &amp;lserror);</em></p>
+  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;if (!retVal)</em></p>
+  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;{</em></p>
+  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSErrorPrint (&amp;lserror, stderr);</em></p>
+  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSErrorFree (&amp;lserror);</em></p>
+  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;}</em></p>
+  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;return retVal;</em></p>
+  <p><em>}</em></p>
   <p>&nbsp;</p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retVal&nbsp;&nbsp;=&nbsp;&nbsp;LSMessageReply&nbsp;(sh,&nbsp;&nbsp;message,&nbsp;&nbsp;&quot;{&nbsp;&nbsp;JSON&nbsp;&nbsp;REPLY&nbsp;&nbsp;PAYLOAD&nbsp;&nbsp;}&quot;&nbsp;,&nbsp;&nbsp;&amp;lserror);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;&nbsp;(!retVal)</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSErrorPrint&nbsp;(&amp;lserror,&nbsp;&nbsp;stderr);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSErrorFree&nbsp;(&amp;lserror);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;&nbsp;retVal;</em></p>
-  <p><em>&nbsp;}</em></p>
+  <p><em>static LSMethod ipcMethods[] = {</em></p>
+  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;{ &quot;listContacts&quot; , listContacts },</em></p>
+  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;{ },</em></p>
+  <p><em>};</em></p>
+  <p><em>bool retVal;</em></p>
+  <p><em>LSError lserror;</em></p>
+  <p><em>LSErrorInit&nbsp;(&amp;lserror);</em></p>
+  <p><em>LSHandle *serviceHandle = NULL;</em></p>
   <p>&nbsp;</p>
-  <p><em>&nbsp;static&nbsp;&nbsp;LSMethod&nbsp;&nbsp;ipcMethods[]&nbsp;&nbsp;=&nbsp;&nbsp;{</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;&quot;listContacts&quot;&nbsp;,&nbsp;&nbsp;listContacts&nbsp;&nbsp;},</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;},</em></p>
-  <p><em>&nbsp;};</em></p>
-  <p><br /><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bool&nbsp;&nbsp;retVal;</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSError&nbsp;&nbsp;lserror;</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSErrorInit&nbsp;(&amp;lserror);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSHandle&nbsp;&nbsp;*serviceHandle&nbsp;&nbsp;=&nbsp;&nbsp;NULL;</em></p>
+  <p><em>retVal = LSRegister ( &quot;com.webos.contacts&quot; , &amp;serviceHandle, &amp;lserror);</em></p>
+  <p><em>if (!retVal) goto error;</em></p>
   <p>&nbsp;</p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retVal&nbsp;&nbsp;=&nbsp;&nbsp;LSRegister&nbsp;(&nbsp;&quot;com.webos.contacts&quot;&nbsp;,&nbsp;&nbsp;&amp;serviceHandle,&nbsp;&nbsp;&amp;lserror);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;&nbsp;(!retVal)&nbsp;&nbsp;goto&nbsp;&nbsp;error;</em></p>
+  <p><em>retVal = LSRegisterCategory (serviceHandle, &quot;/category&quot; , ipcMethods, NULL, NULL, &amp;lserror);</em></p>
+  <p><em>if (!retVal) goto error;</em></p>
   <p>&nbsp;</p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retVal&nbsp;&nbsp;=&nbsp;&nbsp;LSRegisterCategory&nbsp;(serviceHandle,&nbsp;&nbsp;&quot;/category&quot;&nbsp;,&nbsp;&nbsp;&nbsp;ipcMethods,&nbsp;&nbsp;NULL,&nbsp;&nbsp;NULL,&nbsp;&nbsp;&amp;lserror);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;&nbsp;(!retVal)&nbsp;&nbsp;goto&nbsp;&nbsp;error;</em></p>
+  <p><em>retVal = LSCategorySetData (serviceHandle, &quot;/category&quot; , userData, &amp;lserror);</em></p>
+  <p><em>if (!retVal) goto error;</em></p>
   <p>&nbsp;</p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retVal&nbsp;&nbsp;=&nbsp;&nbsp;LSCategorySetData&nbsp;(serviceHandle,&nbsp;&nbsp;&quot;/category&quot;&nbsp;,&nbsp;&nbsp;userData,&nbsp;&nbsp;&amp;lserror);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;&nbsp;(!retVal)&nbsp;&nbsp;goto&nbsp;&nbsp;error;</em></p>
+  <p><em>retVal = LSGmainAttach (serviceHandle, mainLoop, &amp;lserror)</em></p>
+  <p><em>if (!retVal) goto error;</em></p>
   <p>&nbsp;</p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retVal&nbsp;&nbsp;=&nbsp;&nbsp;LSGmainAttach&nbsp;(serviceHandle,&nbsp;&nbsp;mainLoop,&nbsp;&nbsp;&amp;lserror);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;&nbsp;(!retVal)&nbsp;&nbsp;goto&nbsp;&nbsp;error;</em></p>
-  <p>&nbsp;</p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g_main_loop_run(mainLoop);</em></p>
-  <p>&nbsp;</p>
-  <p><br />
+  <p><em>g_main_loop_run(mainLoop);</em></p>
 </div>
-<strong>Storing a message for replying in another thread.</strong><br />
+<strong>Storing a message for replying in another thread.</strong>
 <div class="code-bg-grey">
-  <p><em>&nbsp;Queue&nbsp;&nbsp;messageQueue;</em></p>
-  <p><em>&nbsp;...</em></p>
-  <p><em>&nbsp;static&nbsp;&nbsp;bool</em></p>
-  <p><em>&nbsp;listContacts(&nbsp;LSHandle&nbsp;&nbsp;*sh,&nbsp;&nbsp;LSMessage&nbsp;&nbsp;*message)</em></p>
-  <p><em>&nbsp;{</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bool&nbsp;&nbsp;retVal;</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSError&nbsp;&nbsp;lserror;</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSErrorInit&nbsp;(&amp;lserror);</em></p>
+  <p><em>Queue messageQueue;</em></p>
+  <p><em>...</em></p>
+  <p><em>static bool listContacts(LSHandle *sh, LSMessage *message)</em></p>
+  <p><em>{</em></p>
+  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;bool retVal;</em></p>
+  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;LSError lserror;</em></p>
+  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;LSErrorInit (&amp;lserror);</em></p>
   <p>&nbsp;</p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSMessageRef&nbsp;(message);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue(messageQueue,&nbsp;&nbsp;message);</em></p>
-  <p><em>&nbsp;}</em></p>
-  <p><em>&nbsp;...</em></p>
-  <p><em>&nbsp;void&nbsp;SomeOtherThread()</em></p>
-  <p><em>&nbsp;{</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSError&nbsp;&nbsp;lserror;</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSErrorInit&nbsp;(&amp;lserror);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSMessage&nbsp;&nbsp;*message&nbsp;&nbsp;=&nbsp;&nbsp;dequeue(messageQueue);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;&nbsp;(!&nbsp;LSMessageReply&nbsp;(sh,&nbsp;&nbsp;message,&nbsp;&nbsp;&quot;{PAYLOAD&nbsp;&nbsp;IN&nbsp;&nbsp;JSON}&quot;&nbsp;,&nbsp;&nbsp;lserror))</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSErrorLog&nbsp;(loggingCtx,&nbsp;&nbsp;msgId,&nbsp;&nbsp;&amp;lserror);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSErrorFree&nbsp;(&amp;lserror);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;....</em></p>
-  <p><em>&nbsp;}</em></p>
+  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;LSMessageRef (message);</em></p>
+  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;queue(messageQueue, message);</em></p>
+  <p><em>}</em></p>
+  <p><em>...</em></p>
+  <p><em>void&nbsp;SomeOtherThread()</em></p>
+  <p><em>{</em></p>
+  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;LSError lserror;</em></p>
+  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;LSErrorInit (&amp;lserror);</em></p>
+  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;LSMessage *message = dequeue(messageQueue);</em></p>
+  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;...</em></p>
+  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;if (! LSMessageReply (sh, message, &quot;{PAYLOAD IN JSON}&quot; , lserror))</em></p>
+  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;{</em></p>
+  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSErrorLog (loggingCtx, msgId, &amp;lserror);</em></p>
+  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSErrorFree (&amp;lserror);</em></p>
+  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;}</em></p>
+  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;....</em></p>
+  <p><em>}</em></p>
 </div>
 <h2>Type Definitions</h2>
 <div class="table-container">
