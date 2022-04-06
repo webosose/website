@@ -1,7 +1,7 @@
 ---
 title: Overview
 display_title: Visual Studio Code Extension
-date: 2021-11-26
+date: 2022-04-06
 weight: 20
 toc: true
 ---
@@ -16,11 +16,13 @@ This page only describes the overview of the extension. For more details, see th
 
 webOS OSE VS Code extension provides the following key features:
 
-* Creating the web app, enact app or JS services from a template.
-* Assisting the use of webOS and Enact APIs through content assist.
+* Creating web apps, Enact apps, or JS services from a template.
+* Assisting the use of webOS LS2 APIs and Enact APIs through content assist.
 * Debugging the implementation.
-* Previewing the web app locally.
-* Packaging, installing, and running the apps.
+* Previewing an app locally.
+* Running ESLint on Enact apps.
+* Packaging, installing, and running apps.
+* Configuring and managing VirtualBox emulator.
 
 ## How to Install
 
@@ -60,20 +62,21 @@ For help on using the extension, see [Using the Extension](https://marketplace.v
       <li>Package App: Packages the app into an IPK.</li>
       <li>Install App: Install IPK on the device.</li>
       <li>Run App: Runs the app on the device.</li>
-      <li>Local Preview: Provides a local preview of a web app.</li>
-      <li>Install webOS: Installs the package to allow invocation of webOS luna APIs.</li>
-      <li>Debug: Runs Web Inspector to debug an app.</li>
-      <li>Debug Service: Runs Node Inspector to debug a JS service.</li>
+      <li>Local Preview: Provides a local preview of an app.</li>
+      <li>Install webOS: Installs the package to allow invocation of webOS LS2 APIs.</li>
+      <li>Run Lint: Runs ESLint for Enact apps.</li>
+      <li>Debug App/Service: Debugs apps and services in IDE.</li>
+      <li>Emulator Manager: Manages emulators directly on IDE.</li>
     </ul>
   </dd>
   <dt>Q. When must the webOS library be added to a project?</dt>
   <dd>
-    <p><b>A.</b> The webOS library is required when it is required to invoke webOS luna APIs in the app/service.</p>
+    <p><b>A.</b> The webOS library is required when it is required to invoke webOS LS2 APIs in the app/service.</p>
     <p></p>
   </dd>
-  <dt>Q. I have not added any device, yet I can see an entry named emulator.</dt>
+  <dt>Q. I have not added any device in the <strong>KNOWN DEVICE</strong> pane, yet I can see an entry named emulator.</dt>
   <dd>
-    <p><b>A.</b> Emulator is a default entry that is shown. If not already done, set up the emulator as described in <a href="/docs/tools/sdk/emulator/virtualbox-emulator/emulator-user-guide/">Emulator User Guide</a>.</p>
+    <p><b>A.</b> Emulator is a default entry that is shown. It is associated with the emulator that is running on the local system. If an emulator instance is not already set up, go to the <strong>EMULATOR MANAGER</strong> pane and add the emulator instance.</p>
     <p></p>
   </dd>
   <dt>Q. Getting an error while packaging the app, when my folder path contains special characters.</dt>
