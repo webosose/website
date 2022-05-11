@@ -1,12 +1,12 @@
 ---
 title: pmloglib Library API Reference
-date: 2021-06-17
+date: 2022-05-03
 toc: true
 ---
 
-<h2>API Summary</h2>
+<h2 id="api-summary">API Summary</h2>
 <p>The <strong>pmloglib</strong> provides the API, which enables applications to format the messages and put these messages to the&nbsp;<strong>syslog</strong>.</p>
-<h2>Overview of the API</h2>
+<h2 id="overview-of-the-api">Overview of the API</h2>
 <p>This library supports instrumenting code to produce runtime text output&nbsp; to indicate run status.<br />
   We differentiate output into two types, tracing and logging.</p>
 <p>Tracing code is for detailed debugging for use by individual component development.&nbsp;It is turned on only locally and only as needed, and is&nbsp;<strong>not</strong> included in the main build or release product.&nbsp;The system that&nbsp;supports for tracing code will not be as efficient in this case as it&nbsp;will lean more towards ease of use.</p>
@@ -14,7 +14,8 @@ toc: true
 <p>Logging code may also support more verbose diagnostic&nbsp;levels which may be turned on dynamically as needed on the device.&nbsp;The&nbsp;intent of the system is that logging code which is not enabled has&nbsp;minimal performance impact.&nbsp;In particular, a logging call which is not&nbsp;enabled should not result in a library call or evaluation of parameters.</p>
 <p>This is enabled by requiring logging clients to initialize a logging&nbsp;context that is managed by the PmLog system.&nbsp;The context includes a&nbsp;memory field that can be quickly checked by the logging call to know&nbsp;whether the call is enabled.<br />
   <br />
-  The <strong>pmloglib&nbsp;</strong>service provides the following core features:</p>
+  The <strong>pmloglib&nbsp;</strong>service provides the following core features:
+</p>
 <ul>
   <li>Context support</li>
   <li>Filter messages by id</li>
@@ -22,7 +23,6 @@ toc: true
   <li>Provides C API for other components</li>
   <li>Provide configuration through the <strong>pmlogctl</strong> utility</li>
 </ul>
-<p>&nbsp;</p>
 <p>The <strong>pmloglib</strong>&nbsp;supports contexts. Through the <strong>pmloglib</strong> API, you can configure the contexts, use different files for different contexts and manage the filtering level.</p>
 <p>By default, the pmloglib provides 2 contexts:</p>
 <ul>
@@ -30,7 +30,6 @@ toc: true
   <li>Dynamic libraries that are used by the&nbsp;executable file</li>
 </ul>
 <p>The messages are formatted on the <strong>key - value</strong> basis. The key serves as a tag, by using which it is possible to get all messages that are marked by a certain key.</p>
-<p>&nbsp;</p>
 <p><u><strong>Example usage:</strong></u></p>
 <div class="code-bg-grey">
 <p><br />
@@ -53,8 +52,8 @@ toc: true
     &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; {<br />
     &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; PmLogError(gMyContext, &quot;FOOERR&quot;, 1, PMLOGKFV(ERROR_CODE,&quot;%d&quot;,err), &quot;&quot;);<br />
     &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }<br />
-    &nbsp;&nbsp;&nbsp;&nbsp; }</em></p>
-<p>&nbsp;</p>
+    &nbsp;&nbsp;&nbsp;&nbsp; }</em>
+</p>
 </div>
 <p><u><strong><em>Below are the list of functions which are exported :</em></strong></u></p>
 <div class="code-bg-grey">
@@ -93,13 +92,13 @@ toc: true
     &nbsp;&nbsp; &nbsp;*;<br />
     };</em></p>
 </div>
-<h2>Enumerators</h2>
-<h3>PmLogErr</h3>
+<h2 id="enumerators">Enumerators</h2>
+<h3 id="pmlogerr">PmLogErr</h3>
 <p>&nbsp;Type&nbsp;definition&nbsp;for&nbsp;error&nbsp;codes&nbsp;returned&nbsp;by&nbsp;this&nbsp;module&#39;s&nbsp;methods.</p>
-<h3>PmLogLevel</h3>
+<h3 id="pmloglevel">PmLogLevel</h3>
 <p>Type&nbsp;definition&nbsp;for&nbsp;discrete&nbsp;logging&nbsp;level</p>
-<h2>Methods</h2>
-<h3>PmLogDumpData_</h3>
+<h2 id="methods">Methods</h2>
+<h3 id="pmlogdumpdata_">PmLogDumpData_</h3>
 <h4>Description</h4>
 <p>Logs the specified binary data as text dump to the specified context. Specify kPmLogDumpFormatDefault for the formatting parameter. For efficiency, this method should not be used directly, but instead use the wrappers (e.g., PmLogDumpData, ...) that bypass the library call if the logging is not enabled.</p>
 <h4>Syntax</h4>
@@ -218,7 +217,7 @@ toc: true
   <p>&nbsp; &nbsp; &nbsp;return RESULT_OK;</p>
   <p>}</p>
 </div>
-<h3>PmLogFindContext</h3>
+<h3 id="pmlogfindcontext">PmLogFindContext</h3>
 <h4>Description</h4>
 <p>Finds the logging context for the named context, or NULL if the context does not exist.</p>
 <h4>Syntax</h4>
@@ -317,7 +316,7 @@ toc: true
   <p>&nbsp; &nbsp; &nbsp;return RESULT_PARAM_ERR;</p>
   <p>}</p>
 </div>
-<h3>PmLogGetContext</h3>
+<h3 id="pmloggetcontext">PmLogGetContext</h3>
 <h4>Description</h4>
 <p>Logs context for the named context. If contextName is NULL, returns the global context.Context names must be 1~31 characters long, and each character must be one of A-Z, a-z, 0-9, &#39;_&#39;, &#39;-&#39;, &#39;.&#39;. and&nbsp;Component hierarchies can be indicated using &#39;.&#39; as the path separator. E.g. &quot;FOO.BAR&quot; would indicate the &quot;BAR&quot; subcomponent of the &quot;FOO&quot; component.</p>
 <h4>Syntax</h4>
@@ -414,7 +413,7 @@ toc: true
   <p>&nbsp; &nbsp; &nbsp; &nbsp;return&nbsp;false;</p>
   <p>}</p>
 </div>
-<h3>PmLogGetContextInline</h3>
+<h3 id="pmloggetcontextinline">PmLogGetContextInline</h3>
 <h4>Description</h4>
 <p>Gets the logging context for the named context.</p>
 <h4>Syntax</h4>
@@ -503,7 +502,7 @@ toc: true
   <p>&nbsp; &nbsp; &nbsp; printf(&quot;context name &nbsp;exists.&quot;)</p>
   <p>}</p>
 </div>
-<h3>PmLogGetContextLevel</h3>
+<h3 id="pmloggetcontextlevel">PmLogGetContextLevel</h3>
 <h4>Description</h4>
 <p>Gets the logging level for the specified context. This method may be used for the global context. This should generally not be used by the components doing logging themselves. Instead just use the PmLogPrint, etc. methods which will do inline enabled checks.</p>
 <h4>Syntax</h4>
@@ -596,7 +595,7 @@ toc: true
   <p>&nbsp;&nbsp; &nbsp;&nbsp;}</p>
   <p>}</p>
 </div>
-<h3>PmLogGetContextName</h3>
+<h3 id="pmloggetcontextname">PmLogGetContextName</h3>
 <h4>Description</h4>
 <p>Gets&nbsp;the name of the specified context into the specified string buffer.</p>
 <h4>Syntax</h4>
@@ -695,7 +694,7 @@ toc: true
   <p>&nbsp; &nbsp; &nbsp;return logErr;</p>
   <p>}</p>
 </div>
-<h3>PmLogGetIndContext</h3>
+<h3 id="pmloggetindcontext">PmLogGetIndContext</h3>
 <h4>Description</h4>
 <p>Gets&nbsp;the context by index where index = 0 ~&nbsp;numContexts-1.</p>
 <h4>Syntax</h4>
@@ -785,7 +784,7 @@ toc: true
   <p>&nbsp; &nbsp; &nbsp;DbgPrint(&quot;Context no %d not found. Error no: %d&quot;, contextIndex, logErr);</p>
   <p>}</p>
 </div>
-<h3>PmLogGetNumContexts</h3>
+<h3 id="pmloggetnumcontexts">PmLogGetNumContexts</h3>
 <h4>Description</h4>
 <p>Gets&nbsp;the number of defined contexts, including the global context.</p>
 <h4>Syntax</h4>
@@ -874,7 +873,7 @@ toc: true
   <p>&nbsp; &nbsp; &nbsp;printf(&quot;PmLogGetNumContexts call is success&quot;)</p>
   <p>}</p>
 </div>
-<h3>PmLogPrint_</h3>
+<h3 id="pmlogprint_">PmLogPrint_</h3>
 <h4>Description</h4>
 Logs the specified formatted text to the specified context.
 <h4>Syntax</h4>
@@ -973,7 +972,7 @@ Logs the specified formatted text to the specified context.
   <p>&nbsp; &nbsp; &nbsp;return RESULT_RUN_ERR;</p>
   <p>}</p>
 </div>
-<h3>PmLogSetContextLevel</h3>
+<h3 id="pmlogsetcontextlevel">PmLogSetContextLevel</h3>
 <h4>Description</h4>
 <p>Sets the logging level for the specified context. This method may be used for the global context.</p>
 <h4>Syntax</h4>
@@ -1064,7 +1063,7 @@ Logs the specified formatted text to the specified context.
   <p>&nbsp; &nbsp; &nbsp;return false;</p>
   <p>}</p>
 </div>
-<h3>PmLogString_</h3>
+<h3 id="pmlogstring_">PmLogString_</h3>
 <h4>Description</h4>
 <p>Logs the specified string of key-value pairs and free text to the specified context.</p>
 <h4>Syntax</h4>
@@ -1188,7 +1187,7 @@ Logs the specified formatted text to the specified context.
   <p>&nbsp; &nbsp; &nbsp;logErr = PmLogString_(parent_ctx_, level_,msgId_.c_str(), (&quot;{&quot; + kvpairs_ + &quot;}&quot;).c_str(), messages_.c_str());</p>
   <p>}</p>
 </div>
-<h3>PmLogVPrint_</h3>
+<h3 id="pmlogvprint_">PmLogVPrint_</h3>
 <h4>Description</h4>
 <p>Logs the specified formatted text to the specified context.&nbsp;For efficiency, this method should not be used directly, but instead use the wrappers (e.g., PmLogVPrint, PmLogVPrintError, ...) that bypass the library call if the logging is not enabled.</p>
 <h4>Syntax</h4>
@@ -1296,7 +1295,7 @@ Logs the specified formatted text to the specified context.
   <p>&nbsp; &nbsp; &nbsp;return logErr;</p>
   <p>}</p>
 </div>
-<h3>PmLogLevelToString</h3>
+<h3 id="pmlogleveltostring">PmLogLevelToString</h3>
 <h4>Description</h4>
 <p>Returns&nbsp;the&nbsp;matching&nbsp;symbolic&nbsp;string for&nbsp;a given numeric&nbsp;level&nbsp;value.</p>
 <h4>Syntax</h4>
@@ -1373,7 +1372,7 @@ Logs the specified formatted text to the specified context.
   <p>&nbsp; &nbsp; &nbsp;return s;</p>
   <p>}&nbsp;&nbsp; &nbsp;</p>
 </div>
-<h3>PmLogStringToLevel</h3>
+<h3 id="pmlogstringtolevel">PmLogStringToLevel</h3>
 <h4>Description</h4>
 <p>Returns&nbsp;the&nbsp;matching&nbsp;numeric&nbsp;value for a given&nbsp;a&nbsp;symbolic&nbsp;level&nbsp;string.&nbsp;</p>
 <h4>Syntax</h4>
@@ -1450,7 +1449,7 @@ Logs the specified formatted text to the specified context.
   <p>&nbsp; &nbsp; &nbsp;return true;</p>
   <p>}</p>
 </div>
-<h3>PmLogFacilityToString</h3>
+<h3 id="pmlogfacilitytostring">PmLogFacilityToString</h3>
 <h4>Description</h4>
 <p>Returns&nbsp;the&nbsp;matching&nbsp;symbolic&nbsp;string for a given&nbsp;numeric&nbsp;facility&nbsp;value.</p>
 <h4>Syntax</h4>
@@ -1527,7 +1526,7 @@ Logs the specified formatted text to the specified context.
   <p>&nbsp;&nbsp; &nbsp;return true;</p>
   <p>}&nbsp;&nbsp; &nbsp;</p>
 </div>
-<h3>PmLogStringToFacility</h3>
+<h3 id="pmlogstringtofacility">PmLogStringToFacility</h3>
 <h4>Description</h4>
 <p>Returns&nbsp;the&nbsp;matching&nbsp;numeric&nbsp;value for a given&nbsp;symbolic&nbsp;facility&nbsp;string.</p>
 <h4>Syntax</h4>
@@ -1604,7 +1603,7 @@ Logs the specified formatted text to the specified context.
   <p>&nbsp; &nbsp; &nbsp;return true;</p>
   <p>}&nbsp;&nbsp; &nbsp;</p>
 </div>
-<h3>PmLogGetErrDbgString</h3>
+<h3 id="pmloggeterrdbgstring">PmLogGetErrDbgString</h3>
 <h4>Description</h4>
 <p>Returns a matching symbolic string for a given&nbsp;numeric&nbsp;error&nbsp;code&nbsp;value.</p>
 <p><strong>Note</strong></p>
@@ -1688,7 +1687,7 @@ Logs the specified formatted text to the specified context.
   <p>Example 2:</p>
   <p>snprintf(errMsg, errMsgBuffSize, &quot;Error getting context: %s&quot;,PmLogGetErrDbgString(logErr));</p>
 </div>
-<h3>_PmLogMsgKV</h3>
+<h3 id="_pmlogmsgkv">_PmLogMsgKV</h3>
 <h4>Description</h4>
 <p>Logs&nbsp;the&nbsp;specified&nbsp;key-value&nbsp;pair(s)&nbsp;and&nbsp;formatted&nbsp;text&nbsp;tagged&nbsp;at&nbsp;given&nbsp;level,&nbsp;to&nbsp;the&nbsp;specified&nbsp;context.</p>
 <h4>Syntax</h4>
@@ -1827,7 +1826,7 @@ Logs the specified formatted text to the specified context.
   <p>This method is used when user wants to&nbsp;log&nbsp;the specified key-value pair(s) and formatted text, tagged at given level, to the specified context.</p>
   <p>*(void **)(&amp;dPmLogMsg) = dlsym(hnd, &quot;_PmLogMsgKV&quot;);</p>
 </div>
-<h3>PmLogGetLibContext</h3>
+<h3 id="pmloggetlibcontext">PmLogGetLibContext</h3>
 <h4>Description</h4>
 <p>Returns the context of the process loading the library. This method&nbsp;may be used by shared libraries instead of <strong>PmLogGetContext</strong>&nbsp;method. That is, libraries do not setup their own context, but make this&nbsp;call to invoke the context of the calling process. This makes it easier for processes to control the logging level&nbsp;of library messages and direct them to specified file as needed.</p>
 <h4>Syntax</h4>
@@ -1871,7 +1870,7 @@ None
   <p>This method&nbsp;is used to get the current loaded library context.</p>
   <p>error.log(PmLogGetLibContext(), &quot;LS_SUBS_POST_FAIL&quot;);</p>
 </div>
-<h3>PmLogSetLibContext</h3>
+<h3 id="pmlogsetlibcontext">PmLogSetLibContext</h3>
 <h4>Description</h4>
 <p>Sets PmLog context.</p>
 <h4>Syntax</h4>
@@ -1915,8 +1914,8 @@ None
   <p>This method is used to&nbsp;set&nbsp;up&nbsp;context&nbsp;for&nbsp;a&nbsp;process&nbsp;where&nbsp;all&nbsp;library&nbsp;messages&nbsp;can be directed.</p>
   <p>PmLogSetLibContext(lib_context);</p>
 </div>
-<h2>Structures</h2>
-<h3>IntLabel</h3>
+<h2 id="structures">Structures</h2>
+<h3 id="intlabel">IntLabel</h3>
 <p>Define&nbsp;a&nbsp;integer&nbsp;value&nbsp;=&gt;&nbsp;string&nbsp;label&nbsp;mapping.</p>
 <div class="table-container">
   <table class="table is-bordered is-fullwidth">
@@ -1951,7 +1950,7 @@ None
     </tbody>
   </table>
 </div>
-<h3>PmLogConsole</h3>
+<h3 id="pmlogconsole">PmLogConsole</h3>
 <p>Settings&nbsp;to&nbsp;control&nbsp;std&nbsp;output</p>
 <div class="table-container">
   <table class="table is-bordered is-fullwidth">
@@ -2000,7 +1999,7 @@ None
     </tbody>
   </table>
 </div>
-<h3>PmLogContext</h3>
+<h3 id="pmlogcontext">PmLogContext</h3>
 <p>Public&nbsp;context&nbsp;info&nbsp;at&nbsp;the&nbsp;top&nbsp;of&nbsp;the&nbsp;struct&nbsp;so&nbsp;the&nbsp;pointers&nbsp;are&nbsp;the&nbsp;same.&nbsp;If&nbsp;that&nbsp;is&nbsp;changed,&nbsp;revise&nbsp;PmLogGetContext&nbsp;and&nbsp;PrvResolveContextaccordingly.</p>
 <div class="table-container">
   <table class="table is-bordered is-fullwidth">
@@ -2035,7 +2034,7 @@ None
     </tbody>
   </table>
 </div>
-<h3>PmLogGlobals</h3>
+<h3 id="pmlogglobals">PmLogGlobals</h3>
 <p>Global&nbsp;data&nbsp;structure&nbsp;that&nbsp;is&nbsp;allocated&nbsp;as&nbsp;a&nbsp;shared&nbsp;memory&nbsp;segment.&nbsp;The&nbsp;size&nbsp;should&nbsp;be&nbsp;kept&nbsp;reasonable,&nbsp;e.g.&nbsp;&lt;&nbsp;16K.</p>
 <div class="table-container">
   <table class="table is-bordered is-fullwidth">
@@ -2112,7 +2111,7 @@ None
     </tbody>
   </table>
 </div>
-<h3>PmLogContextInfo</h3>
+<h3 id="pmlogcontextinfo">PmLogContextInfo</h3>
 <p>Type&nbsp;definition&nbsp;for&nbsp;the&nbsp;logging&nbsp;context&nbsp;as&nbsp;returned&nbsp;by&nbsp;PmLogGetContext.&nbsp;&nbsp;This&nbsp;is&nbsp;a&nbsp;read&nbsp;only&nbsp;data&nbsp;view.&nbsp;Clients&nbsp;should&nbsp;treat&nbsp;this&nbsp;as&nbsp;an&nbsp;opaque&nbsp;structure,</p>
 <p>&nbsp;however&nbsp;it&nbsp;is&nbsp;referenced&nbsp;by&nbsp;the&nbsp;macro/inline&nbsp;functions&nbsp;here</p>
 <div class="table-container">

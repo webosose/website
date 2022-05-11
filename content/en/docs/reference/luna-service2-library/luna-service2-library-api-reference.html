@@ -1,98 +1,94 @@
 ---
 title: luna-service2 Library API Reference
-date: 2022-02-07
+date: 2022-05-03
 toc: true
 ---
-<h2>API Summary</h2>
+
+<h2 id="api-summary">API Summary</h2>
 <p>Luna-service2 (LS2) provides a bus-based IPC mechanism used between components in webOS. It is composed of:</p>
 <ul>
-  <li>Client library -&nbsp;Provides APIs&nbsp;to register a service on the Luna bus. Also, provides APIs for services to communicate with other components.</li>
-  <li>Central hub daemon - Provides a central clearinghouse for all communication. It includes utilities for monitoring and debugging the bus.</li>
+  <li>Client library: Provides APIs&nbsp;to register a service on the Luna bus. Also, provides APIs for services to communicate with other components.</li>
+  <li>Central hub daemon: Provides a central clearing house for all communication. It includes utilities for monitoring and debugging the luna bus.</li>
 </ul>
-<h2>Overview of the API</h2>
+<h2 id="overview-of-the-api">Overview of the API</h2>
 <p><strong>Sample Client Usage (calling the &#39;listContacts()&#39; method from a registered service):</strong></p>
 <div class="code-bg-grey">
-  <p><em>bool retVal;</em></p>
-  <p><em>LSError lserror;</em></p>
-  <p><em>LSErrorInit (&amp;lserror);</em></p>
-  <p><em>LSMessageToken token = LSMESSAGE_TOKEN_INVALID;</em></p>
-  <p><em>LSHandle *serviceHandle;</em></p>
-  <p><em>retVal = LSRegister (NULL, &amp;serviceHandle, &amp;lserror);</em></p>
-  <p><em>if (!retVal) goto done;</em></p>
-  <p><em>retVal = LSCallOneReply (serviceHandle, &quot;luna://com.webos.contacts/category/listContacts&quot;,&quot;{\&quot;json payload\&quot;}&quot;, listContactsHandler, userData, &amp;token, &amp;lserror);</em></p>
-  <p><em>if (!retVal) goto done;</em></p>
-  <p><em>LSGmainAttach (serviceHandle, loop, &amp;lserror);</em></p>
-  <p><em>g_main_loop_run(loop);</em></p>
+<p><em>bool retVal;<br />
+    LSError lserror;<br />
+    LSErrorInit (&amp;lserror);<br />
+    LSMessageToken token = LSMESSAGE_TOKEN_INVALID;<br />
+    LSHandle *serviceHandle;<br />
+    retVal = LSRegister (NULL, &amp;serviceHandle, &amp;lserror);<br />
+    if (!retVal) goto done;<br />
+    retVal = LSCallOneReply (serviceHandle, &quot;luna://com.webos.contacts/category/listContacts&quot;,&quot;{\&quot;json payload\&quot;}&quot;, listContactsHandler, userData, &amp;token, &amp;lserror);<br />
+    if (!retVal) goto done;<br />
+    LSGmainAttach (serviceHandle, loop, &amp;lserror);<br />
+    g_main_loop_run(loop);</em></p>
 </div>
-<strong>Sample Service Usage</strong>
+<p><strong>Sample Service Usage</strong></p>
 <div class="code-bg-grey">
-  <p><em>//callback</em></p>
-  <p><em>static bool listContacts( LSHandle *sh, LSMessage *message, void *categoryContext)</em></p>
-  <p><em>{</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;bool retVal;</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;LSError lserror;</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;LSErrorInit (&amp;lserror);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;retVal = LSMessageReply (sh, message, &quot;{JSON REPLY PAYLOAD}&quot; , &amp;lserror);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;if (!retVal)</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;{</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSErrorPrint (&amp;lserror, stderr);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSErrorFree (&amp;lserror);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;}</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;return retVal;</em></p>
-  <p><em>}</em></p>
-  <p>&nbsp;</p>
-  <p><em>static LSMethod ipcMethods[] = {</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;{ &quot;listContacts&quot; , listContacts },</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;{ },</em></p>
-  <p><em>};</em></p>
-  <p><em>bool retVal;</em></p>
-  <p><em>LSError lserror;</em></p>
-  <p><em>LSErrorInit&nbsp;(&amp;lserror);</em></p>
-  <p><em>LSHandle *serviceHandle = NULL;</em></p>
-  <p>&nbsp;</p>
-  <p><em>retVal = LSRegister ( &quot;com.webos.contacts&quot; , &amp;serviceHandle, &amp;lserror);</em></p>
-  <p><em>if (!retVal) goto error;</em></p>
-  <p>&nbsp;</p>
-  <p><em>retVal = LSRegisterCategory (serviceHandle, &quot;/category&quot; , ipcMethods, NULL, NULL, &amp;lserror);</em></p>
-  <p><em>if (!retVal) goto error;</em></p>
-  <p>&nbsp;</p>
-  <p><em>retVal = LSCategorySetData (serviceHandle, &quot;/category&quot; , userData, &amp;lserror);</em></p>
-  <p><em>if (!retVal) goto error;</em></p>
-  <p>&nbsp;</p>
-  <p><em>retVal = LSGmainAttach (serviceHandle, mainLoop, &amp;lserror)</em></p>
-  <p><em>if (!retVal) goto error;</em></p>
-  <p>&nbsp;</p>
-  <p><em>g_main_loop_run(mainLoop);</em></p>
+<p><em>//callback<br />
+    static bool listContacts( LSHandle *sh, LSMessage *message, void *categoryContext)<br />
+    {<br />
+    &nbsp; &nbsp; bool retVal;<br />
+    &nbsp; &nbsp; LSError lserror;<br />
+    &nbsp; &nbsp; LSErrorInit (&amp;lserror);<br />
+    &nbsp; &nbsp; retVal = LSMessageReply (sh, message, &quot;{JSON REPLY PAYLOAD}&quot; , &amp;lserror);<br />
+    &nbsp; &nbsp; if (!retVal)<br />
+    &nbsp; &nbsp; {<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; LSErrorPrint (&amp;lserror, stderr);<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; LSErrorFree (&amp;lserror);<br />
+    &nbsp; &nbsp; }<br />
+    &nbsp; &nbsp; return retVal;<br />
+    }<br />
+    static LSMethod ipcMethods[] = {<br />
+    &nbsp; &nbsp; { &quot;listContacts&quot; , listContacts },<br />
+    &nbsp; &nbsp; { },<br />
+    };<br />
+    bool retVal;<br />
+    LSError lserror;<br />
+    LSErrorInit (&amp;lserror);<br />
+    LSHandle *serviceHandle = NULL;<br />
+    retVal = LSRegister ( &quot;com.webos.contacts&quot; , &amp;serviceHandle, &amp;lserror);<br />
+    if (!retVal) goto error;</em></p>
+<p><em>retVal = LSRegisterCategory (serviceHandle, &quot;/category&quot; , ipcMethods, NULL, NULL, &amp;lserror);<br />
+    if (!retVal) goto error;</em></p>
+<p><em>retVal = LSCategorySetData (serviceHandle, &quot;/category&quot; , userData, &amp;lserror);<br />
+    if (!retVal) goto error;</em></p>
+<p><em>retVal = LSGmainAttach (serviceHandle, mainLoop, &amp;lserror);<br />
+    if (!retVal) goto error;</em></p>
+<p><em>g_main_loop_run(mainLoop);</em></p>
+<p>&nbsp;</p>
 </div>
-<strong>Storing a message for replying in another thread.</strong>
+<p><strong>Storing a message for replying in another thread.</strong><br />
 <div class="code-bg-grey">
-  <p><em>Queue messageQueue;</em></p>
-  <p><em>...</em></p>
-  <p><em>static bool listContacts(LSHandle *sh, LSMessage *message)</em></p>
-  <p><em>{</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;bool retVal;</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;LSError lserror;</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;LSErrorInit (&amp;lserror);</em></p>
-  <p>&nbsp;</p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;LSMessageRef (message);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;queue(messageQueue, message);</em></p>
-  <p><em>}</em></p>
-  <p><em>...</em></p>
-  <p><em>void&nbsp;SomeOtherThread()</em></p>
-  <p><em>{</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;LSError lserror;</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;LSErrorInit (&amp;lserror);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;LSMessage *message = dequeue(messageQueue);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;...</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;if (! LSMessageReply (sh, message, &quot;{PAYLOAD IN JSON}&quot; , lserror))</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;{</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSErrorLog (loggingCtx, msgId, &amp;lserror);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSErrorFree (&amp;lserror);</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;}</em></p>
-  <p><em>&nbsp;&nbsp;&nbsp;&nbsp;....</em></p>
-  <p><em>}</em></p>
+  <em>&nbsp;Queue messageQueue;<br />
+    ...<br />
+    static bool listContacts(LSHandle *sh, LSMessage *message)<br />
+    {<br />
+    &nbsp; &nbsp; bool retVal;<br />
+    &nbsp; &nbsp; LSError lserror;<br />
+    &nbsp; &nbsp; LSErrorInit (&amp;lserror);<br />
+    &nbsp; &nbsp; LSMessageRef (message);<br />
+    &nbsp; &nbsp; queue (messageQueue, message);<br />
+    }<br />
+    ...<br />
+    void SomeOtherThread()<br />
+    {<br />
+    &nbsp; &nbsp; LSError lserror;<br />
+    &nbsp; &nbsp; LSErrorInit (&amp;lserror);<br />
+    &nbsp; &nbsp; LSMessage *message = dequeue(messageQueue);<br />
+    &nbsp; &nbsp; ...<br />
+    &nbsp; &nbsp; if (! LSMessageReply (sh, message, &quot;{PAYLOAD IN JSON}&quot; , lserror))<br />
+    &nbsp; &nbsp; {<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; LSErrorLog (loggingCtx, msgId, &amp;lserror);<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; LSErrorFree (&amp;lserror);<br />
+    &nbsp; &nbsp; }<br />
+    &nbsp; &nbsp; ....<br />
+    }</em>
+</p>
 </div>
-<h2>Type Definitions</h2>
+<h2 id="type-definitions">Type Definitions</h2>
 <div class="table-container">
   <table class="table is-bordered is-fullwidth">
     <thead>
@@ -333,27 +329,18 @@ toc: true
     </tbody>
   </table>
 </div>
-<h2>Enumerators</h2>
-<h3>LSMethodFlags</h3>
-Flags are used during method definition in a category. 
-Can be used to enable incoming message validation against provided schema         
-<h3>LSSignalFlags</h3>
-Flags are used during signal definition in a category. 
-Can be used to mark signal as deprecated         
-<h3>LSPropertyFlags</h3>
-Flags are used during property definition in a category. 
-Can be used to mark property as deprecated         
-<h3>LSMethodFlags</h3>
-Flags are used during method definition in a category. 
-Can be used to enable incoming message validation against provided schema         
-<h3>LSSignalFlags</h3>
-Flags are used during signal definition in a category. 
-Can be used to mark signal as deprecated         
-<h3>LSPropertyFlags</h3>
-Flags are used during property definition in a category. 
-Can be used to mark property as deprecated         
-<h2>Methods</h2>
-<h3>AddWatch</h3>
+<h2 id="enumerators">Enumerators</h2>
+<h3 id="lsmethodflags">LSMethodFlags</h3>
+Flags are used during method definition in a category.
+Can be used to enable incoming message validation against provided schema
+<h3 id="lssignalflags">LSSignalFlags</h3>
+Flags are used during signal definition in a category.
+Can be used to mark signal as deprecated
+<h3 id="lspropertyflags">LSPropertyFlags</h3>
+Flags are used during property definition in a category.
+Can be used to mark property as deprecated
+<h2 id="methods">Methods</h2>
+<h3 id="addwatch">AddWatch</h3>
 <h4>Description</h4>
 <p>Adds a watch to a channel and attach it to the main context.</p>
 <h4>Syntax</h4>
@@ -383,7 +370,7 @@ Can be used to mark property as deprecated
         <td>Required</td>
         <td>_LSTransportChannel *</td>
         <td>
-          IN channel to watch 
+          IN channel to watch
         </td>
       </tr>
       <tr>
@@ -391,7 +378,7 @@ Can be used to mark property as deprecated
         <td>Required</td>
         <td>GIOCondition</td>
         <td>
-          IN condition to watch 
+          IN condition to watch
         </td>
       </tr>
       <tr>
@@ -399,7 +386,7 @@ Can be used to mark property as deprecated
         <td>Required</td>
         <td>GMainContext *</td>
         <td>
-          IN main context 
+          IN main context
         </td>
       </tr>
       <tr>
@@ -407,7 +394,7 @@ Can be used to mark property as deprecated
         <td>Required</td>
         <td>GIOFunc</td>
         <td>
-          IN callback when watch is triggered 
+          IN callback when watch is triggered
         </td>
       </tr>
       <tr>
@@ -415,7 +402,7 @@ Can be used to mark property as deprecated
         <td>Required</td>
         <td>void *</td>
         <td>
-          IN context passed to callback 
+          IN context passed to callback
         </td>
       </tr>
       <tr>
@@ -423,7 +410,7 @@ Can be used to mark property as deprecated
         <td>Required</td>
         <td>GDestroyNotify</td>
         <td>
-          IN callback when watch is destroyed 
+          IN callback when watch is destroyed
         </td>
       </tr>
       <tr>
@@ -431,7 +418,7 @@ Can be used to mark property as deprecated
         <td>Required</td>
         <td>GSource **</td>
         <td>
-          OUT newly created watch 
+          OUT newly created watch
         </td>
       </tr>
     </tbody>
@@ -441,7 +428,7 @@ Can be used to mark property as deprecated
 None
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSCall</h3>
+<h3 id="lscall">LSCall</h3>
 <h4>Description</h4>
 <p>Sends payload to service at the specified URI.</p>
 <p>Special signals usage:</p>
@@ -478,7 +465,7 @@ None
         <td>Required</td>
         <td>LSHandle *</td>
         <td>
-          IN handle to service 
+          IN handle to service
         </td>
       </tr>
       <tr>
@@ -486,7 +473,7 @@ None
         <td>Required</td>
         <td>const char *</td>
         <td>
-          IN fully qualified path to service's method 
+          IN fully qualified path to service's method
         </td>
       </tr>
       <tr>
@@ -494,7 +481,7 @@ None
         <td>Required</td>
         <td>const char *</td>
         <td>
-          IN some string, usually following JSON object semantics 
+          <p>IN some string, usually following JSON&nbsp;object semantics.</p>
         </td>
       </tr>
       <tr>
@@ -502,7 +489,7 @@ None
         <td>Required</td>
         <td>LSFilterFunc</td>
         <td>
-          IN function callback to be called when responses arrive 
+          IN function callback to be called when responses arrive
         </td>
       </tr>
       <tr>
@@ -510,7 +497,7 @@ None
         <td>Required</td>
         <td>void *</td>
         <td>
-          IN user data to be passed to callback 
+          IN user data to be passed to callback
         </td>
       </tr>
       <tr>
@@ -518,7 +505,7 @@ None
         <td>Required</td>
         <td>LSMessageToken *</td>
         <td>
-          OUT token which identifies responses to this call 
+          OUT token which identifies responses to this call
         </td>
       </tr>
       <tr>
@@ -565,9 +552,9 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSCallCancel</h3>
+<h3 id="lscallcancel">LSCallCancel</h3>
 <h4>Description</h4>
-Sends a cancel message to service to end call session and also unregisters any callback associated with call. 
+Sends a cancel message to service to end call session and also unregisters any callback associated with call.
 <h4>Syntax</h4>
 <pre><code>LSCallCancel(LSHandle * sh, LSMessageToken token, LSError * lserror)</code></pre>
 <h4>Parameters</h4>
@@ -595,7 +582,7 @@ Sends a cancel message to service to end call session and also unregisters any c
         <td>Required</td>
         <td>LSHandle *</td>
         <td>
-          IN handle to service 
+          IN handle to service
         </td>
       </tr>
       <tr>
@@ -603,7 +590,7 @@ Sends a cancel message to service to end call session and also unregisters any c
         <td>Required</td>
         <td>LSMessageToken</td>
         <td>
-          IN message token 
+          IN message token
         </td>
       </tr>
       <tr>
@@ -650,7 +637,7 @@ Sends a cancel message to service to end call session and also unregisters any c
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSCallCancelNotificationAdd</h3>
+<h3 id="lscallcancelnotificationadd">LSCallCancelNotificationAdd</h3>
 <h4>Description</h4>
 <p>Registers a callback to be called when remote service has&nbsp;canceled the call.</p>
 <p><strong>Note:</strong></p>
@@ -687,7 +674,7 @@ Sends a cancel message to service to end call session and also unregisters any c
         <td>Required</td>
         <td>LSHandle *</td>
         <td>
-          IN handle to service 
+          IN handle to service
         </td>
       </tr>
       <tr>
@@ -695,7 +682,7 @@ Sends a cancel message to service to end call session and also unregisters any c
         <td>Required</td>
         <td>LSCancelNotificationFunc</td>
         <td>
-          IN callback function 
+          IN callback function
         </td>
       </tr>
       <tr>
@@ -703,7 +690,7 @@ Sends a cancel message to service to end call session and also unregisters any c
         <td>Required</td>
         <td>void *</td>
         <td>
-          IN user data to be passed to callback 
+          IN user data to be passed to callback
         </td>
       </tr>
       <tr>
@@ -750,7 +737,7 @@ Sends a cancel message to service to end call session and also unregisters any c
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSCallCancelNotificationAdd</h3>
+<h3 id="lscallcancelnotificationadd-1">LSCallCancelNotificationAdd</h3>
 <h4>Description</h4>
 <p>Registers a callback to be called when remote service has&nbsp;canceled the call.</p>
 <p><strong>Note:</strong></p>
@@ -787,7 +774,7 @@ Sends a cancel message to service to end call session and also unregisters any c
         <td>Required</td>
         <td>LSHandle *</td>
         <td>
-          IN handle to service 
+          IN handle to service
         </td>
       </tr>
       <tr>
@@ -795,7 +782,7 @@ Sends a cancel message to service to end call session and also unregisters any c
         <td>Required</td>
         <td>LSCancelNotificationFunc</td>
         <td>
-          IN callback function 
+          IN callback function
         </td>
       </tr>
       <tr>
@@ -803,7 +790,7 @@ Sends a cancel message to service to end call session and also unregisters any c
         <td>Required</td>
         <td>void *</td>
         <td>
-          IN user data to be passed to callback 
+          IN user data to be passed to callback
         </td>
       </tr>
       <tr>
@@ -850,7 +837,7 @@ Sends a cancel message to service to end call session and also unregisters any c
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSCallCancelNotificationRemove</h3>
+<h3 id="lscallcancelnotificationremove">LSCallCancelNotificationRemove</h3>
 <h4>Description</h4>
 <p>Removes previously registered callback on call cancellation.</p>
 <p><strong>Note:</strong></p>
@@ -885,7 +872,7 @@ Sends a cancel message to service to end call session and also unregisters any c
         <td>Required</td>
         <td>LSHandle *</td>
         <td>
-          IN handle to service 
+          IN handle to service
         </td>
       </tr>
       <tr>
@@ -893,7 +880,7 @@ Sends a cancel message to service to end call session and also unregisters any c
         <td>Required</td>
         <td>LSCancelNotificationFunc</td>
         <td>
-          IN callback function 
+          IN callback function
         </td>
       </tr>
       <tr>
@@ -901,7 +888,7 @@ Sends a cancel message to service to end call session and also unregisters any c
         <td>Required</td>
         <td>void *</td>
         <td>
-          IN user data to be passed to callback 
+          IN user data to be passed to callback
         </td>
       </tr>
       <tr>
@@ -948,7 +935,7 @@ Sends a cancel message to service to end call session and also unregisters any c
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSCallCancelNotificationRemove</h3>
+<h3 id="lscallcancelnotificationremove-1">LSCallCancelNotificationRemove</h3>
 <h4>Description</h4>
 <p>Removes previously registered callback on call cancellation.</p>
 <p><strong>Note:</strong></p>
@@ -983,7 +970,7 @@ Sends a cancel message to service to end call session and also unregisters any c
         <td>Required</td>
         <td>LSHandle *</td>
         <td>
-          IN handle to service 
+          IN handle to service
         </td>
       </tr>
       <tr>
@@ -991,7 +978,7 @@ Sends a cancel message to service to end call session and also unregisters any c
         <td>Required</td>
         <td>LSCancelNotificationFunc</td>
         <td>
-          IN callback function 
+          IN callback function
         </td>
       </tr>
       <tr>
@@ -999,7 +986,7 @@ Sends a cancel message to service to end call session and also unregisters any c
         <td>Required</td>
         <td>void *</td>
         <td>
-          IN user data to be passed to callback 
+          IN user data to be passed to callback
         </td>
       </tr>
       <tr>
@@ -1046,9 +1033,9 @@ Sends a cancel message to service to end call session and also unregisters any c
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSCallFromApplication</h3>
+<h3 id="lscallfromapplication">LSCallFromApplication</h3>
 <h4>Description</h4>
-<p>A Special<strong> LSCall()</strong> that sends an application ID.</p>
+<p>A Special<strong> LSCall()</strong> that sends an application id.</p>
 <h4>Syntax</h4>
 <pre><code>LSCallFromApplication(LSHandle * sh, const char * uri, const char * payload, const char * applicationID, LSFilterFunc callback, void * ctx, LSMessageToken * ret_token, LSError * lserror)</code></pre>
 <h4>Parameters</h4>
@@ -1076,7 +1063,7 @@ Sends a cancel message to service to end call session and also unregisters any c
         <td>Required</td>
         <td>LSHandle *</td>
         <td>
-          IN handle to service 
+          IN handle to service
         </td>
       </tr>
       <tr>
@@ -1084,7 +1071,7 @@ Sends a cancel message to service to end call session and also unregisters any c
         <td>Required</td>
         <td>const char *</td>
         <td>
-          IN fully qualified path to service's method 
+          IN fully qualified path to service's method
         </td>
       </tr>
       <tr>
@@ -1092,7 +1079,7 @@ Sends a cancel message to service to end call session and also unregisters any c
         <td>Required</td>
         <td>const char *</td>
         <td>
-          IN some string, usually following JSON object semantics 
+          <p>IN some string, usually following JSON object semantics</p>
         </td>
       </tr>
       <tr>
@@ -1100,7 +1087,7 @@ Sends a cancel message to service to end call session and also unregisters any c
         <td>Required</td>
         <td>const char *</td>
         <td>
-          <p>IN application ID.</p>
+          <p>IN application id.</p>
         </td>
       </tr>
       <tr>
@@ -1171,7 +1158,7 @@ Sends a cancel message to service to end call session and also unregisters any c
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSCallFromApplicationOneReply</h3>
+<h3 id="lscallfromapplicationonereply">LSCallFromApplicationOneReply</h3>
 <h4>Description</h4>
 <p>A special <strong>LSCallOneReply()</strong> that sends an application ID.</p>
 <h4>Syntax</h4>
@@ -1217,7 +1204,7 @@ Sends a cancel message to service to end call session and also unregisters any c
         <td>Required</td>
         <td>const char *</td>
         <td>
-          IN some string, usually following JSON object semantics 
+          <p>IN some string, usually following JSON object semantics</p>
         </td>
       </tr>
       <tr>
@@ -1225,7 +1212,7 @@ Sends a cancel message to service to end call session and also unregisters any c
         <td>Required</td>
         <td>const char *</td>
         <td>
-          IN application ID 
+          <p>IN Application ID.</p>
         </td>
       </tr>
       <tr>
@@ -1233,7 +1220,7 @@ Sends a cancel message to service to end call session and also unregisters any c
         <td>Required</td>
         <td>LSFilterFunc</td>
         <td>
-          IN function callback to be called when responses arrive 
+          IN function callback to be called when responses arrive
         </td>
       </tr>
       <tr>
@@ -1241,7 +1228,7 @@ Sends a cancel message to service to end call session and also unregisters any c
         <td>Required</td>
         <td>void *</td>
         <td>
-          IN user data to be passed to callback 
+          IN user data to be passed to callback
         </td>
       </tr>
       <tr>
@@ -1249,7 +1236,7 @@ Sends a cancel message to service to end call session and also unregisters any c
         <td>Required</td>
         <td>LSMessageToken *</td>
         <td>
-          OUT token which identifies responses to this call 
+          OUT token which identifies responses to this call
         </td>
       </tr>
       <tr>
@@ -1296,7 +1283,7 @@ Sends a cancel message to service to end call session and also unregisters any c
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSCallOneReply</h3>
+<h3 id="lscallonereply">LSCallOneReply</h3>
 <h4>Description</h4>
 <p>Sends a message to service like LSCall().</p>
 <p><strong>Note:</strong> This method&nbsp;only accepts&nbsp;one response and does not need to be canceled via LSCallCancel().</p>
@@ -1414,7 +1401,7 @@ Sends a cancel message to service to end call session and also unregisters any c
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSCallSetTimeout</h3>
+<h3 id="lscallsettimeout">LSCallSetTimeout</h3>
 <h4>Description</h4>
 <p>Sets timeout for a method call.</p>
 <p><strong>Note:</strong> The call is canceled if no reply is received after the <strong>timeout_ms </strong>milliseconds.</p>
@@ -1445,7 +1432,7 @@ Sends a cancel message to service to end call session and also unregisters any c
         <td>Required</td>
         <td>LSHandle *</td>
         <td>
-          IN handle to service 
+          IN handle to service
         </td>
       </tr>
       <tr>
@@ -1453,7 +1440,7 @@ Sends a cancel message to service to end call session and also unregisters any c
         <td>Required</td>
         <td>LSMessageToken</td>
         <td>
-          IN message token 
+          IN message token
         </td>
       </tr>
       <tr>
@@ -1461,7 +1448,7 @@ Sends a cancel message to service to end call session and also unregisters any c
         <td>Required</td>
         <td>int</td>
         <td>
-          IN timeout in ms 
+          IN timeout in ms
         </td>
       </tr>
       <tr>
@@ -1508,7 +1495,7 @@ Sends a cancel message to service to end call session and also unregisters any c
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSCancelServerStatus</h3>
+<h3 id="lscancelserverstatus">LSCancelServerStatus</h3>
 <h4>Description</h4>
 <p>Cancels receiving notifications about server status.</p>
 <p><strong>Note:</strong></p>
@@ -1543,7 +1530,7 @@ Sends a cancel message to service to end call session and also unregisters any c
         <td>Required</td>
         <td>LSHandle *</td>
         <td>
-          IN handle to service 
+          IN handle to service
         </td>
       </tr>
       <tr>
@@ -1551,7 +1538,7 @@ Sends a cancel message to service to end call session and also unregisters any c
         <td>Required</td>
         <td>void *</td>
         <td>
-          IN token obtained during registration, can't be NULL 
+          IN token obtained during registration, can't be NULL
         </td>
       </tr>
       <tr>
@@ -1598,7 +1585,7 @@ Sends a cancel message to service to end call session and also unregisters any c
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSCancelServerStatus</h3>
+<h3 id="lscancelserverstatus-1">LSCancelServerStatus</h3>
 <h4>Description</h4>
 <p>Cancels receiving notifications about server status.</p>
 <p><strong>Note:</strong></p>
@@ -1633,7 +1620,7 @@ Sends a cancel message to service to end call session and also unregisters any c
         <td>Required</td>
         <td>LSHandle *</td>
         <td>
-          IN handle to service 
+          IN handle to service
         </td>
       </tr>
       <tr>
@@ -1641,7 +1628,7 @@ Sends a cancel message to service to end call session and also unregisters any c
         <td>Required</td>
         <td>void *</td>
         <td>
-          IN token obtained during registration, can't be NULL 
+          IN token obtained during registration, can't be NULL
         </td>
       </tr>
       <tr>
@@ -1688,7 +1675,7 @@ Sends a cancel message to service to end call session and also unregisters any c
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSCategorySetData</h3>
+<h3 id="lscategorysetdata">LSCategorySetData</h3>
 <h4>Description</h4>
 <p>Sets the user_data that is delivered to each callback registered to the category.</p>
 <p><strong>Note:</strong> If user_data is set using LSMethodSetData, it overrides category data.</p>
@@ -1719,7 +1706,7 @@ Sends a cancel message to service to end call session and also unregisters any c
         <td>Required</td>
         <td>LSHandle *</td>
         <td>
-          IN handle to service 
+          IN handle to service
         </td>
       </tr>
       <tr>
@@ -1727,7 +1714,7 @@ Sends a cancel message to service to end call session and also unregisters any c
         <td>Required</td>
         <td>const char *</td>
         <td>
-          IN category name 
+          IN category name
         </td>
       </tr>
       <tr>
@@ -1735,7 +1722,7 @@ Sends a cancel message to service to end call session and also unregisters any c
         <td>Required</td>
         <td>void *</td>
         <td>
-          IN user data to set 
+          IN user data to set
         </td>
       </tr>
       <tr>
@@ -1782,7 +1769,7 @@ Sends a cancel message to service to end call session and also unregisters any c
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSCategorySetDescription</h3>
+<h3 id="lscategorysetdescription">LSCategorySetDescription</h3>
 <h4>Description</h4>
 <p>Specifies&nbsp;meta information about the category.&nbsp;Sets JSON value that describes specified category. Provides validation schema for input params and replies. Gives some description for calls and so on.</p>
 <p><strong>Note:&nbsp;</strong>Services with dynamically registered methods may wish to call this function after each LSRegisterCategoryAppend.</p>
@@ -1946,10 +1933,9 @@ Sends a cancel message to service to end call session and also unregisters any c
     &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; }<br />
     &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; }<br />
     &nbsp;&nbsp; &nbsp; }<br />
-    &nbsp;}
-  </p>
+    &nbsp;}</p>
 </div>
-<h3>LSErrorFree</h3>
+<h3 id="lserrorfree">LSErrorFree</h3>
 <h4>Description</h4>
 <p>Frees the internal structures of LSError if an error has been handled.</p>
 <p><strong>Note:</strong>&nbsp;This method must be called on an error if set.</p>
@@ -1980,7 +1966,7 @@ Sends a cancel message to service to end call session and also unregisters any c
         <td>Required</td>
         <td>LSError *</td>
         <td>
-          IN LSError structure to free 
+          IN LSError structure to free
         </td>
       </tr>
     </tbody>
@@ -1990,9 +1976,9 @@ Sends a cancel message to service to end call session and also unregisters any c
 None
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSErrorInit</h3>
+<h3 id="lserrorinit">LSErrorInit</h3>
 <h4>Description</h4>
-Initializes a LSError. 
+Initializes a LSError.
 <h4>Syntax</h4>
 <pre><code>LSErrorInit(LSError * lserror)</code></pre>
 <h4>Parameters</h4>
@@ -2059,7 +2045,7 @@ Initializes a LSError.
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSErrorIsSet</h3>
+<h3 id="lserrorisset">LSErrorIsSet</h3>
 <h4>Description</h4>
 <p>Checks the status of an LSError.</p>
 <h4>Syntax</h4>
@@ -2128,7 +2114,7 @@ Initializes a LSError.
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSErrorLog</h3>
+<h3 id="lserrorlog">LSErrorLog</h3>
 <h4>Description</h4>
 <p>Logs an LSError with PmLogLib.</p>
 <h4>Syntax</h4>
@@ -2158,7 +2144,7 @@ Initializes a LSError.
         <td>Required</td>
         <td>PmLogContext</td>
         <td>
-          IN log context 
+          IN log context
         </td>
       </tr>
       <tr>
@@ -2166,7 +2152,7 @@ Initializes a LSError.
         <td>Required</td>
         <td>const char *</td>
         <td>
-          IN message ID 
+          <p>IN Message ID.</p>
         </td>
       </tr>
       <tr>
@@ -2174,7 +2160,7 @@ Initializes a LSError.
         <td>Required</td>
         <td>LSError *</td>
         <td>
-          IN LSError structure to log 
+          IN LSError structure to log
         </td>
       </tr>
     </tbody>
@@ -2184,7 +2170,7 @@ Initializes a LSError.
 None
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSErrorLogDefault</h3>
+<h3 id="lserrorlogdefault">LSErrorLogDefault</h3>
 <h4>Description</h4>
 <p>Logs an LSError by default.</p>
 <h4>Syntax</h4>
@@ -2214,7 +2200,7 @@ None
         <td>Required</td>
         <td>const char *</td>
         <td>
-          IN message ID 
+          <p>IN Message ID.</p>
         </td>
       </tr>
       <tr>
@@ -2222,7 +2208,7 @@ None
         <td>Required</td>
         <td>LSError *</td>
         <td>
-          IN LSError structure to log 
+          IN LSError structure to log
         </td>
       </tr>
     </tbody>
@@ -2232,7 +2218,7 @@ None
 None
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSErrorPrint</h3>
+<h3 id="lserrorprint">LSErrorPrint</h3>
 <h4>Description</h4>
 <p>Convenience function to print a LSError.</p>
 <h4>Syntax</h4>
@@ -2262,7 +2248,7 @@ None
         <td>Required</td>
         <td>LSError *</td>
         <td>
-          IN LSError structure to print 
+          IN LSError structure to print
         </td>
       </tr>
       <tr>
@@ -2270,7 +2256,7 @@ None
         <td>Required</td>
         <td>FILE *</td>
         <td>
-          IN handle to file 
+          IN handle to file
         </td>
       </tr>
     </tbody>
@@ -2280,7 +2266,7 @@ None
 None
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSGmainAttach</h3>
+<h3 id="lsgmainattach">LSGmainAttach</h3>
 <h4>Description</h4>
 <p>Attaches a service to a Glib mainloop.</p>
 <h4>Syntax</h4>
@@ -2310,7 +2296,7 @@ None
         <td>Required</td>
         <td>LSHandle *</td>
         <td>
-          IN handle to service 
+          IN handle to service
         </td>
       </tr>
       <tr>
@@ -2318,7 +2304,7 @@ None
         <td>Required</td>
         <td>GMainLoop *</td>
         <td>
-          IN loop to attach 
+          IN loop to attach
         </td>
       </tr>
       <tr>
@@ -2365,7 +2351,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSGmainContextAttach</h3>
+<h3 id="lsgmaincontextattach">LSGmainContextAttach</h3>
 <h4>Description</h4>
 <p>Attaches a service to a GLib mainloop.</p>
 <h4>Syntax</h4>
@@ -2395,7 +2381,7 @@ None
         <td>Required</td>
         <td>LSHandle *</td>
         <td>
-          IN handle to service 
+          IN handle to service
         </td>
       </tr>
       <tr>
@@ -2403,7 +2389,7 @@ None
         <td>Required</td>
         <td>GMainContext *</td>
         <td>
-          IN context 
+          IN context
         </td>
       </tr>
       <tr>
@@ -2450,7 +2436,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSGmainDetach</h3>
+<h3 id="lsgmaindetach">LSGmainDetach</h3>
 <h4>Description</h4>
 <p>Detaches a service from a GLib mainloop.</p>
 <p><strong>Note:</strong></p>
@@ -2486,7 +2472,7 @@ None
         <td>Required</td>
         <td>LSHandle *</td>
         <td>
-          IN handle to service 
+          IN handle to service
         </td>
       </tr>
       <tr>
@@ -2533,7 +2519,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSGmainGetContext</h3>
+<h3 id="lsgmaingetcontext">LSGmainGetContext</h3>
 <h4>Description</h4>
 <p>Gets a GLib mainloop context for service.</p>
 <h4>Syntax</h4>
@@ -2563,7 +2549,7 @@ None
         <td>Required</td>
         <td>LSHandle *</td>
         <td>
-          IN handle to service 
+          IN handle to service
         </td>
       </tr>
       <tr>
@@ -2610,7 +2596,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSGmainSetPriority</h3>
+<h3 id="lsgmainsetpriority">LSGmainSetPriority</h3>
 <h4>Description</h4>
 <p>Sets the priority level on the associated GSources for the service connection.</p>
 <p><strong>Note:</strong></p>
@@ -2645,7 +2631,7 @@ None
         <td>Required</td>
         <td>LSHandle *</td>
         <td>
-          IN handle to service 
+          IN handle to service
         </td>
       </tr>
       <tr>
@@ -2653,7 +2639,7 @@ None
         <td>Required</td>
         <td>int</td>
         <td>
-          IN priority level 
+          IN priority level
         </td>
       </tr>
       <tr>
@@ -2700,7 +2686,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSHandleGetName</h3>
+<h3 id="lshandlegetname">LSHandleGetName</h3>
 <h4>Description</h4>
 <p>Returns the name of a luna service handle.</p>
 <h4>Syntax</h4>
@@ -2740,7 +2726,7 @@ None
 None
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSIdleTimeout</h3>
+<h3 id="lsidletimeout">LSIdleTimeout</h3>
 <h4>Description</h4>
 <p>Registers a callback that will be called after certain milliseconds of inactivity specified by the timeout parameter.</p>
 <p><strong>Note:</strong></p>
@@ -2776,7 +2762,7 @@ None
         <td>Required</td>
         <td>unsigned int</td>
         <td>
-          IN time of inactivity (in ms) before callback invocation 
+          IN time of inactivity (in ms) before callback invocation
         </td>
       </tr>
       <tr>
@@ -2784,7 +2770,7 @@ None
         <td>Required</td>
         <td>void(*)(void *)</td>
         <td>
-          IN user callback 
+          IN user callback
         </td>
       </tr>
       <tr>
@@ -2792,7 +2778,7 @@ None
         <td>Required</td>
         <td>void *</td>
         <td>
-          IN user provided data, that will be passed into callback 
+          IN user provided data, that will be passed into callback
         </td>
       </tr>
       <tr>
@@ -2818,7 +2804,7 @@ None
     LSRegister ( &quot;com.name.service&quot; , &amp;lsHandle, &amp;error);
   </p>
 </div>
-<h3>LSIsRunning</h3>
+<h3 id="lsisrunning">LSIsRunning</h3>
 <h4>Description</h4>
 <p>Checks if an instance of this executable is running.</p>
 <h4>Syntax</h4>
@@ -2848,7 +2834,7 @@ None
         <td>Required</td>
         <td>const char *</td>
         <td>
-          IN directory where the pid file should reside 
+          IN directory where the pid file should reside
         </td>
       </tr>
       <tr>
@@ -2900,7 +2886,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSLockFile</h3>
+<h3 id="lslockfile">LSLockFile</h3>
 <h4>Description</h4>
 <p>Sets a lock on the specified file.</p>
 <h4>Syntax</h4>
@@ -2969,7 +2955,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSMessageAccessPayload</h3>
+<h3 id="lsmessageaccesspayload">LSMessageAccessPayload</h3>
 <h4>Description</h4>
 <p>Gets the payload of this message.</p>
 <h4>Syntax</h4>
@@ -3038,7 +3024,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSMessageGetApplicationID</h3>
+<h3 id="lsmessagegetapplicationid">LSMessageGetApplicationID</h3>
 <h4>Description</h4>
 <p>Obtains the application&nbsp;ID.</p>
 <p><strong>Note:</strong> This only applies to JS Applications&#39; LSCallFromApplication().</p>
@@ -3100,7 +3086,7 @@ None
         <td>Required</td>
         <td>const char *</td>
         <td>
-          <p>Indicates the application ID.</p>
+          <p>Indicates the application id.</p>
         </td>
       </tr>
     </tbody>
@@ -3108,7 +3094,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSMessageGetCategory</h3>
+<h3 id="lsmessagegetcategory">LSMessageGetCategory</h3>
 <h4>Description</h4>
 <p>Gets the category of this message.</p>
 <p><strong>Note:</strong> This method only applies to request messages on the service side like a method call, method cancel, signal call. It doesn&#39;t apply to response messages.</p>
@@ -3178,7 +3164,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSMessageGetConnection</h3>
+<h3 id="lsmessagegetconnection">LSMessageGetConnection</h3>
 <h4>Description</h4>
 <p>Returns a handle to the connection-to-bus through which the message was sent.</p>
 <h4>Syntax</h4>
@@ -3247,7 +3233,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSMessageGetFd</h3>
+<h3 id="lsmessagegetfd">LSMessageGetFd</h3>
 <h4>Description</h4>
 <p>Retrieves a message only if it contains an FD&nbsp;(file descriptor).</p>
 <h4>Syntax</h4>
@@ -3316,7 +3302,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSMessageGetKind</h3>
+<h3 id="lsmessagegetkind">LSMessageGetKind</h3>
 <h4>Description</h4>
 <p>Returns the kind of the message (category + method).</p>
 <h4>Syntax</h4>
@@ -3385,7 +3371,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSMessageGetMethod</h3>
+<h3 id="lsmessagegetmethod">LSMessageGetMethod</h3>
 <h4>Description</h4>
 <p>Gets the method name of the message.</p>
 <p><strong>Note:</strong> This only applies to request messages on the service side like a method call, method cancel, signal call. It doesn&#39;t apply to response messages.</p>
@@ -3455,7 +3441,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSMessageGetPayload</h3>
+<h3 id="lsmessagegetpayload">LSMessageGetPayload</h3>
 <h4>Description</h4>
 <p>Gets the payload of the&nbsp;message.</p>
 <h4>Syntax</h4>
@@ -3524,7 +3510,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSMessageGetResponseToken</h3>
+<h3 id="lsmessagegetresponsetoken">LSMessageGetResponseToken</h3>
 <h4>Description</h4>
 <p>Gets the response token associated with the message that&nbsp;matches the LSMessageGetToken() of the original call.</p>
 <p><strong>Note:</strong> For signals, the response token is supplanted with the original token returned from LSSignalCall().</p>
@@ -3594,7 +3580,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSMessageGetSender</h3>
+<h3 id="lsmessagegetsender">LSMessageGetSender</h3>
 <h4>Description</h4>
 <p>Obtains a unique token identifying the sender.</p>
 <h4>Syntax</h4>
@@ -3663,7 +3649,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSMessageGetSenderServiceName</h3>
+<h3 id="lsmessagegetsenderservicename">LSMessageGetSenderServiceName</h3>
 <h4>Description</h4>
 <p>Gets the name of the service that sent the message.</p>
 <p><strong>Note:</strong> This method returns NULL if the sender has not&nbsp;registered the&nbsp;service name.</p>
@@ -3733,7 +3719,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSMessageGetToken</h3>
+<h3 id="lsmessagegettoken">LSMessageGetToken</h3>
 <h4>Description</h4>
 <p>Gets the unique serial of this message.</p>
 <p><strong>Note: </strong>Do not confuse with LSMessageGetResponseToken().</p>
@@ -3803,9 +3789,9 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSMessageGetUniqueToken</h3>
+<h3 id="lsmessagegetuniquetoken">LSMessageGetUniqueToken</h3>
 <h4>Description</h4>
-Returns a string that uniquely represents this message. 
+Returns a string that uniquely represents this message.
 <h4>Syntax</h4>
 <pre><code>LSMessageGetUniqueToken(LSMessage * message)</code></pre>
 <h4>Parameters</h4>
@@ -3872,9 +3858,9 @@ Returns a string that uniquely represents this message.
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSMessageIsHubErrorMessage</h3>
+<h3 id="lsmessageishuberrormessage">LSMessageIsHubErrorMessage</h3>
 <h4>Description</h4>
-Returns true if the message is an error message from the hub. 
+Returns true if the message is an error message from the hub.
 <h4>Syntax</h4>
 <pre><code>LSMessageIsHubErrorMessage(LSMessage * message)</code></pre>
 <h4>Parameters</h4>
@@ -3941,7 +3927,7 @@ Returns true if the message is an error message from the hub.
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSMessageIsSubscription</h3>
+<h3 id="lsmessageissubscription">LSMessageIsSubscription</h3>
 <h4>Description</h4>
 <p>Checks if the message has a subscription field with subscribe set as true.</p>
 <h4>Syntax</h4>
@@ -4010,7 +3996,7 @@ Returns true if the message is an error message from the hub.
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSMessageMarkInactive</h3>
+<h3 id="lsmessagemarkinactive">LSMessageMarkInactive</h3>
 <h4>Description</h4>
 <p>Marks specific message as &quot;weak&quot; (no activity associated with it).</p>
 <p><strong>Note: </strong></p>
@@ -4056,9 +4042,9 @@ Returns true if the message is an error message from the hub.
 None
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSMessagePrint</h3>
+<h3 id="lsmessageprint">LSMessagePrint</h3>
 <h4>Description</h4>
-Convenience function to pretty print a message. 
+Convenience function to pretty print a message.
 <h4>Syntax</h4>
 <pre><code>LSMessagePrint(LSMessage * message, FILE * out)</code></pre>
 <h4>Parameters</h4>
@@ -4086,7 +4072,7 @@ Convenience function to pretty print a message.
         <td>Required</td>
         <td>LSMessage *</td>
         <td>
-          IN message to print 
+          IN message to print
         </td>
       </tr>
       <tr>
@@ -4133,7 +4119,7 @@ Convenience function to pretty print a message.
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSMessageRef</h3>
+<h3 id="lsmessageref">LSMessageRef</h3>
 <h4>Description</h4>
 <p>Increments&nbsp;ref count on the message object.</p>
 <p><strong>Note:</strong></p>
@@ -4168,7 +4154,7 @@ Convenience function to pretty print a message.
         <td>Required</td>
         <td>LSMessage *</td>
         <td>
-          IN message to ref 
+          IN message to ref
         </td>
       </tr>
     </tbody>
@@ -4178,7 +4164,7 @@ Convenience function to pretty print a message.
 None
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSMessageReply</h3>
+<h3 id="lsmessagereply">LSMessageReply</h3>
 <h4>Description</h4>
 <p>Sends a reply to a message using the bus identified by LSHandle.</p>
 <p><strong>Note:</strong> To use the same bus upon which the message arrived, it is recommended to use LSMessageRespond().</p>
@@ -4209,7 +4195,7 @@ None
         <td>Required</td>
         <td>LSHandle *</td>
         <td>
-          IN handle to service 
+          IN handle to service
         </td>
       </tr>
       <tr>
@@ -4217,7 +4203,7 @@ None
         <td>Required</td>
         <td>LSMessage *</td>
         <td>
-          IN message 
+          IN message
         </td>
       </tr>
       <tr>
@@ -4225,7 +4211,7 @@ None
         <td>Required</td>
         <td>const char *</td>
         <td>
-          IN JSON as payload 
+          <p>IN JSON as payload</p>
         </td>
       </tr>
       <tr>
@@ -4272,7 +4258,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSMessageRespond</h3>
+<h3 id="lsmessagerespond">LSMessageRespond</h3>
 <h4>Description</h4>
 <p>Sends a reply to the message using the same bus that had sent it.</p>
 <h4>Syntax</h4>
@@ -4302,7 +4288,7 @@ None
         <td>Required</td>
         <td>LSMessage *</td>
         <td>
-          IN message 
+          IN message
         </td>
       </tr>
       <tr>
@@ -4310,7 +4296,7 @@ None
         <td>Required</td>
         <td>const char *</td>
         <td>
-          IN payload to send 
+          IN payload to send
         </td>
       </tr>
       <tr>
@@ -4357,7 +4343,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSMessageRespondWithPayload</h3>
+<h3 id="lsmessagerespondwithpayload">LSMessageRespondWithPayload</h3>
 <h4>Description</h4>
 <p>Sends a reply to the message with a payload.</p>
 <h4>Syntax</h4>
@@ -4387,7 +4373,7 @@ None
         <td>Required</td>
         <td>LSMessage *</td>
         <td>
-          IN message 
+          IN message
         </td>
       </tr>
       <tr>
@@ -4395,7 +4381,7 @@ None
         <td>Required</td>
         <td>LSPayload *</td>
         <td>
-          IN payload to send 
+          IN payload to send
         </td>
       </tr>
       <tr>
@@ -4442,7 +4428,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSMessageUnref</h3>
+<h3 id="lsmessageunref">LSMessageUnref</h3>
 <h4>Description</h4>
 <p>Decrements ref count on the message object.</p>
 <p><strong>Note: </strong>The object is freed if ref goes to zero.</p>
@@ -4473,7 +4459,7 @@ None
         <td>Required</td>
         <td>LSMessage *</td>
         <td>
-          IN message to unref 
+          IN message to unref
         </td>
       </tr>
     </tbody>
@@ -4483,7 +4469,7 @@ None
 None
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSMethodSetData</h3>
+<h3 id="lsmethodsetdata">LSMethodSetData</h3>
 <h4>Description</h4>
 <p>Sets the userdata that is delivered to callback registered to the method.</p>
 <p><strong>Note:</strong>&nbsp;</p>
@@ -4518,7 +4504,7 @@ None
         <td>Required</td>
         <td>LSHandle *</td>
         <td>
-          IN handle to service 
+          IN handle to service
         </td>
       </tr>
       <tr>
@@ -4526,7 +4512,7 @@ None
         <td>Required</td>
         <td>const char *</td>
         <td>
-          IN category name 
+          IN category name
         </td>
       </tr>
       <tr>
@@ -4534,7 +4520,7 @@ None
         <td>Required</td>
         <td>const char *</td>
         <td>
-          IN method name 
+          IN method name
         </td>
       </tr>
       <tr>
@@ -4542,7 +4528,7 @@ None
         <td>Required</td>
         <td>void *</td>
         <td>
-          IN user data to set 
+          IN user data to set
         </td>
       </tr>
       <tr>
@@ -4589,7 +4575,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSPayloadAttachFd</h3>
+<h3 id="lspayloadattachfd">LSPayloadAttachFd</h3>
 <h4>Description</h4>
 <p>Attaches file descriptor to passed LSPayload.</p>
 <p><strong>Note:</strong> File descriptor should outlive created payload.</p>
@@ -4638,7 +4624,7 @@ None
 None
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSPayloadFree</h3>
+<h3 id="lspayloadfree">LSPayloadFree</h3>
 <h4>Description</h4>
 <p>Contains LSPayloadFree()&nbsp;and its internal data.</p>
 <h4>Syntax</h4>
@@ -4678,7 +4664,7 @@ None
 None
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSPayloadFromData</h3>
+<h3 id="lspayloadfromdata">LSPayloadFromData</h3>
 <h4>Description</h4>
 <p>Creates the LSPayload from the binary data.</p>
 <p><strong>Note:</strong> Binary data should outlive created payload.</p>
@@ -4764,7 +4750,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSPayloadFromJson</h3>
+<h3 id="lspayloadfromjson">LSPayloadFromJson</h3>
 <h4>Description</h4>
 <p>Creates the LSPayload from the string.</p>
 <p><strong>Note:</strong> String should outlive created payload.</p>
@@ -4834,7 +4820,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSPayloadFromJValue</h3>
+<h3 id="lspayloadfromjvalue">LSPayloadFromJValue</h3>
 <h4>Description</h4>
 <p>Creates an LSPayload from jvalue.</p>
 <p><strong>Note:</strong> jvalue should outlive created payload.</p>
@@ -4904,7 +4890,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSPayloadGetData</h3>
+<h3 id="lspayloadgetdata">LSPayloadGetData</h3>
 <h4>Description</h4>
 <p>Gets the raw LSPayload data.</p>
 <h4>Syntax</h4>
@@ -4981,7 +4967,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSPayloadGetDataType</h3>
+<h3 id="lspayloadgetdatatype">LSPayloadGetDataType</h3>
 <h4>Description</h4>
 <p>Gets the string identifier of LSPayload data.</p>
 <h4>Syntax</h4>
@@ -5050,7 +5036,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSPayloadGetFd</h3>
+<h3 id="lspayloadgetfd">LSPayloadGetFd</h3>
 <h4>Description</h4>
 <p>Gets the file descriptor attached to passed LSPayload.</p>
 <h4>Syntax</h4>
@@ -5119,7 +5105,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSPayloadGetJson</h3>
+<h3 id="lspayloadgetjson">LSPayloadGetJson</h3>
 <h4>Description</h4>
 <p>Gets the string representation of JSON&nbsp;in LSPayload.</p>
 <h4>Syntax</h4>
@@ -5188,7 +5174,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSPayloadGetJValue</h3>
+<h3 id="lspayloadgetjvalue">LSPayloadGetJValue</h3>
 <h4>Description</h4>
 <p>Gets the&nbsp;jvalue_ref representation of JSON in LSPayload.</p>
 <h4>Syntax</h4>
@@ -5257,7 +5243,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSPushRole</h3>
+<h3 id="lspushrole">LSPushRole</h3>
 <h4>Description</h4>
 <p>Pushes a role file for this process.</p>
 <p><strong>Note:</strong> Once the role file has been pushed with this function, the process will be restricted to the constraints of the provided role file.</p>
@@ -5288,7 +5274,7 @@ None
         <td>Required</td>
         <td>LSHandle *</td>
         <td>
-          IN handle (already connected with LSRegister()) 
+          IN handle (already connected with LSRegister())
         </td>
       </tr>
       <tr>
@@ -5296,7 +5282,7 @@ None
         <td>Required</td>
         <td>const char *</td>
         <td>
-          IN full path to role file 
+          IN full path to role file
         </td>
       </tr>
       <tr>
@@ -5343,7 +5329,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSRegister</h3>
+<h3 id="lsregister">LSRegister</h3>
 <h4>Description</h4>
 <p>Registers a service on the private bus.</p>
 <p><strong>Note: </strong></p>
@@ -5378,7 +5364,7 @@ None
         <td>Required</td>
         <td>const char *</td>
         <td>
-          IN service name 
+          IN service name
         </td>
       </tr>
       <tr>
@@ -5433,9 +5419,9 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSRegisterApplicationService</h3>
+<h3 id="lsregisterapplicationservice">LSRegisterApplicationService</h3>
 <h4>Description</h4>
-<p>Registers a service on the private bus with the application ID.</p>
+<p>Registers a service on the private bus with the application id.</p>
 <p>For details see LSRegister description.</p>
 <h4>Syntax</h4>
 <pre><code>LSRegisterApplicationService(const char * name, const char * app_id, LSHandle ** sh, LSError * lserror)</code></pre>
@@ -5464,7 +5450,7 @@ None
         <td>Required</td>
         <td>const char *</td>
         <td>
-          IN service name 
+          IN service name
         </td>
       </tr>
       <tr>
@@ -5472,7 +5458,7 @@ None
         <td>Required</td>
         <td>const char *</td>
         <td>
-          IN application ID 
+          IN application Id
         </td>
       </tr>
       <tr>
@@ -5527,7 +5513,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSRegisterCategory</h3>
+<h3 id="lsregistercategory">LSRegisterCategory</h3>
 <h4>Description</h4>
 <p>Registers tables of callbacks associated with the message category.</p>
 <h4>Syntax</h4>
@@ -5557,7 +5543,7 @@ None
         <td>Required</td>
         <td>LSHandle *</td>
         <td>
-          IN handle to service 
+          IN handle to service
         </td>
       </tr>
       <tr>
@@ -5565,7 +5551,7 @@ None
         <td>Required</td>
         <td>const char *</td>
         <td>
-          IN may be NULL for default '/' category. 
+          IN may be NULL for default '/' category.
         </td>
       </tr>
       <tr>
@@ -5573,7 +5559,7 @@ None
         <td>Required</td>
         <td>LSMethod *</td>
         <td>
-          IN table of methods. 
+          IN table of methods.
         </td>
       </tr>
       <tr>
@@ -5581,7 +5567,7 @@ None
         <td>Required</td>
         <td>LSSignal *</td>
         <td>
-          IN table of signals. 
+          IN table of signals.
         </td>
       </tr>
       <tr>
@@ -5589,7 +5575,7 @@ None
         <td>Required</td>
         <td>LSProperty *</td>
         <td>
-          IN table of properties. 
+          IN table of properties.
         </td>
       </tr>
       <tr>
@@ -5636,7 +5622,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSRegisterCategoryAppend</h3>
+<h3 id="lsregistercategoryappend">LSRegisterCategoryAppend</h3>
 <h4>Description</h4>
 <p>Appends methods to the category.&nbsp;Creates a category if needed.</p>
 <h4>Syntax</h4>
@@ -5666,7 +5652,7 @@ None
         <td>Required</td>
         <td>LSHandle *</td>
         <td>
-          IN handle to service 
+          IN handle to service
         </td>
       </tr>
       <tr>
@@ -5674,7 +5660,7 @@ None
         <td>Required</td>
         <td>const char *</td>
         <td>
-          IN category name 
+          IN category name
         </td>
       </tr>
       <tr>
@@ -5682,7 +5668,7 @@ None
         <td>Required</td>
         <td>LSMethod *</td>
         <td>
-          IN array of methods 
+          IN array of methods
         </td>
       </tr>
       <tr>
@@ -5690,7 +5676,7 @@ None
         <td>Required</td>
         <td>LSSignal *</td>
         <td>
-          IN array of signals 
+          IN array of signals
         </td>
       </tr>
       <tr>
@@ -5737,7 +5723,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSRegisterServerStatusEx</h3>
+<h3 id="lsregisterserverstatusex">LSRegisterServerStatusEx</h3>
 <h4>Description</h4>
 <p>Registers a callback to be called when the server goes up or comes down.&nbsp;Performs LSCall(sh, &quot;luna://com.webos.service.bus/signal/registerServerStatus&quot;).</p>
 <p><strong>Note:</strong> Callback may be called in this context if the server is already up.</p>
@@ -5768,7 +5754,7 @@ None
         <td>Required</td>
         <td>LSHandle *</td>
         <td>
-          IN handle to service 
+          IN handle to service
         </td>
       </tr>
       <tr>
@@ -5776,7 +5762,7 @@ None
         <td>Required</td>
         <td>const char *</td>
         <td>
-          IN service name to monitor for connect/disconnect. 
+          IN service name to monitor for connect/disconnect.
         </td>
       </tr>
       <tr>
@@ -5784,7 +5770,7 @@ None
         <td>Required</td>
         <td>LSServerStatusFunc</td>
         <td>
-          IN function callback 
+          IN function callback
         </td>
       </tr>
       <tr>
@@ -5800,7 +5786,7 @@ None
         <td>Required</td>
         <td>void **</td>
         <td>
-          OUT token to use for to unregister the callback 
+          OUT token to use for to unregister the callback
         </td>
       </tr>
       <tr>
@@ -5847,7 +5833,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSRegisterServerStatusEx</h3>
+<h3 id="lsregisterserverstatusex-1">LSRegisterServerStatusEx</h3>
 <h4>Description</h4>
 <p>Registers a callback to be called when the server goes up or comes down.&nbsp;Performs LSCall(sh, &quot;luna://com.webos.service.bus/signal/registerServerStatus&quot;).</p>
 <p><strong>Note:</strong> Callback may be called in this context if the server is already up.</p>
@@ -5878,7 +5864,7 @@ None
         <td>Required</td>
         <td>LSHandle *</td>
         <td>
-          IN handle to service 
+          IN handle to service
         </td>
       </tr>
       <tr>
@@ -5886,7 +5872,7 @@ None
         <td>Required</td>
         <td>const char *</td>
         <td>
-          IN service name to monitor for connect/disconnect. 
+          IN service name to monitor for connect/disconnect.
         </td>
       </tr>
       <tr>
@@ -5894,7 +5880,7 @@ None
         <td>Required</td>
         <td>LSServerStatusFunc</td>
         <td>
-          IN function callback 
+          IN function callback
         </td>
       </tr>
       <tr>
@@ -5902,7 +5888,7 @@ None
         <td>Required</td>
         <td>void *</td>
         <td>
-          IN user data to be passed to callback 
+          IN user data to be passed to callback
         </td>
       </tr>
       <tr>
@@ -5910,7 +5896,7 @@ None
         <td>Required</td>
         <td>void **</td>
         <td>
-          OUT token to use for to unregister the callback 
+          OUT token to use for to unregister the callback
         </td>
       </tr>
       <tr>
@@ -5957,7 +5943,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSSetDisconnectHandler</h3>
+<h3 id="lssetdisconnecthandler">LSSetDisconnectHandler</h3>
 <h4>Description</h4>
 <p>Sets a function to be called if&nbsp;disconnected from the bus.</p>
 <h4>Syntax</h4>
@@ -5987,7 +5973,7 @@ None
         <td>Required</td>
         <td>LSHandle *</td>
         <td>
-          IN handle to service 
+          IN handle to service
         </td>
       </tr>
       <tr>
@@ -5995,7 +5981,7 @@ None
         <td>Required</td>
         <td>LSDisconnectHandler</td>
         <td>
-          IN function callback 
+          IN function callback
         </td>
       </tr>
       <tr>
@@ -6003,7 +5989,7 @@ None
         <td>Required</td>
         <td>void *</td>
         <td>
-          IN user data to be passed to callback 
+          IN user data to be passed to callback
         </td>
       </tr>
       <tr>
@@ -6050,7 +6036,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSSignalSend</h3>
+<h3 id="lssignalsend">LSSignalSend</h3>
 <h4>Description</h4>
 <p>Sends a signal.</p>
 <h4>Syntax</h4>
@@ -6080,7 +6066,7 @@ None
         <td>Required</td>
         <td>LSHandle *</td>
         <td>
-          IN handle to service 
+          IN handle to service
         </td>
       </tr>
       <tr>
@@ -6088,7 +6074,7 @@ None
         <td>Required</td>
         <td>const char *</td>
         <td>
-          IN fully qualified path to service's method 
+          IN fully qualified path to service's method
         </td>
       </tr>
       <tr>
@@ -6096,7 +6082,7 @@ None
         <td>Required</td>
         <td>const char *</td>
         <td>
-          IN some string, usually following JSON object semantics 
+          <p>IN some string, usually following JSON object semantics</p>
         </td>
       </tr>
       <tr>
@@ -6143,7 +6129,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSSubscriptionAcquire</h3>
+<h3 id="lssubscriptionacquire">LSSubscriptionAcquire</h3>
 <h4>Description</h4>
 <p>Acquires an iterator to iterate through the subscription for &#39;key&#39;.</p>
 <h4>Syntax</h4>
@@ -6173,7 +6159,7 @@ None
         <td>Required</td>
         <td>LSHandle *</td>
         <td>
-          IN handle to service 
+          IN handle to service
         </td>
       </tr>
       <tr>
@@ -6181,7 +6167,7 @@ None
         <td>Required</td>
         <td>const char *</td>
         <td>
-          IN key 
+          IN key
         </td>
       </tr>
       <tr>
@@ -6236,12 +6222,11 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSSubscriptionAdd</h3>
+<h3 id="lssubscriptionadd">LSSubscriptionAdd</h3>
 <h4>Description</h4>
 <p>Adds a subscription to a list associated with &#39;key&#39;.</p>
 <p><strong>Note:</strong> The call may fail if the client has been disconnected. However, if the call succeeds, the code can install callback to get notification about client&nbsp; &nbsp; &nbsp; &nbsp;<br />
-  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;disconnection or call cancel via LSSubscriptionSetCancelFunction().
-</p>
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;disconnection or call cancel via LSSubscriptionSetCancelFunction().</p>
 <h4>Syntax</h4>
 <pre><code>LSSubscriptionAdd(LSHandle * sh, const char * key, LSMessage * message, LSError * lserror)</code></pre>
 <h4>Parameters</h4>
@@ -6269,7 +6254,7 @@ None
         <td>Required</td>
         <td>LSHandle *</td>
         <td>
-          IN handle to service 
+          IN handle to service
         </td>
       </tr>
       <tr>
@@ -6277,7 +6262,7 @@ None
         <td>Required</td>
         <td>const char *</td>
         <td>
-          IN key 
+          IN key
         </td>
       </tr>
       <tr>
@@ -6285,7 +6270,7 @@ None
         <td>Required</td>
         <td>LSMessage *</td>
         <td>
-          IN message object 
+          IN message object
         </td>
       </tr>
       <tr>
@@ -6332,7 +6317,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSSubscriptionGetHandleSubscribersCount</h3>
+<h3 id="lssubscriptiongethandlesubscriberscount">LSSubscriptionGetHandleSubscribersCount</h3>
 <h4>Description</h4>
 <p>Returns number of subscribers with name &#39;key&#39;.</p>
 <p><strong>Note:</strong></p>
@@ -6414,9 +6399,9 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSSubscriptionHasNext</h3>
+<h3 id="lssubscriptionhasnext">LSSubscriptionHasNext</h3>
 <h4>Description</h4>
-Returns whether there is a next item in subscription. 
+Returns whether there is a next item in subscription.
 <h4>Syntax</h4>
 <pre><code>LSSubscriptionHasNext(LSSubscriptionIter * iter)</code></pre>
 <h4>Parameters</h4>
@@ -6483,7 +6468,7 @@ Returns whether there is a next item in subscription.
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSSubscriptionNext</h3>
+<h3 id="lssubscriptionnext">LSSubscriptionNext</h3>
 <h4>Description</h4>
 <p>Obtains the next subscription message.</p>
 <h4>Syntax</h4>
@@ -6550,7 +6535,7 @@ Returns whether there is a next item in subscription.
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSSubscriptionProcess</h3>
+<h3 id="lssubscriptionprocess">LSSubscriptionProcess</h3>
 <h4>Description</h4>
 <p>Adds the message to the subscription list using the default key &#39;/category/method&#39;, if the message contains subscribe: true.</p>
 <p><strong>Note:</strong> This is equivalent to LSSubscriptionAdd(sh, key, message, lserror) where the key is LSMessageGetKind(message).</p>
@@ -6581,7 +6566,7 @@ Returns whether there is a next item in subscription.
         <td>Required</td>
         <td>LSHandle *</td>
         <td>
-          IN service handle 
+          IN service handle
         </td>
       </tr>
       <tr>
@@ -6589,7 +6574,7 @@ Returns whether there is a next item in subscription.
         <td>Required</td>
         <td>LSMessage *</td>
         <td>
-          IN message object 
+          IN message object
         </td>
       </tr>
       <tr>
@@ -6644,9 +6629,9 @@ Returns whether there is a next item in subscription.
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSSubscriptionRelease</h3>
+<h3 id="lssubscriptionrelease">LSSubscriptionRelease</h3>
 <h4>Description</h4>
-Frees up resources for LSSubscriptionIter. 
+Frees up resources for LSSubscriptionIter.
 <h4>Syntax</h4>
 <pre><code>LSSubscriptionRelease(LSSubscriptionIter * iter)</code></pre>
 <h4>Parameters</h4>
@@ -6674,7 +6659,7 @@ Frees up resources for LSSubscriptionIter.
         <td>Required</td>
         <td>LSSubscriptionIter *</td>
         <td>
-          IN Subscription iterator to free 
+          IN Subscription iterator to free
         </td>
       </tr>
     </tbody>
@@ -6684,7 +6669,7 @@ Frees up resources for LSSubscriptionIter.
 None
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSSubscriptionRemove</h3>
+<h3 id="lssubscriptionremove">LSSubscriptionRemove</h3>
 <h4>Description</h4>
 <p>Removes the last subscription returned by LSSubscriptionNext().</p>
 <h4>Syntax</h4>
@@ -6714,7 +6699,7 @@ None
         <td>Required</td>
         <td>LSSubscriptionIter *</td>
         <td>
-          IN Subscription iterator 
+          IN Subscription iterator
         </td>
       </tr>
     </tbody>
@@ -6724,9 +6709,9 @@ None
 None
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSSubscriptionReply</h3>
+<h3 id="lssubscriptionreply">LSSubscriptionReply</h3>
 <h4>Description</h4>
-Sends a message to subscription list with name 'key'. 
+Sends a message to subscription list with name 'key'.
 <h4>Syntax</h4>
 <pre><code>LSSubscriptionReply(LSHandle * sh, const char * key, const char * payload, LSError * lserror)</code></pre>
 <h4>Parameters</h4>
@@ -6754,7 +6739,7 @@ Sends a message to subscription list with name 'key'.
         <td>Required</td>
         <td>LSHandle *</td>
         <td>
-          IN handle to service 
+          IN handle to service
         </td>
       </tr>
       <tr>
@@ -6762,7 +6747,7 @@ Sends a message to subscription list with name 'key'.
         <td>Required</td>
         <td>const char *</td>
         <td>
-          IN key 
+          IN key
         </td>
       </tr>
       <tr>
@@ -6770,7 +6755,7 @@ Sends a message to subscription list with name 'key'.
         <td>Required</td>
         <td>const char *</td>
         <td>
-          IN some string, usually following JSON object semantics 
+          <p>IN some string, usually following JSON object semantics</p>
         </td>
       </tr>
       <tr>
@@ -6817,7 +6802,7 @@ Sends a message to subscription list with name 'key'.
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSSubscriptionSetCancelFunction</h3>
+<h3 id="lssubscriptionsetcancelfunction">LSSubscriptionSetCancelFunction</h3>
 <h4>Description</h4>
 <p>Registers a callback to be called when the subscription is canceled.</p>
 <p><strong>Note: </strong></p>
@@ -6852,7 +6837,7 @@ Sends a message to subscription list with name 'key'.
         <td>Required</td>
         <td>LSHandle *</td>
         <td>
-          IN handle to service 
+          IN handle to service
         </td>
       </tr>
       <tr>
@@ -6860,7 +6845,7 @@ Sends a message to subscription list with name 'key'.
         <td>Required</td>
         <td>LSFilterFunc</td>
         <td>
-          IN callback function 
+          IN callback function
         </td>
       </tr>
       <tr>
@@ -6868,7 +6853,7 @@ Sends a message to subscription list with name 'key'.
         <td>Required</td>
         <td>void *</td>
         <td>
-          IN user data to be passed to callback 
+          IN user data to be passed to callback
         </td>
       </tr>
       <tr>
@@ -6915,7 +6900,7 @@ Sends a message to subscription list with name 'key'.
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSUnregister</h3>
+<h3 id="lsunregister">LSUnregister</h3>
 <h4>Description</h4>
 <p>Unregisters a service.</p>
 <h4>Syntax</h4>
@@ -6945,7 +6930,7 @@ Sends a message to subscription list with name 'key'.
         <td>Required</td>
         <td>LSHandle *</td>
         <td>
-          IN handle to service 
+          IN handle to service
         </td>
       </tr>
       <tr>
@@ -6992,7 +6977,7 @@ Sends a message to subscription list with name 'key'.
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>RemoveWatch</h3>
+<h3 id="removewatch">RemoveWatch</h3>
 <h4>Description</h4>
 <p>Removes a watch from a channel.</p>
 <h4>Syntax</h4>
@@ -7022,7 +7007,7 @@ Sends a message to subscription list with name 'key'.
         <td>Required</td>
         <td>_LSTransportChannel *</td>
         <td>
-          IN channel that watch is on 
+          IN channel that watch is on
         </td>
       </tr>
       <tr>
@@ -7030,7 +7015,7 @@ Sends a message to subscription list with name 'key'.
         <td>Required</td>
         <td>GSource **</td>
         <td>
-          IN/OUT watch (set to NULL after destroying) 
+          IN/OUT watch (set to NULL after destroying)
         </td>
       </tr>
     </tbody>
@@ -7040,7 +7025,7 @@ Sends a message to subscription list with name 'key'.
 None
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSMessageGetSenderExePath</h3>
+<h3 id="lsmessagegetsenderexepath">LSMessageGetSenderExePath</h3>
 <h4>Description</h4>
 <p>Gets the executable&nbsp;path of the sender that sent the message.</p>
 <h4>Syntax</h4>
@@ -7109,13 +7094,13 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSCallProxy</h3>
+<h3 id="lscallproxy">LSCallProxy</h3>
 <h4>Description</h4>
 <p>Sends payload to service at the specified URI.</p>
 <p>This API facilitates proxy luna calls.</p>
 <p><strong>Note:</strong> It is&nbsp;valid only for services that wish to act as mediators.</p>
 <h4>Syntax</h4>
-<pre><code>LSCallProxy(typedef LSHandle sh, const char * callee_exe, const char * callee_id, const char * callee_name, const char * uri, const char * payload, typedef LSFilterFunc callback, void * ctx, typedef LSMessageToken ret_token, struct LSError * lserror)</code></pre>
+<pre><code>LSCallProxy(typedef LSHandle sh, const char * callee_exe, const char * callee_id	, const char * callee_name, const char * uri, const char * payload, typedef LSFilterFunc callback, void * ctx, typedef LSMessageToken ret_token, struct LSError * lserror)</code></pre>
 <h4>Parameters</h4>
 <div class="table-container">
   <table class="table is-bordered is-fullwidth">
@@ -7141,7 +7126,7 @@ None
         <td>Required</td>
         <td>typedef LSHandle</td>
         <td>
-          <p>IN handle</p>
+          <p>In handle</p>
         </td>
       </tr>
       <tr>
@@ -7153,7 +7138,7 @@ None
         </td>
       </tr>
       <tr>
-        <td>callee_id</td>
+        <td>callee_id </td>
         <td>Required</td>
         <td>const char *</td>
         <td>
@@ -7252,7 +7237,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSCallProxyOneReply</h3>
+<h3 id="lscallproxyonereply">LSCallProxyOneReply</h3>
 <h4>Description</h4>
 <p>Sends payload to service at the specified URI as callee source.</p>
 <p>This API facilitates proxy luna calls and only accepts one response.</p>
@@ -7284,7 +7269,7 @@ None
         <td>Required</td>
         <td>typedef LSHandle</td>
         <td>
-          <p>IN handle</p>
+          <p>IN Handle.</p>
         </td>
       </tr>
       <tr>
@@ -7395,7 +7380,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSCallProxyFromApplication</h3>
+<h3 id="lscallproxyfromapplication">LSCallProxyFromApplication</h3>
 <h4>Description</h4>
 <p>Sends payload to service at the specified URI as callee source.</p>
 <p>This API facilitates proxy luna calls from the application.</p>
@@ -7475,7 +7460,7 @@ None
         <td>Required</td>
         <td>const char *</td>
         <td>
-          <p>IN application ID</p>
+          <p>IN Application ID.</p>
         </td>
       </tr>
       <tr>
@@ -7546,7 +7531,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSCallProxyFromApplicationOneReply</h3>
+<h3 id="lscallproxyfromapplicationonereply">LSCallProxyFromApplicationOneReply</h3>
 <h4>Description</h4>
 <p>Sends payload to service at the specified URI as callee source.</p>
 <p>This API facilitates proxy luna calls from the application and only accepts one response.</p>
@@ -7618,7 +7603,7 @@ None
         <td>Required</td>
         <td>const char *</td>
         <td>
-          <p>IN some string, usually following JSON object semantics</p>
+          <p>IN some string, usually following JSON object semantics.</p>
         </td>
       </tr>
       <tr>
@@ -7626,7 +7611,7 @@ None
         <td>Required</td>
         <td>const char *</td>
         <td>
-          <p>IN application ID</p>
+          <p>IN Application ID.</p>
         </td>
       </tr>
       <tr>
@@ -7697,7 +7682,7 @@ None
 </div>
 <h4>Examples</h4>
 <p>None</p>
-<h3>LSMessageGetSenderTrustLevel</h3>
+<h3 id="lsmessagegetsendertrustlevel">LSMessageGetSenderTrustLevel</h3>
 <h4>Description</h4>
 <p>Gets the trust level of the sender of the message.</p>
 <h4>Syntax</h4>

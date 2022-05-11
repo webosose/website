@@ -425,3 +425,10 @@ sudo usermod -aG vboxusers $USER
 
 - https://superuser.com/questions/956622/no-usb-devices-available-in-virtualbox
 - https://help.ubuntu.com/community/VirtualBox/USB
+
+## Limitations
+
+The following features are not supported in the emulator:
+
+- [Streaming playback](/blog/2022/05/11/webos-ose-2-16-0-release/#streaming-playback-support) (added in 2.16.0 release)
+- [HDMI-CEC](/blog/2022/05/11/webos-ose-2-16-0-release/#hdmi-cec-support) (added in 2.16.0 release)

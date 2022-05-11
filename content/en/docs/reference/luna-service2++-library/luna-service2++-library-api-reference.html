@@ -1,109 +1,105 @@
 ---
 title: luna-service2++ Library API Reference
-date: 2022-02-07
+date: 2022-05-03
 toc: true
 ---
-<h2>API Summary</h2>
-<p>
-  The C++ wrapper for the webOS Luna System Bus that provides a bus-based IPC mechanism used between components in webOS. Luna-service2 is composed of a client library and a central hub daemon. The client library provides the API support to register on the bus and communicate with other components. The hub provides a central clearinghouse for all communication. Utilities for monitoring and debugging the bus are included.
-</p>
-<h2>Overview of the API</h2>
+
+<h2 id="api-summary">API Summary</h2>
+<p>The C++ wrapper for the webOS Luna System Bus that provides a bus-based IPC mechanism used between components in webOS. Luna-service2 is composed of a client library and a central hub daemon. The client library provides the API support to register on the bus and communicate with other components. The hub provides a central clearinghouse for all communication. Utilities for monitoring and debugging the bus are included.</p>
+<h2 id="overview-of-the-api">Overview of the API</h2>
 <p>A bus-based Inter Process Communication (IPC) mechanism for components in the webOS. The Luna Service is composed of a client library and of a central hub daemon. The client library provides the API support to register on the bus and communicate with other components. The hub provides a central clearing house for all communication. Utilities for monitoring and debugging the bus are included. After having registered on the Luna Service Bus, services and applications can call public methods of other services and applications registered on the Luna Service Bus. The Luna Service API offers the mechanism that enables sending and receiving data within a single device. Both third-party and internal services can use Luna Service Bus. The operations that a service can perform on the Luna Service Bus are limited by the assigned security permissions.</p>
-<p>Example for asynchronous client usage:</p>
+<p><strong>Example for asynchronous client usage:</strong></p>
 <div class="code-bg-grey">
-  <p>try</p>
-  <p>{</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;auto  client  =  LS::registerService( nullptr );</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;client.attachToLoop(mainLoop);</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;auto  call  =  client.callOneReply( "luna://com.palm.contacts/category/listContacts" ,"{  \"json  payload\"  }" );</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;call.setTimeout(1000);</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;call.continueWith(listContactsHandler,  userData);</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;g_main_loop_run(mainLoop);</p>
-  <p>}</p>
-  <p>catch  ( const  LS::Error  &e)</p>
-  <p>{</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;cerr  <<  e  <<  endl;</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;throw;</p>
-  <p>}</p>
+<p>try<br />
+    {<br />
+    &nbsp; &nbsp; auto&nbsp; client&nbsp; =&nbsp; LS::registerService( nullptr );<br />
+    &nbsp; &nbsp; client.attachToLoop(mainLoop);<br />
+    &nbsp; &nbsp; auto&nbsp; call&nbsp; =&nbsp; client.callOneReply( &quot;luna://com.palm.contacts/category/listContacts&quot; ,&quot;{&nbsp; \&quot;json&nbsp; payload\&quot;&nbsp; }&quot; );<br />
+    &nbsp; &nbsp; call.setTimeout(1000);<br />
+    &nbsp; &nbsp; call.continueWith(listContactsHandler,&nbsp; userData);<br />
+    &nbsp; &nbsp; g_main_loop_run(mainLoop);<br />
+    }<br />
+    catch&nbsp; ( const&nbsp; LS::Error&nbsp; &amp;e)<br />
+    {<br />
+    &nbsp; &nbsp; cerr&nbsp; &lt;&lt;&nbsp; e&nbsp; &lt;&lt;&nbsp; endl;<br />
+    &nbsp; &nbsp; throw;<br />
+    }</p>
 </div>
-<p>Example for service usage:</p>
+<hr />
+<p><strong>Example for service usage:</strong></p>
 <div class="code-bg-grey">
-  <p>namespace  {</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;//  callback</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;bool  listContacts(LSHandle  *sh,  LSMessage  *raw_message,  void  *categoryContext)</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;{</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LS::Message  message{raw_message};</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;try</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;message.respond( "{  JSON  REPLY  PAYLOAD  }" );</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;catch  ( const  LS::Error  &e)</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cerr  <<  e  <<  endl;</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return  false;</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return  true ;</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;}</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;static  LSMethod  ipcMethods[]  =  {</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{  "listContacts" ,  listContacts  },</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{  },</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;};</p>
-  <p>}  //namespace</p>
-  <p>&nbsp;</p>
-  <p>try</p>
-  <p>{</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;auto  service  =  LS::registerService( "com.palm.contacts" );</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;service.registerCategory( "/category" ,  ipcMethods,  nullptr ,  nullptr );</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;service.setCategoryData( "/category" ,  userData);</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;service.attachToLoop(mainLoop);</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;g_main_loop_run(mainLoop);</p>
-  <p>}</p>
-  <p>catch  ( const  LS::Error  &e)</p>
-  <p>{</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;cerr  <<  e  <<  endl;</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;throw ;</p>
-  <p>}</p>
+<p>namespace&nbsp; {<br />
+    &nbsp; &nbsp; //&nbsp; callback<br />
+    &nbsp; &nbsp; bool&nbsp; listContacts(LSHandle&nbsp; *sh,&nbsp; LSMessage&nbsp; *raw_message,&nbsp; void&nbsp; *categoryContext)<br />
+    &nbsp; &nbsp; {<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; LS::Message&nbsp; message{raw_message};<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; try<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; message.respond( &quot;{&nbsp; JSON&nbsp; REPLY&nbsp; PAYLOAD&nbsp; }&quot; );<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; catch&nbsp; ( const&nbsp; LS::Error&nbsp; &amp;e)<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; cerr&nbsp; &lt;&lt;&nbsp; e&nbsp; &lt;&lt;&nbsp; endl;<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return&nbsp; false;<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; return&nbsp; true ;<br />
+    &nbsp; &nbsp; }<br />
+    &nbsp; &nbsp; static&nbsp; LSMethod&nbsp; ipcMethods[]&nbsp; =&nbsp; {<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; {&nbsp; &quot;listContacts&quot; ,&nbsp; listContacts&nbsp; },<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; {&nbsp; },<br />
+    &nbsp; &nbsp; };<br />
+    }&nbsp; //namespace</p>
+<p>try<br />
+    {<br />
+    &nbsp; &nbsp; auto&nbsp; service&nbsp; =&nbsp; LS::registerService( &quot;com.palm.contacts&quot; );<br />
+    &nbsp; &nbsp; service.registerCategory( &quot;/category&quot; ,&nbsp; ipcMethods,&nbsp; nullptr ,&nbsp; nullptr );<br />
+    &nbsp; &nbsp; service.setCategoryData( &quot;/category&quot; ,&nbsp; userData);<br />
+    &nbsp; &nbsp; service.attachToLoop(mainLoop);<br />
+    &nbsp; &nbsp; g_main_loop_run(mainLoop);<br />
+    }<br />
+    catch&nbsp; ( const&nbsp; LS::Error&nbsp; &amp;e)<br />
+    {<br />
+    &nbsp; &nbsp; cerr&nbsp; &lt;&lt;&nbsp; e&nbsp; &lt;&lt;&nbsp; endl;<br />
+    &nbsp; &nbsp; throw ;<br />
+    }</p>
 </div>
-<p>Example C++ service usage:</p>
+<hr />
+<p><strong>Example C++ service usage:</strong></p>
 <div class="code-bg-grey">
-  <p>class  Category</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;:  private  LS::Handle</p>
-  <p>{</p>
-  <p>&nbsp;</p>
-  <p>public :</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;Category(GMainLoop  *mainLoop)</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  LS::Handle(LS::registerService( "com.palm.contacts" ))</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;{</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;attachToLoop (mainLoop);</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LS_CATEGORY_BEGIN(Category,  "/category" )</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LS_CATEGORY_METHOD(listContacts)</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LS_CATEGORY_END</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;}</p>
-  <p>&nbsp;</p>
-  <p>private:</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;bool  listContacts(LSMessage  &message)</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;{</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LS::Message  request(&message);</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;request.respond( "{  JSON  REPLY  PAYLOAD  }" );</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return true ;</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;}</p>
-  <p>};</p>
-  <p>&nbsp;</p>
-  <p>try</p>
-  <p>{</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;Category  category(mainLoop);</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;g_main_loop_run(mainLoop);</p>
-  <p>}</p>
-  <p>catch  ( const  LS::Error  &e)</p>
-  <p>{</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;cerr  <<  e  <<  endl;</p>
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;throw;</p>
-  <p>}</p>
+<p>class&nbsp; Category<br />
+    &nbsp; &nbsp; :&nbsp; private&nbsp; LS::Handle<br />
+    {</p>
+<p>&nbsp;public :<br />
+    &nbsp; &nbsp; Category(GMainLoop&nbsp; *mainLoop)<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; :&nbsp; LS::Handle(LS::registerService( &quot;com.palm.contacts&quot; ))<br />
+    &nbsp; &nbsp; {<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; attachToLoop (mainLoop);<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; LS_CATEGORY_BEGIN(Category,&nbsp; &quot;/category&quot; )<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; LS_CATEGORY_METHOD(listContacts)<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; LS_CATEGORY_END<br />
+    &nbsp; &nbsp; }</p>
+<p>private:<br />
+    &nbsp; &nbsp; bool&nbsp; listContacts(LSMessage&nbsp; &amp;message)<br />
+    &nbsp; &nbsp; {<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; LS::Message&nbsp; request(&amp;message);<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; request.respond( &quot;{&nbsp; JSON&nbsp; REPLY&nbsp; PAYLOAD&nbsp; }&quot; );<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; return true ;<br />
+    &nbsp; &nbsp; }<br />
+    };</p>
+<p>try<br />
+    {<br />
+    &nbsp; &nbsp; Category&nbsp; category(mainLoop);<br />
+    &nbsp; &nbsp; g_main_loop_run(mainLoop);<br />
+    }<br />
+    catch&nbsp; ( const&nbsp; LS::Error&nbsp; &amp;e)<br />
+    {<br />
+    &nbsp; &nbsp; cerr&nbsp; &lt;&lt;&nbsp; e&nbsp; &lt;&lt;&nbsp; endl;<br />
+    &nbsp; &nbsp; throw;<br />
+    }</p>
 </div>
-<h2>LS::PayloadRef</h2>
+<h2 id="ls-payloadref">LS::PayloadRef</h2>
 <p>A Reference wrapper for LSPayload, that does not own it.</p>
-<em>Methods</em>
-<h3>PayloadRef</h3>
+<h3 id="payloadref">PayloadRef</h3>
 <h4>Description</h4>
 <p>Constructs a reference for the LSPayload.</p>
 <h4>Syntax</h4>
@@ -141,7 +137,7 @@ toc: true
 </div>
 <h4>Returns</h4>
 None
-<h3>~PayloadRef</h3>
+<h3 id="payloadref-1">~PayloadRef</h3>
 <h4>Description</h4>
 <p>Destructs the reference payload.</p>
 <p><strong>Note</strong>: It does not free the reference payload.</p>
@@ -151,7 +147,7 @@ None
 None
 <h4>Returns</h4>
 None
-<h3>attachFd</h3>
+<h3 id="attachfd">attachFd</h3>
 <h4>Description</h4>
 <p>Attaches the file descriptor to the payload.</p>
 <h4>Syntax</h4>
@@ -189,7 +185,7 @@ None
 </div>
 <h4>Returns</h4>
 None
-<h3>getFd</h3>
+<h3 id="getfd">getFd</h3>
 <h4>Description</h4>
 <p>Gets the file descriptor attached to the payload.</p>
 <h4>Syntax</h4>
@@ -227,9 +223,9 @@ None
     </tbody>
   </table>
 </div>
-<h3>getJson</h3>
+<h3 id="getjson">getJson</h3>
 <h4>Description</h4>
-Get string representation of JSON in payload. 
+<p>Get string representation of JSON in payload.</p>
 <h4>Syntax</h4>
 <pre><code>getJson ()</code></pre>
 <h4>Parameters</h4>
@@ -265,7 +261,7 @@ None
     </tbody>
   </table>
 </div>
-<h3>getJValue</h3>
+<h3 id="getjvalue">getJValue</h3>
 <h4>Description</h4>
 <p>Gets the pbnjson::Jvalue from the JSON in the payload.</p>
 <h4>Syntax</h4>
@@ -303,7 +299,7 @@ None
     </tbody>
   </table>
 </div>
-<h3>getDataType</h3>
+<h3 id="getdatatype">getDataType</h3>
 <h4>Description</h4>
 <p>Gets the string identifier of the payload data type.</p>
 <h4>Syntax</h4>
@@ -341,7 +337,7 @@ None
     </tbody>
   </table>
 </div>
-<h3>getData</h3>
+<h3 id="getdata">getData</h3>
 <h4>Description</h4>
 <p>Gets the raw data.</p>
 <h4>Syntax</h4>
@@ -408,13 +404,12 @@ None
     </tbody>
   </table>
 </div>
-<h2>LS::PalmService</h2>
+<h2 id="ls-palmservice">LS::PalmService</h2>
 <p>A wrapper for the service that has both public and private representations.</p>
 <p>Deprecated: Use LS::Handle instead</p>
-<em>Methods</em>
-<h3>registerCategory</h3>
+<h3 id="registercategory">registerCategory</h3>
 <h4>Description</h4>
-Register tables of callbacks (private and public) associated with the message category. 
+Register tables of callbacks (private and public) associated with the message category.
 <h4>Syntax</h4>
 <pre><code>registerCategory (const char * category, LSMethod * methods_public, LSMethod * methods_private, LSSignal * ls_signals)</code></pre>
 <h4>Parameters</h4>
@@ -442,7 +437,7 @@ Register tables of callbacks (private and public) associated with the message ca
         <td>Required</td>
         <td>const char *</td>
         <td>
-          name 
+          name
         </td>
       </tr>
       <tr>
@@ -450,7 +445,7 @@ Register tables of callbacks (private and public) associated with the message ca
         <td>Required</td>
         <td>LSMethod *</td>
         <td>
-          LSMethod array that should end with {0} 
+          LSMethod array that should end with {0}
         </td>
       </tr>
       <tr>
@@ -458,7 +453,7 @@ Register tables of callbacks (private and public) associated with the message ca
         <td>Required</td>
         <td>LSMethod *</td>
         <td>
-          LSMethod array that should end with {0} 
+          LSMethod array that should end with {0}
         </td>
       </tr>
       <tr>
@@ -466,7 +461,7 @@ Register tables of callbacks (private and public) associated with the message ca
         <td>Required</td>
         <td>LSSignal *</td>
         <td>
-          LSSignal array that should end with {0} 
+          LSSignal array that should end with {0}
         </td>
       </tr>
     </tbody>
@@ -474,9 +469,9 @@ Register tables of callbacks (private and public) associated with the message ca
 </div>
 <h4>Returns</h4>
 None
-<h3>getPublicHandle</h3>
+<h3 id="getpublichandle">getPublicHandle</h3>
 <h4>Description</h4>
-Function to get public handle. 
+Function to get public handle.
 <h4>Syntax</h4>
 <pre><code>getPublicHandle ()</code></pre>
 <h4>Parameters</h4>
@@ -510,9 +505,9 @@ None
     </tbody>
   </table>
 </div>
-<h3>getPublicHandle</h3>
+<h3 id="getpublichandle-1">getPublicHandle</h3>
 <h4>Description</h4>
-Function to get public handle. 
+Function to get public handle.
 <h4>Syntax</h4>
 <pre><code>getPublicHandle ()</code></pre>
 <h4>Parameters</h4>
@@ -546,9 +541,9 @@ None
     </tbody>
   </table>
 </div>
-<h3>getPrivateHandle</h3>
+<h3 id="getprivatehandle">getPrivateHandle</h3>
 <h4>Description</h4>
-Function to get private handle. 
+Function to get private handle.
 <h4>Syntax</h4>
 <pre><code>getPrivateHandle ()</code></pre>
 <h4>Parameters</h4>
@@ -582,9 +577,9 @@ None
     </tbody>
   </table>
 </div>
-<h3>getPrivateHandle</h3>
+<h3 id="getprivatehandle-1">getPrivateHandle</h3>
 <h4>Description</h4>
-Function to get private handle. 
+Function to get private handle.
 <h4>Syntax</h4>
 <pre><code>getPrivateHandle ()</code></pre>
 <h4>Parameters</h4>
@@ -618,10 +613,9 @@ None
     </tbody>
   </table>
 </div>
-<h2>LS::SubscriptionPoint</h2>
+<h2 id="ls-subscriptionpoint">LS::SubscriptionPoint</h2>
 <p>Represents a publishing point for the sender service.</p>
-<em>Methods</em>
-<h3>setServiceHandle</h3>
+<h3 id="setservicehandle">setServiceHandle</h3>
 <h4>Description</h4>
 <p>Assigns a publisher service.</p>
 <h4>Syntax</h4>
@@ -658,7 +652,7 @@ None
 </div>
 <h4>Returns</h4>
 None
-<h3>subscribe</h3>
+<h3 id="subscribe">subscribe</h3>
 <h4>Description</h4>
 <p>Indicates the process subscription message. Subscribes sender of the given message.</p>
 <h4>Syntax</h4>
@@ -730,7 +724,7 @@ None
     </tbody>
   </table>
 </div>
-<h3>post</h3>
+<h3 id="post">post</h3>
 <h4>Description</h4>
 <p>Posts the payload to all the subscribers.</p>
 <h4>Syntax</h4>
@@ -802,7 +796,7 @@ None
     </tbody>
   </table>
 </div>
-<h3>getSubscribersCount</h3>
+<h3 id="getsubscriberscount">getSubscribersCount</h3>
 <h4>Description</h4>
 <p>Returns the number of service subscribers.</p>
 <h4>Syntax</h4>
@@ -840,7 +834,7 @@ None
     </tbody>
   </table>
 </div>
-<h2>PJSAXBounce</h2>
+<h2 id="pjsaxbounce">PJSAXBounce</h2>
 <p>Callbacks adapter to parse JSON SAX events.</p>
 <p>Possible types that facilitate the next method calls are:</p>
 <ul>
@@ -858,8 +852,7 @@ None
   <li>(bool)boolVal</li>
 </ul>
 <p><strong>Note</strong>: If the method returns something that implicitly casts to false is treated as the request to abort the parser.</p>
-<em>Methods</em>
-<h3>callbacks</h3>
+<h3 id="callbacks">callbacks</h3>
 <h4>Description</h4>
 <p>Gets the PJSAX callbacks for the type T.</p>
 <h4>Syntax</h4>
@@ -868,10 +861,9 @@ None
 None
 <h4>Returns</h4>
 None
-<h2>LS::Payload</h2>
+<h2 id="ls-payload">LS::Payload</h2>
 <p>Wrapper for LSPayload.</p>
-<em>Methods</em>
-<h3>Payload</h3>
+<h3 id="payload">Payload</h3>
 <h4>Description</h4>
 <p>Construct from the string representation of the JSON.</p>
 <h4>Syntax</h4>
@@ -900,16 +892,18 @@ None
         <td>json</td>
         <td>Required</td>
         <td>const char *</td>
-        <td>Description here</td>
+        <td>
+          <p>JSON.</p>
+        </td>
       </tr>
     </tbody>
   </table>
 </div>
 <h4>Returns</h4>
 None
-<h3>Payload</h3>
+<h3 id="payload-1">Payload</h3>
 <h4>Description</h4>
-Construct from pbnjson::JValue representation of JSON. 
+<p>Construct from pbnjson::JValue representation of JSON.</p>
 <h4>Syntax</h4>
 <pre><code>Payload (pbnjson::JValue json)</code></pre>
 <h4>Parameters</h4>
@@ -937,6 +931,7 @@ Construct from pbnjson::JValue representation of JSON.
         <td>Required</td>
         <td>pbnjson::JValue</td>
         <td>
+          <p>JSON.</p>
         </td>
       </tr>
     </tbody>
@@ -944,9 +939,9 @@ Construct from pbnjson::JValue representation of JSON.
 </div>
 <h4>Returns</h4>
 None
-<h3>Payload</h3>
+<h3 id="payload-2">Payload</h3>
 <h4>Description</h4>
-Construct from raw data. 
+Construct from raw data.
 <h4>Syntax</h4>
 <pre><code>Payload (const char * type, void * data, size_t size)</code></pre>
 <h4>Parameters</h4>
@@ -995,19 +990,18 @@ Construct from raw data.
 </div>
 <h4>Returns</h4>
 None
-<h3>~Payload</h3>
+<h3 id="payload-3">~Payload</h3>
 <h4>Description</h4>
-Destruct owning payload. 
+Destruct owning payload.
 <h4>Syntax</h4>
 <pre><code>~Payload ()</code></pre>
 <h4>Parameters</h4>
 None
 <h4>Returns</h4>
 None
-<h2>LS::Message</h2>
+<h2 id="ls-message">LS::Message</h2>
 <p>Indicates the LSMessage wrapper.</p>
-<em>Methods</em>
-<h3>accessPayload</h3>
+<h3 id="accesspayload">accessPayload</h3>
 <h4>Description</h4>
 <p>Indicates the access payload in the message.</p>
 <h4>Syntax</h4>
@@ -1045,7 +1039,7 @@ None
     </tbody>
   </table>
 </div>
-<h3>getSenderExePath</h3>
+<h3 id="getsenderexepath">getSenderExePath</h3>
 <h4>Description</h4>
 <p>Gets the exe_path of the sender of the message.</p>
 <h4>Syntax</h4>
@@ -1083,7 +1077,7 @@ None
     </tbody>
   </table>
 </div>
-<h3>getSenderTrustLevel</h3>
+<h3 id="getsendertrustlevel">getSenderTrustLevel</h3>
 <h4>Description</h4>
 <p>Gets the trustLevel of the sender that sent the message.</p>
 <h4>Syntax</h4>
@@ -1121,7 +1115,7 @@ None
     </tbody>
   </table>
 </div>
-<h3>respond</h3>
+<h3 id="respond">respond</h3>
 <h4>Description</h4>
 <p>Responds with payload via LS2. Throws an exception on failure.</p>
 <h4>Syntax</h4>
@@ -1159,10 +1153,9 @@ None
 </div>
 <h4>Returns</h4>
 None
-<h2>LS::Error</h2>
+<h2 id="ls-error">LS::Error</h2>
 <p>A class that wraps the LS errors.</p>
-<em>Methods</em>
-<h3>what</h3>
+<h3 id="what">what</h3>
 <h4>Description</h4>
 <p>Gets the text representation of the error.</p>
 <h4>Syntax</h4>
@@ -1200,11 +1193,10 @@ None
     </tbody>
   </table>
 </div>
-<h2>LS::Handle</h2>
+<h2 id="ls-handle">LS::Handle</h2>
 <p>A bus end-point base class that provides an API to control the service and client end-points of the luna hub.</p>
 <p>The user can inherit or use it to create an own service. However the class has not been designed to be used as a precise low-level full functional wrapper for the API. Instead additional service and client wrappers could be created for easy use of the functionality.</p>
-<em>Methods</em>
-<h3>methodWraper</h3>
+<h3 id="methodwraper">methodWraper</h3>
 <h4>Description</h4>
 <p>Maps a category method to some class method.</p>
 <p><strong>Note</strong>:</p>
@@ -1276,7 +1268,7 @@ None
 </div>
 <h4>Returns</h4>
 None
-<h3>Handle</h3>
+<h3 id="handle">Handle</h3>
 <h4>Description</h4>
 <p>Creates an empty inactive instance.</p>
 <p><strong>Note</strong>: This handle is not registered.</p>
@@ -1286,9 +1278,9 @@ None
 None
 <h4>Returns</h4>
 None
-<h3>Handle</h3>
+<h3 id="handle-1">Handle</h3>
 <h4>Description</h4>
-Registers a new service with the specified name. 
+Registers a new service with the specified name.
 <h4>Syntax</h4>
 <pre><code>Handle (const char * name)</code></pre>
 <h4>Parameters</h4>
@@ -1324,9 +1316,9 @@ Registers a new service with the specified name.
 </div>
 <h4>Returns</h4>
 None
-<h3>Handle</h3>
+<h3 id="handle-2">Handle</h3>
 <h4>Description</h4>
-Registers a new service with a specified name and an application ID. 
+<p>Registers a new service with a specified name and an application ID.</p>
 <h4>Syntax</h4>
 <pre><code>Handle (const char * name, const char * app_id)</code></pre>
 <h4>Parameters</h4>
@@ -1371,7 +1363,7 @@ Registers a new service with a specified name and an application ID.
 </div>
 <h4>Returns</h4>
 None
-<h3>get</h3>
+<h3 id="get">get</h3>
 <h4>Description</h4>
 <p>Gets the handle to the service.</p>
 <h4>Syntax</h4>
@@ -1409,7 +1401,7 @@ None
     </tbody>
   </table>
 </div>
-<h3>get</h3>
+<h3 id="get-1">get</h3>
 <h4>Description</h4>
 <p>Gets the handle to the service.</p>
 <h4>Syntax</h4>
@@ -1447,7 +1439,7 @@ None
     </tbody>
   </table>
 </div>
-<h3>getName</h3>
+<h3 id="getname">getName</h3>
 <h4>Description</h4>
 <p>Gets a LSHandle name.</p>
 <h4>Syntax</h4>
@@ -1485,7 +1477,7 @@ None
     </tbody>
   </table>
 </div>
-<h3>operator bool</h3>
+<h3 id="operator-bool">operator bool</h3>
 <h4>Description</h4>
 <p>Checks if the end-point registration was successfully performed.</p>
 <h4>Syntax</h4>
@@ -1494,7 +1486,7 @@ None
 None
 <h4>Returns</h4>
 None
-<h3>registerCategory</h3>
+<h3 id="registercategory-1">registerCategory</h3>
 <h4>Description</h4>
 <p>Registers tables of the callbacks associated with the message category.</p>
 <h4>Syntax</h4>
@@ -1556,7 +1548,7 @@ None
 </div>
 <h4>Returns</h4>
 None
-<h3>registerCategoryAppend</h3>
+<h3 id="registercategoryappend">registerCategoryAppend</h3>
 <h4>Description</h4>
 <p>Appends methods to the category.</p>
 <p><strong>Note</strong>: Creates a category if needed.</p>
@@ -1613,7 +1605,7 @@ None
 </div>
 <h4>Returns</h4>
 None
-<h3>setDisconnectHandler</h3>
+<h3 id="setdisconnecthandler">setDisconnectHandler</h3>
 <h4>Description</h4>
 <p>Sets a function to be called if we are disconnected from the bus.</p>
 <h4>Syntax</h4>
@@ -1659,7 +1651,7 @@ None
 </div>
 <h4>Returns</h4>
 None
-<h3>setCategoryData</h3>
+<h3 id="setcategorydata">setCategoryData</h3>
 <h4>Description</h4>
 <p>Sets the user data that is delivered to each callback registered to the category.</p>
 <p><strong>Note</strong>: If the method user data is set using the <strong>setMethodData</strong>, it overrides the category data.</p>
@@ -1706,7 +1698,7 @@ None
 </div>
 <h4>Returns</h4>
 None
-<h3>setCategoryDescription</h3>
+<h3 id="setcategorydescription">setCategoryDescription</h3>
 <h4>Description</h4>
 <p>Specifies the meta information about the category and sets the JSON value that describes specified category. Provides validation schema for input parameters and replies. Gives some description for calls.</p>
 <h4>Syntax</h4>
@@ -1752,7 +1744,7 @@ None
 </div>
 <h4>Returns</h4>
 None
-<h3>setMethodData</h3>
+<h3 id="setmethoddata">setMethodData</h3>
 <h4>Description</h4>
 <p>Sets the user data that is delivered to callback registered to the method.</p>
 <p><strong>Note</strong>:</p>
@@ -1811,7 +1803,7 @@ None
 </div>
 <h4>Returns</h4>
 None
-<h3>pushRole</h3>
+<h3 id="pushrole">pushRole</h3>
 <h4>Description</h4>
 <p>Pushes a role file for this process.</p>
 <p><strong>Note</strong>: Once the role file has been pushed with this function, the process will be restricted to the constraints of the provided role file.</p>
@@ -1850,7 +1842,7 @@ None
 </div>
 <h4>Returns</h4>
 None
-<h3>attachToLoop</h3>
+<h3 id="attachtoloop">attachToLoop</h3>
 <h4>Description</h4>
 <p>Attaches the service to the&nbsp;<strong>glib</strong> main loop context.</p>
 <h4>Syntax</h4>
@@ -1888,7 +1880,7 @@ None
 </div>
 <h4>Returns</h4>
 None
-<h3>attachToLoop</h3>
+<h3 id="attachtoloop-1">attachToLoop</h3>
 <h4>Description</h4>
 <p>Attaches the service to the <strong>glib</strong> main loop.</p>
 <h4>Syntax</h4>
@@ -1926,7 +1918,7 @@ None
 </div>
 <h4>Returns</h4>
 None
-<h3>detach</h3>
+<h3 id="detach">detach</h3>
 <h4>Description</h4>
 <p>Detaches the end-point from the <strong>glib</strong> mainloop.</p>
 <p><strong>Note</strong>: You should NEVER use this function unless you are fork()&#39;ing without executing. This will perform nearly all the same cleanup as LSUnregister(), with the exception that it will not send out shutdown messages or flush any buffers. It is intended to be used only when fork()&#39;ing so that your child process can continue without interfering with the parent&#39;s file descriptors, since open file descriptors are duplicated during a fork().</p>
@@ -1936,7 +1928,7 @@ None
 None
 <h4>Returns</h4>
 None
-<h3>setPriority</h3>
+<h3 id="setpriority">setPriority</h3>
 <h4>Description</h4>
 <p>Sets the priority level on the associated <strong>GSources</strong> for the service connection.</p>
 <p><strong>Note</strong>: The method should be called after attachToLoop(). See https://developer.gnome.org/glib/2.37/glib-The-Main-Event-Loop.html#g-source-set-priority for details.</p>
@@ -1975,7 +1967,7 @@ None
 </div>
 <h4>Returns</h4>
 None
-<h3>sendSignal</h3>
+<h3 id="sendsignal">sendSignal</h3>
 <h4>Description</h4>
 <p>Sends a signal specified by the URI with given payload to subscribed services.</p>
 <p><strong>Note</strong>:</p>
@@ -2039,11 +2031,11 @@ None
 </div>
 <h4>Returns</h4>
 None
-<h3>callOneReply</h3>
+<h3 id="callonereply">callOneReply</h3>
 <h4>Description</h4>
 <p>Makes a call.</p>
 <h4>Syntax</h4>
-<pre><code>callOneReply (const char * uri, const char * payload, const char * appID, [const char * sessionID])</code></pre>
+<pre><code>callOneReply (const char * uri, const char * payload, const char * appID)</code></pre>
 <h4>Parameters</h4>
 <div class="table-container">
   <table class="table is-bordered is-fullwidth">
@@ -2085,7 +2077,15 @@ None
         <td>Required</td>
         <td>const char *</td>
         <td>
-          <p>Indicates the appID.</p>
+          <p>Indicates the application ID.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>sessionID</td>
+        <td>Optional</td>
+        <td>const char *</td>
+        <td>
+          <p>Indicates the session ID.</p>
         </td>
       </tr>
     </tbody>
@@ -2122,11 +2122,11 @@ None
     </tbody>
   </table>
 </div>
-<h3>callOneReply</h3>
+<h3 id="callonereply-1">callOneReply</h3>
 <h4>Description</h4>
 <p>Makes a call with the result handler callback.</p>
 <h4>Syntax</h4>
-<pre><code>callOneReply (const char * uri, const char * payload, LSFilterFunc func, void * context, const char * appID, [const char * sessionID])</code></pre>
+<pre><code>callOneReply (const char * uri, const char * payload, LSFilterFunc func, void * context, const char * appID)</code></pre>
 <h4>Parameters</h4>
 <div class="table-container">
   <table class="table is-bordered is-fullwidth">
@@ -2184,7 +2184,15 @@ None
         <td>Required</td>
         <td>const char *</td>
         <td>
-          <p>Indicates the appID.</p>
+          <p>Indicates the application ID.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>sessionID</td>
+        <td>Optional</td>
+        <td>const char *</td>
+        <td>
+          <p>Indicates the session ID.</p>
         </td>
       </tr>
     </tbody>
@@ -2221,12 +2229,12 @@ None
     </tbody>
   </table>
 </div>
-<h3>callMultiReply</h3>
+<h3 id="callmultireply">callMultiReply</h3>
 <h4>Description</h4>
 <p>Makes a multi-call Returned object will collect arrived messages in internal queue.</p>
 <p><strong>Note:&nbsp;</strong>The messages can be obtained with callback or get(...) functions.</p>
 <h4>Syntax</h4>
-<pre><code>callMultiReply (const char * uri, const char * payload, const char * appID, [const char * sessionID])</code></pre>
+<pre><code>callMultiReply (const char * uri, const char * payload, const char * appID)</code></pre>
 <h4>Parameters</h4>
 <div class="table-container">
   <table class="table is-bordered is-fullwidth">
@@ -2268,7 +2276,15 @@ None
         <td>Required</td>
         <td>const char *</td>
         <td>
-          <p>Indicates the appID.</p>
+          <p>Indicates the application ID.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>sessionID</td>
+        <td>Optional</td>
+        <td>const char *</td>
+        <td>
+          <p>Indicates the session ID.</p>
         </td>
       </tr>
     </tbody>
@@ -2305,11 +2321,11 @@ None
     </tbody>
   </table>
 </div>
-<h3>callMultiReply</h3>
+<h3 id="callmultireply-1">callMultiReply</h3>
 <h4>Description</h4>
 <p>Makes a multi-call with result processing callback.</p>
 <h4>Syntax</h4>
-<pre><code>callMultiReply (const char * uri, const char * payload, LSFilterFunc func, void * context, const char * appID, [const char * sessionID])</code></pre>
+<pre><code>callMultiReply (const char * uri, const char * payload, LSFilterFunc func, void * context, const char * appID)</code></pre>
 <h4>Parameters</h4>
 <div class="table-container">
   <table class="table is-bordered is-fullwidth">
@@ -2367,7 +2383,15 @@ None
         <td>Required</td>
         <td>const char *</td>
         <td>
-          <p>Indicates the appID.</p>
+          <p>Indicates the application ID.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>sessionID</td>
+        <td>Optional</td>
+        <td>const char *</td>
+        <td>
+          <p>Indicates the session ID.</p>
         </td>
       </tr>
     </tbody>
@@ -2404,9 +2428,9 @@ None
     </tbody>
   </table>
 </div>
-<h3>callSignal</h3>
+<h3 id="callsignal">callSignal</h3>
 <h4>Description</h4>
-Call a signal to a specific category. 
+Call a signal to a specific category.
 <h4>Syntax</h4>
 <pre><code>callSignal (const char * category, const char * methodName, LSFilterFunc func, void * context)</code></pre>
 <h4>Parameters</h4>
@@ -2495,12 +2519,12 @@ Call a signal to a specific category.
     </tbody>
   </table>
 </div>
-<h3>registerServerStatus</h3>
+<h3 id="registerserverstatus">registerServerStatus</h3>
 <h4>Description</h4>
 <p>Registers a callback to be called when the server goes down or comes up.</p>
 <p><strong>Note:</strong> Callback may be called in this context if the server is already up.</p>
 <h4>Syntax</h4>
-<pre><code>registerServerStatus (const char * service_name, const ServerStatusCallback &amp; callback, [const char * sessionID])</code></pre>
+<pre><code>registerServerStatus (const char * service_name, const ServerStatusCallback &amp; callback)</code></pre>
 <h4>Parameters</h4>
 <div class="table-container">
   <table class="table is-bordered is-fullwidth">
@@ -2537,6 +2561,14 @@ Call a signal to a specific category.
           <p>Indicates the callback function.</p>
         </td>
       </tr>
+      <tr>
+        <td>sessionID</td>
+        <td>Optional</td>
+        <td>const char *</td>
+        <td>
+          <p>Indicates the session ID.</p>
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>
@@ -2571,135 +2603,11 @@ Call a signal to a specific category.
     </tbody>
   </table>
 </div>
-<h3>callProxyOneReply</h3>
+<h3 id="callproxyonereply">callProxyOneReply</h3>
 <h4>Description</h4>
 <p>Get the proxy call reply one time.</p>
 <h4>Syntax</h4>
 <pre><code>callProxyOneReply (const char * callee_exe, const char * callee_id, const char * callee_name, const char * uri, const char * payload, char func, void * context, const char * appID)</code></pre>
-<h4>Parameters</h4>
-<div class="table-container">
-  <table class="table is-bordered is-fullwidth">
-    <thead>
-      <tr class="header">
-        <th width="15%">
-          <p>Name</p>
-        </th>
-        <th width="15%">
-          <p>Required</p>
-        </th>
-        <th width="15%">
-          <p>Type</p>
-        </th>
-        <th>
-          <p>Description</p>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>callee_exe</td>
-        <td>Required</td>
-        <td>const char *</td>
-        <td>
-          <p>Absolute exe path of callee, if callee is service else NULL</p>
-        </td>
-      </tr>
-      <tr>
-        <td>callee_id</td>
-        <td>Required</td>
-        <td>const char *</td>
-        <td>
-          <p>app_id of the callee, if callee is app else NULL</p>
-        </td>
-      </tr>
-      <tr>
-        <td>callee_name	</td>
-        <td>Required</td>
-        <td>const char *</td>
-        <td>
-          <p>Service name of the callee, NULL not accepted</p>
-        </td>
-      </tr>
-      <tr>
-        <td>uri</td>
-        <td>Required</td>
-        <td>const char *</td>
-        <td>
-          <p>Fully qualified path to service&#39;s method</p>
-        </td>
-      </tr>
-      <tr>
-        <td>payload	</td>
-        <td>Required</td>
-        <td>const char *</td>
-        <td>
-          <p>Some string, usually following JSON object semantics</p>
-        </td>
-      </tr>
-      <tr>
-        <td>func</td>
-        <td>Required</td>
-        <td>char</td>
-        <td>
-          <p>Function callback to be called when responses arrive</p>
-          <p>Datatype is LSFIlterFunc.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>context</td>
-        <td>Required</td>
-        <td>void *</td>
-        <td>
-          <p>User data to be passed to callback</p>
-        </td>
-      </tr>
-      <tr>
-        <td>appID	</td>
-        <td>Required</td>
-        <td>const char *</td>
-        <td>
-          <p>Application ID</p>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-<h4>Returns</h4>
-<div class="table-container">
-  <table class="table is-bordered is-fullwidth">
-    <thead>
-      <tr class="header">
-        <th width="15%">
-          <p>Name</p>
-        </th>
-        <th width="15%">
-          <p>Required</p>
-        </th>
-        <th width="15%">
-          <p>Type</p>
-        </th>
-        <th>
-          <p>Description</p>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Call</td>
-        <td>Required</td>
-        <td>class LS::Call</td>
-        <td>
-          <p>The call control object</p>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-<h3>callProxyMultiReply</h3>
-<h4>Description</h4>
-<p>Gets the proxy call reply multiple times.</p>
-<h4>Syntax</h4>
-<pre><code>callProxyMultiReply (const char * callee_exe, const char * callee_id, const char * callee_name, const char * uri, const char * payload, char func, void * context, const char * appID)</code></pre>
 <h4>Parameters</h4>
 <div class="table-container">
   <table class="table is-bordered is-fullwidth">
@@ -2765,8 +2673,7 @@ Call a signal to a specific category.
         <td>Required</td>
         <td>char</td>
         <td>
-          <p>Function callback to be called when responses arrive.</p>
-          <p>Datatype is LSFIlterFunc.</p>
+          <p>Function callback to be called when responses arrive. Datatype is LSFIlterFunc.</p>
         </td>
       </tr>
       <tr>
@@ -2774,7 +2681,7 @@ Call a signal to a specific category.
         <td>Required</td>
         <td>void *</td>
         <td>
-          <p>User data to be passed to callback</p>
+          <p>User data to be passed to callback.</p>
         </td>
       </tr>
       <tr>
@@ -2782,7 +2689,130 @@ Call a signal to a specific category.
         <td>Required</td>
         <td>const char *</td>
         <td>
-          <p>Application ID</p>
+          <p>Application ID.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h4>Returns</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Call</td>
+        <td>Required</td>
+        <td>class LS::Call</td>
+        <td>
+          <p>The call control object</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h3 id="callproxymultireply">callProxyMultiReply</h3>
+<h4>Description</h4>
+<p>Gets the proxy call reply multiple times.</p>
+<h4>Syntax</h4>
+<pre><code>callProxyMultiReply (const char * callee_exe, const char * callee_id, const char * callee_name, const char * uri, const char * payload, char func, void * context, const char * appID)</code></pre>
+<h4>Parameters</h4>
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th width="15%">
+          <p>Name</p>
+        </th>
+        <th width="15%">
+          <p>Required</p>
+        </th>
+        <th width="15%">
+          <p>Type</p>
+        </th>
+        <th>
+          <p>Description</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>callee_exe</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          <p>Absolute exe path of callee, if callee is service else NULL</p>
+        </td>
+      </tr>
+      <tr>
+        <td>callee_id</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          <p>app_id of the callee, if callee is app else NULL</p>
+        </td>
+      </tr>
+      <tr>
+        <td>callee_name</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          <p>Service name of the callee, NULL not accepted</p>
+        </td>
+      </tr>
+      <tr>
+        <td>uri</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          <p>Fully qualified path to service&#39;s method.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>payload</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          <p>Some string, usually following JSON object semantics.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>func</td>
+        <td>Required</td>
+        <td>char</td>
+        <td>
+          <p>Function callback to be called when responses arrive. Datatype is LSFIlterFunc.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>context</td>
+        <td>Required</td>
+        <td>void *</td>
+        <td>
+          <p>User data to be passed to callback.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>appID</td>
+        <td>Required</td>
+        <td>const char *</td>
+        <td>
+          <p>Application ID.</p>
         </td>
       </tr>
     </tbody>
@@ -2819,11 +2849,10 @@ Call a signal to a specific category.
     </tbody>
   </table>
 </div>
-<h2>LS::Call</h2>
+<h2 id="ls-call">LS::Call</h2>
 <p>Provides the ability to make a call to service category methods, it controls the lifetime of the call.</p>
 <p><strong>Note: </strong>The call is canceled on object destroy.</p>
-<em>Methods</em>
-<h3>~Call</h3>
+<h3 id="call">~Call</h3>
 <h4>Description</h4>
 <p>Cancels the call if it is active.</p>
 <h4>Syntax</h4>
@@ -2832,7 +2861,7 @@ Call a signal to a specific category.
 None
 <h4>Returns</h4>
 None
-<h3>cancel</h3>
+<h3 id="cancel">cancel</h3>
 <h4>Description</h4>
 <p>Sends the cancel message to the service to end the call session and unregisters any callback associated with the call.</p>
 <h4>Syntax</h4>
@@ -2841,7 +2870,7 @@ None
 None
 <h4>Returns</h4>
 None
-<h3>setTimeout</h3>
+<h3 id="settimeout">setTimeout</h3>
 <h4>Description</h4>
 <p>Sets the timeout for a method call.</p>
 <p><strong>Note</strong>: The call will be canceled if no reply is received after the msTimeout (milliseconds).</p>
@@ -2914,7 +2943,7 @@ None
     </tbody>
   </table>
 </div>
-<h3>continueWith</h3>
+<h3 id="continuewith">continueWith</h3>
 <h4>Description</h4>
 <p>Sets the callback to continue.</p>
 <p><strong>Note</strong>: This is the callback that is called for each message that arrives. It replaces any previous callback if it exists. If the internal queue already contains the messages then the callback is called sequentially for every message in the queue.</p>
@@ -2961,7 +2990,7 @@ None
 </div>
 <h4>Returns</h4>
 None
-<h3>get</h3>
+<h3 id="get-2">get</h3>
 <h4>Description</h4>
 <p><span style="color:#FF0000">Note: Do not use. It will be deprecated.</span></p>
 <p>Retrieve a message object from the top of its queue.</p>
@@ -2994,7 +3023,7 @@ None
         <td>Required</td>
         <td>unsigned long</td>
         <td>
-          time after which method can be canceled. If msTimeout == 0 message wasn't canceled. 
+          time after which method can be canceled. If msTimeout == 0 message wasn't canceled.
         </td>
       </tr>
     </tbody>
@@ -3029,7 +3058,7 @@ None
     </tbody>
   </table>
 </div>
-<h3>isActive</h3>
+<h3 id="isactive">isActive</h3>
 <h4>Description</h4>
 <p>Returns the status of the call.</p>
 <p><strong>Note</strong>:</p>
