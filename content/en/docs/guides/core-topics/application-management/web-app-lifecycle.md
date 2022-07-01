@@ -97,7 +97,7 @@ Web apps can add an event listener to handle the `webOSLaunch` or `webOSRelaunch
 // webOSLaunch event
 document.addEventListener('webOSLaunch', function(inData) {
     // Check the received parameters
-    console.log(JSON.stringify(inData.detail);
+    console.log(JSON.stringify(inData.detail));
 
     // Do something in the foreground
     ...
@@ -127,12 +127,12 @@ Also, an app can be visible by any of the following actions:
 
   - An app icon of the app in Not Launched or Suspended state is clicked
 
-The `visibilitychange` event will be fired when a web app changes from visible to hidden or vice versa. The app can have an event listener to manage the actions for its visibility status.
+The `visibilityChange` event will be fired when a web app changes from visible to hidden or vice versa. The app can have an event listener to manage the actions for its visibility status.
 
 The sample code below shows how to add an event listener in webOS OSE.
 
 ``` javascript
-document.addEventListener ('visibilitychange', function() {
+document.addEventListener ('visibilityChange', function() {
     if (document.hidden)
        doHiddenCleanup();
     else

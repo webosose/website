@@ -35,7 +35,6 @@ This version corresponds to the [GitHub releases](https://github.com/webosose/bu
 
 ## Known Issues
 
-  - Google Assistant API doesn't work on some occasions.
   - Information about the operating system (osInfo) cannot be obtained.
   - The connectionmanager API's `getstatus` method returns `LunaService Error` if the wired ethernet cable is unplugged.
   - The `date` command through serial connection doesn't return correct values of date and time.

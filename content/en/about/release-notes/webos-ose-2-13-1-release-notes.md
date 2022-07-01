@@ -63,5 +63,4 @@ This version corresponds to the [GitHub releases](https://github.com/webosose/bu
 
 ## Known Issues
 
-  - The "Google page" icon is not displayed in the omnibox.
   - Google Assistant API doesn't work on some occasions.

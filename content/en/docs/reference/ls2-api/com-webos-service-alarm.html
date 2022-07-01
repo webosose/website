@@ -1,14 +1,14 @@
 ---
 title: com.webos.service.alarm
-date: 2021-12-20
+date: 2022-06-20
 weight: 85
 toc: true
 ---
 <div>
-  <h2>API Summary</h2>
+  <h2 id="api-summary">API Summary</h2>
   <p>Enables webOS daemons or apps to call webOS API methods with specific parameters in a specified time interval.&nbsp;</p>
 </div>
-<h2>Overview of the API</h2>
+<h2 id="overview-of-the-api">Overview of the API</h2>
 <div>
   <p>About webOS alarm:</p>
   <ul>
@@ -32,11 +32,11 @@ toc: true
   </ul>
   <p>Wake up or non-wake up is determined by&nbsp;<strong>wakeup&nbsp;</strong>parameter in the&nbsp;<strong>set&nbsp;</strong>method.</p>
 </div>
-<h2>Methods</h2>
+<h2 id="methods">Methods</h2>
 <div>
-  <h3>set</h3>
+  <h3 id="set">set</h3>
   <div>
-    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>systemsettings.management</b></span></div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>alarm.operation</b></span></div>
     <h4>Description</h4>
     <p>Creates a new alarm for an absolute time or a relative time. By using the &quot;<strong>wakeup</strong>&quot; parameter you can define it as a wake-up or a non-wakeup alarm.&nbsp;</p>
     <h4>Parameters</h4>
@@ -222,8 +222,7 @@ toc: true
       <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
     </div>
     <div class="code-bg-grey">
-      <p>Example for a successful call:</p>
-      <p># luna-send -n 1 luna://com.webos.service.alarm/set &#39;{<br />
+      <p># luna-send -n 1 -a com.webos.app.test luna://com.webos.service.alarm/set &#39;{<br />
         &nbsp; &nbsp; &nbsp; &quot;key&quot;:&quot;test&quot;,<br />
         &nbsp; &nbsp; &nbsp; &quot;uri&quot;:&quot;luna://com.webos.service.testsleepd/firealarm&quot;,<br />
         &nbsp; &nbsp; &nbsp; &quot;params&quot;:{},<br />
@@ -231,14 +230,19 @@ toc: true
         &nbsp; &nbsp; &nbsp; &quot;wakeup&quot;:true<br />
         }&#39;
       </p>
-      <p>Returns:</p>
-      <p>{</p>
-      <p>&nbsp; &nbsp; &quot;returnValue&quot;: true,</p>
-      <p>&nbsp; &nbsp; &quot;key&quot;: &quot;test&quot;</p>
-      <p>}</p>
-      <p>&nbsp;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
+        &nbsp; &nbsp;&nbsp;&quot;key&quot;: &quot;test&quot;<br />
+        }
+      </p>
+    </div>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
       <p>Example for a successful call:&nbsp;params input parameter&nbsp;is used to pass parameters to alarm client; in this case &quot;com.webos.display&quot; will receive &quot;state : on&quot; and take respective action</p>
-      <p># luna-send -n 1 luna://com.webos.service.alarm/set &#39;{<br />
+      <p># luna-send -n 1 -a com.webos.app.test luna://com.webos.service.alarm/set &#39;{<br />
         &nbsp; &nbsp; &nbsp; &quot;at&quot;:&quot;08/11/2014 09:26:05&quot;,<br />
         &nbsp; &nbsp; &nbsp; &quot;key&quot;:&quot;test_alarm&quot;,<br />
         &nbsp; &nbsp; &nbsp; &quot;params&quot;:{\&quot;state\&quot;: \&quot;on\&quot;},<br />
@@ -247,33 +251,19 @@ toc: true
         }&#39;
       </p>
       <p>Returns:</p>
-      <p>{</p>
-      <p>&nbsp; &nbsp; &quot;returnValue&quot;:true,</p>
-      <p>&nbsp; &nbsp; &quot;key&quot;:&quot;test_alarm&quot;</p>
-      <p>}</p>
-      <p>&nbsp;</p>
-      <p>Example for a failed call: key input parameter&nbsp;is not specified</p>
-      <p># luna-send -n 1 luna://com.webos.service.alarm/set&nbsp;&#39;{<br />
-        &nbsp; &nbsp; &nbsp; &quot;at&quot;:&quot;08/11/2014 09:26:05&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &quot;params&quot;:{\&quot;state\&quot;:\&quot;on\&quot;},<br />
-        &nbsp; &nbsp; &nbsp; &quot;uri&quot;:&quot;luna://com.webos.display/control/setState&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &quot;wakeup&quot;:true<br />
-        }&#39;
+      <p>{<br />
+        &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+        &nbsp; &nbsp;&nbsp;&quot;key&quot;:&quot;test_alarm&quot;<br />
+        }
       </p>
-      <p>Returns:</p>
-      <p>{</p>
-      <p>&nbsp; &nbsp; &quot;errorCode&quot;:-1,</p>
-      <p>&nbsp; &nbsp; &quot;returnValue&quot;:false,</p>
-      <p>&nbsp; &nbsp; &quot;errorText&quot;:&quot;Invalid format for timeout/set&quot;</p>
-      <p>}</p>
     </div>
   </div>
 </div>
-<h3>clear</h3>
+<h3 id="clear">clear</h3>
 <div>
-  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>systemsettings.management</b></span></div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>alarm.operation</b></span></div>
   <h4>Description</h4>
-  <p>Deletes an existing alarm. Apps or daemons can identify the alarm to be deleted by specifying its&nbsp;key.</p>
+  <p>Deletes an existing alarm. Apps or daemons can identify their alarm to be deleted by specifying its&nbsp;key.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -382,16 +372,18 @@ toc: true
     <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
   </div>
   <div class="code-bg-grey">
-    <p># luna-send -n 1 luna://com.webos.service.alarm/clear &#39;{&quot;key&quot;:&quot;test&quot;}&#39;</p>
-    <p>{</p>
-    <p style="margin-left: 40px;">&quot;key&quot;: &quot;test&quot;,</p>
-    <p style="margin-left: 40px;">&quot;returnValue&quot;: true</p>
-    <p>}</p>
+    <p># luna-send -n 1 -a com.webos.app.test luna://com.webos.service.alarm/clear &#39;{&quot;key&quot;:&quot;test&quot;}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&nbsp;&quot;key&quot;: &quot;test&quot;,<br />
+      &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: true<br />
+      }
+    </p>
   </div>
 </div>
-<h2>Objects</h2>
+<h2 id="objects">Objects</h2>
 <div>
-  <h3>alarmObject</h3>
+  <h3 id="alarmobject">alarmObject</h3>
   <p>Object contains information about the alarms.</p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -480,7 +472,7 @@ toc: true
     </table>
   </div>
 </div>
-<h2>API Error Codes Reference</h2>
+<h2 id="api-error-codes-reference">API Error Codes Reference</h2>
 <div class="table-container">
   <table class="table is-bordered is-fullwidth">
     <tbody>
@@ -497,7 +489,7 @@ toc: true
       </tr>
       <tr>
         <td>None</td>
-        <td>Json parse error</td>
+        <td>Invalid parameters</td>
         <td>
           <p>Json parse error</p>
         </td>

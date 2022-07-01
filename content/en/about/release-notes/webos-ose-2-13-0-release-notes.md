@@ -30,6 +30,4 @@ This version corresponds to the [GitHub releases](https://github.com/webosose/bu
 
 ## Known Issues
 
-  - The "Google page" icon is not displayed in the omnibox.
-  - The Virtual Keyboard disappears when the ENG button touches input.
-  - The Launcher App doesn't appear on the screen when running the Launcher by using a USB mouse.
+  - n/a
