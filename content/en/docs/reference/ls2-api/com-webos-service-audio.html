@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.audio
-date: 2022-06-29
+date: 2022-08-29
 weight: 100
 toc: true
 ---
@@ -927,7 +927,7 @@ toc: true
 </div>
 <h3 id="umi-getstatus">UMI/getStatus</h3>
 <div>
-  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>media</b></span></div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>audio.query</b></span></div>
   <h4>Description</h4>
   <p>Shows&nbsp;the&nbsp;connection status of audio resources.&nbsp;</p>
   <h4>Parameters</h4>
@@ -1012,7 +1012,7 @@ toc: true
 </div>
 <h3 id="umi-mute">UMI/mute</h3>
 <div>
-  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>media</b></span></div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>audio.operation</b></span></div>
   <h4>Description</h4>
   <p>Mutes or unmutes&nbsp;the input volume of the requested connection.</p>
   <p><strong>Note: </strong>This method is added for future-use. It does not have any impact on the audio setting.</p>
@@ -1932,12 +1932,6 @@ toc: true
           <td>
             <p>Indicates the audio output device.</p>
           </td>
-        </tr>
-        <tr>
-          <td>return1905</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>Description here</td>
         </tr>
       </tbody>
     </table>
@@ -2946,7 +2940,10 @@ toc: true
             <p>Possible values are:&nbsp;</p>
             <ul>
               <li>pcm_output</li>
+              <li>pcm_output1</li>
+              <li>usb_speaker0</li>
               <li>bluetooth_speaker0</li>
+              <li>usb_speaker1</li>
             </ul>
           </td>
         </tr>
@@ -4291,6 +4288,8 @@ toc: true
             <p>Possible values are:</p>
             <ul>
               <li>pcm_input</li>
+              <li>usb_mic0</li>
+              <li>usb_mic1</li>
             </ul>
           </td>
         </tr>
@@ -5009,6 +5008,917 @@ toc: true
     </p>
   </div>
 </div>
+<h3 id="master-getmicvolume">master/getMicVolume</h3>
+<div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>audio.query</b></span></div>
+  <h4>Description</h4>
+  <p>Gets volume of currently active microphone input.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Subscribe for notifications on changes.</p>
+            <p>Possible values are: </p>
+            <ul>
+              <li><strong>true:</strong> Subscribed.</li>
+              <li><strong>false:</strong> Not subscribed.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>displayId</td>
+          <td>Optional</td>
+          <td>Number (int8_t)</td>
+          <td>
+            <p>The display associated with the microphone.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>0 (default value)</li>
+              <li>1</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>Indicates if subscribed to get notifications.</td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are: </p>
+            <ul>
+              <li><strong>true:</strong> Operation is successful.</li>
+              <li><strong>false:</strong> Operation has failed. Check the 'errorCode' and 'errorText' fields.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The reason for the failure of the operation. See the &#39;Error Codes&#39; section of the method for details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>soundInput</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Input device name.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>usb_mic0</li>
+              <li>usb_mic1</li>
+              <li>pcm_input</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>volume</td>
+          <td>Optional</td>
+          <td>Number (int8_t)</td>
+          <td>
+            <p>Device volume.</p>
+            <p>Possible values 0 - 100.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>muteStatus</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Mute status of input device.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true:&nbsp;</strong>Device is muted.</li>
+              <li><strong>false:&nbsp;</strong>Device is not muted.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Subscription Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>Indicates if subscribed to get notifications.</td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>soundInput</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Input device name.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>usb_mic0</li>
+              <li>usb_mic1</li>
+              <li>pcm_input</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>volume</td>
+          <td>Optional</td>
+          <td>Number (int8_t)</td>
+          <td>
+            <p>Device volume.</p>
+            <p>Possible values 0 - 100.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>muteStatus</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Mute status of input device.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true: </strong>Device is muted.</li>
+              <li><strong>false: </strong>Device is not muted.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Could not validate json message against schema</td>
+          <td>
+            <p>Invalid number of input parameters against defined schema of the method</p>
+          </td>
+        </tr>
+        <tr>
+          <td>15</td>
+          <td>Audiod Internal Error</td>
+          <td>
+            <p>Internal error</p>
+          </td>
+        </tr>
+        <tr>
+          <td>20</td>
+          <td>DisplayId Not in Range</td>
+          <td>
+            <p>Wrong displayId parameter supplied</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : Get volume of active mic input for display 0</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p>#luna-send &ndash;n 1&nbsp;luna://com.webos.service.audio/master/getMicVolume &#39;{}&#39;</p>
+    <p>Response:&nbsp;</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp; &nbsp;&quot;subscribed&quot;:false,<br />
+      &nbsp; &nbsp;&quot;soundInput&quot;:&quot;usb_mic0&quot;,<br />
+      &nbsp; &nbsp;&quot;volume&quot;:100,<br />
+      &nbsp; &nbsp;&quot;muteStatus&quot;:false<br />
+      }
+    </p>
+  </div>
+</div>
+<h3 id="master-setmicvolume">master/setMicVolume</h3>
+<div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>audio.operation</b></span></div>
+  <h4>Description</h4>
+  <p>Sets the volume of the currently active microphone input device.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>displayId</td>
+          <td>Optional</td>
+          <td>Number (int8_t)</td>
+          <td>
+            <p>The display associated with the microphone.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>0 (default value)</li>
+              <li>1</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>volume</td>
+          <td>Required</td>
+          <td>Number (int8_t)</td>
+          <td>
+            <p>The volume to be set.</p>
+            <p>Possible values : 0 - 100.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are: </p>
+            <ul>
+              <li><strong>true:</strong> Operation is successful.</li>
+              <li><strong>false:</strong> Operation has failed. Check the 'errorCode' and 'errorText' fields.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The reason for the failure of the operation. See the &#39;Error Codes&#39; section of the method for details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>soundInput</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Input device name.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>usb_mic0</li>
+              <li>usb_mic1</li>
+              <li>pcm_input&nbsp;</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>volume</td>
+          <td>Optional</td>
+          <td>Number (int8_t)</td>
+          <td>
+            <p>Device volume.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Could not validate json message against schema</td>
+          <td>
+            <p>Invalid number of input parameters against defined schema of the method</p>
+          </td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>SoundInput volume is not in range</td>
+          <td>
+            <p>Sound Input volume is not in range</p>
+          </td>
+        </tr>
+        <tr>
+          <td>15</td>
+          <td>Audiod Internal Error</td>
+          <td>
+            <p>Internal error</p>
+          </td>
+        </tr>
+        <tr>
+          <td>20</td>
+          <td>DisplayId Not in Range</td>
+          <td>
+            <p>Wrong displayId parameter supplied</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : Set volume as 50</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send &ndash;n 1&nbsp;luna://com.webos.service.audio/master/setMicVolume &#39;{&quot;displayId&quot;:0,&quot;volume&quot;:50}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp; &nbsp;&quot;soundInput&quot;:&quot;usb_mic0&quot;,<br />
+      &nbsp; &nbsp;&quot;volume&quot;:50<br />
+      }
+    </p>
+  </div>
+</div>
+<h3 id="master-mutemic">master/muteMic</h3>
+<div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>audio.operation</b></span></div>
+  <h4>Description</h4>
+  <p>Mutes/unmutes the currently active microphone input device.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>displayId</td>
+          <td>Optional</td>
+          <td>Number (int8_t)</td>
+          <td>
+            <p>The display associated with the microphone.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>0 (default value)</li>
+              <li>1</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>mute</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Mute status of the device.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true: </strong>Muted.</li>
+              <li><strong>false: </strong>Not muted.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are: </p>
+            <ul>
+              <li><strong>true:</strong> Operation is successful.</li>
+              <li><strong>false:</strong> Operation has failed. Check the 'errorCode' and 'errorText' fields.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The reason for the failure of the operation. See the &#39;Error Codes&#39; section of the method for details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>soundInput</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Input device name.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>usb_mic0</li>
+              <li>usb_mic1</li>
+              <li>pcm_input</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>mute</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Device mute status.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Could not validate json message against schema</td>
+          <td>
+            <p>Invalid number of input parameters against defined schema of the method</p>
+          </td>
+        </tr>
+        <tr>
+          <td>15</td>
+          <td>Audiod Internal Error</td>
+          <td>
+            <p>Internal Error</p>
+          </td>
+        </tr>
+        <tr>
+          <td>20</td>
+          <td>DisplayId Not in Range</td>
+          <td>
+            <p>Wrong displayId parameter supplied</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : Mute mic input device</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send &ndash;n 1&nbsp;luna://com.webos.service.audio/master/muteMic &#39;{&quot;displayId&quot;:0,&quot;mute&quot;:true}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp; &nbsp;&quot;soundInput&quot;:&quot;usb_mic0&quot;,<br />
+      &nbsp; &nbsp;&quot;mute&quot;:true<br />
+      }
+    </p>
+  </div>
+</div>
+<h3 id="listsupporteddevices">listSupportedDevices</h3>
+<div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>audio.query</b></span></div>
+  <h4>Description</h4>
+  <p>Gets the list of supported audio&nbsp;input and output devices and their connection status.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>subscribe</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Subscribe for notifications on changes.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true:</strong>&nbsp;Subscribed.</li>
+              <li><strong>false:</strong>&nbsp;Not subscribed.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>query</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Requested category of sound devices.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>input</li>
+              <li>output</li>
+              <li>all (default)</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if subscribed to get notifications.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the request.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true:</strong> Operation is successful.</li>
+              <li><strong>false:</strong> Operation has failed. Check the &#39;errorCode&#39; and &#39;errorText&#39; fields.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The reason for the failure of the operation. See the &#39;Error Codes&#39; section of the method for details.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>deviceList</td>
+          <td>Optional</td>
+          <td>Object array: <a href="#devicelist"> deviceList</a></td>
+          <td>
+            <p>List of input and&nbsp;output devices.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Subscription Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>subscribed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates if subscribed to get notifications.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>deviceList</td>
+          <td>Required</td>
+          <td>Object array: <a href="#devicelist"> deviceList</a></td>
+          <td>
+            <p>List of input and output devices.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Could not validate json message against schema</td>
+          <td>
+            <p>Invalid number of input parameters against defined schema of the method</p>
+          </td>
+        </tr>
+        <tr>
+          <td>15</td>
+          <td>Audiod Internal Error</td>
+          <td>
+            <p>Internal error</p>
+          </td>
+        </tr>
+        <tr>
+          <td>20</td>
+          <td>DisplayId Not in Range</td>
+          <td>
+            <p>Wrong displayId parameter supplied</p>
+          </td>
+        </tr>
+        <tr>
+          <td>21</td>
+          <td>Invalid Parameter</td>
+          <td>
+            <p>Invalid query provided Wrong value for query parameter.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : List supported input and output devices</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send &ndash;n 1&nbsp;luna://com.webos.service.audio/listSupportedDevices &#39;{&quot;subscribe&quot;:true,&quot;query&quot;:&quot;all&quot;}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot; : true,<br />
+      &nbsp; &nbsp; &quot;subscribed&quot; : true,<br />
+      &nbsp; &nbsp; &quot;deviceList&quot; : [<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;{<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;type&quot; : &quot;output&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;deviceType&quot; : &quot;internal&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;deviceName&quot;: &quot;pcm_output&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;deviceNameDetail&quot; : &quot;bcm HDMI&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;connected&quot; : true,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;displayId&quot; : &nbsp;0<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;{<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;type&quot; : &quot;output&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;deviceType&quot; : &quot;internal&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;deviceName&quot;: &quot;pcm_output1&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;deviceNameDetail&quot; : &quot;bcm HDMI&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;connected&quot; : true,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;displayId&quot; : &nbsp;1<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;{<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;type&quot; : &quot;output&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;deviceType&quot; : &quot;internal&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;deviceName&quot;: &quot;pcm_headphones&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;deviceNameDetail&quot; : &quot;bcm HDMI&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;connected&quot; : true,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;displayId&quot; : &nbsp;0<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;{<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;type&quot; : &quot;output&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;deviceType&quot; : &quot;external&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;deviceName&quot;: &quot;bluetooth_speaker0&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;deviceNameDetail&quot; : &quot;bluetooth_speaker0&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;connected&quot; : false,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;displayId&quot; : &nbsp;0<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;{<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;type&quot; : &quot;output&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;deviceType&quot; : &quot;external&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;deviceName&quot;: &quot;usb_speaker0&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;deviceNameDetail&quot; : &quot;usb_speaker0&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;connected&quot; : false,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;displayId&quot; : &nbsp;0<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;{<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;type&quot; : &quot;output&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;deviceType&quot; : &quot;external&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;deviceName&quot;: &quot;usb_speaker1&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;deviceNameDetail&quot; : &quot;usb_speaker1&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;connected&quot; : false,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;displayId&quot; : &nbsp;0<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;{<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;type&quot; : &quot;input&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;deviceType&quot; : &quot;external&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;deviceName&quot;: &quot;usb_mic0&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;deviceNameDetail&quot; : &quot;usb_mic0&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;connected&quot; : false,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;displayId&quot; : &nbsp;0<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;{<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;type&quot; : &quot;input&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;deviceType&quot; : &quot;external&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;deviceName&quot;: &quot;usb_mic1&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;deviceNameDetail&quot; : &quot;usb_mic1&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;connected&quot; : false,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;displayId&quot; : &nbsp;0<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp;&nbsp; &nbsp;]
+    </p>
+  </div>
+</div>
 <h2 id="objects">Objects</h2>
 <div>
   <h3 id="audio">audio</h3>
@@ -5365,6 +6275,102 @@ toc: true
               <li>webcall</li>
               <li>voiceassistance</li>
             </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3 id="devicelist">deviceList</h3>
+  <p>Provides information about all supported input and output devices and their type and connection status.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>type</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates if device is input or output device.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>input</li>
+              <li>output</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>deviceType</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Indicates if the device is internal or external device.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>internal</li>
+              <li>external</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>deviceName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Device name internal.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>pcm_output</li>
+              <li>pcm_output1</li>
+              <li>pcm_headphones</li>
+              <li>bluetooth_speaker0</li>
+              <li>usb_speaker0</li>
+              <li>usb_speaker1</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>deviceNameDetail</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Device full name.&nbsp;</p>
+            <p><strong>Note: </strong>It is based on name of the device which will vary based on different sound cards.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>connected</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Device connection status.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true: </strong>Device is connected.</li>
+              <li><strong>false: </strong>Device is not connected.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>displayId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Display id to which the device is associated.</p>
+            <p>Possible values are : 0, 1</p>
           </td>
         </tr>
       </tbody>

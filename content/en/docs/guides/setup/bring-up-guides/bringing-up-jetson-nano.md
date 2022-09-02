@@ -1,11 +1,15 @@
 ---
 title: Tutorial - Jetson Nano
-date: 2021-11-16
+date: 2022-08-31
 weight: 20
 toc: true
 ---
 
 This guide describes how to bring up an [NVIDIA Jetson Nano board](https://developer.NVIDIA.com/embedded/jetson-nano-developer-kit) to run webOS OSE.
+
+{{< note >}}
+This guide is tested on webOS OSE 2.17.0.
+{{< /note >}}
 
 ## Prerequisites
 
@@ -89,7 +93,7 @@ Distribution = "webos"
 
 # Supported MACHINE-s
 # Add 'jetson-nano-devkit' to the list
-Machines = ['qemux86', 'raspberrypi3', 'raspberrypi4', 'jetson-nano-devkit']
+Machines = ['qemux86', 'qemux86-64', 'qemuarm', 'raspberrypi3', 'raspberrypi3-64', 'raspberrypi4', 'raspberrypi4-64', 'jetson-nano-devkit']
 
 # github.com/openembedded repositories are read-only mirrors of the authoritative
 # repositories on git.openembedded.org
@@ -107,7 +111,7 @@ Machines = ['qemux86', 'raspberrypi3', 'raspberrypi4', 'jetson-nano-devkit']
 To add the repository, add the following codes to `build-webos/weboslayer.py`:
 
 ``` python
-('meta-tegra',                30, 'https://github.com/OE4T/meta-tegra.git', 'branch=dunfell-l4t-r32.5.0,commit=65b548a', ''),
+('meta-tegra',                30, 'https://github.com/OE4T/meta-tegra.git',                 'branch=dunfell-l4t-r32.6.1', ''),
 ```
 
 Make sure that you add the above code in **ascending** order. In the following example code, note the order of the number:
@@ -118,10 +122,9 @@ Make sure that you add the above code in **ascending** order. In the following e
 webos_layers = [
 ...
 
-('meta-qt5-compat',           19, 'git://github.com/webosose/meta-webosose',                '', ''),
-('meta-qt5',                  20, 'git://github.com/meta-qt5/meta-qt5.git',                 'branch=warrior,commit=6310c5c', ''),
+('meta-qt6',                  20, 'https://code.qt.io/yocto/meta-qt6.git',                  'branch=6.3.0,commit=f7c9337', ''),
                               
-('meta-tegra',                30, 'https://github.com/OE4T/meta-tegra.git', 'branch=dunfell-l4t-r32.5.0,commit=65b548a', ''),
+('meta-tegra',                30, 'https://github.com/OE4T/meta-tegra.git',                 'branch=dunfell-l4t-r32.6.1', ''),
  
 ('meta-webos-backports-3.2',  33, 'git://github.com/webosose/meta-webosose',                '', ''),
 ('meta-webos-backports-3.4',  35, 'git://github.com/webosose/meta-webosose',                '', ''),
@@ -160,7 +163,7 @@ $ source oe-init-build-env
 
 #### layer.conf
 
-Copy and paste the following codes at the end of the `build-webos/meta-webosose/meta-webos/conf/layer.conf` file:
+Copy and paste the following codes at the end of `build-webos/meta-webosose/meta-webos/conf/layer.conf`:
 
 {{< code "build-webos/meta-webosose/meta-webos/conf/layer.conf" >}}
 ```bash
@@ -169,21 +172,21 @@ Copy and paste the following codes at the end of the `build-webos/meta-webosose/
 IMAGE_CLASSES += "image_types_tegra"
 IMAGE_FSTYPES = "tegraflash tar.gz.bz2"
 IMAGE_TYPES += "tegraflash"
-
-# The default value for IMAGE_NAME_SUFFIX occurs an error when you build webOS OSE with u-boot. 
+ 
+# The default value for IMAGE_NAME_SUFFIX occurs an error when you build webOS OSE with u-boot.
 # To avoid this error, set IMAGE_NAME_SUFFIX as blank.
 IMAGE_NAME_SUFFIX = ""
-
+ 
 # Disable SOTA (Software-Over-the-Air) features.
 # SOTA features are not supported in NVIDIA devices.
 INHERIT_remove = "sota"
 DISTRO_FEATURES_remove = "sota usrmerge"
 DISTRO_FEATURES_NATIVE_remove = "sota"
-
+ 
 # Set rootfs for Jetson Nano.
 # mmcblk0p1 is root in Jetson Nano development module for MicroSD card.
 KERNEL_ROOTSPEC = "root=/dev/mmcblk0p1 rw rootwait"
- 
+  
 # Fix bash runtime dependency with respect to WEBOS_PREFERRED_PROVIDER_FOR_BASH
 VIRTUAL-RUNTIME_bash ?= "bash"
 RDEPENDS_tegra-nvs-base_append_class-target = " ${VIRTUAL-RUNTIME_bash}"
@@ -192,7 +195,7 @@ RDEPENDS_tegra-nvphs-base_append_class-target = " ${VIRTUAL-RUNTIME_bash}"
 RDEPENDS_tegra-nvphs-base_remove_class-target = "${@oe.utils.conditional('WEBOS_PREFERRED_PROVIDER_FOR_BASH', 'busybox', 'bash', '', d)}"
 RDEPENDS_tegra-configs-nvstartup_append_class-target = " ${VIRTUAL-RUNTIME_bash}"
 RDEPENDS_tegra-configs-nvstartup_remove_class-target = "${@oe.utils.conditional('WEBOS_PREFERRED_PROVIDER_FOR_BASH', 'busybox', 'bash', '', d)}"
- 
+  
 # Disable com.webos.app.volume, com.webos.app.notification, and g-media-pipeline
 # These applications are not guaranteed to work properly on NVIDIA devices.
 VIRTUAL-RUNTIME_com.webos.app.notification = ""
@@ -201,42 +204,131 @@ VIRTUAL-RUNTIME_g-media-pipeline = ""
 ```
 {{< /code >}}
 
-#### libhanguel.bb
+#### meta-tegra
 
-In the `libhangul.bb` file, specify the branch name of the libhanguel library as follows:
+In `build-webos/meta-tegra/recipes-bsp/u-boot/u-boot-tegra_2020.04.bb`, add and remove commands as follows:
 
-{{< code "build-webos/meta-webosose/meta-webos/recipes-upstreamable/libhangul/libhangul.bb">}}
+{{< code "build-webos/meta-tegra/recipes-bsp/u-boot/u-boot-tegra_2020.04.bb">}}
 ``` bash
 ...
 
- EXTRA_OECONF += "--libdir=${libdir}/maliit/plugins"
-  
--SRC_URI = "git://github.com/choehwanjin/libhangul.git \
-+SRC_URI = "git://github.com/choehwanjin/libhangul.git;branch=main \
-     file://0001-Change-the-project-to-address-code.google.com-p-libh.patch \
-     file://0002-Add-rule-to-auto-update-when-you-make-dist-ChangeLog.patch \
-     file://0003-Change-wrong-name-hangul-jongseong-dicompose-decomp.patch \
+DEPENDS += "bc-native dtc-native ${SOC_FAMILY}-flashtools-native"
++LICENSE = "CLOSED" # Add this line
+SRC_REPO ?= "github.com/OE4T/u-boot-tegra.git;protocol=https"
+SRC_URI = "git://${SRC_REPO};branch=${SRCBRANCH}"
+
+...
+
+require u-boot-tegra-bootimg.inc
+ 
+-PACKAGES =+ "${PN}-extlinux" # Remove this line
+FILES_${PN}-extlinux = "/boot/extlinux /boot/initrd"
+ALLOW_EMPTY_${PN}-extlinux = "1"
+RPROVIDES_${PN}-extlinux += "u-boot-extlinux"
 
 ...
 ```
 {{< /code >}}
 
 {{< note >}}
-In the above code, `-` means deleting the line and `+` means adding the line.
+Throughout this document, `-` means deleting the line and `+` means adding the line.
 {{< /note >}}
+
+#### qtbase_git.bbappend
+
+In `meta-webosose/meta-webos/recipes-qt/qt6/qtbase_git.bbappend`, remove a line regarding to "eglfs-egldevice".
+
+{{< code "meta-webosose/meta-webos/recipes-qt/qt6/qtbase_git.bbappend">}}
+``` bash
+PACKAGECONFIG[sessionmanager] = "-DFEATURE_sessionmanager=ON,-DFEATURE_sessionmanager=OFF"
+PACKAGECONFIG:remove = "sessionmanager"
+ 
+PACKAGECONFIG[xlib] = "-DFEATURE_xlib=ON,-DFEATURE_xlib=OFF"
+PACKAGECONFIG:remove = "xlib"
+ 
+PACKAGECONFIG[eglfs-egldevice] = "-DFEATURE_eglfs_egldevice=ON,-DFEATURE_eglfs_egldevice=OFF"
+-PACKAGECONFIG:remove = "eglfs-egldevice" # Remove this line
+ 
+ 
+PACKAGECONFIG[system-sqlite] = "-DFEATURE_system_sqlite=ON,-DFEATURE_system_sqlite=OFF"
+PACKAGECONFIG:append = " system-sqlite"
+ 
+PACKAGECONFIG[system-pcre2] = "-DFEATURE_system_pcre2=ON,-DFEATU
+```
+{{< /code >}}
+
+#### Adding compatibility for Qt6
+
+1. Create an directory as follows:
+
+    ``` bash
+    mkdir -p build-webos/meta-tegra/recipes-qt/qt6
+    ```
+
+2. Move to the `build-webos/meta-tegra` directory and cherry-pick the following two commits:
+
+    ``` bash
+    (build-webos/meta-tegra)$ git cherry-pick 47b14268ef9aaccf57604e1665612faa239c2223
+    (build-webos/meta-tegra)$ git cherry-pick f30f4cf1e9edc2eb47b76dfa07cd1be8947a98df
+    ```
+
+3. Cherry-picking generates files in `build-webos/meta-tegra/external/qt5-layer/recipes-qt/qt5`. Move the files to the directory created in the step 2.
+
+    ``` bash
+    mv build-webos/meta-tegra/external/qt5-layer/recipes-qt/qt5/* build-webos/meta-tegra/recipes-qt/qt6
+
+    # Check the result
+    tree build-webos/meta-tegra/recipes-qt/qt6
+    
+    build-webos/meta-tegra/recipes-qt/qt6
+    ├── qtbase
+    │   ├── 0001-eglfs-Newer-Nvidia-libdrm-provide-device-instead-dri.patch
+    │   └── 0002-eglfs-add-a-default-framebuffer-to-NVIDIA-eglstreams.patch
+    └── qtbase_%.bbappend
+
+    1 directory, 3 files
+    ```
+
+4. Then remove the empty directory.
+
+    ``` bash
+    rm -rf build-webos/meta-tegra/external/qt5-layer
+    ```
+
+5. In `build-webos/meta-tegra/recipes-qt/qt6/qtbase_%.bbappend`, add following two lines:
+
+    ```
+    FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
+ 
+    SRC_URI += "file://0001-eglfs-Newer-Nvidia-libdrm-provide-device-instead-dri.patch \
+                file://0002-eglfs-add-a-default-framebuffer-to-NVIDIA-eglstreams.patch \
+    "
+    
+    PACKAGECONFIG:append:tegra = " kms"
+    +PACKAGECONFIG:append:tegra = " gbm eglfs-egldevice"
+    +DISTRO_FEATURES:remove = "ptest"
+    ```
+
+6. In `build-webos/meta-tegra/recipes-qt/qt6`, create the following files:
+
+    - `qtdeclarative_%.bbappend`
+    - `qtgraphicaleffects_%.bbappend`
+    - `qtshadertools_%.bbappend`
+    - `qtwayland_%.bbappend`
+
+    ``` bash
+    touch build-webos/meta-tegra/recipes-qt/qt6/qt{declarative,graphicaleffects,shadertools,wayland}_%.bbappend
+    ```
+
+7. Add a line, `DISTRO_FEATURES:remove = "ptest"`, to each file created in the step 6.
 
 ### Building the webOS OSE Image
 
  To start the build process, run the following command:
 
 ```bash
-$ bitbake webos-image
-```
-
-Alternatively, you can also run the following command:
-
-```bash
-$ make webos-image
+(build-webos)$ source ./oe-init-build-env
+(build-webos)$ bitbake webos-image
 ```
 
 ## Flashing the Image
@@ -244,16 +336,19 @@ $ make webos-image
 If the build succeeds, you can find the built webOS OSE image at the `BUILD/deploy/images/<TARGET DEVICE NAME>` directory. Move to the directory.
 
 ```bash
-$ cd build-webos/BUILD/deploy/images/<TARGET DEVICE NAME>
+$ cd build-webos/BUILD/deploy/images/jetson-nano-devkit
 ```
 
 1. Create an image for MicroSD card.
 
     ``` bash
-    $ tar xvf webos-image-ros-world-foxy-jetson-nano-devkit.tegraflash.tar.gz
+    $ mkdir jetson-nano-image
+    $ tar -zxvf webos-image-jetson-nano-devkit.tegraflash.tar.gz -C ./jetson-nano-image
+    $ cd jetson-nano-image
     $ ./dosdcard.sh
     ```
-2. Flash the image.
+
+2. Insert your MicroSD card into your PC and flash the created image to your microSD card.
 
     ```bash
     $ sudo umount /dev/sd<xN>
@@ -265,13 +360,17 @@ $ cd build-webos/BUILD/deploy/images/<TARGET DEVICE NAME>
     - `sd<xN>` denotes the device name of the MicroSD card, where `x` is a character and `N` is a number suffix.
     - For `dd` command, you must pass `sd<x>` (`x` is the same as the `x` in the above) to the `of` operand. `sd<X>` indicates the mass storage device, not the partition.
 
-If the flashing succeeds, plug the MicroSD card into the target device.
+If the flashing succeeds, remove the MicroSD card from the PC and insert the card into your target device.
 
 ## Configuring Extra Setup
 
-At this monent, if you turn on the target device,  none of the peripheral devices (touch display, keyboard, and mouse) are functional. To use the peripheral devices and other useful features, you need to set up extra configurations.
+At this moment, if you turn on the target device, none of the peripheral devices (touch display, keyboard, and mouse) are work. To use the peripheral devices and other useful features, you need to set up extra configurations.
 
 ### Establishing a Serial Connection
+
+{{< note >}}
+If you use a router, you can skip this step. Go to [Enabling Graphic Interfaces](#enabling-graphic-interfaces).
+{{< /note >}}
 
 Since you cannot use keyboard on the target board yet, you have to establish a serial connection between the host machine and the target device.
 
@@ -361,34 +460,6 @@ pmlog info "Starting /usr/bin/surface-manager with flags -platform ${WEBOS_COMPO
 After modifying the `/usr/bin/surface-manager.sh` file, you have to reboot Home Launcher and the target device.
 
 ``` bash
-$ root@jetson-nano-devkit:~# restart surface-manager
-restart surface-manager
-$ root@jetson-nano-devkit:~# restart bootd
-restart bootd
-```
-
-### Enabling Multimedia Playback
-
-Modify `/etc/systemd/system/scripts/webapp-mgr.sh` as follows:
-
-{{< code "/etc/systemd/system/scripts/webapp-mgr.sh" >}}
-``` bash
-export WAM_COMMON_SWITCHES=" \                                             
-    ....
-    --touch-events=enabled \                   
-    --ui-disable-opaque-shader-program \                         
-    --user-data-dir=$WAM_DATA_PATH \
-+   --disable-web-media-player-neva \
-    --webos-wam \ "
-```
-{{< /code >}}
-
-After modifying the `/etc/systemd/system/scripts/webapp-mgr.sh` file, you have to reboot WAM, Home Launcher and the target device.
-
-``` bash
-restart WAM
-$ root@jetson-nano-devkit:~# restart webapp-mgr
-restart webapp-mgr
 $ root@jetson-nano-devkit:~# restart surface-manager
 restart surface-manager
 $ root@jetson-nano-devkit:~# restart bootd
