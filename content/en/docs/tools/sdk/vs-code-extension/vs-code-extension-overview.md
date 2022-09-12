@@ -1,7 +1,7 @@
 ---
 title: Overview
 display_title: Visual Studio Code Extension
-date: 2022-04-06
+date: 2022-09-13
 weight: 20
 toc: true
 ---
@@ -16,23 +16,24 @@ This page only describes the overview of the extension. For more details, see th
 
 webOS OSE VS Code extension provides the following key features:
 
-* Creating web apps, Enact apps, or JS services from a template.
-* Assisting the use of webOS LS2 APIs and Enact APIs through content assist.
-* Debugging the implementation.
-* Previewing an app locally.
-* Running ESLint on Enact apps.
-* Packaging, installing, and running apps.
-* Configuring and managing VirtualBox emulator.
+* Creating web apps, Enact apps, or JS services from a template
+* Assisting the use of webOS LS2 APIs and Enact APIs through content assist
+* Debugging the implementation
+* Previewing an app locally
+* Running ESLint on Enact apps
+* Packaging, installing, and running apps
+* Configuring and managing VirtualBox emulator
+* Analyzing IPKs
 
 ## How to Install
 
 To install the extension, open [Microsoft Visual Studio Code](https://code.visualstudio.com/) and do the following:
 
 1. Navigate to **View** > **Extensions**.
-2. Search for **webOS OSE** in the search bar and click the **Install** button. Once the installation is complete, you will see the **webOS OSE** icon <img src="/images/docs/tools/vs-code-extension/webos_ose_icon.png" alt="webos OSE icon in the Activity bar" > in the **Activity** bar.
+2. Search for **webOS OSE** in the search bar and click the **Install** button. Once the installation is complete, you will see the **webOS OSE** icon <img src="/images/docs/tools/vs-code-extension/webos-ose-icon.png" alt="webos OSE icon in the Activity bar" > in the **Activity** bar.
 3. Click the icon to see the user interface of the extension:
 
-{{< figure src="/images/docs/tools/vs-code-extension/extension_view.png" >}}
+{{< figure src="/images/docs/tools/vs-code-extension/extension-view.png" >}}
 
 ## How to Use
 
