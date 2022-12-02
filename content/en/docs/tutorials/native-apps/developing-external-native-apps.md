@@ -108,8 +108,8 @@ A brief explanation of the above file:
 - Line(2) : The ID for the app.
 - Line(5) : The type of the native app.
 - Line(6) : The executable file name.
-- Line(7) : The title to be shown on the Home Launcher app.
-- Line(8) : The icon to be shown on the Home Launcher app. Make sure the icon file is available in the project root directory. You can use your own icon.png (80*80) file or attached [icon.png](/images/docs/tutorials/icon.png).
+- Line(7) : The title to be shown on the Launchpad and App Bar.
+- Line(8) : The icon to be shown on the Launchpad. Make sure the icon file is available in the project root directory. You can use your own icon.png (80*80) file or attached [icon.png](/images/docs/tutorials/icon.png).
 
 For more details, see [appinfo.json]({{< relref "appinfo-json" >}}).
 
@@ -283,8 +283,11 @@ $ ares-launch --device <TARGET_DEVICE> --close com.sample.waylandegl
 
 ### Using the Target Device
 
-To launch the native app using the target device, you need to display the Home Launcher first.
+To launch the native app using the target device, you need to display the Launchpad first.
 
-To display the Home Launcher, drag the mouse cursor upward from the bottom of the screen (or swipe up from the bottom of the screen if you’re using a touch display).
+1. Drag the mouse cursor upward from the bottom of the screen (or swipe up from the bottom of the screen if you’re using a touch display).
+2. Click the Launchpad icon.
 
-After the Home Launcher is displayed, click the app icon.
+    {{< figure src="/images/docs/tutorials/launchpad-icon.jpg" width="450px" alt="Launchpad icon" caption="" >}}
+
+3. After the Launchpad is displayed, click the app icon.

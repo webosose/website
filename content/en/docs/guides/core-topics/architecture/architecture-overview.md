@@ -13,7 +13,7 @@ The following figure shows the overall architecture of webOS Open Source Edition
 
 webOS OSE has Core applications as the top layer and this layer includes System UI and System app.
 
-  - System UI includes apps that are related to the basic user interface, such as Home Launcher and Notification. These apps are usually implemented using QML.
+  - System UI includes apps that are related to the basic user interface, such as App Bar, and Notification. These apps are usually implemented using QML.
 
   - System app includes Settings app and web browser. Settings app is used to control the system properties and implemented using Enact. As a web browser, Enact browser is used.
 
@@ -53,7 +53,7 @@ Activity Manager is responsible for managing and executing activities requested 
 
 ### Luna Surface Manager
 
-Luna Surface Manager (LSM) is a component that works as a graphics and window manager. LSM displays graphical elements on the screen, manages the composition of these elements, and performs the event handling for input devices such as keyboard and pointer. LSM is also responsible for the management of System UI, such as Home Launcher and Notification. LSM is implemented using Qt, and System UI is implemented using QML.
+Luna Surface Manager (LSM) is a component that works as a graphics and window manager. LSM displays graphical elements on the screen, manages the composition of these elements, and performs the event handling for input devices such as keyboard and pointer. LSM is also responsible for the management of System UI, such as App Bar and Notification. LSM is implemented using Qt, and System UI is implemented using QML.
 
 ### uMediaServer
 

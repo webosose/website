@@ -55,7 +55,7 @@ Here are little tips that might help you with JSON syntax:
 <td><p>id</p></td>
 <td><p>Required</p></td>
 <td><p>string</p></td>
-<td><p>App ID, e.g. &quot;com.newco.app.myapp&quot;. Every app has a unique ID, formed from reverse DNS naming conventions. Home Launcher uses the ID to uniquely identify your application and displays it with the title. The application ID is unique, set once, and cannot be changed after publishing the application.</p>
+<td><p>App ID, e.g. &quot;com.newco.app.myapp&quot;. Every app has a unique ID, formed from reverse DNS naming conventions. App Bar uses the ID to uniquely identify your application and displays it with the title. The application ID is unique, set once, and cannot be changed after publishing the application.</p>
 <ul>
 <li><p>Start the ID with the reverse domain of company/institution. (Recommended)</p></li>
 <li><p>For app developers, the ID cannot start with the following reverse domain names: <i>com.palm</i>, <i>com.webos</i>, <i>com.lge</i>, <i>com.palmdts</i>. We recommend that platform developers who implement built-in apps and services can only use those names.</p></li>
@@ -68,7 +68,7 @@ Here are little tips that might help you with JSON syntax:
 <td><p>title</p></td>
 <td><p>Required</p></td>
 <td><p>string</p></td>
-<td><p>The title of the app as shown in Home Launcher and the app window. The app title is unique; once set, it cannot be changed after publishing the app.</p></td>
+<td><p>The title of the app as shown in Launchpad and the app window. The app title is unique; once set, it cannot be changed after publishing the app.</p></td>
 </tr>
 <tr>
 <td><p>main</p></td>
@@ -113,7 +113,7 @@ Here are little tips that might help you with JSON syntax:
 <td><p>vendor</p></td>
 <td><p>Optional</p></td>
 <td><p>string</p></td>
-<td><p>Provides the information of the app owner. This is used in Home Launcher and deviceinfo dialogs.</p></td>
+<td><p>Provides the information of the app owner. This is used in deviceinfo dialogs.</p></td>
 </tr>
 <tr>
 <td><p>version</p></td>
@@ -254,7 +254,7 @@ webOS OSE does not support UHD resolution for web apps.
 
 If the app is localized into more than one language, each language can have its own `appinfo.json` file. However, the app ID and version number in each localized `appinfo.json` must be the same as those in the top-level `appinfo.json`. The app ID and version in the top-level `appinfo.json` are validated for correct value and structure. Any app that fails the validation cannot be packaged or uploaded.
 
-According to the locale setting value, the app metadata localization shows the matching app information at the Home Launcher.
+According to the locale setting value, the app metadata localization shows the matching app information at the Launchpad.
 
 To provide app information in a specific locale, you need to create locale folders under the `resources` folder, then `appinfo.json` files for each locale under correct locations as shown below:
 

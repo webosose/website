@@ -408,8 +408,8 @@ A brief explanation of the above file:
 - Line(2) : The ID for the app.
 - Line(5) : The type of the native app.
 - Line(6) : The executable file name.
-- Line(7) : The title to be shown on the Home Launcher app.
-- Line(8) : The icon to be shown on the Home Launcher app. Make sure the icon file is available in the project root directory. You can use your own icon.png (80*80) file or attached [icon.png](/images/docs/tutorials/icon.png).
+- Line(7) : The title to be shown on the Launchpad.
+- Line(8) : The icon to be shown on the Launchpad and App Bar. Make sure the icon file is available in the project root directory. You can use your own icon.png (80*80) file or attached [icon.png](/images/docs/tutorials/icon.png).
 - Line(9) : Specify the group to which the external service's method called by the app belongs. Because SAM's `registerApp` method belongs to "application.operation" group, put "application.operation" in this property. To check the group of each method, use [`ls-monitor`]({{< relref "ls-monitor" >}}) command with "-i" option.
 - Line(10) : This field is required to use SAM's `registerApp` method.
 
@@ -616,7 +616,7 @@ After building the app, you must verify its functionality.
 
 4.  **Scan the app.**
 
-    To make System and Application Manager (SAM) scan the app, restart SAM using the `systemctl` command. This step is required so that the app can be added to the app list, which in turn makes the app appear on the Home Launcher.
+    To make System and Application Manager (SAM) scan the app, restart SAM using the `systemctl` command. This step is required so that the app can be added to the app list, which in turn makes the app appear on the Launchpad.
 
     ``` bash
     root@raspberrypi4-64:/# systemctl restart sam
@@ -628,11 +628,15 @@ After building the app, you must verify its functionality.
 
 5.  **Run the native app.**
 
-    To display the Home Launcher, drag the mouse cursor upward from the bottom of the screen (or swipe up from the bottom of the screen if you're using a touch display).
+    Drag the mouse cursor upward from the bottom of the screen (or swipe up from the bottom of the screen if you’re using a touch display).
 
     {{< note >}}
-    On webOS OSE 1.x, press the Windows key on your keyboard to display the Home Launcher.
+    On webOS OSE 1.x, press the Windows key.
     {{< /note >}}
+
+    Click the Launchpad icon.
+
+    {{< figure src="/images/docs/tutorials/launchpad-icon.jpg" width="450px" alt="Launchpad icon" caption="" >}}
 
     Click the app icon to see the window titled "Native qt app" with the following page:
 
@@ -726,4 +730,4 @@ Perform the following steps:
 
     For more details, see the [Flashing webOS OSE]({{< relref "flashing-webos-ose#linux" >}}) page.
 
-After rebooting, the native app becomes available on the Home Launcher.
+After rebooting, the native app becomes available on the Launchpad.
