@@ -1,6 +1,6 @@
 ---
 title: Developing Built-in QML Apps
-date: 2021-11-24
+date: 2022-12-02
 weight: 20
 toc: true
 ---
@@ -305,7 +305,7 @@ LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/Apache-2.0;md5=89aea4e17d99a7cacdbeed46a0096b10"
 
 DEPENDS = "qtbase qt-features-webos qtdeclarative pmloglib"
-RDEPENDS_${PN} += "qml-webos-framework qml-webos-bridge"
+RDEPENDS:${PN} += "qml-webos-framework qml-webos-bridge"
 
 WEBOS_VERSION="1.0.0"
 PR = "r0"
@@ -314,7 +314,7 @@ inherit webos_qmake5
 inherit webos_submissions
 inherit webos_app
 
-FILES_${PN} += "${webos_applicationsdir}"
+FILES:${PN} += "${webos_applicationsdir}"
 ```
 {{< /code >}}
 
@@ -344,18 +344,18 @@ For the sample QML app (`com.example.app.qml`), you must provide the local path 
 {{< code "webos-local.conf" >}}
 ``` bash {linenos=table}
 INHERIT += "externalsrc"
-EXTERNALSRC_pn-com.example.app.qml = "/home/username/project/com.example.app.qml/"
-EXTERNALSRC_BUILD_pn-com.example.app.qml = "/home/username/project/com.example.app.qml/build/"
-PR_append_pn-com.example.app.qml =".local0"
+EXTERNALSRC:pn-com.example.app.qml = "/home/username/project/com.example.app.qml/"
+EXTERNALSRC_BUILD:pn-com.example.app.qml = "/home/username/project/com.example.app.qml/build/"
+PR:append:pn-com.example.app.qml =".local0"
 ```
 {{< /code >}}
 
 A brief explanation of the above file:
 
 - Line(1) : Inherit `externalsrc` bbclass file.
-- Line(2) : The local source directory. The syntax of the property is `EXTERNALSRC_pn-<component>`. For the value, input `"<absolute path of the project directory>"`
-- Line(3) : The local build directory. The syntax of the property is `EXTERNALSRC_BUILD_pn-<component>`. For the value, input `"<absolute path of the project directory>/build/"`
-- Line(4) : The appended revision version (PR) for building local source files. The syntax of the property is `PR_append_pn-<component>`. This property is optional.
+- Line(2) : The local source directory. The syntax of the property is `EXTERNALSRC:pn-<component>`. For the value, input `"<absolute path of the project directory>"`
+- Line(3) : The local build directory. The syntax of the property is `EXTERNALSRC_BUILD:pn-<component>`. For the value, input `"<absolute path of the project directory>/build/"`
+- Line(4) : The appended revision version (PR) for building local source files. The syntax of the property is `PR:append:pn-<component>`. This property is optional.
 
 {{< note >}}
 We recommend that you add a trailing slash (/) at the end of all local directory paths, as in Line(2) and Line(3).
@@ -509,11 +509,11 @@ Perform the following steps:
 
     - **Directory:** `build-webos/meta-webosose/meta-webos/recipes-core/packagegroups`
 
-    - **Updates to be made:** Add the QML app name to **`RDEPENDS_${PN} =`**
+    - **Updates to be made:** Add the QML app name to **`RDEPENDS:${PN} =`**
 
     ``` bash {hl_lines=[6]}
     ...
-    RDEPENDS_${PN} = " \
+    RDEPENDS:${PN} = " \
         activitymanager \
         audiod \
         ...

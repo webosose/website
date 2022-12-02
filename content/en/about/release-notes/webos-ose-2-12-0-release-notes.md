@@ -2,7 +2,7 @@
 title: webOS OSE 2.12.0
 display_title: webOS OSE 2.12.0 Release Notes
 date: 2021-07-16
-weight: 22
+weight: 26
 toc: true
 layout: release-notes
 ---

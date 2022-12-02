@@ -22,7 +22,11 @@ In this release, **SW Updater service** (`com.webos.service.swupdater`) has been
 
 Eclipse hawkBit is an open-source backend framework for software update. SW Updater service acts as the hawkBit client, and provides methods that let you check the software update status and control the FOTA update.
 
-To set up the hawkBit server, see [hawkBit documentation](https://www.eclipse.org/hawkbit/). To configure and use the hawkBit client on webOS OSE, see the [com.webos.service.swupdater API reference]({{< relref "com-webos-service-swupdater" >}}).
+To set up the hawkBit server, see [hawkBit documentation](https://www.eclipse.org/hawkbit/). To configure and use the hawkBit client on webOS OSE, see the com.webos.service.swupdater API reference.
+
+{{< note >}}
+The com.webos.service.swupdater API had retired in webOS OSE 2.16.0.
+{{< /note >}}
 
 ## Enact framework upgrade
 

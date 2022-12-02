@@ -1,6 +1,6 @@
 ---
 title: webOS OSE 1.4.0 Release
-date: 2018-10-25
+date: 2018-10-31
 slug: webos-ose-1-4-0-release
 posttype: release
 toc: false

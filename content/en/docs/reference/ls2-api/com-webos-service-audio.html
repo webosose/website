@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.audio
-date: 2022-08-29
+date: 2022-11-21
 weight: 100
 toc: true
 ---
@@ -1274,7 +1274,57 @@ toc: true
         <tr>
           <td>volumeStatus</td>
           <td>Optional</td>
-          <td>Object array: <a href="#volumestatus"> VolumeStatus</a></td>
+          <td>Object: <a href="#volumestatus"> VolumeStatus</a></td>
+          <td>
+            <p>Indicates the status of volume&nbsp;for different audio output devices.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>callerId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the luna service name of the calling application.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Subscription Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+              <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>volumeStatus</td>
+          <td>Optional</td>
+          <td>Object: <a href="#volumestatus"> VolumeStatus</a></td>
           <td>
             <p>Indicates the status of volume&nbsp;for different audio output devices.</p>
           </td>
@@ -1311,7 +1361,7 @@ toc: true
       &nbsp; &nbsp;&quot;callerId&quot;:&quot;com.webos.lunasend-2027&quot;<br />
       }
     </p>
-    <p>After change volume for session 1:</p>
+    <p>Subscription response (after change volume for session 1):</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;volumeStatus&quot;:{<br />
       &nbsp; &nbsp; &nbsp; &quot;sessionId&quot;:1,<br />
@@ -5870,7 +5920,7 @@ toc: true
       &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;{<br />
       &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;type&quot; : &quot;output&quot;,<br />
       &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;deviceType&quot; : &quot;internal&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;deviceName&quot;: &quot;pcm_headphones&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;deviceName&quot;: &quot;pcm_headphone&quot;,<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;deviceNameDetail&quot; : &quot;bcm HDMI&quot;,<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;connected&quot; : true,<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;displayId&quot; : &nbsp;0<br />
@@ -5915,7 +5965,319 @@ toc: true
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;connected&quot; : false,<br />
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;displayId&quot; : &nbsp;0<br />
       &nbsp; &nbsp; &nbsp; &nbsp; }<br />
-      &nbsp;&nbsp; &nbsp;]
+      &nbsp;&nbsp; &nbsp;]<br />
+      }
+    </p>
+  </div>
+</div>
+<h3 id="getaudioeffectlist">getAudioEffectList</h3>
+<div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>audio.query</b></span></div>
+  <h4>Description</h4>
+  <p>Lists all the supported audio effects.</p>
+  <h4>Parameters</h4>
+  <p>None</p>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>audioEffectList</td>
+          <td>Optional</td>
+          <td>String array</td>
+          <td>
+            <p>List of the supported audio effects.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are: </p>
+            <ul>
+              <li><strong>true:</strong> Operation is successful.</li>
+              <li><strong>false:</strong> Operation has failed. Check the 'errorCode' and 'errorText' fields.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The reason for the failure of the operation. See the &#39;API Error Codes Reference&#39; section for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : Lists the supported audio effects</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -f -n 1 luna://com.webos.service.audio/getAudioEffectList &#39;{}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&nbsp;&quot;returnValue&quot; : true<br />
+      &nbsp; &nbsp;&nbsp;&quot;audioEffectList&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;speech enhancement&quot;<br />
+      &nbsp; &nbsp; ]<br />
+      }
+    </p>
+  </div>
+</div>
+<h3 id="setaudioeffect">setAudioEffect</h3>
+<div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>audio.operation</b></span></div>
+  <h4>Description</h4>
+  <p>Sets the status of an audio effect.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>effectName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Audio effect name.&nbsp;</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>speech enhancement</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>enabled</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Status of the audio effect.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true:&nbsp;</strong>Audio effect is enabled.</li>
+              <li><strong>false:&nbsp;</strong>Audio effect is disabled.</li>
+            </ul>
+            <p><strong>Note: </strong>By default, all the audio effects are disabled.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are: </p>
+            <ul>
+              <li><strong>true:</strong> Operation is successful.</li>
+              <li><strong>false:</strong> Operation has failed. Check the 'errorCode' and 'errorText' fields.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The reason for the failure of the operation. See the &#39;API Error Codes Reference&#39; section for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example :  Enable speech enhancement effect</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -f -n 1 luna://com.webos.service.audio/setAudioEffect &#39;{&quot;effectName&quot;:&quot;speech enhancement&quot;, &quot;enabled&quot;:true}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:&nbsp;true<br />
+      }
+    </p>
+  </div>
+</div>
+<h3 id="checkaudioeffectstatus">checkAudioEffectStatus</h3>
+<div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>audio.query</b></span></div>
+  <h4>Description</h4>
+  <p>Check the status of an audio effect.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>effectName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Audio effect name.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li>speech enhancement</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>enabled</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the current state of the audio effect.</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true:&nbsp;</strong>Audio effect is enabled.</li>
+              <li><strong>false: </strong>Audio effect is not enabled.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of the operation.</p>
+            <p>Possible values are: </p>
+            <ul>
+              <li><strong>true:</strong> Operation is successful.</li>
+              <li><strong>false:</strong> Operation has failed. Check the 'errorCode' and 'errorText' fields.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The reason for the failure of the operation. See the &#39;API Error Codes Reference&#39; section for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : Checks the status of the speech enhancement audio effect</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -f -n 1 luna://com.webos.service.audio/checkAudioEffectStatus&nbsp;&#39;{&quot;effectName&quot;:&quot;speech enhancement&quot;}&#39;</p>
+    <p>Response:<br />
+      {<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;:&nbsp;true,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&quot;enabled&quot;:&nbsp;true,<br />
+      }
     </p>
   </div>
 </div>
@@ -6335,7 +6697,7 @@ toc: true
             <ul>
               <li>pcm_output</li>
               <li>pcm_output1</li>
-              <li>pcm_headphones</li>
+              <li>pcm_headphone</li>
               <li>bluetooth_speaker0</li>
               <li>usb_speaker0</li>
               <li>usb_speaker1</li>

@@ -56,11 +56,11 @@ About the requirements for a build environment, refer to [System Requirements]({
     ``` shell
     MyLinux:~/ose/build-webos$ vi meta-webosose/meta-webos/recipes-core/packagegroups/packagegroup-webos-extended.bb
     ```
-    Add `wiringpi` in `RDEPENDS_${PN} =`
+    Add `wiringpi` in `RDEPENDS:${PN} =`
 
     ``` shell {hl_lines=[11]}
     ...
-    RDEPENDS_${PN} = " \
+    RDEPENDS:${PN} = " \
     activitymanager \
     audiod \
     bootd \

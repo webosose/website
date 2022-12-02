@@ -1,6 +1,6 @@
 ---
 title: Developing Built-in Native Services
-date: 2021-11-24
+date: 2022-12-02
 weight: 20
 toc: true
 ---
@@ -505,6 +505,7 @@ PR = "r0"
 
 inherit webos_component
 inherit webos_submissions
+inherit webos_daemon
 inherit webos_cmake
 inherit webos_system_bus
 ```
@@ -518,8 +519,9 @@ A brief explanation of the above file:
 - Line(9) : Revision version of the recipe. Each recipe requires a counter to track its modification history. Make sure that you increment the version when you edit the recipe, unless you only change the value of the `WEBOS_VERSION` field or comments.
 - Line(11) : Inherit common functions of webOS OSE. For all components of webOS OSE, this entry is required.
 - Line(12) : Instruct OpenEmbedded to use the `WEBOS_VERSION` value as the component version number. If you develop your component on a local repository, this entry is required.
-- Line(13) : Instruct OpenEmbedded that the component uses CMake for configuration, which is the preferred choice for webOS components.
-- Line(14) : To register component as a service and install LS2 configuration files, inherit `webos_system_bus`.
+- Line(13) : Every component that installs a daemon inherits `webos_daemon`.
+- Line(14) : Instruct OpenEmbedded that the component uses CMake for configuration, which is the preferred choice for webOS components.
+- Line(15) : To register component as a service and install LS2 configuration files, inherit `webos_system_bus`.
 
 ### Configure the Local Source Directory
 
@@ -535,18 +537,18 @@ For the sample native service (`com.example.service.native`), you must provide t
 {{< code "webos-local.conf" >}}
 ``` bash {linenos=table}
 INHERIT += "externalsrc"
-EXTERNALSRC_pn-com.example.service.native = "/home/username/project/com.example.service.native/"
-EXTERNALSRC_BUILD_pn-com.example.service.native = "/home/username/project/com.example.service.native/build/"
-PR_append_pn-com.example.service.native =".local0"
+EXTERNALSRC:pn-com.example.service.native = "/home/username/project/com.example.service.native/"
+EXTERNALSRC_BUILD:pn-com.example.service.native = "/home/username/project/com.example.service.native/build/"
+PR:append:pn-com.example.service.native =".local0"
 ```
 {{< /code >}}
 
 A brief explanation of the above file:
 
 - Line(1) : Inherit "externalsrc" bbclass file.
-- Line(2) : The local source directory. The syntax of the property is `EXTERNALSRC_pn-<component>`. For the value, input `"<absolute path of the project directory>"`
-- Line(3) : The local build directory. The syntax of the property is `EXTERNALSRC_BUILD_pn-<component>`. For the value, input `"<absolute path of the project directory>/build/"`
-- Line(4) : The appended revision version (PR) for building local source files. The syntax of the property is `PR_append_pn-<component>`. This property is optional.
+- Line(2) : The local source directory. The syntax of the property is `EXTERNALSRC:pn-<component>`. For the value, input `"<absolute path of the project directory>"`
+- Line(3) : The local build directory. The syntax of the property is `EXTERNALSRC_BUILD:pn-<component>`. For the value, input `"<absolute path of the project directory>/build/"`
+- Line(4) : The appended revision version (PR) for building local source files. The syntax of the property is `PR:append:pn-<component>`. This property is optional.
 
 {{< note >}}
 We recommend that you add a trailing slash (/) at the end of all local directory paths, as in Line(2) and Line(3).
@@ -713,11 +715,11 @@ Add the service to the package recipe file.
 
 - **Directory:** `build-webos/meta-webosose/meta-webos/recipes-core/packagegroups`
 
-- **Updates to be made:** Add the service name to **`RDEPENDS_${PN} =`**
+- **Updates to be made:** Add the service name to **`RDEPENDS:${PN} =`**
 
 ``` bash
 ...
-RDEPENDS_${PN} = " \
+RDEPENDS:${PN} = " \
     activitymanager \
     audiod \
     ...
@@ -766,12 +768,12 @@ Modify the **`webos-initscripts`** component which is responsible for systemd co
 
     ``` bash
     INHERIT += "externalsrc"
-    EXTERNALSRC_pn-com.example.service.native = "/home/username/project/webOS/com.example.service.native/"
-    EXTERNALSRC_BUILD_pn-com.example.service.native = "/home/username/project/webOS/com.example.service.native/build/"
-    PR_append_pn-com.example.service.native =".local0"
-    EXTERNALSRC_pn-webos-initscripts = "/home/username/project/webOS/webos-initscripts/"
-    EXTERNALSRC_BUILD_pn-webos-initscripts = "/home/username/project/webOS/webos-initscripts/build"
-    PR_append_pn-webos-initscripts =".local0"
+    EXTERNALSRC:pn-com.example.service.native = "/home/username/project/webOS/com.example.service.native/"
+    EXTERNALSRC_BUILD:pn-com.example.service.native = "/home/username/project/webOS/com.example.service.native/build/"
+    PR:append:pn-com.example.service.native =".local0"
+    EXTERNALSRC:pn-webos-initscripts = "/home/username/project/webOS/webos-initscripts/"
+    EXTERNALSRC_BUILD:pn-webos-initscripts = "/home/username/project/webOS/webos-initscripts/build"
+    PR:append:pn-webos-initscripts =".local0"
     ```
 
 4.  Build webos-initscripts on build-webos.

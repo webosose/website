@@ -13,7 +13,7 @@ This release brings you the following improvements.
 
 ## Enact browser update
 
-Enact browser has been updated to support several basic browser features such as dialogs and notifications. In addition, Enact browser is now better equipped for internationalization (i18n), in tandem with iLib update included in the recent [Enact framework update]({{< relref "2018-10-25-webos-ose-1-4-0-release#enact-framework-update" >}}).
+Enact browser has been updated to support several basic browser features such as dialogs and notifications. In addition, Enact browser is now better equipped for internationalization (i18n), in tandem with iLib update included in the recent [Enact framework update]({{< relref "2018-10-31-webos-ose-1-4-0-release#enact-framework-update" >}}).
 
 There are more updates and a bug fix for Enact browser, so check the [release notes]({{< relref "webos-ose-1-4-1-release-notes" >}}) for more information.
 

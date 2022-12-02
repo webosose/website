@@ -1,7 +1,7 @@
 ---
 title: Flashing webOS OSE
 display_title: Flashing webOS Open Source Edition
-date: 2019-12-04
+date: 2022-12-02
 weight: 30
 toc: true
 ---
@@ -119,8 +119,9 @@ After you finish flashing the webOS OSE image to the microSD card, you can check
 
 1. First, eject the microSD card from the reader device and insert it in the target device.
 2. Connect the target device with peripheral devices.
-    * **For webOS OSE 2.0**
-        * Connect the target device with a touchscreen through Micro HDMI to HDMI cable.
+    * **For webOS OSE 2.0.0 or Higher**
+        * Connect the target device with a monitor through Micro HDMI cable.
+        * (Optional) Connect the target device with a touchscreen through Micro HDMI to HDMI cable.
         * Connect Ethernet cable to the target device.
         * (Optional) Plug a keyboard and a mouse into the USB ports of the target device.
     * **For webOS OSE 1.x**
@@ -130,24 +131,16 @@ After you finish flashing the webOS OSE image to the microSD card, you can check
 3. Set the input mode of the touchscreen (or monitor) to the port connected with the target device.
 4. Plug the power cable into the target device. The target device will boot up. Wait until the start-up screen with webOS OSE logo appears on the screen.
 5. Start the webOS OSE Home Launcher.
-    * **For webOS OSE 2.0**
+    * **For webOS OSE 2.0.0 or Higher**
 
         After starting up the target device, you will see the Home Launcher UI popping up from the bottom side of the screen. Home Launcher should contain a list of pre-installed apps and icons for quick access menu, as shown in the figure below.
 
-        {{< figure src="/images/docs/guides/setup/webosose-2_0-bootup-launcher.jpg" alt="webOS OSE 2.0 Bootup Screen" class="align-left" >}}
+        {{< figure src="/images/docs/guides/setup/boot-screen-for-2-19-0-or-higher.jpg" alt="Bootup screen for webOS OSE 2.19.0 or higher" class="align-left" >}}
 
-        The names of quick access menu icons are as shown below. Currently, only the icon for System Settings app is working. The others will be implemented in a future release.
-
-        {{< figure src="/images/docs/guides/setup/webosose-2_0-quick-access-menu.jpg" alt="webOS OSE 2.0 quick access menu" class="align-left" >}}
-
-        If you want to close the Home Launcher, tap the outside of the Home Launcher. Swiping up from the bottom of the screen will show the Home Launcher again.
-
-        {{< note >}}
-        Currently, the Edit button in the Home Launcher is not working.
-        {{< /note >}}
+        For more details on how to use webOS OSE UI, see [webOS OSE UI Guide]({{< relref "webos-ose-ui-guide" >}}).
 
     * **For webOS OSE 1.x**
 
         Press the Windows key (Linux, Windows) or the right command key (macOS) on your keyboard, and you will see the Home Launcher UI popping up from the right side of the screen. Home Launcher should contain a list of pre-installed apps and an icon for Settings app, as shown in the figure below.
 
-        {{< figure src="/images/docs/guides/setup/webosose-bootup-launcher.jpg" alt="webOS OSE Bootup Screen" class="align-left" >}}
+        {{< figure src="/images/docs/guides/setup/webosose-bootup-launcher.jpg" alt="Bootup screen for webOS OSE 1.x versions" class="align-left" >}}

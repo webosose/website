@@ -1,6 +1,6 @@
 ---
 title: webOS OSE 1.1.0 Release
-date: 2018-06-19
+date: 2018-06-29
 slug: webos-ose-1-1-0-release
 posttype: release
 toc: false

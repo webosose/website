@@ -53,7 +53,11 @@ Using dual display with Raspberry Pi 4, you can launch web apps on the secondary
 
 **Firmware-Over-the-Air (FOTA)** is a technology that facilitates wireless firmware upgrade on a device. In an era of connected cars, FOTA is becoming a requirement in the automotive context.
 
-This release provides a FOTA solution based on [libostree](https://ostree.readthedocs.io/en/latest/), an upgrade system for Linux-based operating systems that performs atomic upgrades of complete filesystem trees. For overview of the solution and how to set up FOTA, see [Firmware-Over-the-Air Setup Guide]({{< relref "setting-up-fota" >}}).
+This release provides a FOTA solution based on [libostree](https://ostree.readthedocs.io/en/latest/), an upgrade system for Linux-based operating systems that performs atomic upgrades of complete filesystem trees. For overview of the solution and how to set up FOTA, see Firmware-Over-the-Air Setup Guide.
+
+{{< note >}}
+The FOTA feature had been retired since webOS OSE 2.16.0.
+{{< /note >}}
 
 ## SoftAP support
 

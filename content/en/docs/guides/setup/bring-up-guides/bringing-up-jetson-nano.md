@@ -1,6 +1,6 @@
 ---
 title: Tutorial - Jetson Nano
-date: 2022-08-31
+date: 2022-12-02
 weight: 20
 toc: true
 ---
@@ -8,7 +8,7 @@ toc: true
 This guide describes how to bring up an [NVIDIA Jetson Nano board](https://developer.NVIDIA.com/embedded/jetson-nano-developer-kit) to run webOS OSE.
 
 {{< note >}}
-This guide is tested on webOS OSE 2.17.0.
+This guide is only valid for webOS OSE with Yocto 3.1 (webOS OSE version: 2.14.0 ~ 2.18.0).
 {{< /note >}}
 
 ## Prerequisites
@@ -408,7 +408,7 @@ Using the USB to TTL serial cable, connect the host machine and the target devic
   </div>
 </div>
 
-Then set up the serial connection by following the [Set Up a Serial Terminal]({{< relref "setting-up-networking-iot#set-up-a-serial-terminal" >}}) guide.
+Then set up the serial connection by following the [Set Up a Serial Terminal]({{< relref "setting-up-network-iot#set-up-a-serial-terminal" >}}) guide.
 
 Once you set up a serial connection successfully, connect to the target device and modify the files specified in the subsequent sections.
 

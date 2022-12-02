@@ -1,13 +1,13 @@
 ---
 title: Architecture Overview
-date: 2019-03-14
+date: 2022-12-02
 weight: 10
 toc: true
 ---
 
 The following figure shows the overall architecture of webOS Open Source Edition (OSE). webOS OSE consists of a set of layers: Core Applications, Application Framework, Managers & Services, Base Components, and BSP/Kernel.
 
-{{< figure src="/images/docs/guides/core-topics/architecture/webos-ose-architecture-20191120.png" link="/images/docs/guides/core-topics/architecture/webos-ose-architecture-20191120.png" target="_blank" alt="webOS OSE architecture diagram showing its layer structure" caption="webOS OSE Architecture Overview" >}}
+{{< figure src="/images/docs/guides/core-topics/architecture/webos-ose-architecture-20221202.png" link="/images/docs/guides/core-topics/architecture/webos-ose-architecture-20221202.png" target="_blank" alt="webOS OSE architecture diagram showing its layer structure" caption="webOS OSE Architecture Overview (Click image to open larger view)" >}}
 
 ## Core Applications
 

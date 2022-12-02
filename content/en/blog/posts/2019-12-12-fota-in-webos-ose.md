@@ -55,4 +55,8 @@ To take full advantage of FOTA, we need integration with a backend framework. An
 
 To this end, webOS OSE will incorporate [Eclipse hawkBit](https://www.eclipse.org/hawkbit/), for its domain-independence and popularity in the world of backend framework. The current plan is to make it available in version 2.2.0.
 
-For more on how to set up FOTA in webOS OSE, visit [Firmware-Over-the-Air Setup Guide]({{< relref "setting-up-fota" >}}).
+For more on how to set up FOTA in webOS OSE, visit Firmware-Over-the-Air Setup Guide.
+
+{{< note >}}
+The FOTA feature had been retired since webOS OSE 2.16.0.
+{{< /note >}}

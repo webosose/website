@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.db
-date: 2022-06-29
+date: 2022-11-21
 weight: 170
 toc: true
 ---
@@ -1582,7 +1582,7 @@ toc: true
 <div>
   <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.management</b></span></div>
   <h4>Description</h4>
-  <p style="text-align:left">The&nbsp;<strong>dump </strong>method&nbsp;is used to backup a database. The file created by the <strong>dump</strong> method<strong>&nbsp;</strong>typically contains JSON statements to recreate all of the Kinds and data of the database from which they have been dumped.</p>
+  <p style="text-align:left">Backs up a database. The file created by the <strong>dump</strong> method<strong>&nbsp;</strong>typically contains JSON statements to recreate all of the Kinds and data of the database from which they have been dumped.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -2377,11 +2377,798 @@ toc: true
     </p>
   </div>
 </div>
+<h3 id="internal-postrestore">internal/postRestore</h3>
+<div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.management</b></span></div>
+  <h4>Description</h4>
+  <p>An internal DB8 method that is called when the database finishes a restore process.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>tempDir</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Directory where the JSON dump file is stored.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>files</td>
+          <td>Required</td>
+          <td>String array</td>
+          <td>
+            <p>List of files to load from tempDir<br></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>If the &lt;<strong>internal/postRestore</strong>&gt; method succeeds, returnValue will contain true.</p>
+            <p>If the &lt;<strong>internal/postRestore</strong>&gt; method fails, returnValue will contain false. The &lt;<strong>internal/postRestore</strong>&gt; method may fail because of:</p>
+            <ul>
+              <li>If an error occured during a&nbsp;<strong>restore</strong> method call</li>
+              <li>DB8 internal error</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <p>None</p>
+</div>
+<h3 id="internal-prebackup">internal/preBackup</h3>
+<div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.management</b></span></div>
+  <h4>Description</h4>
+  <p>Invoked when an internal webOS service wants to restore a database from a backup file.&nbsp;</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>tempDir</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Directory where the JSON dump files are stored.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>maxTempBytes</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>Maximum size allowed for the dump file.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>incrementalKey</td>
+          <td>Optional</td>
+          <td>Object</td>
+          <td>
+            <p>Provides list of revisions to be dumped</p>
+          </td>
+        </tr>
+        <tr>
+          <td>deletedRev</td>
+          <td>Optional</td>
+          <td>Number (int32_t)</td>
+          <td>
+            <p>Deleted revision value that increase after operation</p>
+          </td>
+        </tr>
+        <tr>
+          <td>rev</td>
+          <td>Optional</td>
+          <td>Number (int32_t)</td>
+          <td>
+            <p>revision value that increase after operation</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>files</td>
+          <td>Required</td>
+          <td>Object array</td>
+          <td>
+            <p>List of files that were created by the <strong>dump</strong> method.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true </strong>- Indicates that the operation was successful.</li>
+              <li>
+                <strong>false </strong>- Indicates that the operation failed. Reasons of failure could be:
+                <ul>
+                  <li>Insufficient disk space</li>
+                  <li>I/O error</li>
+                </ul>
+              </li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>full</td>
+          <td>Optional</td>
+          <td>Boolean</td>
+          <td>
+            <p>If pre-backup is full, then returns <strong>true</strong>. Else, <strong>false</strong>.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>warnings</td>
+          <td>Optional</td>
+          <td>Number (int32_t)</td>
+          <td>
+            <p>Number of warnings during pre-backup operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>description</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Pre-backup operation identifier.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>incrementalKey</td>
+          <td>Optional</td>
+          <td>Object: <a href="#query"> Query</a></td>
+          <td>
+            <p>Incremental key revision number for pre-backup operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>version</td>
+          <td>Optional</td>
+          <td>Number (int32_t)</td>
+          <td>
+            <p>Pre-backup version for a given operation.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -m com.webos.service.configurator -f luna://com.webos.service.db/internal/preBackup &#39;{<br />
+      &nbsp;&nbsp;&nbsp; &quot;tempDir&quot;: &quot;/tmp/&quot;,<br />
+      &nbsp;&nbsp;&nbsp; &quot;maxTempBytes&quot; : 777 ,<br />
+      &nbsp;&nbsp;&nbsp; &quot;incrementalKey&quot; : {<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;deletedRev&quot; : 1,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;rev&quot; : 1<br />
+      &nbsp;&nbsp;&nbsp; }<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;description&quot;:&quot;incremental=1&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;warnings&quot;:0,<br />
+      &nbsp;&nbsp;&nbsp;&quot;files&quot;:[&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;backup-1457026101363953.json&quot;<br />
+      &nbsp;&nbsp;&nbsp;],<br />
+      &nbsp;&nbsp;&nbsp;&quot;full&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;incrementalKey&quot;:{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;rev&quot;:4675<br />
+      &nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&quot;version&quot;:8<br />
+      }
+    </p>
+  </div>
+</div>
+<h3 id="internal-prerestore">internal/preRestore</h3>
+<div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.management</b></span></div>
+  <h4>Description</h4>
+  <p style="text-align:left">Used by the webOS service to correctly respond to a database restore command.&nbsp;This method must be called before restoring a database.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>version</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p><strong>version</strong>&nbsp;is the database version that is to be restored.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>proceed</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p style="text-align:left"><strong>proceed </strong>will contain <strong>true&nbsp;</strong>if the database revision is greater than the verison key provided in the&nbsp;<strong>version</strong>&nbsp;parameter.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>If the <strong>internal/preRestore</strong> method succeeds, <strong>returnValue</strong> will contain true.</p>
+            <p>If the <strong>internal/preRestore</strong> method fails, <strong>returnValue</strong> will contain <strong>false</strong>. The <strong>internal/preRestore</strong> method may fail because of:</p>
+            <ul>
+              <li>Insufficient disk space</li>
+              <li>I/O error</li>
+              <li>Internal db8 error</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <p>None</p>
+</div>
+<h3 id="internal-releaseadminprofile">internal/releaseAdminProfile</h3>
+<div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.management</b></span></div>
+  <h4>Description</h4>
+  <p>For applications whose profiling is controlled by admin-privileged applications, this method relinquishes the profiling control from admin-privilged applications. The 3rd-party application can then control its own its own profiling.</p>
+  <p><strong>Background:</strong> Once an admin-privileged application has enabled/disabled profiling for a 3rd-party application, then only admin-privileged applications can control the profiling for that application.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>application</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Name of application for which admin permission must be relinquished.</p>
+            <ul>
+              <li>If no name is specified, admin permission for the caller application is released.</li>
+              <li>If name is given as *, admin permission for all applications is released.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>-3999</td>
+          <td>db: access denied</td>
+          <td>
+            <p>The caller application does not have admin permission.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-3946</td>
+          <td>db: profiling not enabled for this application</td>
+          <td>
+            <p>Application profiling is disabled. Enable it by using the &quot;profile&quot; method.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p>Example 1: Admin-privileged application (com.webos.service.configurator) relinquishes its control over profiling&nbsp;for all 3rd-party applications.</p>
+    <p># luna-send -n 1 -a com.webos.service.configurator &nbsp;luna://com.webos.service.db/internal/releaseAdminProfile &#39;{&quot;application&quot;:&quot;*&quot;}&#39; -f</p>
+    <p>&nbsp;</p>
+    <p>Example 2:&nbsp;Admin-privileged application (com.webos.service.configurator) relinquishes its control over profiling for the &quot;com.webos.testApp&quot; 3rd-party application.</p>
+    <p># luna-send -n 1 -a com.webos.service.configurator &nbsp;luna://com.webos.service.db/internal/releaseAdminProfile &#39;{&quot;application&quot;:&quot;com.webos.testApp&quot;}&#39; -f</p>
+  </div>
+</div>
+<h3 id="internal-scheduledpurge">internal/scheduledPurge</h3>
+<div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.management</b></span></div>
+  <h4>Description</h4>
+  <p>An internal&nbsp;DB8 private method, used by <strong>activityManager</strong>. <strong>Activity manager</strong> periodically calls the <strong>DB8</strong> garbage collector to remove data that has been marked for deletion.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>$activity</td>
+          <td>Required</td>
+          <td>Object: <a href="#activity">activity</a></td>
+          <td>
+            <p><strong>$activity</strong> contain information about active <u>ActivityManager</u> job</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <ul>
+              <li style="text-align:left">If the&nbsp;method succeeds,&nbsp;<strong>returnValue</strong>&nbsp;will contain <strong>true</strong>.</li>
+              <li>If the&nbsp;method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false</strong>.&nbsp;</li>
+            </ul>
+            <p style="margin-left:0.0in">The&nbsp;method may fail because of provided wrong $<strong>activity</strong> parameter</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p>Step 1: Create an activity using ActivityManager</p>
+    <p># luna-send -n 1 -f luna://com.webos.service.activitymanager/create &#39;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;activity&quot;:{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;name&quot;:&quot;basicactivity&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;description&quot;:&quot;Test&nbsp;create&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;type&quot;:{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;foreground&quot;:true<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;},<br />
+      &nbsp;&nbsp;&nbsp;&quot;start&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;subscribe&quot;:true<br />
+      }&#39;
+    </p>
+    <p>Response:&nbsp;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;subscribed&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;activityId&quot;:87,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+    <p>Step 2: Call sheduledPurge API&nbsp;</p>
+    <p># luna-send -a com.webos.service.configurator -n 1 luna://com.webos.service.db/internal/scheduledPurge &#39;{<br />
+      &nbsp; &nbsp;&quot;$activity&quot;: {&quot;activityId&quot;: 87}<br />
+      }&#39;
+    </p>
+    <p>Response:&nbsp;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+  </div>
+</div>
+<h3 id="internal-scheduledspacecheck">internal/scheduledSpaceCheck</h3>
+<div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.management</b></span></div>
+  <h4>Description</h4>
+  <p>An internal DB8 callback method, that is called by the <strong>Activity Manager</strong> for checking available disk space.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>$activity</td>
+          <td>Required</td>
+          <td>Object</td>
+          <td>
+            <p style="text-align:left">Id of created activity by activity manager.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>If the <strong>scheduledSpaceCheck</strong> method succeeds, <strong>returnValue</strong> will contain true.</p>
+            <p>If the <strong>scheduledSpaceCheck</strong> method fails, <strong>returnValue</strong> will contain <strong>false</strong>. The <strong>scheduledSpaceCheck</strong> method may fail because of:</p>
+            <ul>
+              <li>If the method succeeds it implies that the Activity Manager ran successfully.</li>
+              <li>The method may fail if the Activity Manager is not running.</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <p>None</p>
+</div>
+<h3 id="internal-spacecheck">internal/spaceCheck</h3>
+<div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.management</b></span></div>
+  <h4>Description</h4>
+  <p>An internal DB8 private method, used by webOS private services. Services can subscribe for the <strong>spaceCheck </strong>method and get notifications when DB8 reaches soft and hard disk space limits.</p>
+  <h4>Parameters</h4>
+  <p>None</p>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>severity</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The level of severity reached. Can have one of the following values: <strong>none</strong>, <strong>warning</strong>, <strong>critical</strong></p>
+          </td>
+        </tr>
+        <tr>
+          <td>bytesUsed</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>The number of bytes used in the partition</p>
+          </td>
+        </tr>
+        <tr>
+          <td>bytesAvailable</td>
+          <td>Required</td>
+          <td>Number</td>
+          <td>
+            <p>The number of bytes avaiable for db8</p>
+          </td>
+        </tr>
+        <tr>
+          <td>path</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Path to the current active database</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <p>None</p>
+</div>
+<h3 id="listactivemedia">listActiveMedia</h3>
+<div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.operation</b></span></div>
+  <h4>Description</h4>
+  <p><span style="background-color:rgb(255, 255, 255); color:rgb(102, 102, 102)">Returns a list of active attached media, and shards.</span>&nbsp;</p>
+  <h4>Parameters</h4>
+  <p>None</p>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>If the <strong>listActiveMedia </strong>method succeeds, <strong>returnValue</strong> will contain true.<br />
+              If the <strong>listActiveMedia </strong> method fails, <strong>returnValue</strong> will contain <strong>false</strong>. The <strong>listActiveMedia </strong> method may fail because of:
+            </p>
+            <ul>
+              <li>Shard engine disabled</li>
+              <li>Internal Kind not registered</li>
+              <li>I/O error</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>media</td>
+          <td>Required</td>
+          <td>Object: <a href="#media"> media</a></td>
+          <td>
+            <p>List of active devices and their associated shards</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -f -n 1 luna://com.webos.mediadb/listActiveMedia &#39;{}&#39;</p>
+    <p>Response (When one media device is active):</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;count&quot;:1,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;media&quot;:[&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;deviceId&quot;:&quot;323031333032535030303739303230313132323230_1&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;mountPath&quot;:&quot;/var/run/db8/mountpoints//174B7C9&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;deviceUri&quot;:&quot;/tmp/usb/sda/sda1&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;shardId&quot;:&quot;+MHrmF&quot;<br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+      &nbsp;&nbsp;&nbsp;]<br />
+      }
+    </p>
+  </div>
+</div>
 <h3 id="load">load</h3>
 <div>
   <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.management</b></span></div>
   <h4>Description</h4>
-  <p>The <strong>load</strong> method restores a database from a dumped JSON file.</p>
+  <p>Restores a database from a dumped JSON file.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -4631,6 +5418,351 @@ toc: true
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;_kind&quot;:&quot;com.webos.service.test:1&quot;<br />
       &nbsp; &nbsp; &nbsp; }<br />
       &nbsp; &nbsp;]<br />
+      }
+    </p>
+  </div>
+</div>
+<h3 id="setshardmode">setShardMode</h3>
+<div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.operation</b></span></div>
+  <h4>Description</h4>
+  <p>Marks an external media as <strong>transient</strong>&nbsp;for the specified DB8 shard Id. This means&nbsp;that all data, relative to the shard, are not required by any application and will be removed by garbage collector.&nbsp;In other words, marking shard as <strong>transient</strong>&nbsp;will wipe all data from the shard on the nearest garbage collector call.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>shardId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Base64 encoded id of shard</p>
+          </td>
+        </tr>
+        <tr>
+          <td>transient</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Mark shard as transient.</p>
+            <p>Service can mark shard as not transient. If garbage collector didn&#39;t run, all data relative to shard, will not be removed.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true </strong>- Indicates that the operation was successful.</li>
+              <li><strong>false </strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the <strong>&quot;Error Codes&quot; </strong>section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Invalid Parameters</td>
+          <td>
+            <p>This message implies that the&nbsp;client did not pass the correct shardId.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>100</td>
+          <td>Invalid Shard ID</td>
+          <td>
+            <p>This message implies that the&nbsp;Shard ID was specified, but malformed</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -f -n 1 luna://com.webos.mediadb/setShardMode &#39;{ &quot;shardId&quot; : &quot;+MHrmF&quot;, &quot;transient&quot; : true }&#39;</p>
+    <p>Response:&nbsp;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+  </div>
+</div>
+<h3 id="shardinfo">shardInfo</h3>
+<div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.operation</b></span></div>
+  <h4>Description</h4>
+  <p>Retrieves the state of a shard, like shard activity, associated media devices, mount point.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>shardId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Base64 encoded shard Id for which information is to be retrieved.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation. Possible values are:</p>
+            <ul>
+              <li><strong>true </strong>- Indicates that the operation was successful.</li>
+              <li><strong>false </strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>isActive</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Will return <strong>true</strong>, If media device <strong>attached</strong></p>
+            <ul>
+              <li>If the&nbsp;method succeeds,&nbsp;<strong>returnValue</strong>&nbsp;will contain true.</li>
+              <li>If the&nbsp;method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;false.&nbsp;</li>
+            </ul>
+            <p style="margin-left:0.0in">The&nbsp;method may fail because of one of the error conditions described in the&nbsp;<strong>Error Codes Reference</strong>&nbsp; of this method. See the&nbsp;<strong>Error Code Reference</strong>&nbsp;for more information.&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>isTransient</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p><strong>True</strong>, if the shard is marked as <strong>transient</strong></p>
+            <ul>
+              <li>If the&nbsp;method succeeds,&nbsp;<strong>returnValue</strong>&nbsp;will contain true.</li>
+              <li>If the&nbsp;method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;false.&nbsp;</li>
+            </ul>
+            <p style="margin-left:0.0in">The&nbsp;method may fail because of one of the error conditions described in the&nbsp;<strong>Error Codes Reference</strong>&nbsp; of this method. See the&nbsp;<strong>Error Code Reference</strong>&nbsp;for more information.&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>shardId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Will return base64 of shardId</p>
+          </td>
+        </tr>
+        <tr>
+          <td>deviceId</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Return UUID of device, associated with shard.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>deviceName</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Will return the symbolic name of a device. For example, name of flash card or external hdd</p>
+          </td>
+        </tr>
+        <tr>
+          <td>deviceUri</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>The physical device path. For example:&nbsp;/tmp/usb/sda/sda1</p>
+          </td>
+        </tr>
+        <tr>
+          <td>mountPath</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Mount path of device</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation. See the <strong>&quot;Error Codes&quot;</strong> section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>100</td>
+          <td>Invalid Shard ID</td>
+          <td>
+            <p>This message implies that the registered shard is not found in db8.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Invalid Parameters</td>
+          <td>
+            <p>This message implies that the&nbsp;client specified the shardId, but it is malformed.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -f -n 1 luna://com.webos.mediadb/shardInfo &#39;{ &quot;shardId&quot; : &quot;+MHrmF&quot;}&#39;</p>
+    <p>Response:&nbsp;</p>
+    <p>{&nbsp;<br />
+      &nbsp;&nbsp;&nbsp;&quot;deviceUri&quot;:&quot;/tmp/usb/sda/sda1&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;deviceName&quot;:&quot;A:&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;deviceId&quot;:&quot;323031333032535030303739303230313132323230_1&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp;&nbsp;&nbsp;&quot;shardId&quot;:&quot;+MHrmF&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;mountPath&quot;:&quot;/var/run/db8/mountpoints//174B7C9&quot;,<br />
+      &nbsp;&nbsp;&nbsp;&quot;isTransient&quot;:false,<br />
+      &nbsp;&nbsp;&nbsp;&quot;isActive&quot;:true<br />
+      }
+    </p>
+    <p>Response (if shard is&nbsp;disabled):</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: -3958,<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;db: sharding disabled&quot;<br />
       }
     </p>
   </div>

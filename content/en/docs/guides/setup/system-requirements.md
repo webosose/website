@@ -1,6 +1,6 @@
 ---
 title: System Requirements
-date: 2022-05-19
+date: 2022-12-02
 weight: 10
 toc: true
 ---
@@ -15,7 +15,7 @@ webOS OSE cannot be built directly on the target device. You must use a separate
 
 A **target device** is a device that runs webOS OSE. To test apps and services on your target device, we recommend that you prepare the following set of hardware and peripheral devices.
 
-### For webOS OSE 2.0 or Higher
+### For webOS OSE 2.0.0 or Higher
 
 * Raspberry Pi 4
 * microSD card (8 GB or larger) and microSD card reader device
@@ -94,7 +94,7 @@ The build system (Linux machine) can be also used as a host machine for further 
 
 Recommended version for each operating system are as follows:
 
-* Linux: Ubuntu 14.04 LTS or higher
+* Linux: Ubuntu 18.04 LTS or higher
 * Windows: Windows 7 or higher
 * macOS: Mac OS X 10.6 Snow Leopard or higher
 

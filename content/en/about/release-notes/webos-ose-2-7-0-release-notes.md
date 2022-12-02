@@ -2,7 +2,7 @@
 title: webOS OSE 2.7.0
 display_title: webOS OSE 2.7.0 Release Notes
 date: 2020-09-29
-weight: 20
+weight: 21
 toc: true
 layout: release-notes
 ---

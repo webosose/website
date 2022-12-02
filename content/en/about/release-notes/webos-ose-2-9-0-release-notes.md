@@ -2,7 +2,7 @@
 title: webOS OSE 2.9.0
 display_title: webOS OSE 2.9.0 Release Notes
 date: 2021-01-22
-weight: 22
+weight: 23
 toc: true
 layout: release-notes
 ---

@@ -2,7 +2,7 @@
 title: webOS OSE 2.16.0
 display_title: webOS OSE 2.16.0 Release Notes
 date: 2022-05-11
-weight: 24
+weight: 33
 toc: true
 layout: release-notes
 ---

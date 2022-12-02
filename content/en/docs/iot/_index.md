@@ -1,14 +1,14 @@
 ---
 title: IoT
 section_main: true
-date: 2021-11-05
+date: 2022-12-02
 weight: 60
 ---
 
 This section provides documentation for **webOS IoT**, the IoT profile of webOS Open Source Edition (OSE).
 
 {{< caution >}}
-webOS IoT is supported by webOS OSE 2.4.0.
+webOS IoT is **ONLY** supported from webOS OSE 2.4.0 to webOS OSE 2.18.0. We plan to replace webOS IoT with [Matter](https://csa-iot.org/all-solutions/matter/) in the future release.
 {{< /caution >}}
 
 - [Overview](#overview)
@@ -29,7 +29,7 @@ This unit describes how to set up the webOS IoT development environment.
 * [System Requirements]({{< relref "system-requirements-iot" >}})
 * [Building webOS IoT]({{< relref "building-webos-iot" >}})
 * [Flashing webOS IoT]({{< relref "flashing-webos-iot" >}})
-* [Network Setup]({{< relref "setting-up-networking-iot" >}})
+* [Network Setup]({{< relref "setting-up-network-iot" >}})
 * [Google Assistant Setup]({{< relref "setting-up-google-assistant-iot" >}})
 
 ## Development

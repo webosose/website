@@ -1,7 +1,7 @@
 ---
 title: Introduction to LS2 API
 date: 2019-03-05
-weight: 30
+weight: 20
 toc: true
 ---
 

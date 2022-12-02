@@ -1,6 +1,6 @@
 ---
 title: Network Setup
-date: 2019-11-07
+date: 2022-12-02
 weight: 40
 toc: true
 ---
@@ -17,7 +17,7 @@ The default setting of the webOS OSE is to use Dynamic Host Configuration Protoc
 
 Follow the steps below to configure the network information on the target device. Make sure that the Ethernet cable is connected beforehand.
 
-1. On the Home Launcher, click the icon of Settings app. <img src="/images/docs/guides/setup/webosose-2_0-homelauncher-settings-icon.png" alt="Settings icon">
+1. Go to Settings Application or press the **F1** key.
 
     Settings app UI will show up on the left side of the screen.
 2. Click the **Network** icon, and you will see the initial status of network setting.

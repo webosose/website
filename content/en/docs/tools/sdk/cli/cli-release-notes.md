@@ -1,9 +1,8 @@
 ---
 title: Release Notes
 display_title: Command-Line Interface Release Notes
-date: 2022-03-04
+date: 2022-12-02
 weight: 20
-file_download: true
 toc: true
 ---
 
@@ -22,37 +21,29 @@ The following table shows the compatibility between webOS OSE and CLI.
   <table class="table is-bordered">
     <thead>
       <tr class="header">
-        <th style="width:30%"><p>CLI Ver.</p></th>
-        <th><p>webOS OSE Ver.</p></th>
+        <th style="width:30%"><p>CLI Version</p></th>
+        <th><p>webOS OSE Version</p></th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><p>2.3.1</p></td>
-        <td><p>2.15.0</p></td>
+        <td rowspan="5"><p>2.3.1</p></td>
+        <td><p>2.19.0</p></td>
       </tr>
+      <tr><td><p>2.18.0</p></td></tr>
+      <tr><td><p>2.17.0</p></td></tr>
+      <tr><td><p>2.16.0</p></td></tr>
+      <tr><td><p>2.15.0</p></td></tr>
       <tr>
         <td rowspan="7"><p>2.2.0</p></td>
         <td><p>2.14.1</p></td>
       </tr>
-      <tr>
-        <td><p>2.14.0</p></td>
-      </tr>
-      <tr>
-        <td><p>2.13.2</p></td>
-      </tr>
-      <tr>
-        <td><p>2.13.1</p></td>
-      </tr>
-      <tr>
-        <td><p>2.13.0</p></td>
-      </tr>
-      <tr>
-        <td><p>2.12.0</p></td>
-      </tr>
-      <tr>
-        <td><p>2.11.0</p></td>
-      </tr>
+      <tr><td><p>2.14.0</p></td></tr>
+      <tr><td><p>2.13.2</p></td></tr>
+      <tr><td><p>2.13.1</p></td></tr>
+      <tr><td><p>2.13.0</p></td></tr>
+      <tr><td><p>2.12.0</p></td></tr>
+      <tr><td><p>2.11.0</p></td></tr>
       <tr>
         <td><p>2.1.0</p></td>
         <td><p>2.10.0</p></td>
@@ -65,9 +56,7 @@ The following table shows the compatibility between webOS OSE and CLI.
         <td><p>2.0.2</p></td>
         <td rowspan="2"><p>2.8.0</p></td>
       </tr>
-      <tr>
-        <td><p>1.13.1</p></td>
-      </tr>
+      <tr><td><p>1.13.1</p></td></tr>
       <tr>
         <td><p>1.13.0</p></td>
         <td><p>2.7.0</p></td>
@@ -96,19 +85,15 @@ The following table shows the compatibility between webOS OSE and CLI.
         <td><p>1.9.4</p></td>
         <td rowspan="3"><p>1.0.0</p></td>
       </tr>
-      <tr>
-        <td><p>1.8.1</p></td>
-      </tr>
-      <tr>
-        <td><p>1.6.4</p></td>
-      </tr>
+      <tr><td><p>1.8.1</p></td></tr>
+      <tr><td><p>1.6.4</p></td></tr>
     </tbody>
   </table>
 </div>
 
 ## v2.3.1 (February 2022)
 
-This version is compatible with **webOS OSE 2.15.0**. See below for the new and changed features in this release.
+This version is compatible with **webOS OSE 2.15.0** ~ **webOS OSE 2.19.0**. See below for the new and changed features in this release.
 
 ### New features
 

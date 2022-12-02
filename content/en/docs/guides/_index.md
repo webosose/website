@@ -1,7 +1,7 @@
 ---
 title: Guides
 section_main: true
-date: 2020-12-31
+date: 2022-12-02
 weight: 20
 ---
 
@@ -18,6 +18,8 @@ This unit walks you through your first project and introduces the essentials of 
 
 * [Hello, webOS OSE!]({{< relref "hello-webos-ose" >}})
 * [Introduction to LS2 API]({{< relref "introduction-to-ls2-api" >}})
+* [webOS OSE UI Guide]({{< relref "webos-ose-ui-guide" >}})
+* [Video Call Usage Guide]({{< relref "how-to-use-video-call-app" >}})
 
 ## Setup
 
@@ -26,10 +28,9 @@ This unit describes steps to set up the webOS OSE development environment.
 * [System Requirements]({{< relref "system-requirements" >}})
 * [Building webOS OSE]({{< relref "building-webos-ose" >}})
 * [Flashing webOS OSE]({{< relref "flashing-webos-ose" >}})
-* [Network Setup]({{< relref "setting-up-networking" >}})
+* [Network Setup]({{< relref "setting-up-network" >}})
 * [Dual Display Setup]({{< relref "setting-up-dual-displays" >}})
 * [Google Assistant Setup]({{< relref "setting-up-google-assistant" >}})
-* [Firmware-Over-the-Air Setup]({{< relref "setting-up-fota" >}})
 * [GDB Debugging Setup]({{< relref "setting-up-debugging" >}})
 * [Native Development Kit Setup]({{< relref "setting-up-native-development-kit" >}})
 
@@ -46,6 +47,7 @@ This unit explains how you can build apps and services for webOS OSE.
 * [Localization Guide]({{< relref "localization-guide" >}})
 * [Logging Guide]({{< relref "logging-overview" >}})
 * [Bluetooth Guide]({{< relref "bluetooth-guide" >}})
+* [Speech Enhancement Guide]({{< relref "speech-enhancement-guide" >}})
 
 ## Core Topics
 

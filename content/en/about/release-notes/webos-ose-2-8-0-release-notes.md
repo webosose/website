@@ -2,7 +2,7 @@
 title: webOS OSE 2.8.0
 display_title: webOS OSE 2.8.0 Release Notes
 date: 2020-11-13
-weight: 21
+weight: 22
 toc: true
 layout: release-notes
 ---

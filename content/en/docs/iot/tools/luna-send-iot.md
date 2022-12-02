@@ -1,18 +1,18 @@
 ---
 title: luna-send Usage Guide
-date: 2021-11-05
+date: 2022-12-02
 weight: 10
 toc: true
 ---
 
 {{< caution >}}
-webOS IoT is supported by webOS OSE 2.4.0.
+webOS IoT is **ONLY** supported from webOS OSE 2.4.0 to webOS OSE 2.18.0. We plan to replace webOS IoT with [Matter](https://csa-iot.org/all-solutions/matter/) in the future release.
 {{< /caution >}}
 
 `luna-send` is a command-line tool accessible through a shell on a device. `luna-send` is mainly used to test calls to services accessible on the system bus through the LS2 (Luna Bus).
 
 {{< note >}}
-To access the device shell, you must connect to the device using the Secure Shell (SSH) protocol. For more details, see [Network Setup]({{< relref "setting-up-networking-iot" >}}).
+To access the device shell, you must connect to the device using the Secure Shell (SSH) protocol. For more details, see [Network Setup]({{< relref "setting-up-network-iot" >}}).
 {{< /note >}}
 
 ## Syntax

@@ -1,6 +1,6 @@
 ---
 title: ls-monitor Usage Guide
-date: 2020-02-28
+date: 2022-12-02
 weight: 20
 toc: true
 ---
@@ -8,7 +8,7 @@ toc: true
 `ls-monitor` is a command-line tool accessible through a shell on a device. `ls-monitor` lets you see traffic going over the webOS service bus, similar to a network sniffer that lets you observe HTTP traffic.
 
 {{< note >}}
-To access the device shell, you must connect to the device using the Secure Shell (SSH) protocol. For more details, see [Network Setup]({{< relref "setting-up-networking" >}}).
+To access the device shell, you must connect to the device using the Secure Shell (SSH) protocol. For more details, see [Network Setup]({{< relref "setting-up-network" >}}).
 {{< /note >}}
 
 ## Syntax

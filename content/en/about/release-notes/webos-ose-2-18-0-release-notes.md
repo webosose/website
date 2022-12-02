@@ -2,7 +2,7 @@
 title: webOS OSE 2.18.0
 display_title: webOS OSE 2.18.0 Release Notes
 date: 2022-09-02
-weight: 24
+weight: 35
 toc: true
 layout: release-notes
 ---

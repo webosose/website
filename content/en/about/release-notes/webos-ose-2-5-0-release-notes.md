@@ -2,7 +2,7 @@
 title: webOS OSE 2.5.0
 display_title: webOS OSE 2.5.0 Release Notes
 date: 2020-05-12
-weight: 18
+weight: 19
 toc: true
 layout: release-notes
 ---

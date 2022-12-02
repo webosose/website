@@ -1,6 +1,6 @@
 ---
 title: webOS OSE 2.6.0 Release
-date: 2020-07-16
+date: 2020-07-20
 slug: webos-ose-2-6-0-release
 posttype: release
 toc: false

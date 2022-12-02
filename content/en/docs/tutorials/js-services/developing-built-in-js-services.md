@@ -1,6 +1,6 @@
 ---
 title: Developing Built-in JS Services
-date: 2021-11-24
+date: 2022-12-02
 weight: 20
 toc: true
 ---
@@ -334,7 +334,7 @@ inherit webos_submissions
 inherit webos_cmake
 inherit webos_system_bus
 
-FILES_${PN} += "${webos_servicesdir}/${PN}/*"
+FILES:${PN} += "${webos_servicesdir}/${PN}/*"
 ```
 {{< /code >}}
 
@@ -364,18 +364,18 @@ For the sample JS service (`com.example.service.js`), you must provide the local
 {{< code "webos-local.conf" >}}
 ``` bash {linenos=table}
 INHERIT += "externalsrc"
-EXTERNALSRC_pn-com.example.service.js = "/home/username/project/com.example.service.js/"
-EXTERNALSRC_BUILD_pn-com.example.service.js = "/home/username/project/com.example.service.js/build/"
-PR_append_pn-com.example.service.js =".local0"
+EXTERNALSRC:pn-com.example.service.js = "/home/username/project/com.example.service.js/"
+EXTERNALSRC_BUILD:pn-com.example.service.js = "/home/username/project/com.example.service.js/build/"
+PR:append:pn-com.example.service.js =".local0"
 ```
 {{< /code >}}
 
 A brief explanation of the above file:
 
 - Line(1) : Inherit `externalsrc` bbclass file.
-- Line(2) : The local source directory. The syntax of the property is `EXTERNALSRC_pn-<component>`. For the value, input `"<absolute path of the project directory>"`
-- Line(3) : The local build directory. The syntax of the property is `EXTERNALSRC_BUILD_pn-<component>`. For the value, input `"<absolute path of the project directory>/build/"`
-- Line(4) : The appended revision version (PR) for building local source files. The syntax of the property is `PR_append_pn-<component>`. This property is optional.
+- Line(2) : The local source directory. The syntax of the property is `EXTERNALSRC:pn-<component>`. For the value, input `"<absolute path of the project directory>"`
+- Line(3) : The local build directory. The syntax of the property is `EXTERNALSRC_BUILD:pn-<component>`. For the value, input `"<absolute path of the project directory>/build/"`
+- Line(4) : The appended revision version (PR) for building local source files. The syntax of the property is `PR:append:pn-<component>`. This property is optional.
 
 {{< note >}}
 We recommend that you add a trailing slash (/) at the end of all local directory paths, as in Line(2) and Line(3).
@@ -510,11 +510,11 @@ Add the JS service to the packagegroup recipe file.
 
 - **Update the file:** `packagegroup-webos-extended.bb`
 - **Directory:** `build-webos/meta-webosose/meta-webos/recipes-core/packagegroups`
-- **Updates to be made:** Add the JS service name to **`RDEPENDS_${PN} =`**
+- **Updates to be made:** Add the JS service name to **`RDEPENDS:${PN} =`**
 
 ``` bash {hl_lines=[6]}
 ...
-RDEPENDS_${PN} = " \
+RDEPENDS:${PN} = " \
     activitymanager \
     audiod \
     ...

@@ -1,8 +1,8 @@
 ---
 title: webOS OSE 2.6.0
 display_title: webOS OSE 2.6.0 Release Notes
-date: 2020-07-16
-weight: 19
+date: 2020-07-20
+weight: 20
 toc: true
 layout: release-notes
 ---

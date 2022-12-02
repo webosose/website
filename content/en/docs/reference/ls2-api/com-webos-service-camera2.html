@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.camera2
-date: 2022-05-04
+date: 2022-11-21
 weight: 120
 toc: true
 ---
@@ -157,6 +157,42 @@ toc: true
             </ul>
           </td>
         </tr>
+        <tr>
+          <td>pid</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Indicates the process ID of the client process&nbsp;which&nbsp;intends to get notified of a&nbsp;shared memory writing-done event by a signal.</p>
+            <p><strong>Note:&nbsp;</strong>The client process ID should&nbsp;be the one that is actually on the running context.</p>
+            <ul>
+              <li>If a client app&nbsp;A calls another process B and process B is the one who&nbsp;is waiting for a&nbsp;writing-done event and reading the shared memory synchronously, then process B must&nbsp;call&nbsp;open. Otherwise, if A calls open with its open process ID, it would kill&nbsp;the app.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>sig</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Indicates the ID of the&nbsp;signal by which the camera service reports&nbsp;a&nbsp;shared memory writing-done event and a&nbsp;client app will get notified of it. The number of possible values are 29 from 1 (SIGHUP)&nbsp;to 31&nbsp;(SIGSYS) except for 9&nbsp;(SIGKILL)&nbsp;and19 (SIGSTOP).</p>
+            <p><strong>Note:</strong></p>
+            <ul>
+              <li>Must be provided with &quot;pid&quot;</li>
+              <li>The process ID and the signal ID passed by payload will be registered (or added) to a&nbsp;pool that the camera service manages.</li>
+              <li>If the&nbsp;signal ID is not specified in the payload, the default signal number&nbsp;10 (SYGUSR1) will be applied.&nbsp;</li>
+              <li>If an invalid value&nbsp;is passed, the camera service will reject the request and return false.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>appId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>ID of the application</p>
+            <p><strong>Note:&nbsp;</strong>App must have permission to open the camera.</p>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -215,6 +251,22 @@ toc: true
             <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
           </td>
         </tr>
+        <tr>
+          <td>pid</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The process ID.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>sig</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>The Signal ID.</p>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -265,6 +317,116 @@ toc: true
       &nbsp; &nbsp;&quot;returnValue&quot;:false,<br />
       &nbsp; &nbsp;&quot;errorText&quot;:&quot;Already another device opened as primary&quot;<br />
       }
+    </p>
+  </div>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : App does not require synchronized shared memory synchronization</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -f -n 1 luna://com.webos.service.camera2/open &#39;{<br />
+      &nbsp; &nbsp;&nbsp;&quot;id&quot;:&quot;camera1&quot;,<br />
+      &nbsp; &nbsp;&nbsp;&quot;appId&quot;: &quot;com.webos.app.browser&quot;<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp;&quot;handle&quot;: 4503<br />
+      }
+    </p>
+  </div>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : App does not require synchronized shared memory synchronization - case to open with primary mode</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.camera2/open &#39;{<br />
+      &nbsp; &nbsp; &quot;id&quot;:&quot;camera1&quot;,<br />
+      &nbsp; &nbsp; &quot;appId&quot;: &quot;com.webos.app.browser&quot;,<br />
+      &nbsp; &nbsp; &quot;mode&quot;:&quot;primary&quot;<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
+      &nbsp; &nbsp;&quot;handle&quot;:886<br />
+      }
+    </p>
+  </div>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : App does not require synchronized shared memory synchronization - case when an application has already opened with mode as primary.</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.camera2/open &#39;{<br />
+      &nbsp; &nbsp; &quot;id&quot;:&quot;camera1&quot;,<br />
+      &nbsp; &nbsp;&nbsp;&quot;appId&quot;: &quot;com.webos.app.browser&quot;,&nbsp;<br />
+      &nbsp; &nbsp;&nbsp;&quot;mode&quot;:&quot;primary&quot;<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp;&quot;errorCode&quot;:44,<br />
+      &nbsp; &nbsp;&quot;returnValue&quot;:false,<br />
+      &nbsp; &nbsp;&quot;errorText&quot;:&quot;Already another device opened as primary&quot;<br />
+      }
+    </p>
+  </div>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : App requires shared memory synchronization, with default signal</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.camera2/open &#39;{<br />
+      &nbsp; &nbsp;&nbsp;&quot;id&quot;: &quot;camera1&quot;,<br />
+      &nbsp; &nbsp;&nbsp;&quot;appId&quot;: &quot;com.webos.app.browser&quot;,<br />
+      &nbsp; &nbsp;&nbsp;&quot;pid&quot;: 1804<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp;&quot;pid&quot;: 1804,<br />
+      &nbsp;&nbsp; &quot;handle&quot;: 6393,<br />
+      &nbsp;&nbsp; &quot;sig&quot;: 10<br />
+      }
+    </p>
+    <p>&nbsp;</p>
+  </div>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : App requires shared memory synchronization, with a specified signal</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.camera2/open &#39;{<br />
+      &nbsp; &nbsp;&nbsp;&quot;id&quot;: &quot;camera1&quot;,<br />
+      &nbsp; &nbsp;&nbsp;&quot;appId&quot;: &quot;com.webos.app.browser&quot;,<br />
+      &nbsp; &nbsp;&nbsp;&quot;pid&quot;: 1430,<br />
+      &nbsp; &nbsp;&nbsp;&quot;sig&quot;: 2<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp;&quot;pid&quot;: 1430,<br />
+      &nbsp; &nbsp;&quot;handle&quot;: 2516,<br />
+      &nbsp;&nbsp; &quot;sig&quot;: 2<br />
+      }
+    </p>
+  </div>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : App passes an invalid signal</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.camera2/open &#39;{<br />
+      &nbsp; &nbsp;&nbsp;&quot;id&quot;: &quot;camera1&quot;,<br />
+      &nbsp; &nbsp;&nbsp;&quot;appId&quot;: &quot;com.webos.app.browser&quot;,<br />
+      &nbsp; &nbsp;&nbsp;&quot;pid&quot;: 1970,<br />
+      &nbsp; &nbsp;&nbsp;&quot;sig&quot;: 19<br />
+      }&#39; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+    </p>
+    <p>Response:</p>
+    <p>{&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
+      &nbsp; &nbsp; &quot;errorCode&quot;: 50, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: false, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
+      &nbsp; &nbsp; &quot;errorText&quot;: &quot;Failed to register pid with specified signal&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
+      } &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
     </p>
   </div>
 </div>
@@ -823,6 +985,15 @@ toc: true
             <p>Indicates the handle for the device obtained using the&nbsp;open() API.&nbsp;</p>
           </td>
         </tr>
+        <tr>
+          <td>pid</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Indicates the client process ID that should be unregistered (or eliminated) from the pool the camera service manages.</p>
+            <p><strong>Note:&nbsp;</strong>When the camera was&nbsp;opened with a valid PID, this parameter is required (mandatory), otherwise the device is not closed and the method returns false.</p>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -885,6 +1056,30 @@ toc: true
     <p>Response:</p>
     <p>{<br />
       &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+      }
+    </p>
+  </div>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : App requires shared memory synchronization, with default signal</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.camera2/close &#39;{&quot;handle&quot;:6393, &quot;pid&quot;: 1804}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp;&nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp;&nbsp; &quot;pid&quot;: 1804<br />
+      }
+    </p>
+  </div>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : App requires shared memory synchronization, with a specified signal</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.camera2/close &#39;{&quot;handle&quot;:2516, &quot;pid&quot;: 1430}&#39;</p>
+    <p>Response;</p>
+    <p>{<br />
+      &nbsp;&nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp;&nbsp; &quot;pid&quot;: 1430<br />
       }
     </p>
   </div>
@@ -1078,7 +1273,7 @@ toc: true
         </tr>
         <tr>
           <td>params</td>
-          <td>Optional</td>
+          <td>Required</td>
           <td>Object: <a href="#camera-properties"> camera_properties</a></td>
           <td>
             <p>Indicates the current properties of the camera.</p>
@@ -1197,6 +1392,166 @@ toc: true
       &nbsp; &nbsp; &nbsp; &quot;frequency&quot;:2,<br />
       &nbsp; &nbsp; &nbsp; &quot;saturation&quot;:128<br />
       &nbsp; &nbsp;}<br />
+      }
+    </p>
+  </div>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example:  With handle</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p>#&nbsp;&nbsp;luna-send -n 1 -f luna://com.webos.service.camera2/getProperties &#39;{<br />
+      &nbsp; &nbsp;&quot;handle&quot;:502<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;params&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;exposure&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;: 10000,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;: 78,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;: 312,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;: 1,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;: 312<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;backlightCompensation&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;: 3,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;: 1,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;: 0<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;frequency&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;: 2,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;: 1,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;: 1,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;: 1<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;saturation&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;: 100,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;: 58,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;: 1,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;: 58<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;brightness&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;: 64,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;: -64,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;: 1,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;: 0<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;tilt&quot;: &quot;not support&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sharpness&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;: 7,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;: 1,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;: 2,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;: 1,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;: 2<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;focusAbsolute&quot;: &quot;not support&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;contrast&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;: 95,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;: 1,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;: 0<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;gamma&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;: 300,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;: 100,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;: 100,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;: 1,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;: 100<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;autoWhiteBalance&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;: 1,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;: 1,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;: 1,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;: 1<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;hue&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;: 2000,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;: -2000,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;: 100,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;: 0<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;gain&quot;: &quot;not support&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;resolution&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;YUV&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;640,480,25&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1920,1080,5&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1280,720,6&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;320,240,25&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1024,768,6&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1280,1024,6&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;160,120,25&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ],<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;JPEG&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;640,480,25&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1920,1080,5&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1280,720,6&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;320,240,25&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1024,768,6&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1280,1024,6&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;160,120,25&quot;<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;autoFocus&quot;: &quot;not support&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;whiteBalanceTemperature&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;: 6500,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;: 2800,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;: 4600,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;: 1,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;: 4600<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;autoExposure&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;: 3,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;: 3,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;: 1,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;: 3<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;pan&quot;: &quot;not support&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;zoomAbsolute&quot;: &quot;not support&quot;<br />
+      &nbsp; &nbsp; }<br />
+      }
+    </p>
+  </div>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example: With handle and params</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.camera2/getProperties &#39;{<br />
+      &nbsp; &nbsp;&quot;handle&quot;:502,<br />
+      &nbsp; &nbsp;&quot;params&quot;:[<br />
+      &nbsp; &nbsp; &nbsp; &quot;frequency&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &quot;saturation&quot;<br />
+      &nbsp; &nbsp;]<br />
+      }&#39;
+    </p>
+    <p>Response:<br />
+      {<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;params&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;saturation&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;: 100,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;: 58,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;: 1,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;: 58<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &quot;frequency&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;: 2,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;: 0,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;: 1,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;: 1,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;: 1<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; }<br />
       }
     </p>
   </div>
@@ -1604,7 +1959,7 @@ toc: true
   <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>camera.operation</b></span></div>
   <h4>Description</h4>
   <p>Provides the FD (File Descriptor) for the POSIX shared memory.</p>
-  <p><strong>Note: </strong>It returns the FD d by attaching it using LS2 attach fd interface to the client.</p>
+  <p><strong>Note: </strong>It returns the FD by attaching it using LS2 attach fd interface to the client.</p>
   <h4>Parameters</h4>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
@@ -1708,8 +2063,475 @@ toc: true
     </p>
   </div>
 </div>
+<h3 id="getsolutions">getSolutions</h3>
+<div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>camera.operation</b></span></div>
+  <h4>Description</h4>
+  <p>Gets the current status of the supported camera solutions.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>handle</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Indicates the handle for the device. It is obtained using the&nbsp;<strong>open()</strong> API.</p>
+            <p><strong>Note</strong>:<strong>&nbsp;</strong>Either one of &quot;handle&quot; or &quot;id&quot; must be provided.&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>id</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the camera id for the device. It is obtained using the&nbsp;<strong>getCameraList() </strong>API.</p>
+            <p><strong>Note</strong>:<strong>&nbsp;</strong>Either one of &quot;handle&quot; or &quot;id&quot; must be provided.&nbsp;</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>&nbsp;- Indicates that the operation was successful.</li>
+              <li><strong>false</strong>&nbsp;- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>solutions</td>
+          <td>Optional</td>
+          <td>Object array: <a href="#solutions"> solutions</a></td>
+          <td>
+            <p>Provides current status of the supported camera solutions.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>API</strong>&nbsp;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>11</td>
+          <td>Camera device is not opened</td>
+          <td>
+            <p>Camera device is not opened</p>
+          </td>
+        </tr>
+        <tr>
+          <td>32</td>
+          <td>Wrong param</td>
+          <td>
+            <p>Input parameter is incorrect.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>35</td>
+          <td>Unknown error</td>
+          <td>
+            <p>Unknown error happens</p>
+          </td>
+        </tr>
+        <tr>
+          <td>47</td>
+          <td>Wrong handle</td>
+          <td>
+            <p>Device handle number is incorrect.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : Get solutions by specifying the -id- parameter</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.camera2/getSolutions &#39;{&quot;id&quot;: &quot;camera1&quot;}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;solutions&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;FaceDetectionCNN&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;params&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;enable&quot;: false<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;FaceDetection&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;params&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;enable&quot;: false<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; ]<br />
+      }
+    </p>
+  </div>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : Get solutions by specifying the -handle- parameter</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.camera2/getSolutions &#39;{&quot;handle&quot;: 2214}&#39;</p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+      &nbsp; &nbsp; &quot;solutions&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;FaceDetectionCNN&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;params&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;enable&quot;: false<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;FaceDetection&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;params&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;enable&quot;: false<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; ]<br />
+      }
+    </p>
+  </div>
+</div>
+<h3 id="setsolutions">setSolutions</h3>
+<div>
+  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>camera.operation</b></span></div>
+  <h4>Description</h4>
+  <p>Enables and disables camera solutions.</p>
+  <h4>Parameters</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>handle</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>Indicates the handle for the device. It is obtained using the&nbsp;<strong>open() </strong>API.&nbsp;</p>
+            <p><strong>Note</strong>:<strong>&nbsp;</strong>Either one of &quot;handle&quot; or &quot;id&quot; must be provided.&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>id</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the camera id for the device. It is obtained using the&nbsp;<strong>getCameraList()&nbsp;</strong>API.</p>
+            <p><strong>Note</strong>:<strong>&nbsp;</strong>Either one of &quot;handle&quot; or &quot;id&quot; must be provided.&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>solutions</td>
+          <td>Required</td>
+          <td>Object array: <a href="#solutions"> solutions</a></td>
+          <td>
+            <p>Specifies the&nbsp;current status of the supported camera solutions.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Call Returns</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>returnValue</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Indicates the status of operation.&nbsp;</p>
+            <p>Possible values are:</p>
+            <ul>
+              <li><strong>true</strong>&nbsp;- Indicates that the operation was successful.</li>
+              <li><strong>false</strong>&nbsp;- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>errorCode</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The error code for the failed operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>errorText</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>API</strong>&nbsp;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Error Codes Reference</h4>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>11</td>
+          <td>Camera device is not opened</td>
+          <td>
+            <p>Camera device is not opened</p>
+          </td>
+        </tr>
+        <tr>
+          <td>32</td>
+          <td>Wrong param</td>
+          <td>
+            <p>Input parameter is incorrect.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>35</td>
+          <td>Unknown error</td>
+          <td>
+            <p>Unknown error happens</p>
+          </td>
+        </tr>
+        <tr>
+          <td>47</td>
+          <td>Wrong handle</td>
+          <td>
+            <p>Device handle number is incorrect.&nbsp;</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Example</h4>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : Set solutions by specifying the -id- parameter</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.camera2/setSolutions &#39;{<br />
+      &nbsp; &nbsp; &quot;id&quot;: &quot;camera1&quot;,<br />
+      &nbsp; &nbsp; &quot;solutions&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;AutoContrast&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;params&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;enable&quot;: true<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;FaceDetection&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;params&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;enable&quot;: true<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; ]<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : Set solutions by specifying the -handle- parameter</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 -f luna://com.webos.service.camera2/setSolutions &#39;{<br />
+      &nbsp; &nbsp; &quot;handle&quot;: 4231,<br />
+      &nbsp; &nbsp; &quot;solutions&quot;: [<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;AutoContrast&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;params&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;enable&quot;: true<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;FaceDetection&quot;,<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;params&quot;: {<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;enable&quot;: true<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+      &nbsp; &nbsp; ]<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+</div>
 <h2 id="objects">Objects</h2>
 <div>
+  <h3 id="camera-capability">camera_capability</h3>
+  <p>Contains the capability of&nbsp;the camera</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>min</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The minimum value of the control.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>max</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The maximum value of the control.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>default</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The default value of the control.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>step</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The step value of the control.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>value</td>
+          <td>Optional</td>
+          <td>Number</td>
+          <td>
+            <p>The current value of the control.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   <h3 id="camera-properties">camera_properties</h3>
   <p>Contains the properties of the camera.</p>
   <div class="table-container">
@@ -1730,80 +2552,115 @@ toc: true
           </th>
         </tr>
         <tr>
+          <td>sharpness</td>
+          <td>Optional</td>
+          <td>Object: <a href="#camera-capability"> camera_capability</a></td>
+          <td>
+            <p>Indicates the camera sharpness&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td>autoExposure</td>
+          <td>Optional</td>
+          <td>Object: <a href="#camera-capability"> camera_capability</a></td>
+          <td>
+            <p>Indicates the camera auto exposure</p>
+          </td>
+        </tr>
+        <tr>
+          <td>autoFocus</td>
+          <td>Optional</td>
+          <td>Object: <a href="#camera-capability"> camera_capability</a></td>
+          <td>
+            <p>Indicates the camera auto focus</p>
+          </td>
+        </tr>
+        <tr>
           <td>autoWhiteBalance</td>
           <td>Optional</td>
-          <td>Number</td>
+          <td>Object: <a href="#camera-capability"> camera_capability</a></td>
           <td>
-            <p>Indicates the camera auto white balance on/off (true/false)</p>
+            <p>Indicates the camera auto white balance</p>
           </td>
         </tr>
         <tr>
           <td>backlightCompensation</td>
           <td>Optional</td>
-          <td>Boolean</td>
+          <td>Object: <a href="#camera-capability"> camera_capability</a></td>
           <td>
             <p>Indicates the camera backlight compensation value</p>
-            <p>Possible values:</p>
-            <ul>
-              <li><strong>true</strong></li>
-              <li><strong>false</strong></li>
-            </ul>
           </td>
         </tr>
         <tr>
           <td>brightness</td>
           <td>Optional</td>
-          <td>Number</td>
+          <td>Object: <a href="#camera-capability"> camera_capability</a></td>
           <td>
-            <p>Indicates the camera brightness (0-255)</p>
+            <p>Indicates the camera brightness</p>
           </td>
         </tr>
         <tr>
           <td>contrast</td>
           <td>Optional</td>
-          <td>Number</td>
+          <td>Object: <a href="#camera-capability"> camera_capability</a></td>
           <td>
-            <p>Indicates the camera contrast (0-255)</p>
+            <p>Indicates the camera contrast</p>
+          </td>
+        </tr>
+        <tr>
+          <td>exposure</td>
+          <td>Optional</td>
+          <td>Object: <a href="#camera-capability"> camera_capability</a></td>
+          <td>
+            <p>Indicates the exposure value</p>
+          </td>
+        </tr>
+        <tr>
+          <td>focusAbsolute</td>
+          <td>Optional</td>
+          <td>Object: <a href="#camera-capability"> camera_capability</a></td>
+          <td>
+            <p>Indicates the focus value</p>
           </td>
         </tr>
         <tr>
           <td>frequency</td>
           <td>Optional</td>
-          <td>Number</td>
+          <td>Object: <a href="#camera-capability"> camera_capability</a></td>
           <td>
-            <p>Indicates the camera power line frequency (0-2)</p>
+            <p>Indicates the camera power line frequency</p>
           </td>
         </tr>
         <tr>
           <td>gain</td>
           <td>Optional</td>
-          <td>Number</td>
+          <td>Object: <a href="#camera-capability"> camera_capability</a></td>
           <td>
-            <p>Indicates the camera gain (0-255)</p>
+            <p>Indicates the camera gain</p>
           </td>
         </tr>
         <tr>
           <td>gamma</td>
           <td>Optional</td>
-          <td>Number</td>
+          <td>Object: <a href="#camera-capability"> camera_capability</a></td>
           <td>
-            <p>Camera gamma (1-255)</p>
+            <p>Camera gamma</p>
           </td>
         </tr>
         <tr>
           <td>hue</td>
           <td>Optional</td>
-          <td>Number</td>
+          <td>Object: <a href="#camera-capability"> camera_capability</a></td>
           <td>
-            <p>Indicates the camera hue (-180 ~ 180)</p>
+            <p>Indicates the camera hue</p>
           </td>
         </tr>
         <tr>
           <td>pan</td>
           <td>Optional</td>
-          <td>Number</td>
+          <td>Object: <a href="#camera-capability"> camera_capability</a></td>
           <td>
-            <p>Indicates the pan value(0-255)</p>
+            <p>Indicates the pan value</p>
           </td>
         </tr>
         <tr>
@@ -1817,23 +2674,15 @@ toc: true
         <tr>
           <td>saturation</td>
           <td>Optional</td>
-          <td>Number</td>
+          <td>Object: <a href="#camera-capability"> camera_capability</a></td>
           <td>
-            <p>Indicates the camera saturation (0-255)</p>
-          </td>
-        </tr>
-        <tr>
-          <td>sharpness</td>
-          <td>Optional</td>
-          <td>Number</td>
-          <td>
-            <p>Indicates the camera sharpness (0-255)</p>
+            <p>Indicates the camera saturation</p>
           </td>
         </tr>
         <tr>
           <td>tilt</td>
           <td>Optional</td>
-          <td>Number</td>
+          <td>Object: <a href="#camera-capability"> camera_capability</a></td>
           <td>
             <p>Indicates the tilt value</p>
           </td>
@@ -1841,9 +2690,17 @@ toc: true
         <tr>
           <td>whiteBalanceTemperature</td>
           <td>Optional</td>
-          <td>Number</td>
+          <td>Object: <a href="#camera-capability"> camera_capability</a></td>
           <td>
-            <p>Indicates the white balance temperature (0-10000)</p>
+            <p>Indicates the white balance temperature</p>
+          </td>
+        </tr>
+        <tr>
+          <td>zoomAbsolute</td>
+          <td>Optional</td>
+          <td>Object: <a href="#camera-capability"> camera_capability</a></td>
+          <td>
+            <p>Indicates the zoom value</p>
           </td>
         </tr>
       </tbody>
@@ -2253,6 +3110,74 @@ toc: true
               <li>MODE_BURST: For&nbsp;burst mode</li>
               <li>MODE_CONTINUOUS: For continuous mode</li>
             </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3 id="solutions">solutions</h3>
+  <p>Information of all supported camera solutions.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>name</td>
+          <td>Required</td>
+          <td>String</td>
+          <td>
+            <p>Name of supported solution.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>params</td>
+          <td>Required</td>
+          <td>Object: <a href="#params"> params</a></td>
+          <td>
+            <p>Detailed information of a specific solution.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3 id="params">params</h3>
+  <p>Detailed information of a specific solution.</p>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Name</p>
+          </th>
+          <th width="15%">
+            <p>Required</p>
+          </th>
+          <th width="15%">
+            <p>Type</p>
+          </th>
+          <th>
+            <p>Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>enable</td>
+          <td>Required</td>
+          <td>Boolean</td>
+          <td>
+            <p>Status of solution&nbsp;[enable/disable each solution]</p>
           </td>
         </tr>
       </tbody>

@@ -1,6 +1,6 @@
 ---
 title: appinfo.json
-date: 2022-03-02
+date: 2022-12-02
 weight: 10
 toc: true
 ---
@@ -184,7 +184,7 @@ webOS OSE does not support UHD resolution for web apps.
 <td><p>requiredPermissions</p></td>
 <td><p>Optional</p></td>
 <td><p>string array</p></td>
-<td><p>Specifies the required <a href="/docs/guides/development/configuration-files/acg-usage-guide/">Access Control Group (ACG)</a> names associated with the LS2 API methods used in the app. The ACG names associated with each method can be found in their respective <a href="/docs/reference/ls2-api/ls2-api-index/">LS2 API Reference</a>.</p></td>
+<td><p>Specifies the required <a href="/docs/guides/development/configuration-files/security-guide/">Access Control Group (ACG)</a> names associated with the LS2 API methods used in the app. The ACG names associated with each method can be found in their respective <a href="/docs/reference/ls2-api/ls2-api-index/">LS2 API Reference</a>.</p></td>
 </tr>
 </tbody>
 </table>

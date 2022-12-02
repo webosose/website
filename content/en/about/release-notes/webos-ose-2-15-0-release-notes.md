@@ -2,7 +2,7 @@
 title: webOS OSE 2.15.0
 display_title: webOS OSE 2.15.0 Release Notes
 date: 2022-02-18
-weight: 24
+weight: 32
 toc: true
 layout: release-notes
 ---

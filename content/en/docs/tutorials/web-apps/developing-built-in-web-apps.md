@@ -1,6 +1,6 @@
 ---
 title: Developing Built-in Web Apps
-date: 2022-02-11
+date: 2022-12-02
 weight: 20
 toc: true
 ---
@@ -281,9 +281,9 @@ A brief explanation of the above file:
 
 - Line(2) : The ID for the sample app.
 - Line(5) : The type of the sample app.
-- Line(7) : The title to be shown on the Home Launcher, which is a dock UI of webOS OSE.
-- Line(8) : The icon file to be shown on Home Launcher. Make sure the icon file is located in the project root directory. You can use your own icon file (size: 80 px * 80 px) or [icon.png](/images/docs/tutorials/icon.png).
-- Line(9) : The [Access Control Group (ACG)]({{< relref "acg-usage-guide" >}}) name associated with the LS2 API methods used in the app. For example, this sample app uses the `clock/getTime` method of the [com.webos.service.systemservice]({{< relref "com-webos-service-systemservice" >}}) API, whose ACG is "time.query". To identify the ACG names associated with a method, see the "ACG" field of the method in its API reference. You can also use the [`ls-monitor`]({{< relref "ls-monitor" >}}) command with the `-i` option to identify the ACGs of the method.
+- Line(7) : The title to be shown on the Launchpad, which is a dock UI of webOS OSE.
+- Line(8) : The icon file to be shown on the App Bar and the Launchpad. Make sure the icon file is located in the project root directory. You can use your own icon file (size: 80 px * 80 px) or [icon.png](/images/docs/tutorials/icon.png).
+- Line(9) : The [Access Control Group (ACG)]({{< relref "security-guide" >}}) name associated with the LS2 API methods used in the app. For example, this sample app uses the `clock/getTime` method of the [com.webos.service.systemservice]({{< relref "com-webos-service-systemservice" >}}) API, whose ACG is "time.query". To identify the ACG names associated with a method, see the "ACG" field of the method in its API reference. You can also use the [`ls-monitor`]({{< relref "ls-monitor" >}}) command with the `-i` option to identify the ACGs of the method.
 
 For more details, see [appinfo.json]({{< relref "appinfo-json" >}}).
 
@@ -353,7 +353,7 @@ inherit webos_cmake
 inherit webos_app
 inherit webos_arch_indep
 
-FILES_${PN} += "${webos_applicationsdir}"
+FILES:${PN} += "${webos_applicationsdir}"
 ```
 {{< /code >}}
 
@@ -383,9 +383,9 @@ For the sample web app (`com.example.app.web`), you must provide the local path 
 {{< code "webos-local.conf" >}}
 ``` bash {linenos=table}
 INHERIT += "externalsrc"
-EXTERNALSRC_pn-com.example.app.web = "/home/username/project/com.example.app.web/"
-EXTERNALSRC_BUILD_pn-com.example.app.web = "/home/username/project/com.example.app.web/build/"
-PR_append_pn-com.example.app.web =".local0"
+EXTERNALSRC:pn-com.example.app.web = "/home/username/project/com.example.app.web/"
+EXTERNALSRC_BUILD:pn-com.example.app.web = "/home/username/project/com.example.app.web/build/"
+PR:append:pn-com.example.app.web =".local0"
 ```
 {{< /code >}}
 
@@ -393,12 +393,12 @@ A brief explanation of the above file:
 
 - Line(1) : Inherit the `externalsrc.bbclass` file.
 - Line(2) : The path to the local source directory. **You must replace this value with your own value as follows:**
-  - For the property name, enter `EXTERNALSRC_pn-<web app ID>`. 
+  - For the property name, enter `EXTERNALSRC:pn-<web app ID>`. 
   - For the value, enter an absolute path to your web app directory. If you use the sample codes, enter an absolute path to `/samples/web-apps/com.example.app.web/`. 
 - Line(3) : The path to the local build directory. **You must replace this value with your own value as follows:**
-  - For the property name, enter `EXTERNALSRC_BUILD_pn-<component>`. 
+  - For the property name, enter `EXTERNALSRC_BUILD:pn-<component>`. 
   - For the value, enter `<local source directory>/build/`. 
-- Line(4) : The appended revision version (PR) for building local source files. The syntax of the property is `PR_append_pn-<component>`. This property is optional.
+- Line(4) : The appended revision version (PR) for building local source files. The syntax of the property is `PR:append:pn-<component>`. This property is optional.
 
 {{< note >}}
 We recommend that you add a trailing slash (/) at the end of all local directory paths, as in Line(2) and Line(3).
@@ -476,7 +476,7 @@ For built-in web apps, LS2 configuration files are generated during the build pr
 
 ### Scan the App
 
-To make System and Application Manager (SAM) scan the app, restart SAM using the `systemctl` command. This step is required so that the app can be added to the app list, which in turn makes the app appear on the Home Launcher.
+To make System and Application Manager (SAM) scan the app, restart SAM using the `systemctl` command. This step is required so that the app can be added to the app list, which in turn makes the app appear on the Launchpad.
 
 ``` bash
 root@raspberrypi4-64:/# systemctl restart sam
@@ -488,13 +488,18 @@ Rebooting the target after installing the app will have the same effect as runni
 
 ### Run the Web App
 
-To display the Home Launcher, drag the mouse cursor upward from the bottom of the screen (or swipe up from the bottom of the screen if you're using a touch display).
+To display the App Bar, drag the mouse cursor upward from the bottom of the screen (or swipe up from the bottom of the screen if you're using a touch display). 
 
-{{< figure src="/images/docs/tutorials/web-apps/installed-built-in-web-app.jpg" alt="Built-in web app in Home Launcher" width="80%" height="80%" >}}
+{{< figure src="/images/docs/tutorials/web-apps/app-bar.jpg" alt="App Bar" width="80%" height="80%" >}}
 
 {{< note >}}
-On webOS OSE 1.x, press the Windows key on your keyboard to display the Home Launcher.
+- On webOS OSE 1.x, press the Windows key on your keyboard to display the Home Launcher.
+- From webOS OSE 2.19.0, the app icon is displayed on the Launchpad instead of the Home Launcher.
 {{< /note >}}
+
+To display the Launchpad, click the Launchpad icon. The Launchpad shows the list of installed apps.
+
+{{< figure src="/images/docs/tutorials/web-apps/installed-built-in-web-app.jpg" alt="Built-in web app in the Launchpad " width="80%" height="80%" >}}
 
 Click the app icon to run the app. The message, "Hello, Web Application!!", will be displayed as follows:
 
@@ -543,11 +548,11 @@ You are now ready to build the webOS OSE image including the built-in web app an
 1. Add the web app to the build recipe file (`packagegroup-webos-extended.bb`).
 
     - **File path:** `build-webos/meta-webosose/meta-webos/recipes-core/packagegroups/packagegroup-webos-extended.bb`
-    - **Updates to be made:** Add the web app name to **`RDEPENDS_${PN} =`**
+    - **Updates to be made:** Add the web app name to **`RDEPENDS:${PN} =`**
 
     ``` bash {hl_lines=[6]}
     ...
-    RDEPENDS_${PN} = " \
+    RDEPENDS:${PN} = " \
         activitymanager \
         audiod \
         ...
@@ -575,4 +580,4 @@ You are now ready to build the webOS OSE image including the built-in web app an
 
     For more details, see the [Flashing webOS OSE]({{< relref "flashing-webos-ose#linux" >}}) page.
 
-After rebooting the target device, the web app becomes available on the Home Launcher.
+After rebooting the target device, the web app becomes available on the Launchpad.

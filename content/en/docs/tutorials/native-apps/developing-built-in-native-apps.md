@@ -1,6 +1,6 @@
 ---
 title: Developing Built-in Native Apps
-date: 2021-11-24
+date: 2022-12-02
 weight: 20
 toc: true
 ---
@@ -490,10 +490,11 @@ DEPENDS = "qtbase luna-service2 glib-2.0 libpbnjson"
 inherit webos_submissions
 inherit webos_qmake5
 inherit webos_app
+inherit webos_pkgconfig
 
 OE_QMAKE_PATH_HEADERS = "${OE_QMAKE_PATH_QT_HEADERS}"
 
-FILES_${PN} += "${webos_applicationsdir}"
+FILES:${PN} += "${webos_applicationsdir}"
 ```
 {{< /code >}}
 
@@ -506,8 +507,9 @@ A brief explanation of the above file:
 - Line(11) : Instruct OpenEmbedded to use the `WEBOS_VERSION` value as the component version number. If you develop your component on a local repository, this entry is required.
 - Line(12) : Instruct OpenEmbedded that the component uses QMake for configuration, which is the preferred choice for webOS components.
 - Line(13) : Inherit `webos_app`, because the component is an app.
-- Line(15) : Put `OE_QMAKE_PATH_HEADERS = "${OE_QMAKE_PATH_QT_HEADERS}"` so that Qt header files can be included at compile time.
-- Line(17) : `${webos_applicationsdir}` indicates `/usr/palm/applications`. `${PN}` is the package name, which is set to **webos.example.app.nativeqt**.
+- Line(14) : For the component that uses [pkg-config](https://en.wikipedia.org/wiki/Pkg-config) at build time or installs a pkg-config file (`.pc`), this entry is required.
+- Line(16) : Put `OE_QMAKE_PATH_HEADERS = "${OE_QMAKE_PATH_QT_HEADERS}"` so that Qt header files can be included at compile time.
+- Line(18) : `${webos_applicationsdir}` indicates `/usr/palm/applications`. `${PN}` is the package name, which is set to **webos.example.app.nativeqt**.
 
 ### Configure the Local Source Directory
 
@@ -523,18 +525,18 @@ For the sample native app (`com.example.app.nativqt`), you must provide the loca
 {{< code "webos-local.conf" >}}
 ``` bash {linenos=table}
 INHERIT += "externalsrc"
-EXTERNALSRC_pn-com.example.app.nativeqt = "/home/username/project/com.example.app.nativeqt/"
-EXTERNALSRC_BUILD_pn-com.example.app.nativeqt = "/home/username/project/com.example.app.nativeqt/build/"
-PR_append_pn-com.example.app.nativeqt =".local0"
+EXTERNALSRC:pn-com.example.app.nativeqt = "/home/username/project/com.example.app.nativeqt/"
+EXTERNALSRC_BUILD:pn-com.example.app.nativeqt = "/home/username/project/com.example.app.nativeqt/build/"
+PR:append:pn-com.example.app.nativeqt =".local0"
 ```
 {{< /code >}}
 
 A brief explanation of the above file:
 
 - Line(1) : Inherit `externalsrc` bbclass file.
-- Line(2) : The local source directory. The syntax of the property is `EXTERNALSRC_pn-<component>`. For the value, input `"<absolute path of the project directory>"`
-- Line(3) : The local build directory. The syntax of the property is `EXTERNALSRC_BUILD_pn-<component>`. For the value, input `"<absolute path of the project directory>/build/"`
-- Line(4) : The appended revision version (PR) for building local source files. The syntax of the property is `PR_append_pn-<component>`. This property is optional.
+- Line(2) : The local source directory. The syntax of the property is `EXTERNALSRC:pn-<component>`. For the value, input `"<absolute path of the project directory>"`
+- Line(3) : The local build directory. The syntax of the property is `EXTERNALSRC_BUILD:pn-<component>`. For the value, input `"<absolute path of the project directory>/build/"`
+- Line(4) : The appended revision version (PR) for building local source files. The syntax of the property is `PR:append:pn-<component>`. This property is optional.
 
 {{< note >}}
 We recommend that you add a trailing slash (/) at the end of all local directory paths, as in Line(2) and Line(3).
@@ -692,11 +694,11 @@ Perform the following steps:
 
     - **Filename:** `packagegroup-webos-extended.bb`
     - **Directory:** `build-webos/meta-webosose/meta-webos/recipes-core/packagegroups`
-    - **Updates to be made:** Add the native app name to **`RDEPENDS_${PN} =`**
+    - **Updates to be made:** Add the native app name to **`RDEPENDS:${PN} =`**
 
     ``` bash {hl_lines=[6]}
     ...
-    RDEPENDS_${PN} = " \
+    RDEPENDS:${PN} = " \
         activitymanager \
         audiod \
         ...

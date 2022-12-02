@@ -1,6 +1,6 @@
 ---
 title: Flashing the Image
-date: 2020-03-17
+date: 2022-12-02
 weight: 30
 toc: true
 ---
@@ -62,4 +62,4 @@ $ sudo umount /dev/sdb1
 
 ## Next Steps
 
-After you finish flashing the webOS IoT image to the microSD card, you must set up a network on the image. See [Network Setup]({{< relref "setting-up-networking-iot" >}}).
+After you finish flashing the webOS IoT image to the microSD card, you must set up a network on the image. See [Network Setup]({{< relref "setting-up-network-iot" >}}).
