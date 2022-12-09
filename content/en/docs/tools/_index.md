@@ -1,7 +1,7 @@
 ---
 title: Tools
 section_main: true
-date: 2021-11-24
+date: 2022-12-02
 weight: 50
 ---
 
@@ -36,6 +36,7 @@ Check the user guides, download links, and release notes for SDK tools.
 ### Emulator
 
 * [User Guide]({{< relref "emulator-user-guide" >}})
+* [Emulator Launcher]({{< relref "emulator-launcher" >}})
 
 ### Beanviser
 

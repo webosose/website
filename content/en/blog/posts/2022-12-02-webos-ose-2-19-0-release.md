@@ -14,6 +14,7 @@ The highlights of this release are as follows:
 - [Enhanced Home App](#enhanced-home-app)
 - [Video Call](#video-call)
 - [Blockchain Wallet](#blockchain-wallet)
+- [Emulator Launcher](#emulator-launcher)
 - [Yocto upgrade to 4.0 Kirkstone](#yocto-upgrade-to-40-kirkstone)
 - [Chromuium Upgrade to v94](#chromuium-upgrade-to-v94)
 - [Qt 6.4 Update](#qt-64-update)
@@ -52,6 +53,12 @@ webOS OSE doesn't provide a secure environment for blockchain wallets. LG Electr
 {{< note >}}
 More updates and related documents will be released in the future.
 {{< /note >}}
+
+## Emulator Launcher
+
+Emulator Launcher is a command-line based tool that helps users set up the webOS OSE VirtualBox emulator.
+
+See the [Emulator Launcher Guide]({{< relref "emulator-launcher" >}}).
 
 ## Yocto upgrade to 4.0 Kirkstone
 

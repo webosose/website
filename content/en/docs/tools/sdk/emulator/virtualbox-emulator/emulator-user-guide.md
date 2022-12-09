@@ -1,7 +1,7 @@
 ---
 title: User Guide
 display_title: VirtualBox Emulator User Guide
-date: 2022-01-11
+date: 2022-12-02
 weight: 10
 toc: true
 ---
@@ -24,6 +24,7 @@ Key characteristics of the emulator are as follows:
 * Emulates major features of webOS OSE platform on PC without Raspberry Pi target device
 * Provides graphics functionality with host PC’s GPU H/W acceleration
 * Supports webOS OSE CLI tool for application and service development
+* Supports [Emulator Launcher]({{< relref "emulator-launcher" >}}).
 
 ## System Requirements
 
@@ -38,8 +39,14 @@ The emulator requires the following environments.
         * 16.04 LTS (64-bit)
         * 18.04 LTS (64-bit)
         * 20.04 LTS (64-bit)
+        * 22.04 LTS (64-bit)
     * macOS
         * macOS Sierra (10.12) or higher (64-bit)
+  
+        {{< note >}}
+        Emulator Launcher is not supported in macOS.
+        {{< /note >}}
+
     * Windows
         * Windows 7 (64-bit)
         * Windows 10 (64-bit)
@@ -390,7 +397,41 @@ To connect to the emulator using Web Inspector, access `localhost:<PortNumber>` 
 
 ### Connect from the Serial Ports
 
-For more details on serial ports setup, visit [webOS Emulator Tips](https://github.com/webosose-emulator/build-webos/blob/master/webOS-Emulator-Tips.md#serial-setting)
+Go Setting in Virtualbox Emulator machine, select "Serial Ports" and then,
+
+``` 
+check "Enable Serial Port"
+Serial Ports : Port 1
+Port Number : COM1
+Port Mode : Host Pipe
+Connect to existing pipe/socket : UNCHECKED
+Path/Address: /tmp/vbox (on Ubuntu/macOS) or \\.\pipe\com1 (on Windows)
+```
+
+Now, set terminal progrom in Host PC. For example, Minicom in Ubuntu host PC or macOS.
+
+``` bash
+$ sudo apt install minicom
+$ sudo minicom -s -c on
+Serial port setup
+Serial Device : unix#/tmp/vbox
+Hardware Control : No
+Software Control : No
+Save setup as dfl
+Exit
+Ctrl-a q
+$ minicom
+```
+
+For Windows PC, please use terminal program (such as puTTY) and set
+
+```
+type -> serial
+speed -> 115200
+serial line -> \\.\pipe\com1
+```
+
+Finally start VirtualBox emulator and then you can see serial outputs.
 
 ## Trouble Shooting
 

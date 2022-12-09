@@ -134,6 +134,7 @@ IoTivity and webOS IoT is no longer supported. We plan to replace webOS IoT with
 ### Emulator
 
 - Fixed an issue where pop-up windows showed up multiple times when sound devices are connected
+- Added [Emulator Launcher]({{< relref "emulator-launcher" >}})
 
 ### Build System & SCM
 

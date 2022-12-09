@@ -57,13 +57,7 @@ webOS OSE can be built on the 64-bit version of Ubuntu Long Term Support (LTS) r
 * Ubuntu 20.04 LTS (Focal Fossa) 64-bit
 
 {{< caution >}}
-* We strongly advise you NOT to use a Linux virtual machine on Windows or macOS for building webOS OSE, as it may cause unexpected issues.
-* Since webOS OSE 2.7.0, for building the VirtualBox emulator you need the following:
-
-    * Ubuntu 20.04 build system
-    * Additional code patch
-
-    For more details on how to build and patch, visit [webOS OSE emulator GitHub](https://github.com/webosose-emulator/build-webos).
+We strongly advise you NOT to use a Linux virtual machine on Windows or macOS for building webOS OSE, as it may cause unexpected issues.
 {{< /caution >}}
 
 ### Hardware
