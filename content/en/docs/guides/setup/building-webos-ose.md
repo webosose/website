@@ -1,7 +1,7 @@
 ---
 title: Building webOS OSE
 display_title: Building webOS Open Source Edition
-date: 2021-11-24
+date: 2022-12-14
 weight: 20
 toc: true
 ---
@@ -102,6 +102,35 @@ The following images can be built:
 - `webos-image-devel`: The image with various development tools added to `webos-image`, including GDB and strace (system call tracer).
 
 ### Building webos-image
+
+{{< caution "2022-12-14 Workaround" >}}
+Currently, a build error occurs due to fetching issues. Modify the following file to resolve the error.
+
+- File location: `build-webos/meta-webosose/meta-webos/recipes-upstreamable/tensorflow-lite/tensorflow-lite_2.6.2.bb`
+- Change the branch name of "Vulkan-Headers" and "cpuinfo" to `main`.
+  
+  {{< code "Before" >}}
+  ``` bash {linenos=table, linenostart=61, hl_lines=[1 4 5]}
+  git://github.com/KhronosGroup/Vulkan-Headers;branch=master;protocol=https;destsuffix=git/vulkan_headers;name=vulkan-headers \
+  git://github.com/KhronosGroup/EGL-Registry;branch=main;protocol=https;destsuffix=git/egl_headers;name=egl-headers \
+  git://github.com/KhronosGroup/OpenGL-Registry;branch=main;protocol=https;destsuffix=git/opengl_headers;name=opengl-headers \
+  git://github.com/pytorch/cpuinfo;branch=master;protocol=https;destsuffix=git/cpuinfo-source;name=cpuinfo \
+  git://github.com/pytorch/cpuinfo;branch=master;protocol=https;destsuffix=git/clog-source;name=clog \
+  ```
+  {{< /code >}}
+  
+  {{< code "After" >}}
+  ``` bash {linenos=table, linenostart=61, hl_lines=[1 4 5]}
+  git://github.com/KhronosGroup/Vulkan-Headers;branch=main;protocol=https;destsuffix=git/vulkan_headers;name=vulkan-headers \
+  git://github.com/KhronosGroup/EGL-Registry;branch=main;protocol=https;destsuffix=git/egl_headers;name=egl-headers \
+  git://github.com/KhronosGroup/OpenGL-Registry;branch=main;protocol=https;destsuffix=git/opengl_headers;name=opengl-headers \
+  git://github.com/pytorch/cpuinfo;branch=main;protocol=https;destsuffix=git/cpuinfo-source;name=cpuinfo \
+  git://github.com/pytorch/cpuinfo;branch=main;protocol=https;destsuffix=git/clog-source;name=clog \
+  ```
+  {{< /code >}}
+
+This error will be resolved in the next release.
+{{< /caution >}}
 
 To kick off a full build of webOS OSE, enter the following:
 
