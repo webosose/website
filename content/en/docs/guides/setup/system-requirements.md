@@ -1,6 +1,6 @@
 ---
 title: System Requirements
-date: 2022-12-28
+date: 2022-12-29
 weight: 10
 toc: true
 ---
@@ -13,7 +13,7 @@ webOS OSE cannot be built directly on the target device. You must use a separate
 
 ## Target Device Requirements
 
-A **target device*- is a device that runs webOS OSE. To test apps and services on your target device, we recommend that you prepare the following set of hardware and peripheral devices.
+A **target device** is a device that runs webOS OSE. To test apps and services on your target device, we recommend that you prepare the following set of hardware and peripheral devices.
 
 ### For webOS OSE 2.0.0 or Higher
 

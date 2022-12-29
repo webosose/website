@@ -13,7 +13,7 @@ For more details on this release, see the [release notes](/about/release-notes/w
 
 ## Updated Branch Policy
 
-As one of the open source platform, webOS OSE uses many other open source projects. It leads inevitable dependency to other projects, and this dependency might cause serious errors to our platform --- such as build errors. Moreover, these changes usually happen abruptly and instantly.
+As one of the open source platform, webOS OSE uses many other open source projects. It leads inevitable dependency to other projects, and this dependency might cause serious errors to our platform, such as build errors. Moreover, these changes usually happen abruptly and instantly.
 
 To resolve this issue, we introduced a new branch policy to our [GitHub repository](https://github.com/webosose/build-webos).
 
