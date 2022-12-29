@@ -1,7 +1,7 @@
 ---
 title: User Guide
 display_title: VirtualBox Emulator User Guide
-date: 2022-12-02
+date: 2022-12-28
 weight: 10
 toc: true
 ---
@@ -36,7 +36,6 @@ The emulator requires the following environments.
     * 8 GB or higher
 * Operating system
     * Ubuntu Linux
-        * 16.04 LTS (64-bit)
         * 18.04 LTS (64-bit)
         * 20.04 LTS (64-bit)
         * 22.04 LTS (64-bit)
@@ -44,7 +43,7 @@ The emulator requires the following environments.
         * macOS Sierra (10.12) or higher (64-bit)
   
         {{< note >}}
-        Emulator Launcher is not supported in macOS.
+        The emulator does not support Mac computers with Apple silicon.
         {{< /note >}}
 
     * Windows
@@ -107,7 +106,7 @@ Download the same version of Extension Pack as your installed version of Virtual
 
 Build the webOS OSE image for the emulator in [Building webOS OSE]({{< relref "building-webos-ose" >}}).
 
-* Make sure you set up the build for the emulator at the [configuration step]({{< relref "building-webos-ose#configuring-the-build-for-the-target-device" >}}).
+* Make sure you set up the build for the emulator at the [configuration step]({{< relref "building-webos-ose#configuring-the-build" >}}).
 * After the build is completed, check that the resulting image (`webos-image-qemux86-64-master-*.wic.vmdk`) has been created properly.
 
 ## Setting Up the Virtual Machine in VirtualBox

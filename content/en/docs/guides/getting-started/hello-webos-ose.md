@@ -1,6 +1,6 @@
 ---
 title: "Hello, webOS OSE!"
-date: 2022-12-02
+date: 2022-12-27
 weight: 10
 toc: true
 ---
@@ -27,7 +27,7 @@ You need to create an image for the desired target and prepare the target enviro
 ### Real Device
 
 * Before you begin, check the [system requirements]({{< relref "system-requirements" >}}).
-* [Build the source code]({{< relref "building-webos-ose" >}}) to create an image for RPi. Ensure that you set up the build for RPi at the [configuration step]({{< relref "building-webos-ose#configuring-the-build-for-the-target-device" >}}).
+* [Build the source code]({{< relref "building-webos-ose" >}}) to create an image for RPi. Ensure that you set up the build for RPi at the [configuration step]({{< relref "building-webos-ose#configuring-the-build" >}}).
 * [Flash the built image]({{< relref "flashing-webos-ose" >}}) to RPi.
 * [Set up networking]({{< relref "setting-up-network" >}}) between the host machine and RPi.
 * If you use webOS OSE 2.0 or higher and RPi 4 for a target device, consider setting up [dual displays]({{< relref "setting-up-dual-displays" >}}).
@@ -35,7 +35,7 @@ You need to create an image for the desired target and prepare the target enviro
 ### Emulator
 
 * Before you begin, check the system requirements for the [build system]({{< relref "system-requirements#build-system-requirements" >}}), [host machine]({{< relref "system-requirements#host-machine-requirements" >}}), and the [emulator host]({{< relref "emulator-user-guide#system-requirements" >}}).
-* [Build the source code]({{< relref "building-webos-ose" >}}) to create an image for the emulator. Make sure that you set up the build for the emulator at the [configuration step]({{< relref "building-webos-ose#configuring-the-build-for-the-target-device" >}}).
+* [Build the source code]({{< relref "building-webos-ose" >}}) to create an image for the emulator. Make sure that you set up the build for the emulator at the [configuration step]({{< relref "building-webos-ose#configuring-the-build" >}}).
 * Set up the emulator by following the steps in [emulator user guide]({{< relref "emulator-user-guide" >}}).
 
 ## Your First webOS OSE App

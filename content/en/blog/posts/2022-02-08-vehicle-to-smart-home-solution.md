@@ -11,7 +11,7 @@ thumbnail: th-vehicle-to-smart-home-solution.png
 
 ## Introduction
 
-Many developers had gathered for [The World Embedded Software Contest 2021](https://eswcontest.or.kr/main/main.php) (Korean only). The webOS division was among the most popular picks with contest participants. After a fierce competition, Team Three Americano's project (Title: SMILE - Smart Mobility Improving Life Experience) won the top prize.
+Many developers had gathered for [The World Embedded Software Contest 2021](https://www.eswcontest.or.kr/) (Korean only). The webOS division was among the most popular picks with contest participants. After a fierce competition, Team Three Americano's project (Title: SMILE - Smart Mobility Improving Life Experience) won the top prize.
 
 Team Three Americano developed a solution that checks and controls home appliances using a car dashboard running on webOS OSE and a smartphone application. Using this solution, users can easily check the status of home appliances and control them, for example, turning on/off the air conditioner or lights.
 

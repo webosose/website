@@ -1,6 +1,6 @@
 ---
 title: System Requirements
-date: 2022-12-02
+date: 2022-12-28
 weight: 10
 toc: true
 ---
@@ -13,33 +13,32 @@ webOS OSE cannot be built directly on the target device. You must use a separate
 
 ## Target Device Requirements
 
-A **target device** is a device that runs webOS OSE. To test apps and services on your target device, we recommend that you prepare the following set of hardware and peripheral devices.
+A **target device*- is a device that runs webOS OSE. To test apps and services on your target device, we recommend that you prepare the following set of hardware and peripheral devices.
 
 ### For webOS OSE 2.0.0 or Higher
 
-* Raspberry Pi 4
-* microSD card (8 GB or larger) and microSD card reader device
-* HDMI-compatible touchscreen using USB interface, with 1920x1080 resolution
-* Micro HDMI to HDMI cable
-* Ethernet cable and internet connection
-* (Optional) Input devices such as a keyboard and a mouse
+- Raspberry Pi 4
+- microSD card (8 GB or larger) and microSD card reader device
+- HDMI-compatible touchscreen using USB interface, with 1920x1080 resolution
+- Micro HDMI to HDMI cable
+- Ethernet cable and internet connection
+- (Optional) Input devices such as a keyboard and a mouse
 
 {{< note >}}
-* webOS OSE 2.0 officially supports **[Raspberry Pi 4 Model B](https://www.raspberrypi.org/products/raspberry-pi-4-model-b/)**. To avoid insufficient memory issues, the recommended RAM memory of Raspberry Pi 4 is **4 GB or 8 GB**.
-* webOS OSE 2.0 is designed for touch interface, so we recommend that you use a touch device as an input device for the target device. If you use a keyboard and a mouse as input devices, some functionalities might not work.
+From the version 2.0.0, webOS OSE officially supports **[Raspberry Pi 4 Model B](https://www.raspberrypi.org/products/raspberry-pi-4-model-b/)**. We recommend using **4 GB or higher** model to avoid insufficient memory issues.
 {{< /note >}}
 
 {{< caution >}}
-We do not provide official support for issues caused by running webOS OSE 2.0 on Raspberry Pi 3.
+We do not support running webOS OSE 2.0.0 or higher on Raspberry Pi 3.
 {{< /caution >}}
 
 ### For webOS OSE 1.x
 
-* Raspberry Pi 3
-* microSD card (8 GB or larger) and microSD card reader device
-* HDMI-compatible monitor and cable
-* Input devices such as a keyboard and a mouse
-* Ethernet cable and internet connection
+- Raspberry Pi 3
+- microSD card (8 GB or larger) and microSD card reader device
+- HDMI-compatible monitor and cable
+- Input devices such as a keyboard and a mouse
+- Ethernet cable and internet connection
 
 {{< note >}}
 webOS OSE 1.x officially supports **[Raspberry Pi 3 Model B](https://www.raspberrypi.org/products/raspberry-pi-3-model-b/)**.
@@ -53,24 +52,27 @@ A **build system** is a computer that builds an image from webOS OSE source code
 
 webOS OSE can be built on the 64-bit version of Ubuntu Long Term Support (LTS) releases, including:
 
-* Ubuntu 18.04 LTS (Bionic Beaver) 64-bit (with GCC 9.4 or higher)
-* Ubuntu 20.04 LTS (Focal Fossa) 64-bit
+- Ubuntu 18.04 LTS (Bionic Beaver) 64-bit (with GCC 9.4 or higher)
+- Ubuntu 20.04 LTS (Focal Fossa) 64-bit
+- Ubuntu 22.04 LTS (Jammy Jellyfish) 64-bit
 
 {{< caution >}}
-We strongly advise you NOT to use a Linux virtual machine on Windows or macOS for building webOS OSE, as it may cause unexpected issues.
+We strongly advise you **NOT** to use a Linux virtual machine on Windows or macOS for building webOS OSE, as it might cause unexpected issues.
 {{< /caution >}}
 
 ### Hardware
 
-* CPU
-    * Minimum: Intel Core i5 dual-core with 4 threads
-    * Recommended: Intel Core i7 quad-core with 8 threads or higher
-* RAM
-    * Minimum: 8 GB
-    * Recommended: 16 GB or higher
-* Storage
-    * Minimum: HDD with 100 GB of free disk space
-    * Recommended: SSD with 100 GB of free disk space or more
+- CPU
+    - Recommended: Intel Core i7 quad-core with 8 threads or higher
+- RAM
+    - Recommended: 16 GB or higher
+- Storage
+    - Minimum: HDD with 300 GB of free disk space
+    - Recommended: SSD with 300 GB of free disk space or more
+
+{{< note >}}
+See also [our test results]({{< relref "building-webos-ose#test-results" >}}) for the actual time build webOS OSE.
+{{< /note >}}
 
 ### Git
 
@@ -88,9 +90,9 @@ The build system (Linux machine) can be also used as a host machine for further 
 
 Recommended version for each operating system are as follows:
 
-* Linux: Ubuntu 18.04 LTS or higher
-* Windows: Windows 7 or higher
-* macOS: Mac OS X 10.6 Snow Leopard or higher
+- Linux: Ubuntu 18.04 LTS or higher
+- Windows: Windows 7 or higher
+- macOS: Mac OS X 10.6 Snow Leopard or higher
 
 ### Software Tools
 

@@ -1,6 +1,6 @@
 ---
 title: Tutorial - Jetson Nano
-date: 2022-12-02
+date: 2022-12-27
 weight: 20
 toc: true
 ---
@@ -143,7 +143,7 @@ $ ./mcf -p A_HALF_NUMBER_OF_PHYSICAL_CPU_CORES -b A_HALF_NUMBER_OF_PHYSICAL_CPU_
 
 ```
 
-We highly recommend to use the value less than half of the number of physical CPU cores. If you specify a number higher than that, it might cause unexpected errors during the build. For more information about how to set the option values, see [Setting the Parallelism Values]({{< relref "building-webos-ose#setting-the-parallelism-values" >}}).
+We highly recommend to use the value less than half of the number of physical CPU cores. If you specify a number higher than that, it might cause unexpected errors during the build. For more information about how to set the option values, see [How to Find the Optimum Parallelism Values]({{< relref "building-webos-ose#appendix-a-how-to-find-the-optimum-parallelism-values" >}}).
 
 The `mcf` command creates a file to initialize the build environment.
 
