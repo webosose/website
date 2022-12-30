@@ -1,7 +1,7 @@
 ---
 title: Building webOS OSE
 display_title: Building webOS Open Source Edition
-date: 2022-12-28
+date: 2022-12-30
 weight: 20
 toc: true
 ---
@@ -20,8 +20,8 @@ Here is a quick summary for users already familiar with building webOS OSE. If y
 # Download source codes
 $ git clone https://github.com/webosose/build-webos.git
 $ cd build-webos
-$ git fetch origin --tags
-$ git checkout tags/<tag you want> -b <branch name you want>
+$ git fetch origin <latest version branch>
+$ git checkout <latest version branch>
 
 # Install and configure the build
 $ sudo scripts/prerequisites.sh
@@ -41,12 +41,18 @@ $ git clone https://github.com/webosose/build-webos.git
 $ cd build-webos
 ```
 
-Then, checkout to the version you want to build. For example, if you want to build webOS OSE 2.19.1, enter the following commands:
+Since webOS OSE 2.19.1, we introduced a new branch policy. This new policy allows the platform to quickly implement important changes.
+
+What you need to do is to **checkout your branch to the latest version**. For example, if you want to build the latest version of webOS OSE 2.19.x, enter the following commands:
 
 ```bash
-$ git fetch origin --tags
-$ git checkout tags/v2.19.1 -b v2.19.1-local-branch
+$ git fetch origin 2.19
+$ git checkout 2.19
 ```
+
+{{< note >}}
+For more deatils on the new branch policy, refer to [webOS OSE 2.19.1 Release]({{< relref "2022-12-29-webos-ose-2-19-1-release" >}}).
+{{< /note >}}
 
 ## Installing the Required Tools and Libraries
 

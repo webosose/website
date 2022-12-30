@@ -21,10 +21,12 @@ To resolve this issue, we introduced a new branch policy to our [GitHub reposito
 
 The previous policy (`[Before]` in the above figure) released all commits in the order of creation. This policy is useful in terms of reliable maintenance, especially in configuration management. But it cannot resolve errors instantly because every commit must pass qualification tests before releasing it. The more commits require the longer time.
 
-A new policy creates a new branch (the `2.19` branch) for every minor version. (Versioning rule: `major`.`minor`.`patch`) If changes from other open source projects affect our platform, hotfix commits will be released through this branch. This allows us to resolve errors quickly by reducing the number of commits to be released.
+A new policy creates a new branch (the `2.19` branch in the above figure) for every minor version. If some critical errors occur due to the changes from other open source projects, commits for hotfix will be released through this branch. This allows us to resolve errors quickly by reducing the number of commits to be released.
 
-The hotfix commits, and other commits are released to the master branch when the next minor version is released.
+{{< figure src="/images/blog/news/webos-ose-versioning-rule.jpg" width="60%" caption="Versioning rule of webOS OSE" >}}
+
+These hotfix commits will also be released to the `main` branch in the next minor version.
 
 {{< note >}}
-For more details on how to build webOS OSE in a new way, refer to [Building webOS OSE]({{< relref "building-webos-ose" >}}).
+For more details on how to build webOS OSE in the new way, refer to [Building webOS OSE]({{< relref "building-webos-ose" >}}).
 {{< /note >}}
