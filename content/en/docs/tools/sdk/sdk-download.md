@@ -1,6 +1,6 @@
 ---
 title: "SDK Download"
-date: 2022-02-18
+date: 2023-02-14
 weight: 5
 file_download: true
 toc: true
@@ -24,15 +24,15 @@ Emulator is created as a virtual machine image when you build webOS OSE platform
 
 ## Beanviser
 
-* Version: v2.0.6
+* Version: v2.0.7
 
 |	Platform	|	Beanviser Package	|	Size	|
-|-----------------------|-------------------|-----------|
-|	Linux (32-bit)	|	<a href="javascript:" onclick="file_dn('Beanviser', 'Linux', 'beanviser-linux32-2.0.6.tgz', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/beanviser/v2.0.6/beanviser-linux32-2.0.6.tgz');">beanviser-linux32-2.0.6.tgz</a>	|	126.0 MB	|
-|	Linux (64-bit)	|	<a href="javascript:" onclick="file_dn('Beanviser', 'Linux', 'beanviser-linux64-2.0.6.tgz', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/beanviser/v2.0.6/beanviser-linux64-2.0.6.tgz');">beanviser-linux64-2.0.6.tgz</a>	|	126.3 MB	|
-|	macOS (64-bit)	|	<a href="javascript:" onclick="file_dn('Beanviser', 'macOS', 'beanviser-mac64-2.0.6.tgz', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/beanviser/v2.0.6/beanviser-mac64-2.0.6.tgz');">beanviser-mac64-2.0.6.tgz</a>	|	112.7 MB	|
-|	Windows	(32-bit) |	<a href="javascript:" onclick="file_dn('Beanviser', 'Windows', 'beanviser-win32-2.0.6.zip', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/beanviser/v2.0.6/beanviser-win32-2.0.6.zip');">beanviser-win32-2.0.6.zip</a>	|	102.1 MB	|
-|	Windows	(64-bit) |	<a href="javascript:" onclick="file_dn('Beanviser', 'Windows', 'beanviser-win64-2.0.6.zip', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/beanviser/v2.0.6/beanviser-win64-2.0.6.zip');">beanviser-win64-2.0.6.zip</a>	|	110.4 MB	|
+|-----------|-------------------|-------|
+|	Linux (32-bit)	|	<a href="javascript:" onclick="file_dn('Beanviser', 'Linux', 'beanviser-linux32-2.0.7.tgz', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/beanviser/v2.0.7/beanviser-linux32-2.0.7.tgz');">beanviser-linux32-2.0.7.tgz</a>	|	142.1 MB	|
+|	Linux (64-bit)	|	<a href="javascript:" onclick="file_dn('Beanviser', 'Linux', 'beanviser-linux64-2.0.7.tgz', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/beanviser/v2.0.7/beanviser-linux64-2.0.7.tgz');">beanviser-linux64-2.0.7.tgz</a>	|	139.6 MB	|
+|	macOS (64-bit)	|	<a href="javascript:" onclick="file_dn('Beanviser', 'macOS', 'beanviser-mac64-2.0.7.tgz', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/beanviser/v2.0.7/beanviser-mac64-2.0.7.tgz');">beanviser-mac64-2.0.7.tgz</a>	|	123.8 MB	|
+|	Windows	(32-bit) |	<a href="javascript:" onclick="file_dn('Beanviser', 'Windows', 'beanviser-win32-2.0.7.zip', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/beanviser/v2.0.7/beanviser-win32-2.0.7.zip');">beanviser-win32-2.0.7.zip</a>	|	110.7 MB	|
+|	Windows	(64-bit) |	<a href="javascript:" onclick="file_dn('Beanviser', 'Windows', 'beanviser-win64-2.0.7.zip', 'https://webosose.s3.ap-northeast-2.amazonaws.com/tools/beanviser/v2.0.7/beanviser-win64-2.0.7.zip');">beanviser-win64-2.0.7.zip</a>	|	118.9 MB	|
 
 See the [Beanviser release notes]({{< relref "beanviser-release-notes" >}}).
 

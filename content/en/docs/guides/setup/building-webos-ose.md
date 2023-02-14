@@ -1,7 +1,7 @@
 ---
 title: Building webOS OSE
 display_title: Building webOS Open Source Edition
-date: 2022-12-30
+date: 2023-02-14
 weight: 20
 toc: true
 ---
@@ -10,7 +10,7 @@ This page describes how to build a webOS Open Source Edition (OSE) image from so
 
 ## Before You Begin
 
-Ensure that your system meets the [Build System Requirements]({{< relref "system-requirements#build-system-requirements" >}}).
+Make sure that your system meets the [Build System Requirements]({{< relref "system-requirements#build-system-requirements" >}}).
 
 ## Quick Summary
 
@@ -20,8 +20,7 @@ Here is a quick summary for users already familiar with building webOS OSE. If y
 # Download source codes
 $ git clone https://github.com/webosose/build-webos.git
 $ cd build-webos
-$ git fetch origin <latest version branch>
-$ git checkout <latest version branch>
+$ git checkout -t origin/<branch of the latest webOS OSE version>
 
 # Install and configure the build
 $ sudo scripts/prerequisites.sh
@@ -41,24 +40,24 @@ $ git clone https://github.com/webosose/build-webos.git
 $ cd build-webos
 ```
 
-Since webOS OSE 2.19.1, we introduced a new branch policy. This new policy allows the platform to quickly implement important changes.
+Since webOS OSE 2.19.1, we introduced a new branch policy. This new policy allows the platform to implement important changes quickly.
 
-What you need to do is to **checkout your branch to the latest version**. For example, if you want to build the latest version of webOS OSE 2.19.x, enter the following commands:
+What you need to do is to **check out a branch of the latest webOS OSE version**. For example, if the latest version of webOS OSE is 2.19.1, enter the following commands:
 
 ```bash
-$ git fetch origin 2.19
-$ git checkout 2.19
+$ git checkout -t origin/2.19
 ```
 
 {{< note >}}
-For more deatils on the new branch policy, refer to [webOS OSE 2.19.1 Release]({{< relref "2022-12-29-webos-ose-2-19-1-release" >}}).
+- If a branch of the latest version doesn't exist, use the `master` branch.
+- For more details on the new branch policy, refer to [webOS OSE 2.19.1 Release]({{< relref "2022-12-29-webos-ose-2-19-1-release" >}}).
 {{< /note >}}
 
 ## Installing the Required Tools and Libraries
 
 During the building process, [BitBake](https://docs.yoctoproject.org/bitbake.html) might fail a sanity check. Although BitBake tells you what is missing, it doesn't install the missing tools and libraries. 
 
-You can force to install all of the missing software by entering:
+You can force to install all of the missing software by entering the following:
 
 ```bash
 $ sudo scripts/prerequisites.sh
@@ -68,8 +67,8 @@ $ sudo scripts/prerequisites.sh
 
 Using the `mcf` command, you can set up the followings:
 
-- A type of webOS image
-- How many resources to allocate for building webOS OSE
+- A type of the webOS OSE image
+- How many resources to allocate to the build process
 
 ```bash
 $ ./mcf -p <num of CPUs> -b <num of CPUs> <device type>
@@ -78,9 +77,9 @@ $ ./mcf -p <num of CPUs> -b <num of CPUs> <device type>
 | Property | Description |
 |----------|-------------|
 | `<num of CPUs>` | This number determines how CPU cores to allocate for the building process. See [Appendix. How to Find the Optimum Parallelism Values](#appendix-a-how-to-find-the-optimum-parallelism-values).|
-| `<device type>` | A type of target devices. Available values are as follows: <ul><li><code>raspberrypi4</code>: 32-bit image for webOS OSE 2.0 or higher</li><li><code>raspberrypi4-64</code>: 64-bit image for webOS OSE 2.0 or higher</li><li><code>raspberrypi3</code>: 32-bit image for webOS OSE 1.x version</li><li><code>raspberrypi3-64</code>: 64-bit image for webOS OSE 1.x version</li><li><code>qemux86</code>: 32-bit image for emulator</li><li><code>qemux86-64</code>: 64-bit image for emulator</li></ul> {{< note >}}
-The 64-bit emulator is supported by webOS OSE 2.14.0 or higher.
-{{< /note >}} |
+| `<device type>` | A type of the webOS OSE image. Available values are as follows: <ul><li><code>raspberrypi4</code>: 32-bit image for webOS OSE 2.0 or higher</li><li><code>raspberrypi4-64</code>: 64-bit image for webOS OSE 2.0 or higher</li><li><code>raspberrypi3</code>: 32-bit image for webOS OSE 1.x version</li><li><code>raspberrypi3-64</code>: 64-bit image for webOS OSE 1.x version</li><li><code>qemux86</code>: 32-bit image for webOS OSE emulator</li><li><code>qemux86-64</code>: 64-bit image for webOS OSE emulator (For webOS OSE 2.14.0 or higher)</li></ul> {{< caution >}}
+Previous versions of webOS OSE might occur errors during build time. We only guarantee the build of the latest version.
+{{< /caution >}} |
 
 ## Building the Image
 
@@ -200,7 +199,7 @@ $ bitbake -c cleansstate <component-name>
 
 To set the make and BitBake parallelism values, use `-p` and `-b` options to the `mcf` script. The `-p` and `-b` options correspond to `PARALLEL_MAKE` and `BB_NUMBER_THREADS` variables described in [Yocto Project Development Tasks Manual](https://docs.yoctoproject.org/dev-manual/common-tasks.html#speeding-up-a-build).
 
-The recommended value for `-p` and `-b` option is **a half of the number of physical CPU cores**. To get the number of physical CPU cores on your build system, use the following commands.
+The recommended value for `-p` and `-b` options is **a half of the number of physical CPU cores**. To get the number of physical CPU cores on your build system, use the following commands.
 
 1. Get the number of physical CPUs.
 
@@ -220,17 +219,17 @@ The recommended value for `-p` and `-b` option is **a half of the number of phys
 
 	1 * 4 = 4 (The number of physical CPU cores)
 
-With the above example, the recommended value for `-p` and `-b` option becomes 4 / 2 = 2.
+With the above example, the recommended value for `-p` and `-b` options becomes 4 / 2 = 2.
 
 {{< note >}}
-We recommend to use the value under two-thirds of the number of CPU cores.
+We recommend you use the value under two-thirds of the number of CPU cores.
 {{< /note >}}
 
 {{< caution >}}
-Omitting `-p` and `-b` options are equivalent to using `-p 0 -b 0`, which forces the build to use all CPU cores. This might cause an unexpected behavior or a build failure.
+Omitting `-p` and `-b` options are equivalent to using `-p 0 -b 0`, which forces the build to use all CPU cores. This might cause unexpected behaviors or a build failure.
 {{< /caution >}}
 
-## Appendix B. Build Time test
+## Appendix B. Build Time Test
 
 This section describes the actual build time of webOS OSE using our build machine.
 

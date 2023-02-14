@@ -1,12 +1,18 @@
 ---
 title: Release Notes
 display_title: Beanviser Release Notes
-date: 2022-02-18
+date: 2023-02-14
 weight: 20
 toc: true
 ---
 
 This page provides the summary of each Beanviser release for webOS Open Source Edition (OSE).
+
+## v2.0.7 (February 14, 2023)
+
+### Fixed issues
+
+  - Fixed a connection issue on Windows 10
 
 ## v2.0.6 (February 18, 2022)
 
