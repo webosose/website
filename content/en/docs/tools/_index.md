@@ -1,7 +1,7 @@
 ---
 title: Tools
 section_main: true
-date: 2022-12-02
+date: 2023-01-09
 weight: 50
 ---
 
@@ -28,6 +28,7 @@ Check the user guides, download links, and release notes for SDK tools.
 
 * [User Guide]({{< relref "cli-user-guide" >}})
 * [Release Notes]({{< relref "cli-release-notes" >}})
+* [API Reference]({{< relref "cli-api-reference" >}})
 
 ### VS Code Extension
 

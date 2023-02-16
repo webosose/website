@@ -1,13 +1,12 @@
 ---
 title: Release Notes
 display_title: Command-Line Interface Release Notes
-date: 2022-12-28
+date: 2023-02-16
 weight: 20
 toc: true
 ---
 
 This page provides the summary of each Command-Line Interface (CLI) release for webOS Open Source Edition (OSE).
-
 
 {{< note >}}
 To install the CLI packages, see [CLI User Guide]({{< relref "cli-user-guide#installing-cli" >}}).
@@ -17,18 +16,37 @@ To install the CLI packages, see [CLI User Guide]({{< relref "cli-user-guide#ins
 
 The following table shows the compatibility between webOS OSE and CLI.
 
+<style>
+  .table {
+    border-left: 1px solid #DBDBDB;
+    border-right: 1px solid #DBDBDB;
+    border-top: 1px solid #DBDBDB;
+    border-bottom: 1px solid #DBDBDB;
+  }
+  .middle-border-left {
+    border-right: 1px solid #DBDBDB !important;
+  }
+  .middle-border-right {
+    border-left: 1px solid #DBDBDB !important;
+  }
+</style>
+
 <div class="table-container" style="width:50%">
-  <table class="table is-bordered">
+  <table class="table">
     <thead>
       <tr class="header">
-        <th style="width:30%"><p>CLI Version</p></th>
+        <th class="middle-border-left" style="width:30%"><p>CLI Version</p></th>
         <th><p>webOS OSE Version</p></th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td rowspan="6"><p>2.3.1</p></td>
-        <td><p>2.19.1</p></td>
+        <td class="middle-border-left"><p>2.4.0</p></td>
+        <td style="border-bottom: none;"><p>2.19.1</p></td>
+      </tr>
+      <tr>
+        <td class="middle-border-left" rowspan="6"><p>2.3.1</p></td>
+        <td><p style="visibility: hidden;">dummy text</p></td>
       </tr>
       <tr><td><p>2.19.0</p></td></tr>
       <tr><td><p>2.18.0</p></td></tr>
@@ -36,7 +54,7 @@ The following table shows the compatibility between webOS OSE and CLI.
       <tr><td><p>2.16.0</p></td></tr>
       <tr><td><p>2.15.0</p></td></tr>
       <tr>
-        <td rowspan="7"><p>2.2.0</p></td>
+        <td class="middle-border-left" rowspan="7"><p>2.2.0</p></td>
         <td><p>2.14.1</p></td>
       </tr>
       <tr><td><p>2.14.0</p></td></tr>
@@ -46,45 +64,45 @@ The following table shows the compatibility between webOS OSE and CLI.
       <tr><td><p>2.12.0</p></td></tr>
       <tr><td><p>2.11.0</p></td></tr>
       <tr>
-        <td><p>2.1.0</p></td>
+        <td class="middle-border-left"><p>2.1.0</p></td>
         <td><p>2.10.0</p></td>
       </tr>
       <tr>
-        <td><p>2.0.3</p></td>
+        <td class="middle-border-left"><p>2.0.3</p></td>
         <td><p>2.9.0</p></td>
       </tr>
       <tr>
         <td><p>2.0.2</p></td>
-        <td rowspan="2"><p>2.8.0</p></td>
+        <td class="middle-border-right" rowspan="2"><p>2.8.0</p></td>
       </tr>
       <tr><td><p>1.13.1</p></td></tr>
       <tr>
-        <td><p>1.13.0</p></td>
+        <td class="middle-border-left"><p>1.13.0</p></td>
         <td><p>2.7.0</p></td>
       </tr>
       <tr>
-        <td><p>1.12.0</p></td>
+        <td class="middle-border-left"><p>1.12.0</p></td>
         <td><p>2.6.0</p></td>
       </tr>
       <tr>
-        <td><p>1.11.1</p></td>
+        <td class="middle-border-left"><p>1.11.1</p></td>
         <td><p>2.5.0</p></td>
       </tr>
       <tr>
-        <td><p>1.11.0</p></td>
+        <td class="middle-border-left"><p>1.11.0</p></td>
         <td><p>2.4.0</p></td>
       </tr>
       <tr>
-        <td><p>1.10.2</p></td>
+        <td class="middle-border-left"><p>1.10.2</p></td>
         <td><p>2.1.0</p></td>
       </tr>
       <tr>
-        <td><p>1.10.1</p></td>
+        <td class="middle-border-left"><p>1.10.1</p></td>
         <td><p>2.0.0</p></td>
       </tr>
       <tr>
         <td><p>1.9.4</p></td>
-        <td rowspan="3"><p>1.0.0</p></td>
+        <td class="middle-border-right" rowspan="3"><p>1.0.0</p></td>
       </tr>
       <tr><td><p>1.8.1</p></td></tr>
       <tr><td><p>1.6.4</p></td></tr>
@@ -92,9 +110,29 @@ The following table shows the compatibility between webOS OSE and CLI.
   </table>
 </div>
 
+## v2.4.0 (February 2023)
+
+This version is compatible with **webOS OSE 2.19.1**. See below for the new and changed features in this release.
+
+### New features
+
+* We have released a new JavaScript API, see [CLI API Reference]({{< relref "cli-api-reference" >}}). You can use features of existing CLI commands through this API. Supported commands are as follows: 
+
+  `ares-generate`, `ares-inspect`, `ares-install`, `ares-launch`, `ares-package`, `ares-pull`, `ares-push`, `ares-server`, `ares-setup-device`, `ares-shell`
+
+* Now `ares-device --system-info` shows the node version of the target device.
+
+### Changed features
+
+* Guide messages for `ares-inspect --service` are updated.
+
+### Fixed issues
+
+* Now `ares-device --resource-monitor --list` shows the list of JS services properly.
+
 ## v2.3.1 (February 2022)
 
-This version is compatible with **webOS OSE 2.15.0** ~ **webOS OSE 2.19.0**. See below for the new and changed features in this release.
+This version is compatible with **webOS OSE 2.15.0** ~ **webOS OSE 2.19.1**. See below for the new and changed features in this release.
 
 ### New features
 
