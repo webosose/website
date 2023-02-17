@@ -1,6 +1,6 @@
 ---
 title: webOS OSE UI Guide
-date: 2022-12-02
+date: 2023-02-07
 weight: 30
 toc: true
 ---
@@ -81,13 +81,11 @@ Swipe down the top of the screen.
 |------------|--------------|
 | Volume | You can change the volume level of the device. See [Changing the Volume Level](#changing-the-volume-level). |
 | Notifications | This menu shows the list of notification messages.<strong>*</strong> |
-| SW Version Infomation | You can check the webOS OSE version of the device. You can also update the platform using this menu.<strong>*</strong> |
+| SW Updates | You can check the webOS OSE version of the device. You can also update the platform using this menu.<strong>*</strong> |
 | Bluetooth | You can turn on/off the Bluetooth of the device.<strong>*</strong> |
 | Wi-Fi | This menu shows the list of nearby Wi-Fi signals. You can also turn on/off the Wi-Fi of the device. |
 
 <strong>*</strong>: This feature will be supported in future release.
-
-
 
 ### Changing the Volume Level
 
@@ -96,7 +94,7 @@ To change the volume level of the device:
 1. Tap the Volume icon in the status bar.
 2. Adjust the volume bar.
 
-{{< figure src="/images/docs/guides/getting-started/webos-ui-guide/adjust-volume-level.jpg" caption="" alt="" width="500px" >}}
+{{< figure src="/images/docs/guides/getting-started/webos-ui-guide/adjust-volume-level.jpg" caption="" alt="adjusting the volume level" class="align-left">}}
 
 ## Launchpad
 
@@ -146,7 +144,7 @@ You can sort apps in alphabetical or reverse alphabetical order. The default val
 You can add more apps to **Default Apps Area** of the app bar. (Maximum number of apps: 5)
 
 {{< note >}}
-This feature is only available on touch displays.
+Long-tap feature is only available on touch displays.
 {{< /note >}}
 
 1. Long-tap the screen in the launchpad app.
@@ -161,6 +159,10 @@ If you want to delete apps from the app bar, long-tap the app bar and toggle on 
 {{< figure src="/images/docs/guides/getting-started/webos-ui-guide/deleting-an-app-from-the-app-bar.jpg" caption="Deleting an app from the app bar" alt="" >}}
 
 ### Deleting Apps from the Device
+
+{{< note >}}
+Long-tap feature is only available on touch displays.
+{{< /note >}}
 
 1. Long-tap the screen in the launchpad app.
 2. Tap the **+** button of the app you want to add to the app bar.

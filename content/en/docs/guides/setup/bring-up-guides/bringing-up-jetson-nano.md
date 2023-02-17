@@ -1,15 +1,15 @@
 ---
 title: Tutorial - Jetson Nano
-date: 2022-12-27
+date: 2023-02-17
 weight: 20
 toc: true
 ---
 
 This guide describes how to bring up an [NVIDIA Jetson Nano board](https://developer.NVIDIA.com/embedded/jetson-nano-developer-kit) to run webOS OSE.
 
-{{< note >}}
-This guide is only valid for webOS OSE with Yocto 3.1 (webOS OSE version: 2.14.0 ~ 2.18.0).
-{{< /note >}}
+{{< caution "Deprecation Notice" >}}
+This guide had been tested with webOS OSE 2.18.0. We do not guarantee the validity of this guide on the latest webOS OSE.
+{{< /caution >}}
 
 ## Prerequisites
 

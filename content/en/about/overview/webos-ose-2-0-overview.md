@@ -1,13 +1,13 @@
 ---
 title: webOS Open Source Edition 2.0
-date: 2019-10-24
+date: 2023-02-06
 weight: 30
 toc: false
 ---
 
 webOS Open Source Edition (OSE) 2.0 is taking a leap to further extend its domain, especially towards the automotive industry.
 
-{{< figure src="/images/about/webos-ose-2-0-startup-screen.png" alt="webOS OSE 2.0 startup screen" width="800px" >}}
+{{< figure src="/images/about/webos-ose-2-20-0-startup-screen.jpg" alt="webOS OSE 2.20.0 startup screen" >}}
 
 ## Great Step Forward towards Automotive Industry
 

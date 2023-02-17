@@ -1,7 +1,7 @@
 ---
 title: Release Notes
 display_title: Command-Line Interface Release Notes
-date: 2023-02-16
+date: 2023-02-17
 weight: 20
 toc: true
 ---
@@ -41,7 +41,10 @@ The following table shows the compatibility between webOS OSE and CLI.
     </thead>
     <tbody>
       <tr>
-        <td class="middle-border-left"><p>2.4.0</p></td>
+        <td class="middle-border-left" rowspan="2" ><p>2.4.0</p></td>
+        <td><p>2.20.0</p></td>
+      </tr>
+      <tr>
         <td style="border-bottom: none;"><p>2.19.1</p></td>
       </tr>
       <tr>
@@ -112,7 +115,7 @@ The following table shows the compatibility between webOS OSE and CLI.
 
 ## v2.4.0 (February 2023)
 
-This version is compatible with **webOS OSE 2.19.1**. See below for the new and changed features in this release.
+This version is compatible with **webOS OSE 2.19.1** ~ **webOS OSE 2.20.0**. See below for the new and changed features in this release.
 
 ### New features
 
@@ -120,7 +123,7 @@ This version is compatible with **webOS OSE 2.19.1**. See below for the new and 
 
   `ares-generate`, `ares-inspect`, `ares-install`, `ares-launch`, `ares-package`, `ares-pull`, `ares-push`, `ares-server`, `ares-setup-device`, `ares-shell`
 
-* Now `ares-device --system-info` shows the node version of the target device.
+* Now `ares-device --system-info` shows the Node.js version of the target device.
 
 ### Changed features
 
@@ -145,7 +148,7 @@ This version is compatible with **webOS OSE 2.15.0** ~ **webOS OSE 2.19.1**. See
 
 ### Changed features
 
-* Updated the minimum supported node version from v8.12.0 to v10.24.1.
+* Updated the minimum supported Node.js version from v8.12.0 to v10.24.1.
 
 ### Fixed issues
 

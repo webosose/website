@@ -1,6 +1,6 @@
 ---
 title: com.webos.media
-date: 2022-11-21
+date: 2023-02-09
 weight: 30
 toc: true
 ---
@@ -3809,6 +3809,24 @@ toc: true
           <td>Object: <a href="#resources-new"> resources_new</a></td>
           <td>
             <p>Resource list to be allocated.</p>
+            <p><strong>Note:</strong></p>
+            <ul>
+              <li>Resources information can be provided using either one of &#39;resources_new&#39; or &#39;resources&#39; object.</li>
+              <li>The &#39;resources_new&#39; object is supported to provide for backward compatibility.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>resources</td>
+          <td>Required</td>
+          <td>Object: <a href="#resources"> resources</a></td>
+          <td>
+            <p>Resource list to be allocated.</p>
+            <p><strong>Note:</strong></p>
+            <ul>
+              <li>Resources information can be provided using either one of &#39;resources_new&#39; or &#39;resources&#39; object.</li>
+              <li>It is recommended to use the &#39;resources&#39; object.</li>
+            </ul>
           </td>
         </tr>
       </tbody>
@@ -3861,6 +3879,15 @@ toc: true
             <p>The reason for the failure of the operation. See the &#39;Error Codes&#39; section of this method for details.</p>
           </td>
         </tr>
+        <tr>
+          <td>mediaId</td>
+          <td>Optional</td>
+          <td>String</td>
+          <td>
+            <p>Indicates the unique identifier of the loaded media pipeline which is requested.</p>
+            <p><strong>Note: </strong>This parameter is returned only in error cases.</p>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -3880,10 +3907,52 @@ toc: true
           </th>
         </tr>
         <tr>
-          <td>-1</td>
-          <td>Method &quot;reacquire&quot; for category &quot;/&quot; was not handled</td>
+          <td>601</td>
+          <td>Resource Allocation Error</td>
           <td>
-            <p>In&nbsp;case of invalid argument scenarios, this error will be returned.</p>
+            <p>This error occurs when there is failure in releasing already acquired resources.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>602</td>
+          <td>Invalid Payload</td>
+          <td>
+            <p>This error occurs when invalid payload is detected.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>603</td>
+          <td>Resources not Provided</td>
+          <td>
+            <p>This error occurs when argument &quot;resources&quot; is not provided.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>604</td>
+          <td>ConnectionId Not Provided</td>
+          <td>
+            <p>This error occurs when &quot;argument&quot; connection id is not provided.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>605</td>
+          <td>Invalid Connection</td>
+          <td>
+            <p>This error occurs when provided &quot;connection id&quot; is not available.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>606</td>
+          <td>Internal Error</td>
+          <td>
+            <p>This error occurs when an internal error occurs.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>607</td>
+          <td>Invalid Resource</td>
+          <td>
+            <p>This error occurs when provided with improper resource.</p>
           </td>
         </tr>
       </tbody>
@@ -3891,7 +3960,7 @@ toc: true
   </div>
   <h4>Example</h4>
   <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-    <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    <p style="color:white;margin:5.0px;"><b>Example : Reacquire using resources_new object</b></p>
   </div>
   <div class="code-bg-grey">
     <p># luna-send -n 1 -f luna://com.webos.media/reacquire &#39;{<br />
@@ -3899,6 +3968,21 @@ toc: true
       &nbsp; &nbsp;&nbsp;&quot;resources&quot;:&quot;{<br />
       &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;\&quot;new\&quot;:\&quot;[{\\\&quot;qty\\\&quot;:3,\\\&quot;resource\\\&quot;:\\\&quot;VDEC\\\&quot;}]\&quot;,<br />
       &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;\&quot;old\&quot;:\&quot;[{\\\&quot;index\\\&quot;:31,\\\&quot;resource\\\&quot;:\\\&quot;VDEC\\\&quot;}]\&quot;}&quot;<br />
+      }&#39;
+    </p>
+    <p>Response:</p>
+    <p>{<br />
+      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+      }
+    </p>
+  </div>
+  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+    <p style="color:white;margin:5.0px;"><b>Example : Reacquire using resources object (recommended approach)</b></p>
+  </div>
+  <div class="code-bg-grey">
+    <p># luna-send -n 1 luna://com.webos.media/reacquire &#39;{<br />
+      &nbsp; &nbsp;&nbsp;&quot;resources&quot;: &quot;[{\&quot;resource\&quot;:\&quot;VDEC\&quot;,\&quot;qty\&quot;:3}]&quot;,<br />
+      &nbsp; &nbsp;&nbsp;&quot;connectionId&quot;: &quot;_ABQqg8An9msDLC&quot;<br />
       }&#39;
     </p>
     <p>Response:</p>

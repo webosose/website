@@ -1,13 +1,13 @@
 ---
 title: webOS Open Source Edition 1.0
-date: 2018-10-11
+date: 2023-02-06
 weight: 20
 toc: false
 ---
 
 webOS Open Source Edition (OSE) offers a strong development environment that enables easy collaboration with other platform developers, as well as distinctive built-in user features.
 
-{{< figure src="/images/about/webos-ose-1-0-startup-screen.png" alt="webOS OSE 1.0 startup screen" width="800px" >}}
+{{< figure src="/images/about/webos-ose-1-0-startup-screen.png" alt="webOS OSE 1.0 startup screen" >}}
 
 ## New Beginning of webOS
 

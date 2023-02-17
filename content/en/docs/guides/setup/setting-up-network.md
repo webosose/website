@@ -1,46 +1,85 @@
 ---
 title: Network Setup
-date: 2022-12-02
+date: 2023-02-06
 weight: 40
 toc: true
 ---
 
-This guide describes how to set up the network between the host machine and the target device.
+This guide describes how to set up the network on the webOS OSE device.
 
-## Target Device Configuration
+## Setting Up Wired Network (Dynamic)
 
-You need to configure the network information of the target device to enable communication between the host machine and the target device.
+webOS OSE sets the network information automatically when you use Dynamic Host Configuration Protocol (DHCP). So you don't need to set up additionally.
+
+Depending on your environment, however, you may need to check if the automatic configuration has been performed correctly. Otherwise, you will need to configure the network information manually. In this case, see [Setting Up Wired Connection (Static)](#setting-up-wired-connection-static).
+
+## Setting Up Wired Network (Static)
+
+Before you begin, prepare the followings information about your static network:
+
+- IP address
+- Subnet mask
+- Gateway
+- DNS server
+
+Then, follow the steps below to configure the static network. Make sure that the Ethernet cable is connected beforehand.
+
+1. Click the Settings Application or press the **F1** key.
+
+    {{< figure src="/images/docs/guides/setup/network-setup-settings-app.jpg" alt="Setting app icon" class="align-left" width="60%">}}
+
+2. Go to **Network** > **Wired Connection (Ethernet)**. The default network information will be displayed.
+
+    {{< figure src="/images/docs/guides/setup/network-setup-network-menu.jpg" alt="Network Setting - The initial status of network including Wired/Wi-Fi connection" class="align-left">}}
+
+3. Click the **Edit** button.
+
+    {{< figure src="/images/docs/guides/setup/network-setup-edit-button.jpg" alt="Edit button in the ethernet setup menu" class="align-left">}}
+
+4. Deactivate the **Set Automatically** button. Then input fields will be activated.
+
+    {{< figure src="/images/docs/guides/setup/network-setup-deactivate-set-automatically-button.jpg" alt="Deactivate the set automatically button" class="align-left">}}
+
+5. Enter the information of your network and click the **CONNECT** button.
+
+    {{< figure src="/images/docs/guides/setup/network-setup-edit-network-information.jpg" alt="Edit the network information" class="align-left">}}
+
+## Setting Up Wireless Network
+
+1. Click the Wi-Fi icon in the status bar.
+   
+    {{< figure src="/images/docs/guides/setup/network-setup-wifi-select-wifi.jpg" alt="Edit the network information" class="align-left">}}
+
+2. Click the Wi-Fi you want to connect, enter the password, and click the **Connect** button.
+
+    {{< figure src="/images/docs/guides/setup/network-setup-wifi-click-connect.jpg" alt="Edit the network information" class="align-left">}}
+
+    If the connection suceeds, a notification shows up.
+
+    {{< figure src="/images/docs/guides/setup/network-setup-wifi-connected.jpg" alt="Edit the network information" class="align-left">}}
+
+3. Go back to the Wi-Fi menu in the status bar. You can see the connected Wi-Fi in the list.
+
+    {{< figure src="/images/docs/guides/setup/network-setup-wifi-connected-wifi.jpg" alt="Edit the network information" class="align-left">}}
+
+4. Further network information of the connected Wi-Fi are at the Settings application > **Network** > **Wi-Fi Connection** > **Advanced Wi-Fi Settings**.
+
+    {{< figure src="/images/docs/guides/setup/network-setup-wifi-advanced.jpg" alt="Edit the network information" class="align-left">}}
+
+5. Go to the Settings application > **Network** > **Wi-Fi Connection** > **My Wi-Fi**. You can see the list of Wi-Fis you ever connected. 
+
+    {{< figure src="/images/docs/guides/setup/network-setup-wifi-known-wifi-list.jpg" alt="Edit the network information" class="align-left">}}
+
+## Communicating with the webOS OSE Device
+
+After the network connection has been set up, you can connect or send files to the webOS OSE device.
 
 {{< note >}}
-The default setting of the webOS OSE is to use Dynamic Host Configuration Protocol (DHCP) and set the network information automatically. Depending on your environment, however, you may need to check if the automatic configuration has been performed correctly. Otherwise, you will need to configure the network information manually.
+The default account of webOS OSE devices is as follows. (ID: root, password: *none*)
 {{< /note >}}
 
-Follow the steps below to configure the network information on the target device. Make sure that the Ethernet cable is connected beforehand.
+Choose one the following guidelines:
 
-1. Go to Settings Application or press the **F1** key.
-
-    Settings app UI will show up on the left side of the screen.
-2. Click the **Network** icon, and you will see the initial status of network setting.
-    {{< figure src="/images/docs/guides/setup/webosose-network-setup-1.png" alt="Network Setting - The initial status of network including Wired/Wi-Fi connection"  class="align-left">}}
-3. Click the **Wired Connection (Ethernet)** menu. The default network information will be displayed.
-    {{< figure src="/images/docs/guides/setup/webosose-network-setup-2.png" alt="Network Setting - Detailed information" class="align-left">}}
-4. Click the **Edit** button, and the **EDIT** menu will show up.
-    * By default, **Set Automatically** button is checked. To turn on the manual editing mode, uncheck the button.
-    {{< figure src="/images/docs/guides/setup/webosose-network-setup-3.png" alt="Network Setting - Manual edit mode"  class="align-left">}}
-5. In each field, enter the IP address, subnet mask, gateway, and DNS server information in dot-decimal notation. After you finish entering the information, click the **CONNECT** button.
-    * If the status shows up as "Connected to Internet", it means the connection has been set up successfully.
-    * Otherwise, retry after checking the address information and the physical connection.
-
-## Communicating between the Host and Target
-
-After the network connection has been set up, you can connect or send files to the target device using Secure Shell (SSH) protocol.
-
-{{< note >}}
-The default account information is as follows. (ID: root, password: *none*)
-{{< /note >}}
-
-Here are several methods that you can use for host-target communication:
-
-* To connect to the target device, use the `ssh` command on Linux or macOS shell. On Windows, use an SSH client (for example, Putty).
-* To send files to the target device, use the `scp` (secure copy) command on Linux or macOS shell. On Windows, use an SSH client that supports secure file transfer (for example, WinSCP).
-* In addition, you can use [ares-push]({{< relref "cli-user-guide#ares-push" >}}) or [ares-pull]({{< relref "cli-user-guide#ares-pull" >}}) command of [Command-Line Interface (CLI)]({{< relref "cli-user-guide" >}}) to transfer files between the host machine and the target device.
+* Use the `ssh` command on Linux or macOS shell to connect to the device. On Windows, use an Secure Shell (SSH) client (for example, Putty).
+* Use the `scp` (secure copy) command on Linux or macOS shell to send files to the target device. On Windows, use Secure Copy Protocol (SCP) programs (for example, WinSCP).
+* Use [Command-Line Interface (CLI)]({{< relref "cli-user-guide" >}}).

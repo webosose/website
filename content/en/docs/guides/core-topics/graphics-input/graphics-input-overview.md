@@ -1,6 +1,6 @@
 ---
 title: Graphics and Input
-date: 2019-04-18
+date: 2023-02-07
 weight: 10
 toc: true
 ---
@@ -54,9 +54,9 @@ Ozone-Wayland
 
 ### Roles of LSM
 
-In webOS OSE, Bare App (application) and Launcher (System UI) are the UX that users encounter first. The following shows the result of Bare App's rendering displayed in the full-screen window area and the Launcher UI displayed on top of that.
+In webOS OSE, Bare App (application) and App Bar (System UI) are the UX that users encounter first. The following shows the result of Bare App's rendering displayed in the full-screen window area and the App Bar UI displayed on top of that.
 
-{{< figure src="/images/docs/guides/core-topics/graphics-input/LSM_image1.png" alt="" caption="webOS OSE graphics example" width="600px" >}}
+{{< figure src="/images/docs/guides/core-topics/graphics-input/basic-graphic-example.jpg" alt="" caption="webOS OSE graphics example" >}}
 
 Behind the scenes, LSM performs the role of a graphics compositor so that System UI and applications can be rendered seamlessly on the screen. LSM manages the windows created by applications and performs blending of application's graphics and System UI. In addition, LSM handles input so that graphics can be updated and displayed appropriately in response to user input.
 
@@ -64,7 +64,7 @@ Behind the scenes, LSM performs the role of a graphics compositor so that System
 
 The diagram below shows LSM along with external modules that interact with LSM. Highlighted blocks indicate modules directly related to LSM. Because LSM is one of webOS components, it uses Luna Bus to communicate with other webOS components.
 
-{{< figure src="/images/docs/guides/core-topics/graphics-input/LSM_image2.png" alt="" caption="LSM architecture diagram" width="900px" >}}
+{{< figure src="/images/docs/guides/core-topics/graphics-input/lsm-architecture-diagram.png" alt="" caption="LSM architecture diagram" width="900px" >}}
 
 At the top, there are Wayland clients such as Web App Manager (WAM), Qt/QML Native, and Pure Native. Pure Native refers to applications that use Wayland EGL directly without using an additional adaptation layer.
 
@@ -82,7 +82,7 @@ The following sections examine the internal architecture of webOS OSE in terms o
 
 This section describes components related to Wayland (highlighted in red) in detail.
 
-{{< figure src="/images/docs/guides/core-topics/graphics-input/LSM_image3.png" alt="" caption="Wayland-related components" width="900px" >}}
+{{< figure src="/images/docs/guides/core-topics/graphics-input/wayland-related-components.png" alt="" caption="Wayland-related components" width="900px" >}}
 
 Wayland is defined as a display server protocol in Wikipedia, and it indicates the **Wayland protocol** area in the above diagram.
 
@@ -96,7 +96,7 @@ To apply LSM to other chipsets, it is required to implement Wayland EGL, which i
 
 The figure below shows the software stack of the QtWayland Compositor and the client. Note that some of them overlap with previously described blocks.
 
-{{< figure src="/images/docs/guides/core-topics/graphics-input/LSM_image4.png" alt="" caption="QtWayland Compositor and client stack" width="900px" >}}
+{{< figure src="/images/docs/guides/core-topics/graphics-input/qtwayland-composistor-client-stack.png" alt="" caption="QtWayland Compositor and client stack" width="900px" >}}
 
 The client-side stack includes the application code, so OpenGL ES-based rendering is performed on this side. The Wayland-related interfaces are glued together via Wayland adaptation layer. Below that, libwayland-client is located, which is the client side of the Wayland protocol. The result of OpenGL ES rendering is integrated using the Wayland client EGL interface. The client side communicates with the compositor using the Wayland wire protocol. The Wayland protocol is used for controlling the surface and input.
 
@@ -166,7 +166,7 @@ The following shows an example of the protocol extended for webOS OSE.
 
 This section describes the rendering process on the client side.
 
-{{< figure src="/images/docs/guides/core-topics/graphics-input/LSM_image5.png" alt="" caption="Wayland client rendering process" width="900px" >}}
+{{< figure src="/images/docs/guides/core-topics/graphics-input/wayland-client-rendering-process.png" alt="" caption="Wayland client rendering process" width="900px" >}}
 
 (1) To perform rendering, the window to be used for rendering must be defined. A window is the same concept as the surface in Wayland. When the request for creating `wl_surface` is received through Wayland adaptation layer, the request is sent to the compositor through libwayland-client, and then the compositor allocates the structure for the surface that the client requested.
 
@@ -194,7 +194,7 @@ The "attach" and "commit" in Step (8) are part of the Wayland protocol concepts,
 
 LSM uses QtWayland Compositor as a Qt application running on top of QPA.
 
-{{< figure src="/images/docs/guides/core-topics/graphics-input/LSM_image6.png" alt="" caption="QtWayland Compositor and QPA" width="900px" >}}
+{{< figure src="/images/docs/guides/core-topics/graphics-input/qtwayland-compositor-qpa.png" alt="" caption="QtWayland Compositor and QPA" width="900px" >}}
 
 LSM renders Wayland surfaces and local UI elements (System UI such as Toast) together. QML defines each rendered item as a `QQuickItem`. `WebOSSurfaceItem`, the class for Wayland surfaces, inherits from `QWaylandSurfaceItem`, which in turn inherits from `QQuickItem`. Thus, `WebOSSurfaceItem` is a type of `QQuickItem` that contains the results of application's rendering. The compositor performs rendering and composition of various `QQuickItem` objects (including `WebOSSurfaceItem` objects) using the Qt scene graph mechanism.
 
@@ -206,11 +206,11 @@ QPA is standardized, so it is possible to run Qt/QML Native clients on the QPA o
 
 QtWayland Compositor relies on the Qt scene graph structure and rendering architecture. The screenshot below shows Bare App (Wayland surface of Fullscreen type) in full screen, Settings app (Wayland surface of Overlay type) on top, and Toast (System UI) on top of them.
 
-{{< figure src="/images/docs/guides/core-topics/graphics-input/LSM_image7a.png" alt="" caption="Screenshot of rendered applications" width="600px" >}}
+{{< figure src="/images/docs/guides/core-topics/graphics-input/rendered-applications.jpg" alt="" caption="Screenshot of rendered applications" >}}
 
 This can be illustrated as a window layout view shown below. Inside the Root window owned by LSM, `FullscreenView` and `OverlayView` are defined. The result of Wayland surface rendering is placed in the `FullscreenView` or `OverlayView`. Toast is not a Wayland surface, but a local UI element owned by LSM. The screenshot above is the result of compositing the Wayland surfaces (the result of swap buffer operations by each client) and Toast (System UI rendered in QtDeclarative module by the QML logic of LSM) along with their coordinates and Z-order information.
 
-{{< figure src="/images/docs/guides/core-topics/graphics-input/LSM_image7b.png" alt="" caption="Window layout view diagram" width="600px" >}}
+{{< figure src="/images/docs/guides/core-topics/graphics-input/layout-view-diagram.png" alt="" caption="Window layout view diagram" width="600px" >}}
 
 {{< note "Window types" >}}
 For detailed description of window types in webOS OSE, see the [**Window Types**](#window-types) section below.
@@ -320,7 +320,7 @@ Window types are not fixed, which means that it is also possible to add a new wi
 
 The following is a simplified view of the surface life cycle, where a client creates a window, and the rendered result of the window appears and disappears from the screen.
 
-{{< figure src="/images/docs/guides/core-topics/graphics-input/LSM_image8.png" alt="" caption="Surface life cycle diagram" width="450px" >}}
+{{< figure src="/images/docs/guides/core-topics/graphics-input/surface-life-cycle-diagram.png" alt="" caption="Surface life cycle diagram" width="450px" >}}
 
   - **Create a surface**: When a surface is created by a client, it is in "Unmapped/Removed from model" state, which means the surface is separate from the window model. At this point, only a conceptual window has been created without any buffer allocation. From the Wayland's point of view, only `wl_surface` object has been created at this state. From the compositor's point of view, `WebOSSurfaceItem` that is mapped to the Wayland surface has been instantiated.
   - **Map the surface**: The client renders the first frame. A buffer is required in order to perform rendering, so the client requests buffer allocation. The client performs rendering on the buffer and requests a swap buffer operation, and then the result rendered in the buffer is passed to LSM. The event of passing the rendered result is called "map", during which the surface transitions from "unmapped" to "mapped" state. When a surface is "mapped", that means the surface should be displayed somewhere on the screen. Therefore, the surface is appended to a window model so that it can be displayed using the view, and eventually the surface shows up on the screen. After that, rendering proceeds with continuous EGL swap buffer operations.
@@ -378,7 +378,7 @@ This section describes the input event handling mechanism for keyboard and point
 
 The following illustrates the concept of input event routing. Suppose graphics elements are displayed as below. If a user clicks on the blue circle with the remote control — that is, the clicked event is dropped from the top — which element will receive the event first?
 
-{{< figure src="/images/docs/guides/core-topics/graphics-input/LSM_image9.png" alt="" caption="Input event routing diagram" width="600px" >}}
+{{< figure src="/images/docs/guides/core-topics/graphics-input/input-event-routing-diagram.png" alt="" caption="Input event routing diagram" width="600px" >}}
 
 Considering the hierarchy, the pointer events layer receives the event first. According to the event propagation mechanism of QML, if this layer does not accept the event, the event will be passed down to the layer below; if this layer accepts the event, the layer below will not receive the event. The same applies to keyboard event handling. A keyboard event is delivered to an item that has the keyboard focus, which means that the item's `activeFocus` is true at the QML level. A pointer event is delivered to a relevant item depending on the state of `MouseArea`.
 

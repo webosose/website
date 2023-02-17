@@ -1,7 +1,7 @@
 ---
 title: User Guide
 display_title: Command-Line Interface User Guide
-date: 2022-02-18
+date: 2023-02-17
 weight: 10
 toc: true
 ---
@@ -1536,6 +1536,10 @@ We highly recommend you to use the same version as Chrome/Chromium of webOS OSE.
     </thead>
     <tbody>
       <tr>
+        <td><p>v2.4.0</p></td>
+        <td><p>Updates guide messages of the <code>--service</code> option.</p></td>
+      </tr>
+      <tr>
         <td><p>v2.3.1</p></td>
         <td><p>Supports the <code>--level</code> option.</p></td>
       </tr>
@@ -2258,6 +2262,10 @@ This command displays the information of the target device.
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><p>v2.4.0</p></td>
+        <td><p>Supports the Node.js version in the <code>--system-info</code> result.</p></td>
+      </tr>
       <tr>
         <td><p>v2.3.1</p></td>
         <td><p>Supports the <code>--resource-monitor</code> and the <code>--level</code> options.</p></td>
