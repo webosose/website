@@ -1,7 +1,7 @@
 ---
 title: Building webOS OSE
 display_title: Building webOS Open Source Edition
-date: 2023-02-14
+date: 2023-02-20
 weight: 20
 toc: true
 ---
@@ -11,6 +11,10 @@ This page describes how to build a webOS Open Source Edition (OSE) image from so
 ## Before You Begin
 
 Make sure that your system meets the [Build System Requirements]({{< relref "system-requirements#build-system-requirements" >}}).
+
+{{< note >}}
+If you cannot afford to build the image on your own, try with [pre-built images](https://github.com/webosose/build-webos/releases).
+{{< /note >}}
 
 ## Quick Summary
 

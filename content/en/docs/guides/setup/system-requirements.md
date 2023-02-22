@@ -1,6 +1,6 @@
 ---
 title: System Requirements
-date: 2022-12-29
+date: 2023-02-20
 weight: 10
 toc: true
 ---
@@ -47,6 +47,10 @@ webOS OSE 1.x officially supports **[Raspberry Pi 3 Model B](https://www.raspber
 ## Build System Requirements
 
 A **build system** is a computer that builds an image from webOS OSE source code. To build a webOS OSE image, you need a **Linux** machine. Building under Windows or macOS is currently not supported.
+
+{{< note >}}
+If you cannot afford to build the image on your own, try with [pre-built images](https://github.com/webosose/build-webos/releases).
+{{< /note >}}
 
 ### Operating System
 

@@ -1,7 +1,7 @@
 ---
 title: Flashing webOS OSE
 display_title: Flashing webOS Open Source Edition
-date: 2022-12-02
+date: 2023-02-20
 weight: 30
 toc: true
 ---
@@ -12,8 +12,12 @@ This page provides details for flashing the webOS Open Source Edition (OSE) imag
 
 Make sure you have completed the following:
 
-* Build the webOS OSE image on a Linux machine. For more information, see [Building webOS OSE]({{< relref "building-webos-ose" >}}).
-    * To flash the image from Windows or macOS, you must copy the built image from the Linux machine.
+* Build the webOS OSE image on a Linux machine. For more information, see [Building webOS OSE]({{< relref "building-webos-ose" >}}). To flash the image from Windows or macOS, you must copy the built image from the Linux machine.
+
+    {{< note >}}
+    If you cannot afford to build the image on your own, try with [pre-built images](https://github.com/webosose/build-webos/releases).
+    {{< /note >}}
+
 * Insert a microSD card in the microSD card reader device connected to the host machine.
 
 ## Flashing the Image
