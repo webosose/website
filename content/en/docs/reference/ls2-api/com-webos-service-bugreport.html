@@ -1,11 +1,11 @@
 ---
 title: com.webos.service.bugreport
-date: 2022-05-04
+date: 2023-02-23
 weight: 115
 toc: true
 ---
+<h2 id="api-summary">API Summary</h2>
 <div>
-  <h2 id="api-summary">API Summary</h2>
   <p>Provides methods for reporting bug&nbsp;in Jira system.</p>
 </div>
 <h2 id="overview-of-the-api">Overview of the API</h2>
@@ -119,276 +119,276 @@ toc: true
       </p>
     </div>
   </div>
-</div>
-<h3 id="setconfig">setConfig</h3>
-<div>
-  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>None</b></span></div>
-  <h4>Description</h4>
-  <p>Sets the Jira configurations.</p>
-  <p>Currently, the only configurations supported are:</p>
-  <ul>
-    <li>username</li>
-    <li>password</li>
-  </ul>
-  <p><strong>Note:</strong></p>
-  <ul>
-    <li>These values are persisted across reboots until another value is set.</li>
-    <li>This method&nbsp;is intended to be called by the bugreport app. If you want to use this in other modules, contact the API owner.</li>
-  </ul>
-  <h4>Parameters</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>account</td>
-          <td>Optional</td>
-          <td>Object: <a href="#account"> account</a></td>
-          <td>
-            <p>Account info to login to&nbsp;Jira</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <h3 id="setconfig">setConfig</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>None</b></span></div>
+    <h4>Description</h4>
+    <p>Sets the Jira configurations.</p>
+    <p>Currently, the only configurations supported are:</p>
+    <ul>
+      <li>username</li>
+      <li>password</li>
+    </ul>
+    <p><strong>Note:</strong></p>
+    <ul>
+      <li>These values are persisted across reboots until another value is set.</li>
+      <li>This method&nbsp;is intended to be called by the bugreport app. If you want to use this in other modules, contact the API owner.</li>
+    </ul>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>account</td>
+            <td>Optional</td>
+            <td>Object: <a href="#account"> account</a></td>
+            <td>
+              <p>Account info to login to&nbsp;Jira</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation. Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code&nbsp;when returnValue is false.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>The error text when returnValue is false</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example : Set the username and password</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.bugreport/setConfig &#39;{&quot;account&quot;: {&quot;username&quot;: &quot;webosreporter&quot;, &quot;password&quot;: &quot;bGdlITIzNDVe&quot;}}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example : Clear the username and password</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.bugreport/setConfig &#39;{&quot;account&quot;: {&quot;username&quot;: &quot;&quot;, &quot;password&quot;: &quot;&quot;}}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
   </div>
-  <h4>Call Returns</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates the status of operation. Possible values are:</p>
-            <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>errorCode</td>
-          <td>Optional</td>
-          <td>Number</td>
-          <td>
-            <p>The error code&nbsp;when returnValue is false.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>errorText</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>The error text when returnValue is false</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Example</h4>
-  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-    <p style="color:white;margin:5.0px;"><b>Example : Set the username and password</b></p>
-  </div>
-  <div class="code-bg-grey">
-    <p># luna-send -n 1 -f luna://com.webos.service.bugreport/setConfig &#39;{&quot;account&quot;: {&quot;username&quot;: &quot;webosreporter&quot;, &quot;password&quot;: &quot;bGdlITIzNDVe&quot;}}&#39;</p>
-    <p>Response:</p>
-    <p>{<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
-  </div>
-  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-    <p style="color:white;margin:5.0px;"><b>Example : Clear the username and password</b></p>
-  </div>
-  <div class="code-bg-grey">
-    <p># luna-send -n 1 -f luna://com.webos.service.bugreport/setConfig &#39;{&quot;account&quot;: {&quot;username&quot;: &quot;&quot;, &quot;password&quot;: &quot;&quot;}}&#39;</p>
-    <p>Response:</p>
-    <p>{<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
-  </div>
-</div>
-<h3 id="createbug">createBug</h3>
-<div>
-  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>None</b></span></div>
-  <h4>Description</h4>
-  <p>Creates a bug ticket on Jira with the given data.</p>
-  <p><strong>Note: </strong>This method&nbsp;is intended to be called by the bugreport app. If you want to use this in other modules, contact the API owner.</p>
-  <h4>Parameters</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>summary</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Summary of Jira ticket.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>description</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Description of the Jira ticket.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>priority</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Priority of Jira ticket. It depends on the Jira system.&nbsp;</p>
-            <p>For example, the following values are used in the WRN project of clm.lge.com.</p>
-            <ul>
-              <li>P1</li>
-              <li>P2</li>
-              <li>P3</li>
-              <li>P4</li>
-              <li>P5</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>reproducibility</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Reproducibility of Jira ticket. It depends on the Jira system.&nbsp;</p>
-            <p>For example, the following values are used in the WRN project of clm.lge.com.</p>
-            <ul>
-              <li>Always (100%)</li>
-              <li>Often (50-99%)</li>
-              <li>Seldom (10-49%)</li>
-              <li>Rarely (&lt;10%)</li>
-              <li>I didn&#39;t try</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>screenshots</td>
-          <td>Optional</td>
-          <td>String array</td>
-          <td>
-            <p>Screenshot files to attach to the Jira ticket. These files are deleted upon successful ticket creation.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Call Returns</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates the status of the operation. Possible values are:</p>
-            <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful. It&nbsp;does not mean that the ticket creation is complete.&nbsp;It just means that the method has started the ticket creation task.&nbsp;It takes about 10&nbsp;seconds to create a ticket and the result is displayed as a pop-up on the screen.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>errorCode</td>
-          <td>Optional</td>
-          <td>Number</td>
-          <td>
-            <p>The error code&nbsp;when returnValue is false.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>errorText</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>The error text when returnValue is false</p>
-          </td>
-        </tr>
-        <tr>
-          <td>key</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>The key of the created issue.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Example</h4>
-  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-    <p style="color:white;margin:5.0px;"><b>Example : Create a bug</b></p>
-  </div>
-  <div class="code-bg-grey">
-    <p># luna-send -n 1 -f luna://com.webos.service.bugreport/createBug &#39;{&quot;summary&quot;: &quot;test&quot;, &quot;priority&quot;: &quot;P5&quot;, &quot;reproducibility&quot;: &quot;Always&nbsp;(100%)&quot;}&#39;</p>
-    <p>Response:</p>
-    <p>{<br />
-      &nbsp; &nbsp; &quot;key&quot;: &quot;WRN-XXXXX&quot;,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
+  <h3 id="createbug">createBug</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>None</b></span></div>
+    <h4>Description</h4>
+    <p>Creates a bug ticket on Jira with the given data.</p>
+    <p><strong>Note: </strong>This method&nbsp;is intended to be called by the bugreport app. If you want to use this in other modules, contact the API owner.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>summary</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Summary of Jira ticket.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>description</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Description of the Jira ticket.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>priority</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Priority of Jira ticket. It depends on the Jira system.&nbsp;</p>
+              <p>For example, the following values are used in the WRN project of clm.lge.com.</p>
+              <ul>
+                <li>P1</li>
+                <li>P2</li>
+                <li>P3</li>
+                <li>P4</li>
+                <li>P5</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>reproducibility</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Reproducibility of Jira ticket. It depends on the Jira system.&nbsp;</p>
+              <p>For example, the following values are used in the WRN project of clm.lge.com.</p>
+              <ul>
+                <li>Always (100%)</li>
+                <li>Often (50-99%)</li>
+                <li>Seldom (10-49%)</li>
+                <li>Rarely (&lt;10%)</li>
+                <li>I didn&#39;t try</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>screenshots</td>
+            <td>Optional</td>
+            <td>String array</td>
+            <td>
+              <p>Screenshot files to attach to the Jira ticket. These files are deleted upon successful ticket creation.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation. Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful. It&nbsp;does not mean that the ticket creation is complete.&nbsp;It just means that the method has started the ticket creation task.&nbsp;It takes about 10&nbsp;seconds to create a ticket and the result is displayed as a pop-up on the screen.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code&nbsp;when returnValue is false.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>The error text when returnValue is false</p>
+            </td>
+          </tr>
+          <tr>
+            <td>key</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>The key of the created issue.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example : Create a bug</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.bugreport/createBug &#39;{&quot;summary&quot;: &quot;test&quot;, &quot;priority&quot;: &quot;P5&quot;, &quot;reproducibility&quot;: &quot;Always&nbsp;(100%)&quot;}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;key&quot;: &quot;WRN-XXXXX&quot;,<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
   </div>
 </div>
 <h2 id="objects">Objects</h2>

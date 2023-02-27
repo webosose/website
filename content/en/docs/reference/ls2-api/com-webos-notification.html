@@ -1,11 +1,11 @@
 ---
 title: com.webos.notification
-date: 2022-11-21
+date: 2023-02-23
 weight: 40
 toc: true
 ---
+<h2 id="api-summary">API Summary</h2>
 <div>
-  <h2 id="api-summary">API Summary</h2>
   <p>Manages the system notifications.</p>
 </div>
 <h2 id="overview-of-the-api">Overview of the API</h2>
@@ -113,2364 +113,2364 @@ toc: true
       </p>
     </div>
   </div>
-</div>
-<h3 id="disable">disable</h3>
-<div>
-  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>notification.management</b></span></div>
-  <h4>Description</h4>
-  <p>Disables all notification features (Toast, Alert, Input Alert, Pin Prompt).</p>
-  <p><strong>Note:</strong> Only a privileged application or service can call this method.</p>
-  <h4>Parameters</h4>
-  <p>None</p>
-  <h4>Call Returns</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates the status of the operation.</p>
-            <p>Possible values are:</p>
-            <ul>
-              <li><strong>true:</strong> Indicates that the operation was successful.</li>
-              <li><strong>false:</strong> Indicates that the operation failed.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>errorText</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Indicates the reason for the failure of the operation. See the &quot;Error Codes&quot; section of this method for details.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Error Codes Reference</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Error Code</p>
-          </th>
-          <th width="30%">
-            <p>Error Text</p>
-          </th>
-          <th width="55%">
-            <p>Error Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>Unknown Source</td>
-          <td>
-            <p>Indicates that the system was unable to retrieve the app/service&#39;s source id from the system bus message.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>Permission Denied</td>
-          <td>
-            <p>Indicates that the app/service does not have permission to enable&nbsp;notifications.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Example</h4>
-  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
-  </div>
-  <div class="code-bg-grey">
-    <p># luna-send -n 1 -f -a com.webos.app.test luna://com.webos.notification/disable &#39;{}&#39;</p>
-    <p>Response:</p>
-    <p>{<br />
-      &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
-      }
-    </p>
-  </div>
-</div>
-<h3 id="createalert">createAlert</h3>
-<div>
-  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>notification.operation</b></span></div>
-  <h4>Description</h4>
-  <p>Creates a system alert notification.</p>
-  <h4>Parameters</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>iconUrl</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p style="text-align: left;">The file path of the alert icon. The file path must be local to the device.<br></p>
-          </td>
-        </tr>
-        <tr>
-          <td>title</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p style="text-align:left">A brief title for the alert notification.&nbsp;</p>
-          </td>
-        </tr>
-        <tr>
-          <td>message</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p style="text-align:left">A detailed message for the alert notification.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>modal</td>
-          <td>Optional</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates whether to display a&nbsp;modal or non-modal alert notification. Possible values are:</p>
-            <ul>
-              <li><strong>true</strong>: Display a modal alert notification</li>
-              <li><strong>false</strong>: Display a non-modal alert notification</li>
-            </ul>
-            <p><strong>Note</strong>: The default value&nbsp;is <strong>false</strong>.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>buttons</td>
-          <td>Required</td>
-          <td>Object array: <a href="#button"> button</a></td>
-          <td>
-            <p style="text-align:left">Defines the button label, and onclick action. Button specification is given in an array. An example is:</p>
-            <p style="text-align:left">&quot;buttons&quot;:[<br />
-              &nbsp; &nbsp; &nbsp; &nbsp; {&quot;label&quot;:&quot;button1&quot;, &quot;onclick&quot;:&quot;luna://com.webos.service.applicationmanager/launch&quot;, &quot;params&quot;:{&quot;id&quot;:&quot;com.webos.app.settings&quot;}},<br />
-              &nbsp; &nbsp; &nbsp; &nbsp; {&quot;label&quot;:&quot;button2&quot;, &quot;focus&quot;:true},<br />
-              &nbsp; &nbsp; &nbsp; &nbsp; {&quot;label&quot;:&quot;button3&quot;}<br />
-              ]
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td>onclose</td>
-          <td>Optional</td>
-          <td>Object: <a href="#onclose"> onclose</a></td>
-          <td>
-            <p>Defines the close action to be performed when an alert is closed.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>type</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Defines the button type in the alert. Possible values are:&nbsp;</p>
-            <ul>
-              <li>confirm</li>
-              <li>warning</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>isSysReq</td>
-          <td>Optional</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates whether the notification has come from an app or system</p>
-            <ul>
-              <li><strong>true </strong>: notification comes from system</li>
-              <li><strong>false </strong>: notification comes from an app</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>onfail</td>
-          <td>Optional</td>
-          <td>Object: <a href="#onfail"> onfail</a></td>
-          <td>
-            <p>Action to be performed on failure to create an alert.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Call Returns</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>alertId</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p style="text-align:left">The ID&nbsp;of the created alert notification. This would be sourceId + &quot;-&quot; + Timestamp.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p style="text-align:left">Indicates the status of operation.&nbsp;Possible values are:</p>
-            <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorText&quot; field&nbsp;for details.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>errorText</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Error Codes Reference</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Error Code</p>
-          </th>
-          <th width="30%">
-            <p>Error Text</p>
-          </th>
-          <th width="55%">
-            <p>Error Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>Unknown Source</td>
-          <td>
-            <p style="text-align:left">This message implies that the system was unable to retrieve the app&#39;s sourceId from the system bus message.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>Permission Denied</td>
-          <td>
-            <p style="text-align:left">This message implies that the app does not have permission to create system alerts.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>Message is not parsed</td>
-          <td>
-            <p>This message implies that a JSON message parsing error occured. One of the following situations can cause the parsing error:</p>
-            <ul>
-              <li>The&nbsp;Request&nbsp;object was not formatted correctly.</li>
-              <li>One ore more of the required fields are missing.</li>
-              <li>One or more of the values provided were not the expected data type, for example a string was expected, however the app passed a number instead.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>Message can&#39;t be empty</td>
-          <td>
-            <p style="text-align:left">This message implies that the field <strong>message</strong>&nbsp;in the request message is empty.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>Invalid Service Uri in the onclick</td>
-          <td>
-            <p style="text-align:left">This message implies that the service URI given in the <strong>onclick </strong>object is invalid.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Example</h4>
-  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-    <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
-  </div>
-  <div class="code-bg-grey">
-    <p># luna-send -n 1 -f -a com.webos.surfacemanager luna://com.webos.notification/createAlert &#39;{<br />
-      &nbsp; &nbsp;&quot;message&quot;:&quot;hello world&quot;,<br />
-      &nbsp; &nbsp;&quot;buttons&quot;:[<br />
-      &nbsp; &nbsp; &nbsp; {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;label&quot;:&quot;launch&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;params&quot;:{<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;id&quot;:&quot;youtube.leanback.v4&quot;<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}<br />
-      &nbsp; &nbsp; &nbsp; }<br />
-      &nbsp; &nbsp;]<br />
-      }&#39;
-    </p>
-    <p>Response:</p>
-    <p>{<br />
-      &nbsp; &nbsp;&quot;alertId&quot;:&quot;com.webos.surfacemanager-1582247038454&quot;,<br />
-      &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-      }
-    </p>
-  </div>
-</div>
-<h3 id="getalertnotification">getAlertNotification</h3>
-<div>
-  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>notification.management</b></span></div>
-  <h4>Description</h4>
-  <p style="text-align:left">Subscribe to create alert notifications.</p>
-  <p style="text-align:left"><strong>Note:</strong> This method should only be used by the <strong>Surface Manager</strong>.</p>
-  <h4>Parameters</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>subscribe</td>
-          <td>Optional</td>
-          <td>Boolean</td>
-          <td>
-            <p style="text-align:left">Indicates if subscribed to get notifications.</p>
-            <p style="text-align:left">Possible values are:</p>
-            <ul>
-              <li style="text-align:left"><strong>true:</strong> Subscribed for notifications.</li>
-              <li style="text-align:left"><strong>false:</strong> Not subscribed</li>
-            </ul>
-            <p>Default: <strong>false</strong></p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Call Returns</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates the status of operation.</p>
-            <p>Possible values are:</p>
-            <ul>
-              <li><strong>true:</strong>&nbsp;Indicates that the operation was successful.</li>
-              <li><strong>false:</strong> Indicates that the operation failed.</li>
-            </ul>
-            <p><strong>Note:</strong> This&nbsp;method always&nbsp;returns&nbsp;<strong>returnValue</strong>&nbsp;as&nbsp;<strong>true</strong>.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>subscribed</td>
-          <td>Optional</td>
-          <td>Boolean</td>
-          <td>
-            <p style="text-align:left">Indicates if subscribed to get notifications.</p>
-            <p style="text-align:left">Possible values are:</p>
-            <ul>
-              <li style="text-align:left"><strong>true:</strong> Subscribed for notifications.</li>
-              <li style="text-align:left"><strong>false:</strong> Not subscribed</li>
-            </ul>
-            <p><strong>Note:</strong> No explicit error message will be sent out when the subscription fails because this method is intended for one specific client that is the&nbsp;<strong>Surface Manager</strong>.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Subscription Returns</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>alertInfo</td>
-          <td>Required</td>
-          <td>Object: <a href="#alertinfo"> alertInfo</a></td>
-          <td>
-            <p>Contains alert info.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>timestamp</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Indicates the timestamp&nbsp;string.</p>
-            <p><strong>Note:</strong> It indicates epoch time as milliseconds.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates the status of operation.</p>
-            <p>Possible values are:</p>
-            <ul>
-              <li><strong>true:</strong>&nbsp;Indicates that the operation was successful.</li>
-              <li><strong>false:</strong> Indicates that the operation failed.</li>
-            </ul>
-            <p><strong>Note:</strong> This&nbsp;method always&nbsp;returns&nbsp;<strong>returnValue</strong>&nbsp;as&nbsp;<strong>true</strong>.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>alertAction</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Indicates the action that the subscriber should take.</p>
-            <p>Possible alert types are:</p>
-            <ul>
-              <li><strong>open:</strong>&nbsp;Indicates that the SystemUI should show the alert.</li>
-              <li><strong>close:</strong>&nbsp;Indicates that the SystemUI should close the currently open alert.&nbsp;</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>onFailAction</td>
-          <td>Optional</td>
-          <td>Object: <a href="#onfailaction"> onFailAction</a></td>
-          <td>
-            <p>Indicates the action to be performed on failure to create an alert.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Example</h4>
-  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
-  </div>
-  <div class="code-bg-grey">
-    <p># luna-send -i -f -a com.webos.surfacemanager luna://com.webos.notification/getAlertNotification &#39;{&quot;subscribe&quot;:true}&#39;</p>
-    <p>Response:</p>
-    <p>{<br />
-      &nbsp; &nbsp;&quot;subscribed&quot;: true,<br />
-      &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
-      }
-    </p>
-    <p>Subscription Response:</p>
-    <p>{<br />
-      &nbsp; &nbsp; &quot;alertInfo&quot;: {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;alertId&quot;: &quot;com.webos.surfacemanager-1583462810158&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;message&quot;: &quot;Hello World&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;sourceId&quot;: &quot;com.webos.surfacemanager&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;isNotiSave&quot;: false,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;buttons&quot;: [<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;focus&quot;: false,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;action&quot;: {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;label&quot;: &quot;Yes&quot;<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;focus&quot;: false,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;label&quot;: &quot;No&quot;<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; ],<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;modal&quot;: false,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;onFailAction&quot;: {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;isSysReq&quot;: false,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;onCloseAction&quot;: {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; }<br />
-      &nbsp; &nbsp; },<br />
-      &nbsp; &nbsp; &quot;timestamp&quot;: &quot;1583462810158&quot;,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;alertAction&quot;: &quot;open&quot;<br />
-      }
-    </p>
-  </div>
-</div>
-<h3 id="closealert">closeAlert</h3>
-<div>
-  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>notification.management</b></span></div>
-  <h4>Description</h4>
-  <p>Closes the currently displayed alert notification.</p>
-  <h4>Parameters</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>alertId</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p style="text-align:left">The ID&nbsp;of the alert notification to close.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Call Returns</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
-            <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.&nbsp;Check the&nbsp;&quot;errorText&quot; field&nbsp;for details.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>errorText</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Error Codes Reference</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Error Code</p>
-          </th>
-          <th width="30%">
-            <p>Error Text</p>
-          </th>
-          <th width="55%">
-            <p>Error Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>Message is not parsed</td>
-          <td>
-            <p style="text-align:left">&nbsp;This message implies that a JSON message parsing error occured. One of the following situations can cause the parsing error:</p>
-            <ul>
-              <li style="text-align:left">The <strong>Request </strong>object was not formatted correctly.</li>
-              <li style="text-align:left">One or&nbsp;more of the required fields are missing.</li>
-              <li style="text-align:left">One or more of the values provided were not the expected data type, for example a string was expected, however the app passed a number instead.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>Alert ID can&#39;t be empty</td>
-          <td>
-            <p style="text-align:left">This message implies that the <strong>alertId</strong> field in the message is empty or missing.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>Alert ID parse error</td>
-          <td>
-            <p style="text-align:left"><span style="display:none">&nbsp;</span><span style="display:none">&nbsp;</span><span style="display:none">&nbsp;</span><span style="display:none">&nbsp;</span><span style="display:none">&nbsp;</span><span style="display:none">&nbsp;</span><span style="display:none">&nbsp;</span>This message implies that the <strong>alertId</strong> is not formatted properly.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Example</h4>
-  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
-  </div>
-  <div class="code-bg-grey">
-    <p># luna-send -n 1 -f -a com.webos.surfacemanager luna://com.webos.notification/closeAlert &#39;{&quot;alertId&quot;:&quot;com.webos.surfacemanager-1582876366095&quot;}&#39;</p>
-    <p>Response:</p>
-    <p>{<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
-  </div>
-</div>
-<h3 id="closeallalerts">closeAllAlerts</h3>
-<div>
-  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>notification.management</b></span></div>
-  <h4>Description</h4>
-  <p>Closes all the open alerts.</p>
-  <p><strong>Note:</strong> This method is only used by <strong>com.webos.service.battest</strong> during <strong>BAT test</strong>. If the caller is not <strong>com.webos.service.battest</strong>, the method will fail.</p>
-  <h4>Parameters</h4>
-  <p>None</p>
-  <h4>Call Returns</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates the status of operation.&nbsp;Possible values are:</p>
-            <ul>
-              <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li><strong>false&nbsp;</strong>- Indicates that the operation failed.&nbsp;Check the&nbsp;&quot;errorText&quot; field&nbsp;for details.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>errorText</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Indicates the reason for the failure of the operation.&nbsp;See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Error Codes Reference</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Error Code</p>
-          </th>
-          <th width="30%">
-            <p>Error Text</p>
-          </th>
-          <th width="55%">
-            <p>Error Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>Unknown Source</td>
-          <td>
-            <p>This message implies that the system was unable to retrieve the app source ID&nbsp;from the system bus message.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>Message is not parsed</td>
-          <td>
-            <p>This message implies that a JSON message parsing error occured. One of the following situations can cause the parsing error:</p>
-            <ul>
-              <li style="text-align:left">The&nbsp;<strong>Request</strong>&nbsp;object was not formatted correctly.</li>
-              <li style="text-align:left">One ore more of the required fields are missing.</li>
-              <li style="text-align:left">One or more of the values provided were not the expected data type, for example a string was expected, however the app passed a number instead.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>Invalid source ID specified</td>
-          <td>
-            <p>If call is not from com.webos.service.battest, notification refuses API request with this error.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Example</h4>
-  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
-  </div>
-  <div class="code-bg-grey">
-    <p>Example for a successful call:</p>
-    <p># luna-send -n 1 -f -a com.webos.service.battest luna://com.webos.notification/closeAllAlerts &#39;{}&#39;</p>
-    <p>&nbsp;</p>
-    <p>Response:</p>
-    <p>{&nbsp;<br />
-      &nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-      }
-    </p>
-    <p>&nbsp;</p>
-    <p>Example for a failed call:</p>
-    <p># luna-send -n 1 -f luna://com.webos.notification/closeAllAlerts &#39;{}&#39;</p>
-    <p>&nbsp;</p>
-    <p>Response:</p>
-    <p>{&nbsp;<br />
-      &nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
-      &nbsp;&nbsp;&quot;errorText&quot;:&quot;Unknown&nbsp;Source&quot;<br />
-      }
-    </p>
-  </div>
-</div>
-<h3 id="removeallnotification">removeAllNotification</h3>
-<div>
-  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>notification.management</b></span></div>
-  <h4>Description</h4>
-  <p>Removes all notifications that are currently being displayed.</p>
-  <h4>Parameters</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>displayId</td>
-          <td>Optional</td>
-          <td>Number</td>
-          <td>
-            <p>Identifier of the display where the notification is to be displayed. Possible values are 0 and 1.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Call Returns</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates the status of operation.</p>
-            <p>Possible values are:</p>
-            <ul>
-              <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
-              <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the &quot;errorText&quot; field&nbsp;for details.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>removeAllNotiId</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates whether all notifications were removed successfully.</p>
-            <p>Possible values are:&nbsp;</p>
-            <ul>
-              <li><strong>true:</strong>&nbsp;Notifications were removed successfully.</li>
-              <li><strong>false:</strong> Notification removal failed.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>errorText</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;Error Codes&quot; section of this method for details.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>displayId</td>
-          <td>Required</td>
-          <td>Number</td>
-          <td>
-            <p>Identifier of the display where the notification is to be displayed. Possible values are 0 and 1.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Error Codes Reference</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Error Code</p>
-          </th>
-          <th width="30%">
-            <p>Error Text</p>
-          </th>
-          <th width="55%">
-            <p>Error Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>Permission Denied</td>
-          <td>
-            <p>This error message implies that calling App or source is not previleged source for this method. Only SystemUI component is allowed to call this method.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Example</h4>
-  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-    <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
-  </div>
-  <div class="code-bg-grey">
-    <p># luna-send -a com.webos.surfacemanager -n 1 luna://com.webos.notification/removeAllNotification &#39;{&quot;displayId&quot;: 0}&#39;</p>
-    <p>Response:</p>
-    <p>{<br />
-      &nbsp; &nbsp; &quot;removeAllNotiId&quot;:true,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;:true<br />
-      }
-    </p>
-  </div>
-</div>
-<h3 id="removenotification">removeNotification</h3>
-<div>
-  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>notification.management</b></span></div>
-  <h4>Description</h4>
-  <p>Deletes the given notification(s) from DB. We can remove given set of notifications or remove all notifications from a given sourceId.</p>
-  <h4>Parameters</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>removeNotiId</td>
-          <td>Optional</td>
-          <td>String array</td>
-          <td>
-            <p>A list of IDs of the notifications to be deleted. Notification ID is composed of the URI of the notification source, a dash, and the timestamp of the time when the notification was issued.</p>
-            <p><strong>Format:</strong> &quot;Source URI-Timestamp&quot;</p>
-            <p><strong>Example</strong> &quot;com.webos.surfacemanager-1393548223764&quot;</p>
-            <p><strong>Note:&nbsp;</strong>Either one of &quot;removeNotiId&quot; or &quot;sourceId&quot; is mandatory to be provided.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>sourceId</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Identifies the app or service that created the notification to be deleted.</p>
-            <p><strong>Format:</strong> URI</p>
-            <p><strong>Note:&nbsp;</strong>Either one of &quot;removeNotiId&quot; or &quot;sourceId&quot; is mandatory to be provided.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Call Returns</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Optional</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates the status of operation. Possible values are:</p>
-            <ul>
-              <li>&nbsp;<strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-              <li>&nbsp;<strong>false&nbsp;</strong>- Indicates that the operation failed. Check the &quot;errorText&quot; field&nbsp;for details.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>removeNotiId</td>
-          <td>Optional</td>
-          <td>String array</td>
-          <td>
-            <p>A list of IDs of the notification that has been deleted.</p>
-            <p><strong>Format:</strong> &quot;Source URI-Timestamp&quot;</p>
-            <p><strong>Example:</strong> &quot;com.webos.surfacemanager-1393548223764&quot;</p>
-            <p><strong>Note:&nbsp;</strong>Returned when &quot;removeNotiId&quot; is passed as input parameter</p>
-          </td>
-        </tr>
-        <tr>
-          <td>sourceId</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>The app or service that created the notification that are deleted.</p>
-            <p><strong>Format:</strong> URI</p>
-            <p><strong>Example:&nbsp;</strong>&quot;com.webos.surfacemanager&quot;</p>
-            <p><strong>Note:&nbsp;</strong>Returned when &quot;sourceId&quot; is passed as input parameter</p>
-          </td>
-        </tr>
-        <tr>
-          <td>errorText</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Indicates the reason for the failure of the operation. See the &quot;Error Codes&quot; section of this method for details.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Error Codes Reference</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Error Code</p>
-          </th>
-          <th width="30%">
-            <p>Error Text</p>
-          </th>
-          <th width="55%">
-            <p>Error Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>Message is not parsed</td>
-          <td>
-            <p>This message implies that a JSON message parsing error occured. One of the following situations can cause the parsing error:</p>
-            <ul>
-              <li>The&nbsp;Request&nbsp;object was not formatted correctly.</li>
-              <li>One ore more of the required fields are missing.</li>
-              <li>One or more of the values provided were not the expected data type, for example a string was expected, however the app passed a number instead.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>input sourceId or removeNotiId parameter</td>
-          <td>
-            <p>This message implies that both <strong>sourceId</strong> and <strong>removeNotiId </strong>parameters are missing. At least one should be present.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>sourceId can&#39;t be empty</td>
-          <td>
-            <p>This message implies that given <strong>sourceId </strong>parameter does not have any value. It cannot be empty.&nbsp;</p>
-          </td>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>Noti Id can&#39;t be Empty</td>
-          <td>
-            <p>This message implies that given <strong>NotiId </strong>is empty.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Example</h4>
-  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-    <p style="color:white;margin:5.0px;"><b>Example : WIth removeNotiId provided</b></p>
-  </div>
-  <div class="code-bg-grey">
-    <p># luna-send -a com.webos.surfacemanager -n 1 -f luna://com.webos.notification/removeNotification &#39;{&quot;removeNotiId&quot;: [&quot;com.sloy.jbnotif-1393548393417&quot;]}&#39;</p>
-    <p>Response:</p>
-    <p>{<br />
-      &nbsp; &nbsp;&quot;removeNotiId&quot;: [<br />
-      &nbsp; &nbsp; &nbsp;&nbsp;&quot;com.sloy.jbnotif-1393548393417&quot;<br />
-      &nbsp; &nbsp;],<br />
-      &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
-      }
-    </p>
-  </div>
-  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-    <p style="color:white;margin:5.0px;"><b>Example : With sourceId provided</b></p>
-  </div>
-  <div class="code-bg-grey">
-    <p># luna-send -n 1 -f -a com.webos.surfacemanager luna://com.webos.notification/removeNotification &#39;{&quot;sourceId&quot;: &quot;com.sloy.jbnotif&quot;}&#39;</p>
-    <p>Response:<br />
-      {<br />
-      &nbsp; &nbsp; &quot;sourceId&quot;: &quot;com.sloy.jbnotif&quot;,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
-  </div>
-</div>
-<h3 id="createtoast">createToast</h3>
-<div>
-  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>notification.operation</b></span></div>
-  <h4>Description</h4>
-  <p style="text-align:left">Creates a toast notification.</p>
-  <h4>Parameters</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>sourceId</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p style="text-align:left">The ID&nbsp;of the application or service that creates the toast notification.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>iconUrl</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p style="text-align:left">The file path of the alert icon. The file path must be local to the device.</p>
-            <p style="text-align:left"><strong>NOTE</strong>: The icon must be 80 x 80 and in PNG format.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>message</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p style="text-align:left">The detailed message to be displayed as part of the toast notification. The message can be up to 60 characters long.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>onclick</td>
-          <td>Optional</td>
-          <td>Object: <a href="#onclick"> onclick</a></td>
-          <td>
-            <p style="text-align:left">Defines the toast action. An example is:&nbsp;</p>
-            <p style="text-align:left">{&quot;appId&quot;:&quot;com.webos.app.test&quot;}</p>
-          </td>
-        </tr>
-        <tr>
-          <td>noaction</td>
-          <td>Optional</td>
-          <td>Boolean</td>
-          <td>
-            <p style="text-align:left">Indicates no action is required. Possible values are:</p>
-            <ul>
-              <li style="text-align: left;"><strong>true</strong>:&nbsp;If no action is required</li>
-              <li style="text-align: left;"><strong>false</strong>:&nbsp;If action is defined.</li>
-            </ul>
-            <p style="text-align: left;"><strong>Note</strong>: The default value is <strong>false</strong>.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>stale</td>
-          <td>Optional</td>
-          <td>Boolean</td>
-          <td>
-            <p>Possible values are:</p>
-            <ul>
-              <li><strong>true</strong>:&nbsp;To indicate the toast notification is old and does not need to be displayed.</li>
-              <li><strong>false</strong>:&nbsp;If the toast notification is current and should be displayed.</li>
-            </ul>
-            <p><strong>Note</strong>:&nbsp;The default value is <strong>false</strong>.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>persistent</td>
-          <td>Optional</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates whether the toast message should be saved in the database. If <strong>persistent</strong> is set to <strong>true</strong>, the toast message will be saved in the database.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>isSysReq</td>
-          <td>Optional</td>
-          <td>Boolean</td>
-          <td>
-            <p>Defines notification comes from app or system</p>
-            <ul>
-              <li><strong>true </strong>: notification comes from system</li>
-              <li><strong>false </strong>: notification comes from app</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>schedule</td>
-          <td>Optional</td>
-          <td>Object: <a href="#schedule"> schedule</a></td>
-          <td>
-            <p>Creates a toast notification as a persistent message and defines its schedule.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>type</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Defines the toast type.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>extra</td>
-          <td>Optional</td>
-          <td>Object array: <a href="#image"> image</a></td>
-          <td>
-            <p>Defines extra toast resource.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>onlyToast</td>
-          <td>Optional</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates if notification to be created is just a simple toast.</p>
-            <p>Possible values are:</p>
-            <ul>
-              <li><strong>true: </strong>Shows simple&nbsp;information</li>
-              <li><strong>false: </strong>Calls createNotification&nbsp;API and&nbsp;notiInfo&nbsp;is&nbsp;added&nbsp;in&nbsp;notification&nbsp;list</li>
-            </ul>
-            <p>Default:<strong> </strong><strong>true</strong></p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Call Returns</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates the status of operation.</p>
-            <p>Possible values are:</p>
-            <ul>
-              <li><strong>true: </strong>Indicates that the operation was successful.</li>
-              <li><strong>false: </strong>Indicates that the operation failed.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>toastId</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p style="text-align:left">The id of the created toast notification.&nbsp;This would be sourceId + &quot;-&quot; + Timestamp.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>errorText</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Error Codes Reference</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Error Code</p>
-          </th>
-          <th width="30%">
-            <p>Error Text</p>
-          </th>
-          <th width="55%">
-            <p>Error Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>Unknown Source</td>
-          <td>
-            <p style="text-align:left">Indicates that the system was unable to retrieve the app source id from the System Bus message.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>Message is not parsed</td>
-          <td>
-            <p>Indicates that the JSON message parsing error occured.</p>
-            <p>Possible situations that can cause the parsing error:</p>
-            <ul>
-              <li style="text-align:left">Request&nbsp;object was not formatted correctly.</li>
-              <li style="text-align:left">One ore more of the required fields are missing.</li>
-              <li style="text-align:left">One or more of the values provided were not the expected data type, for example a string was expected, however the app passed a number instead.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>Invalid id specified</td>
-          <td>
-            <p style="text-align:left">Indicates that the app is missing from the requested message.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>Invalid source id specified</td>
-          <td>
-            <p style="text-align:left">Indicates that the app Id given in the requested message does not match with the system bus caller Id.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>Message can&#39;t be empty</td>
-          <td>
-            <p style="text-align:left">Indicates that the message field in the requested message is empty.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Example</h4>
-  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
-  </div>
-  <div class="code-bg-grey">
-    <p># luna-send -n 1 -f -a com.webos.app.test luna://com.webos.notification/createToast &#39;{<br />
-      &nbsp; &nbsp; &nbsp; &quot;sourceId&quot;:&quot;com.webos.app.test&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &quot;onclick&quot;: {&quot;appId&quot;:&quot;com.webos.app.test&quot;},<br />
-      &nbsp; &nbsp; &nbsp; &quot;message&quot;:&quot;hello world&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &quot;noaction&quot;: false,<br />
-      &nbsp; &nbsp; &nbsp; &quot;persistent&quot;:true<br />
-      }&#39;
-    </p>
-    <p>Response:</p>
-    <p>{<br />
-      &nbsp; &nbsp;&nbsp;&quot;toastId&quot;: &quot;com.webos.app.test-1435192659892&quot;,<br />
-      &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: true<br />
-      }
-    </p>
-  </div>
-</div>
-<h3 id="gettoastnotification">getToastNotification</h3>
-<div>
-  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>notification.management</b></span></div>
-  <h4>Description</h4>
-  <p style="text-align:left">Subscribe to created toast notification.&nbsp;</p>
-  <p style="text-align:left"><strong>Note: </strong>This method should only be used by<strong> Surface Manager </strong>only.</p>
-  <h4>Parameters</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>subscribe</td>
-          <td>Optional</td>
-          <td>Boolean</td>
-          <td>
-            <p style="text-align:left">Indicates if subscribed to get notifications.</p>
-            <p style="text-align:left">Possible values are:</p>
-            <ul>
-              <li style="text-align: left;"><strong>true:</strong> Subscribe for notifications</li>
-              <li style="text-align: left;"><strong>false:</strong> Not subscribed</li>
-            </ul>
-            <p style="text-align: left;">Default: <strong>false</strong></p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Call Returns</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>subscribed</td>
-          <td>Optional</td>
-          <td>Boolean</td>
-          <td>
-            <p style="text-align:left">Indicates if subscribed to get notifications.</p>
-            <p style="text-align:left">Possible values are:</p>
-            <ul>
-              <li style="text-align:left"><strong>true:</strong> Subscribe for notifications</li>
-              <li style="text-align:left"><strong>false:</strong> Not subscribed</li>
-            </ul>
-            <p style="text-align:left"><strong>Note:</strong> No explicit error message will be sent out when subscription fails because this method is intended for one speicific client that is the <strong>Surface Manager</strong>.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p style="text-align:left">Indicates the status of the operation.</p>
-            <p style="text-align:left">Possible values are:</p>
-            <ul>
-              <li><strong>true: </strong>Indicates that the operation was successful.</li>
-              <li><strong>false: </strong>Indicates that the operation failed.</li>
-            </ul>
-            <p><strong>Note:</strong> This&nbsp;method always&nbsp;returns&nbsp;<strong>returnValue</strong>&nbsp;as&nbsp;<strong>true</strong>.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Subscription Returns</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p style="text-align:left">Indicates the status of the operation.</p>
-            <p style="text-align:left">Possible values are:</p>
-            <ul>
-              <li><strong>true: </strong>Indicates that the operation was successful.</li>
-              <li><strong>false: </strong>Indicates that the operation failed.</li>
-            </ul>
-            <p style="text-align:left"><strong>Note:</strong> This&nbsp;method always&nbsp;returns&nbsp;<strong>returnValue</strong>&nbsp;as&nbsp;<strong>true</strong>.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>message</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Contains the message to be displayed.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>type</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Indicates the type of the toast message.</p>
-            <p><strong>Note:</strong> This is optional parameter and currently not used. This is reserved for future purpose.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>title</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Contains the title information to be displayed for the toast.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>isCradleReq</td>
-          <td>Optional</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates if this is a <strong>Cradle Request </strong>or not. <strong>Cradle Request</strong> is used for <strong>Battery Notifications</strong> only. So, it will be set to false for all other cases.</p>
-            <p>Note:</p>
-            <ul>
-              <li>A Cradle is used for charging the watch wirelessly. When a watch is put on an inductive charger, it sends a notification indicating the current battery level.</li>
-              <li>A <strong>Cradle Request</strong>&nbsp;is used for showing that notification.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>sourceId</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Contains the source Id of the requester.&nbsp;</p>
-          </td>
-        </tr>
-        <tr>
-          <td>timestamp</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Indicates the time stamp string. It indicates epoch time as milliseconds.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>isSysReq</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates if the notification comes from an app or system.</p>
-            <p>Possible values are:</p>
-            <ul>
-              <li><strong>true:</strong> Notification comes from system.</li>
-              <li><strong>false: </strong>Notification comes from app.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>iconUrl</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Contains the file path to icon to be displayed.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>action</td>
-          <td>Optional</td>
-          <td>Object: <a href="#action"> action</a></td>
-          <td>
-            <p>Contains the action parameter.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>schedule</td>
-          <td>Optional</td>
-          <td>Object: <a href="#schedule"> schedule</a></td>
-          <td>
-            <p>Describes the toast schedule.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>iconPath</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Specifies the path of the&nbsp;icon. It should be absolute local file system path.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>user</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Indicates the names of the user logged in to the corresponding session. If the user is logged in as guest user, the value will be &quot;guest&quot;.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>_kind</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Displays the db kind in which the toast is stored.</p>
-            <p><strong>Note:</strong>&nbsp;It is an internal parameter.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>onlyToast</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates if notification is created as a simple toast.</p>
-            <p><strong>Note:</strong> It is set when creating the&nbsp;toast.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Example</h4>
-  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
-  </div>
-  <div class="code-bg-grey">
-    <p># luna-send -i -f -a com.webos.surfacemanager&nbsp;luna://com.webos.notification/getToastNotification &#39;{<br />
-      &nbsp;&nbsp; &quot;subscribe&quot;:true<br />
-      }&#39;
-    </p>
-    <p>Response:</p>
-    <p>{<br />
-      &nbsp; &nbsp;&quot;subscribed&quot;: true,<br />
-      &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
-      }
-    </p>
-    <p>Subscription Response:</p>
-    <p>{<br />
-      &nbsp; &nbsp; &quot;message&quot;: &quot;hello world&quot;,<br />
-      &nbsp; &nbsp; &quot;iconPath&quot;: &quot;/usr/palm/notificationmgr/images/toast-notification-icon.png&quot;,<br />
-      &nbsp; &nbsp; &quot;type&quot;: &quot;standard&quot;,<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;user&quot;: &quot;guest&quot;,<br />
-      &nbsp; &nbsp; &quot;title&quot;: &quot;&quot;,<br />
-      &nbsp; &nbsp; &quot;isCradleReq&quot;: false,<br />
-      &nbsp; &nbsp; &quot;sourceId&quot;: &quot;com.webos.app.notification&quot;,<br />
-      &nbsp; &nbsp; &quot;timestamp&quot;: &quot;1583463281128&quot;,<br />
-      &nbsp; &nbsp; &quot;onlyToast&quot;: true,<br />
-      &nbsp; &nbsp; &quot;isSysReq&quot;: false,<br />
-      &nbsp; &nbsp; &quot;schedule&quot;: {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;expire&quot;: 1586055281<br />
-      &nbsp; &nbsp; },<br />
-      &nbsp; &nbsp; &quot;iconUrl&quot;: &quot;file:///usr/palm/notificationmgr/images/toast-notification-icon.png&quot;,<br />
-      &nbsp; &nbsp; &quot;action&quot;: {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;launchParams&quot;: {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;id&quot;: &quot;com.webos.app.notification&quot;<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;serviceMethod&quot;: &quot;launch&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;serviceURI&quot;: &quot;luna://com.webos.service.applicationmanager/&quot;<br />
-      &nbsp; &nbsp; }<br />
-      }
-    </p>
-  </div>
-</div>
-<h3 id="gettoastlist">getToastList</h3>
-<div>
-  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>notification.management</b></span></div>
-  <h4>Description</h4>
-  <p>Lists the toasts created for the app/client based on the user logged into the particular session.</p>
-  <h4>Parameters</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>displayId</td>
-          <td>Optional</td>
-          <td>Number</td>
-          <td>
-            <p>Identifier of the display where the notification is to be displayed. Possible values are 0 and 1.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Call Returns</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates the status of the operation.</p>
-            <p>Possible values are:</p>
-            <ul>
-              <li><strong>true:</strong>&nbsp;Indicates that the operation was successful.</li>
-              <li><strong>false:</strong>&nbsp;Indicates that the operation failed.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>toastInfo</td>
-          <td>Required</td>
-          <td>Object array: <a href="#toastinfo"> toastInfo</a></td>
-          <td>
-            <p>Contains information of the stored toasts.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>errorText</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Error Codes Reference</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Error Code</p>
-          </th>
-          <th width="30%">
-            <p>Error Text</p>
-          </th>
-          <th width="55%">
-            <p>Error Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>Unknown Source</td>
-          <td>
-            <p>Indicates that the system was unable to retrieve the app/service&#39;s source id from the system bus message.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>Permission Denied</td>
-          <td>
-            <p>Indicates that the app/service does not have permission to query toast list.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>Message is not parsed</td>
-          <td>
-            <p>Indicates that the required parameters were not passed to API.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>Can&#39;t get the notification info from db</td>
-          <td>
-            <p>Failed to fetch the&nbsp;toast list from the database.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Example</h4>
-  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-    <p style="color:white;margin:5.0px;"><b>Example</b></p>
-  </div>
-  <div class="code-bg-grey">
-    <p># luna-send -n 1 -f -a com.webos.app.notification luna://com.webos.notification/getToastList &#39;{&quot;displayId&quot;: 0}&#39;</p>
-    <p>Response:</p>
-    <p>{<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      &nbsp; &nbsp; &quot;toastInfo&quot; : [<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;sourceId&quot; : &quot;com.webos.app.notification&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;toastId&quot; : &quot;com.webos.app.notification-1584349101435&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;timestamp&quot; : &quot;1584349101435&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;iconUrl&quot; : &quot;file:///usr/palm/notificationmgr/images/toast-notification-icon.png&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;iconPath&quot; : &quot;/usr/palm/notificationmgr/images/toast-notification-icon.png&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;title&quot; : &quot;&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;message&quot; : &quot;hello world&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;isSysReq&quot; : false,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;user&quot; : &quot;guest&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;schedule&quot; : {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;expire&quot;: 1590207128<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;type&quot; : &quot;standard&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;action&quot; : {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;launchParams&quot;: {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;id&quot;: &quot;com.webos.app.notification&quot;<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;serviceMethod&quot;: &quot;launch&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;serviceURI&quot;: &quot;luna://com.webos.service.applicationmanager/&quot;<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;readStatus&quot; : false<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; },<br />
-      &nbsp; &nbsp; ],
-    </p>
-    <p>&nbsp; &nbsp; &quot;displayId&quot;: 0<br />
-      }
-    </p>
-  </div>
-</div>
-<h3 id="settoaststatus">setToastStatus</h3>
-<div>
-  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>notification.management</b></span></div>
-  <h4>Description</h4>
-  <p>Specifies whether the toast is to be marked as read or unread.</p>
-  <h4>Parameters</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>toastId</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Indicates the unique ID of the toast created.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>readStatus</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates the status of a toast to be set by the user.</p>
-            <p>Possible values are:&nbsp;</p>
-            <ul>
-              <li><strong>true:</strong> toast is read.</li>
-              <li><strong>false</strong>: toast is unread.</li>
-            </ul>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Call Returns</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates the status of the operation.</p>
-            <p>Possible values are:</p>
-            <ul>
-              <li><strong>true:</strong>&nbsp;Indicates that the operation was successful.</li>
-              <li><strong>false:</strong>&nbsp;Indicates that the operation failed.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>toastId</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Contains the unique ID of the toast created.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>readStatus</td>
-          <td>Optional</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates the status of a toast set by the user.</p>
-            <p>Possible values are:</p>
-            <ul>
-              <li><strong>true:</strong> toast is read.</li>
-              <li><strong>false</strong>: toast is unread.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>errorText</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Error Codes Reference</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Error Code</p>
-          </th>
-          <th width="30%">
-            <p>Error Text</p>
-          </th>
-          <th width="55%">
-            <p>Error Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>Failed to set status</td>
-          <td>
-            <p>Failed to set the read / unread status of the toast.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Example</h4>
-  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-    <p style="color:white;margin:5.0px;"><b>Example code</b></p>
-  </div>
-  <div class="code-bg-grey">
-    <p># luna-send -i -f -a com.webos.app.notification luna://com.webos.notification/setToastStatus &#39;{<br />
-      &nbsp;&nbsp;&nbsp;&quot;toastId&quot; : &quot;com.webos.app.notification-1584349101435&quot;,<br />
-      &nbsp;&nbsp;&nbsp;&quot;readStatus&quot; : true<br />
-      }&#39;
-    </p>
-    <p>Response:</p>
-    <p>{<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot; : true,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&quot;toastId&quot; : &quot;com.webos.app.notification-1584349101435&quot;,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&quot;readStatus&quot; : true<br />
-      }
-    </p>
-  </div>
-</div>
-<h3 id="gettoastcount">getToastCount</h3>
-<div>
-  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>notification.management</b></span></div>
-  <h4>Description</h4>
-  <p>Queries&nbsp;the toast notification details of the stored messages and provides the read/unread count of the toast notifications.</p>
-  <p><strong>Note:&nbsp;</strong>Only &quot;com.webos.surfacemanager&quot; and &quot;com.webos.app.notification&quot; have permission to monitor the notification status change.</p>
-  <h4>Parameters</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>subscribe</td>
-          <td>Optional</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates if subscribed to get notifications.</p>
-            <p>Possible values are:</p>
-            <ul>
-              <li><strong>true:</strong> Subscribe for notifications</li>
-              <li><strong>false:</strong> Not subscribed</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>displayId</td>
-          <td>Optional</td>
-          <td>Number</td>
-          <td>
-            <p>Identifier of the display where the notification is to be displayed. Possible values are 0 and 1.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Call Returns</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates the status of operation.</p>
-            <p>Possible values are:</p>
-            <ul>
-              <li><strong>true: </strong>Indicates that the operation was successful.</li>
-              <li><strong>false: </strong>Indicates that the operation failed.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>subscribed</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p style="text-align:left">Indicates if subscribed to get notifications.</p>
-            <p style="text-align:left">Possible values are:</p>
-            <ul>
-              <li><strong>true:</strong> Subscribe for notifications</li>
-              <li><strong>false:</strong> Not subscribed</li>
-            </ul>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Subscription Returns</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>readCount</td>
-          <td>Required</td>
-          <td>Number</td>
-          <td>
-            <p>Indicates the count of toast notifications read by a specific user.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>unreadCount</td>
-          <td>Required</td>
-          <td>Number</td>
-          <td>
-            <p>Indicates the count of toast notifications unread by the user.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>totalCount</td>
-          <td>Required</td>
-          <td>Number</td>
-          <td>
-            <p>Indicates the total count of toast notifications respective to a user.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates the status of operation.</p>
-            <p>Possible values are:</p>
-            <ul>
-              <li><strong>true: </strong>Indicates that the operation was successful.</li>
-              <li><strong>false: </strong>Indicates that the operation failed.</li>
-            </ul>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Example</h4>
-  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-    <p style="color:white;margin:5.0px;"><b>Example: Get toast count form a specific displayId</b></p>
-  </div>
-  <div class="code-bg-grey">
-    <p># luna-send -i -f -a com.webos.app.notification luna://com.webos.notification/getToastCount &#39;{<br />
-      &nbsp;&nbsp; &quot;subscribe&quot;:true,
-    </p>
-    <p>&nbsp; &nbsp;&quot;displayId&quot;: 0<br />
-      }&#39;
-    </p>
-    <p>Response:</p>
-    <p>{<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot; : true,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&quot;subscribed&quot; : true<br />
-      }
-    </p>
-    <p>Subscription response:</p>
-    <p>{<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&quot;unreadCount&quot;: 2,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&quot;totalCount&quot;: 3,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&quot;readCount&quot;: 1,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true<br />
-      }
-    </p>
-  </div>
-</div>
-<h3 id="closetoast">closeToast</h3>
-<div>
-  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>notification.management</b></span></div>
-  <h4>Description</h4>
-  <p style="text-align:left">Removes a toast notification from the database.</p>
-  <h4>Parameters</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>toastId</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p style="text-align:left">ID&nbsp;of the toast notification to remove from the database.&nbsp;</p>
-            <p style="text-align:left"><strong>Note</strong>: Either <strong>toastId</strong> or <strong>sourceId</strong> is required.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>sourceId</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>ID&nbsp;of the app/service to remove from the&nbsp;database.</p>
-            <p><strong>Note</strong>: Either <strong>toastId</strong> or <strong>sourceId</strong> is required.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Call Returns</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates the status of the operation.</p>
-            <p>Possible values are:</p>
-            <ul>
-              <li><strong>true: </strong>Indicates that the operation was successful.</li>
-              <li><strong>false: </strong>Indicates that the operation failed.&nbsp;Check the&nbsp;&quot;errorText&quot; field&nbsp;for details.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>errorText</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Error Codes Reference</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Error Code</p>
-          </th>
-          <th width="30%">
-            <p>Error Text</p>
-          </th>
-          <th width="55%">
-            <p>Error Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>Toast ID parse error</td>
-          <td>
-            <p style="text-align:left">Indicates that the <strong>toastId </strong>is not formatted properly.&nbsp;</p>
-          </td>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>Both Toast ID and Source ID can&#39;t be empty</td>
-          <td>
-            <p style="text-align:left">Indicates that neither&nbsp;<strong>toastId or sourceId&nbsp;</strong>field in the message is empty or missing.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>None</td>
-          <td>Message is not parsed</td>
-          <td>
-            <p>Indicates that a JSON message parsing error occured.</p>
-            <p>Possible situations that can cause the parsing error:</p>
-            <ul>
-              <li>The Request object was not formatted correctly.</li>
-              <li>One or&nbsp;more of the required fields are missing.</li>
-              <li>One or more of the values provided were not the expected data type, for example a string was expected, however the app passed a number instead.</li>
-            </ul>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Example</h4>
-  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-    <p style="color:white;margin:5.0px;"><b>Example : With toast ID</b></p>
-  </div>
-  <div class="code-bg-grey">
-    <p># luna-send -n 1 -f -a com.webos.app.test luna://com.webos.notification/closeToast &#39;{<br />
-      &nbsp;&nbsp; &quot;toastId&quot;:&quot;com.webos.app.test-1433221930402&quot;<br />
-      }&#39;
-    </p>
-    <p>Response:</p>
-    <p>{&nbsp;<br />
-      &nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-      }
-    </p>
-  </div>
-  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-    <p style="color:white;margin:5.0px;"><b>Example : With source ID</b></p>
-  </div>
-  <div class="code-bg-grey">
-    <p># luna-send -n 1 -f -a com.webos.app.test luna://com.webos.notification/closeToast &#39;{<br />
-      &nbsp;&nbsp; &quot;sourceId&quot;:&quot;com.webos.app.test&quot;<br />
-      }&#39;
-    </p>
-    <p>Response:</p>
-    <p>{&nbsp;<br />
-      &nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-      }
-    </p>
+  <h3 id="disable">disable</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>notification.management</b></span></div>
+    <h4>Description</h4>
+    <p>Disables all notification features (Toast, Alert, Input Alert, Pin Prompt).</p>
+    <p><strong>Note:</strong> Only a privileged application or service can call this method.</p>
+    <h4>Parameters</h4>
+    <p>None</p>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true:</strong> Indicates that the operation was successful.</li>
+                <li><strong>false:</strong> Indicates that the operation failed.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation. See the &quot;Error Codes&quot; section of this method for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Unknown Source</td>
+            <td>
+              <p>Indicates that the system was unable to retrieve the app/service&#39;s source id from the system bus message.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Permission Denied</td>
+            <td>
+              <p>Indicates that the app/service does not have permission to enable&nbsp;notifications.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f -a com.webos.app.test luna://com.webos.notification/disable &#39;{}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="createalert">createAlert</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>notification.operation</b></span></div>
+    <h4>Description</h4>
+    <p>Creates a system alert notification.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>iconUrl</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p style="text-align: left;">The file path of the alert icon. The file path must be local to the device.<br></p>
+            </td>
+          </tr>
+          <tr>
+            <td>title</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p style="text-align:left">A brief title for the alert notification.&nbsp;</p>
+            </td>
+          </tr>
+          <tr>
+            <td>message</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p style="text-align:left">A detailed message for the alert notification.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>modal</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates whether to display a&nbsp;modal or non-modal alert notification. Possible values are:</p>
+              <ul>
+                <li><strong>true</strong>: Display a modal alert notification</li>
+                <li><strong>false</strong>: Display a non-modal alert notification</li>
+              </ul>
+              <p><strong>Note</strong>: The default value&nbsp;is <strong>false</strong>.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>buttons</td>
+            <td>Required</td>
+            <td>Object array: <a href="#button"> button</a></td>
+            <td>
+              <p style="text-align:left">Defines the button label, and onclick action. Button specification is given in an array. An example is:</p>
+              <p style="text-align:left">&quot;buttons&quot;:[<br />
+                &nbsp; &nbsp; &nbsp; &nbsp; {&quot;label&quot;:&quot;button1&quot;, &quot;onclick&quot;:&quot;luna://com.webos.service.applicationmanager/launch&quot;, &quot;params&quot;:{&quot;id&quot;:&quot;com.webos.app.settings&quot;}},<br />
+                &nbsp; &nbsp; &nbsp; &nbsp; {&quot;label&quot;:&quot;button2&quot;, &quot;focus&quot;:true},<br />
+                &nbsp; &nbsp; &nbsp; &nbsp; {&quot;label&quot;:&quot;button3&quot;}<br />
+                ]
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td>onclose</td>
+            <td>Optional</td>
+            <td>Object: <a href="#onclose"> onclose</a></td>
+            <td>
+              <p>Defines the close action to be performed when an alert is closed.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>type</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Defines the button type in the alert. Possible values are:&nbsp;</p>
+              <ul>
+                <li>confirm</li>
+                <li>warning</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>isSysReq</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates whether the notification has come from an app or system</p>
+              <ul>
+                <li><strong>true </strong>: notification comes from system</li>
+                <li><strong>false </strong>: notification comes from an app</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>onfail</td>
+            <td>Optional</td>
+            <td>Object: <a href="#onfail"> onfail</a></td>
+            <td>
+              <p>Action to be performed on failure to create an alert.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>alertId</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p style="text-align:left">The ID&nbsp;of the created alert notification. This would be sourceId + &quot;-&quot; + Timestamp.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p style="text-align:left">Indicates the status of operation.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorText&quot; field&nbsp;for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Unknown Source</td>
+            <td>
+              <p style="text-align:left">This message implies that the system was unable to retrieve the app&#39;s sourceId from the system bus message.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Permission Denied</td>
+            <td>
+              <p style="text-align:left">This message implies that the app does not have permission to create system alerts.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Message is not parsed</td>
+            <td>
+              <p>This message implies that a JSON message parsing error occured. One of the following situations can cause the parsing error:</p>
+              <ul>
+                <li>The&nbsp;Request&nbsp;object was not formatted correctly.</li>
+                <li>One ore more of the required fields are missing.</li>
+                <li>One or more of the values provided were not the expected data type, for example a string was expected, however the app passed a number instead.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Message can&#39;t be empty</td>
+            <td>
+              <p style="text-align:left">This message implies that the field <strong>message</strong>&nbsp;in the request message is empty.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Invalid Service Uri in the onclick</td>
+            <td>
+              <p style="text-align:left">This message implies that the service URI given in the <strong>onclick </strong>object is invalid.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f -a com.webos.surfacemanager luna://com.webos.notification/createAlert &#39;{<br />
+        &nbsp; &nbsp;&quot;message&quot;:&quot;hello world&quot;,<br />
+        &nbsp; &nbsp;&quot;buttons&quot;:[<br />
+        &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;label&quot;:&quot;launch&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;params&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;id&quot;:&quot;youtube.leanback.v4&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}<br />
+        &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp;]<br />
+        }&#39;
+      </p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&quot;alertId&quot;:&quot;com.webos.surfacemanager-1582247038454&quot;,<br />
+        &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="getalertnotification">getAlertNotification</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>notification.management</b></span></div>
+    <h4>Description</h4>
+    <p style="text-align:left">Subscribe to create alert notifications.</p>
+    <p style="text-align:left"><strong>Note:</strong> This method should only be used by the <strong>Surface Manager</strong>.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>subscribe</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p style="text-align:left">Indicates if subscribed to get notifications.</p>
+              <p style="text-align:left">Possible values are:</p>
+              <ul>
+                <li style="text-align:left"><strong>true:</strong> Subscribed for notifications.</li>
+                <li style="text-align:left"><strong>false:</strong> Not subscribed</li>
+              </ul>
+              <p>Default: <strong>false</strong></p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true:</strong>&nbsp;Indicates that the operation was successful.</li>
+                <li><strong>false:</strong> Indicates that the operation failed.</li>
+              </ul>
+              <p><strong>Note:</strong> This&nbsp;method always&nbsp;returns&nbsp;<strong>returnValue</strong>&nbsp;as&nbsp;<strong>true</strong>.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>subscribed</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p style="text-align:left">Indicates if subscribed to get notifications.</p>
+              <p style="text-align:left">Possible values are:</p>
+              <ul>
+                <li style="text-align:left"><strong>true:</strong> Subscribed for notifications.</li>
+                <li style="text-align:left"><strong>false:</strong> Not subscribed</li>
+              </ul>
+              <p><strong>Note:</strong> No explicit error message will be sent out when the subscription fails because this method is intended for one specific client that is the&nbsp;<strong>Surface Manager</strong>.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Subscription Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>alertInfo</td>
+            <td>Required</td>
+            <td>Object: <a href="#alertinfo"> alertInfo</a></td>
+            <td>
+              <p>Contains alert info.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>timestamp</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the timestamp&nbsp;string.</p>
+              <p><strong>Note:</strong> It indicates epoch time as milliseconds.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true:</strong>&nbsp;Indicates that the operation was successful.</li>
+                <li><strong>false:</strong> Indicates that the operation failed.</li>
+              </ul>
+              <p><strong>Note:</strong> This&nbsp;method always&nbsp;returns&nbsp;<strong>returnValue</strong>&nbsp;as&nbsp;<strong>true</strong>.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>alertAction</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the action that the subscriber should take.</p>
+              <p>Possible alert types are:</p>
+              <ul>
+                <li><strong>open:</strong>&nbsp;Indicates that the SystemUI should show the alert.</li>
+                <li><strong>close:</strong>&nbsp;Indicates that the SystemUI should close the currently open alert.&nbsp;</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>onFailAction</td>
+            <td>Optional</td>
+            <td>Object: <a href="#onfailaction"> onFailAction</a></td>
+            <td>
+              <p>Indicates the action to be performed on failure to create an alert.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -i -f -a com.webos.surfacemanager luna://com.webos.notification/getAlertNotification &#39;{&quot;subscribe&quot;:true}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&quot;subscribed&quot;: true,<br />
+        &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
+        }
+      </p>
+      <p>Subscription Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;alertInfo&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;alertId&quot;: &quot;com.webos.surfacemanager-1583462810158&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;message&quot;: &quot;Hello World&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;sourceId&quot;: &quot;com.webos.surfacemanager&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;isNotiSave&quot;: false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;buttons&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;focus&quot;: false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;action&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;label&quot;: &quot;Yes&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;focus&quot;: false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;label&quot;: &quot;No&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; ],<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;modal&quot;: false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;onFailAction&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;isSysReq&quot;: false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;onCloseAction&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &quot;timestamp&quot;: &quot;1583462810158&quot;,<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp; &nbsp; &quot;alertAction&quot;: &quot;open&quot;<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="closealert">closeAlert</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>notification.management</b></span></div>
+    <h4>Description</h4>
+    <p>Closes the currently displayed alert notification.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>alertId</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p style="text-align:left">The ID&nbsp;of the alert notification to close.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed.&nbsp;Check the&nbsp;&quot;errorText&quot; field&nbsp;for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Message is not parsed</td>
+            <td>
+              <p style="text-align:left">&nbsp;This message implies that a JSON message parsing error occured. One of the following situations can cause the parsing error:</p>
+              <ul>
+                <li style="text-align:left">The <strong>Request </strong>object was not formatted correctly.</li>
+                <li style="text-align:left">One or&nbsp;more of the required fields are missing.</li>
+                <li style="text-align:left">One or more of the values provided were not the expected data type, for example a string was expected, however the app passed a number instead.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Alert ID can&#39;t be empty</td>
+            <td>
+              <p style="text-align:left">This message implies that the <strong>alertId</strong> field in the message is empty or missing.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Alert ID parse error</td>
+            <td>
+              <p style="text-align:left"><span style="display:none">&nbsp;</span><span style="display:none">&nbsp;</span><span style="display:none">&nbsp;</span><span style="display:none">&nbsp;</span><span style="display:none">&nbsp;</span><span style="display:none">&nbsp;</span><span style="display:none">&nbsp;</span>This message implies that the <strong>alertId</strong> is not formatted properly.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f -a com.webos.surfacemanager luna://com.webos.notification/closeAlert &#39;{&quot;alertId&quot;:&quot;com.webos.surfacemanager-1582876366095&quot;}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="closeallalerts">closeAllAlerts</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>notification.management</b></span></div>
+    <h4>Description</h4>
+    <p>Closes all the open alerts.</p>
+    <p><strong>Note:</strong> This method is only used by <strong>com.webos.service.battest</strong> during <strong>BAT test</strong>. If the caller is not <strong>com.webos.service.battest</strong>, the method will fail.</p>
+    <h4>Parameters</h4>
+    <p>None</p>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed.&nbsp;Check the&nbsp;&quot;errorText&quot; field&nbsp;for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Unknown Source</td>
+            <td>
+              <p>This message implies that the system was unable to retrieve the app source ID&nbsp;from the system bus message.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Message is not parsed</td>
+            <td>
+              <p>This message implies that a JSON message parsing error occured. One of the following situations can cause the parsing error:</p>
+              <ul>
+                <li style="text-align:left">The&nbsp;<strong>Request</strong>&nbsp;object was not formatted correctly.</li>
+                <li style="text-align:left">One ore more of the required fields are missing.</li>
+                <li style="text-align:left">One or more of the values provided were not the expected data type, for example a string was expected, however the app passed a number instead.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Invalid source ID specified</td>
+            <td>
+              <p>If call is not from com.webos.service.battest, notification refuses API request with this error.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p>Example for a successful call:</p>
+      <p># luna-send -n 1 -f -a com.webos.service.battest luna://com.webos.notification/closeAllAlerts &#39;{}&#39;</p>
+      <p>&nbsp;</p>
+      <p>Response:</p>
+      <p>{&nbsp;<br />
+        &nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+        }
+      </p>
+      <p>&nbsp;</p>
+      <p>Example for a failed call:</p>
+      <p># luna-send -n 1 -f luna://com.webos.notification/closeAllAlerts &#39;{}&#39;</p>
+      <p>&nbsp;</p>
+      <p>Response:</p>
+      <p>{&nbsp;<br />
+        &nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
+        &nbsp;&nbsp;&quot;errorText&quot;:&quot;Unknown&nbsp;Source&quot;<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="removeallnotification">removeAllNotification</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>notification.management</b></span></div>
+    <h4>Description</h4>
+    <p>Removes all notifications that are currently being displayed.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>displayId</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>Identifier of the display where the notification is to be displayed. Possible values are 0 and 1.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+                <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the &quot;errorText&quot; field&nbsp;for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>removeAllNotiId</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates whether all notifications were removed successfully.</p>
+              <p>Possible values are:&nbsp;</p>
+              <ul>
+                <li><strong>true:</strong>&nbsp;Notifications were removed successfully.</li>
+                <li><strong>false:</strong> Notification removal failed.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;Error Codes&quot; section of this method for details.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>displayId</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>Identifier of the display where the notification is to be displayed. Possible values are 0 and 1.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Permission Denied</td>
+            <td>
+              <p>This error message implies that calling App or source is not previleged source for this method. Only SystemUI component is allowed to call this method.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -a com.webos.surfacemanager -n 1 luna://com.webos.notification/removeAllNotification &#39;{&quot;displayId&quot;: 0}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;removeAllNotiId&quot;:true,<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;:true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="removenotification">removeNotification</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>notification.management</b></span></div>
+    <h4>Description</h4>
+    <p>Deletes the given notification(s) from DB. We can remove given set of notifications or remove all notifications from a given sourceId.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>removeNotiId</td>
+            <td>Optional</td>
+            <td>String array</td>
+            <td>
+              <p>A list of IDs of the notifications to be deleted. Notification ID is composed of the URI of the notification source, a dash, and the timestamp of the time when the notification was issued.</p>
+              <p><strong>Format:</strong> &quot;Source URI-Timestamp&quot;</p>
+              <p><strong>Example</strong> &quot;com.webos.surfacemanager-1393548223764&quot;</p>
+              <p><strong>Note:&nbsp;</strong>Either one of &quot;removeNotiId&quot; or &quot;sourceId&quot; is mandatory to be provided.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>sourceId</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Identifies the app or service that created the notification to be deleted.</p>
+              <p><strong>Format:</strong> URI</p>
+              <p><strong>Note:&nbsp;</strong>Either one of &quot;removeNotiId&quot; or &quot;sourceId&quot; is mandatory to be provided.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation. Possible values are:</p>
+              <ul>
+                <li>&nbsp;<strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li>&nbsp;<strong>false&nbsp;</strong>- Indicates that the operation failed. Check the &quot;errorText&quot; field&nbsp;for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>removeNotiId</td>
+            <td>Optional</td>
+            <td>String array</td>
+            <td>
+              <p>A list of IDs of the notification that has been deleted.</p>
+              <p><strong>Format:</strong> &quot;Source URI-Timestamp&quot;</p>
+              <p><strong>Example:</strong> &quot;com.webos.surfacemanager-1393548223764&quot;</p>
+              <p><strong>Note:&nbsp;</strong>Returned when &quot;removeNotiId&quot; is passed as input parameter</p>
+            </td>
+          </tr>
+          <tr>
+            <td>sourceId</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>The app or service that created the notification that are deleted.</p>
+              <p><strong>Format:</strong> URI</p>
+              <p><strong>Example:&nbsp;</strong>&quot;com.webos.surfacemanager&quot;</p>
+              <p><strong>Note:&nbsp;</strong>Returned when &quot;sourceId&quot; is passed as input parameter</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation. See the &quot;Error Codes&quot; section of this method for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Message is not parsed</td>
+            <td>
+              <p>This message implies that a JSON message parsing error occured. One of the following situations can cause the parsing error:</p>
+              <ul>
+                <li>The&nbsp;Request&nbsp;object was not formatted correctly.</li>
+                <li>One ore more of the required fields are missing.</li>
+                <li>One or more of the values provided were not the expected data type, for example a string was expected, however the app passed a number instead.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>input sourceId or removeNotiId parameter</td>
+            <td>
+              <p>This message implies that both <strong>sourceId</strong> and <strong>removeNotiId </strong>parameters are missing. At least one should be present.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>sourceId can&#39;t be empty</td>
+            <td>
+              <p>This message implies that given <strong>sourceId </strong>parameter does not have any value. It cannot be empty.&nbsp;</p>
+            </td>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Noti Id can&#39;t be Empty</td>
+            <td>
+              <p>This message implies that given <strong>NotiId </strong>is empty.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example : WIth removeNotiId provided</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -a com.webos.surfacemanager -n 1 -f luna://com.webos.notification/removeNotification &#39;{&quot;removeNotiId&quot;: [&quot;com.sloy.jbnotif-1393548393417&quot;]}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&quot;removeNotiId&quot;: [<br />
+        &nbsp; &nbsp; &nbsp;&nbsp;&quot;com.sloy.jbnotif-1393548393417&quot;<br />
+        &nbsp; &nbsp;],<br />
+        &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example : With sourceId provided</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f -a com.webos.surfacemanager luna://com.webos.notification/removeNotification &#39;{&quot;sourceId&quot;: &quot;com.sloy.jbnotif&quot;}&#39;</p>
+      <p>Response:<br />
+        {<br />
+        &nbsp; &nbsp; &quot;sourceId&quot;: &quot;com.sloy.jbnotif&quot;,<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="createtoast">createToast</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>notification.operation</b></span></div>
+    <h4>Description</h4>
+    <p style="text-align:left">Creates a toast notification.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>sourceId</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p style="text-align:left">The ID&nbsp;of the application or service that creates the toast notification.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>iconUrl</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p style="text-align:left">The file path of the alert icon. The file path must be local to the device.</p>
+              <p style="text-align:left"><strong>NOTE</strong>: The icon must be 80 x 80 and in PNG format.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>message</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p style="text-align:left">The detailed message to be displayed as part of the toast notification. The message can be up to 60 characters long.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>onclick</td>
+            <td>Optional</td>
+            <td>Object: <a href="#onclick"> onclick</a></td>
+            <td>
+              <p style="text-align:left">Defines the toast action. An example is:&nbsp;</p>
+              <p style="text-align:left">{&quot;appId&quot;:&quot;com.webos.app.test&quot;}</p>
+            </td>
+          </tr>
+          <tr>
+            <td>noaction</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p style="text-align:left">Indicates no action is required. Possible values are:</p>
+              <ul>
+                <li style="text-align: left;"><strong>true</strong>:&nbsp;If no action is required</li>
+                <li style="text-align: left;"><strong>false</strong>:&nbsp;If action is defined.</li>
+              </ul>
+              <p style="text-align: left;"><strong>Note</strong>: The default value is <strong>false</strong>.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>stale</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true</strong>:&nbsp;To indicate the toast notification is old and does not need to be displayed.</li>
+                <li><strong>false</strong>:&nbsp;If the toast notification is current and should be displayed.</li>
+              </ul>
+              <p><strong>Note</strong>:&nbsp;The default value is <strong>false</strong>.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>persistent</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates whether the toast message should be saved in the database. If <strong>persistent</strong> is set to <strong>true</strong>, the toast message will be saved in the database.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>isSysReq</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Defines notification comes from app or system</p>
+              <ul>
+                <li><strong>true </strong>: notification comes from system</li>
+                <li><strong>false </strong>: notification comes from app</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>schedule</td>
+            <td>Optional</td>
+            <td>Object: <a href="#schedule"> schedule</a></td>
+            <td>
+              <p>Creates a toast notification as a persistent message and defines its schedule.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>type</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Defines the toast type.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>extra</td>
+            <td>Optional</td>
+            <td>Object array: <a href="#image"> image</a></td>
+            <td>
+              <p>Defines extra toast resource.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>onlyToast</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates if notification to be created is just a simple toast.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true: </strong>Shows simple&nbsp;information</li>
+                <li><strong>false: </strong>Calls createNotification&nbsp;API and&nbsp;notiInfo&nbsp;is&nbsp;added&nbsp;in&nbsp;notification&nbsp;list</li>
+              </ul>
+              <p>Default:<strong> </strong><strong>true</strong></p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true: </strong>Indicates that the operation was successful.</li>
+                <li><strong>false: </strong>Indicates that the operation failed.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>toastId</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p style="text-align:left">The id of the created toast notification.&nbsp;This would be sourceId + &quot;-&quot; + Timestamp.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Unknown Source</td>
+            <td>
+              <p style="text-align:left">Indicates that the system was unable to retrieve the app source id from the System Bus message.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Message is not parsed</td>
+            <td>
+              <p>Indicates that the JSON message parsing error occured.</p>
+              <p>Possible situations that can cause the parsing error:</p>
+              <ul>
+                <li style="text-align:left">Request&nbsp;object was not formatted correctly.</li>
+                <li style="text-align:left">One ore more of the required fields are missing.</li>
+                <li style="text-align:left">One or more of the values provided were not the expected data type, for example a string was expected, however the app passed a number instead.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Invalid id specified</td>
+            <td>
+              <p style="text-align:left">Indicates that the app is missing from the requested message.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Invalid source id specified</td>
+            <td>
+              <p style="text-align:left">Indicates that the app Id given in the requested message does not match with the system bus caller Id.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Message can&#39;t be empty</td>
+            <td>
+              <p style="text-align:left">Indicates that the message field in the requested message is empty.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f -a com.webos.app.test luna://com.webos.notification/createToast &#39;{<br />
+        &nbsp; &nbsp; &nbsp; &quot;sourceId&quot;:&quot;com.webos.app.test&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &quot;onclick&quot;: {&quot;appId&quot;:&quot;com.webos.app.test&quot;},<br />
+        &nbsp; &nbsp; &nbsp; &quot;message&quot;:&quot;hello world&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &quot;noaction&quot;: false,<br />
+        &nbsp; &nbsp; &nbsp; &quot;persistent&quot;:true<br />
+        }&#39;
+      </p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&nbsp;&quot;toastId&quot;: &quot;com.webos.app.test-1435192659892&quot;,<br />
+        &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="gettoastnotification">getToastNotification</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>notification.management</b></span></div>
+    <h4>Description</h4>
+    <p style="text-align:left">Subscribe to created toast notification.&nbsp;</p>
+    <p style="text-align:left"><strong>Note: </strong>This method should only be used by<strong> Surface Manager </strong>only.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>subscribe</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p style="text-align:left">Indicates if subscribed to get notifications.</p>
+              <p style="text-align:left">Possible values are:</p>
+              <ul>
+                <li style="text-align: left;"><strong>true:</strong> Subscribe for notifications</li>
+                <li style="text-align: left;"><strong>false:</strong> Not subscribed</li>
+              </ul>
+              <p style="text-align: left;">Default: <strong>false</strong></p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>subscribed</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p style="text-align:left">Indicates if subscribed to get notifications.</p>
+              <p style="text-align:left">Possible values are:</p>
+              <ul>
+                <li style="text-align:left"><strong>true:</strong> Subscribe for notifications</li>
+                <li style="text-align:left"><strong>false:</strong> Not subscribed</li>
+              </ul>
+              <p style="text-align:left"><strong>Note:</strong> No explicit error message will be sent out when subscription fails because this method is intended for one speicific client that is the <strong>Surface Manager</strong>.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p style="text-align:left">Indicates the status of the operation.</p>
+              <p style="text-align:left">Possible values are:</p>
+              <ul>
+                <li><strong>true: </strong>Indicates that the operation was successful.</li>
+                <li><strong>false: </strong>Indicates that the operation failed.</li>
+              </ul>
+              <p><strong>Note:</strong> This&nbsp;method always&nbsp;returns&nbsp;<strong>returnValue</strong>&nbsp;as&nbsp;<strong>true</strong>.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Subscription Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p style="text-align:left">Indicates the status of the operation.</p>
+              <p style="text-align:left">Possible values are:</p>
+              <ul>
+                <li><strong>true: </strong>Indicates that the operation was successful.</li>
+                <li><strong>false: </strong>Indicates that the operation failed.</li>
+              </ul>
+              <p style="text-align:left"><strong>Note:</strong> This&nbsp;method always&nbsp;returns&nbsp;<strong>returnValue</strong>&nbsp;as&nbsp;<strong>true</strong>.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>message</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Contains the message to be displayed.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>type</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the type of the toast message.</p>
+              <p><strong>Note:</strong> This is optional parameter and currently not used. This is reserved for future purpose.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>title</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Contains the title information to be displayed for the toast.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>isCradleReq</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates if this is a <strong>Cradle Request </strong>or not. <strong>Cradle Request</strong> is used for <strong>Battery Notifications</strong> only. So, it will be set to false for all other cases.</p>
+              <p>Note:</p>
+              <ul>
+                <li>A Cradle is used for charging the watch wirelessly. When a watch is put on an inductive charger, it sends a notification indicating the current battery level.</li>
+                <li>A <strong>Cradle Request</strong>&nbsp;is used for showing that notification.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>sourceId</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Contains the source Id of the requester.&nbsp;</p>
+            </td>
+          </tr>
+          <tr>
+            <td>timestamp</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the time stamp string. It indicates epoch time as milliseconds.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>isSysReq</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates if the notification comes from an app or system.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true:</strong> Notification comes from system.</li>
+                <li><strong>false: </strong>Notification comes from app.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>iconUrl</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Contains the file path to icon to be displayed.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>action</td>
+            <td>Optional</td>
+            <td>Object: <a href="#action"> action</a></td>
+            <td>
+              <p>Contains the action parameter.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>schedule</td>
+            <td>Optional</td>
+            <td>Object: <a href="#schedule"> schedule</a></td>
+            <td>
+              <p>Describes the toast schedule.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>iconPath</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Specifies the path of the&nbsp;icon. It should be absolute local file system path.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>user</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the names of the user logged in to the corresponding session. If the user is logged in as guest user, the value will be &quot;guest&quot;.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>_kind</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Displays the db kind in which the toast is stored.</p>
+              <p><strong>Note:</strong>&nbsp;It is an internal parameter.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>onlyToast</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates if notification is created as a simple toast.</p>
+              <p><strong>Note:</strong> It is set when creating the&nbsp;toast.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -i -f -a com.webos.surfacemanager&nbsp;luna://com.webos.notification/getToastNotification &#39;{<br />
+        &nbsp;&nbsp; &quot;subscribe&quot;:true<br />
+        }&#39;
+      </p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&quot;subscribed&quot;: true,<br />
+        &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
+        }
+      </p>
+      <p>Subscription Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;message&quot;: &quot;hello world&quot;,<br />
+        &nbsp; &nbsp; &quot;iconPath&quot;: &quot;/usr/palm/notificationmgr/images/toast-notification-icon.png&quot;,<br />
+        &nbsp; &nbsp; &quot;type&quot;: &quot;standard&quot;,<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp; &nbsp; &quot;user&quot;: &quot;guest&quot;,<br />
+        &nbsp; &nbsp; &quot;title&quot;: &quot;&quot;,<br />
+        &nbsp; &nbsp; &quot;isCradleReq&quot;: false,<br />
+        &nbsp; &nbsp; &quot;sourceId&quot;: &quot;com.webos.app.notification&quot;,<br />
+        &nbsp; &nbsp; &quot;timestamp&quot;: &quot;1583463281128&quot;,<br />
+        &nbsp; &nbsp; &quot;onlyToast&quot;: true,<br />
+        &nbsp; &nbsp; &quot;isSysReq&quot;: false,<br />
+        &nbsp; &nbsp; &quot;schedule&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;expire&quot;: 1586055281<br />
+        &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &quot;iconUrl&quot;: &quot;file:///usr/palm/notificationmgr/images/toast-notification-icon.png&quot;,<br />
+        &nbsp; &nbsp; &quot;action&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;launchParams&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;id&quot;: &quot;com.webos.app.notification&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;serviceMethod&quot;: &quot;launch&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;serviceURI&quot;: &quot;luna://com.webos.service.applicationmanager/&quot;<br />
+        &nbsp; &nbsp; }<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="gettoastlist">getToastList</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>notification.management</b></span></div>
+    <h4>Description</h4>
+    <p>Lists the toasts created for the app/client based on the user logged into the particular session.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>displayId</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>Identifier of the display where the notification is to be displayed. Possible values are 0 and 1.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true:</strong>&nbsp;Indicates that the operation was successful.</li>
+                <li><strong>false:</strong>&nbsp;Indicates that the operation failed.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>toastInfo</td>
+            <td>Required</td>
+            <td>Object array: <a href="#toastinfo"> toastInfo</a></td>
+            <td>
+              <p>Contains information of the stored toasts.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Unknown Source</td>
+            <td>
+              <p>Indicates that the system was unable to retrieve the app/service&#39;s source id from the system bus message.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Permission Denied</td>
+            <td>
+              <p>Indicates that the app/service does not have permission to query toast list.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Message is not parsed</td>
+            <td>
+              <p>Indicates that the required parameters were not passed to API.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Can&#39;t get the notification info from db</td>
+            <td>
+              <p>Failed to fetch the&nbsp;toast list from the database.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f -a com.webos.app.notification luna://com.webos.notification/getToastList &#39;{&quot;displayId&quot;: 0}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+        &nbsp; &nbsp; &quot;toastInfo&quot; : [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;sourceId&quot; : &quot;com.webos.app.notification&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;toastId&quot; : &quot;com.webos.app.notification-1584349101435&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;timestamp&quot; : &quot;1584349101435&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;iconUrl&quot; : &quot;file:///usr/palm/notificationmgr/images/toast-notification-icon.png&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;iconPath&quot; : &quot;/usr/palm/notificationmgr/images/toast-notification-icon.png&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;title&quot; : &quot;&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;message&quot; : &quot;hello world&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;isSysReq&quot; : false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;user&quot; : &quot;guest&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;schedule&quot; : {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;expire&quot;: 1590207128<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;type&quot; : &quot;standard&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;action&quot; : {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;launchParams&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;id&quot;: &quot;com.webos.app.notification&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;serviceMethod&quot;: &quot;launch&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;serviceURI&quot;: &quot;luna://com.webos.service.applicationmanager/&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;readStatus&quot; : false<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; ],
+      </p>
+      <p>&nbsp; &nbsp; &quot;displayId&quot;: 0<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="settoaststatus">setToastStatus</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>notification.management</b></span></div>
+    <h4>Description</h4>
+    <p>Specifies whether the toast is to be marked as read or unread.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>toastId</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the unique ID of the toast created.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>readStatus</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of a toast to be set by the user.</p>
+              <p>Possible values are:&nbsp;</p>
+              <ul>
+                <li><strong>true:</strong> toast is read.</li>
+                <li><strong>false</strong>: toast is unread.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true:</strong>&nbsp;Indicates that the operation was successful.</li>
+                <li><strong>false:</strong>&nbsp;Indicates that the operation failed.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>toastId</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Contains the unique ID of the toast created.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>readStatus</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of a toast set by the user.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true:</strong> toast is read.</li>
+                <li><strong>false</strong>: toast is unread.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Failed to set status</td>
+            <td>
+              <p>Failed to set the read / unread status of the toast.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -i -f -a com.webos.app.notification luna://com.webos.notification/setToastStatus &#39;{<br />
+        &nbsp;&nbsp;&nbsp;&quot;toastId&quot; : &quot;com.webos.app.notification-1584349101435&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&quot;readStatus&quot; : true<br />
+        }&#39;
+      </p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot; : true,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;toastId&quot; : &quot;com.webos.app.notification-1584349101435&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;readStatus&quot; : true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="gettoastcount">getToastCount</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>notification.management</b></span></div>
+    <h4>Description</h4>
+    <p>Queries&nbsp;the toast notification details of the stored messages and provides the read/unread count of the toast notifications.</p>
+    <p><strong>Note:&nbsp;</strong>Only &quot;com.webos.surfacemanager&quot; and &quot;com.webos.app.notification&quot; have permission to monitor the notification status change.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>subscribe</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates if subscribed to get notifications.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true:</strong> Subscribe for notifications</li>
+                <li><strong>false:</strong> Not subscribed</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>displayId</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>Identifier of the display where the notification is to be displayed. Possible values are 0 and 1.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true: </strong>Indicates that the operation was successful.</li>
+                <li><strong>false: </strong>Indicates that the operation failed.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>subscribed</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p style="text-align:left">Indicates if subscribed to get notifications.</p>
+              <p style="text-align:left">Possible values are:</p>
+              <ul>
+                <li><strong>true:</strong> Subscribe for notifications</li>
+                <li><strong>false:</strong> Not subscribed</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Subscription Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>readCount</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>Indicates the count of toast notifications read by a specific user.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>unreadCount</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>Indicates the count of toast notifications unread by the user.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>totalCount</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>Indicates the total count of toast notifications respective to a user.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true: </strong>Indicates that the operation was successful.</li>
+                <li><strong>false: </strong>Indicates that the operation failed.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example: Get toast count form a specific displayId</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -i -f -a com.webos.app.notification luna://com.webos.notification/getToastCount &#39;{<br />
+        &nbsp;&nbsp; &quot;subscribe&quot;:true,
+      </p>
+      <p>&nbsp; &nbsp;&quot;displayId&quot;: 0<br />
+        }&#39;
+      </p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot; : true,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;subscribed&quot; : true<br />
+        }
+      </p>
+      <p>Subscription response:</p>
+      <p>{<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;unreadCount&quot;: 2,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;totalCount&quot;: 3,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;readCount&quot;: 1,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="closetoast">closeToast</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>notification.management</b></span></div>
+    <h4>Description</h4>
+    <p style="text-align:left">Removes a toast notification from the database.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>toastId</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p style="text-align:left">ID&nbsp;of the toast notification to remove from the database.&nbsp;</p>
+              <p style="text-align:left"><strong>Note</strong>: Either <strong>toastId</strong> or <strong>sourceId</strong> is required.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>sourceId</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>ID&nbsp;of the app/service to remove from the&nbsp;database.</p>
+              <p><strong>Note</strong>: Either <strong>toastId</strong> or <strong>sourceId</strong> is required.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true: </strong>Indicates that the operation was successful.</li>
+                <li><strong>false: </strong>Indicates that the operation failed.&nbsp;Check the&nbsp;&quot;errorText&quot; field&nbsp;for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Toast ID parse error</td>
+            <td>
+              <p style="text-align:left">Indicates that the <strong>toastId </strong>is not formatted properly.&nbsp;</p>
+            </td>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Both Toast ID and Source ID can&#39;t be empty</td>
+            <td>
+              <p style="text-align:left">Indicates that neither&nbsp;<strong>toastId or sourceId&nbsp;</strong>field in the message is empty or missing.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Message is not parsed</td>
+            <td>
+              <p>Indicates that a JSON message parsing error occured.</p>
+              <p>Possible situations that can cause the parsing error:</p>
+              <ul>
+                <li>The Request object was not formatted correctly.</li>
+                <li>One or&nbsp;more of the required fields are missing.</li>
+                <li>One or more of the values provided were not the expected data type, for example a string was expected, however the app passed a number instead.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example : With toast ID</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f -a com.webos.app.test luna://com.webos.notification/closeToast &#39;{<br />
+        &nbsp;&nbsp; &quot;toastId&quot;:&quot;com.webos.app.test-1433221930402&quot;<br />
+        }&#39;
+      </p>
+      <p>Response:</p>
+      <p>{&nbsp;<br />
+        &nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+        }
+      </p>
+    </div>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example : With source ID</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f -a com.webos.app.test luna://com.webos.notification/closeToast &#39;{<br />
+        &nbsp;&nbsp; &quot;sourceId&quot;:&quot;com.webos.app.test&quot;<br />
+        }&#39;
+      </p>
+      <p>Response:</p>
+      <p>{&nbsp;<br />
+        &nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+        }
+      </p>
+    </div>
   </div>
 </div>
 <h2 id="objects">Objects</h2>

@@ -1,11 +1,11 @@
 ---
 title: com.webos.service.cec
-date: 2022-05-04
+date: 2023-02-23
 weight: 125
 toc: true
 ---
+<h2 id="api-summary">API Summary</h2>
 <div>
-  <h2 id="api-summary">API Summary</h2>
   <p>The CEC (Consumer Electronic Control)&nbsp;service allows webOS to control connected HDMI CEC devices.</p>
 </div>
 <h2 id="overview-of-the-api">Overview of the API</h2>
@@ -107,686 +107,686 @@ toc: true
       </p>
     </div>
   </div>
-</div>
-<h3 id="scan">scan</h3>
-<div>
-  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>cec.query</b></span></div>
-  <h4>Description</h4>
-  <p>Scans the CEC bus and provides information of the connected HDMI CEC devices.</p>
-  <h4>Parameters</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>adapter</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Input HDMI-CEC adapter.</p>
-            <p><strong>Default:</strong> cec0</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <h3 id="scan">scan</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>cec.query</b></span></div>
+    <h4>Description</h4>
+    <p>Scans the CEC bus and provides information of the connected HDMI CEC devices.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>adapter</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Input HDMI-CEC adapter.</p>
+              <p><strong>Default:</strong> cec0</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+              <p>Possible values are: </p>
+              <ul>
+                <li><strong>true:</strong> Operation is successful.</li>
+                <li><strong>false:</strong> Operation has failed. Check the 'errorCode' and 'errorText' fields.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>devices</td>
+            <td>Required</td>
+            <td>Object array: <a href="#devices"> devices</a></td>
+            <td>
+              <p>Information about connected HDMI CEC devices.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>The reason for the failure of the operation. See the 'API Error Codes Reference' section for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>1, 6</td>
+            <td>See API Error Codes Reference</td>
+            <td>
+              <p>See&nbsp;<strong>API Error Codes Reference</strong>.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example : Scan the cec0 adapter and list the devices</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.cec/scan &#39;{ &quot;adapter&quot;: &quot;cec0&quot; }&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp; &quot;devices&quot; : [<br />
+        &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;TV&quot;<br />
+        &nbsp; &nbsp; &nbsp; &quot;address&quot;: &quot;0.0.0.0&quot;<br />
+        &nbsp; &nbsp; &nbsp; &quot;activeSource&quot;: &quot;no&quot;<br />
+        &nbsp; &nbsp; &nbsp; &quot;vendor&quot;: &quot;LG&quot;<br />
+        &nbsp; &nbsp; &nbsp; &quot;osd&quot;: &quot;TV&quot;<br />
+        &nbsp; &nbsp; &nbsp; &quot;cecVersion&quot;: &quot;1.3a&quot;<br />
+        &nbsp; &nbsp; &nbsp; &quot;powerStatus&quot;: &quot;on&quot;<br />
+        &nbsp; &nbsp; &nbsp; &quot;language&quot;: &quot;eng&quot;<br />
+        &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;Recorder 1&quot;<br />
+        &nbsp; &nbsp; &nbsp; &quot;address&quot;: &quot;1.0.0.0&quot;<br />
+        &nbsp; &nbsp; &nbsp; &quot;activeSource&quot;: &quot;yes&quot;<br />
+        &nbsp; &nbsp; &nbsp; &quot;vendor&quot;: &quot;LG&quot;<br />
+        &nbsp; &nbsp; &nbsp; &quot;osd&quot;: &quot;CECTester&quot;<br />
+        &nbsp; &nbsp; &nbsp; &quot;cecVersion&quot;: &quot;1.3a&quot;<br />
+        &nbsp; &nbsp; &nbsp; &quot;powerStatus&quot;: &quot;on&quot;<br />
+        &nbsp; &nbsp; &nbsp; &quot;language&quot;: &quot;eng&quot;<br />
+        &nbsp; &nbsp; }<br />
+        &nbsp; ]<br />
+        }
+      </p>
+    </div>
   </div>
-  <h4>Call Returns</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates the status of the operation.</p>
-            <p>Possible values are: </p>
-            <ul>
-              <li><strong>true:</strong> Operation is successful.</li>
-              <li><strong>false:</strong> Operation has failed. Check the 'errorCode' and 'errorText' fields.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>devices</td>
-          <td>Required</td>
-          <td>Object array: <a href="#devices"> devices</a></td>
-          <td>
-            <p>Information about connected HDMI CEC devices.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>errorCode</td>
-          <td>Optional</td>
-          <td>Number</td>
-          <td>
-            <p>The error code for the failed operation.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>errorText</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>The reason for the failure of the operation. See the 'API Error Codes Reference' section for details.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <h3 id="sendcommand">sendCommand</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>cec.operation</b></span></div>
+    <h4>Description</h4>
+    <p>Sends the input command to destination HDMI CEC devices connected on CEC bus.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>adapter</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>HDMI CEC device from which the command gets executed.</p>
+              <p><strong>Default</strong>: cec0</p>
+            </td>
+          </tr>
+          <tr>
+            <td>destAddress</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Physical or logical address of destination HDMI CEC device.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>timeout</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>Reply timeout, in milliseconds.</p>
+              <p><strong>Default</strong>: 1000</p>
+            </td>
+          </tr>
+          <tr>
+            <td>command</td>
+            <td>Required</td>
+            <td>Object: <a href="#command"> command</a></td>
+            <td>
+              <p>Command to execute on destination CEC device.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true:</strong> Operation is successful.</li>
+                <li><strong>false:</strong> Operation has failed. Check the &#39;errorCode&#39; and &#39;errorText&#39; fields.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>The reason for the failure of the operation. See the 'API Error Codes Reference' section for details.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>payload</td>
+            <td>Optional</td>
+            <td>Object</td>
+            <td>
+              <p>Response payload provides the array of return values for the requested parameters in key value form. Check examples below.</p>
+              <p><strong>Note</strong>: This parameter is only returned in cases where the&nbsp;<strong>arg value is not provided </strong>(this means the command is requesting for information).</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>1, 2, 4, 5, 6, 7</td>
+            <td>See API Error Codes Reference</td>
+            <td>
+              <p>See&nbsp;<strong>API Error Codes Reference</strong>.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example : Set audio mute status off</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p>#&nbsp; luna-send -n 1 -f luna://com.webos.service.cec/sendCommand &#39;{<br />
+        &nbsp;&nbsp; &nbsp;&quot;adapter&quot;: &quot;cec0&quot;, &nbsp;<br />
+        &nbsp; &nbsp;&nbsp;&quot;destAddress&quot; : &quot;0.0.0.0&quot;,<br />
+        &nbsp; &nbsp;&nbsp;&quot;timeout&quot;: 500,<br />
+        &nbsp;&nbsp; &nbsp;&quot;command&quot; : {<br />
+        &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;name&quot; : &quot;report-audio-status&quot;,<br />
+        &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;args&quot; : [&nbsp;<br />
+        &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;{ &quot;arg&quot; : &quot;aud-mute-status&quot;, &quot;value&quot; : &quot;off&quot;}<br />
+        &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;]<br />
+        &nbsp;&nbsp; &nbsp;}<br />
+        }&#39;
+      </p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example : Get language information</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.cec/sendCommand &#39;{<br />
+        &nbsp; &nbsp;&nbsp;&quot;adapter&quot;: &quot;cec0&quot;, &nbsp;<br />
+        &nbsp; &nbsp;&nbsp;&quot;destAddress&quot; : &quot;0.0.0.0&quot;,<br />
+        &nbsp; &nbsp;&nbsp;&quot;timeout&quot;: 500,<br />
+        &nbsp; &nbsp;&nbsp;&quot;command&quot; : {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;name&quot; : &quot;system-information&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;args&quot; : [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;{ &quot;arg&quot; : &quot;language&quot;}<br />
+        &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;]<br />
+        &nbsp; &nbsp;&nbsp;}<br />
+        }&#39;
+      </p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
+        &nbsp; &nbsp;&nbsp;&quot;payload&quot; : [{&quot;language&quot;: &quot;eng&quot;}]<br />
+        }
+      </p>
+    </div>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example : Get language and version information</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.cec/sendCommand &#39;{<br />
+        &nbsp; &nbsp; &quot;adapter&quot;: &quot;cec0&quot;, &nbsp;<br />
+        &nbsp; &nbsp; &quot;destAddress&quot; : &quot;0.0.0.0&quot;,<br />
+        &nbsp; &nbsp; &quot;timeout&quot;: 500,<br />
+        &nbsp; &nbsp; &quot;command&quot; : {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot; : &quot;system-information&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;args&quot; : [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; { &quot;arg&quot; : &quot;language&quot;},<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; { &quot;arg&quot; : &quot;version&quot;}<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+        &nbsp; &nbsp; }<br />
+        }&#39;
+      </p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;payload&quot; : [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {&quot;language&quot;: &quot;eng&quot;},<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {&quot;version&quot;: &quot;1.3a&quot;}<br />
+        &nbsp;&nbsp; &nbsp;]<br />
+        }
+      </p>
+    </div>
   </div>
-  <h4>Error Codes Reference</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Error Code</p>
-          </th>
-          <th width="30%">
-            <p>Error Text</p>
-          </th>
-          <th width="55%">
-            <p>Error Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>1, 6</td>
-          <td>See API Error Codes Reference</td>
-          <td>
-            <p>See&nbsp;<strong>API Error Codes Reference</strong>.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <h3 id="getconfig">getConfig</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>cec.query</b></span></div>
+    <h4>Description</h4>
+    <p>Gets the value of the specified input configuration.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>adapter</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Input HDMI-CEC adapter.</p>
+              <p><strong>Default</strong>: cec0</p>
+            </td>
+          </tr>
+          <tr>
+            <td>key</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Key name to get configuration value.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>vendorId</strong>:&nbsp;Vendor ID of device.</li>
+                <li><strong>version</strong>:&nbsp;CEC Version of the device.</li>
+                <li><strong>osd</strong>:&nbsp;OSD name of the device.</li>
+                <li><strong>language</strong>:&nbsp;Menu language.</li>
+                <li><strong>powerState</strong>:&nbsp;Power status of the device.</li>
+                <li><strong>physicalAddress</strong>: Physical address of the device.</li>
+                <li><strong>logicalAddress</strong>: Logical address of the device.</li>
+                <li><strong>deviceType</strong>: Type of device (TV, recorder, playback).</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+              <p>Possible values are: </p>
+              <ul>
+                <li><strong>true:</strong> Operation is successful.</li>
+                <li><strong>false:</strong> Operation has failed. Check the 'errorCode' and 'errorText' fields.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>key</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Key name of input configuration.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>value</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Value of input configuration.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>The reason for the failure of the operation. See the 'API Error Codes Reference' section for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>1, 2, 6</td>
+            <td>See API Error Codes Reference</td>
+            <td>
+              <p>See&nbsp;<strong>API Error Codes Reference</strong>.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example : Get the vendor ID</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.cec/getConfig &#39;{ &quot;adapter&quot;:&quot;cec0&quot;, &quot;key&quot;: &quot;vendorId&quot; }&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp; &nbsp; &quot;key&quot;: &quot;vendorId&quot;,<br />
+        &nbsp; &nbsp; &quot;value&quot;: &quot;LG&quot;<br />
+        }
+      </p>
+    </div>
   </div>
-  <h4>Example</h4>
-  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-    <p style="color:white;margin:5.0px;"><b>Example : Scan the cec0 adapter and list the devices</b></p>
-  </div>
-  <div class="code-bg-grey">
-    <p># luna-send -n 1 -f luna://com.webos.service.cec/scan &#39;{ &quot;adapter&quot;: &quot;cec0&quot; }&#39;</p>
-    <p>Response:</p>
-    <p>{<br />
-      &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &quot;devices&quot; : [<br />
-      &nbsp; &nbsp; {<br />
-      &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;TV&quot;<br />
-      &nbsp; &nbsp; &nbsp; &quot;address&quot;: &quot;0.0.0.0&quot;<br />
-      &nbsp; &nbsp; &nbsp; &quot;activeSource&quot;: &quot;no&quot;<br />
-      &nbsp; &nbsp; &nbsp; &quot;vendor&quot;: &quot;LG&quot;<br />
-      &nbsp; &nbsp; &nbsp; &quot;osd&quot;: &quot;TV&quot;<br />
-      &nbsp; &nbsp; &nbsp; &quot;cecVersion&quot;: &quot;1.3a&quot;<br />
-      &nbsp; &nbsp; &nbsp; &quot;powerStatus&quot;: &quot;on&quot;<br />
-      &nbsp; &nbsp; &nbsp; &quot;language&quot;: &quot;eng&quot;<br />
-      &nbsp; &nbsp; },<br />
-      &nbsp; &nbsp; {<br />
-      &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;Recorder 1&quot;<br />
-      &nbsp; &nbsp; &nbsp; &quot;address&quot;: &quot;1.0.0.0&quot;<br />
-      &nbsp; &nbsp; &nbsp; &quot;activeSource&quot;: &quot;yes&quot;<br />
-      &nbsp; &nbsp; &nbsp; &quot;vendor&quot;: &quot;LG&quot;<br />
-      &nbsp; &nbsp; &nbsp; &quot;osd&quot;: &quot;CECTester&quot;<br />
-      &nbsp; &nbsp; &nbsp; &quot;cecVersion&quot;: &quot;1.3a&quot;<br />
-      &nbsp; &nbsp; &nbsp; &quot;powerStatus&quot;: &quot;on&quot;<br />
-      &nbsp; &nbsp; &nbsp; &quot;language&quot;: &quot;eng&quot;<br />
-      &nbsp; &nbsp; }<br />
-      &nbsp; ]<br />
-      }
-    </p>
-  </div>
-</div>
-<h3 id="sendcommand">sendCommand</h3>
-<div>
-  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>cec.operation</b></span></div>
-  <h4>Description</h4>
-  <p>Sends the input command to destination HDMI CEC devices connected on CEC bus.</p>
-  <h4>Parameters</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>adapter</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>HDMI CEC device from which the command gets executed.</p>
-            <p><strong>Default</strong>: cec0</p>
-          </td>
-        </tr>
-        <tr>
-          <td>destAddress</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Physical or logical address of destination HDMI CEC device.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>timeout</td>
-          <td>Optional</td>
-          <td>Number</td>
-          <td>
-            <p>Reply timeout, in milliseconds.</p>
-            <p><strong>Default</strong>: 1000</p>
-          </td>
-        </tr>
-        <tr>
-          <td>command</td>
-          <td>Required</td>
-          <td>Object: <a href="#command"> command</a></td>
-          <td>
-            <p>Command to execute on destination CEC device.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Call Returns</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates the status of the operation.</p>
-            <p>Possible values are:</p>
-            <ul>
-              <li><strong>true:</strong> Operation is successful.</li>
-              <li><strong>false:</strong> Operation has failed. Check the &#39;errorCode&#39; and &#39;errorText&#39; fields.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>errorCode</td>
-          <td>Optional</td>
-          <td>Number</td>
-          <td>
-            <p>The error code for the failed operation.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>errorText</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>The reason for the failure of the operation. See the 'API Error Codes Reference' section for details.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>payload</td>
-          <td>Optional</td>
-          <td>Object</td>
-          <td>
-            <p>Response payload provides the array of return values for the requested parameters in key value form. Check examples below.</p>
-            <p><strong>Note</strong>: This parameter is only returned in cases where the&nbsp;<strong>arg value is not provided </strong>(this means the command is requesting for information).</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Error Codes Reference</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Error Code</p>
-          </th>
-          <th width="30%">
-            <p>Error Text</p>
-          </th>
-          <th width="55%">
-            <p>Error Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>1, 2, 4, 5, 6, 7</td>
-          <td>See API Error Codes Reference</td>
-          <td>
-            <p>See&nbsp;<strong>API Error Codes Reference</strong>.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Example</h4>
-  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-    <p style="color:white;margin:5.0px;"><b>Example : Set audio mute status off</b></p>
-  </div>
-  <div class="code-bg-grey">
-    <p>#&nbsp; luna-send -n 1 -f luna://com.webos.service.cec/sendCommand &#39;{<br />
-      &nbsp;&nbsp; &nbsp;&quot;adapter&quot;: &quot;cec0&quot;, &nbsp;<br />
-      &nbsp; &nbsp;&nbsp;&quot;destAddress&quot; : &quot;0.0.0.0&quot;,<br />
-      &nbsp; &nbsp;&nbsp;&quot;timeout&quot;: 500,<br />
-      &nbsp;&nbsp; &nbsp;&quot;command&quot; : {<br />
-      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;name&quot; : &quot;report-audio-status&quot;,<br />
-      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;args&quot; : [&nbsp;<br />
-      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;{ &quot;arg&quot; : &quot;aud-mute-status&quot;, &quot;value&quot; : &quot;off&quot;}<br />
-      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;]<br />
-      &nbsp;&nbsp; &nbsp;}<br />
-      }&#39;
-    </p>
-    <p>Response:</p>
-    <p>{<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
-  </div>
-  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-    <p style="color:white;margin:5.0px;"><b>Example : Get language information</b></p>
-  </div>
-  <div class="code-bg-grey">
-    <p># luna-send -n 1 -f luna://com.webos.service.cec/sendCommand &#39;{<br />
-      &nbsp; &nbsp;&nbsp;&quot;adapter&quot;: &quot;cec0&quot;, &nbsp;<br />
-      &nbsp; &nbsp;&nbsp;&quot;destAddress&quot; : &quot;0.0.0.0&quot;,<br />
-      &nbsp; &nbsp;&nbsp;&quot;timeout&quot;: 500,<br />
-      &nbsp; &nbsp;&nbsp;&quot;command&quot; : {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;name&quot; : &quot;system-information&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;args&quot; : [<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;{ &quot;arg&quot; : &quot;language&quot;}<br />
-      &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;]<br />
-      &nbsp; &nbsp;&nbsp;}<br />
-      }&#39;
-    </p>
-    <p>Response:</p>
-    <p>{<br />
-      &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp;&nbsp;&quot;payload&quot; : [{&quot;language&quot;: &quot;eng&quot;}]<br />
-      }
-    </p>
-  </div>
-  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-    <p style="color:white;margin:5.0px;"><b>Example : Get language and version information</b></p>
-  </div>
-  <div class="code-bg-grey">
-    <p># luna-send -n 1 -f luna://com.webos.service.cec/sendCommand &#39;{<br />
-      &nbsp; &nbsp; &quot;adapter&quot;: &quot;cec0&quot;, &nbsp;<br />
-      &nbsp; &nbsp; &quot;destAddress&quot; : &quot;0.0.0.0&quot;,<br />
-      &nbsp; &nbsp; &quot;timeout&quot;: 500,<br />
-      &nbsp; &nbsp; &quot;command&quot; : {<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot; : &quot;system-information&quot;,<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &quot;args&quot; : [<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; { &quot;arg&quot; : &quot;language&quot;},<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; { &quot;arg&quot; : &quot;version&quot;}<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
-      &nbsp; &nbsp; }<br />
-      }&#39;
-    </p>
-    <p>Response:</p>
-    <p>{<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&quot;payload&quot; : [<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; {&quot;language&quot;: &quot;eng&quot;},<br />
-      &nbsp; &nbsp; &nbsp; &nbsp; {&quot;version&quot;: &quot;1.3a&quot;}<br />
-      &nbsp;&nbsp; &nbsp;]<br />
-      }
-    </p>
-  </div>
-</div>
-<h3 id="getconfig">getConfig</h3>
-<div>
-  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>cec.query</b></span></div>
-  <h4>Description</h4>
-  <p>Gets the value of the specified input configuration.</p>
-  <h4>Parameters</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>adapter</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Input HDMI-CEC adapter.</p>
-            <p><strong>Default</strong>: cec0</p>
-          </td>
-        </tr>
-        <tr>
-          <td>key</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Key name to get configuration value.</p>
-            <p>Possible values are:</p>
-            <ul>
-              <li><strong>vendorId</strong>:&nbsp;Vendor ID of device.</li>
-              <li><strong>version</strong>:&nbsp;CEC Version of the device.</li>
-              <li><strong>osd</strong>:&nbsp;OSD name of the device.</li>
-              <li><strong>language</strong>:&nbsp;Menu language.</li>
-              <li><strong>powerState</strong>:&nbsp;Power status of the device.</li>
-              <li><strong>physicalAddress</strong>: Physical address of the device.</li>
-              <li><strong>logicalAddress</strong>: Logical address of the device.</li>
-              <li><strong>deviceType</strong>: Type of device (TV, recorder, playback).</li>
-            </ul>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Call Returns</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates the status of the operation.</p>
-            <p>Possible values are: </p>
-            <ul>
-              <li><strong>true:</strong> Operation is successful.</li>
-              <li><strong>false:</strong> Operation has failed. Check the 'errorCode' and 'errorText' fields.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>key</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Key name of input configuration.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>value</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Value of input configuration.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>errorCode</td>
-          <td>Optional</td>
-          <td>Number</td>
-          <td>
-            <p>The error code for the failed operation.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>errorText</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>The reason for the failure of the operation. See the 'API Error Codes Reference' section for details.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Error Codes Reference</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Error Code</p>
-          </th>
-          <th width="30%">
-            <p>Error Text</p>
-          </th>
-          <th width="55%">
-            <p>Error Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>1, 2, 6</td>
-          <td>See API Error Codes Reference</td>
-          <td>
-            <p>See&nbsp;<strong>API Error Codes Reference</strong>.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Example</h4>
-  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-    <p style="color:white;margin:5.0px;"><b>Example : Get the vendor ID</b></p>
-  </div>
-  <div class="code-bg-grey">
-    <p># luna-send -n 1 -f luna://com.webos.service.cec/getConfig &#39;{ &quot;adapter&quot;:&quot;cec0&quot;, &quot;key&quot;: &quot;vendorId&quot; }&#39;</p>
-    <p>Response:</p>
-    <p>{<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-      &nbsp; &nbsp; &quot;key&quot;: &quot;vendorId&quot;,<br />
-      &nbsp; &nbsp; &quot;value&quot;: &quot;LG&quot;<br />
-      }
-    </p>
-  </div>
-</div>
-<h3 id="setconfig">setConfig</h3>
-<div>
-  <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>cec.operation</b></span></div>
-  <h4>Description</h4>
-  <p>Sets the input configuration.</p>
-  <h4>Parameters</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>adapter</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Input CEC adapter.</p>
-            <p><strong>Default:</strong> cec0</p>
-          </td>
-        </tr>
-        <tr>
-          <td>key</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Key name to set configuration value.</p>
-            <p>Possible values are:</p>
-            <ul>
-              <li><strong>vendorId</strong>:&nbsp;Vendor ID of device.</li>
-              <li><strong>version</strong>:&nbsp;CEC Version of the device.</li>
-              <li><strong>osd</strong>:&nbsp;OSD name of the device.</li>
-              <li><strong>language</strong>:&nbsp;Menu language.</li>
-              <li><strong>powerState</strong>:&nbsp;Power status of the device.</li>
-              <li><strong>physicalAddress</strong>: Physical address of the device.</li>
-              <li><strong>logicalAddress</strong>: Logical address of the device.</li>
-              <li><strong>deviceType</strong>: Type of device (TV, recorder, playback).</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>value</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Configuration value to be set for the specified key.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Call Returns</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates the status of the operation.</p>
-            <p>Possible values are: </p>
-            <ul>
-              <li><strong>true:</strong> Operation is successful.</li>
-              <li><strong>false:</strong> Operation has failed. Check the 'errorCode' and 'errorText' fields.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>errorCode</td>
-          <td>Optional</td>
-          <td>Number</td>
-          <td>
-            <p>The error code for the failed operation.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>errorText</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>The reason for the failure of the operation. See the 'API Error Codes Reference' section for details.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Error Codes Reference</h4>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Error Code</p>
-          </th>
-          <th width="30%">
-            <p>Error Text</p>
-          </th>
-          <th width="55%">
-            <p>Error Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>1, 2, 6</td>
-          <td>See API Error Codes Reference</td>
-          <td>
-            <p>See&nbsp;<strong>API Error Codes Reference</strong>.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h4>Example</h4>
-  <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-    <p style="color:white;margin:5.0px;"><b>Example : Set the vendor ID</b></p>
-  </div>
-  <div class="code-bg-grey">
-    <p># luna-send -n 1 -f luna://com.webos.service.cec/setConfig &#39;{&quot;adapter&quot;:&quot;cec0&quot;,&quot;key&quot;: &quot;vendorId&quot;, &quot;value&quot;: &quot;LG&quot;}&#39;</p>
-    <p>Response:</p>
-    <p>{<br />
-      &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-      }
-    </p>
+  <h3 id="setconfig">setConfig</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>cec.operation</b></span></div>
+    <h4>Description</h4>
+    <p>Sets the input configuration.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>adapter</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Input CEC adapter.</p>
+              <p><strong>Default:</strong> cec0</p>
+            </td>
+          </tr>
+          <tr>
+            <td>key</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Key name to set configuration value.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>vendorId</strong>:&nbsp;Vendor ID of device.</li>
+                <li><strong>version</strong>:&nbsp;CEC Version of the device.</li>
+                <li><strong>osd</strong>:&nbsp;OSD name of the device.</li>
+                <li><strong>language</strong>:&nbsp;Menu language.</li>
+                <li><strong>powerState</strong>:&nbsp;Power status of the device.</li>
+                <li><strong>physicalAddress</strong>: Physical address of the device.</li>
+                <li><strong>logicalAddress</strong>: Logical address of the device.</li>
+                <li><strong>deviceType</strong>: Type of device (TV, recorder, playback).</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>value</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Configuration value to be set for the specified key.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+              <p>Possible values are: </p>
+              <ul>
+                <li><strong>true:</strong> Operation is successful.</li>
+                <li><strong>false:</strong> Operation has failed. Check the 'errorCode' and 'errorText' fields.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>The reason for the failure of the operation. See the 'API Error Codes Reference' section for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>1, 2, 6</td>
+            <td>See API Error Codes Reference</td>
+            <td>
+              <p>See&nbsp;<strong>API Error Codes Reference</strong>.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example : Set the vendor ID</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.cec/setConfig &#39;{&quot;adapter&quot;:&quot;cec0&quot;,&quot;key&quot;: &quot;vendorId&quot;, &quot;value&quot;: &quot;LG&quot;}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
   </div>
 </div>
 <h2 id="objects">Objects</h2>
