@@ -1,7 +1,7 @@
 ---
 title: User Guide
 display_title: VirtualBox Emulator User Guide
-date: 2022-12-28
+date: 2023-02-28
 weight: 10
 toc: true
 ---
@@ -145,7 +145,7 @@ The screenshots below have been captured from Oracle VM VirtualBox v6.0.14 on Wi
 
     Type the amount of memory in the box to the right of the slider, and click **Next**.
 
-5.  In the **Hard disk** section, select **Use an existing virtual hard disk file** and click <img src="/images/docs/tools/emulator/vbox_emulator_icon01.jpg" alt="Add hard disk file icon"> icon.
+5.  In the **Hard disk** section, select **Use an existing virtual hard disk file** and click ![Add hard disk file icon](/images/docs/tools/emulator/vbox_emulator_icon01.jpg) icon.
 
     {{< figure src="/images/docs/tools/emulator/vbox_emulator_img04.png" alt="Configuring the hard disk 1" class="align-left" >}}
 
@@ -218,7 +218,7 @@ The screenshots below have been captured from Oracle VM VirtualBox v6.0.14 on Wi
 
 12. The **Port Forwarding Rules** dialog box will show up.
 
-    You need to set up port forwarding rules to connect through SSH and Web Inspector. To add port forwarding rules, click <img src="/images/docs/tools/emulator/vbox_emulator_icon02.jpg" alt="Port forwarding icon">.
+    You need to set up port forwarding rules to connect through SSH and Web Inspector. To add port forwarding rules, click ![Port forwarding icon](/images/docs/tools/emulator/vbox_emulator_icon02.jpg).
 
     {{< figure src="/images/docs/tools/emulator/vbox_emulator_img12.png" alt="Configuring the port forwarding rules 1" class="align-left" >}}
 
@@ -359,7 +359,7 @@ The following describes the steps to update the emulator image on the previously
 
     {{< figure src="/images/docs/tools/emulator/vbox_emulator_img17.png" alt="Configuring the storage" class="align-left" >}}
 
-4.  On the **Attributes** section, click <img src="/images/docs/tools/emulator/vbox_emulator_icon03.png" alt="Hard disk icon"> icon. From the displayed menu, select **Choose Virtual Hard Disk File...**.
+4.  On the **Attributes** section, click ![Hard disk icon](/images/docs/tools/emulator/vbox_emulator_icon03.png) icon. From the displayed menu, select **Choose Virtual Hard Disk File...**.
 
     You will see the **Please choose a virtual hard disk file** dialog box. Locate the new webOS image you wish to install from your computer. Select the appropriate emulator image file (`.vmdk`), and click **Open**.
 

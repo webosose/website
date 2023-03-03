@@ -31,7 +31,7 @@ webOS Studio provides the following key features:
 To install the extension, open VS Code and do the following:
 
 1. Navigate to **View** > **Extensions**.
-2. Search for **webOS Studio** in the search bar and click the **Install** button. Once the installation is completed, you will see the <img src="/images/docs/tools/vs-code-extension/webos-studio-icon.jpg" alt="webos Studio icon in Activity Bar" > icon in **Activity Bar**.
+2. Search for **webOS Studio** in the search bar and click the **Install** button. Once the installation is completed, you will see the ![webos Studio icon in Activity Bar](/images/docs/tools/vs-code-extension/webos-studio-icon.jpg) icon in **Activity Bar**.
 3. Click the icon to see the user interface of the extension:
 
 {{< figure src="/images/docs/tools/vs-code-extension/extension-interface.jpg" caption="Interface of the webOS Studio extension" >}}
