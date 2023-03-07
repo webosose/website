@@ -1,7 +1,7 @@
 ---
 title: webOS OSE 2.20.0
 display_title: webOS OSE 2.20.0 Release Notes
-date: 2023-02-17
+date: 2023-03-07
 weight: 38
 toc: true
 layout: release-notes
@@ -124,3 +124,4 @@ This version corresponds to the [GitHub releases](https://github.com/webosose/bu
 - The volume level in the Status bar shows a wrong value after flashing a webOS OSE image.
 - Videos and audio cannot be paused when the pause button is pressed through Bluetooth.
 - White screen displays when the Web Browser app is launched.
+- Temporarily unable to generate the NDK installer file (`.sh`).
