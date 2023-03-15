@@ -7,7 +7,7 @@ toc: true
 layout: release-notes
 ---
 
-This version corresponds to the [v2.19.1 tag](https://github.com/webosose/build-webos/releases/tag/v2.19.1) in the GitHub repository.
+This version is a hotfix release for [webOS OSE 2.19.0]({{< relref "webos-ose-2-19-0-release-notes" >}}).
 
 ## New and Changed Features
 

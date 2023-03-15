@@ -9,7 +9,7 @@ thumbnail: th-release.png
 
 We're pleased to announce the release of webOS Open Source Edition (OSE) 2.19.1.
 
-For more details on this release, see the [release notes](/about/release-notes/webos-ose-2-19-1-release-notes).
+See also the [release notes](/about/release-notes/webos-ose-2-19-1-release-notes).
 
 ## Updated Branch Policy
 
