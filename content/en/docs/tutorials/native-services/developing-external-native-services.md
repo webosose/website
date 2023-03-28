@@ -1,6 +1,6 @@
 ---
 title: Developing External Native Services
-date: 2021-11-24
+date: 2023-03-28
 weight: 10
 toc: true
 ---
@@ -234,10 +234,10 @@ To package the native service, use the `ares-package` command. The packaged file
 
 ``` bash
 $ cd ..
-$ ares-package ../com.sample.echo ./pkg_aarch64
+$ ares-package ../com.sample.echo ./pkg_arm64
 ```
 
-In the above command, `../com.sample.echo` is the dummy app directory and `./pkg_aarch64` is the native service directory which contains `services.json` file. You can use an absolute or relative path. For more details on using `ares-package`, see [ares-package]({{< relref "cli-user-guide#ares-package" >}}).
+In the above command, `../com.sample.echo` is the dummy app directory and `./pkg_arm64` is the native service directory which contains `services.json` file. You can use an absolute or relative path. For more details on using `ares-package`, see [ares-package]({{< relref "cli-user-guide#ares-package" >}}).
 
 {{< note >}}
 You can use any type of dummy app (web, QML, native) for packaging an external native service.

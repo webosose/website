@@ -1,6 +1,6 @@
 ---
 title: Developing External Native Apps
-date: 2021-11-24
+date: 2023-03-27
 weight: 10
 toc: true
 ---
@@ -221,10 +221,10 @@ To package the native app, use the `ares-package` command. The packaged file is 
 
 ``` bash
 $ cd ..
-$ ares-package pkg_aarch64
+$ ares-package pkg_arm64
 ```
 
-In the above command, `pkg_aarch64` is the native app directory. You can use an absolute or relative path. Also, you can package the app with a service. For more details on using `ares-package`, see [ares-package]({{< relref "cli-user-guide#ares-package" >}}).
+In the above command, `pkg_arm64` is the native app directory. You can use an absolute or relative path. Also, you can package the app with a service. For more details on using `ares-package`, see [ares-package]({{< relref "cli-user-guide#ares-package" >}}).
 
 ## Step 5: Install the Native App
 

@@ -1,74 +1,100 @@
 ---
 title: Native Development Kit Setup
-date: 2020-03-06
+date: 2023-03-28
 weight: 90
 toc: true
 ---
 
-Native Development Kit (NDK) is a set of tools that include toolchains, libraries, and header files. To build 3rd party native apps and services for the pre-built webOS target device, you need to set up the NDK on your host machine.
+To build [external native apps]({{< relref "developing-external-native-apps" >}}) or [services]({{< relref "developing-external-native-services" >}}) for webOS Open Source Edition (OSE), you need to install Native Development Kit (NDK) on your computer.
 
-This guide describes how to set up the NDK for 3rd party native apps and services.
+The NDK is a set of tools that include toolchains, libraries, and header files. This guide describes how to build and install the NDK on your computer.
 
-## Build the NDK Installer
+{{< caution >}}
+Building NDK needs a high-performance build system computer. See [Build System Requirements]({{< relref "system-requirements#build-system-requirements" >}}).
+{{< /caution >}}
 
-To set up the NDK, you must build an NDK installer first. Go to your `build-webos` directory and enter the following commands on the shell.
+## Build the NDK
+
+To build the NDK, enter the following commands:
 
 ``` bash
-build-webos$ sudo scripts/prerequisites.sh
-build-webos$ ./mcf -p <number of physical CPU cores / 2> -b <number of physical CPU cores / 2> raspberrypi4
-build-webos$ source oe-init-build-env
-build-webos$ bitbake -c populate_sdk webos-image
+$ git clone https://github.com/webosose/build-webos
+$ cd build-webos
+$ git checkout -t origin/<BRANCH_OF_THE_LATEST_WEBOS_OSE_VERSION>
+$ sudo scripts/prerequisites.sh
+$ ./mcf -p <NUM_OF_CPUS> -b <NUM_OF_CPUS> raspberrypi4-64
+$ source oe-init-build-env
+$ bitbake -c populate_sdk webos-image
+```
+
+| Parameter | Description |
+|-----------|-------------|
+| `<BRANCH_OF_THE_LATEST_WEBOS_OSE_VERSION>` | This parameter varies depending on the current the webOS OSE version. Use the latest version. See also [Cloning the Repository]({{< relref "building-webos-ose#cloning-the-repository" >}}). |
+| `<NUM_OF_CPUS>` | Number of CPU cores to allocate to the building process. For the specific value, refer to [Appendix A. How to Find the Optimum Parallelism Values]({{< relref "building-webos-ose#appendix-a-how-to-find-the-optimum-parallelism-values" >}}). |
+
+{{< note >}}
+OpenEmbedded commands (e.g., `bitbake`) are used to build the NDK installer. For more details about the commands and OpenEmbedded, see [Yocto Project SDK Manual](https://www.yoctoproject.org/docs/2.6/sdk-manual/sdk-manual.html#sdk-building-an-sdk-installer).
+{{< /note >}}
+
+If the building process succeeds, a script file (`.sh`) is generated in `build-webos/BUILD/deploy/sdk/`.
+
+``` bash
+$ ls BUILD/deploy/sdk
+# Example results for webOS OSE v2.20.1
+webos-sdk-x86_64-cortexa72-toolchain-2.20.1.g.host.manifest
+webos-sdk-x86_64-cortexa72-toolchain-2.20.1.g.sh
+webos-sdk-x86_64-cortexa72-toolchain-2.20.1.g.target.manifest
+webos-sdk-x86_64-cortexa72-toolchain-2.20.1.g.testdata.json
+```
+
+## Install the NDK
+
+To install the NDK, you need to:
+
+1. Run the generated script (`.sh`) file.
+2. Set up an environment.
+
+### Run the Script File
+
+To run the generated script file, enter the following commands:
+
+``` bash
+$ cd BUILD/deploy/sdk
+$ ./webos-sdk-x86_64-cortexa72-toolchain-2.20.1.g.sh
+# Example results for webOS OSE v2.20.1
+webOS OSE SDK installer version 2.20.1.g
+========================================
+Enter target directory for SDK (default: /usr/local/webos-sdk-x86_64):
+You are about to install the SDK to "/usr/local/webos-sdk-x86_64". Proceed [Y/n]? Y
 ```
 
 {{< note >}}
-  - `build-webos` directory, `prerequisites.sh`, and `mcf` command are explained in [Building webOS OSE]({{< relref "building-webos-ose">}}).
-  - OpenEmbedded commands are used to build the NDK installer. For more details about using the commands and OpenEmbedded, see [Yocto Project SDK Manual](https://www.yoctoproject.org/docs/2.6/sdk-manual/sdk-manual.html#sdk-building-an-sdk-installer).
+You can change the target directory using the interactive menu.
 {{< /note >}}
 
-If the build succeeds, the NDK installer (`.sh` file) is created in `build-webos/BUILD/deploy/sdk/`.
+If the process succeeds, an environment setup file (`environment-setup-cortexa72-webos-linux`) is generated in the target directory (default: `/usr/local/webos-sdk-x86_64`).
 
 ``` bash
-build-webos/BUILD/deploy/sdk$ ls
-webos-sdk-x86_64-cortexa7t2hf-neon-vfpv4-toolchain-1.0.g.host.manifest
-webos-sdk-x86_64-cortexa7t2hf-neon-vfpv4-toolchain-1.0.g.sh
-webos-sdk-x86_64-cortexa7t2hf-neon-vfpv4-toolchain-1.0.g.target.manifest
-webos-sdk-x86_64-cortexa7t2hf-neon-vfpv4-toolchain-1.0.g.testdata.json
+$ ls /usr/local/webos-sdk-x86_64/
+environment-setup-cortexa72-webos-linux  sysroots
+site-config-cortexa72-webos-linux        version-cortexa72-webos-linux
 ```
 
-## Run the NDK Installer
+### Set Up an Environment
 
-After building the NDK installer, you must run the installer. Go to your `build-webos/BUILD/deploy/sdk/` directory and enter the following commands on the shell.
+To set up the environment, run the environment setup file.
 
 ``` bash
-build-webos/BUILD/deploy/sdk$ ./webos-sdk-x86_64-cortexa7t2hf-neon-vfpv4-toolchain-1.0.g.sh
-webOS OSE SDK installer version 1.0.g
-=====================================
-Enter target directory for SDK (default: /opt/webos-sdk-x86_64/1.0.g):<Press Enter key or type the custom directory>
-You are about to install the SDK to `/opt/webos-sdk-x86_64/1.0.g`. Proceed[Y/n]? <Type Y and press Enter key>
+$ source /usr/local/webos-sdk-x86_64/environment-setup-cortexa72-webos-linux
 ```
 
-If the installation succeeds, an environment setup script file (`environment-setup-cortexa7t2hf-neon-vfpv4-webos-linux-gnueabi`) is created in the destination directory.
+Output messages might or might not be displayed depending on your computer's setup. If you see the message below, it's not an error so you can proceed to the next step.
 
-``` bash
-/opt/webos-sdk-x86_64/1.0.g$ ls
-environment-setup-cortexa7t2hf-neon-vfpv4-webos-linux-gnueabi
-site-config-cortexa7t2hf-neon-vfpv4-webos-linux-gnueabi
-sysroots
-version-cortexa7t2hf-neon-vfpv4-webos-linux-gnueabi
-```
-
-## Run the Environment Setup Script
-
-The final step to use the installed NDK is running the environment setup script, enter the following command on the shell.
-
-{{< caution >}}
-You need to enter the following command every time you start a new shell session.
-{{< /caution >}}
-
-``` bash
-$ source /opt/webos-sdk-x86_64/1.0.g/environment-setup-cortexa7t2hf-neon-vfpv4-webos-linux-gnueabi
-```
+> Icecc not found. Disabling distributed compiling
 
 ## Next Steps
 
-If you want to develop external native apps, see [Developing External Native Apps]({{< relref "developing-external-native-apps">}}).
+Now you ready to build external native apps or services. Check the following guides:
+
+- [Developing External Native Apps]({{< relref "developing-external-native-apps">}})
+- [Developing External Native Services]({{< relref "developing-external-native-services">}})
