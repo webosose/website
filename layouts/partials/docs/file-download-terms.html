@@ -28,17 +28,27 @@ function file_dn(category, action, label, fileId){
 
 	var terms = termsCntt.replace(/_&_#39;/g,"&#39;");
 	$("#termsCntt").html(terms);
-  _fild_dn._fileId 	= fileId;
-  _fild_dn._category 	= category;
-	_fild_dn._action 	= action;
-	_fild_dn._label 	= label;
+  _fild_dn._fileId = fileId;
+  _fild_dn._category = category;
+	_fild_dn._action = action;
+	_fild_dn._label = label;
 	popClauseWindow();
 	return false;
 }
 
 function _fild_dn(category, action, label, fileId){
+  window.dataLayer = window.dataLayer || [];
 
-  ga('send', 'event', category, action, label);
+  const pattern = /\d+\.\d+\.\d+/;
+  version = label.match(pattern)[0];
+  
+  dataLayer.push({
+    event: 'download_sdk',
+    sdk_file_name: label,
+    sdk_file_os: action,
+    sdk_file_category: category,
+    sdk_file_version: version,
+  });
 
 	document.getElementById("ifrm").src = fileId;
 	return true;
@@ -85,7 +95,7 @@ function close_button(){
 			<div id='termsCntt' style="overflow-y: auto;overflow-x: hidden; height: 200px; margin: 5px 0 5px; padding: 3px; border: 1px solid #aaa; border-right-color: #e1e1e1;border-bottom-color: #e1e1e1;line-height: 160%;">
 
 			</div>
-			<div style=""><input type="checkbox" id="agree" onclick="check_button();" />
+			<div><input type="checkbox" id="agree" onclick="check_button();" />
 				<label for="agree" style="display: inline-block;max-width: 100%;margin-bottom: 5px;font-weight: bold;">I have read and agree with the above terms and conditions</label>
 			</div>
 			<!-- //textareaBox -->
