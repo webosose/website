@@ -1,0 +1,353 @@
+---
+title: com.webos.service.ime
+date: 2023-04-19
+weight: 223
+toc: true
+---
+<h2 id="api-summary">API Summary</h2>
+<div>IME and Virtual Keyboard Service<br></div>
+<h2 id="overview-of-the-api">Overview of the API</h2>
+<div>
+  <p>This is a static service that starts with MaliitServer and provides access to the IME text field editor at a lower level than the VKB QML (since some languages have different VKBs).</p>
+  <p>For now, it primarily serves Second Screen, but it could provide other IME-related APIs in the future. The Second Screen functionality includes the ability to know&nbsp;when a text field is focused and the expected type of the input text, as well as inserting and replacing characters in the text field.</p>
+  <p>Text manipulation using this API is handled exclusively in Unicode characters. The encoding for LS2 is UTF-8, but length and count parameters should be based on Unicode characters. The manipulation is independent of language or keyboard layout.</p>
+</div>
+<h2 id="methods">Methods</h2>
+<div>
+  <h3 id="registerremotekeyboard">registerRemoteKeyboard</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>ime.operation</b></span></div>
+    <h4>Description</h4>
+    Allows subscribing to information about the current text field. When a text field is selected or updated, an update will be sent out to any subscribers with information about the text field.<br>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>subscribe</td>
+            <td>Required</td>
+            <td>boolean</td>
+            <td>Must be true.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>boolean</td>
+            <td>true if successful, false otherwise.</td>
+          </tr>
+          <tr>
+            <td>subscribed</td>
+            <td>Optional</td>
+            <td>boolean</td>
+            <td>Subscribed to service.</td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>Indicates the number for the failure of the operation.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Subscription Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>focusChanged</td>
+            <td>Required</td>
+            <td>boolean</td>
+            <td>true if a different text field was selected/focused<br></td>
+          </tr>
+          <tr>
+            <td>currentWidget</td>
+            <td>Optional</td>
+            <td>object</td>
+            <td>An object with properties describing the current text field, including the boolean values "focus", "correctionEnabled", "predictionEnabled", "autoCapitalizationEnabled", "hiddenText", "hasSurroundingText", "hasSelection", and the integer values "cursorPosition" (Unicode offset of cursor) and "surroundingTextLength" (Unicode length of field contents, if available)<br></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 luna://com.webos.service.ime/registerRemoteKeyboard &#39;{&quot;subscribe&quot;: true}&#39;</p>
+    </div>
+  </div>
+  <h3 id="inserttext">insertText</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>ime.operation</b></span></div>
+    <h4>Description</h4>
+    Inserts text at the current insertion point, or replaces all text in the field.
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>text</td>
+            <td>Required</td>
+            <td>string</td>
+            <td>Text to insert.</td>
+          </tr>
+          <tr>
+            <td>replace</td>
+            <td>Optional</td>
+            <td>boolean</td>
+            <td>if true, replace any existing text in field.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>boolean</td>
+            <td>true if successful, false otherwise.</td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>Indicates the number for the failure of the operation.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 luna://com.webos.service.ime/insertText &#39;{&quot;text&quot;: &quot;hello world&quot;, &quot;replace&quot;: true}&#39;</p>
+    </div>
+  </div>
+  <h3 id="deletecharacters">deleteCharacters</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>ime.operation</b></span></div>
+    <h4>Description</h4>
+    Deletes characters from the current insertion point.
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>count</td>
+            <td>Required</td>
+            <td>number</td>
+            <td>Number of Unicode characters to delete.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>boolean</td>
+            <td>true if successful, false otherwise.</td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>Indicates the number for the failure of the operation.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 luna://com.webos.service.ime/deleteCharacters &#39;{&quot;count&quot;: 1}&#39;</p>
+    </div>
+  </div>
+  <h3 id="sendenterkey">sendEnterKey</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>ime.operation</b></span></div>
+    <h4>Description</h4>
+    Sends the enter key in the current field.
+    <h4>Parameters</h4>
+    <p>None</p>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>boolean</td>
+            <td>true if successful, false otherwise.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 luna://com.webos.service.ime/sendEnterKey &#39;{}&#39;</p>
+    </div>
+  </div>
+</div>

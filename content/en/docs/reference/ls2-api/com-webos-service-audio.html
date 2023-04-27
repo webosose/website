@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.audio
-date: 2023-02-23
+date: 2023-04-10
 weight: 100
 toc: true
 ---
@@ -6309,7 +6309,11 @@ toc: true
             <td>Optional</td>
             <td>String array</td>
             <td>
-              <p>List of the supported audio effects.</p>
+              <p>List of the supported audio effects.&nbsp;Possible values are:</p>
+              <ul>
+                <li>speech enhancement</li>
+                <li>gain control</li>
+              </ul>
             </td>
           </tr>
           <tr>
@@ -6344,6 +6348,38 @@ toc: true
         </tbody>
       </table>
     </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Could not validate json message against schema</td>
+            <td>
+              <p>Invalid number of input parameters against defined schema of the method</p>
+            </td>
+          </tr>
+          <tr>
+            <td>15</td>
+            <td>Audiod Internal Error</td>
+            <td>
+              <p>Internal error</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
       <p style="color:white;margin:5.0px;"><b>Example : Lists the supported audio effects</b></p>
@@ -6354,7 +6390,8 @@ toc: true
       <p>{<br />
         &nbsp; &nbsp;&nbsp;&quot;returnValue&quot; : true<br />
         &nbsp; &nbsp;&nbsp;&quot;audioEffectList&quot;: [<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;speech enhancement&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;speech enhancement&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;gain control&quot;<br />
         &nbsp; &nbsp; ]<br />
         }
       </p>
@@ -6388,10 +6425,10 @@ toc: true
             <td>Required</td>
             <td>String</td>
             <td>
-              <p>Audio effect name.&nbsp;</p>
-              <p>Possible values are:</p>
+              <p>Audio effect name.&nbsp;Possible values are:</p>
               <ul>
                 <li>speech enhancement</li>
+                <li>gain control</li>
               </ul>
             </td>
           </tr>
@@ -6462,15 +6499,79 @@ toc: true
         </tbody>
       </table>
     </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Could not validate json message against schema</td>
+            <td>
+              <p>Invalid number of input parameters against defined schema of the method</p>
+            </td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>SoundInput not connected</td>
+            <td>
+              <p>SoundInput device not available</p>
+            </td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>AGC Already Enabled</td>
+            <td>
+              <p>AGC feature is already enabled</p>
+            </td>
+          </tr>
+          <tr>
+            <td>15</td>
+            <td>Audiod Internal Error</td>
+            <td>
+              <p>Internal Error</p>
+            </td>
+          </tr>
+          <tr>
+            <td>19</td>
+            <td>Invalid parameters</td>
+            <td>
+              <p>Invalid parameters error</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example :  Enable speech enhancement effect</b></p>
+      <p style="color:white;margin:5.0px;"><b>Example : Enable speech enhancement effect</b></p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -f -n 1 luna://com.webos.service.audio/setAudioEffect &#39;{&quot;effectName&quot;:&quot;speech enhancement&quot;, &quot;enabled&quot;:true}&#39;</p>
       <p>Response:</p>
       <p>{<br />
         &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:&nbsp;true<br />
+        }
+      </p>
+    </div>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example : Enable gain control effect</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p>#luna-send -f -n 1 luna://com.webos.service.audio/setAudioEffect &#39;{&quot;effectName&quot;:&quot;gain control&quot;, &quot;enabled&quot;:true}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;returnValue&quot; : true<br />
         }
       </p>
     </div>
@@ -6503,10 +6604,10 @@ toc: true
             <td>Required</td>
             <td>String</td>
             <td>
-              <p>Audio effect name.</p>
-              <p>Possible values are:</p>
+              <p>Audio effect name.&nbsp;Possible values are:</p>
               <ul>
                 <li>speech enhancement</li>
+                <li>gain control</li>
               </ul>
             </td>
           </tr>
@@ -6576,6 +6677,45 @@ toc: true
         </tbody>
       </table>
     </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Could not validate json message against schema</td>
+            <td>
+              <p>Invalid number of input parameters against defined schema of the method</p>
+            </td>
+          </tr>
+          <tr>
+            <td>15</td>
+            <td>Audiod Internal Error</td>
+            <td>
+              <p>Internal error</p>
+            </td>
+          </tr>
+          <tr>
+            <td>19</td>
+            <td>Invalid parameters</td>
+            <td>
+              <p>Invalid parameters error</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
       <p style="color:white;margin:5.0px;"><b>Example : Checks the status of the speech enhancement audio effect</b></p>
@@ -6586,6 +6726,18 @@ toc: true
         {<br />
         &nbsp; &nbsp; &quot;returnValue&quot;:&nbsp;true,<br />
         &nbsp;&nbsp;&nbsp;&nbsp;&quot;enabled&quot;:&nbsp;true,<br />
+        }
+      </p>
+    </div>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example : Checks the status of the gain control audio effect</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -f -n 1 luna://com.webos.service.audio/checkAudioEffectStatus &#39;{&quot;effectName&quot;:&quot;gain control&quot;}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;returnValue&quot; : true,<br />
+        &nbsp; &nbsp; &nbsp;&quot;enabled&quot;: true<br />
         }
       </p>
     </div>

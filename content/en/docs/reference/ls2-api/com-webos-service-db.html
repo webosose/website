@@ -1,6 +1,6 @@
 ---
 title: com.webos.service.db
-date: 2023-02-23
+date: 2023-04-12
 weight: 170
 toc: true
 ---
@@ -2372,6 +2372,134 @@ toc: true
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;time&quot;: &quot;0.083334&quot;<br />
         &nbsp; &nbsp; &nbsp; &nbsp; }<br />
         &nbsp; &nbsp; ]<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="internal-postbackup">internal/postBackup</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.management</b></span></div>
+    <h4>Description</h4>
+    <p>An internal DB8 method that is called when a backup operation has been completed.</p>
+    <h4>Parameters</h4>
+    <p>None</p>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>If the <strong>internal</strong>/<strong>postBackup</strong> method succeeds, <strong>returnValue</strong> will contain true.</p>
+              <p>If the <strong>internal</strong>/<strong>postBackup</strong> method fails, <strong>returnValue</strong> will contain <strong>false</strong>. The <strong>postBackup</strong> method may fail because of:</p>
+              <ul>
+                <li>Not enough disk space</li>
+                <li>I/O error</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>-1989</td>
+            <td>json: unexpected char at 1:9</td>
+            <td>
+              <p>invalid json format input parameter.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>-1990</td>
+            <td>json: error parsing prop name at 1:2</td>
+            <td>
+              <p>invalid json format input parameter.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -a com.webos.service.configurator -f luna://com.webos.service.db/internal/postBackup &#39;{}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -a com.webos.service.configurator -f luna://com.webos.service.db/internal/postBackup &#39;{&quot;Test&quot;:db}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;errorCode&quot;: -1989,<br />
+        &nbsp; &nbsp; &quot;errorText&quot;: &quot;json: unexpected char at 1:9&quot;,<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: false<br />
+        }
+      </p>
+    </div>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -a com.webos.service.configurator -f luna://com.webos.service.db/internal/postBackup &#39;{123:123}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;errorCode&quot;: -1990,<br />
+        &nbsp; &nbsp; &quot;errorText&quot;: &quot;json: error parsing prop name at 1:2&quot;,<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: false<br />
         }
       </p>
     </div>

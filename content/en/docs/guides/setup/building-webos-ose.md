@@ -1,7 +1,7 @@
 ---
 title: Building webOS OSE
 display_title: Building webOS Open Source Edition
-date: 2023-02-20
+date: 2023-04-27
 weight: 20
 toc: true
 ---
@@ -10,7 +10,8 @@ This page describes how to build a webOS Open Source Edition (OSE) image from so
 
 ## Before You Begin
 
-Make sure that your system meets the [Build System Requirements]({{< relref "system-requirements#build-system-requirements" >}}).
+- Make sure that your system meets the [Build System Requirements]({{< relref "system-requirements#build-system-requirements" >}}).
+- Basic knowledge about how to use [Git](https://git-scm.com/) is required.
 
 {{< note >}}
 If you cannot afford to build the image on your own, try with [pre-built images](https://github.com/webosose/build-webos/releases).
@@ -24,7 +25,7 @@ Here is a quick summary for users already familiar with building webOS OSE. If y
 # Download source codes
 $ git clone https://github.com/webosose/build-webos.git
 $ cd build-webos
-$ git checkout -t origin/<branch of the latest webOS OSE version>
+$ git checkout <branch of the latest commit>
 
 # Install and configure the build
 $ sudo scripts/prerequisites.sh
@@ -44,17 +45,22 @@ $ git clone https://github.com/webosose/build-webos.git
 $ cd build-webos
 ```
 
-Since webOS OSE 2.19.1, we introduced a new branch policy. This new policy allows the platform to implement important changes quickly.
+Since webOS OSE 2.19.1, we introduced a new branch policy. This new policy allows the platform to implement important changes quickly. All you need to do is to **checkout to the branch of the latest commit**.
 
-What you need to do is to **check out a branch of the latest webOS OSE version**. For example, if the latest version of webOS OSE is 2.19.1, enter the following commands:
+For example, if the latest commit of [build-webos repository](https://github.com/webosose/build-webos) is in the `2.20` branch, check out to the `2.20` branch:
 
 ```bash
-$ git checkout -t origin/2.19
+$ git checkout 2.20
+```
+
+But if the latest commit is in the `master` branch, a branch of the latest version doesn't exist, use the `master` branch.
+
+```bash
+$ git checkout master
 ```
 
 {{< note >}}
-- If a branch of the latest version doesn't exist, use the `master` branch.
-- For more details on the new branch policy, refer to [webOS OSE 2.19.1 Release]({{< relref "2022-12-29-webos-ose-2-19-1-release" >}}).
+For more details on the new branch policy, refer to [webOS OSE 2.19.1 Release]({{< relref "2022-12-29-webos-ose-2-19-1-release" >}}).
 {{< /note >}}
 
 ## Installing the Required Tools and Libraries
