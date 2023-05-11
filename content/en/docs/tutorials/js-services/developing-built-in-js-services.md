@@ -1,13 +1,13 @@
 ---
 title: Developing Built-in JS Services
-date: 2022-12-02
+date: 2023-05-11
 weight: 20
 toc: true
 ---
 
 To create a built-in JS service, you must write the source code and prepare the required configuration files.
 
-For easier understanding, the process to create a built-in JS service is explained using using a sample service in [Sample Code Repository](https://github.com/webosose/samples). The sample service has the following methods:
+For easier understanding, the process to create a built-in JS service is explained using a sample service in [Sample Code Repository](https://github.com/webosose/samples). The sample service has the following methods:
 
 - **`hello`** - Calling this method on the target gives response as "Hello, JS Service!!".
 - **`time`** - Calls methods of another service and gets a value from it.
