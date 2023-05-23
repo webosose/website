@@ -1,9 +1,13 @@
 ---
 title: com.webos.service.contextintentmgr
-date: 2023-02-23
+date: 2023-05-22
+api_level: 23
 weight: 160
 toc: true
 ---
+{{< note >}}
+This API has been available since [API level]({{< relref "ls2-api-index#api-levels" >}}) 11.
+{{< /note >}}
 <h2 id="api-summary">API Summary</h2>
 <div>
   <p>CIM is a service that adds AI logic to your web app, without actually modifying its source code.&nbsp;This makes your web app context-aware and therefore provide a better experience to your customers.</p>
@@ -41,134 +45,14 @@ toc: true
 </div>
 <h2 id="methods">Methods</h2>
 <div>
-  <h3 id="injectdatatoworkflow">injectDataToWorkflow</h3>
-  <div>
-    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>contextintent.operation</b></span></div>
-    <h4>Description</h4>
-    <p>Injects data from the app to the workflow.&nbsp;</p>
-    <h4>Parameters</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>key</td>
-            <td>Required</td>
-            <td>String</td>
-            <td>
-              <p>Identifies the &#39;data-inject&#39; node that is defined in the workflow.&nbsp;</p>
-              <p><span style="color:#FF0000"><strong>Note: </strong></span>Make sure that the key is associated with the relevant &#39;data-inject&#39; node.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>data</td>
-            <td>Required</td>
-            <td>String</td>
-            <td>
-              <p>The actual data that must be sent to the workflow. It must be a stringified object.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Call Returns</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>returnValue</td>
-            <td>Required</td>
-            <td>Boolean</td>
-            <td>
-              <p>Indicates the status of operation. Possible values are:</p>
-              <ul>
-                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>result</td>
-            <td>Required</td>
-            <td>Object: <a href="#result"> result</a></td>
-            <td>
-              <p>Contains the result.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Example</h4>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p>// This API must be called within an app. Below is a sample app code snippet. Do not try to run the code directly from the terminal as it will fail.</p>
-      <p>function injectDataToWorkflow(){<br />
-        &nbsp; &nbsp; var bridge = new WebOSServiceBridge();<br />
-        &nbsp; &nbsp; var url = &#39;luna://com.webos.service.contextintentmgr/injectDataToWorkflow&#39;;
-      </p>
-      <p>&nbsp; &nbsp; bridge.onservicecallback = callback;</p>
-      <p>&nbsp; &nbsp; function callback(msg){<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; var response = JSON.parse(msg);<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; console.log(response.returnValue);<br />
-        &nbsp; &nbsp; }
-      </p>
-      <p>&nbsp; &nbsp; var params = &#39;{<br />
-        &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;key: &quot;6bb6c4ab.00e67c_128e776f.c57939&quot;, //&nbsp;Key&nbsp;generated&nbsp;in&nbsp;the&nbsp;data-inject&nbsp;node&nbsp;<br />
-        &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;data: &lt;&gt;<br />
-        &nbsp;&nbsp; &nbsp;}&#39;;<br />
-        &nbsp; &nbsp; bridge.call(url, params);<br />
-        }
-      </p>
-    </div>
-  </div>
   <h3 id="getdatafromworkflow">getDataFromWorkflow</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>contextintent.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Publishes data from the workflow to the app.</p>
     <p>The data can be consumed by an app which has subscribed to it.</p>
@@ -275,7 +159,7 @@ toc: true
           <tr>
             <td>result</td>
             <td>Required</td>
-            <td>Object: <a href="#result"> result</a></td>
+            <td>Object: <a href="#object-result">result</a></td>
             <td>
               <p>Contains the result.</p>
             </td>
@@ -316,7 +200,7 @@ toc: true
           <tr>
             <td>result</td>
             <td>Required</td>
-            <td>Object: <a href="#result"> result</a></td>
+            <td>Object: <a href="#object-result">result</a></td>
             <td>
               <p>Contains the result.</p>
             </td>
@@ -346,106 +230,240 @@ toc: true
       </p>
     </div>
   </div>
+  <h3 id="injectdatatoworkflow">injectDataToWorkflow</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>contextintent.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Injects data from the app to the workflow.&nbsp;</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>key</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Identifies the &#39;data-inject&#39; node that is defined in the workflow.&nbsp;</p>
+              <p><span style="color:#FF0000"><strong>Note: </strong></span>Make sure that the key is associated with the relevant &#39;data-inject&#39; node.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>data</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>The actual data that must be sent to the workflow. It must be a stringified object.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation. Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>result</td>
+            <td>Required</td>
+            <td>Object: <a href="#object-result">result</a></td>
+            <td>
+              <p>Contains the result.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p>// This API must be called within an app. Below is a sample app code snippet. Do not try to run the code directly from the terminal as it will fail.</p>
+      <p>function injectDataToWorkflow(){<br />
+        &nbsp; &nbsp; var bridge = new WebOSServiceBridge();<br />
+        &nbsp; &nbsp; var url = &#39;luna://com.webos.service.contextintentmgr/injectDataToWorkflow&#39;;
+      </p>
+      <p>&nbsp; &nbsp; bridge.onservicecallback = callback;</p>
+      <p>&nbsp; &nbsp; function callback(msg){<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; var response = JSON.parse(msg);<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; console.log(response.returnValue);<br />
+        &nbsp; &nbsp; }
+      </p>
+      <p>&nbsp; &nbsp; var params = &#39;{<br />
+        &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;key: &quot;6bb6c4ab.00e67c_128e776f.c57939&quot;, //&nbsp;Key&nbsp;generated&nbsp;in&nbsp;the&nbsp;data-inject&nbsp;node&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;data: &lt;&gt;<br />
+        &nbsp;&nbsp; &nbsp;}&#39;;<br />
+        &nbsp; &nbsp; bridge.call(url, params);<br />
+        }
+      </p>
+    </div>
+  </div>
 </div>
 <h2 id="objects">Objects</h2>
 <div>
-  <h3 id="result">result</h3>
-  <p>Contains the results.</p>
+  <h3 id="object-result">result</h3>
+  <div>
+    <p>Contains the results.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>data</td>
+            <td>Required</td>
+            <td>Object</td>
+            <td>
+              <p>Depending on the method:</p>
+              <ul>
+                <li>For&nbsp;injectDataToWorkflow: It is the same data that is sent in the input of the method.</li>
+                <li>For getDataFromWorkflow: The data that is published from the flow (the&nbsp;msg object of the flow).</li>
+                <li>Example:<br />
+                  {<br />
+                  &nbsp; &nbsp;&nbsp;data: {<br />
+                  &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;payload: {<br />
+                  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;winner: undefined,<br />
+                  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;depth: 8,<br />
+                  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;nextBestGameState: [&#39;X&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;O&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;]<br />
+                  &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;},<br />
+                  &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;_msgid: &#39;bb8697a9.d885e8&#39;<br />
+                  &nbsp; &nbsp;&nbsp;}<br />
+                  }
+                </li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<h2 id="api-error-codes-reference">API Error Codes Reference</h2>
+<div>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
         <tr>
           <th width="15%">
-            <p>Name</p>
+            <p>Error Code</p>
           </th>
-          <th width="15%">
-            <p>Required</p>
+          <th width="30%">
+            <p>Error Text</p>
           </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
+          <th width="55%">
+            <p>Error Description</p>
           </th>
         </tr>
         <tr>
-          <td>data</td>
-          <td>Required</td>
-          <td>Object</td>
+          <td>0</td>
+          <td>Not a JSON data in the data-inject request.</td>
           <td>
-            <p>Depending on the method:</p>
-            <ul>
-              <li>For&nbsp;injectDataToWorkflow: It is the same data that is sent in the input of the method.</li>
-              <li>For getDataFromWorkflow: The data that is published from the flow (the&nbsp;msg object of the flow).</li>
-              <li>Example:<br />
-                {<br />
-                &nbsp; &nbsp;&nbsp;data: {<br />
-                &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;payload: {<br />
-                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;winner: undefined,<br />
-                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;depth: 8,<br />
-                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;nextBestGameState: [&#39;X&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;O&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;]<br />
-                &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;},<br />
-                &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;_msgid: &#39;bb8697a9.d885e8&#39;<br />
-                &nbsp; &nbsp;&nbsp;}<br />
-                }
-              </li>
-            </ul>
+            <p>The &#39;data-inject&#39; request does not include JSON data.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>0</td>
+          <td>Invalid call to API</td>
+          <td>
+            <p>Invalid call to API</p>
+          </td>
+        </tr>
+        <tr>
+          <td>0</td>
+          <td>Could not inject data</td>
+          <td>
+            <p>Could not inject the data.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>0</td>
+          <td>Associated flow is disabled, calls to APIs does not work</td>
+          <td>
+            <p>This error is thrown when workflow is disabled.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>0</td>
+          <td>Caller does not have permission for this API.</td>
+          <td>
+            <p>This error is thrown when the calling application does not include a &#39;data-inject&#39; or &#39;data-publish&#39; node with the specified key.</p>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
-</div>
-<h2 id="api-error-codes-reference">API Error Codes Reference</h2>
-<div class="table-container">
-  <table class="table is-bordered is-fullwidth">
-    <tbody>
-      <tr>
-        <th width="15%">
-          <p>Error Code</p>
-        </th>
-        <th width="30%">
-          <p>Error Text</p>
-        </th>
-        <th width="55%">
-          <p>Error Description</p>
-        </th>
-      </tr>
-      <tr>
-        <td>0</td>
-        <td>Not a JSON data in the data-inject request.</td>
-        <td>
-          <p>The &#39;data-inject&#39; request does not include JSON data.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>0</td>
-        <td>Invalid call to API</td>
-        <td>
-          <p>Invalid call to API</p>
-        </td>
-      </tr>
-      <tr>
-        <td>0</td>
-        <td>Could not inject data</td>
-        <td>
-          <p>Could not inject the data.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>0</td>
-        <td>Associated flow is disabled, calls to APIs does not work</td>
-        <td>
-          <p>This error is thrown when workflow is disabled.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>0</td>
-        <td>Caller does not have permission for this API.</td>
-        <td>
-          <p>This error is thrown when the calling application does not include a &#39;data-inject&#39; or &#39;data-publish&#39; node with the specified key.</p>
-        </td>
-      </tr>
-    </tbody>
-  </table>
 </div>

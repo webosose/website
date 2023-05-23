@@ -1,9 +1,13 @@
 ---
 title: com.webos.bootManager
-date: 2023-02-23
+date: 2023-05-22
+api_level: 23
 weight: 20
 toc: true
 ---
+{{< note >}}
+This API has been available since [API level]({{< relref "ls2-api-index#api-levels" >}}) 11.
+{{< /note >}}
 <h2 id="api-summary">API Summary</h2>
 <div>
   <p>Monitors and controls the boot status/mode.</p>
@@ -23,6 +27,11 @@ toc: true
   <h3 id="generatesignal">generateSignal</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>boot.management</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p style="text-align:start">Generates boot step signals. Caller and argument are decided statically.</p>
     <h4>Parameters</h4>
@@ -143,6 +152,11 @@ toc: true
   <h3 id="getbootstatus">getBootStatus</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>boot.query</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Gets the boot status or subscribe to updates on the boot status.</p>
     <h4>Parameters</h4>
@@ -242,7 +256,7 @@ toc: true
           <tr>
             <td>signals</td>
             <td>Required</td>
-            <td>Object: <a href="#signals"> signals</a></td>
+            <td>Object: <a href="#object-signals">signals</a></td>
             <td>
               <p>Returns signal information.</p>
             </td>
@@ -330,7 +344,7 @@ toc: true
           <tr>
             <td>signals</td>
             <td>Required</td>
-            <td>Object: <a href="#signals"> signals</a></td>
+            <td>Object: <a href="#object-signals">signals</a></td>
             <td>
               <p>Indicates signal information.</p>
             </td>
@@ -378,86 +392,88 @@ toc: true
 </div>
 <h2 id="objects">Objects</h2>
 <div>
-  <h3 id="signals">signals</h3>
-  <p>Contains an array of upstart signals. The value of an upstart signal is set to&nbsp;<strong>true</strong>&nbsp;after bootd generates the signal.</p>
-  <p><strong>Note:</strong></p>
-  <ul>
-    <li>The value of all upstart signal in this array is set to <strong>false</strong> by default.</li>
-  </ul>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>snapshot-resume-done</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates <strong>snapshot-resume-done</strong>&nbsp;upstart signal.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>core-boot-done</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates <strong>core-boot-done</strong>&nbsp;upstart signal.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>init-boot-done</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates <strong>init-boot-done</strong>&nbsp;upstart signal.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>datastore-init-start</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates <strong>datastore-init-start</strong>&nbsp;upstart signal.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>minimal-boot-done</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates <strong>minimal-boot-done</strong>&nbsp;upstart signal.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>rest-boot-done</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates <strong>rest-boot-done</strong>&nbsp;upstart signal.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>boot-done</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates <strong>boot-done</strong> upstart signal.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <h3 id="object-signals">signals</h3>
+  <div>
+    <p>Contains an array of upstart signals. The value of an upstart signal is set to&nbsp;<strong>true</strong>&nbsp;after bootd generates the signal.</p>
+    <p><strong>Note:</strong></p>
+    <ul>
+      <li>The value of all upstart signal in this array is set to <strong>false</strong> by default.</li>
+    </ul>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>snapshot-resume-done</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates <strong>snapshot-resume-done</strong>&nbsp;upstart signal.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>core-boot-done</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates <strong>core-boot-done</strong>&nbsp;upstart signal.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>init-boot-done</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates <strong>init-boot-done</strong>&nbsp;upstart signal.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>datastore-init-start</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates <strong>datastore-init-start</strong>&nbsp;upstart signal.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>minimal-boot-done</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates <strong>minimal-boot-done</strong>&nbsp;upstart signal.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>rest-boot-done</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates <strong>rest-boot-done</strong>&nbsp;upstart signal.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>boot-done</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates <strong>boot-done</strong> upstart signal.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

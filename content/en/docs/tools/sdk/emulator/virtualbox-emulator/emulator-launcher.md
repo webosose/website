@@ -1,6 +1,6 @@
 ---
 title: Emulator Launcher
-date: 2022-12-09
+date: 2023-05-15
 weight: 20
 toc: true
 ---
@@ -28,6 +28,10 @@ If you use Windows or Ubuntu, see [Emulator System Requirements]({{< relref "emu
 ``` bash
 $ python3 -m pip install --upgrade webos-emulator --force-reinstall
 ```
+
+{{< note >}}
+Use `python` on Windows.
+{{< /note >}}
 
 After installing Emulator Launcher, check the version of it.
 

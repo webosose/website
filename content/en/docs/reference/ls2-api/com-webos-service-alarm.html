@@ -1,9 +1,13 @@
 ---
 title: com.webos.service.alarm
-date: 2023-02-23
+date: 2023-05-19
+api_level: 23
 weight: 85
 toc: true
 ---
+{{< note >}}
+This API has been available since [API level]({{< relref "ls2-api-index#api-levels" >}}) 13.
+{{< /note >}}
 <h2 id="api-summary">API Summary</h2>
 <div>
   <p>Enables webOS daemons or apps to call webOS API methods with specific parameters in a specified time interval.&nbsp;</p>
@@ -34,9 +38,141 @@ toc: true
 </div>
 <h2 id="methods">Methods</h2>
 <div>
+  <h3 id="clear">clear</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>alarm.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 13</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Deletes an existing alarm. Apps or daemons can identify their alarm to be deleted by specifying its&nbsp;key.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>key</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p><strong>key </strong>of&nbsp;the alarm that you wish to delete. This is the same key that was specified when the alarm was created the&nbsp;<strong>set</strong>&nbsp;method.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>key</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>The same unique identifier is returned if the alarm was deleted successfully.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorText&quot; field&nbsp;for details</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;See the&nbsp;<strong>Error Codes Reference </strong>and&nbsp;<strong>API Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Could not find key</td>
+            <td>
+              <p>The supplied key does not exist.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -a com.webos.app.test luna://com.webos.service.alarm/clear &#39;{&quot;key&quot;:&quot;test&quot;}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&nbsp;&quot;key&quot;: &quot;test&quot;,<br />
+        &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+  </div>
   <h3 id="set">set</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>alarm.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 13</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Creates a new alarm for an absolute time or a relative time. By using the &quot;<strong>wakeup</strong>&quot; parameter you can define it as a wake-up or a non-wakeup alarm.&nbsp;</p>
     <h4>Parameters</h4>
@@ -258,12 +394,12 @@ toc: true
       </p>
     </div>
   </div>
-  <h3 id="clear">clear</h3>
+</div>
+<h2 id="objects">Objects</h2>
+<div>
+  <h3 id="object-alarmobject">alarmObject</h3>
   <div>
-    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>alarm.operation</b></span></div>
-    <h4>Description</h4>
-    <p>Deletes an existing alarm. Apps or daemons can identify their alarm to be deleted by specifying its&nbsp;key.</p>
-    <h4>Parameters</h4>
+    <p>Object contains information about the alarms.</p>
     <div class="table-container">
       <table class="table is-bordered is-fullwidth">
         <tbody>
@@ -282,218 +418,100 @@ toc: true
             </th>
           </tr>
           <tr>
-            <td>key</td>
-            <td>Required</td>
-            <td>String</td>
-            <td>
-              <p><strong>key </strong>of&nbsp;the alarm that you wish to delete. This is the same key that was specified when the alarm was created the&nbsp;<strong>set</strong>&nbsp;method.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Call Returns</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>key</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>The same unique identifier is returned if the alarm was deleted successfully.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>returnValue</td>
+            <td>wakeup</td>
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <p>Indicates whether the alarm can&nbsp;wakeup the device from suspend state or not.</p>
               <ul>
-                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorText&quot; field&nbsp;for details</li>
+                <li>true: can wakeup the device&nbsp;from suspend state</li>
+                <li>false: cannot wakeup the device&nbsp;from suspend state</li>
               </ul>
             </td>
           </tr>
           <tr>
-            <td>errorText</td>
+            <td>expiry</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Expiry time when the alarm will be expired. It is returned as a&nbsp;string&nbsp;in a format: <em>MM/DD/YYYY HH:MM:SS</em>.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>uri</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>webOS API method that should be called when the alarm fires.</p>
+              <p>Example:&nbsp;luna://com.webos.display/control/setState</p>
+            </td>
+          </tr>
+          <tr>
+            <td>params</td>
+            <td>Optional</td>
+            <td>Object</td>
+            <td>
+              <p>Parameters that need to be passed with the&nbsp;<strong>uri&nbsp;</strong>when the alarm fires.</p>
+              <p>Example: {&quot;param1&quot;:&quot;abc&quot;,&quot;param2&quot;:&quot;xyz&quot;}</p>
+            </td>
+          </tr>
+          <tr>
+            <td>key</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Unique key to identify individual alarms.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>calendar</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates whether the alarm is calendar alarm or relative alarm.</p>
+              <ul>
+                <li>true: calendar alarm</li>
+                <li>false: relative alarm</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>appid</td>
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>Indicates the reason for the failure of the operation.&nbsp;See the&nbsp;<strong>Error Codes Reference </strong>and&nbsp;<strong>API Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+              <p>Application ID</p>
             </td>
           </tr>
         </tbody>
       </table>
-    </div>
-    <h4>Error Codes Reference</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Error Code</p>
-            </th>
-            <th width="30%">
-              <p>Error Text</p>
-            </th>
-            <th width="55%">
-              <p>Error Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>None</td>
-            <td>Could not find key</td>
-            <td>
-              <p>The supplied key does not exist.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Example</h4>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 -a com.webos.app.test luna://com.webos.service.alarm/clear &#39;{&quot;key&quot;:&quot;test&quot;}&#39;</p>
-      <p>Response:</p>
-      <p>{<br />
-        &nbsp; &nbsp;&nbsp;&quot;key&quot;: &quot;test&quot;,<br />
-        &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: true<br />
-        }
-      </p>
     </div>
   </div>
 </div>
-<h2 id="objects">Objects</h2>
+<h2 id="api-error-codes-reference">API Error Codes Reference</h2>
 <div>
-  <h3 id="alarmobject">alarmObject</h3>
-  <p>Object contains information about the alarms.</p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
         <tr>
           <th width="15%">
-            <p>Name</p>
+            <p>Error Code</p>
           </th>
-          <th width="15%">
-            <p>Required</p>
+          <th width="30%">
+            <p>Error Text</p>
           </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
+          <th width="55%">
+            <p>Error Description</p>
           </th>
         </tr>
         <tr>
-          <td>wakeup</td>
-          <td>Required</td>
-          <td>Boolean</td>
+          <td>None</td>
+          <td>Invalid parameters</td>
           <td>
-            <p>Indicates whether the alarm can&nbsp;wakeup the device from suspend state or not.</p>
-            <ul>
-              <li>true: can wakeup the device&nbsp;from suspend state</li>
-              <li>false: cannot wakeup the device&nbsp;from suspend state</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>expiry</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Expiry time when the alarm will be expired. It is returned as a&nbsp;string&nbsp;in a format: <em>MM/DD/YYYY HH:MM:SS</em>.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>uri</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>webOS API method that should be called when the alarm fires.</p>
-            <p>Example:&nbsp;luna://com.webos.display/control/setState</p>
-          </td>
-        </tr>
-        <tr>
-          <td>params</td>
-          <td>Optional</td>
-          <td>Object</td>
-          <td>
-            <p>Parameters that need to be passed with the&nbsp;<strong>uri&nbsp;</strong>when the alarm fires.</p>
-            <p>Example: {&quot;param1&quot;:&quot;abc&quot;,&quot;param2&quot;:&quot;xyz&quot;}</p>
-          </td>
-        </tr>
-        <tr>
-          <td>key</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Unique key to identify individual alarms.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>calendar</td>
-          <td>Optional</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates whether the alarm is calendar alarm or relative alarm.</p>
-            <ul>
-              <li>true: calendar alarm</li>
-              <li>false: relative alarm</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>appid</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Application ID</p>
+            <p>Json parse error</p>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
-</div>
-<h2 id="api-error-codes-reference">API Error Codes Reference</h2>
-<div class="table-container">
-  <table class="table is-bordered is-fullwidth">
-    <tbody>
-      <tr>
-        <th width="15%">
-          <p>Error Code</p>
-        </th>
-        <th width="30%">
-          <p>Error Text</p>
-        </th>
-        <th width="55%">
-          <p>Error Description</p>
-        </th>
-      </tr>
-      <tr>
-        <td>None</td>
-        <td>Invalid parameters</td>
-        <td>
-          <p>Json parse error</p>
-        </td>
-      </tr>
-    </tbody>
-  </table>
 </div>

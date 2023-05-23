@@ -1,9 +1,13 @@
 ---
 title: com.webos.service.ai.voice
-date: 2023-02-23
+date: 2023-05-22
+api_level: 23
 weight: 80
 toc: true
 ---
+{{< note >}}
+This API has been available since [API level]({{< relref "ls2-api-index#api-levels" >}}) 11.
+{{< /note >}}
 <h2 id="api-summary">API Summary</h2>
 <div>
   <p>This service is used to recognize voice input.</p>
@@ -90,281 +94,14 @@ toc: true
 </div>
 <h2 id="methods">Methods</h2>
 <div>
-  <h3 id="start">start</h3>
-  <div>
-    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>ai.management</b></span></div>
-    <h4>Description</h4>
-    <p>Starts the service based on the mode selected.</p>
-    <p><strong>Note: </strong>This method is only for allowed clients.</p>
-    <h4>Parameters</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>mode</td>
-            <td>Required</td>
-            <td>String</td>
-            <td>
-              <p>Select the service mode. Possible values are:&nbsp;</p>
-              <ul>
-                <li><strong>continuous </strong>-&nbsp;The service will restart automatically when a conversation ends.</li>
-                <li><strong>single</strong> -&nbsp;The service will be stopped when a conversation ends.</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>keywordDetect</td>
-            <td>Required</td>
-            <td>Boolean</td>
-            <td>
-              <p>Indicates if a keyword is to be used for activating speech recognition. Possible values are:</p>
-              <ul>
-                <li><strong>true:&nbsp;</strong>Activated by a keyword. The default keyword is &quot;Snowboy&quot;.&nbsp;<br />
-                  To change the keyword model, refer&nbsp;<a href="https://snowboy.kitt.ai/" rel="nofollow">snowboy.kitt.ai</a>.&nbsp;<br />
-                  Download custom the keyword model and move it to <strong>/etc/googleAssistant/</strong> on your device. Then, modify <strong>KEYWORD_DETECT_MODEL</strong> in <strong>/var/systemd/system/env/ai.env</strong>.<br />
-                  &nbsp;
-                </li>
-                <li><strong>false:&nbsp;</strong>Activated by a button press.</li>
-              </ul>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Call Returns</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>returnValue</td>
-            <td>Required</td>
-            <td>Boolean</td>
-            <td>
-              <p>Indicates the status of operation. Possible values are:</p>
-              <ul>
-                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number (int8_t)</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Example</h4>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.ai.voice/start &#39;{&quot;mode&quot;: &quot;continuous&quot;, &quot;keywordDetect&quot;: true}&#39;</p>
-      <p>&nbsp;</p>
-      <p>Response:</p>
-      <p>{&nbsp;&nbsp;<br />
-        &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-        }
-      </p>
-    </div>
-  </div>
-  <h3 id="getstate">getState</h3>
-  <div>
-    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>ai.voice</b></span></div>
-    <h4>Description</h4>
-    <p>Gets the current state of the service. It can have the following states:</p>
-    <ul>
-      <li><strong>idle</strong>: Before start.</li>
-      <li><strong>waitActivation</strong>: Wait for keyword activation.</li>
-      <li><strong>recording</strong>: Uploading&nbsp;audio to the server&nbsp;for speech recognition.</li>
-      <li><strong>thinking</strong>: Waiting for results from server.</li>
-      <li><strong>answering</strong>: Answering to the request&nbsp;through the speaker.</li>
-    </ul>
-    <p><img alt="com.webos.service.ai.voice state diagram" src="/images/docs/reference/com-webos-service-ai-voice-getState.png" height="150px" width="855px" /></p>
-    <h4>Parameters</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>subscribe</td>
-            <td>Optional</td>
-            <td>Boolean</td>
-            <td>
-              <p>Subscribe for notifications.&nbsp;Possible values are:</p>
-              <ul>
-                <li><strong>true&nbsp;</strong>- Get notifications.</li>
-                <li><strong>false&nbsp;</strong>- Notifications are not required.</li>
-              </ul>
-              <p><strong>Default value:</strong>&nbsp;false</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Call Returns</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>returnValue</td>
-            <td>Required</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the status of operation. Possible values are:</p>
-              <ul>
-                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>subscribed</td>
-            <td>Optional</td>
-            <td>Boolean</td>
-            <td>
-              <p>Indicates if&nbsp;subscribed to get notified. Possible values are:</p>
-              <ul>
-                <li><strong>true&nbsp;</strong>- Get notifications</li>
-                <li><strong>false&nbsp;</strong>- Notifications are not required</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>state</td>
-            <td>Required</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the running state of the service. Possible values are:</p>
-              <ul>
-                <li><strong>idle</strong></li>
-                <li><strong>waitActivation</strong></li>
-                <li><strong>recording</strong></li>
-                <li><strong>thinking</strong></li>
-                <li><strong>answering</strong></li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number (int8_t)</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Example</h4>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.ai.voice/getState&nbsp;&#39;{}&#39;</p>
-      <p>&nbsp;</p>
-      <p>Response:</p>
-      <p>{&nbsp;&nbsp;<br />
-        &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
-        &nbsp;&nbsp;&nbsp;&quot;state&quot;:&quot;idle&quot;<br />
-        }
-      </p>
-      <p>&nbsp;</p>
-      <p># luna-send -i&nbsp;-f luna://com.webos.service.ai.voice/getState&nbsp;&#39;{&quot;subscribe&quot;: true}&#39;</p>
-      <p>&nbsp;</p>
-      <p>Response:</p>
-      <p>{&nbsp;&nbsp;<br />
-        &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
-        &nbsp;&nbsp;&nbsp;&quot;state&quot;:&quot;idle&quot;<br />
-        }<br />
-        {&nbsp;&nbsp;<br />
-        &nbsp;&nbsp;&nbsp;&quot;state&quot;:&quot;waitActivation&quot;<br />
-        }<br />
-        {&nbsp;&nbsp;<br />
-        &nbsp;&nbsp;&nbsp;&quot;state&quot;:&quot;recording&quot;<br />
-        }<br />
-        ...
-      </p>
-    </div>
-  </div>
   <h3 id="getresponse">getResponse</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>ai.voice</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Returns speech recognition results. This method is&nbsp;asynchronous.</p>
     <h4>Parameters</h4>
@@ -543,9 +280,296 @@ toc: true
       </p>
     </div>
   </div>
+  <h3 id="getstate">getState</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>ai.voice</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Gets the current state of the service. It can have the following states:</p>
+    <ul>
+      <li><strong>idle</strong>: Before start.</li>
+      <li><strong>waitActivation</strong>: Wait for keyword activation.</li>
+      <li><strong>recording</strong>: Uploading&nbsp;audio to the server&nbsp;for speech recognition.</li>
+      <li><strong>thinking</strong>: Waiting for results from server.</li>
+      <li><strong>answering</strong>: Answering to the request&nbsp;through the speaker.</li>
+    </ul>
+    <p><img alt="com.webos.service.ai.voice state diagram" src="/images/docs/reference/com-webos-service-ai-voice-getState.png" height="150px" width="855px" /></p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>subscribe</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Subscribe for notifications.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Get notifications.</li>
+                <li><strong>false&nbsp;</strong>- Notifications are not required.</li>
+              </ul>
+              <p><strong>Default value:</strong>&nbsp;false</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the status of operation. Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>subscribed</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates if&nbsp;subscribed to get notified. Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Get notifications</li>
+                <li><strong>false&nbsp;</strong>- Notifications are not required</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>state</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the running state of the service. Possible values are:</p>
+              <ul>
+                <li><strong>idle</strong></li>
+                <li><strong>waitActivation</strong></li>
+                <li><strong>recording</strong></li>
+                <li><strong>thinking</strong></li>
+                <li><strong>answering</strong></li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number (int8_t)</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.ai.voice/getState&nbsp;&#39;{}&#39;</p>
+      <p>&nbsp;</p>
+      <p>Response:</p>
+      <p>{&nbsp;&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+        &nbsp;&nbsp;&nbsp;&quot;state&quot;:&quot;idle&quot;<br />
+        }
+      </p>
+      <p>&nbsp;</p>
+      <p># luna-send -i&nbsp;-f luna://com.webos.service.ai.voice/getState&nbsp;&#39;{&quot;subscribe&quot;: true}&#39;</p>
+      <p>&nbsp;</p>
+      <p>Response:</p>
+      <p>{&nbsp;&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+        &nbsp;&nbsp;&nbsp;&quot;state&quot;:&quot;idle&quot;<br />
+        }<br />
+        {&nbsp;&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&quot;state&quot;:&quot;waitActivation&quot;<br />
+        }<br />
+        {&nbsp;&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&quot;state&quot;:&quot;recording&quot;<br />
+        }<br />
+        ...
+      </p>
+    </div>
+  </div>
+  <h3 id="start">start</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>ai.management</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Starts the service based on the mode selected.</p>
+    <p><strong>Note: </strong>This method is only for allowed clients.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>mode</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Select the service mode. Possible values are:&nbsp;</p>
+              <ul>
+                <li><strong>continuous </strong>-&nbsp;The service will restart automatically when a conversation ends.</li>
+                <li><strong>single</strong> -&nbsp;The service will be stopped when a conversation ends.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>keywordDetect</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates if a keyword is to be used for activating speech recognition. Possible values are:</p>
+              <ul>
+                <li><strong>true:&nbsp;</strong>Activated by a keyword. The default keyword is &quot;Snowboy&quot;.&nbsp;<br />
+                  To change the keyword model, refer&nbsp;<a href="https://snowboy.kitt.ai/" rel="nofollow">snowboy.kitt.ai</a>.&nbsp;<br />
+                  Download custom the keyword model and move it to <strong>/etc/googleAssistant/</strong> on your device. Then, modify <strong>KEYWORD_DETECT_MODEL</strong> in <strong>/var/systemd/system/env/ai.env</strong>.<br />
+                  &nbsp;
+                </li>
+                <li><strong>false:&nbsp;</strong>Activated by a button press.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation. Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number (int8_t)</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.ai.voice/start &#39;{&quot;mode&quot;: &quot;continuous&quot;, &quot;keywordDetect&quot;: true}&#39;</p>
+      <p>&nbsp;</p>
+      <p>Response:</p>
+      <p>{&nbsp;&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+        }
+      </p>
+    </div>
+  </div>
   <h3 id="stop">stop</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>ai.management</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Stops&nbsp;the service. Make sure to call this method before starting another engine.</p>
     <p><strong>Note: </strong>This method is only for allowed clients.</p>
@@ -615,97 +639,99 @@ toc: true
   </div>
 </div>
 <h2 id="api-error-codes-reference">API Error Codes Reference</h2>
-<div class="table-container">
-  <table class="table is-bordered is-fullwidth">
-    <tbody>
-      <tr>
-        <th width="15%">
-          <p>Error Code</p>
-        </th>
-        <th width="30%">
-          <p>Error Text</p>
-        </th>
-        <th width="55%">
-          <p>Error Description</p>
-        </th>
-      </tr>
-      <tr>
-        <td>0</td>
-        <td>Not error</td>
-        <td>
-          <p>Not error.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>-1</td>
-        <td>Unknown error</td>
-        <td>
-          <p>Unknown error.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>-2</td>
-        <td>Invalid parameters</td>
-        <td>
-          <p>This error occurs&nbsp;when api parameters are incorrectly.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>-3</td>
-        <td>Invalid configurations</td>
-        <td>
-          <p>This error occurs&nbsp;when system missed the environment files.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>-5</td>
-        <td>Network error has occurred</td>
-        <td>
-          <p>Network error has occurred.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>-6</td>
-        <td>Not supported</td>
-        <td>
-          <p>Not supported api.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>-7</td>
-        <td>Service had not started</td>
-        <td>
-          <p>Service had not started.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>-8</td>
-        <td>Service had already started</td>
-        <td>
-          <p>Service had already started.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>-9</td>
-        <td>Microphone error has occurred</td>
-        <td>
-          <p>Microphone error has occurred.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>-10</td>
-        <td>Audio error has occurred</td>
-        <td>
-          <p>Audio&nbsp;error has occurred.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>-11</td>
-        <td>Camera error has occurred</td>
-        <td>
-          <p>Camera error has occurred.</p>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<div>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>-11</td>
+          <td>Camera error has occurred</td>
+          <td>
+            <p>Camera error has occurred.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-10</td>
+          <td>Audio error has occurred</td>
+          <td>
+            <p>Audio&nbsp;error has occurred.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-9</td>
+          <td>Microphone error has occurred</td>
+          <td>
+            <p>Microphone error has occurred.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-8</td>
+          <td>Service had already started</td>
+          <td>
+            <p>Service had already started.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-7</td>
+          <td>Service had not started</td>
+          <td>
+            <p>Service had not started.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-6</td>
+          <td>Not supported</td>
+          <td>
+            <p>Not supported api.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-5</td>
+          <td>Network error has occurred</td>
+          <td>
+            <p>Network error has occurred.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-3</td>
+          <td>Invalid configurations</td>
+          <td>
+            <p>This error occurs&nbsp;when system missed the environment files.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-2</td>
+          <td>Invalid parameters</td>
+          <td>
+            <p>This error occurs&nbsp;when api parameters are incorrectly.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-1</td>
+          <td>Unknown error</td>
+          <td>
+            <p>Unknown error.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>0</td>
+          <td>Not error</td>
+          <td>
+            <p>Not error.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

@@ -1,9 +1,13 @@
 ---
 title: com.webos.service.location
-date: 2023-02-23
+date: 2023-05-22
+api_level: 23
 weight: 230
 toc: true
 ---
+{{< note >}}
+This API has been available since [API level]({{< relref "ls2-api-index#api-levels" >}}) 11.
+{{< /note >}}
 <h2 id="api-summary">API Summary</h2>
 <div>
   <p>Provides basic location services for single or multiple position fixes.&nbsp;This service connects to Luna bus to interact with other system components (e.g. apps, services) that require location services.</p>
@@ -11,7 +15,7 @@ toc: true
 </div>
 <h2 id="overview-of-the-api">Overview of the API</h2>
 <div>
-  <p>D<span style="background-color:transparent">ecides the type of location service provider based on the request parameters. Once a suitable location service provider is selected, the service uses the location service provider to construct positions fix(es). webOS uses the following location service providers for position fixing:</span></p>
+  <p>Decides the type of location service provider based on the request parameters. Once a suitable location service provider is selected, the service uses the location service provider to construct positions fix(es). webOS uses the following location service providers for position fixing:</p>
   <ul>
     <li>GPS / AGPS</li>
     <li>WPS / CellID.</li>
@@ -53,6 +57,11 @@ toc: true
   <h3 id="getalllocationhandlers">getAllLocationHandlers</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>location.query</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Gets a list of the available location handlers, along with each handler&#39;s attributes including name and state.</p>
     <h4>Parameters</h4>
@@ -111,7 +120,7 @@ toc: true
           <tr>
             <td>handlers</td>
             <td>Optional</td>
-            <td>Object array: <a href="#handler"> handler</a></td>
+            <td>Object array: <a href="#object-handler">handler</a></td>
             <td>
               <p>Contains each handler&#39;s name and state in an object array.</p>
             </td>
@@ -169,7 +178,7 @@ toc: true
           <tr>
             <td>handler</td>
             <td>Optional</td>
-            <td>Object array: <a href="#handler"> handler</a></td>
+            <td>Object array: <a href="#object-handler">handler</a></td>
             <td>
               <p>Contains each handler&#39;s name and state in an object array.</p>
             </td>
@@ -233,6 +242,11 @@ toc: true
   <h3 id="getgeocodelocation">getGeoCodeLocation</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>location.query</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p><span style="color:#222222">Transforms a given street address or other description of a location into a coordinate</span><span style="color:#222222"> (latitude, longitude)</span><span style="color:#222222">.</span></p>
     <p><strong><span style="color:rgb(93, 92, 92)">Important points:</span></strong></p>
@@ -241,7 +255,7 @@ toc: true
       <li>
         Prerequisite:
         <ul>
-          <li>Set up the Geocoding API key as described in&nbsp;<u>Overview&nbsp;of the API &gt; &quot;Google Geocoding API Key&quot;</u>.&nbsp;</li>
+          <li>Set up the Geocoding API key as described in&nbsp;<a href="#overview-of-the-api">Google Geocoding API Key</a>.&nbsp;</li>
           <li>Enable network location provider state by:<br />
             # luna-send -f -n 1 luna://com.webos.service.location/<strong>setState </strong>&#39;{&quot;Handler&quot;:&quot;network&quot;,&quot;state&quot;:true}&#39;
           </li>
@@ -279,7 +293,7 @@ toc: true
           <tr>
             <td>components</td>
             <td>Required</td>
-            <td>Object array: <a href="#components"> components</a></td>
+            <td>Object array: <a href="#object-components">components</a></td>
             <td>
               <p>Indicates the component filter required.</p>
               <p><strong>Note:</strong> Either address&nbsp;or <strong>component</strong> parameter&nbsp;is required&nbsp;for the <strong>getGeoCodeLocation</strong> service to transform the address successfully.</p>
@@ -288,7 +302,7 @@ toc: true
           <tr>
             <td>bounds</td>
             <td>Optional</td>
-            <td>Object array: <a href="#bounds"> bounds</a></td>
+            <td>Object array: <a href="#object-bounds">bounds</a></td>
             <td>
               <p>The bounding box of the viewport within which to bias geocode results more prominently.</p>
             </td>
@@ -471,6 +485,11 @@ toc: true
   <h3 id="getgpsstatus">getGpsStatus</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>location.query</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Gets the current status of the GPS engine. Used for notifying device users that the GPS engine has started or stopped.</p>
     <ul>
@@ -664,6 +683,11 @@ toc: true
   <h3 id="getlocationhandlerdetails">getLocationHandlerDetails</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>location.query</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Gets the details of the given location handler (Location service provider).</p>
     <h4>Parameters</h4>
@@ -837,6 +861,11 @@ toc: true
   <h3 id="getlocationupdates">getLocationUpdates</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>location.query</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Requests a single location fix based on the given criteria. If the subscription value is set to true, it requests for continuous location fixes.</p>
     <p><strong>Note:</strong></p>
@@ -1222,6 +1251,11 @@ toc: true
   <h3 id="getreverselocation">getReverseLocation</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>location.query</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Transforms a given coordinate (latitude, longitude) into a (partial) address.</p>
     <p><strong>Note:&nbsp;</strong>The amount of detail in a reverse geocoded location description may vary. For example, one location might contain the full street address of the closest building, while another location might contain only a city name and postal code.</p>
@@ -1231,7 +1265,7 @@ toc: true
       <li>
         Prerequisite:
         <ul>
-          <li>Set up the Geocoding API key as described in&nbsp;<u>Overview&nbsp;of the API &gt; &quot;Google Geocoding API Key&quot;</u>.&nbsp;</li>
+          <li>Set up the Geocoding API key as described in&nbsp;<a href="#overview-of-the-api">Google Geocoding API Key</a>.</li>
           <li>Enable network location provider state by:<br />
             # luna-send -f -n 1 luna://com.webos.service.location/<strong>setState&nbsp;</strong>&#39;{&quot;Handler&quot;:&quot;network&quot;,&quot;state&quot;:true}&#39;
           </li>
@@ -2005,6 +2039,11 @@ toc: true
   <h3 id="getstate">getState</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>location.query</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Gets the current state of the given handler. Application settings can use this to update location settings.</p>
     <h4>Parameters</h4>
@@ -2208,9 +2247,367 @@ toc: true
       </p>
     </div>
   </div>
+  <h3 id="mock-disable">mock/disable</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>location.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Disables the mock location of the given provider.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>name</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the name of the location service provider.</p>
+              <p>Possible values are :</p>
+              <ul>
+                <li>gps</li>
+                <li>network</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+                <li><strong>false:</strong>&nbsp;Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation. See the &quot;API Error Codes Reference&quot; section for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.location/mock/disable&#39;{<br />
+        &nbsp; &nbsp;&quot;name&quot;:&quot;gps&quot;<br />
+        }&#39;
+      </p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
+        &nbsp; &nbsp;&quot;errorCode&quot;:0<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="mock-enable">mock/enable</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>location.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Enables a mock location of the given provider.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>name</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Name of the location service provider.</p>
+              <p>Possible values:</p>
+              <ul>
+                <li>gps</li>
+                <li>network</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true:</strong>&nbsp;Indicates that the operation was successful.</li>
+                <li><strong>false:</strong>&nbsp;Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation. See the &quot;API Error Codes Reference&quot; section for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.location/mock/enable&nbsp;&#39;{<br />
+        &nbsp; &nbsp;&quot;name&quot;:&quot;gps&quot;<br />
+        }&#39;
+      </p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
+        &nbsp; &nbsp;&quot;errorCode&quot;:0<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="mock-setlocation">mock/setLocation</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>location.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Sets a mock location for the given provider.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>name</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the name of the location service provider.</p>
+              <p>Possible values are :</p>
+              <ul>
+                <li>gps</li>
+                <li>network</li>
+              </ul>
+              <p><strong>NOTE: </strong>If<strong> &#39;</strong>name&#39; field is set as network so for every <strong>mock/setLocation</strong> we need to call <strong>getLocationUpdates </strong>API with subscription false. (Since it different from GPS handler we wont get continuous reponse when&nbsp;subscription is true)</p>
+            </td>
+          </tr>
+          <tr>
+            <td>location</td>
+            <td>Required</td>
+            <td>Object: <a href="#object-location">location</a></td>
+            <td>
+              <p>Indicates the information about a mock location.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+                <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation. See the &quot;API Error Codes Reference&quot; section for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.location/mock/setLocation &#39;{<br />
+        &nbsp; &nbsp;&quot;name&quot;:&quot;gps&quot;,<br />
+        &nbsp; &nbsp;&quot;location&quot;:<br />
+        &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;speed&quot;:-1,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;longitude&quot;:127.034097,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;horizAccuracy&quot;:30,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;verAccuracy&quot;:2,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;heading&quot;:-1,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;timestamp&quot;:1410827340157,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;altitude&quot;:-1,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;latitude&quot;:37.460605<br />
+        &nbsp; &nbsp; &nbsp; }<br />
+        }&#39;
+      </p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
+        &nbsp; &nbsp;&quot;errorCode&quot;:0<br />
+        }
+      </p>
+    </div>
+  </div>
   <h3 id="setstate">setState</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>location.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Enables or disables a location service provider in the setting menu.</p>
     <h4>Parameters</h4>
@@ -2328,803 +2725,477 @@ toc: true
       </p>
     </div>
   </div>
-  <h3 id="mock-enable">mock/enable</h3>
-  <div>
-    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>location.operation</b></span></div>
-    <h4>Description</h4>
-    <p>Enables a mock location of the given provider.</p>
-    <h4>Parameters</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>name</td>
-            <td>Required</td>
-            <td>String</td>
-            <td>
-              <p>Name of the location service provider.</p>
-              <p>Possible values:</p>
-              <ul>
-                <li>gps</li>
-                <li>network</li>
-              </ul>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Call Returns</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>returnValue</td>
-            <td>Required</td>
-            <td>Boolean</td>
-            <td>
-              <p>Indicates the status of the operation.</p>
-              <p>Possible values are:</p>
-              <ul>
-                <li><strong>true:</strong>&nbsp;Indicates that the operation was successful.</li>
-                <li><strong>false:</strong>&nbsp;Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Required</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;API Error Codes Reference&quot; section for details.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Example</h4>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.location/mock/enable&nbsp;&#39;{<br />
-        &nbsp; &nbsp;&quot;name&quot;:&quot;gps&quot;<br />
-        }&#39;
-      </p>
-      <p>Response:</p>
-      <p>{<br />
-        &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
-        &nbsp; &nbsp;&quot;errorCode&quot;:0<br />
-        }
-      </p>
-    </div>
-  </div>
-  <h3 id="mock-disable">mock/disable</h3>
-  <div>
-    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>location.operation</b></span></div>
-    <h4>Description</h4>
-    <p>Disables the mock location of the given provider.</p>
-    <h4>Parameters</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>name</td>
-            <td>Required</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the name of the location service provider.</p>
-              <p>Possible values are :</p>
-              <ul>
-                <li>gps</li>
-                <li>network</li>
-              </ul>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Call Returns</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>returnValue</td>
-            <td>Required</td>
-            <td>Boolean</td>
-            <td>
-              <p>Indicates the status of the operation.</p>
-              <p>Possible values are:</p>
-              <ul>
-                <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
-                <li><strong>false:</strong>&nbsp;Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Required</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;API Error Codes Reference&quot; section for details.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Example</h4>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.location/mock/disable&#39;{<br />
-        &nbsp; &nbsp;&quot;name&quot;:&quot;gps&quot;<br />
-        }&#39;
-      </p>
-      <p>Response:</p>
-      <p>{<br />
-        &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
-        &nbsp; &nbsp;&quot;errorCode&quot;:0<br />
-        }
-      </p>
-    </div>
-  </div>
-  <h3 id="mock-setlocation">mock/setLocation</h3>
-  <div>
-    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>location.operation</b></span></div>
-    <h4>Description</h4>
-    <p>Sets a mock location for the given provider.</p>
-    <h4>Parameters</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>name</td>
-            <td>Required</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the name of the location service provider.</p>
-              <p>Possible values are :</p>
-              <ul>
-                <li>gps</li>
-                <li>network</li>
-              </ul>
-              <p><strong>NOTE: </strong>If<strong> &#39;</strong>name&#39; field is set as network so for every <strong>mock/setLocation</strong> we need to call <strong>getLocationUpdates </strong>API with subscription false. (Since it different from GPS handler we wont get continuous reponse when&nbsp;subscription is true)</p>
-            </td>
-          </tr>
-          <tr>
-            <td>location</td>
-            <td>Required</td>
-            <td>Object: <a href="#location"> location</a></td>
-            <td>
-              <p>Indicates the information about a mock location.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Call Returns</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>returnValue</td>
-            <td>Required</td>
-            <td>Boolean</td>
-            <td>
-              <p>Indicates the status of the operation.</p>
-              <p>Possible values are:</p>
-              <ul>
-                <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
-                <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Required</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;API Error Codes Reference&quot; section for details.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Example</h4>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.location/mock/setLocation &#39;{<br />
-        &nbsp; &nbsp;&quot;name&quot;:&quot;gps&quot;,<br />
-        &nbsp; &nbsp;&quot;location&quot;:<br />
-        &nbsp; &nbsp; &nbsp; {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;speed&quot;:-1,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;longitude&quot;:127.034097,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;horizAccuracy&quot;:30,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;verAccuracy&quot;:2,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;heading&quot;:-1,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;timestamp&quot;:1410827340157,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;altitude&quot;:-1,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;latitude&quot;:37.460605<br />
-        &nbsp; &nbsp; &nbsp; }<br />
-        }&#39;
-      </p>
-      <p>Response:</p>
-      <p>{<br />
-        &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
-        &nbsp; &nbsp;&quot;errorCode&quot;:0<br />
-        }
-      </p>
-    </div>
-  </div>
 </div>
 <h2 id="objects">Objects</h2>
 <div>
-  <h3 id="location">location</h3>
-  <p>Indicates the&nbsp;object of location for mock.</p>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>speed</td>
-          <td>Required</td>
-          <td>Number (double)</td>
-          <td>
-            <p>Speed, in meters/second overground.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>longitude</td>
-          <td>Required</td>
-          <td>Number (double)</td>
-          <td>
-            <p>Indicates longitude.</p>
-            <p>Possible Range: -180.0 ~180.0(in degrees).</p>
-          </td>
-        </tr>
-        <tr>
-          <td>horizAccuracy</td>
-          <td>Required</td>
-          <td>Number (double)</td>
-          <td>
-            <p>Indicates the accuracy of this location(in meters).</p>
-          </td>
-        </tr>
-        <tr>
-          <td>verAccuracy</td>
-          <td>Required</td>
-          <td>Number (double)</td>
-          <td>
-            <p>Indicates the accuracy of this location(in meters).</p>
-          </td>
-        </tr>
-        <tr>
-          <td>heading</td>
-          <td>Required</td>
-          <td>Number (double)</td>
-          <td>
-            <p>Indicates the horizontal direction traveled by the&nbsp;device.</p>
-            <p>Possible Range: -360.0 ~360.0(in degrees).</p>
-          </td>
-        </tr>
-        <tr>
-          <td>timestamp</td>
-          <td>Required</td>
-          <td>Number (int8_t)</td>
-          <td>
-            <p>Indicates the time when the location fix was created(in milliseconds).</p>
-          </td>
-        </tr>
-        <tr>
-          <td>altitude</td>
-          <td>Required</td>
-          <td>Number (double)</td>
-          <td>
-            <p>Indicates the altitude(in meters) above the WGS 84 reference ellipsoid.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>latitude</td>
-          <td>Required</td>
-          <td>Number (double)</td>
-          <td>
-            <p>Indicates latitude.</p>
-            <p>Possible Range: -90.0 ~90.0(in degrees).</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <h3 id="object-bounds">bounds</h3>
+  <div>
+    <p>Indicates the bounding box of the viewport within which to bias geocode results more prominently.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>southwestLat</td>
+            <td>Required</td>
+            <td>Number (double)</td>
+            <td>
+              <p><span style="color:rgb(34, 34, 34)">Indicates the latitude of southwest direction.</span></p>
+            </td>
+          </tr>
+          <tr>
+            <td>southwestLon</td>
+            <td>Required</td>
+            <td>Number (double)</td>
+            <td>
+              <p><span style="color:rgb(34, 34, 34)">Indicates longitude of southwest direction.</span></p>
+            </td>
+          </tr>
+          <tr>
+            <td>northeastLat</td>
+            <td>Required</td>
+            <td>Number (double)</td>
+            <td>
+              <p><span style="color:rgb(34, 34, 34)">Indicates latitude of northeast direction.</span></p>
+            </td>
+          </tr>
+          <tr>
+            <td>northeastLon</td>
+            <td>Required</td>
+            <td>Number (double)</td>
+            <td>
+              <p><span style="color:rgb(34, 34, 34)">Indicates longitude of northeast direction.</span></p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-  <h3 id="handler">handler</h3>
-  <p>Contains a handler&#39;s name and state.</p>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>name</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Indicates the name of the handler.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>state</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates the state of the&nbsp;handler.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <h3 id="object-components">components</h3>
+  <div>
+    <p>Indicates the component filter for which&nbsp;a geocode has to be generated.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>route</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p><span style="color:rgb(33, 33, 33)">Indicates long or short name of a route.</span></p>
+            </td>
+          </tr>
+          <tr>
+            <td>locality</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the locality.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>administrative_area</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the administrative area.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>postal_code</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p><span style="background-color:rgb(244, 244, 244)">Indicates the postal code.</span></p>
+            </td>
+          </tr>
+          <tr>
+            <td>country</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the country name or&nbsp;<span style="color:rgb(34, 34, 34)">a two letter&nbsp;</span>ISO 3166-1<span style="color:rgb(34, 34, 34)">&nbsp;country code.</span></p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-  <h3 id="components">components</h3>
-  <p>Indicates the component filter for which&nbsp;a geocode has to be generated.</p>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>route</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p><span style="color:rgb(33, 33, 33)">Indicates long or short name of a route.</span></p>
-          </td>
-        </tr>
-        <tr>
-          <td>locality</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Indicates the locality.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>administrative_area</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Indicates the administrative area.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>postal_code</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p><span style="background-color:rgb(244, 244, 244)">Indicates the postal code.</span></p>
-          </td>
-        </tr>
-        <tr>
-          <td>country</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Indicates the country name or&nbsp;<span style="color:rgb(34, 34, 34)">a two letter&nbsp;</span>ISO 3166-1<span style="color:rgb(34, 34, 34)">&nbsp;country code.</span></p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <h3 id="object-handler">handler</h3>
+  <div>
+    <p>Contains a handler&#39;s name and state.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>name</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the name of the handler.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>state</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the state of the&nbsp;handler.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-  <h3 id="bounds">bounds</h3>
-  <p>Indicates the bounding box of the viewport within which to bias geocode results more prominently.</p>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>southwestLat</td>
-          <td>Required</td>
-          <td>Number (double)</td>
-          <td>
-            <p><span style="color:rgb(34, 34, 34)">Indicates the latitude of southwest direction.</span></p>
-          </td>
-        </tr>
-        <tr>
-          <td>southwestLon</td>
-          <td>Required</td>
-          <td>Number (double)</td>
-          <td>
-            <p><span style="color:rgb(34, 34, 34)">Indicates longitude of southwest direction.</span></p>
-          </td>
-        </tr>
-        <tr>
-          <td>northeastLat</td>
-          <td>Required</td>
-          <td>Number (double)</td>
-          <td>
-            <p><span style="color:rgb(34, 34, 34)">Indicates latitude of northeast direction.</span></p>
-          </td>
-        </tr>
-        <tr>
-          <td>northeastLon</td>
-          <td>Required</td>
-          <td>Number (double)</td>
-          <td>
-            <p><span style="color:rgb(34, 34, 34)">Indicates longitude of northeast direction.</span></p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <h3 id="object-location">location</h3>
+  <div>
+    <p>Indicates the&nbsp;object of location for mock.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>speed</td>
+            <td>Required</td>
+            <td>Number (double)</td>
+            <td>
+              <p>Speed, in meters/second overground.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>longitude</td>
+            <td>Required</td>
+            <td>Number (double)</td>
+            <td>
+              <p>Indicates longitude.</p>
+              <p>Possible Range: -180.0 ~180.0(in degrees).</p>
+            </td>
+          </tr>
+          <tr>
+            <td>horizAccuracy</td>
+            <td>Required</td>
+            <td>Number (double)</td>
+            <td>
+              <p>Indicates the accuracy of this location(in meters).</p>
+            </td>
+          </tr>
+          <tr>
+            <td>verAccuracy</td>
+            <td>Required</td>
+            <td>Number (double)</td>
+            <td>
+              <p>Indicates the accuracy of this location(in meters).</p>
+            </td>
+          </tr>
+          <tr>
+            <td>heading</td>
+            <td>Required</td>
+            <td>Number (double)</td>
+            <td>
+              <p>Indicates the horizontal direction traveled by the&nbsp;device.</p>
+              <p>Possible Range: -360.0 ~360.0(in degrees).</p>
+            </td>
+          </tr>
+          <tr>
+            <td>timestamp</td>
+            <td>Required</td>
+            <td>Number (int8_t)</td>
+            <td>
+              <p>Indicates the time when the location fix was created(in milliseconds).</p>
+            </td>
+          </tr>
+          <tr>
+            <td>altitude</td>
+            <td>Required</td>
+            <td>Number (double)</td>
+            <td>
+              <p>Indicates the altitude(in meters) above the WGS 84 reference ellipsoid.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>latitude</td>
+            <td>Required</td>
+            <td>Number (double)</td>
+            <td>
+              <p>Indicates latitude.</p>
+              <p>Possible Range: -90.0 ~90.0(in degrees).</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-  <h3 id="satellite">satellite</h3>
-  <p>Contains satellite information.</p>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>index</td>
-          <td>Required</td>
-          <td>Number</td>
-          <td>
-            <p>Indicates the index of the satellite.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>azimuth</td>
-          <td>Required</td>
-          <td>Number (double)</td>
-          <td>
-            <p>Indicates the azimuth value of the satellite(in degrees).</p>
-          </td>
-        </tr>
-        <tr>
-          <td>elevation</td>
-          <td>Required</td>
-          <td>Number (double)</td>
-          <td>
-            <p>Indicates the elevation of the satellite(in degrees).</p>
-          </td>
-        </tr>
-        <tr>
-          <td>prn</td>
-          <td>Required</td>
-          <td>Number</td>
-          <td>
-            <p>Indicates the PRN (pseudo-random number) for the satellite.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>snr</td>
-          <td>Required</td>
-          <td>Number (double)</td>
-          <td>
-            <p>Indicates the signal to noise ratio for the satellite.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>hasAlmanac</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates whether the GPS engine has almanac data for the satellite.</p>
-            <p>Possible values are :</p>
-            <ul>
-              <li><strong>true</strong>: GPS engine has almanac data for the satellite.</li>
-              <li><strong>false</strong>: GPS engine has no almanac data for the satellite.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>hasEphemeris</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates whether the GPS engine has ephemeris data for the satellite.</p>
-            <ul>
-              <li><strong>true</strong>: GPS engine has ephemeris data for the satellite.</li>
-              <li><strong>false</strong>: GPS engine has no ephemeris data for the satellite.&nbsp;</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>usedInFix</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>Indicates whether&nbsp;<span style="color:rgb(34, 34, 34)">the satellite was used by the GPS engine in calculating the most recent GPS fix.</span></p>
-            <ul>
-              <li><strong>true</strong>: Satellite was used.</li>
-              <li><strong>false</strong>: Satellite was not used.</li>
-            </ul>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <h3 id="object-satellite">satellite</h3>
+  <div>
+    <p>Contains satellite information.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>index</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>Indicates the index of the satellite.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>azimuth</td>
+            <td>Required</td>
+            <td>Number (double)</td>
+            <td>
+              <p>Indicates the azimuth value of the satellite(in degrees).</p>
+            </td>
+          </tr>
+          <tr>
+            <td>elevation</td>
+            <td>Required</td>
+            <td>Number (double)</td>
+            <td>
+              <p>Indicates the elevation of the satellite(in degrees).</p>
+            </td>
+          </tr>
+          <tr>
+            <td>prn</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>Indicates the PRN (pseudo-random number) for the satellite.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>snr</td>
+            <td>Required</td>
+            <td>Number (double)</td>
+            <td>
+              <p>Indicates the signal to noise ratio for the satellite.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>hasAlmanac</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates whether the GPS engine has almanac data for the satellite.</p>
+              <p>Possible values are :</p>
+              <ul>
+                <li><strong>true</strong>: GPS engine has almanac data for the satellite.</li>
+                <li><strong>false</strong>: GPS engine has no almanac data for the satellite.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>hasEphemeris</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates whether the GPS engine has ephemeris data for the satellite.</p>
+              <ul>
+                <li><strong>true</strong>: GPS engine has ephemeris data for the satellite.</li>
+                <li><strong>false</strong>: GPS engine has no ephemeris data for the satellite.&nbsp;</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>usedInFix</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates whether&nbsp;<span style="color:rgb(34, 34, 34)">the satellite was used by the GPS engine in calculating the most recent GPS fix.</span></p>
+              <ul>
+                <li><strong>true</strong>: Satellite was used.</li>
+                <li><strong>false</strong>: Satellite was not used.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <h2 id="api-error-codes-reference">API Error Codes Reference</h2>
-<div class="table-container">
-  <table class="table is-bordered is-fullwidth">
-    <tbody>
-      <tr>
-        <th width="15%">
-          <p>Error Code</p>
-        </th>
-        <th width="30%">
-          <p>Error Text</p>
-        </th>
-        <th width="55%">
-          <p>Error Description</p>
-        </th>
-      </tr>
-      <tr>
-        <td>0</td>
-        <td>Success</td>
-        <td>
-          <p>Indicates that the operation was successfully executed.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>1</td>
-        <td>Time out</td>
-        <td>
-          <p>The operation&#39;s return is overtime.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td>Unkown error</td>
-        <td>
-          <p>Indicates that the reason for the occurrence of the error is unknown/ambiguous.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>5</td>
-        <td>Location source is off</td>
-        <td>
-          <p>Indicates that the location source is unavailable to get the location information.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>10</td>
-        <td>Invalid input</td>
-        <td>
-          <p>Indicates the input provided is invalid.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>11</td>
-        <td>No internet connection</td>
-        <td>
-          <p>Indicates that the&nbsp;current internet connection is closed (unavailable).</p>
-        </td>
-      </tr>
-      <tr>
-        <td>13</td>
-        <td>Out of memory</td>
-        <td>
-          <p>Indicates that the device is out of memory.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>21</td>
-        <td>Failed to read the WSP Configuration file</td>
-        <td>
-          <p>Indicates that the configuration file <strong>wsp.conf </strong>is missing&nbsp;or it has an invalid JSON.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>22</td>
-        <td>Failed to get the WSP name in conf file</td>
-        <td>
-          <p>Indicates that the <strong>wspName</strong>&nbsp;file&nbsp;is missing&nbsp;or its value is empty.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>23</td>
-        <td>Failed to get the WSP API Key in conf file</td>
-        <td>
-          <p>Indicates that <strong>apiKey</strong>&nbsp;file&nbsp;is missing&nbsp;or its value is empty.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>24</td>
-        <td>Failed to get the WSP service list in conf file</td>
-        <td>
-          <p>Indicates that the <strong>services</strong>&nbsp;file&nbsp;is missing&nbsp;or its&nbsp;array has&nbsp;no members.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>25</td>
-        <td>Failed to get the WSP supported features list in conf file</td>
-        <td>
-          <p>Indicates that the <strong>features</strong>&nbsp;file&nbsp;is missing or its array has no members or present members are empty.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>26</td>
-        <td>Failed to get the WSP feature&#39;s URL in conf file</td>
-        <td>
-          <p>Indicates that <strong>url</strong>&nbsp;file&nbsp;is missing or its value is empty.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>27</td>
-        <td>Invalid WSP Setup Configuration</td>
-        <td>
-          <p>Indicates that the WSP setup configuration is invalid.</p>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<div>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>0</td>
+          <td>Success</td>
+          <td>
+            <p>Indicates that the operation was successfully executed.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Time out</td>
+          <td>
+            <p>The operation&#39;s return is overtime.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Unkown error</td>
+          <td>
+            <p>Indicates that the reason for the occurrence of the error is unknown/ambiguous.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>Location source is off</td>
+          <td>
+            <p>Indicates that the location source is unavailable to get the location information.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td>Invalid input</td>
+          <td>
+            <p>Indicates the input provided is invalid.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>11</td>
+          <td>No internet connection</td>
+          <td>
+            <p>Indicates that the&nbsp;current internet connection is closed (unavailable).</p>
+          </td>
+        </tr>
+        <tr>
+          <td>13</td>
+          <td>Out of memory</td>
+          <td>
+            <p>Indicates that the device is out of memory.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>21</td>
+          <td>Failed to read the WSP Configuration file</td>
+          <td>
+            <p>Indicates that the configuration file <strong>wsp.conf </strong>is missing&nbsp;or it has an invalid JSON.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>22</td>
+          <td>Failed to get the WSP name in conf file</td>
+          <td>
+            <p>Indicates that the <strong>wspName</strong>&nbsp;file&nbsp;is missing&nbsp;or its value is empty.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>23</td>
+          <td>Failed to get the WSP API Key in conf file</td>
+          <td>
+            <p>Indicates that <strong>apiKey</strong>&nbsp;file&nbsp;is missing&nbsp;or its value is empty.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>24</td>
+          <td>Failed to get the WSP service list in conf file</td>
+          <td>
+            <p>Indicates that the <strong>services</strong>&nbsp;file&nbsp;is missing&nbsp;or its&nbsp;array has&nbsp;no members.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>25</td>
+          <td>Failed to get the WSP supported features list in conf file</td>
+          <td>
+            <p>Indicates that the <strong>features</strong>&nbsp;file&nbsp;is missing or its array has no members or present members are empty.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>26</td>
+          <td>Failed to get the WSP feature&#39;s URL in conf file</td>
+          <td>
+            <p>Indicates that <strong>url</strong>&nbsp;file&nbsp;is missing or its value is empty.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>27</td>
+          <td>Invalid WSP Setup Configuration</td>
+          <td>
+            <p>Indicates that the WSP setup configuration is invalid.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

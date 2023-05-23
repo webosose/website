@@ -1,12 +1,16 @@
 ---
 title: com.webos.service.applicationmanager
-date: 2023-04-19
+date: 2023-05-22
+api_level: 23
 weight: 90
 toc: true
 ---
+{{< note >}}
+This API has been available since [API level]({{< relref "ls2-api-index#api-levels" >}}) 11.
+{{< /note >}}
 <h2 id="api-summary">API Summary</h2>
 <div>
-  <p><span style="color:#333333">Provides methods for managing application life cycle, application information, LaunchPoint list.</span></p>
+  <p>Provides methods for managing application life cycle, application information, LaunchPoint list.</p>
 </div>
 <h2 id="overview-of-the-api">Overview of the API</h2>
 <div>
@@ -18,6 +22,11 @@ toc: true
   <h3 id="addlaunchpoint">addLaunchPoint</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>application.launcher</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Adds a dynamic launchpoint. According to the information on launchpoint, application is displayed in the Launcher.</p>
     <p>If a parameter is not defined, SAM set the LP&#39;s parameter value same as appInfo&#39;s value.</p>
@@ -128,7 +137,7 @@ toc: true
           <tr>
             <td>params</td>
             <td>Optional</td>
-            <td>Object: <a href="#params"> params</a></td>
+            <td>Object: <a href="#object-params">params</a></td>
             <td>
               <p>If <strong>params</strong> is used, it should contain information on the launchpoint.</p>
             </td>
@@ -356,6 +365,11 @@ toc: true
   <h3 id="close">close</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>application.launcher</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Closes an application.</p>
     <p><strong>Note A: </strong>At least one parameter is required. (&#39;id&#39;, &#39;launchPointId&#39;, &#39;instanceId&#39;)</p>
@@ -555,6 +569,11 @@ toc: true
   <h3 id="closebyappid">closeByAppId</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>application.launcher</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Closes an application by appId in the system manager.</p>
     <h4>Parameters</h4>
@@ -718,9 +737,280 @@ toc: true
       </p>
     </div>
   </div>
+  <h3 id="dev-close">dev/close</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>application.devmode</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 23</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Closes application by either of&nbsp; application id, instance id and launchpoint id .&nbsp;</p>
+    <p><strong>Note:</strong>&nbsp;At least one parameter is required. Available only in developer mode (devmode)</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>id</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the id of the application.</p>
+              <p><strong>Note</strong>: At least one parameter of &#39;id&#39;, &#39;launchPointId&#39;, or &#39;instanceId&#39; is mandatory.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>launchPointId</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the launchPointId of the application.</p>
+              <p><strong>Note</strong>: At least one parameter of &#39;id&#39;, &#39;launchPointId&#39;, or &#39;instanceId&#39; is mandatory.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>instanceId</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the instanceId of the application.</p>
+              <p><strong>Note</strong>: At least one parameter of &#39;id&#39;, &#39;launchPointId&#39;, or &#39;instanceId&#39; is mandatory.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+              <p>Possible values are: </p>
+              <ul>
+                <li><strong>true:</strong> Operation is successful.</li>
+                <li><strong>false:</strong> Operation has failed. Check the 'errorCode' and 'errorText' fields.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>The reason for the failure of the operation. See the &#39;Error Codes&#39; section of this method for details.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>processId</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Process ID&nbsp;of the closed application.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>launchPointId</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Launch point ID of the running application.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>appId</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>App ID of the running application.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>displayId</td>
+            <td>Optional</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>Display ID&nbsp;of running application.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>app is not running</td>
+            <td>
+              <p>app is not running</p>
+            </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Only Dev app should be closed using /dev category_API</td>
+            <td>
+              <p>Only Dev app cane be closed using /dev category_API</p>
+            </td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>invalid parameter</td>
+            <td>
+              <p>invalid parameter</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example : Closing application by app id</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p>1. Launch the application.</p>
+      <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/launch &#39;{&quot;id&quot;:&quot;com.lgsi.test.app&quot; }&#39;</p>
+      <p>Response:&nbsp;</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;launchPointId&quot;: &quot;com.lgsi.test.app_default&quot;,<br />
+        &nbsp; &nbsp; &quot;appId&quot;: &quot;com.lgsi.test.app&quot;,<br />
+        &nbsp; &nbsp; &quot;instanceId&quot;: &quot;7bf743c6-140d-4daf-817a-ef86d5d2d0060&quot;,<br />
+        &nbsp; &nbsp; &quot;displayId&quot;: 0,<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+        }
+      </p>
+      <p>&nbsp;</p>
+      <p>2. Close the application.</p>
+      <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/dev/close &#39;{&quot;id&quot;:&quot;com.lgsi.test.app&quot;}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;launchPointId&quot;: &quot;com.lgsi.test.app_default&quot;,<br />
+        &nbsp; &nbsp; &quot;appId&quot;: &quot;com.lgsi.test.app&quot;,<br />
+        &nbsp; &nbsp; &quot;instanceId&quot;: &quot;7bf743c6-140d-4daf-817a-ef86d5d2d0060&quot;,<br />
+        &nbsp; &nbsp; &quot;displayId&quot;: 0,<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example : Closing application by app instanceId</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p>1. Launch the application.</p>
+      <p># luna-send -n 1 -f luna://com.webos.applicationManager/launch &#39;{&quot;id&quot;:&quot;com.domain.app&quot;}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;launchPointId&quot;: &quot;com.domain.app_default&quot;,<br />
+        &nbsp; &nbsp; &quot;appId&quot;: &quot;com.domain.app&quot;,<br />
+        &nbsp; &nbsp; &quot;instanceId&quot;: &quot;74a77a9c-1779-4f9c-92c2-87d3a27650260&quot;,<br />
+        &nbsp; &nbsp; &quot;displayId&quot;: 0,<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+        }
+      </p>
+      <p>&nbsp;</p>
+      <p>2. Close the application.</p>
+      <p># luna-send -n 1 -f luna://com.webos.applicationManager/dev/close &#39;{&quot;instanceId&quot;:&quot;74a77a9c-1779-4f9c-92c2-87d3a27650260&quot;}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;launchPointId&quot;: &quot;com.domain.app_default&quot;,<br />
+        &nbsp; &nbsp; &quot;appId&quot;: &quot;com.domain.app&quot;,<br />
+        &nbsp; &nbsp; &quot;instanceId&quot;: &quot;74a77a9c-1779-4f9c-92c2-87d3a27650260&quot;,<br />
+        &nbsp; &nbsp; &quot;displayId&quot;: 0,<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example : Closing application by app launchPointId</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p>1. Launch the application.</p>
+      <p># luna-send -n 1 -f luna://com.webos.applicationManager/launch &#39;{&quot;id&quot;:&quot;com.domain.app&quot;}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;launchPointId&quot;: &quot;com.domain.app_default&quot;,<br />
+        &nbsp; &nbsp; &quot;appId&quot;: &quot;com.domain.app&quot;,<br />
+        &nbsp; &nbsp; &quot;instanceId&quot;: &quot;93cb3c90-4837-4514-8fb7-34645cc11dc90&quot;,<br />
+        &nbsp; &nbsp; &quot;displayId&quot;: 0,<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+        }
+      </p>
+      <p>&nbsp;</p>
+      <p>2. Close the application.</p>
+      <p># luna-send -n 1 -f luna://com.webos.applicationManager/dev/close &#39;{&quot;launchPointId&quot;:&quot;com.domain.app_default&quot;}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;launchPointId&quot;: &quot;com.domain.app_default&quot;,<br />
+        &nbsp; &nbsp; &quot;appId&quot;: &quot;com.domain.app&quot;,<br />
+        &nbsp; &nbsp; &quot;instanceId&quot;: &quot;93cb3c90-4837-4514-8fb7-34645cc11dc90&quot;,<br />
+        &nbsp; &nbsp; &quot;displayId&quot;: 0,<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+  </div>
   <h3 id="dev-closebyappid">dev/closeByAppId</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>application.devmode</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Closes an application by the application id.</p>
     <p><strong>Note:&nbsp;</strong>Available only in developer mode (devmode).&nbsp;To enable devmode, call &#39;com.webos.service.devmode&#39; (&#39;setDevMode&#39;) with value &#39;true&#39;.&nbsp;</p>
@@ -878,6 +1168,11 @@ toc: true
   <h3 id="dev-listapps">dev/listApps</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>application.devmode</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Lists all of the registered applications.</p>
     <p><strong>Note:&nbsp;</strong></p>
@@ -975,7 +1270,7 @@ toc: true
           <tr>
             <td>apps</td>
             <td>Required</td>
-            <td>Object array: <a href="#appinfo"> appInfo</a></td>
+            <td>Object array: <a href="#object-appinfo">appInfo</a></td>
             <td>
               <p>If the <strong>dev/listApps&nbsp;</strong>method succeeds, the array of the applications will be returned.</p>
             </td>
@@ -1017,7 +1312,7 @@ toc: true
           <tr>
             <td>apps</td>
             <td>Required</td>
-            <td>Object array: <a href="#appinfo"> appInfo</a></td>
+            <td>Object array: <a href="#object-appinfo">appInfo</a></td>
             <td>
               <p>Either this, or <strong>app</strong> will be returned.</p>
               <p><strong><span style="color:rgb(51,51,51)">apps</span></strong><strong><span style="color:rgb(51,51,51)">&nbsp;</span></strong><span style="color:rgb(51,51,51)">is returned when all apps&#39; information has been changed by language change.</span></p>
@@ -1026,7 +1321,7 @@ toc: true
           <tr>
             <td>app</td>
             <td>Required</td>
-            <td>Object array: <a href="#appinfo"> appInfo</a></td>
+            <td>Object array: <a href="#object-appinfo">appInfo</a></td>
             <td>
               <p>Either this, or <strong>apps</strong>&nbsp;will be&nbsp;required.</p>
               <p><strong><span style="color:rgb(51,51,51)">app</span></strong><span style="color:rgb(51,51,51)"> is returned the information of an app which has been installed/updated/removed.</span></p>
@@ -1104,9 +1399,371 @@ toc: true
       </p>
     </div>
   </div>
+  <h3 id="dev-managerinfo">dev/managerInfo</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>application.devmode</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 23</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Provides information provided by&nbsp;listLaunchPoints,running, and listApps APIs.&nbsp;Gets all of the launchpoints and lists all of the registered applications.&nbsp;Lists the background/foreground applications and their process IDs that are running on device.</p>
+    <h4>Parameters</h4>
+    <p>None</p>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+              <p>Possible values are: </p>
+              <ul>
+                <li><strong>true:</strong> Operation is successful.</li>
+                <li><strong>false:</strong> Operation has failed. Check the 'errorCode' and 'errorText' fields.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>The reason for the failure of the operation. See the &#39;Error Codes&#39; section of this method for details.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>launchPoints</td>
+            <td>Optional</td>
+            <td>Object array: <a href="#object-launchpoints">launchPoints</a></td>
+            <td>
+              <p>Array of the launch points.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>lunaTasks</td>
+            <td>Optional</td>
+            <td>Object array</td>
+            <td>
+              <p>Provides information of caller of dev/managerInfo API.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>running</td>
+            <td>Optional</td>
+            <td>Object array: <a href="#object-running">running</a></td>
+            <td>
+              <p>Indicates the background/foreground applications and their process IDs that are running on device.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>apps</td>
+            <td>Optional</td>
+            <td>Object array: <a href="#object-appinfo">appInfo</a></td>
+            <td>
+              <p>Lists all of the registered applications.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>invalid parameter</td>
+            <td>
+              <p>For invalid parameter.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -i -f luna://com.webos.applicationManager/dev/managerInfo &#39;{}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&quot;launchPoints&quot;:[<br />
+        &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;checkUpdateOnLaunch&quot;:true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;title&quot;:&quot;Bare App&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;icon&quot;:&quot;/usr/palm/applications/bareapp/icon.png&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;tileSize&quot;:&quot;normal&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;inAppSetting&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;miniicon&quot;:&quot;icon.png&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;folderPath&quot;:&quot;/usr/palm/applications/bareapp&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;lptype&quot;:&quot;default&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;transparent&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;icons&quot;:[<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;],<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;version&quot;:&quot;1.0.1&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;hasPromotion&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;lockable&quot;:true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;trustLevel&quot;:&quot;default&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;bgImage&quot;:&quot;&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;systemApp&quot;:true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;launchPointId&quot;:&quot;bareapp_default&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;main&quot;:&quot;index.html&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;visible&quot;:true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;largeIcon&quot;:&quot;/usr/palm/applications/bareapp/icon.png&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;privilegedJail&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;inspectable&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;imageForRecents&quot;:&quot;&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;defaultWindowType&quot;:&quot;card&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;vendor&quot;:&quot;LG Electronics, Inc.&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;accessibility&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;supportsAudioGuidance&quot;:false<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;},<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;deeplinkingParams&quot;:&quot;&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;type&quot;:&quot;web&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;spinnerOnLaunch&quot;:true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;id&quot;:&quot;bareapp&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;disableBackHistoryAPI&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;favicon&quot;:&quot;&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;handlesRelaunch&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;noSplashOnLaunch&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;removable&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;unmovable&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;uiRevision&quot;:&quot;2&quot;<br />
+        &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;v8SnapshotFile&quot;:&quot;snapshot_blob.bin&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;checkUpdateOnLaunch&quot;:true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;requiredPermissions&quot;:[<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;com.example.service.iotivity.client.group&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;com.example.service.iotivity.server.group&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;notification.operation&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;],<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;title&quot;:&quot;IoTivity Sampler&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;icon&quot;:&quot;/usr/palm/applications/com.example.app.iotivity/icon.png&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;tileSize&quot;:&quot;normal&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;inAppSetting&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;folderPath&quot;:&quot;/usr/palm/applications/com.example.app.iotivity&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;lptype&quot;:&quot;default&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;transparent&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;version&quot;:&quot;1.0.0&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;trustLevel&quot;:&quot;default&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;hasPromotion&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;lockable&quot;:true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;icons&quot;:[<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;],<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;bgImage&quot;:&quot;&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;launchPointId&quot;:&quot;com.example.app.iotivity_default&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;systemApp&quot;:true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;main&quot;:&quot;index.multi.html&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;visible&quot;:true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;largeIcon&quot;:&quot;&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;privilegedJail&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;inspectable&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;imageForRecents&quot;:&quot;&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;defaultWindowType&quot;:&quot;card&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;vendor&quot;:&quot;LGE&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;type&quot;:&quot;web&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;deeplinkingParams&quot;:&quot;&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;accessibility&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;supportsAudioGuidance&quot;:false<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;},<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;spinnerOnLaunch&quot;:true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;id&quot;:&quot;com.example.app.iotivity&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;disableBackHistoryAPI&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;favicon&quot;:&quot;&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;handlesRelaunch&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;noSplashOnLaunch&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;removable&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;unmovable&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;usePrerendering&quot;:true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;uiRevision&quot;:2<br />
+        &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp;],<br />
+        &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
+        &nbsp; &nbsp;&quot;lunaTasks&quot;:[<br />
+        &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;caller&quot;:&quot;com.webos.lunasend-1851&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;kind&quot;:&quot;/dev/managerInfo&quot;<br />
+        &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp;],<br />
+        &nbsp; &nbsp;&quot;running&quot;:[<br />
+        &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;appType&quot;:&quot;web&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;displayId&quot;:0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;instanceId&quot;:&quot;03419c62-edad-4031-8ffb-c2494170befc0&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;launchPointId&quot;:&quot;com.webos.app.volume_default&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;webprocessid&quot;:&quot;1161&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;id&quot;:&quot;com.webos.app.volume&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;processid&quot;:&quot;-1&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;defaultWindowType&quot;:&quot;system_ui&quot;<br />
+        &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;appType&quot;:&quot;web&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;displayId&quot;:0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;instanceId&quot;:&quot;0b4c885e-e9c2-4923-9ad3-2ff663cc3c320&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;launchPointId&quot;:&quot;com.webos.app.notification_default&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;webprocessid&quot;:&quot;1156&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;id&quot;:&quot;com.webos.app.notification&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;processid&quot;:&quot;434&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;defaultWindowType&quot;:&quot;system_ui&quot;<br />
+        &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;appType&quot;:&quot;web&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;displayId&quot;:0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;instanceId&quot;:&quot;457dcbb0-76ab-4fa7-9c0f-ffa9cbca44110&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;launchPointId&quot;:&quot;bareapp_default&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;webprocessid&quot;:&quot;1043&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;id&quot;:&quot;bareapp&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;processid&quot;:&quot;434&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;defaultWindowType&quot;:&quot;card&quot;<br />
+        &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;appType&quot;:&quot;web&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;displayId&quot;:0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;instanceId&quot;:&quot;61a9142a-f21f-4ab1-ac37-2aeeed660cb50&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;launchPointId&quot;:&quot;com.webos.app.home_default&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;webprocessid&quot;:&quot;1064&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;id&quot;:&quot;com.webos.app.home&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;processid&quot;:&quot;434&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;defaultWindowType&quot;:&quot;system_ui&quot;<br />
+        &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp;],<br />
+        &nbsp; &nbsp;&quot;apps&quot;:[<br />
+        &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;checkUpdateOnLaunch&quot;:true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;title&quot;:&quot;Bare App&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;icon&quot;:&quot;icon.png&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;tileSize&quot;:&quot;normal&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;inAppSetting&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;miniicon&quot;:&quot;icon.png&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;folderPath&quot;:&quot;/usr/palm/applications/bareapp&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;transparent&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;version&quot;:&quot;1.0.1&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;icons&quot;:[<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;],<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;hasPromotion&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;lockable&quot;:true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;trustLevel&quot;:&quot;default&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;systemApp&quot;:true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;largeIcon&quot;:&quot;icon.png&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;main&quot;:&quot;index.html&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;visible&quot;:true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;privilegedJail&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;inspectable&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;defaultWindowType&quot;:&quot;card&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;vendor&quot;:&quot;LG Electronics, Inc.&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;deeplinkingParams&quot;:&quot;&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;type&quot;:&quot;web&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;accessibility&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;supportsAudioGuidance&quot;:false<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;},<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;spinnerOnLaunch&quot;:true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;id&quot;:&quot;bareapp&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;disableBackHistoryAPI&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;handlesRelaunch&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;noSplashOnLaunch&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;removable&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;unmovable&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;uiRevision&quot;:&quot;2&quot;<br />
+        &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;v8SnapshotFile&quot;:&quot;snapshot_blob.bin&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;checkUpdateOnLaunch&quot;:true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;requiredPermissions&quot;:[<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;com.example.service.iotivity.client.group&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;com.example.service.iotivity.server.group&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;notification.operation&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;],<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;title&quot;:&quot;IoTivity Sampler&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;icon&quot;:&quot;icon.png&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;tileSize&quot;:&quot;normal&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;inAppSetting&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;folderPath&quot;:&quot;/usr/palm/applications/com.example.app.iotivity&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;transparent&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;version&quot;:&quot;1.0.0&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;icons&quot;:[<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;],<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;hasPromotion&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;lockable&quot;:true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;trustLevel&quot;:&quot;default&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;systemApp&quot;:true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;main&quot;:&quot;index.multi.html&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;visible&quot;:true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;privilegedJail&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;inspectable&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;defaultWindowType&quot;:&quot;card&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;accessibility&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;supportsAudioGuidance&quot;:false<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;},<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;deeplinkingParams&quot;:&quot;&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;type&quot;:&quot;web&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;vendor&quot;:&quot;LGE&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;spinnerOnLaunch&quot;:true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;id&quot;:&quot;com.example.app.iotivity&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;disableBackHistoryAPI&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;handlesRelaunch&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;noSplashOnLaunch&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;removable&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;unmovable&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;usePrerendering&quot;:true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;uiRevision&quot;:2<br />
+        &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp;]<br />
+        }
+      </p>
+    </div>
+  </div>
   <h3 id="dev-running">dev/running</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>application.devmode</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Lists the background/foreground applications and their process IDs that are running on the webOS platform.</p>
     <p><strong>Note:&nbsp;</strong></p>
@@ -1197,7 +1854,7 @@ toc: true
           <tr>
             <td>running</td>
             <td>Required</td>
-            <td>Object array: <a href="#running"> running</a></td>
+            <td>Object array: <a href="#object-running">running</a></td>
             <td>
               <p>If the <strong>dev/running </strong>method succeeds, the array of the running applications will be returned.</p>
             </td>
@@ -1253,7 +1910,7 @@ toc: true
           <tr>
             <td>running</td>
             <td>Required</td>
-            <td>Object array: <a href="#running"> running</a></td>
+            <td>Object array: <a href="#object-running">running</a></td>
             <td>
               <p>If the <strong>dev/running </strong>method succeeds, the array of the running applications will be returned</p>
             </td>
@@ -1290,6 +1947,11 @@ toc: true
   <h3 id="getappbasepath">getAppBasePath</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>application.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Gets the path of the application.</p>
     <p><strong>Note: </strong>This API is useful to get base directory path of installed application.</p>
@@ -1441,6 +2103,11 @@ toc: true
   <h3 id="getappinfo">getAppInfo</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>application.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Gets the application information.</p>
     <p><strong>Note:</strong> The information is generated from appinfo.json file.</p>
@@ -1523,7 +2190,7 @@ toc: true
           <tr>
             <td>appInfo</td>
             <td>Optional</td>
-            <td>Object: <a href="#appinfo"> appInfo</a></td>
+            <td>Object: <a href="#object-appinfo">appInfo</a></td>
             <td>
               <p>If the <strong>getAppinfo </strong>method succeeds, the <strong>appInfo</strong> object contains information about the application.</p>
             </td>
@@ -1609,6 +2276,11 @@ toc: true
   <h3 id="getapplifeevents">getAppLifeEvents</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>application.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Provides the application&#39;s&nbsp;event status in its life cycle.</p>
     <h4>Parameters</h4>
@@ -1958,6 +2630,11 @@ toc: true
   <h3 id="getapplifestatus">getAppLifeStatus</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>application.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Provides the application&#39;s life cycle status.</p>
     <p><strong>Note:</strong> This API is useful to do something based on application&#39;s life cycle status.</p>
@@ -2285,6 +2962,11 @@ toc: true
   <h3 id="getappstatus">getAppStatus</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>application.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Gets the application status and information.</p>
     <h4>Parameters</h4>
@@ -2316,7 +2998,7 @@ toc: true
           <tr>
             <td>appInfo</td>
             <td>Optional</td>
-            <td>Object: <a href="#appinfo"> appInfo</a></td>
+            <td>Object: <a href="#object-appinfo">appInfo</a></td>
             <td>
               <p>Indicates the information of the application.</p>
             </td>
@@ -2408,7 +3090,7 @@ toc: true
           <tr>
             <td>appInfo</td>
             <td>Optional</td>
-            <td>Object: <a href="#appinfo"> appInfo</a></td>
+            <td>Object: <a href="#object-appinfo">appInfo</a></td>
             <td>
               <p>If the&nbsp;<strong>getAppStatus&nbsp;</strong>method succeeds and the parameter &quot;appInfo&quot; is&nbsp;<strong>true</strong>, the&nbsp;<strong>appInfo</strong>&nbsp;object contains information about the application.</p>
             </td>
@@ -2515,7 +3197,7 @@ toc: true
           <tr>
             <td>appInfo</td>
             <td>Optional</td>
-            <td>Object array: <a href="#appinfo"> appInfo</a></td>
+            <td>Object array: <a href="#object-appinfo">appInfo</a></td>
             <td>
               <p>If the&nbsp;<strong>getAppStatus&nbsp;</strong>method succeeds and the parameter &quot;appInfo&quot; is&nbsp;<strong>true</strong>, the&nbsp;<strong>appInfo</strong>&nbsp;object contains information about the application.</p>
             </td>
@@ -2589,6 +3271,11 @@ toc: true
   <h3 id="getforegroundappinfo">getForegroundAppInfo</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>application.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Gets the information on the foreground application.</p>
     <p><strong>Note:</strong> The information comes from LSM. Please use extraInfo parameter to get raw responsePayload from LSM.</p>
@@ -2736,7 +3423,7 @@ toc: true
           <tr>
             <td>foregroundAppInfo</td>
             <td>Optional</td>
-            <td>Object array: <a href="#foregroundappinfo"> foregroundAppInfo</a></td>
+            <td>Object array: <a href="#object-foregroundappinfo">foregroundAppInfo</a></td>
             <td>
               <p>Indicates an array of the foreground application.</p>
             </td>
@@ -2841,7 +3528,7 @@ toc: true
           <tr>
             <td>foregroundAppInfo</td>
             <td>Optional</td>
-            <td>Object array: <a href="#foregroundappinfo"> foregroundAppInfo</a></td>
+            <td>Object array: <a href="#object-foregroundappinfo">foregroundAppInfo</a></td>
             <td>
               <p>Indicates an array of the foreground application.</p>
             </td>
@@ -2915,6 +3602,11 @@ toc: true
   <h3 id="launch">launch</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>application.launcher</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Launches an application corresponding to the given application ID. Opens the service or app.</p>
     <p>Example: The user can download a content with a service in the background. Once the content is downloaded, the service must launch the app again.</p>
@@ -2965,7 +3657,7 @@ toc: true
           <tr>
             <td>params</td>
             <td>Optional</td>
-            <td>Object: <a href="#params"> params</a></td>
+            <td>Object: <a href="#object-params">params</a></td>
             <td>
               <p>If&nbsp;<strong>params&nbsp;</strong>is used, it should contain information on the target application. Specify correct parameters for each application. See the following parameter examples:</p>
               <ul>
@@ -3114,6 +3806,11 @@ toc: true
   <h3 id="listapps">listApps</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>application.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Lists all of the registered applications.</p>
     <p><strong>Note:</strong> Client can get all installed application information using&nbsp;this API.</p>
@@ -3195,7 +3892,7 @@ toc: true
           <tr>
             <td>apps</td>
             <td>Required</td>
-            <td>Object array: <a href="#appinfo"> appInfo</a></td>
+            <td>Object array: <a href="#object-appinfo">appInfo</a></td>
             <td>
               <p>If the&nbsp;<strong>listApps&nbsp;</strong>method succeeds, the array of the applications will be returned.</p>
             </td>
@@ -3250,7 +3947,7 @@ toc: true
           <tr>
             <td>apps</td>
             <td>Required</td>
-            <td>Object array: <a href="#appinfo"> appInfo</a></td>
+            <td>Object array: <a href="#object-appinfo">appInfo</a></td>
             <td>
               <p>Either this, or <strong>app</strong> is required.</p>
               <p><strong><span style="color:#333333">apps</span></strong><strong><span style="color:#333333">&nbsp;</span></strong><span style="color:#333333">is returned when all apps&#39; information has been changed by language change</span>.</p>
@@ -3259,7 +3956,7 @@ toc: true
           <tr>
             <td>app</td>
             <td>Required</td>
-            <td>Object array: <a href="#appinfo"> appInfo</a></td>
+            <td>Object array: <a href="#object-appinfo">appInfo</a></td>
             <td>
               <p>Either this, or <strong>apps</strong> is required.</p>
               <p><strong><span style="color:#333333">app</span></strong><span style="color:#333333"> is returned the information of an app which has been installed/updated/removed.</span></p>
@@ -3340,6 +4037,11 @@ toc: true
   <h3 id="listlaunchpoints">listLaunchPoints</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>application.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Gets all of the launchpoints.</p>
     <p><strong>Note:</strong> LaunchPoint is the virtual instance of an application. The webOS provides <strong>shortcut</strong> based on launchPoint.</p>
@@ -3426,7 +4128,7 @@ toc: true
           <tr>
             <td>launchPoints</td>
             <td>Required</td>
-            <td>Object array: <a href="#launchpoints"> launchPoints</a></td>
+            <td>Object array: <a href="#object-launchpoints">launchPoints</a></td>
             <td>
               <p>If the&nbsp;<strong>listLaunchPoints</strong>&nbsp;method succeeds, the array of the launchpoints will be returned.</p>
             </td>
@@ -3539,6 +4241,11 @@ toc: true
   <h3 id="lockapp">lockApp</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>application.launcher</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Locks an application.&nbsp;</p>
     <p><strong>Note:&nbsp;</strong></p>
@@ -3696,6 +4403,11 @@ toc: true
   <h3 id="pause">pause</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>application.launcher</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Pauses an application.</p>
     <p><strong>Note</strong>: At least one parameter is required. (&#39;id&#39;, &#39;launchPointId&#39;, &#39;instanceId&#39;)</p>
@@ -3853,6 +4565,11 @@ toc: true
   <h3 id="registerapp">registerApp</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>application.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Registers to receive events related to app life cycle.</p>
     <h4>Parameters</h4>
@@ -3948,7 +4665,7 @@ toc: true
           <tr>
             <td>parameters</td>
             <td>Optional</td>
-            <td>Object: <a href="#params"> params</a></td>
+            <td>Object: <a href="#object-params">params</a></td>
             <td>
               <p>Indicates the information to be delivered to the registered&nbsp;app.</p>
             </td>
@@ -4023,6 +4740,11 @@ toc: true
   <h3 id="removelaunchpoint">removeLaunchPoint</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>application.launcher</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Removes a dynamic launchpoint.</p>
     <p><strong>Note:</strong> It can cause application uninstall.</p>
@@ -4156,6 +4878,11 @@ toc: true
   <h3 id="running">running</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>application.launcher</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Lists the background/foreground applications and their process IDs that are running on webOS platform.</p>
     <p><strong>Note:</strong> This API is one of key methods of applicationmanager.</p>
@@ -4242,7 +4969,7 @@ toc: true
           <tr>
             <td>running</td>
             <td>Required</td>
-            <td>Object array: <a href="#running"> running</a></td>
+            <td>Object array: <a href="#object-running">running</a></td>
             <td>
               <p>If the <strong>running </strong>method succeeds, the array of the running applications will be returned.</p>
             </td>
@@ -4298,7 +5025,7 @@ toc: true
           <tr>
             <td>running</td>
             <td>Required</td>
-            <td>Object array: <a href="#running"> running</a></td>
+            <td>Object array: <a href="#object-running">running</a></td>
             <td>
               <p>If the&nbsp;<strong>running&nbsp;</strong>method succeeds, the array of the running applications will be returned.</p>
             </td>
@@ -4332,6 +5059,11 @@ toc: true
   <h3 id="updatelaunchpoint">updateLaunchPoint</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>application.launcher</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Updates a dynamic launchpoint.</p>
     <p><strong>Note:</strong> If a user changes the HDMI application icon to another icon like a game icon using Input Manager on a TV, the HDMI application icon is dynamically&nbsp;<br />
@@ -4437,7 +5169,7 @@ toc: true
           <tr>
             <td>params</td>
             <td>Optional</td>
-            <td>Object: <a href="#params"> params</a></td>
+            <td>Object: <a href="#object-params">params</a></td>
             <td>
               <p>If&nbsp;<strong>params</strong>&nbsp;is used, it should contain information on the launchpoint&nbsp;which will be passed to the application.</p>
             </td>
@@ -4665,365 +5397,12 @@ toc: true
       </p>
     </div>
   </div>
-  <h3 id="dev-managerinfo">dev/managerInfo</h3>
+</div>
+<h2 id="objects">Objects</h2>
+<div>
+  <h3 id="object-appinfo">appInfo</h3>
   <div>
-    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>application.devmode</b></span></div>
-    <h4>Description</h4>
-    <p>Provides information provided by&nbsp;listLaunchPoints,running, and listApps APIs.&nbsp;Gets all of the launchpoints and lists all of the registered applications.&nbsp;Lists the background/foreground applications and their process IDs that are running on device.</p>
-    <h4>Parameters</h4>
-    <p>None</p>
-    <h4>Call Returns</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>returnValue</td>
-            <td>Required</td>
-            <td>Boolean</td>
-            <td>
-              <p>Indicates the status of the operation.</p>
-              <p>Possible values are: </p>
-              <ul>
-                <li><strong>true:</strong> Operation is successful.</li>
-                <li><strong>false:</strong> Operation has failed. Check the 'errorCode' and 'errorText' fields.</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>The reason for the failure of the operation. See the &#39;Error Codes&#39; section of this method for details.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>launchPoints</td>
-            <td>Optional</td>
-            <td>Object array: <a href="#launchpoints"> launchPoints</a></td>
-            <td>
-              <p>Array of the launch points.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>lunaTasks</td>
-            <td>Optional</td>
-            <td>Object array</td>
-            <td>
-              <p>Provides information of caller of dev/managerInfo API.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>running</td>
-            <td>Optional</td>
-            <td>Object array: <a href="#running"> running</a></td>
-            <td>
-              <p>Indicates the background/foreground applications and their process IDs that are running on device.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>apps</td>
-            <td>Optional</td>
-            <td>Object array: <a href="#appinfo"> appInfo</a></td>
-            <td>
-              <p>Lists all of the registered applications.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Error Codes Reference</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Error Code</p>
-            </th>
-            <th width="30%">
-              <p>Error Text</p>
-            </th>
-            <th width="55%">
-              <p>Error Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>invalid parameter</td>
-            <td>
-              <p>For invalid parameter.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Example</h4>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p># luna-send -i -f luna://com.webos.applicationManager/dev/managerInfo &#39;{}&#39;</p>
-      <p>Response:</p>
-      <p>{<br />
-        &nbsp; &nbsp;&quot;launchPoints&quot;:[<br />
-        &nbsp; &nbsp; &nbsp; {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;checkUpdateOnLaunch&quot;:true,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;title&quot;:&quot;Bare App&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;icon&quot;:&quot;/usr/palm/applications/bareapp/icon.png&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;tileSize&quot;:&quot;normal&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;inAppSetting&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;miniicon&quot;:&quot;icon.png&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;folderPath&quot;:&quot;/usr/palm/applications/bareapp&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;lptype&quot;:&quot;default&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;transparent&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;icons&quot;:[<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;],<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;version&quot;:&quot;1.0.1&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;hasPromotion&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;lockable&quot;:true,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;trustLevel&quot;:&quot;default&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;bgImage&quot;:&quot;&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;systemApp&quot;:true,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;launchPointId&quot;:&quot;bareapp_default&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;main&quot;:&quot;index.html&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;visible&quot;:true,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;largeIcon&quot;:&quot;/usr/palm/applications/bareapp/icon.png&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;privilegedJail&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;inspectable&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;imageForRecents&quot;:&quot;&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;defaultWindowType&quot;:&quot;card&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;vendor&quot;:&quot;LG Electronics, Inc.&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;accessibility&quot;:{<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;supportsAudioGuidance&quot;:false<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;},<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;deeplinkingParams&quot;:&quot;&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;type&quot;:&quot;web&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;spinnerOnLaunch&quot;:true,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;id&quot;:&quot;bareapp&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;disableBackHistoryAPI&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;favicon&quot;:&quot;&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;handlesRelaunch&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;noSplashOnLaunch&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;removable&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;unmovable&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;uiRevision&quot;:&quot;2&quot;<br />
-        &nbsp; &nbsp; &nbsp; },<br />
-        &nbsp; &nbsp; &nbsp; {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;v8SnapshotFile&quot;:&quot;snapshot_blob.bin&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;checkUpdateOnLaunch&quot;:true,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;requiredPermissions&quot;:[<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;com.example.service.iotivity.client.group&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;com.example.service.iotivity.server.group&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;notification.operation&quot;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;],<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;title&quot;:&quot;IoTivity Sampler&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;icon&quot;:&quot;/usr/palm/applications/com.example.app.iotivity/icon.png&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;tileSize&quot;:&quot;normal&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;inAppSetting&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;folderPath&quot;:&quot;/usr/palm/applications/com.example.app.iotivity&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;lptype&quot;:&quot;default&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;transparent&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;version&quot;:&quot;1.0.0&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;trustLevel&quot;:&quot;default&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;hasPromotion&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;lockable&quot;:true,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;icons&quot;:[<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;],<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;bgImage&quot;:&quot;&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;launchPointId&quot;:&quot;com.example.app.iotivity_default&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;systemApp&quot;:true,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;main&quot;:&quot;index.multi.html&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;visible&quot;:true,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;largeIcon&quot;:&quot;&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;privilegedJail&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;inspectable&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;imageForRecents&quot;:&quot;&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;defaultWindowType&quot;:&quot;card&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;vendor&quot;:&quot;LGE&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;type&quot;:&quot;web&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;deeplinkingParams&quot;:&quot;&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;accessibility&quot;:{<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;supportsAudioGuidance&quot;:false<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;},<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;spinnerOnLaunch&quot;:true,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;id&quot;:&quot;com.example.app.iotivity&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;disableBackHistoryAPI&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;favicon&quot;:&quot;&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;handlesRelaunch&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;noSplashOnLaunch&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;removable&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;unmovable&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;usePrerendering&quot;:true,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;uiRevision&quot;:2<br />
-        &nbsp; &nbsp; &nbsp; }<br />
-        &nbsp; &nbsp;],<br />
-        &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
-        &nbsp; &nbsp;&quot;lunaTasks&quot;:[<br />
-        &nbsp; &nbsp; &nbsp; {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;caller&quot;:&quot;com.webos.lunasend-1851&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;kind&quot;:&quot;/dev/managerInfo&quot;<br />
-        &nbsp; &nbsp; &nbsp; }<br />
-        &nbsp; &nbsp;],<br />
-        &nbsp; &nbsp;&quot;running&quot;:[<br />
-        &nbsp; &nbsp; &nbsp; {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;appType&quot;:&quot;web&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;displayId&quot;:0,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;instanceId&quot;:&quot;03419c62-edad-4031-8ffb-c2494170befc0&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;launchPointId&quot;:&quot;com.webos.app.volume_default&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;webprocessid&quot;:&quot;1161&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;id&quot;:&quot;com.webos.app.volume&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;processid&quot;:&quot;-1&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;defaultWindowType&quot;:&quot;system_ui&quot;<br />
-        &nbsp; &nbsp; &nbsp; },<br />
-        &nbsp; &nbsp; &nbsp; {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;appType&quot;:&quot;web&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;displayId&quot;:0,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;instanceId&quot;:&quot;0b4c885e-e9c2-4923-9ad3-2ff663cc3c320&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;launchPointId&quot;:&quot;com.webos.app.notification_default&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;webprocessid&quot;:&quot;1156&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;id&quot;:&quot;com.webos.app.notification&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;processid&quot;:&quot;434&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;defaultWindowType&quot;:&quot;system_ui&quot;<br />
-        &nbsp; &nbsp; &nbsp; },<br />
-        &nbsp; &nbsp; &nbsp; {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;appType&quot;:&quot;web&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;displayId&quot;:0,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;instanceId&quot;:&quot;457dcbb0-76ab-4fa7-9c0f-ffa9cbca44110&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;launchPointId&quot;:&quot;bareapp_default&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;webprocessid&quot;:&quot;1043&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;id&quot;:&quot;bareapp&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;processid&quot;:&quot;434&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;defaultWindowType&quot;:&quot;card&quot;<br />
-        &nbsp; &nbsp; &nbsp; },<br />
-        &nbsp; &nbsp; &nbsp; {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;appType&quot;:&quot;web&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;displayId&quot;:0,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;instanceId&quot;:&quot;61a9142a-f21f-4ab1-ac37-2aeeed660cb50&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;launchPointId&quot;:&quot;com.webos.app.home_default&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;webprocessid&quot;:&quot;1064&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;id&quot;:&quot;com.webos.app.home&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;processid&quot;:&quot;434&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;defaultWindowType&quot;:&quot;system_ui&quot;<br />
-        &nbsp; &nbsp; &nbsp; }<br />
-        &nbsp; &nbsp;],<br />
-        &nbsp; &nbsp;&quot;apps&quot;:[<br />
-        &nbsp; &nbsp; &nbsp; {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;checkUpdateOnLaunch&quot;:true,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;title&quot;:&quot;Bare App&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;icon&quot;:&quot;icon.png&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;tileSize&quot;:&quot;normal&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;inAppSetting&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;miniicon&quot;:&quot;icon.png&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;folderPath&quot;:&quot;/usr/palm/applications/bareapp&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;transparent&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;version&quot;:&quot;1.0.1&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;icons&quot;:[<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;],<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;hasPromotion&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;lockable&quot;:true,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;trustLevel&quot;:&quot;default&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;systemApp&quot;:true,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;largeIcon&quot;:&quot;icon.png&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;main&quot;:&quot;index.html&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;visible&quot;:true,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;privilegedJail&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;inspectable&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;defaultWindowType&quot;:&quot;card&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;vendor&quot;:&quot;LG Electronics, Inc.&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;deeplinkingParams&quot;:&quot;&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;type&quot;:&quot;web&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;accessibility&quot;:{<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;supportsAudioGuidance&quot;:false<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;},<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;spinnerOnLaunch&quot;:true,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;id&quot;:&quot;bareapp&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;disableBackHistoryAPI&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;handlesRelaunch&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;noSplashOnLaunch&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;removable&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;unmovable&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;uiRevision&quot;:&quot;2&quot;<br />
-        &nbsp; &nbsp; &nbsp; },<br />
-        &nbsp; &nbsp; &nbsp; {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;v8SnapshotFile&quot;:&quot;snapshot_blob.bin&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;checkUpdateOnLaunch&quot;:true,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;requiredPermissions&quot;:[<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;com.example.service.iotivity.client.group&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;com.example.service.iotivity.server.group&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;notification.operation&quot;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;],<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;title&quot;:&quot;IoTivity Sampler&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;icon&quot;:&quot;icon.png&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;tileSize&quot;:&quot;normal&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;inAppSetting&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;folderPath&quot;:&quot;/usr/palm/applications/com.example.app.iotivity&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;transparent&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;version&quot;:&quot;1.0.0&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;icons&quot;:[<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;],<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;hasPromotion&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;lockable&quot;:true,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;trustLevel&quot;:&quot;default&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;systemApp&quot;:true,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;main&quot;:&quot;index.multi.html&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;visible&quot;:true,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;privilegedJail&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;inspectable&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;defaultWindowType&quot;:&quot;card&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;accessibility&quot;:{<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;supportsAudioGuidance&quot;:false<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;},<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;deeplinkingParams&quot;:&quot;&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;type&quot;:&quot;web&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;vendor&quot;:&quot;LGE&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;spinnerOnLaunch&quot;:true,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;id&quot;:&quot;com.example.app.iotivity&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;disableBackHistoryAPI&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;handlesRelaunch&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;noSplashOnLaunch&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;removable&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;unmovable&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;usePrerendering&quot;:true,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;uiRevision&quot;:2<br />
-        &nbsp; &nbsp; &nbsp; }<br />
-        &nbsp; &nbsp;]<br />
-        }
-      </p>
-    </div>
-  </div>
-  <h3 id="dev-close">dev/close</h3>
-  <div>
-    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>application.devmode</b></span></div>
-    <h4>Description</h4>
-    <p>Closes application by either of&nbsp; application id, instance id and launchpoint id .&nbsp;</p>
-    <p><strong>Note:</strong>&nbsp;At least one parameter is required. Available only in developer mode (devmode)</p>
-    <h4>Parameters</h4>
+    <p>Contains the information about the application.</p>
     <div class="table-container">
       <table class="table is-bordered is-fullwidth">
         <tbody>
@@ -5043,35 +5422,134 @@ toc: true
           </tr>
           <tr>
             <td>id</td>
-            <td>Optional</td>
+            <td>Required</td>
             <td>String</td>
             <td>
-              <p>Indicates the id of the application.</p>
-              <p><strong>Note</strong>: At least one parameter of &#39;id&#39;, &#39;launchPointId&#39;, or &#39;instanceId&#39; is mandatory.</p>
+              <p>Indicates the application ID.</p>
+              <p><strong>Example</strong>: \&quot;com.newco.app.myApp\&quot;</p>
+              <p><strong>Note</strong>:</p>
+              <ul>
+                <li>Every application has a unique ID, created from reverse DNS naming conventions.</li>
+                <li>The launcher uses the ID to uniquely identify application and displays it with the title above.</li>
+                <li>The application ID is unique,can only be set once, and cannot be changed after publishing the application.</li>
+              </ul>
             </td>
           </tr>
           <tr>
-            <td>launchPointId</td>
-            <td>Optional</td>
+            <td>main</td>
+            <td>Required</td>
             <td>String</td>
             <td>
-              <p>Indicates the launchPointId of the application.</p>
-              <p><strong>Note</strong>: At least one parameter of &#39;id&#39;, &#39;launchPointId&#39;, or &#39;instanceId&#39; is mandatory.</p>
+              <p>Indicates the launchpoint of the application.</p>
+              <p><strong>Note</strong>: This is a file path relative to the <strong>appinfo.json</strong> file and needs to point to an <strong>HTML</strong> file.</p>
             </td>
           </tr>
           <tr>
-            <td>instanceId</td>
+            <td>title</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the application title as it is shown in the launcher and in the application window.</p>
+              <p><strong>Note</strong>: The application title is unique, set once.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>icon</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the path of the icon image displayed for the application.</p>
+              <p><strong>Note</strong>: The file path is relative to the appinfo.json file. The default is \&quot;icon.png\&quot;</p>
+            </td>
+          </tr>
+          <tr>
+            <td>largeIcon</td>
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>Indicates the instanceId of the application.</p>
-              <p><strong>Note</strong>: At least one parameter of &#39;id&#39;, &#39;launchPointId&#39;, or &#39;instanceId&#39; is mandatory.</p>
+              <p>The path of the large icon (130x130 pixels) displayed in the top left corner of the screen, when the user hovers over an application tile in the Launcher. This file path is relative to the appinfo.json file.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>type</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>The application type; web or pdk.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>splashBackground</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>The background image to be shown while application is loading, e.g., splash-background.png.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>vendor</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>The application owner used in the launcher&nbsp;and deviceinfo dialogs.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>transparent</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p><span style="line-height:1.6em">This indicates whether the web application&#39;s background is transparent or not.</span></p>
+            </td>
+          </tr>
+          <tr>
+            <td>version</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>The application version number, in the dot-notation format, e.g., 3.0.2500.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>handlesRelaunch</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>This indicates whether the application is relaunched or not when a user executes application that is already running.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>requiredMemory</td>
+            <td>Optional</td>
+            <td>Number (int8_t)</td>
+            <td>
+              <p>The memory consumption is increasing quickly while&nbsp;launching. OOM can occur before system (Memory Manager) try to acquire adequate memory for the application.&nbsp;</p>
+              <p>The requiredMemory&nbsp;describes the maximum usage of memory, in megabytes, while an application is launching. This is not same as the maximum memory usage while the application is running.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>iconColor</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>The background color for the application tile. The&nbsp;application&nbsp;tile is displayed in the Home, the Launcher, and the Recent screen.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>appDescription</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>A short description for the application.&nbsp;The&nbsp;<strong>appDescription&nbsp;</strong>cannot exceed 60 characters.</p>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-    <h4>Call Returns</h4>
+  </div>
+  <h3 id="object-foregroundappinfo">foregroundAppInfo</h3>
+  <div>
+    <p>The object contains <span style="color:rgb(0, 0, 0)">sorted&nbsp;</span>foreground applications in ascending order.</p>
     <div class="table-container">
       <table class="table is-bordered is-fullwidth">
         <tbody>
@@ -5090,40 +5568,191 @@ toc: true
             </th>
           </tr>
           <tr>
-            <td>returnValue</td>
-            <td>Required</td>
-            <td>Boolean</td>
-            <td>
-              <p>Indicates the status of the operation.</p>
-              <p>Possible values are: </p>
-              <ul>
-                <li><strong>true:</strong> Operation is successful.</li>
-                <li><strong>false:</strong> Operation has failed. Check the 'errorCode' and 'errorText' fields.</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
+            <td>instanceId</td>
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>The reason for the failure of the operation. See the &#39;Error Codes&#39; section of this method for details.</p>
+              <p>InstanceId of running application.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>appId</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>The application ID.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>windowId</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>The window ID of the application running in the foreground.</p>
             </td>
           </tr>
           <tr>
             <td>processId</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>The process ID of the application running in the foreground.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>displayId</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The display ID of application.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h3 id="object-launchpoints">launchPoints</h3>
+  <div>
+    <p>Contains the array of launchpoints.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>lptype</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>The launchpoint type: default, bookmark, group.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>id</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>The application ID of the launchpoint.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>launchPointId</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>The unique launchpoint ID.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>removable</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>This indicates whether the application is removable or not.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>title</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>The application title as it is shown in the Launcher and in the application window. The application title is unique, set once.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>icon</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>The image displayed for the application.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>iconColor</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>The background color for the application tile. The application tile is displayed in the Home, the Launcher, and the Recent screen.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>largeIcon</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>The path of the large icon (130x130 pixels) displayed in the top left corner of the screen, when the user hovers over an application tile in the Launcher. This file path is relative to the appinfo.json file.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>appDescription</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>A short description for the application.&nbsp;The&nbsp;<strong>appDescription&nbsp;</strong>cannot exceed 60 characters.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>params</td>
+            <td>Optional</td>
+            <td>Object: <a href="#object-params">params</a></td>
+            <td>
+              <p>The <strong>params&nbsp;</strong>object contains information on the target application.&nbsp;You should specify correct parameters for each application.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>userData</td>
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>Process ID&nbsp;of the closed application.</p>
+              <p>The additional data that may be used for&nbsp;analytical purposes. The userData will simply be logged when the user interacts with it in Launcher.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h3 id="object-params">params</h3>
+  <div>
+    <p>Contains the parameters for the target application. Specify correct parameters for each application. As each application has different parameters, the parameters&nbsp;of params cannot be defined.</p>
+  </div>
+  <h3 id="object-running">running</h3>
+  <div>
+    <p>Indicates the object that contains the array of the&nbsp;running applications.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>id</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>The application ID.</p>
             </td>
           </tr>
           <tr>
@@ -5131,620 +5760,122 @@ toc: true
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>Launch point ID of the running application.</p>
+              <p>The launch point ID of the app.&nbsp;</p>
             </td>
           </tr>
           <tr>
-            <td>appId</td>
+            <td>instanceId</td>
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>App ID of the running application.</p>
+              <p>The instance ID of the app.</p>
             </td>
           </tr>
           <tr>
             <td>displayId</td>
             <td>Optional</td>
-            <td>Number (int32_t)</td>
+            <td>Number</td>
             <td>
-              <p>Display ID&nbsp;of running application.</p>
+              <p>The display ID of the app.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>processId</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>The process ID of the application.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>webprocessid</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>The webprocess ID of the application.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>defaultWindowType</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>The default window type of the application.</p>
+              <p>Used by WAM (WebAppMgr) to launch a window with a&nbsp;special window type setting.</p>
+              <p>The value will be one of the followings:</p>
+              <ul>
+                <li>card</li>
+                <li>minimal</li>
+                <li>overlay</li>
+                <li>popup</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>appType</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>The application type.</p>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-    <h4>Error Codes Reference</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Error Code</p>
-            </th>
-            <th width="30%">
-              <p>Error Text</p>
-            </th>
-            <th width="55%">
-              <p>Error Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>invalid parameter</td>
-            <td>
-              <p>invalid parameter</p>
-            </td>
-          </tr>
-          <tr>
-            <td>None</td>
-            <td>app is not running</td>
-            <td>
-              <p>app is not running</p>
-            </td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Only Dev app should be closed using /dev category_API</td>
-            <td>
-              <p>Only Dev app cane be closed using /dev category_API</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Example</h4>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example : Closing application by app id</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p>1. Launch the application.</p>
-      <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/launch &#39;{&quot;id&quot;:&quot;com.lgsi.test.app&quot; }&#39;</p>
-      <p>Response:&nbsp;</p>
-      <p>{<br />
-        &nbsp; &nbsp; &quot;launchPointId&quot;: &quot;com.lgsi.test.app_default&quot;,<br />
-        &nbsp; &nbsp; &quot;appId&quot;: &quot;com.lgsi.test.app&quot;,<br />
-        &nbsp; &nbsp; &quot;instanceId&quot;: &quot;7bf743c6-140d-4daf-817a-ef86d5d2d0060&quot;,<br />
-        &nbsp; &nbsp; &quot;displayId&quot;: 0,<br />
-        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-        }
-      </p>
-      <p>&nbsp;</p>
-      <p>2. Close the application.</p>
-      <p># luna-send -n 1 -f luna://com.webos.service.applicationmanager/dev/close &#39;{&quot;id&quot;:&quot;com.lgsi.test.app&quot;}&#39;</p>
-      <p>Response:</p>
-      <p>{<br />
-        &nbsp; &nbsp; &quot;launchPointId&quot;: &quot;com.lgsi.test.app_default&quot;,<br />
-        &nbsp; &nbsp; &quot;appId&quot;: &quot;com.lgsi.test.app&quot;,<br />
-        &nbsp; &nbsp; &quot;instanceId&quot;: &quot;7bf743c6-140d-4daf-817a-ef86d5d2d0060&quot;,<br />
-        &nbsp; &nbsp; &quot;displayId&quot;: 0,<br />
-        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-        }
-      </p>
-    </div>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example : Closing application by app instanceId</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p>1. Launch the application.</p>
-      <p># luna-send -n 1 -f luna://com.webos.applicationManager/launch &#39;{&quot;id&quot;:&quot;com.domain.app&quot;}&#39;</p>
-      <p>Response:</p>
-      <p>{<br />
-        &nbsp; &nbsp; &quot;launchPointId&quot;: &quot;com.domain.app_default&quot;,<br />
-        &nbsp; &nbsp; &quot;appId&quot;: &quot;com.domain.app&quot;,<br />
-        &nbsp; &nbsp; &quot;instanceId&quot;: &quot;74a77a9c-1779-4f9c-92c2-87d3a27650260&quot;,<br />
-        &nbsp; &nbsp; &quot;displayId&quot;: 0,<br />
-        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-        }
-      </p>
-      <p>&nbsp;</p>
-      <p>2. Close the application.</p>
-      <p># luna-send -n 1 -f luna://com.webos.applicationManager/dev/close &#39;{&quot;instanceId&quot;:&quot;74a77a9c-1779-4f9c-92c2-87d3a27650260&quot;}&#39;</p>
-      <p>Response:</p>
-      <p>{<br />
-        &nbsp; &nbsp; &quot;launchPointId&quot;: &quot;com.domain.app_default&quot;,<br />
-        &nbsp; &nbsp; &quot;appId&quot;: &quot;com.domain.app&quot;,<br />
-        &nbsp; &nbsp; &quot;instanceId&quot;: &quot;74a77a9c-1779-4f9c-92c2-87d3a27650260&quot;,<br />
-        &nbsp; &nbsp; &quot;displayId&quot;: 0,<br />
-        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-        }
-      </p>
-    </div>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example : Closing application by app launchPointId</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p>1. Launch the application.</p>
-      <p># luna-send -n 1 -f luna://com.webos.applicationManager/launch &#39;{&quot;id&quot;:&quot;com.domain.app&quot;}&#39;</p>
-      <p>Response:</p>
-      <p>{<br />
-        &nbsp; &nbsp; &quot;launchPointId&quot;: &quot;com.domain.app_default&quot;,<br />
-        &nbsp; &nbsp; &quot;appId&quot;: &quot;com.domain.app&quot;,<br />
-        &nbsp; &nbsp; &quot;instanceId&quot;: &quot;93cb3c90-4837-4514-8fb7-34645cc11dc90&quot;,<br />
-        &nbsp; &nbsp; &quot;displayId&quot;: 0,<br />
-        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-        }
-      </p>
-      <p>&nbsp;</p>
-      <p>2. Close the application.</p>
-      <p># luna-send -n 1 -f luna://com.webos.applicationManager/dev/close &#39;{&quot;launchPointId&quot;:&quot;com.domain.app_default&quot;}&#39;</p>
-      <p>Response:</p>
-      <p>{<br />
-        &nbsp; &nbsp; &quot;launchPointId&quot;: &quot;com.domain.app_default&quot;,<br />
-        &nbsp; &nbsp; &quot;appId&quot;: &quot;com.domain.app&quot;,<br />
-        &nbsp; &nbsp; &quot;instanceId&quot;: &quot;93cb3c90-4837-4514-8fb7-34645cc11dc90&quot;,<br />
-        &nbsp; &nbsp; &quot;displayId&quot;: 0,<br />
-        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-        }
-      </p>
-    </div>
-  </div>
-</div>
-<h2 id="objects">Objects</h2>
-<div>
-  <h3 id="appinfo">appInfo</h3>
-  <p>Contains the information about the application.</p>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>id</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Indicates the application ID.</p>
-            <p><strong>Example</strong>: \&quot;com.newco.app.myApp\&quot;</p>
-            <p><strong>Note</strong>:</p>
-            <ul>
-              <li>Every application has a unique ID, created from reverse DNS naming conventions.</li>
-              <li>The launcher uses the ID to uniquely identify application and displays it with the title above.</li>
-              <li>The application ID is unique,can only be set once, and cannot be changed after publishing the application.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>main</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Indicates the launchpoint of the application.</p>
-            <p><strong>Note</strong>: This is a file path relative to the <strong>appinfo.json</strong> file and needs to point to an <strong>HTML</strong> file.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>title</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Indicates the application title as it is shown in the launcher and in the application window.</p>
-            <p><strong>Note</strong>: The application title is unique, set once.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>icon</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Indicates the path of the icon image displayed for the application.</p>
-            <p><strong>Note</strong>: The file path is relative to the appinfo.json file. The default is \&quot;icon.png\&quot;</p>
-          </td>
-        </tr>
-        <tr>
-          <td>largeIcon</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>The path of the large icon (130x130 pixels) displayed in the top left corner of the screen, when the user hovers over an application tile in the Launcher. This file path is relative to the appinfo.json file.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>type</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>The application type; web or pdk.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>splashBackground</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>The background image to be shown while application is loading, e.g., splash-background.png.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>vendor</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>The application owner used in the launcher&nbsp;and deviceinfo dialogs.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>transparent</td>
-          <td>Optional</td>
-          <td>Boolean</td>
-          <td>
-            <p><span style="line-height:1.6em">This indicates whether the web application&#39;s background is transparent or not.</span></p>
-          </td>
-        </tr>
-        <tr>
-          <td>version</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>The application version number, in the dot-notation format, e.g., 3.0.2500.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>handlesRelaunch</td>
-          <td>Optional</td>
-          <td>Boolean</td>
-          <td>
-            <p>This indicates whether the application is relaunched or not when a user executes application that is already running.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>requiredMemory</td>
-          <td>Optional</td>
-          <td>Number (int8_t)</td>
-          <td>
-            <p>The memory consumption is increasing quickly while&nbsp;launching. OOM can occur before system (Memory Manager) try to acquire adequate memory for the application.&nbsp;</p>
-            <p>The requiredMemory&nbsp;describes the maximum usage of memory, in megabytes, while an application is launching. This is not same as the maximum memory usage while the application is running.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>iconColor</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>The background color for the application tile. The&nbsp;application&nbsp;tile is displayed in the Home, the Launcher, and the Recent screen.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>appDescription</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>A short description for the application.&nbsp;The&nbsp;<strong>appDescription&nbsp;</strong>cannot exceed 60 characters.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h3 id="launchpoints">launchPoints</h3>
-  <p>Contains the array of launchpoints.</p>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>lptype</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>The launchpoint type: default, bookmark, group.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>id</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>The application ID of the launchpoint.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>launchPointId</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>The unique launchpoint ID.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>removable</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <p>This indicates whether the application is removable or not.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>title</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>The application title as it is shown in the Launcher and in the application window. The application title is unique, set once.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>icon</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>The image displayed for the application.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>iconColor</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>The background color for the application tile. The application tile is displayed in the Home, the Launcher, and the Recent screen.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>largeIcon</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>The path of the large icon (130x130 pixels) displayed in the top left corner of the screen, when the user hovers over an application tile in the Launcher. This file path is relative to the appinfo.json file.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>appDescription</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>A short description for the application.&nbsp;The&nbsp;<strong>appDescription&nbsp;</strong>cannot exceed 60 characters.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>params</td>
-          <td>Optional</td>
-          <td>Object: <a href="#params"> params</a></td>
-          <td>
-            <p>The <strong>params&nbsp;</strong>object contains information on the target application.&nbsp;You should specify correct parameters for each application.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>userData</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>The additional data that may be used for&nbsp;analytical purposes. The userData will simply be logged when the user interacts with it in Launcher.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h3 id="params">params</h3>
-  <p>Contains the parameters for the target application. Specify correct parameters for each application. As each application has different parameters, the parameters&nbsp;of params cannot be defined.</p>
-  <h3 id="foregroundappinfo">foregroundAppInfo</h3>
-  <p>The object contains <span style="color:rgb(0, 0, 0)">sorted&nbsp;</span>foreground applications in ascending order.</p>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>instanceId</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>InstanceId of running application.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>appId</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>The application ID.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>windowId</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>The window ID of the application running in the foreground.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>processId</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>The process ID of the application running in the foreground.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>displayId</td>
-          <td>Optional</td>
-          <td>Number</td>
-          <td>
-            <p>The display ID of application.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h3 id="running-1">running</h3>
-  <p>Indicates the object that contains the array of the&nbsp;running applications.</p>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>id</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>The application ID.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>launchPointId</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>The launch point ID of the app.&nbsp;</p>
-          </td>
-        </tr>
-        <tr>
-          <td>instanceId</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>The instance ID of the app.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>displayId</td>
-          <td>Optional</td>
-          <td>Number</td>
-          <td>
-            <p>The display ID of the app.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>processId</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>The process ID of the application.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>webprocessid</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>The webprocess ID of the application.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>defaultWindowType</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>The default window type of the application.</p>
-            <p>Used by WAM (WebAppMgr) to launch a window with a&nbsp;special window type setting.</p>
-            <p>The value will be one of the followings:</p>
-            <ul>
-              <li>card</li>
-              <li>minimal</li>
-              <li>overlay</li>
-              <li>popup</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>appType</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>The application type.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
   </div>
 </div>
 <h2 id="api-error-codes-reference">API Error Codes Reference</h2>
-<div class="table-container">
-  <table class="table is-bordered is-fullwidth">
-    <tbody>
-      <tr>
-        <th width="15%">
-          <p>Error Code</p>
-        </th>
-        <th width="30%">
-          <p>Error Text</p>
-        </th>
-        <th width="55%">
-          <p>Error Description</p>
-        </th>
-      </tr>
-      <tr>
-        <td>None</td>
-        <td>Missing required key</td>
-        <td>
-          <p>Missing required key.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>None</td>
-        <td>invalid json request</td>
-        <td>
-          <p>Invalid JSON request.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>-102</td>
-        <td>[ID] has been locked.</td>
-        <td>
-          <p>Application has been locked.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>-203</td>
-        <td>[ID] is already launching</td>
-        <td>
-          <p>The native application is already launching.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>-312</td>
-        <td>not allowed</td>
-        <td>
-          <p>EULA is not accepted.</p>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<div>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>Missing required key</td>
+          <td>
+            <p>Missing required key.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>None</td>
+          <td>invalid json request</td>
+          <td>
+            <p>Invalid JSON request.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-312</td>
+          <td>not allowed</td>
+          <td>
+            <p>EULA is not accepted.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-203</td>
+          <td>[ID] is already launching</td>
+          <td>
+            <p>The native application is already launching.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-102</td>
+          <td>[ID] has been locked.</td>
+          <td>
+            <p>Application has been locked.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

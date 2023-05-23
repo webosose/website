@@ -1,9 +1,13 @@
 ---
 title: com.webos.service.db
-date: 2023-04-12
+date: 2023-05-22
+api_level: 23
 weight: 170
 toc: true
 ---
+{{< note >}}
+This API has been available since [API level]({{< relref "ls2-api-index#api-levels" >}}) 11.
+{{< /note >}}
 <h2 id="api-summary">API Summary</h2>
 <div>
   <p>Enables apps to store persistent data.</p>
@@ -951,6 +955,11 @@ toc: true
   <h3 id="batch">batch</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>The <strong>batch</strong> method enables apps to execute multiple database operations in one service request. It allows only the following database operations:</p>
     <ul>
@@ -982,7 +991,7 @@ toc: true
           <tr>
             <td>operations</td>
             <td>Required</td>
-            <td>Object array: <a href="#batchoperation"> BatchOperation</a></td>
+            <td>Object array: <a href="#object-batchoperation">BatchOperation</a></td>
             <td>
               <p style="text-align:left">The <strong>operations</strong> parameter contains the list of database operations to perform.</p>
             </td>
@@ -1011,7 +1020,7 @@ toc: true
           <tr>
             <td>batchResponse</td>
             <td>Optional</td>
-            <td>Object: <a href="#batchresponse"> BatchResponse</a></td>
+            <td>Object: <a href="#object-batchresponse">BatchResponse</a></td>
             <td>
               <p style="text-align:left">If <strong>DB8</strong> modifies any record, status of the executing batch will be returned in a&nbsp;<strong>BatchResponse</strong> object</p>
             </td>
@@ -1063,13 +1072,6 @@ toc: true
             </th>
           </tr>
           <tr>
-            <td>-3982</td>
-            <td>db: invalid operation in batch</td>
-            <td>
-              <p style="text-align: left;">This message implies that an incorrect or an unsupported database operation was specified in the <strong>operations</strong>&nbsp;parameter.&nbsp;<br></p>
-            </td>
-          </tr>
-          <tr>
             <td>-3984</td>
             <td>No required key: &quot;method&quot;</td>
             <td>
@@ -1081,6 +1083,13 @@ toc: true
             <td>No required key: &quot;params&quot;</td>
             <td>
               <p style="text-align:left">This message implies that the required parameters for a database operation are missing.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>-3982</td>
+            <td>db: invalid operation in batch</td>
+            <td>
+              <p style="text-align: left;">This message implies that an incorrect or an unsupported database operation was specified in the <strong>operations</strong>&nbsp;parameter.&nbsp;<br></p>
             </td>
           </tr>
         </tbody>
@@ -1150,9 +1159,144 @@ toc: true
       </p>
     </div>
   </div>
+  <h3 id="cancelsearch">cancelSearch</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Stops the search operation mid-way.</p>
+    <p>This&nbsp;method can be used when the search operation takes a&nbsp;long time to return results or&nbsp;required to search with another keyword without waiting for previous search results. It is not applicable to situations where the&nbsp;search method returns results immediately.</p>
+    <p><strong>Note:&nbsp;</strong>For this method to work, the search() API must be configured with the &#39;cancelable&#39; parameter set to &#39;true&#39;.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>taskId</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Unique identifier of the search operation.</p>
+              <p>Obtained using the search() API.&nbsp;</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes&quot;</strong>&nbsp;section of this method for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>-3984</td>
+            <td>db: find_bKkNbX job does not exist</td>
+            <td>
+              <p>When there is no active search or when the&nbsp;search is already completed.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f&nbsp;luna://com.webos.service.db/cancelSearch &#39;{&quot;taskId&quot;: &quot;find_sEhKeU&quot;}&#39;</p>
+      <p>&nbsp;</p>
+      <p>Response:&nbsp;</p>
+      <p>{&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+        }
+      </p>
+    </div>
+  </div>
   <h3 id="compact">compact</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.management</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p style="text-align:left">The <strong>compact </strong>method invokes the&nbsp;low level garbage collector. When DB8 executes a&nbsp;<strong>del</strong> operation without&nbsp;<strong>Purge:True</strong> param, it only marks the object as to be deleted. The object will be removed by DB8, when the garbage collector is called. To call the garbage collector manually, the client can call the <strong>compact</strong> method.</p>
     <p style="text-align:left">This command is implemented only for the <strong>LevelDB</strong> and <strong>Sandwich</strong> engine.</p>
@@ -1223,17 +1367,17 @@ toc: true
             </th>
           </tr>
           <tr>
-            <td>-3988</td>
-            <td>db: backup file is full</td>
-            <td>
-              <p>This message implies that the storage does not have free space.</p>
-            </td>
-          </tr>
-          <tr>
             <td>-3997</td>
             <td>db: corrupt database</td>
             <td>
               <p><span style="display:none">&nbsp;</span>This message implies that some part of the database is logically corrupted.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>-3988</td>
+            <td>db: backup file is full</td>
+            <td>
+              <p>This message implies that the storage does not have free space.</p>
             </td>
           </tr>
         </tbody>
@@ -1256,6 +1400,11 @@ toc: true
   <h3 id="del">del</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p style="text-align:left">The <strong>del </strong>method deletes JSON data objects from the database.<br />
       <br />
@@ -1294,7 +1443,7 @@ toc: true
           <tr>
             <td>query</td>
             <td>Optional</td>
-            <td>Object: <a href="#query"> Query</a></td>
+            <td>Object: <a href="#object-query">Query</a></td>
             <td>
               <p style="text-align:left">The <strong>query </strong>parameter contains a query for a set of objects to be deleted. If you do not wish to specify a query, you must specify a list of JSON object ids in the <strong>ids </strong>parameter.</p>
             </td>
@@ -1335,7 +1484,7 @@ toc: true
           <tr>
             <td>results</td>
             <td>Optional</td>
-            <td>Object array: <a href="#results">Results</a></td>
+            <td>Object array: <a href="#object-results">Results</a></td>
             <td>
               <p>When the <strong>del </strong>method succeeds, and the objects to be deleted were specified as a list of JSON object ids, the <strong>del </strong>method will return a list of deleted ids.</p>
             </td>
@@ -1395,17 +1544,17 @@ toc: true
             </th>
           </tr>
           <tr>
-            <td>-3963</td>
-            <td>db: permission denied</td>
-            <td>
-              <p style="text-align: left;">This message implies that the app does not have permission to delete the specified object.&nbsp;</p>
-            </td>
-          </tr>
-          <tr>
             <td>-3965</td>
             <td>db: no index for query</td>
             <td>
               <p style="text-align: left;">This message implies that the query is referring to an index that does not exist for the specified kind.&nbsp;<br></p>
+            </td>
+          </tr>
+          <tr>
+            <td>-3963</td>
+            <td>db: permission denied</td>
+            <td>
+              <p style="text-align: left;">This message implies that the app does not have permission to delete the specified object.&nbsp;</p>
             </td>
           </tr>
           <tr>
@@ -1451,6 +1600,11 @@ toc: true
   <h3 id="delkind">delKind</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>The <strong>delKind </strong>method deletes a Kind from the database. Deleting a Kind deletes ALL data objects of that Kind.</p>
     <h4>Parameters</h4>
@@ -1547,17 +1701,17 @@ toc: true
             </th>
           </tr>
           <tr>
-            <td>-3970</td>
-            <td>db: kind not registered</td>
-            <td>
-              <p style="text-align: left;">This message implies that the specified kind doesn't exist in the database.<br></p>
-            </td>
-          </tr>
-          <tr>
             <td>-3999</td>
             <td>db: access denied</td>
             <td>
               <p style="text-align: left;">This message implies that the specified kind exists in the database, however the app does not have the delete permissions.&nbsp;<br></p>
+            </td>
+          </tr>
+          <tr>
+            <td>-3970</td>
+            <td>db: kind not registered</td>
+            <td>
+              <p style="text-align: left;">This message implies that the specified kind doesn't exist in the database.<br></p>
             </td>
           </tr>
         </tbody>
@@ -1580,6 +1734,11 @@ toc: true
   <h3 id="dump">dump</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.management</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p style="text-align:left">Backs up a database. The file created by the <strong>dump</strong> method<strong>&nbsp;</strong>typically contains JSON statements to recreate all of the Kinds and data of the database from which they have been dumped.</p>
     <h4>Parameters</h4>
@@ -1719,6 +1878,11 @@ toc: true
   <h3 id="find">find</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>The <strong>find</strong> method returns a set of objects that match the query specified in the&nbsp;<strong>query</strong>&nbsp;parameter.</p>
     <p>The app can specify the number of results to return. However, if the app does not want to specify a limit, it can set the&nbsp;<strong>count</strong>&nbsp;parameter to <strong>true</strong>. This will cause the&nbsp;<strong>find</strong>&nbsp;method to return the total number of results.</p>
@@ -1745,7 +1909,7 @@ toc: true
           <tr>
             <td>query</td>
             <td>Required</td>
-            <td>Object: <a href="#query"> Query</a></td>
+            <td>Object: <a href="#object-query">Query</a></td>
             <td>
               <p style="text-align:left">DB8 query for retrieving results.</p>
             </td>
@@ -1877,17 +2041,17 @@ toc: true
             </th>
           </tr>
           <tr>
-            <td>-3970</td>
-            <td>db: kind not registered</td>
-            <td>
-              <p style="text-align: left;">This message implies that the specified kind is not registered in the database.</p>
-            </td>
-          </tr>
-          <tr>
             <td>-3978</td>
             <td>db: invalid query</td>
             <td>
               <p style="text-align: left;">This message implies that the query syntax is correct, but contains misspelled commands or logical errors.<br></p>
+            </td>
+          </tr>
+          <tr>
+            <td>-3970</td>
+            <td>db: kind not registered</td>
+            <td>
+              <p style="text-align: left;">This message implies that the specified kind is not registered in the database.</p>
             </td>
           </tr>
           <tr>
@@ -1953,6 +2117,11 @@ toc: true
   <h3 id="get">get</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p style="text-align:left">The&nbsp;<strong>get</strong>&nbsp;method retrieves&nbsp;JSON data objects by ids. This is the fastest way to retrieve data.</p>
     <h4>Parameters</h4>
@@ -2099,6 +2268,11 @@ toc: true
   <h3 id="getprofile">getProfile</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.profiling</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Get profiling data for applications. Profile data includes the queries made and related information such as&nbsp;request time and response time.</p>
     <h4>Parameters</h4>
@@ -2134,7 +2308,7 @@ toc: true
           <tr>
             <td>query</td>
             <td>Optional</td>
-            <td>Object: <a href="#query"> Query</a></td>
+            <td>Object: <a href="#object-query">Query</a></td>
             <td>
               <p>Additional filters for retrieving profile data.</p>
             </td>
@@ -2215,17 +2389,17 @@ toc: true
             </th>
           </tr>
           <tr>
-            <td>-3970</td>
-            <td>db: kind not registered</td>
-            <td>
-              <p>The specified kind is not registered in the database.</p>
-            </td>
-          </tr>
-          <tr>
             <td>-3978</td>
             <td>db: invalid query</td>
             <td>
               <p>The query syntax is correct&nbsp;but contains misspelled commands or logical errors.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>-3970</td>
+            <td>db: kind not registered</td>
+            <td>
+              <p>The specified kind is not registered in the database.</p>
             </td>
           </tr>
           <tr>
@@ -2243,17 +2417,17 @@ toc: true
             </td>
           </tr>
           <tr>
-            <td>-3946</td>
-            <td>db: profiling not enabled for this application</td>
-            <td>
-              <p>Application profiling is disabled. Enable it by using the &quot;profile&quot; method.</p>
-            </td>
-          </tr>
-          <tr>
             <td>-3947</td>
             <td>db: profiling feature is not supported</td>
             <td>
               <p>DB8 profiling feature is not supported.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>-3946</td>
+            <td>db: profiling not enabled for this application</td>
+            <td>
+              <p>Application profiling is disabled. Enable it by using the &quot;profile&quot; method.</p>
             </td>
           </tr>
         </tbody>
@@ -2379,6 +2553,11 @@ toc: true
   <h3 id="internal-postbackup">internal/postBackup</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.management</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 23</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>An internal DB8 method that is called when a backup operation has been completed.</p>
     <h4>Parameters</h4>
@@ -2449,15 +2628,15 @@ toc: true
             </th>
           </tr>
           <tr>
-            <td>-1989</td>
-            <td>json: unexpected char at 1:9</td>
+            <td>-1990</td>
+            <td>json: error parsing prop name at 1:2</td>
             <td>
               <p>invalid json format input parameter.</p>
             </td>
           </tr>
           <tr>
-            <td>-1990</td>
-            <td>json: error parsing prop name at 1:2</td>
+            <td>-1989</td>
+            <td>json: unexpected char at 1:9</td>
             <td>
               <p>invalid json format input parameter.</p>
             </td>
@@ -2507,6 +2686,11 @@ toc: true
   <h3 id="internal-postrestore">internal/postRestore</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.management</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 21</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>An internal DB8 method that is called when the database finishes a restore process.</p>
     <h4>Parameters</h4>
@@ -2586,6 +2770,11 @@ toc: true
   <h3 id="internal-prebackup">internal/preBackup</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.management</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 21</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Invoked when an internal webOS service wants to restore a database from a backup file.&nbsp;</p>
     <h4>Parameters</h4>
@@ -2720,7 +2909,7 @@ toc: true
           <tr>
             <td>incrementalKey</td>
             <td>Optional</td>
-            <td>Object: <a href="#query"> Query</a></td>
+            <td>Object: <a href="#object-query">Query</a></td>
             <td>
               <p>Incremental key revision number for pre-backup operation.</p>
             </td>
@@ -2770,6 +2959,11 @@ toc: true
   <h3 id="internal-prerestore">internal/preRestore</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.management</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 21</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p style="text-align:left">Used by the webOS service to correctly respond to a database restore command.&nbsp;This method must be called before restoring a database.</p>
     <h4>Parameters</h4>
@@ -2850,6 +3044,11 @@ toc: true
   <h3 id="internal-releaseadminprofile">internal/releaseAdminProfile</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.management</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 21</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>For applications whose profiling is controlled by admin-privileged applications, this method relinquishes the profiling control from admin-privilged applications. The 3rd-party application can then control its own its own profiling.</p>
     <p><strong>Background:</strong> Once an admin-privileged application has enabled/disabled profiling for a 3rd-party application, then only admin-privileged applications can control the profiling for that application.</p>
@@ -2982,6 +3181,11 @@ toc: true
   <h3 id="internal-scheduledpurge">internal/scheduledPurge</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.management</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 21</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>An internal&nbsp;DB8 private method, used by <strong>activityManager</strong>. <strong>Activity manager</strong> periodically calls the <strong>DB8</strong> garbage collector to remove data that has been marked for deletion.</p>
     <h4>Parameters</h4>
@@ -3005,7 +3209,7 @@ toc: true
           <tr>
             <td>$activity</td>
             <td>Required</td>
-            <td>Object: <a href="#activity">activity</a></td>
+            <td>Object: <a href="#object-activity">activity</a></td>
             <td>
               <p><strong>$activity</strong> contain information about active <u>ActivityManager</u> job</p>
             </td>
@@ -3087,6 +3291,11 @@ toc: true
   <h3 id="internal-scheduledspacecheck">internal/scheduledSpaceCheck</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.management</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 21</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>An internal DB8 callback method, that is called by the <strong>Activity Manager</strong> for checking available disk space.</p>
     <h4>Parameters</h4>
@@ -3158,6 +3367,11 @@ toc: true
   <h3 id="internal-spacecheck">internal/spaceCheck</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.management</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 21</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>An internal DB8 private method, used by webOS private services. Services can subscribe for the <strong>spaceCheck </strong>method and get notifications when DB8 reaches soft and hard disk space limits.</p>
     <h4>Parameters</h4>
@@ -3221,6 +3435,11 @@ toc: true
   <h3 id="listactivemedia">listActiveMedia</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 21</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p><span style="background-color:rgb(255, 255, 255); color:rgb(102, 102, 102)">Returns a list of active attached media, and shards.</span>&nbsp;</p>
     <h4>Parameters</h4>
@@ -3261,7 +3480,7 @@ toc: true
           <tr>
             <td>media</td>
             <td>Required</td>
-            <td>Object: <a href="#media"> media</a></td>
+            <td>Object: <a href="#object-media">media</a></td>
             <td>
               <p>List of active devices and their associated shards</p>
             </td>
@@ -3294,6 +3513,11 @@ toc: true
   <h3 id="load">load</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.management</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Restores a database from a dumped JSON file.</p>
     <h4>Parameters</h4>
@@ -3432,6 +3656,11 @@ toc: true
   <h3 id="merge">merge</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>The <strong>merge</strong>&nbsp;method updates the properties of existing objects.</p>
     <p>The objects can be specified in one of the following ways:</p>
@@ -3468,7 +3697,7 @@ toc: true
           <tr>
             <td>query</td>
             <td>Optional</td>
-            <td>Object: <a href="#query"> Query</a></td>
+            <td>Object: <a href="#object-query">Query</a></td>
             <td>
               <p style="text-align:left">The <strong>query</strong> parameter is a <strong>Query</strong> object specifying the set of objects whose properties the app wants to update.</p>
               <p style="text-align:left">The&nbsp;<strong>query</strong>&nbsp;parameter is required if the&nbsp;<strong>object</strong>&nbsp;parameter is not specified.</p>
@@ -3514,7 +3743,7 @@ toc: true
           <tr>
             <td>results</td>
             <td>Optional</td>
-            <td>Object array: <a href="#results">Results</a></td>
+            <td>Object array: <a href="#object-results">Results</a></td>
             <td>
               <p style="text-align:left">If the objects parameter was specified, and the <strong>merge</strong>&nbsp;method succeeds, <strong>merge </strong>will return the ids and revisions of the updated object.</p>
             </td>
@@ -3574,10 +3803,10 @@ toc: true
             </th>
           </tr>
           <tr>
-            <td>-3961</td>
-            <td>db: quota exceeded</td>
+            <td>-3965</td>
+            <td>db: no index for query</td>
             <td>
-              <p style="text-align:left"><span style="display:none">&nbsp;</span>This message implies that the app has exceeded its quota or there is no free space available on the device.</p>
+              <p style="text-align: left;">This message implies that the query contains a SELECT for object properties that do not have an index associated with them.&nbsp;</p>
             </td>
           </tr>
           <tr>
@@ -3588,10 +3817,10 @@ toc: true
             </td>
           </tr>
           <tr>
-            <td>-3965</td>
-            <td>db: no index for query</td>
+            <td>-3961</td>
+            <td>db: quota exceeded</td>
             <td>
-              <p style="text-align: left;">This message implies that the query contains a SELECT for object properties that do not have an index associated with them.&nbsp;</p>
+              <p style="text-align:left"><span style="display:none">&nbsp;</span>This message implies that the app has exceeded its quota or there is no free space available on the device.</p>
             </td>
           </tr>
         </tbody>
@@ -3655,6 +3884,11 @@ toc: true
   <h3 id="mergeput">mergePut</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>The <strong>mergePut</strong> method updates the properties of existing objects. If an object doesn&#39;t exist, a new one&nbsp;will be created in the database.</p>
     <p>The object&nbsp;to be updated can be specified in one of the following ways:</p>
@@ -3692,7 +3926,7 @@ toc: true
           <tr>
             <td>query</td>
             <td>Optional</td>
-            <td>Object: <a href="#query"> Query</a></td>
+            <td>Object: <a href="#object-query">Query</a></td>
             <td>
               <p style="text-align:left">The <strong>query</strong> parameter is a <strong>Query</strong> object specifying the set of objects whose properties the app wants to update.</p>
               <p style="text-align:left">The&nbsp;<strong>query</strong>&nbsp;parameter is required if the&nbsp;<strong>object</strong>&nbsp;parameter is not specified.</p>
@@ -3730,7 +3964,7 @@ toc: true
           <tr>
             <td>results</td>
             <td>Optional</td>
-            <td>Object array: <a href="#results"> Results</a></td>
+            <td>Object array: <a href="#object-results">Results</a></td>
             <td>
               <p>If the objects parameter was specified, and the <strong>merge</strong>&nbsp;method succeeds, <strong>merge </strong>will return the ids and revisions of the updated object.</p>
             </td>
@@ -3790,10 +4024,10 @@ toc: true
             </th>
           </tr>
           <tr>
-            <td>-3961</td>
-            <td>db: quota exceeded</td>
+            <td>-3965</td>
+            <td>db: no index for query</td>
             <td>
-              <p>This message implies that the app has exceeded its quota or there is no free space available on the device.</p>
+              <p>This message implies that the query contains a SELECT for object properties that do not have an index associated with them.&nbsp;</p>
             </td>
           </tr>
           <tr>
@@ -3804,10 +4038,10 @@ toc: true
             </td>
           </tr>
           <tr>
-            <td>-3965</td>
-            <td>db: no index for query</td>
+            <td>-3961</td>
+            <td>db: quota exceeded</td>
             <td>
-              <p>This message implies that the query contains a SELECT for object properties that do not have an index associated with them.&nbsp;</p>
+              <p>This message implies that the app has exceeded its quota or there is no free space available on the device.</p>
             </td>
           </tr>
         </tbody>
@@ -3846,6 +4080,11 @@ toc: true
   <h3 id="profile">profile</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.profiling</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Enables or disables DB8 profiling for an application. When enabled, profiling data is stored for the&nbsp;application.</p>
     <p>You can enable DB8 profiling using one of the following approaches:</p>
@@ -3959,17 +4198,17 @@ toc: true
             </th>
           </tr>
           <tr>
-            <td>-3947</td>
-            <td>db: profiling feature is not supported</td>
-            <td>
-              <p>Profiling feature is not supported.</p>
-            </td>
-          </tr>
-          <tr>
             <td>-3963</td>
             <td>db: permission denied</td>
             <td>
               <p>The application does not have permission to enable/disable&nbsp;profiles for other applications.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>-3947</td>
+            <td>db: profiling feature is not supported</td>
+            <td>
+              <p>Profiling feature is not supported.</p>
             </td>
           </tr>
           <tr>
@@ -4000,6 +4239,11 @@ toc: true
   <h3 id="purge">purge</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>The <strong>purge </strong>method invokes the garbage collector. The purge method will:</p>
     <ul>
@@ -4097,6 +4341,11 @@ toc: true
   <h3 id="purgestatus">purgeStatus</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>The <strong>purgeStatus </strong>method returns the status of the last run <strong>purge </strong>command. If the last run <strong>purge </strong>command was successful, the objects were permanently deleted, and the <strong>purgeStatus </strong>method will return the updated database revision number.</p>
     <h4>Parameters</h4>
@@ -4159,6 +4408,11 @@ toc: true
   <h3 id="put">put</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>The <strong>put </strong>method stores JSON data objects of a particular Kind into the database. The <strong>put </strong>method will:</p>
     <ul>
@@ -4223,7 +4477,7 @@ toc: true
           <tr>
             <td>results</td>
             <td>Required</td>
-            <td>Object array: <a href="#results">Results</a></td>
+            <td>Object array: <a href="#object-results">Results</a></td>
             <td>
               <p>If the object was inserted, <strong>results</strong> will contain <u><strong>id</strong></u> and <u><strong>revision</strong></u> of the inserted object</p>
             </td>
@@ -4275,13 +4529,6 @@ toc: true
             </th>
           </tr>
           <tr>
-            <td>-3962</td>
-            <td>db: quota exceeded</td>
-            <td>
-              <p style="text-align:left"><span style="display:none">&nbsp;</span>This message implies that the app has exceeded its quota or there is no free space available on the device.</p>
-            </td>
-          </tr>
-          <tr>
             <td>-3970</td>
             <td>db: kind not registered</td>
             <td>
@@ -4293,6 +4540,13 @@ toc: true
             <td>db: permission denied</td>
             <td>
               <p style="text-align: left;">This message implies that the app does not have permission to save objects of a specified kind.<br></p>
+            </td>
+          </tr>
+          <tr>
+            <td>-3962</td>
+            <td>db: quota exceeded</td>
+            <td>
+              <p style="text-align:left"><span style="display:none">&nbsp;</span>This message implies that the app has exceeded its quota or there is no free space available on the device.</p>
             </td>
           </tr>
         </tbody>
@@ -4330,6 +4584,11 @@ toc: true
   <h3 id="putkind">putKind</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>The <strong>putKind </strong>method registers a kind with the database.</p>
     <p>Kinds define the owner, and the indexes for a JSON data object. Indexes can be composed of single or multiple properties. When you create your index, be aware that queries can only return results that are indexed, and are contiguously ordered.</p>
@@ -4403,7 +4662,7 @@ toc: true
           <tr>
             <td>indexes</td>
             <td>Optional</td>
-            <td>Object: <a href="#indexclause"> IndexClause</a></td>
+            <td>Object: <a href="#object-indexclause">IndexClause</a></td>
             <td>
               <p style="text-align:left">The <strong>indexes&nbsp;</strong>parameter contains indexes for the kind.</p>
             </td>
@@ -4411,7 +4670,7 @@ toc: true
           <tr>
             <td>revsets</td>
             <td>Optional</td>
-            <td>Object array: <a href="#revsetclause"> RevSetClause</a></td>
+            <td>Object array: <a href="#object-revsetclause">RevSetClause</a></td>
             <td>
               <p style="text-align: left;">List of database revision sets.<br></p>
             </td>
@@ -4558,6 +4817,11 @@ toc: true
   <h3 id="putpermissions">putPermissions</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p style="text-align:left">The <strong>putPermissions </strong>method enables other apps or services to access an app&#39;s stored DB8 data. The app can give permissions to access data objects of a specific Kind.</p>
     <h4>Parameters</h4>
@@ -4605,7 +4869,7 @@ toc: true
           <tr>
             <td>operations</td>
             <td>Required</td>
-            <td>Object: <a href="#operation"> operation</a></td>
+            <td>Object: <a href="#object-operation">operation</a></td>
             <td>
               <p style="text-align: left;">Database operations the app is granting permissions for.<br></p>
             </td>
@@ -4751,6 +5015,11 @@ toc: true
   <h3 id="putquotas">putQuotas</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.management</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>The <strong>putQuotas</strong> method provides the ability to update a quota&#39;s current service limits at runtime. This service is used by private webOS services to increase/decrease quotas for critical webOS services.</p>
     <h4>Parameters</h4>
@@ -4774,7 +5043,7 @@ toc: true
           <tr>
             <td>quotas</td>
             <td>Required</td>
-            <td>Object array: <a href="#putquotas"> putQuotas</a></td>
+            <td>Object array: <a href="#object-putquotas">putQuotas</a></td>
             <td>
               <p style="text-align: left;"><span style="text-align: justify;"></span>List of quotas</p>
             </td>
@@ -4873,6 +5142,11 @@ toc: true
   <h3 id="quotastats">quotaStats</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.management</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>The <strong>quotaStats </strong>method returns information about a service&#39;s used limits.</p>
     <h4>Parameters</h4>
@@ -4910,7 +5184,7 @@ toc: true
           <tr>
             <td>results</td>
             <td>Required</td>
-            <td>Object: <a href="#quotastatsresult"> quotaStatsResult</a></td>
+            <td>Object: <a href="#object-quotastatsresult">quotaStatsResult</a></td>
             <td>
               <p style="text-align:left">Returns information about a service&#39;s quota.</p>
             </td>
@@ -4949,6 +5223,11 @@ toc: true
   <h3 id="removeappdata">removeAppData</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>The <strong>removeAppData</strong> method removes all data&nbsp;associated with the given owner. In other words, the method removes all <strong>Kinds&nbsp;</strong>that have specified&nbsp;<strong>owner</strong>.</p>
     <h4>Parameters</h4>
@@ -5071,6 +5350,11 @@ toc: true
   <h3 id="reserveids">reserveIds</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>When a client service creates objects that have references between each other, the service can ask the database through the <strong>reserveIds</strong> method to regenerate ids of objects.&nbsp;The client service can use such ids as objects, and DB8 will use those ids when objects are inserted into the database.</p>
     <p>By default, DB8 configured to reserve maximum [0:1000] ids, but this limit can vary depending on the platform.</p>
@@ -5212,6 +5496,11 @@ toc: true
   <h3 id="search">search</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p style="text-align:left">Unlike the <strong>find </strong>method, the <strong>search</strong>&nbsp;method supports the <strong>&quot;?&quot; </strong>(question mark) operator. The&nbsp;<strong>?&nbsp;</strong>operator&nbsp;can be used for full-text searching.&nbsp;However, the <strong>search </strong>method is significantly slower, and should only be used for full-text type-down search. The <strong>search</strong>&nbsp;method should not be used for&nbsp;retrieving results that are going to be scrolled in a list.</p>
     <p style="text-align:left">The&nbsp;search&nbsp;method supports:</p>
@@ -5247,7 +5536,7 @@ toc: true
           <tr>
             <td>query</td>
             <td>Required</td>
-            <td>Object: <a href="#query"> Query</a></td>
+            <td>Object: <a href="#object-query">Query</a></td>
             <td>
               <p>Query for search.<br></p>
             </td>
@@ -5449,6 +5738,20 @@ toc: true
             </th>
           </tr>
           <tr>
+            <td>-986</td>
+            <td>db : &#39;cancelable&#39; property must be used with &#39;subscribe&#39;</td>
+            <td>
+              <p>&#39;subscribe&#39; parameter is mandatory when &#39;cancelable&#39; parameter is passed to search() method.&nbsp;</p>
+            </td>
+          </tr>
+          <tr>
+            <td>-992</td>
+            <td>db : cannot use both &#39;watch&#39; and &#39;cancelable&#39; simultaneously</td>
+            <td>
+              <p>The &#39;watch&#39; and &#39;cancelable&#39; parameters must not be used in the same call.</p>
+            </td>
+          </tr>
+          <tr>
             <td>-3987</td>
             <td>db: invalid filter op</td>
             <td>
@@ -5474,20 +5777,6 @@ toc: true
             <td>db: invalid combination of query operations</td>
             <td>
               <p style="text-align: left;">This message implies that the query syntax is correct, but contains logical errors.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>-992</td>
-            <td>db : cannot use both &#39;watch&#39; and &#39;cancelable&#39; simultaneously</td>
-            <td>
-              <p>The &#39;watch&#39; and &#39;cancelable&#39; parameters must not be used in the same call.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>-986</td>
-            <td>db : &#39;cancelable&#39; property must be used with &#39;subscribe&#39;</td>
-            <td>
-              <p>&#39;subscribe&#39; parameter is mandatory when &#39;cancelable&#39; parameter is passed to search() method.&nbsp;</p>
             </td>
           </tr>
         </tbody>
@@ -5552,6 +5841,11 @@ toc: true
   <h3 id="setshardmode">setShardMode</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 21</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Marks an external media as <strong>transient</strong>&nbsp;for the specified DB8 shard Id. This means&nbsp;that all data, relative to the shard, are not required by any application and will be removed by garbage collector.&nbsp;In other words, marking shard as <strong>transient</strong>&nbsp;will wipe all data from the shard on the nearest garbage collector call.</p>
     <h4>Parameters</h4>
@@ -5689,6 +5983,11 @@ toc: true
   <h3 id="shardinfo">shardInfo</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 21</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Retrieves the state of a shard, like shard activity, associated media devices, mount point.</p>
     <h4>Parameters</h4>
@@ -5851,17 +6150,17 @@ toc: true
             </th>
           </tr>
           <tr>
-            <td>100</td>
-            <td>Invalid Shard ID</td>
-            <td>
-              <p>This message implies that the registered shard is not found in db8.</p>
-            </td>
-          </tr>
-          <tr>
             <td>1</td>
             <td>Invalid Parameters</td>
             <td>
               <p>This message implies that the&nbsp;client specified the shardId, but it is malformed.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>100</td>
+            <td>Invalid Shard ID</td>
+            <td>
+              <p>This message implies that the registered shard is not found in db8.</p>
             </td>
           </tr>
         </tbody>
@@ -5894,9 +6193,161 @@ toc: true
       </p>
     </div>
   </div>
+  <h3 id="shardkind">shardKind</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.operation</b></span></div>
+    <div style="text-align: right;display: inline-block;float:right;"><span style="background: #FF4444;padding: 5px; width: 100px; text-align: center;color:#FBFBFB;margin-right: 5px;">Retired</span></div>
+    <div>
+      <ul>
+        <li>Added: API level 23</li>
+        <li>Deprecated: API level 23</li>
+        <li>Retired: API level 23</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Requests whether an external media supports a specific kind, by providing the DB8 short ID and the Kind.</p>
+    <p><strong>shardKind</strong>&nbsp;method&nbsp;call is deprecated and will always return <em>isSupported: TRUE</em>.</p>
+    <p>For physical shards, sharding is available for any kind and so the <strong>shardKind</strong> call is no longer useful.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>shardId</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>base64 encoded shard ID</p>
+            </td>
+          </tr>
+          <tr>
+            <td>kind</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Id of kind</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>isSupported</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Return true, if <strong>shard</strong> id is registered for <strong>_kind</strong></p>
+              <ul>
+                <li>If the&nbsp;method succeeds,&nbsp;<strong>returnValue</strong>&nbsp;will contain <strong>true</strong>.</li>
+                <li>If the&nbsp;method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false</strong>.&nbsp;</li>
+              </ul>
+              <p style="margin-left:0.0in">The&nbsp;method may fail because of one of the error conditions described in the&nbsp;<strong>Error Codes Reference</strong>&nbsp; of this method. See the&nbsp;<strong>Error Code Reference</strong>&nbsp;for more information.&nbsp;</p>
+            </td>
+          </tr>
+          <tr>
+            <td>shardId</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Base64 encoded shard ID (same, as passed in params)</p>
+            </td>
+          </tr>
+          <tr>
+            <td>kind</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>associated shards _kind (same, as passed into params)</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation. See the <strong>&quot;Error Codes&quot; </strong>section of this method for details.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation. Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p>Note: shards disabled</p>
+      <p># luna-send -f -n 1 luna://com.webos.mediadb/shardKind &#39;{ &quot;shardId&quot; : &quot;+MHrmF&quot;}&#39;</p>
+      <p>&nbsp;</p>
+      <p>Response (if shards disabled):&nbsp;</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;errorCode&quot;: -3958,<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
+        &nbsp; &nbsp; &quot;errorText&quot;: &quot;db: sharding disabled&quot;<br />
+        }
+      </p>
+    </div>
+  </div>
   <h3 id="stats">stats</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.profiling</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>The stats method returns detailed information about the storage space used by every service.</p>
     <h4>Parameters</h4>
@@ -5969,7 +6420,7 @@ toc: true
           <tr>
             <td>results</td>
             <td>Required</td>
-            <td>Object array: <a href="#statskindresult"> statsKindResult</a></td>
+            <td>Object array: <a href="#object-statskindresult">statsKindResult</a></td>
             <td>
               <p>Information about resource usage per kind.</p>
             </td>
@@ -6019,6 +6470,11 @@ toc: true
   <h3 id="watch">watch</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p style="text-align:left">The <strong>watch </strong>method watches for&nbsp;updates to the database that would change the results of a query.</p>
     <h4>Parameters</h4>
@@ -6042,7 +6498,7 @@ toc: true
           <tr>
             <td>query</td>
             <td>Required</td>
-            <td>Object: <a href="#query"> Query</a></td>
+            <td>Object: <a href="#object-query">Query</a></td>
             <td>
               <p>Query whose results the app wants to watch.</p>
             </td>
@@ -6168,14 +6624,12 @@ toc: true
       </p>
     </div>
   </div>
-  <h3 id="cancelsearch">cancelSearch</h3>
+</div>
+<h2 id="objects">Objects</h2>
+<div>
+  <h3 id="object-batchoperation">BatchOperation</h3>
   <div>
-    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>database.operation</b></span></div>
-    <h4>Description</h4>
-    <p>Stops the search operation mid-way.</p>
-    <p>This&nbsp;method can be used when the search operation takes a&nbsp;long time to return results or&nbsp;required to search with another keyword without waiting for previous search results. It is not applicable to situations where the&nbsp;search method returns results immediately.</p>
-    <p><strong>Note:&nbsp;</strong>For this method to work, the search() API must be configured with the &#39;cancelable&#39; parameter set to &#39;true&#39;.</p>
-    <h4>Parameters</h4>
+    <p>Method and params for batch operation.</p>
     <div class="table-container">
       <table class="table is-bordered is-fullwidth">
         <tbody>
@@ -6194,18 +6648,36 @@ toc: true
             </th>
           </tr>
           <tr>
-            <td>taskId</td>
+            <td>method</td>
             <td>Required</td>
             <td>String</td>
             <td>
-              <p>Unique identifier of the search operation.</p>
-              <p>Obtained using the search() API.&nbsp;</p>
+              <p style="text-align: left;"><span style="text-align: justify;">Database operation to perform. </span><br></p>
+              <p style="text-align: left;"><span style="text-align: justify;">Allowed values are:</span><br></p>
+              <ul>
+                <li style="text-align: left;"><span style="text-align: justify;">del</span><br></li>
+                <li style="text-align: left;"><span style="text-align: justify;">find</span><br></li>
+                <li style="text-align: left;"><span style="text-align: justify;">get</span><br></li>
+                <li style="text-align: left;"><span style="text-align: justify;">merge</span><br></li>
+                <li style="text-align: left;"><span style="text-align: justify;">put</span><br></li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>params</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p style="text-align: left;">List of parameters for the database operation.<br></p>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-    <h4>Call Returns</h4>
+  </div>
+  <h3 id="object-batchresponse">BatchResponse</h3>
+  <div>
+    <p>Response to batch operation.</p>
     <div class="table-container">
       <table class="table is-bordered is-fullwidth">
         <tbody>
@@ -6228,11 +6700,19 @@ toc: true
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
               <ul>
-                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details</li>
+                <li>If the&nbsp;method succeeds,&nbsp;<strong>returnValue&nbsp;</strong>will contain true.</li>
+                <li>If the&nbsp;method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;false.&nbsp;</li>
               </ul>
+              <p style="margin-left:0.0in">The&nbsp;method may fail because of one of the error conditions described in the&nbsp;<strong>Error Codes Reference</strong>&nbsp;table of this method. See the&nbsp;<strong>Error Code Reference&nbsp;table</strong> for more information.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>responses</td>
+            <td>Required</td>
+            <td>Array</td>
+            <td>
+              <p style="text-align: left;">Array of responses for each of the operations in the batch.<br></p>
             </td>
           </tr>
           <tr>
@@ -6240,7 +6720,8 @@ toc: true
             <td>Optional</td>
             <td>Number</td>
             <td>
-              <p>The error code for the failed operation.</p>
+              <p><strong>errorCode </strong>contains the error code if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorCode</strong>&nbsp;only if it fails.</p>
+              <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
             </td>
           </tr>
           <tr>
@@ -6248,747 +6729,625 @@ toc: true
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes&quot;</strong>&nbsp;section of this method for details.</p>
+              <p><strong>errorText </strong>contains the error text if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorText&nbsp;</strong>only if it fails.</p>
+              <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-    <h4>Error Codes Reference</h4>
+  </div>
+  <h3 id="object-filterclause">FilterClause</h3>
+  <div>
+    <p>Definition of the Filter clause that is part of the Query object.</p>
     <div class="table-container">
       <table class="table is-bordered is-fullwidth">
         <tbody>
           <tr>
             <th width="15%">
-              <p>Error Code</p>
+              <p>Name</p>
             </th>
-            <th width="30%">
-              <p>Error Text</p>
+            <th width="15%">
+              <p>Required</p>
             </th>
-            <th width="55%">
-              <p>Error Description</p>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
             </th>
           </tr>
           <tr>
-            <td>-3984</td>
-            <td>db: find_bKkNbX job does not exist</td>
+            <td>prop</td>
+            <td>Required</td>
+            <td>String</td>
             <td>
-              <p>When there is no active search or when the&nbsp;search is already completed.</p>
+              <p>Name of property to test.<br></p>
+            </td>
+          </tr>
+          <tr>
+            <td>op</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Test operator. Must be one of the following:</p>
+              <ul>
+                <li>&quot;&lt;&quot; : Less than</li>
+                <li>&quot;&lt;=&quot; : Less than or equal</li>
+                <li>&quot;=&quot; : Equals</li>
+                <li>&quot;&gt;=&quot; : Greater than or equal</li>
+                <li>&quot;&gt;&quot; : Greater than</li>
+                <li>&quot;!=&quot; : Not equal</li>
+                <li>&quot;?&quot; : Wildcard</li>
+                <li>&quot;%&quot; : Full-text. This operator (aka - the prefix operator) will return all matches beginning with the value specified.</li>
+                <li>&quot;%%&quot; : Partial-text. This operator is used to locate sub-strings or partial string matches.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>val</td>
+            <td>Required</td>
+            <td>Any</td>
+            <td>Value to test against.</td>
+          </tr>
+          <tr>
+            <td>collate</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>Indicates the string comparison routine used to order the results. See the collate field in the IndexPropClause data structure for more information.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h3 id="object-indexclause">IndexClause</h3>
+  <div>
+    <p>Used in the putKind call for creating kind object indexes. Note that indexes determine the type of queries your app can make. See Queries and Indexing for more information. Set the <strong>incDel </strong>flag to true if you want future queries to return marked as deleted objects. Objects are not completely deleted until an administrative purge operation takes place.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>name</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>Index name</td>
+          </tr>
+          <tr>
+            <td>props</td>
+            <td>Required</td>
+            <td>Object array: <a href="#object-indexpropclause">IndexPropClause</a></td>
+            <td>
+              <p style="text-align: left;">Array of properties to index together.<br></p>
+            </td>
+          </tr>
+          <tr>
+            <td>incDel</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>To display query results with deleted objects, set <strong>incDel</strong> to <strong>true</strong>.<br />
+                To display query results without deleted objects, set incDel to<strong> false</strong>.
+              </p>
+              <p>The default value of <strong>incDel</strong> is false.</p>
+              <p>Note: You can only request this if the&nbsp;<strong>incDel</strong>&nbsp;field was true when you created your indexes during a&nbsp;<strong>putKind</strong>&nbsp;operation. Otherwise, the query fails with a &quot;no index for this query&quot; message.</p>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-    <h4>Example</h4>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+  </div>
+  <h3 id="object-indexpropclause">IndexPropClause</h3>
+  <div>
+    <p>Defines index property for IndexClause</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>name</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Name of property being indexed.<br></p>
+            </td>
+          </tr>
+          <tr>
+            <td>collate</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the string comparison routine used to order the index. Must be one of the following:</p>
+              <ul>
+                <li>default: Does binary comparison.</li>
+                <li>primary: Compares base characters (for example, &quot;a&quot; &lt; &quot;b&quot;) without considering accents, case, or tone marks.</li>
+                <li>secondary: Accents in the characters are considered secondary differences (for example, &quot;as&quot; &lt; &quot;&agrave;s&quot; &lt; &quot;at&quot;). Other differences between letters can also be considered secondary differences, depending on the language. A secondary difference is ignored when there is a primary difference anywhere in the strings.</li>
+                <li>tertiary: Upper and lower case differences in characters are distinguished at the tertiary level (for example, &quot;ao&quot; &lt; &quot;Ao&quot; &lt; &quot;a&ograve;&quot;). In addition, a variant of a letter differs from the base form on the tertiary level (such as &quot;A&quot; and &quot;?&quot;). A tertiary difference is ignored when there is a primary or secondary difference anywhere in the strings.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>default</td>
+            <td>Optional</td>
+            <td>Any</td>
+            <td>Default value to set for this property at insertion time, if not present.</td>
+          </tr>
+          <tr>
+            <td>tokenize</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates if words in strings should be broken up, i.e., should &quot;Hello World&quot; become &quot;Hello&quot; and &quot;World&quot; for purposes of indexing. Must be one of the following:</p>
+              <ul>
+                <li>none: Does not tokenize.</li>
+                <li>default: Use the default for the locale (which may strip stop-words). Stop-words are common words that are stripped for purposes of indexing, i.e., &quot;the&quot;, &quot;a&quot;, &quot;an&quot;, &quot;is&quot;, etc.</li>
+                <li>all: Tokenizes all words.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>type</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>"single" or "multi". Single property or multiple properties.</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 -f&nbsp;luna://com.webos.service.db/cancelSearch &#39;{&quot;taskId&quot;: &quot;find_sEhKeU&quot;}&#39;</p>
-      <p>&nbsp;</p>
-      <p>Response:&nbsp;</p>
-      <p>{&nbsp;<br />
-        &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-        }
-      </p>
+  </div>
+  <h3 id="object-query">Query</h3>
+  <div>
+    <p>Defines a db8 query.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>select</td>
+            <td>Optional</td>
+            <td>String array</td>
+            <td>Array of property names to return.</td>
+          </tr>
+          <tr>
+            <td>from</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>Name of kind to retrieve results from.</td>
+          </tr>
+          <tr>
+            <td>where</td>
+            <td>Optional</td>
+            <td>Object array: <a href="#object-whereclause">WhereClause</a></td>
+            <td>
+              <p>Array of clauses to test.<br></p>
+            </td>
+          </tr>
+          <tr>
+            <td>orderBy</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>Order results on this property.</td>
+          </tr>
+          <tr>
+            <td>desc</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>To display query results in descending order, set <strong>desc</strong> to <strong>true</strong>.<br />
+                To display query results in ascending order, set <strong>desc</strong> to <strong>false</strong>.
+              </p>
+              <p>The default value of desc is <strong>false</strong>.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>incDel</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>To display query results with deleted objects, set <strong>incDel</strong> to <strong>true</strong>.<br />
+                To display query as is, set <strong>incDel</strong> to <strong>false</strong>.
+              </p>
+              <p>The default value of <strong>incDel</strong> is <strong>false</strong>.</p>
+              <p><strong>Note:</strong> You can only request this if the <strong>incDel</strong>&nbsp;field was true when you created your indexes during a <strong>putKind</strong> operation. Otherwise, the query fails with a &quot;no index for this query&quot; message.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>limit</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p style="text-align: left;">Specifies maximum number of results to return (0-500). Default is 500<br></p>
+            </td>
+          </tr>
+          <tr>
+            <td>page</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p style="text-align: left;">Page key returned by previous query.<br></p>
+            </td>
+          </tr>
+          <tr>
+            <td>filter</td>
+            <td>Optional</td>
+            <td>Object array: <a href="#object-filterclause">FilterClause</a></td>
+            <td>
+              <p style="text-align: left;">Array of clauses - works only in the search method - identical to WhereClause. Can be used along with where to perform a range search.<br></p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
-</div>
-<h2 id="objects">Objects</h2>
-<div>
-  <h3 id="batchoperation">BatchOperation</h3>
-  <p>Method and params for batch operation.</p>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>method</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p style="text-align: left;"><span style="text-align: justify;">Database operation to perform. </span><br></p>
-            <p style="text-align: left;"><span style="text-align: justify;">Allowed values are:</span><br></p>
-            <ul>
-              <li style="text-align: left;"><span style="text-align: justify;">del</span><br></li>
-              <li style="text-align: left;"><span style="text-align: justify;">find</span><br></li>
-              <li style="text-align: left;"><span style="text-align: justify;">get</span><br></li>
-              <li style="text-align: left;"><span style="text-align: justify;">merge</span><br></li>
-              <li style="text-align: left;"><span style="text-align: justify;">put</span><br></li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>params</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p style="text-align: left;">List of parameters for the database operation.<br></p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <h3 id="object-results">Results</h3>
+  <div>
+    <p>Contains &quot;id&quot; and &quot;rev&quot; fields for the JSON data object.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>id</td>
+            <td>Required</td>
+            <td>Any</td>
+            <td>
+              <p>ID of the object.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>rev</td>
+            <td>Required</td>
+            <td>Any</td>
+            <td>Object's revision ID. Every db8 object has this ID field. db8 maintains a global rev id counter that is incremented every time a db8 object is created or updated.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-  <h3 id="batchresponse">BatchResponse</h3>
-  <p>Response to batch operation.</p>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>returnValue</td>
-          <td>Required</td>
-          <td>Boolean</td>
-          <td>
-            <ul>
-              <li>If the&nbsp;method succeeds,&nbsp;<strong>returnValue&nbsp;</strong>will contain true.</li>
-              <li>If the&nbsp;method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;false.&nbsp;</li>
-            </ul>
-            <p style="margin-left:0.0in">The&nbsp;method may fail because of one of the error conditions described in the&nbsp;<strong>Error Codes Reference</strong>&nbsp;table of this method. See the&nbsp;<strong>Error Code Reference&nbsp;table</strong> for more information.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>responses</td>
-          <td>Required</td>
-          <td>Array</td>
-          <td>
-            <p style="text-align: left;">Array of responses for each of the operations in the batch.<br></p>
-          </td>
-        </tr>
-        <tr>
-          <td>errorCode</td>
-          <td>Optional</td>
-          <td>Number</td>
-          <td>
-            <p><strong>errorCode </strong>contains the error code if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorCode</strong>&nbsp;only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>errorText</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p><strong>errorText </strong>contains the error text if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorText&nbsp;</strong>only if it fails.</p>
-            <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <h3 id="object-revsetclause">RevSetClause</h3>
+  <div>
+    <p>Defines a revision set - subset of an object&#39;s properties that your app can be notified about when one of the properties is modified.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>name</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>Name of the revision set (unique to this kind).</td>
+          </tr>
+          <tr>
+            <td>props</td>
+            <td>Required</td>
+            <td>Object array: <a href="#object-revsetpropclause">RevSetPropClause</a></td>
+            <td>
+              <p>Array of properties to include in revision set.<br></p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-  <h3 id="query">Query</h3>
-  <p>Defines a db8 query.</p>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>select</td>
-          <td>Optional</td>
-          <td>String array</td>
-          <td>Array of property names to return.</td>
-        </tr>
-        <tr>
-          <td>from</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>Name of kind to retrieve results from.</td>
-        </tr>
-        <tr>
-          <td>where</td>
-          <td>Optional</td>
-          <td>Object array: <a href="#whereclause"> WhereClause</a></td>
-          <td>
-            <p>Array of clauses to test.<br></p>
-          </td>
-        </tr>
-        <tr>
-          <td>orderBy</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>Order results on this property.</td>
-        </tr>
-        <tr>
-          <td>desc</td>
-          <td>Optional</td>
-          <td>Boolean</td>
-          <td>
-            <p>To display query results in descending order, set <strong>desc</strong> to <strong>true</strong>.<br />
-              To display query results in ascending order, set <strong>desc</strong> to <strong>false</strong>.
-            </p>
-            <p>The default value of desc is <strong>false</strong>.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>incDel</td>
-          <td>Optional</td>
-          <td>Boolean</td>
-          <td>
-            <p>To display query results with deleted objects, set <strong>incDel</strong> to <strong>true</strong>.<br />
-              To display query as is, set <strong>incDel</strong> to <strong>false</strong>.
-            </p>
-            <p>The default value of <strong>incDel</strong> is <strong>false</strong>.</p>
-            <p><strong>Note:</strong> You can only request this if the <strong>incDel</strong>&nbsp;field was true when you created your indexes during a <strong>putKind</strong> operation. Otherwise, the query fails with a &quot;no index for this query&quot; message.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>limit</td>
-          <td>Optional</td>
-          <td>Number</td>
-          <td>
-            <p style="text-align: left;">Specifies maximum number of results to return (0-500). Default is 500<br></p>
-          </td>
-        </tr>
-        <tr>
-          <td>page</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p style="text-align: left;">Page key returned by previous query.<br></p>
-          </td>
-        </tr>
-        <tr>
-          <td>filter</td>
-          <td>Optional</td>
-          <td>Object array: <a href="#filterclause"> FilterClause</a></td>
-          <td>
-            <p style="text-align: left;">Array of clauses - works only in the search method - identical to WhereClause. Can be used along with where to perform a range search.<br></p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <h3 id="object-revsetpropclause">RevSetPropClause</h3>
+  <div>
+    <p>A property in a RevSetClause.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>name</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>Name of property to include in revision set.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-  <h3 id="indexclause">IndexClause</h3>
-  <p>Used in the putKind call for creating kind object indexes. Note that indexes determine the type of queries your app can make. See Queries and Indexing for more information. Set the <strong>incDel </strong>flag to true if you want future queries to return marked as deleted objects. Objects are not completely deleted until an administrative purge operation takes place.</p>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>name</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>Index name</td>
-        </tr>
-        <tr>
-          <td>props</td>
-          <td>Required</td>
-          <td>Object array: <a href="#indexpropclause"> IndexPropClause</a></td>
-          <td>
-            <p style="text-align: left;">Array of properties to index together.<br></p>
-          </td>
-        </tr>
-        <tr>
-          <td>incDel</td>
-          <td>Optional</td>
-          <td>Boolean</td>
-          <td>
-            <p>To display query results with deleted objects, set <strong>incDel</strong> to <strong>true</strong>.<br />
-              To display query results without deleted objects, set incDel to<strong> false</strong>.
-            </p>
-            <p>The default value of <strong>incDel</strong> is false.</p>
-            <p>Note: You can only request this if the&nbsp;<strong>incDel</strong>&nbsp;field was true when you created your indexes during a&nbsp;<strong>putKind</strong>&nbsp;operation. Otherwise, the query fails with a &quot;no index for this query&quot; message.</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <h3 id="object-whereclause">WhereClause</h3>
+  <div>
+    <p>Defines a SQL-like JSON where clause for a db8 Query.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>prop</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>Name of property to test.</td>
+          </tr>
+          <tr>
+            <td>op</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Test operator. Must be one of the following:</p>
+              <ul>
+                <li>&quot;&lt;&quot; : Less than</li>
+                <li>&quot;&lt;=&quot; : Less than or equal</li>
+                <li>&quot;=&quot; : Equals</li>
+                <li>&quot;&gt;=&quot; : Greater than or equal</li>
+                <li>&quot;&gt;&quot; : Greater than</li>
+                <li>&quot;!=&quot; : Not equal</li>
+                <li>&quot;?&quot; : Wildcard</li>
+                <li>&quot;%&quot; : Full-text. This operator (aka - the prefix operator) will return all matches beginning with the value specified.</li>
+                <li>&quot;%%&quot; : Partial-text. This operator is used to locate sub-strings or partial string matches.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>val</td>
+            <td>Required</td>
+            <td>Any</td>
+            <td>Value to test against.</td>
+          </tr>
+          <tr>
+            <td>collate</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>Indicates the string comparison routine used to order the results. See the collate field in the IndexPropClause data structure for more information.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-  <h3 id="revsetclause">RevSetClause</h3>
-  <p>Defines a revision set - subset of an object&#39;s properties that your app can be notified about when one of the properties is modified.</p>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>name</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>Name of the revision set (unique to this kind).</td>
-        </tr>
-        <tr>
-          <td>props</td>
-          <td>Required</td>
-          <td>Object array: <a href="#revsetpropclause"> RevSetPropClause</a></td>
-          <td>
-            <p>Array of properties to include in revision set.<br></p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <h3 id="object-operation">operation</h3>
+  <div>
+    <p>Object used to represent a batch operation to run.</p>
+    <p>Note: This object has different format as target. Following object example is for the target.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>method</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>operation being requested.</td>
+          </tr>
+          <tr>
+            <td>params</td>
+            <td>Required</td>
+            <td>Any array</td>
+            <td>Params will depend on the type of operation being requested.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-  <h3 id="operation">operation</h3>
-  <p>Object used to represent a batch operation to run.</p>
-  <p>Note: This object has different format as target. Following object example is for the target.</p>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>method</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>operation being requested.</td>
-        </tr>
-        <tr>
-          <td>params</td>
-          <td>Required</td>
-          <td>Any array</td>
-          <td>Params will depend on the type of operation being requested.</td>
-        </tr>
-      </tbody>
-    </table>
+  <h3 id="object-putquotas">putQuotas</h3>
+  <div>
+    <p>Represent Kind owner and maximum allowed DB8 storage usage.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>owner</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Name of service</p>
+            </td>
+          </tr>
+          <tr>
+            <td>size</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>Size in bytes of allowed quota</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-  <h3 id="putquotas-1">putQuotas</h3>
-  <p>Represent Kind owner and maximum allowed DB8 storage usage.</p>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>owner</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Name of service</p>
-          </td>
-        </tr>
-        <tr>
-          <td>size</td>
-          <td>Required</td>
-          <td>Number</td>
-          <td>
-            <p>Size in bytes of allowed quota</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <h3 id="object-quotastatsresult">quotaStatsResult</h3>
+  <div>
+    <p>Information about used quotas.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>size</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>Size of quotas in bytes</p>
+            </td>
+          </tr>
+          <tr>
+            <td>used</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>Used quotas by service in bytes</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-  <h3 id="quotastatsresult">quotaStatsResult</h3>
-  <p>Information about used quotas.</p>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>size</td>
-          <td>Required</td>
-          <td>Number</td>
-          <td>
-            <p>Size of quotas in bytes</p>
-          </td>
-        </tr>
-        <tr>
-          <td>used</td>
-          <td>Required</td>
-          <td>Number</td>
-          <td>
-            <p>Used quotas by service in bytes</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h3 id="statskindresult">statsKindResult</h3>
-  <p>Information about kind usage.</p>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>indexes</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Statistic for each index, created for kind</p>
-          </td>
-        </tr>
-        <tr>
-          <td>_id</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Statistic for each id, created for kind</p>
-          </td>
-        </tr>
-        <tr>
-          <td>objects</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Statistic about objects, relative to kind</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h3 id="whereclause">WhereClause</h3>
-  <p>Defines a SQL-like JSON where clause for a db8 Query.</p>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>prop</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>Name of property to test.</td>
-        </tr>
-        <tr>
-          <td>op</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Test operator. Must be one of the following:</p>
-            <ul>
-              <li>&quot;&lt;&quot; : Less than</li>
-              <li>&quot;&lt;=&quot; : Less than or equal</li>
-              <li>&quot;=&quot; : Equals</li>
-              <li>&quot;&gt;=&quot; : Greater than or equal</li>
-              <li>&quot;&gt;&quot; : Greater than</li>
-              <li>&quot;!=&quot; : Not equal</li>
-              <li>&quot;?&quot; : Wildcard</li>
-              <li>&quot;%&quot; : Full-text. This operator (aka - the prefix operator) will return all matches beginning with the value specified.</li>
-              <li>&quot;%%&quot; : Partial-text. This operator is used to locate sub-strings or partial string matches.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>val</td>
-          <td>Required</td>
-          <td>Any</td>
-          <td>Value to test against.</td>
-        </tr>
-        <tr>
-          <td>collate</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>Indicates the string comparison routine used to order the results. See the collate field in the IndexPropClause data structure for more information.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h3 id="filterclause">FilterClause</h3>
-  <p>Definition of the Filter clause that is part of the Query object.</p>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>prop</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Name of property to test.<br></p>
-          </td>
-        </tr>
-        <tr>
-          <td>op</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Test operator. Must be one of the following:</p>
-            <ul>
-              <li>&quot;&lt;&quot; : Less than</li>
-              <li>&quot;&lt;=&quot; : Less than or equal</li>
-              <li>&quot;=&quot; : Equals</li>
-              <li>&quot;&gt;=&quot; : Greater than or equal</li>
-              <li>&quot;&gt;&quot; : Greater than</li>
-              <li>&quot;!=&quot; : Not equal</li>
-              <li>&quot;?&quot; : Wildcard</li>
-              <li>&quot;%&quot; : Full-text. This operator (aka - the prefix operator) will return all matches beginning with the value specified.</li>
-              <li>&quot;%%&quot; : Partial-text. This operator is used to locate sub-strings or partial string matches.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>val</td>
-          <td>Required</td>
-          <td>Any</td>
-          <td>Value to test against.</td>
-        </tr>
-        <tr>
-          <td>collate</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>Indicates the string comparison routine used to order the results. See the collate field in the IndexPropClause data structure for more information.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h3 id="results">Results</h3>
-  <p>Contains &quot;id&quot; and &quot;rev&quot; fields for the JSON data object.</p>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>id</td>
-          <td>Required</td>
-          <td>Any</td>
-          <td>
-            <p>ID of the object.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>rev</td>
-          <td>Required</td>
-          <td>Any</td>
-          <td>Object's revision ID. Every db8 object has this ID field. db8 maintains a global rev id counter that is incremented every time a db8 object is created or updated.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h3 id="indexpropclause">IndexPropClause</h3>
-  <p>Defines index property for IndexClause</p>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>name</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>
-            <p>Name of property being indexed.<br></p>
-          </td>
-        </tr>
-        <tr>
-          <td>collate</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Indicates the string comparison routine used to order the index. Must be one of the following:</p>
-            <ul>
-              <li>default: Does binary comparison.</li>
-              <li>primary: Compares base characters (for example, &quot;a&quot; &lt; &quot;b&quot;) without considering accents, case, or tone marks.</li>
-              <li>secondary: Accents in the characters are considered secondary differences (for example, &quot;as&quot; &lt; &quot;&agrave;s&quot; &lt; &quot;at&quot;). Other differences between letters can also be considered secondary differences, depending on the language. A secondary difference is ignored when there is a primary difference anywhere in the strings.</li>
-              <li>tertiary: Upper and lower case differences in characters are distinguished at the tertiary level (for example, &quot;ao&quot; &lt; &quot;Ao&quot; &lt; &quot;a&ograve;&quot;). In addition, a variant of a letter differs from the base form on the tertiary level (such as &quot;A&quot; and &quot;?&quot;). A tertiary difference is ignored when there is a primary or secondary difference anywhere in the strings.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>default</td>
-          <td>Optional</td>
-          <td>Any</td>
-          <td>Default value to set for this property at insertion time, if not present.</td>
-        </tr>
-        <tr>
-          <td>tokenize</td>
-          <td>Optional</td>
-          <td>String</td>
-          <td>
-            <p>Indicates if words in strings should be broken up, i.e., should &quot;Hello World&quot; become &quot;Hello&quot; and &quot;World&quot; for purposes of indexing. Must be one of the following:</p>
-            <ul>
-              <li>none: Does not tokenize.</li>
-              <li>default: Use the default for the locale (which may strip stop-words). Stop-words are common words that are stripped for purposes of indexing, i.e., &quot;the&quot;, &quot;a&quot;, &quot;an&quot;, &quot;is&quot;, etc.</li>
-              <li>all: Tokenizes all words.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td>type</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>"single" or "multi". Single property or multiple properties.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h3 id="revsetpropclause">RevSetPropClause</h3>
-  <p>A property in a RevSetClause.</p>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th width="15%">
-            <p>Name</p>
-          </th>
-          <th width="15%">
-            <p>Required</p>
-          </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
-          </th>
-        </tr>
-        <tr>
-          <td>name</td>
-          <td>Required</td>
-          <td>String</td>
-          <td>Name of property to include in revision set.</td>
-        </tr>
-      </tbody>
-    </table>
+  <h3 id="object-statskindresult">statsKindResult</h3>
+  <div>
+    <p>Information about kind usage.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>indexes</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Statistic for each index, created for kind</p>
+            </td>
+          </tr>
+          <tr>
+            <td>_id</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Statistic for each id, created for kind</p>
+            </td>
+          </tr>
+          <tr>
+            <td>objects</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Statistic about objects, relative to kind</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

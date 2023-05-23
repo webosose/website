@@ -1,0 +1,2022 @@
+---
+title: com.webos.service.videooutput
+date: 2023-05-22
+api_level: 23
+weight: 346
+toc: true
+---
+{{< caution >}}
+This API has been retired since [API level]({{< relref "ls2-api-index#api-levels" >}}) 23.
+{{< /caution >}}
+<h2 id="api-summary">API Summary</h2>
+<div>
+  <p>Connects&nbsp;the video&nbsp;source to the video output&nbsp;device and also controls post-processing and scaling on the video&nbsp;device. The service exposes methods that make&nbsp;the HAL calls to connect source to sink and position output as needed.</p>
+  <p><strong>Note: Application developers must not use&nbsp;this service directly.</strong></p>
+</div>
+<h2 id="overview-of-the-api">Overview of the API</h2>
+<div>
+  <p>This service is&nbsp;responsible for connecting the input pipeline to the backend video.&nbsp;The&nbsp;<strong>Media Framework</strong>&nbsp;is responsible for determining the life cycle of a connection and pipeline policy (which application is in foreground and has focus, resources, and so on). Media Framework uses VideoOutput&nbsp;APIs to achieve connection and video post-processing.</p>
+  <ul>
+    <li>VideoOutput&nbsp;does NOT have policy.</li>
+    <li>It provides API&nbsp;to connect video source (frames from decoder and so on) to video plane.</li>
+    <li>It provides the HAL abstraction for the backend (i.e. VideoOutput&nbsp;will work with HAL or KMS/DRM or other hardware abstraction layer) &nbsp;</li>
+    <li>It provides the interface for H/W video post-processing and scaling.&nbsp;The post-processing functionality will be implemented with a plugin design to allow various degrees of functionality based on product.</li>
+  </ul>
+  <p>Direct use of videooutputd by application developers is strongly discouraged. Instead, the modules of media framework like UMS, LSM are supposed to use these APIs.</p>
+</div>
+<h2 id="methods">Methods</h2>
+<div>
+  <h3 id="connect">connect</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>videooutput.management</b></span></div>
+    <div style="text-align: right;display: inline-block;float:right;"><span style="background: #FF4444;padding: 5px; width: 100px; text-align: center;color:#FBFBFB;margin-right: 5px;">Retired</span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+        <li>Deprecated: API level 13</li>
+        <li>Retired: API level 23</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Connects a video source to a video sink</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>source</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Video source.&nbsp;</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>VDEC : It describes source of video decoder</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>sourcePort</td>
+            <td>Optional</td>
+            <td>Number (int8_t)</td>
+            <td>
+              <p>Video port number.</p>
+              <p><strong>Note</strong>: For VDEC, the possible values are 0 and 1.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>sink</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Video sink.&nbsp;</p>
+              <p>Each value corresponds to overlay&nbsp;plane ID of display. For example, raspberrypi have overlay planes whose IDs are 44, 45, 46, 47. Each possible string value corresponds to the ID values above.</p>
+              <p>Possible values are:&nbsp;</p>
+              <ul>
+                <li>DISP0_MAIN</li>
+                <li>DISP0_SUB0</li>
+                <li>DISP0_SUB1</li>
+                <li>DISP0_SUB2</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>context</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Registered pipeline ID.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>appId</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Registered application ID.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorMessage&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number (int8_t)</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorMessage</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>API&nbsp;Error Codes Reference&quot;</strong>&nbsp;section for details.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>planeID</td>
+            <td>Required</td>
+            <td>Number (int8_t)</td>
+            <td>
+              <p>Numeric plane ID of the sink.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p>Example:</p>
+      <p># luna-send -n 1 -f luna://com.webos.service.videooutput/connect &#39;{&quot;source&quot;: &quot;VDEC&quot;, &quot;sourcePort&quot;:0, &quot;sink&quot;:&quot;DISP0_MAIN&quot;}&#39;</p>
+      <p>&nbsp;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;planeID&quot;: 44,<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="disconnect">disconnect</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>videooutput.management</b></span></div>
+    <div style="text-align: right;display: inline-block;float:right;"><span style="background: #FF4444;padding: 5px; width: 100px; text-align: center;color:#FBFBFB;margin-right: 5px;">Retired</span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+        <li>Deprecated: API level 13</li>
+        <li>Retired: API level 23</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Disconnects video from sink.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>sink</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Video sink.</p>
+              <p>Each value corresponds to overlay&nbsp;plane ID of display. For example, raspberrypi have overlay planes whose IDs are 44, 45, 46, 47. Each possible string value corresponds to the ID values above.</p>
+              <p>Possible values are:&nbsp;</p>
+              <ul>
+                <li>DISP0_MAIN</li>
+                <li>DISP0_SUB0</li>
+                <li>DISP0_SUB1</li>
+                <li>DISP0_SUB2</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>context</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Specifies registered pipeline ID</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorMessage&quot; fields for details</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number (int8_t)</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorMessage</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>API&nbsp;Error Codes Reference&quot;</strong>&nbsp;section for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p>Example:</p>
+      <p># luna-send -n 1 -f luna://com.webos.service.videooutput/disconnect &#39;{&quot;sink&quot;:&quot;DISP0_MAIN&quot;}&#39;</p>
+      <p>&nbsp;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="display-getoutputcapabilities">display/getOutputCapabilities</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>videooutput.query</b></span></div>
+    <div style="text-align: right;display: inline-block;float:right;"><span style="background: #FF4444;padding: 5px; width: 100px; text-align: center;color:#FBFBFB;margin-right: 5px;">Retired</span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+        <li>Deprecated: API level 13</li>
+        <li>Retired: API level 23</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Helper method to query the set video limits</p>
+    <h4>Parameters</h4>
+    <p>None</p>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorMessage&quot; fields for details</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>numPlanes</td>
+            <td>Required</td>
+            <td>Number (int8_t)</td>
+            <td>
+              <p>Total hardware planes available on the platform for rendering</p>
+            </td>
+          </tr>
+          <tr>
+            <td>planes</td>
+            <td>Required</td>
+            <td>Object array: <a href="#object-planes">Planes</a></td>
+            <td>
+              <p>See &quot;Planes&quot; object.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number (int8_t)</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorMessage</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>API&nbsp;Error Codes Reference&quot;</strong>&nbsp;section for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p>Example:</p>
+      <p># luna-send -n 1 -f luna://com.webos.service.videooutput/display/getOutputCapabilities &#39;{}&#39;</p>
+      <p>&nbsp;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;numPlanes&quot;: 4,<br />
+        &nbsp; &nbsp; &quot;planes&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;maxDownscaleSize&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;width&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;height&quot;: 0<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;sinkId&quot;: &quot;DISP0_MAIN&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;maxUpscaleSize&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;width&quot;: 1920,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;height&quot;: 1080<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;maxDownscaleSize&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;width&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;height&quot;: 0<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;sinkId&quot;: &quot;DISP0_SUB0&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;maxUpscaleSize&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;width&quot;: 1920,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;height&quot;: 1080<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;maxDownscaleSize&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;width&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;height&quot;: 0<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;sinkId&quot;: &quot;DISP0_SUB1&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;maxUpscaleSize&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;width&quot;: 1920,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;height&quot;: 1080<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;maxDownscaleSize&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;width&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;height&quot;: 0<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;sinkId&quot;: &quot;DISP0_SUB2&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;maxUpscaleSize&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;width&quot;: 1920,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;height&quot;: 1080<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; ],<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="display-getparam">display/getParam</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>videooutput.query</b></span></div>
+    <div style="text-align: right;display: inline-block;float:right;"><span style="background: #FF4444;padding: 5px; width: 100px; text-align: center;color:#FBFBFB;margin-right: 5px;">Retired</span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+        <li>Deprecated: API level 13</li>
+        <li>Retired: API level 23</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Gets information of parameters for video sinks to render video frames</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>command</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Type of command.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>DRMResources -&nbsp;</strong>Get DRM/KMS related information.</li>
+                <li><strong>NumConnector -&nbsp;</strong>Get the number of connected displays.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>sink</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Video sink.&nbsp;</p>
+              <p>Each value corresponds to overlay&nbsp;plane ID of display. For example, raspberrypi have overlay planes whose IDs are 44, 45, 46, 47. Each possible string value corresponds to the ID values above.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>DISP0_MAIN</li>
+                <li>DISP0_SUB0</li>
+                <li>DISP0_SUB1</li>
+                <li>DISP0_SUB2</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorMessage&quot; fields for details</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number (int8_t)</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorMessage</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>API Error Codes Reference&quot;</strong>&nbsp;section for details.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>sink</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Video sink.&nbsp;</p>
+              <p>Each value corresponds to overlay&nbsp;plane ID of display. For example, raspberrypi have overlay planes whose IDs are 44, 45, 46, 47. Each possible string value corresponds to the ID values above.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>DISP0_MAIN</li>
+                <li>DISP0_SUB0</li>
+                <li>DISP0_SUB1</li>
+                <li>DISP0_SUB2</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>planeId</td>
+            <td>Optional</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>Numeric plane ID of the sink.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>crtcId</td>
+            <td>Optional</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>Numeric crtc ID of the sink.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>connId</td>
+            <td>Optional</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>Numeric connector ID of the sink.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>numConnector</td>
+            <td>Optional</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>Number of connected displays</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p>Example 1 - Get DRM/KMS related information</p>
+      <p># luna-send -n 1 -f luna://com.webos.service.videooutput/display/getParam &#39;{&quot;command&quot;:&quot;DRMResources&quot;,&quot;sink&quot;:&quot;DISP0_MAIN&quot;}&#39;</p>
+      <p>&nbsp;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;planeId&quot;: 44,<br />
+        &nbsp; &nbsp; &quot;sink&quot;: &quot;DISP0_MAIN&quot;,<br />
+        &nbsp; &nbsp; &quot;crtcId&quot;: 43,<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp; &nbsp; &quot;connId&quot;: 19<br />
+        }<br />
+        &nbsp;
+      </p>
+      <p>Example 2 - Get the number of connected displays</p>
+      <p># luna-send -n 1 -f luna://com.webos.service.videooutput/display/getParam &#39;{&quot;command&quot;:&quot;NumConnector&quot;}&#39;</p>
+      <p>&nbsp;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;numConnector&quot;: 1,<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="display-setcompositing">display/setCompositing</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>videooutput.management</b></span></div>
+    <div style="text-align: right;display: inline-block;float:right;"><span style="background: #FF4444;padding: 5px; width: 100px; text-align: center;color:#FBFBFB;margin-right: 5px;">Retired</span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+        <li>Deprecated: API level 13</li>
+        <li>Retired: API level 23</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Sets compositing parameters for the video sinks.</p>
+    <p>This maps directly to adapter call and changes the compositing parameters for both video outputs simultaneously.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>composeOrder</td>
+            <td>Required</td>
+            <td>Object array: <a href="#object-composeorder">ComposeOrder</a></td>
+            <td>
+              <p>See &quot;ComposeOrder&quot; object.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorMessage&quot; fields for details</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number (int8_t)</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorMessage</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>API Error Codes Reference&quot;</strong>&nbsp;section for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p>Example:</p>
+      <p># luna-send -n 1 -f luna://com.webos.service.videooutput/display/setCompositing &#39;{<br />
+        &nbsp; &nbsp;&quot;composeOrder&quot;:[<br />
+        &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;sink&quot;:&quot;DISP0_MAIN&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;opacity&quot;:255,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;zOrder&quot;:0<br />
+        &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;sink&quot;:&quot;DISP0_SUB0&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;opacity&quot;:255,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;zOrder&quot;:1<br />
+        &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;sink&quot;:&quot;DISP0_SUB1&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;opacity&quot;:255,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;zOrder&quot;:2<br />
+        &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;sink&quot;:&quot;DISP0_SUB2&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;opacity&quot;:255,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;zOrder&quot;:3<br />
+        &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp;]<br />
+        }&#39;
+      </p>
+      <p>&nbsp;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="display-setdisplaywindow">display/setDisplayWindow</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>videooutput.management</b></span></div>
+    <div style="text-align: right;display: inline-block;float:right;"><span style="background: #FF4444;padding: 5px; width: 100px; text-align: center;color:#FBFBFB;margin-right: 5px;">Retired</span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+        <li>Deprecated: API level 13</li>
+        <li>Retired: API level 23</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Setup video output location on the screen for specified sink.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>sink</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Video sink.&nbsp;</p>
+              <p>Each value corresponds to overlay&nbsp;plane ID of display. For example, raspberrypi have overlay planes whose IDs are 44, 45, 46, 47. Each possible string value corresponds to the ID values above.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>DISP0_MAIN</li>
+                <li>DISP0_SUB0</li>
+                <li>DISP0_SUB1</li>
+                <li>DISP0_SUB2</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>fullScreen</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates whether the output is fullscreen.</p>
+              <p>Possible&nbsp;values are:</p>
+              <ul>
+                <li><strong>true</strong>: output is fullscreen</li>
+                <li><strong>false</strong>:&nbsp;use data from displayOuput</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>sourceInput</td>
+            <td>Optional</td>
+            <td>Object: <a href="#object-videorect">VideoRect</a></td>
+            <td>
+              <p>Source input rectangle.</p>
+              <p><strong>Note</strong>: Full video frame if not set.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>displayOutput</td>
+            <td>Optional</td>
+            <td>Object: <a href="#object-videorect">VideoRect</a></td>
+            <td>
+              <p>Display output rectangle.</p>
+              <p><strong>Note</strong>: Required if fullscreen is false.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorMessage&quot; fields for details</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number (int8_t)</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorMessage</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>API&nbsp;Error Codes Reference&quot;</strong>&nbsp;section for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p>Example 1: Verify video position and size is correctly changed - the video should be placed in bottom right corner:</p>
+      <p># luna-send -n 1 -f luna://com.webos.service.videooutput/display/setDisplayWindow &#39;{<br />
+        &nbsp; &nbsp;&quot;sink&quot;:&quot;DISP0_MAIN&quot;,<br />
+        &nbsp; &nbsp;&quot;fullScreen&quot;:false,<br />
+        &nbsp; &nbsp;&quot;displayOutput&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &quot;x&quot;:1000,<br />
+        &nbsp; &nbsp; &nbsp; &quot;y&quot;:500,<br />
+        &nbsp; &nbsp; &nbsp; &quot;width&quot;:920,<br />
+        &nbsp; &nbsp; &nbsp; &quot;height&quot;:580<br />
+        &nbsp; &nbsp;}<br />
+        }&#39;
+      </p>
+      <p>&nbsp;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+        }<br />
+        &nbsp;
+      </p>
+      <p>Example 2:&nbsp;Verify video source rect is correctly changed - the video should be zoomed in to center 2x:</p>
+      <p># luna-send -n 1 -f luna://com.webos.service.videooutput/display/setDisplayWindow &#39;{<br />
+        &nbsp; &nbsp;&quot;sink&quot;:&quot;DISP0_MAIN&quot;,<br />
+        &nbsp; &nbsp;&quot;fullScreen&quot;:false,<br />
+        &nbsp; &nbsp;&quot;displayOutput&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &quot;x&quot;:1000,<br />
+        &nbsp; &nbsp; &nbsp; &quot;y&quot;:500,<br />
+        &nbsp; &nbsp; &nbsp; &quot;width&quot;:1280,<br />
+        &nbsp; &nbsp; &nbsp; &quot;height&quot;:720<br />
+        &nbsp; &nbsp;},<br />
+        &nbsp; &nbsp;&quot;sourceInput&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &quot;x&quot;:80,<br />
+        &nbsp; &nbsp; &nbsp; &quot;y&quot;:60,<br />
+        &nbsp; &nbsp; &nbsp; &quot;width&quot;:640,<br />
+        &nbsp; &nbsp; &nbsp; &quot;height&quot;:360<br />
+        &nbsp; &nbsp;}<br />
+        }&#39;
+      </p>
+      <p>&nbsp;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+        }<br />
+        &nbsp;
+      </p>
+      <p>Example 3: Verify full-screen mode:</p>
+      <p># luna-send -n 1 -f luna://com.webos.service.videooutput/display/setDisplayWindow &#39;{&quot;sink&quot;:&quot;DISP0_MAIN&quot;, &quot;fullScreen&quot;:true}&#39;</p>
+      <p>&nbsp;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="getstatus">getStatus</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>videooutput.query</b></span></div>
+    <div style="text-align: right;display: inline-block;float:right;"><span style="background: #FF4444;padding: 5px; width: 100px; text-align: center;color:#FBFBFB;margin-right: 5px;">Retired</span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+        <li>Deprecated: API level 13</li>
+        <li>Retired: API level 23</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Lists all video sinks and their status.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>subscribe</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Subscribe for notifications when value changes.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Get notifications</li>
+                <li><strong>false&nbsp;</strong>- Notifications are not required</li>
+              </ul>
+              <p>Note:&nbsp;This returns one entry for each video sink</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorMessage&quot; fields for details</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number (int8_t)</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorMessage</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>API&nbsp;Error Codes Reference&quot;</strong>&nbsp;section for details.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>subscribed</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>If it is subscribed,&nbsp;<strong>subscribed</strong>&nbsp;will contain&nbsp;<strong>true</strong>.<br />
+                If it is not subscribed,&nbsp;<strong>subscribed</strong>&nbsp;will contain&nbsp;<strong>false</strong>.
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td>video</td>
+            <td>Optional</td>
+            <td>Object array: <a href="#object-video">Video</a></td>
+            <td>
+              <p>See &quot;Video&quot; object.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p>Example:</p>
+      <p># luna-send -n&nbsp;1&nbsp;-f luna://com.webos.service.videooutput/getStatus &#39;{&quot;subscribe&quot;:true}&#39;</p>
+      <p>&nbsp;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;video&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;connected&quot;: true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;displayOutput&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;width&quot;: 1280,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;height&quot;: 720,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;x&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;y&quot;: 0<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;connectedSource&quot;: &quot;VDEC&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;fullScreen&quot;: false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;frameRate&quot;: 24,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;muted&quot;: true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;connectedSourcePort&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;zOrder&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;width&quot;: 1280,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;contentType&quot;: &quot;movie&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;opacity&quot;: 255,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;height&quot;: 720,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;videoInfo&quot;: null,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;sourceInput&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;width&quot;: 854,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;height&quot;: 480,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;x&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;y&quot;: 0<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;DISP0_MAIN&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;context&quot;: &quot;_TMnGr2TKCjdpKL&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;scanType&quot;: &quot;progressive&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;connected&quot;: false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;displayOutput&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;width&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;height&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;x&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;y&quot;: 0<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;connectedSource&quot;: null,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;fullScreen&quot;: false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;frameRate&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;muted&quot;: true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;connectedSourcePort&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;zOrder&quot;: 1,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;width&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;contentType&quot;: &quot;unknown&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;opacity&quot;: 255,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;height&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;videoInfo&quot;: null,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;sourceInput&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;width&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;height&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;x&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;y&quot;: 0<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;DISP0_SUB0&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;context&quot;: &quot;&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;scanType&quot;: &quot;unknown&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;connected&quot;: false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;displayOutput&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;width&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;height&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;x&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;y&quot;: 0<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;connectedSource&quot;: null,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;fullScreen&quot;: false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;frameRate&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;muted&quot;: true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;connectedSourcePort&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;zOrder&quot;: 2,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;width&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;contentType&quot;: &quot;unknown&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;opacity&quot;: 255,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;height&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;videoInfo&quot;: null,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;sourceInput&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;width&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;height&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;x&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;y&quot;: 0<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;DISP0_SUB1&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;context&quot;: &quot;&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;scanType&quot;: &quot;unknown&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;connected&quot;: false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;displayOutput&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;width&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;height&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;x&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;y&quot;: 0<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;connectedSource&quot;: null,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;fullScreen&quot;: false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;frameRate&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;muted&quot;: true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;connectedSourcePort&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;zOrder&quot;: 3,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;width&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;contentType&quot;: &quot;unknown&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;opacity&quot;: 255,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;height&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;videoInfo&quot;: null,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;sourceInput&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;width&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;height&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;x&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;y&quot;: 0<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;sink&quot;: &quot;DISP0_SUB2&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;context&quot;: &quot;&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;scanType&quot;: &quot;unknown&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; ],<br />
+        &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+        }<br />
+        &nbsp;
+      </p>
+    </div>
+  </div>
+  <h3 id="register">register</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>videooutput.management</b></span></div>
+    <div style="text-align: right;display: inline-block;float:right;"><span style="background: #FF4444;padding: 5px; width: 100px; text-align: center;color:#FBFBFB;margin-right: 5px;">Retired</span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+        <li>Deprecated: API level 13</li>
+        <li>Retired: API level 23</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Registers pipeline ID to videooutputd.</p>
+    <p><strong>Note: </strong>If this API is required to be called, make sure it is called before the connect API call.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>context</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Pipeline ID for registration.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorMessage&quot; fields for details</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number (int8_t)</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorMessage</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>API Error Codes Reference&quot;</strong>&nbsp;section for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p>Example:</p>
+      <p># luna-send -n 1 -f luna://com.webos.service.videooutput/register &#39;{&quot;context&quot;:&quot;_rf8D3OiiIsX6Wk&quot;}&#39;</p>
+      <p>&nbsp;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="setvideodata">setVideoData</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>videooutput.management</b></span></div>
+    <div style="text-align: right;display: inline-block;float:right;"><span style="background: #FF4444;padding: 5px; width: 100px; text-align: center;color:#FBFBFB;margin-right: 5px;">Retired</span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+        <li>Deprecated: API level 13</li>
+        <li>Retired: API level 23</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Sets video&nbsp;data needed for playback.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>contentType</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Type of media content.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>movie</li>
+                <li>photo</li>
+                <li>atsc30</li>
+                <li>dtv</li>
+                <li>hdmi</li>
+                <li>atv</li>
+                <li>av</li>
+                <li>component</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>context</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Registered pipeline ID.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>frameRate</td>
+            <td>Required</td>
+            <td>Number (double)</td>
+            <td>
+              <p>Video frame&nbsp;rate.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>width</td>
+            <td>Required</td>
+            <td>Number (uint32_t)</td>
+            <td>
+              <p>Video frame width.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>height</td>
+            <td>Required</td>
+            <td>Number (uint32_t)</td>
+            <td>
+              <p>Video frame height.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>scanType</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Type of scan. Possible values are:</p>
+              <ul>
+                <li>progressive</li>
+                <li>interlaced</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>sink</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Video sink.&nbsp;</p>
+              <p>Each value corresponds to overlay&nbsp;plane ID of display. For example, raspberrypi have overlay planes whose IDs are 44, 45, 46, 47. Each possible string value corresponds to the ID values above.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>DISP0_MAIN</li>
+                <li>DISP0_SUB0</li>
+                <li>DISP0_SUB1</li>
+                <li>DISP0_SUB2</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorMessage&quot; fields for details</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number (int8_t)</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorMessage</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>API&nbsp;Error Codes Reference&quot;</strong>&nbsp;section for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p>Example:</p>
+      <p># luna-send -n 1 -f luna://com.webos.service.videooutput/setVideoData &#39;{&quot;sink&quot;:&quot;DISP0_MAIN&quot;,&quot;frameRate&quot;:24,&quot;width&quot;:854,&quot;height&quot;:480}&#39;</p>
+      <p>&nbsp;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="unregister">unregister</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>videooutput.management</b></span></div>
+    <div style="text-align: right;display: inline-block;float:right;"><span style="background: #FF4444;padding: 5px; width: 100px; text-align: center;color:#FBFBFB;margin-right: 5px;">Retired</span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+        <li>Deprecated: API level 13</li>
+        <li>Retired: API level 23</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Unregisters pipeline ID from videooutputd.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>context</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Registered pipeline ID.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorMessage&quot; fields for details</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number (int8_t)</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorMessage</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>API Error Codes Reference&quot;</strong>&nbsp;section for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p>Example:</p>
+      <p># luna-send -n 1 -f luna://com.webos.service.videooutput/unregister &#39;{&quot;context&quot;:&quot;_fkluA2iyTUgqNM&quot;}&#39;</p>
+      <p>&nbsp;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+  </div>
+</div>
+<h2 id="objects">Objects</h2>
+<div>
+  <h3 id="object-composeorder">ComposeOrder</h3>
+  <div>
+    <p>Object to represent compositing parameters for the video sinks.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>sink</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Video sink.&nbsp;</p>
+              <p>Each value corresponds to overlay&nbsp;plane ID of display. For example, raspberrypi have overlay planes whose IDs are 44, 45, 46, 47.&nbsp;Each possible string value corresponds to the id values above.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>DISP0_MAIN</li>
+                <li>DISP0_SUB0</li>
+                <li>DISP0_SUB1</li>
+                <li>DISP0_SUB2</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>opacity</td>
+            <td>Required</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>Opacity value.&nbsp;</p>
+              <p>Value can be between&nbsp;0 and 255, where:</p>
+              <ul>
+                <li>0 - Highest transparency value.</li>
+                <li>255 - Highest opacity value.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>zOrder</td>
+            <td>Required</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>Relative order between Main and Sub.</p>
+              <p>Value can be between 0 and 3, where:</p>
+              <ul>
+                <li>0 -&nbsp;bottom</li>
+                <li>3 - top</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>clientId</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Client or context ID to set composition.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h3 id="object-planes">Planes</h3>
+  <div>
+    <p>Object to represent video planes and available size of scaling.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>sinkId</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Video sink.&nbsp;</p>
+              <p>Each value corresponds to overlay&nbsp;plane ID of display. For example, raspberrypi have overlay planes whose IDs are 44, 45, 46, 47. Each possible string value corresponds to the ID values above.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>DISP0_MAIN</li>
+                <li>DISP0_SUB0</li>
+                <li>DISP0_SUB1</li>
+                <li>DISP0_SUB2</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>maxDownscaleSize</td>
+            <td>Required</td>
+            <td>Object: <a href="#object-videosize">VideoSize</a></td>
+            <td>
+              <p>See &quot;VideoSize&quot; object.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>maxUpscaleSize</td>
+            <td>Required</td>
+            <td>Object: <a href="#object-videosize">VideoSize</a></td>
+            <td>
+              <p>See &quot;VideoSize&quot; object.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h3 id="object-video">Video</h3>
+  <div>
+    <p>Object to represent the status of&nbsp;video sinks.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>connected</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Specifies a video source is connected to a video sink</p>
+            </td>
+          </tr>
+          <tr>
+            <td>connectedSource</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Video source connected.</p>
+              <p><strong>Note</strong>: Returns &#39;null&#39; if not connected.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>connectedSourcePort</td>
+            <td>Required</td>
+            <td>Number (int8_t)</td>
+            <td>
+              <p>Port of the source to which sink is connected</p>
+            </td>
+          </tr>
+          <tr>
+            <td>contentType</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Type of media content. Possible values are:</p>
+              <ul>
+                <li>movie</li>
+                <li>photo</li>
+                <li>atsc30</li>
+                <li>dtv</li>
+                <li>hdmi</li>
+                <li>atv</li>
+                <li>av</li>
+                <li>component</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>context</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Specifies registered pipeline ID</p>
+            </td>
+          </tr>
+          <tr>
+            <td>displayOutput</td>
+            <td>Required</td>
+            <td>Object: <a href="#object-videorect">VideoRect</a></td>
+            <td>
+              <p>Specifies display output location.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>frameRate</td>
+            <td>Required</td>
+            <td>Number (double)</td>
+            <td>
+              <p>Frame rate of video.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>fullscreen</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Possible&nbsp;values are:</p>
+              <ul>
+                <li><strong>true</strong>: If output is fullscreen</li>
+                <li><strong>false</strong>: If otherwise</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>height</td>
+            <td>Required</td>
+            <td>Number (int16_t)</td>
+            <td>
+              <p>Frame height&nbsp;of video.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>muted</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true</strong>: Video is on mute</li>
+                <li><strong>false</strong>: Video is not on mute</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>opacity</td>
+            <td>Required</td>
+            <td>Number (int8_t)</td>
+            <td>
+              <p>Possible values are in the range of 0..255.</p>
+              <ul>
+                <li>0 = Highest transparency value</li>
+                <li>255 = Highest opacity value</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>scanType</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Type of scan. Possible values are:</p>
+              <ul>
+                <li>progressive</li>
+                <li>interlaced</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>sink</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Video sink.&nbsp;</p>
+              <p>Each value corresponds to overlay&nbsp;plane ID of display. For example, raspberrypi have overlay planes whose IDs are 44, 45, 46, 47. Each possible string value corresponds to the id values above.</p>
+              <p>Possible values are:&nbsp;</p>
+              <ul>
+                <li>DISP0_MAIN</li>
+                <li>DISP0_SUB0</li>
+                <li>DISP0_SUB1</li>
+                <li>DISP0_SUB2</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>sourceInput</td>
+            <td>Required</td>
+            <td>Object: <a href="#object-videorect">VideoRect</a></td>
+            <td>
+              <p>Specifies source or input cropping location.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>width</td>
+            <td>Required</td>
+            <td>Number (int16_t)</td>
+            <td>
+              <p>Frame width of video.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>zOrder</td>
+            <td>Required</td>
+            <td>Number (int8_t)</td>
+            <td>
+              <p>Possible values are:</p>
+              <ul>
+                <li>int (0..3) - relative order from Main, Sub0, Sub1, Sub2</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h3 id="object-videorect">VideoRect</h3>
+  <div>
+    <p>Object to represent the video window coordinates.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>x</td>
+            <td>Required</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>Horizontal offset from top left of the screen or origin (0,0)</p>
+            </td>
+          </tr>
+          <tr>
+            <td>y</td>
+            <td>Required</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>Vertical offset from top left of the screen</p>
+            </td>
+          </tr>
+          <tr>
+            <td>width</td>
+            <td>Required</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>Width of the video window</p>
+            </td>
+          </tr>
+          <tr>
+            <td>height</td>
+            <td>Required</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>Height of the video window</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h3 id="object-videosize">VideoSize</h3>
+  <div>
+    <p>Object to represent&nbsp;video size.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>width</td>
+            <td>Required</td>
+            <td>Number (int16_t)</td>
+            <td>
+              <p>Width of the video window.</p>
+              <p>Range: 0 - 3840.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>height</td>
+            <td>Required</td>
+            <td>Number (int16_t)</td>
+            <td>
+              <p>Height of the video window.</p>
+              <p>Range: 0 - 2160.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

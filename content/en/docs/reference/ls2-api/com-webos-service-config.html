@@ -1,14 +1,18 @@
 ---
 title: com.webos.service.config
-date: 2023-02-23
+date: 2023-05-22
+api_level: 23
 weight: 130
 toc: true
 ---
+{{< note >}}
+This API has been available since [API level]({{< relref "ls2-api-index#api-levels" >}}) 11.
+{{< /note >}}
 <h2 id="api-summary">API Summary</h2>
 <div>
   <p>A static service in the system that provides product specific configurations to webOS components.</p>
   <p>This service provides simple <strong>get/set</strong> interfaces to access the configurations.</p>
-  <p><span style="color:#0000FF"><strong>[Terminology]</strong></span></p>
+  <p><strong>[Terminology]</strong></p>
   <ul>
     <li>
       <strong>config : </strong>It consists of &#39;key&#39; and &#39;value&#39;. Following is an example of config.
@@ -64,7 +68,7 @@ toc: true
           <td>
             <p>com.webos.surfacemanager.json&nbsp;<br />
               {<br />
-              &quot;compositorGeometry&quot;: &quot;1920x1080+0+0r0&quot;<br />
+                &nbsp; &nbsp; &quot;compositorGeometry&quot;: &quot;1920x1080+0+0r0&quot;<br />
               }
             </p>
           </td>
@@ -114,7 +118,12 @@ toc: true
 <div>
   <h3 id="getconfigs">getConfigs</h3>
   <div>
-    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>activity.query</b></span></div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>activity.query,-</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>It returns the requested&nbsp;<strong>configs</strong><strong>&nbsp;</strong>which is<strong>&nbsp;</strong>the pairs of key-value&nbsp;as a JSON object&nbsp;and also supports a subscription.</p>
     <p>configd provides asterisk but configNames should starts feature&nbsp;file name. For example, to get all configs for com.webos.surfacemanager, configNames should be&nbsp;&quot;com.webos.surfacemanager.*&quot;. Note that&nbsp;&quot;com.webos.*&quot; or &quot;com.webos.surfacemanager*&quot; is not supported.&nbsp;&nbsp;</p>
@@ -328,6 +337,11 @@ toc: true
   <h3 id="reconfigure">reconfigure</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>systemconfig.management</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Configd parses all configuration files again and regenerates the values of <strong>configs</strong>.</p>
     <h4>Parameters</h4>
@@ -391,7 +405,12 @@ toc: true
   </div>
   <h3 id="setconfigs">setConfigs</h3>
   <div>
-    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>activity.operation</b></span></div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>activity.operation,-</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Overrides current settings of the <strong>configs</strong>.</p>
     <p>The&nbsp;overridden values will be kept until rebooting or returning back in any future queries for the config. It is useful for changing configuration in factory test process.</p>
@@ -417,7 +436,7 @@ toc: true
           <tr>
             <td>configs</td>
             <td>Required</td>
-            <td>Object: <a href="#configs"> configs</a></td>
+            <td>Object: <a href="#object-configs">configs</a></td>
             <td>
               <p>JSON value with configd key full name and value pair.&nbsp;</p>
             </td>
@@ -513,55 +532,57 @@ toc: true
   </div>
 </div>
 <h2 id="api-error-codes-reference">API Error Codes Reference</h2>
-<div class="table-container">
-  <table class="table is-bordered is-fullwidth">
-    <tbody>
-      <tr>
-        <th width="15%">
-          <p>Error Code</p>
-        </th>
-        <th width="30%">
-          <p>Error Text</p>
-        </th>
-        <th width="55%">
-          <p>Error Description</p>
-        </th>
-      </tr>
-      <tr>
-        <td>-1</td>
-        <td>&quot;Unknown error&quot;</td>
-        <td>
-          <p>Unknown Error</p>
-        </td>
-      </tr>
-      <tr>
-        <td>-2</td>
-        <td>&quot;Invalid parameter error&quot;</td>
-        <td>
-          <p>Invalid Parameter Error</p>
-        </td>
-      </tr>
-      <tr>
-        <td>-3</td>
-        <td>&quot;Invalid main database error&quot;</td>
-        <td>
-          <p>Main Database is invalid</p>
-        </td>
-      </tr>
-      <tr>
-        <td>-4</td>
-        <td>&quot;Json parsing error&quot;</td>
-        <td>
-          <p>Json parsing error</p>
-        </td>
-      </tr>
-      <tr>
-        <td>-5</td>
-        <td>&quot;Response error&quot;</td>
-        <td>
-          <p>Make-up response payload error</p>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<div>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>-5</td>
+          <td>&quot;Response error&quot;</td>
+          <td>
+            <p>Make-up response payload error</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-4</td>
+          <td>&quot;Json parsing error&quot;</td>
+          <td>
+            <p>Json parsing error</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-3</td>
+          <td>&quot;Invalid main database error&quot;</td>
+          <td>
+            <p>Main Database is invalid</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-2</td>
+          <td>&quot;Invalid parameter error&quot;</td>
+          <td>
+            <p>Invalid Parameter Error</p>
+          </td>
+        </tr>
+        <tr>
+          <td>-1</td>
+          <td>&quot;Unknown error&quot;</td>
+          <td>
+            <p>Unknown Error</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

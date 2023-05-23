@@ -1,9 +1,13 @@
 ---
 title: com.webos.service.tts
-date: 2023-02-23
+date: 2023-05-22
+api_level: 23
 weight: 330
 toc: true
 ---
+{{< note >}}
+This API has been available since [API level]({{< relref "ls2-api-index#api-levels" >}}) 11.
+{{< /note >}}
 <h2 id="api-summary">API Summary</h2>
 <div>
   <p>Converts plain language text into speech output.&nbsp;The synthesized speech can be used by applications such as voice assistants.</p>
@@ -48,9 +52,337 @@ toc: true
 </div>
 <h2 id="methods">Methods</h2>
 <div>
+  <h3 id="getavailablelanguages">getAvailableLanguages</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>tts.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Gets the list of&nbsp;languages that are supported by the <strong>TTS</strong> provider.&nbsp;</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>displayId</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>Indicates the unique identifier for the displays.</p>
+              <p>Possible values are:&nbsp;</p>
+              <ul>
+                <li>0: display 1</li>
+                <li>1: display 2</li>
+              </ul>
+              <p>Default:&nbsp;<strong>0</strong></p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>languages</td>
+            <td>Required</td>
+            <td>String array</td>
+            <td>
+              <p>Indicates the list of&nbsp;supported languages.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true: </strong>Indicates that the operation was successful.</li>
+                <li><strong>false: </strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation. See the &quot;API Error Codes Reference&quot; section for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.tts/getAvailableLanguages &#39;{}&#39;</p>
+      <p>Response:</p>
+      <p>{&nbsp;&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&quot;Languages&quot;:[&nbsp;&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;ko-KR&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;en-US&quot;<br />
+        &nbsp;&nbsp;&nbsp;],<br />
+        &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+        }
+      </p>
+    </div>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example: With displayId</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.tts/getAvailableLanguages &#39;{<br />
+        &nbsp;&nbsp; &quot;displayId&quot;:1<br />
+        }&#39;
+      </p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp; &nbsp; &quot;Languages&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;de-DE&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;en-GB&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;en-IN&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;hi-IN&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;id-ID&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;ar-XA&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;cmn-CN&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;cmn-TW&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;cs-CZ&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;da-DK&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;el-GR&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;en-AU&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;en-US&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;fi-FI&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;fil-PH&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;fr-CA&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;fr-FR&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;hu-HU&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;it-IT&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;ja-JP&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;ko-KR&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;nb-NO&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;nl-NL&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;pl-PL&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;pt-BR&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;pt-PT&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;ru-RU&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;sk-SK&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;sv-SE&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;tr-TR&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;uk-UA&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;vi-VN&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;es-ES&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;yue-HK&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;th-TH&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;bn-IN&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;gu-IN&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;kn-IN&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;ml-IN&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;ta-IN&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;te-IN&quot;<br />
+        &nbsp; &nbsp; ]<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="getstatus">getStatus</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>tts.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Gets the current state of the service.&nbsp;</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>displayId</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>Indicates the unique identifier for the displays.</p>
+              <p>Possible values are:&nbsp;</p>
+              <ul>
+                <li>0: display 1</li>
+                <li>1: display 2</li>
+              </ul>
+              <p>Default:&nbsp;<strong>0</strong></p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>status</td>
+            <td>Required</td>
+            <td>Object: <a href="#object-status">status</a></td>
+            <td>
+              <p>Indicates the current state of the service.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true</strong>:<strong> </strong>Indicates that the operation was successful.</li>
+                <li><strong>false</strong>:<strong> </strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation. See the &quot;API Error Codes Reference&quot; section for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.tts/getStatus &#39;{}&#39;</p>
+      <p>Response:</p>
+      <p>{&nbsp;&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&quot;status&quot;:{&nbsp;&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;pitch&quot;:0,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;status&quot;:&quot;TTS&nbsp;Task&nbsp;is&nbsp;Ready&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;speechRate&quot;:0,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;ttsCurrLang&quot;:&quot;en-US&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;ttsMainLang&quot;:&quot;en-US&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;volume&quot;:75<br />
+        &nbsp;&nbsp;&nbsp;},<br />
+        &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+        }
+      </p>
+    </div>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.tts/getStatus &#39;{<br />
+        &nbsp;&nbsp; &quot;displayId&quot;:1<br />
+        }&#39;
+      </p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;status&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;pitch&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;status&quot;: &quot;TTS task is not ready&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;ttsMenuLang&quot;: &quot;eng&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;ttsCurrLang&quot;: &quot;en-US&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;speech rate&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 100<br />
+        &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+  </div>
   <h3 id="speak">speak</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>tts.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Reads out an input text in the language chosen by the user.</p>
     <p><strong>Note</strong>: It generates a series of audio as output sounds until the complete speech signal for the input text is synthesized.</p>
@@ -373,6 +705,11 @@ toc: true
   <h3 id="stop">stop</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>tts.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Stops the text-to-speech processing immediately and ignores the pending text on the buffer.&nbsp;</p>
     <p><strong>Note</strong>:</p>
@@ -656,12 +993,12 @@ toc: true
       </p>
     </div>
   </div>
-  <h3 id="getavailablelanguages">getAvailableLanguages</h3>
+</div>
+<h2 id="objects">Objects</h2>
+<div>
+  <h3 id="object-status">status</h3>
   <div>
-    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>tts.operation</b></span></div>
-    <h4>Description</h4>
-    <p>Gets the list of&nbsp;languages that are supported by the <strong>TTS</strong> provider.&nbsp;</p>
-    <h4>Parameters</h4>
+    <p>Indicates the current state of the service.</p>
     <div class="table-container">
       <table class="table is-bordered is-fullwidth">
         <tbody>
@@ -680,482 +1017,173 @@ toc: true
             </th>
           </tr>
           <tr>
-            <td>displayId</td>
+            <td>pitch</td>
             <td>Optional</td>
-            <td>Number</td>
+            <td>Number (float)</td>
             <td>
-              <p>Indicates the unique identifier for the displays.</p>
-              <p>Possible values are:&nbsp;</p>
-              <ul>
-                <li>0: display 1</li>
-                <li>1: display 2</li>
-              </ul>
-              <p>Default:&nbsp;<strong>0</strong></p>
+              <p>Indicates the pitch value of the audio.</p>
             </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Call Returns</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>languages</td>
-            <td>Required</td>
-            <td>String array</td>
-            <td>
-              <p>Indicates the list of&nbsp;supported languages.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>returnValue</td>
-            <td>Required</td>
-            <td>Boolean</td>
-            <td>
-              <p>Indicates the status of the operation.</p>
-              <p>Possible values are:</p>
-              <ul>
-                <li><strong>true: </strong>Indicates that the operation was successful.</li>
-                <li><strong>false: </strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;API Error Codes Reference&quot; section for details.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Example</h4>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.tts/getAvailableLanguages &#39;{}&#39;</p>
-      <p>Response:</p>
-      <p>{&nbsp;&nbsp;<br />
-        &nbsp;&nbsp;&nbsp;&quot;Languages&quot;:[&nbsp;&nbsp;<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;ko-KR&quot;,<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;en-US&quot;<br />
-        &nbsp;&nbsp;&nbsp;],<br />
-        &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-        }
-      </p>
-    </div>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example: With displayId</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.tts/getAvailableLanguages &#39;{<br />
-        &nbsp;&nbsp; &quot;displayId&quot;:1<br />
-        }&#39;
-      </p>
-      <p>Response:</p>
-      <p>{<br />
-        &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-        &nbsp; &nbsp; &quot;Languages&quot;: [<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;de-DE&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;en-GB&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;en-IN&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;hi-IN&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;id-ID&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;ar-XA&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;cmn-CN&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;cmn-TW&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;cs-CZ&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;da-DK&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;el-GR&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;en-AU&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;en-US&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;fi-FI&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;fil-PH&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;fr-CA&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;fr-FR&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;hu-HU&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;it-IT&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;ja-JP&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;ko-KR&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;nb-NO&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;nl-NL&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;pl-PL&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;pt-BR&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;pt-PT&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;ru-RU&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;sk-SK&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;sv-SE&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;tr-TR&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;uk-UA&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;vi-VN&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;es-ES&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;yue-HK&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;th-TH&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;bn-IN&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;gu-IN&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;kn-IN&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;ml-IN&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;ta-IN&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;te-IN&quot;<br />
-        &nbsp; &nbsp; ]<br />
-        }
-      </p>
-    </div>
-  </div>
-  <h3 id="getstatus">getStatus</h3>
-  <div>
-    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>tts.operation</b></span></div>
-    <h4>Description</h4>
-    <p>Gets the current state of the service.&nbsp;</p>
-    <h4>Parameters</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>displayId</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>Indicates the unique identifier for the displays.</p>
-              <p>Possible values are:&nbsp;</p>
-              <ul>
-                <li>0: display 1</li>
-                <li>1: display 2</li>
-              </ul>
-              <p>Default:&nbsp;<strong>0</strong></p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Call Returns</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
           </tr>
           <tr>
             <td>status</td>
             <td>Required</td>
-            <td>Object: <a href="#status"> status</a></td>
+            <td>String</td>
             <td>
-              <p>Indicates the current state of the service.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>returnValue</td>
-            <td>Required</td>
-            <td>Boolean</td>
-            <td>
-              <p>Indicates the status of the operation.</p>
+              <p>Indicates the status of the TTS task instance.</p>
               <p>Possible values are:</p>
               <ul>
-                <li><strong>true</strong>:<strong> </strong>Indicates that the operation was successful.</li>
-                <li><strong>false</strong>:<strong> </strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+                <li>TTS Task is Ready</li>
+                <li>TTS Task is Not Ready</li>
+                <li>TTS Task is Done</li>
+                <li>Error: TTS task is not running</li>
               </ul>
             </td>
           </tr>
           <tr>
-            <td>errorCode</td>
+            <td>speechRate</td>
             <td>Optional</td>
-            <td>Number</td>
+            <td>Number (float)</td>
             <td>
-              <p>The error code for the failed operation.</p>
+              <p>Indicates the speech rate value of the audio.</p>
             </td>
           </tr>
           <tr>
-            <td>errorText</td>
-            <td>Optional</td>
+            <td>ttsCurrLang</td>
+            <td>Required</td>
             <td>String</td>
             <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;API Error Codes Reference&quot; section for details.</p>
+              <p>Indicates the language currently set/playing as obtained from the speak() API.&nbsp;</p>
+            </td>
+          </tr>
+          <tr>
+            <td>ttsMainLang</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the language set as&nbsp;the menu language as obtained from the settings service.&nbsp;</p>
+            </td>
+          </tr>
+          <tr>
+            <td>volume</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>Indicates the volume of the audio.</p>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-    <h4>Example</h4>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.tts/getStatus &#39;{}&#39;</p>
-      <p>Response:</p>
-      <p>{&nbsp;&nbsp;<br />
-        &nbsp;&nbsp;&nbsp;&quot;status&quot;:{&nbsp;&nbsp;<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;pitch&quot;:0,<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;status&quot;:&quot;TTS&nbsp;Task&nbsp;is&nbsp;Ready&quot;,<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;speechRate&quot;:0,<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;ttsCurrLang&quot;:&quot;en-US&quot;,<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;ttsMainLang&quot;:&quot;en-US&quot;,<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;volume&quot;:75<br />
-        &nbsp;&nbsp;&nbsp;},<br />
-        &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-        }
-      </p>
-    </div>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.tts/getStatus &#39;{<br />
-        &nbsp;&nbsp; &quot;displayId&quot;:1<br />
-        }&#39;
-      </p>
-      <p>Response:</p>
-      <p>{<br />
-        &nbsp; &nbsp; &quot;status&quot;: {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;pitch&quot;: 0,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;status&quot;: &quot;TTS task is not ready&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;ttsMenuLang&quot;: &quot;eng&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;ttsCurrLang&quot;: &quot;en-US&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;speech rate&quot;: 0,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 100<br />
-        &nbsp; &nbsp; },<br />
-        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
-        }
-      </p>
-    </div>
   </div>
 </div>
-<h2 id="objects">Objects</h2>
+<h2 id="api-error-codes-reference">API Error Codes Reference</h2>
 <div>
-  <h3 id="status">status</h3>
-  <p>Indicates the current state of the service.</p>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
         <tr>
           <th width="15%">
-            <p>Name</p>
+            <p>Error Code</p>
           </th>
-          <th width="15%">
-            <p>Required</p>
+          <th width="30%">
+            <p>Error Text</p>
           </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
+          <th width="55%">
+            <p>Error Description</p>
           </th>
         </tr>
         <tr>
-          <td>pitch</td>
-          <td>Optional</td>
-          <td>Number (float)</td>
+          <td>8000</td>
+          <td>Unknown error</td>
           <td>
-            <p>Indicates the pitch value of the audio.</p>
+            <p>Unknown error.</p>
           </td>
         </tr>
         <tr>
-          <td>status</td>
-          <td>Required</td>
-          <td>String</td>
+          <td>8001</td>
+          <td>Service is not ready</td>
           <td>
-            <p>Indicates the status of the TTS task instance.</p>
-            <p>Possible values are:</p>
-            <ul>
-              <li>TTS Task is Ready</li>
-              <li>TTS Task is Not Ready</li>
-              <li>TTS Task is Done</li>
-              <li>Error: TTS task is not running</li>
-            </ul>
+            <p>TTS service is not ready.</p>
           </td>
         </tr>
         <tr>
-          <td>speechRate</td>
-          <td>Optional</td>
-          <td>Number (float)</td>
+          <td>8002</td>
+          <td>Initialize error</td>
           <td>
-            <p>Indicates the speech rate value of the audio.</p>
+            <p>TTS service initialization error.</p>
           </td>
         </tr>
         <tr>
-          <td>ttsCurrLang</td>
-          <td>Required</td>
-          <td>String</td>
+          <td>8003</td>
+          <td>Invalid parameter</td>
           <td>
-            <p>Indicates the language currently set/playing as obtained from the speak() API.&nbsp;</p>
+            <p>Invalid parameter.</p>
           </td>
         </tr>
         <tr>
-          <td>ttsMainLang</td>
-          <td>Required</td>
-          <td>String</td>
+          <td>8004</td>
+          <td>Internal error</td>
           <td>
-            <p>Indicates the language set as&nbsp;the menu language as obtained from the settings service.&nbsp;</p>
+            <p>Internal interface function call error.</p>
           </td>
         </tr>
         <tr>
-          <td>volume</td>
-          <td>Required</td>
-          <td>Number</td>
+          <td>8005</td>
+          <td>Required parameter is missing</td>
           <td>
-            <p>Indicates the volume of the audio.</p>
+            <p>Parameter missing.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>8006</td>
+          <td>Not supported language</td>
+          <td>
+            <p>Language is not supported.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>8007</td>
+          <td>Not supported country</td>
+          <td>
+            <p>Country is not supported.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>8008</td>
+          <td>Play error</td>
+          <td>
+            <p>Playback error.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>8009</td>
+          <td>Audio resource is not available</td>
+          <td>
+            <p>Audio playback is not possible.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>8010</td>
+          <td>Speech data creating error</td>
+          <td>
+            <p>TTS internal engine error.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>8011</td>
+          <td>Finalize error</td>
+          <td>
+            <p>TTS service termination error.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>8012</td>
+          <td>Service is already running</td>
+          <td>
+            <p>TTS service is already running.</p>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
-</div>
-<h2 id="api-error-codes-reference">API Error Codes Reference</h2>
-<div class="table-container">
-  <table class="table is-bordered is-fullwidth">
-    <tbody>
-      <tr>
-        <th width="15%">
-          <p>Error Code</p>
-        </th>
-        <th width="30%">
-          <p>Error Text</p>
-        </th>
-        <th width="55%">
-          <p>Error Description</p>
-        </th>
-      </tr>
-      <tr>
-        <td>8000</td>
-        <td>Unknown error</td>
-        <td>
-          <p>Unknown error.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>8001</td>
-        <td>Service is not ready</td>
-        <td>
-          <p>TTS service is not ready.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>8002</td>
-        <td>Initialize error</td>
-        <td>
-          <p>TTS service initialization error.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>8003</td>
-        <td>Invalid parameter</td>
-        <td>
-          <p>Invalid parameter.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>8004</td>
-        <td>Internal error</td>
-        <td>
-          <p>Internal interface function call error.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>8005</td>
-        <td>Required parameter is missing</td>
-        <td>
-          <p>Parameter missing.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>8006</td>
-        <td>Not supported language</td>
-        <td>
-          <p>Language is not supported.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>8007</td>
-        <td>Not supported country</td>
-        <td>
-          <p>Country is not supported.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>8008</td>
-        <td>Play error</td>
-        <td>
-          <p>Playback error.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>8009</td>
-        <td>Audio resource is not available</td>
-        <td>
-          <p>Audio playback is not possible.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>8010</td>
-        <td>Speech data creating error</td>
-        <td>
-          <p>TTS internal engine error.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>8011</td>
-        <td>Finalize error</td>
-        <td>
-          <p>TTS service termination error.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>8012</td>
-        <td>Service is already running</td>
-        <td>
-          <p>TTS service is already running.</p>
-        </td>
-      </tr>
-    </tbody>
-  </table>
 </div>

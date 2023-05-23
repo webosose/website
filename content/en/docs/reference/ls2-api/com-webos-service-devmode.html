@@ -1,9 +1,13 @@
 ---
 title: com.webos.service.devmode
-date: 2023-04-10
+date: 2023-05-22
+api_level: 23
 weight: 180
 toc: true
 ---
+{{< note >}}
+This API has been available since [API level]({{< relref "ls2-api-index#api-levels" >}}) 11.
+{{< /note >}}
 <h2 id="api-summary">API Summary</h2>
 <div>
   <p>Developer mode support service. Allows you to enable or disable&nbsp;developer mode on a device and to query the status of developer mode.</p>
@@ -17,6 +21,11 @@ toc: true
   <h3 id="getdevmode">getDevMode</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>devmode.query</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Return the current status of developer mode.</p>
     <h4>Parameters</h4>
@@ -76,9 +85,127 @@ toc: true
       </p>
     </div>
   </div>
+  <h3 id="getpassphrase">getPassphrase</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>devmode.management</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 21</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Returns the current passphrase associated with the SSH key, which is used to connect to the device. This method is only callable by the developer mode app.</p>
+    <h4>Parameters</h4>
+    <p>None</p>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>boolean</td>
+            <td>
+              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>passphrase</td>
+            <td>Optional</td>
+            <td>string</td>
+            <td>The passphrase.</td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>string</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>11</td>
+            <td>getPassphrase: Denied. Only DevMode app can call getPassphrase.</td>
+            <td>
+              <p>Only the DevMode app can call the getPassphrase method.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>12</td>
+            <td>getPassphrase: nduid not received from systemservice</td>
+            <td>
+              <p>Unable to retrieve the device nduid from systemservice.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -P -a com.palmdts.devmode -n 1 luna://com.webos.service.devmode/getPassphrase &#39;{}&#39;</p>
+      <p>Returns:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;passphrase&quot;: &quot;123ABC&quot;,<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;:true<br />
+        }
+      </p>
+    </div>
+  </div>
   <h3 id="setdevmode">setDevMode</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>devmode.management</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 11</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Enable or disable developer mode. The device will reboot if the mode is changed.</p>
     <h4>Parameters</h4>
@@ -186,17 +313,17 @@ toc: true
             </td>
           </tr>
           <tr>
-            <td>42</td>
-            <td>SetDevMode: enabled parameter must exist and be true or false</td>
-            <td>
-              <p>The <strong>enabled</strong> parameter must be specified to true or false when calling the method.</p>
-            </td>
-          </tr>
-          <tr>
             <td>3</td>
             <td>exec of &#39;reboot&#39; failed</td>
             <td>
               <p>Unable to reboot the device.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>42</td>
+            <td>SetDevMode: enabled parameter must exist and be true or false</td>
+            <td>
+              <p>The <strong>enabled</strong> parameter must be specified to true or false when calling the method.</p>
             </td>
           </tr>
         </tbody>
@@ -212,114 +339,6 @@ toc: true
       <p>Response:</p>
       <p>{<br />
         &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-        }
-      </p>
-    </div>
-  </div>
-  <h3 id="getpassphrase">getPassphrase</h3>
-  <div>
-    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>devmode.management</b></span></div>
-    <h4>Description</h4>
-    <p>Returns the current passphrase associated with the SSH key, which is used to connect to the device. This method is only callable by the developer mode app.</p>
-    <h4>Parameters</h4>
-    <p>None</p>
-    <h4>Call Returns</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>returnValue</td>
-            <td>Required</td>
-            <td>boolean</td>
-            <td>
-              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
-              <ul>
-                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>passphrase</td>
-            <td>Optional</td>
-            <td>string</td>
-            <td>The passphrase.</td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>string</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Error Codes Reference</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Error Code</p>
-            </th>
-            <th width="30%">
-              <p>Error Text</p>
-            </th>
-            <th width="55%">
-              <p>Error Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>11</td>
-            <td>getPassphrase: Denied. Only DevMode app can call getPassphrase.</td>
-            <td>
-              <p>Only the DevMode app can call the getPassphrase method.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>12</td>
-            <td>getPassphrase: nduid not received from systemservice</td>
-            <td>
-              <p>Unable to retrieve the device nduid from systemservice.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Example</h4>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p># luna-send -P -a com.palmdts.devmode -n 1 luna://com.webos.service.devmode/getPassphrase &#39;{}&#39;</p>
-      <p>Returns:</p>
-      <p>{<br />
-        &nbsp; &nbsp; &quot;passphrase&quot;: &quot;123ABC&quot;,<br />
-        &nbsp; &nbsp; &quot;returnValue&quot;:true<br />
         }
       </p>
     </div>

@@ -1,11 +1,17 @@
 ---
 title: com.webos.service.nettools
-date: 2023-02-23
+date: 2023-05-22
+api_level: 23
 weight: 245
 toc: true
 ---
+{{< note >}}
+This API has been available since [API level]({{< relref "ls2-api-index#api-levels" >}}) 13.
+{{< /note >}}
 <h2 id="api-summary">API Summary</h2>
-<div>Provides a selection of standard network tools.</div>
+<div>
+  Provides a selection of standard network tools.
+</div>
 <h2 id="overview-of-the-api">Overview of the API</h2>
 <div>
   <p>Provides a set of standard network utility tools for applications so that they don&#39;t have to deal directly with low level network system tools.</p>
@@ -18,12 +24,18 @@ toc: true
 </div>
 <h2 id="methods">Methods</h2>
 <div>
-  <h3 id="resolvehostname">resolvehostname</h3>
+  <h3 id="arping">arping</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>nettools.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 13</li>
+      </ul>
+    </div>
     <h4>Description</h4>
-    <p>Performs a DNS request to resolve hostname to list all IP addresses that it maps to. This will return IPv4 or IPv6 addresses depending upon what the network interface supports.</p>
-    <p>The implementation uses a call to the POSIX.1-2001 getaddrinfo() function, please refer to <a href="https://www.ietf.org/rfc/rfc2553.txt">RFC 2553</a></p>
+    <p>Performs an ARP request to resolve IP address to mac address which can then be used to detect IP address conflicts.</p>
+    <p>The implementation uses a call to the system arping utility: &quot;arping -c 1 -f -I ifName ipaddress&quot;.</p>
+    <p>arping is part of the iputils package available from&nbsp;http://www.skbuff.net/iputils/.</p>
     <h4>Parameters</h4>
     <div class="table-container">
       <table class="table is-bordered is-fullwidth">
@@ -43,12 +55,168 @@ toc: true
             </th>
           </tr>
           <tr>
-            <td>hostname</td>
+            <td>ifName</td>
             <td>Required</td>
+            <td>string</td>
+            <td>
+              <p>Indicates the network interface to use for the arping command.</p>
+              <p>Example: eth0</p>
+            </td>
+          </tr>
+          <tr>
+            <td>ipAddress</td>
+            <td>Required</td>
+            <td>string</td>
+            <td>
+              <p>Indicates the IP address for which the mac address needs to be resolved</p>
+              <p>Example: 192.168.1.100</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>boolean</td>
+            <td>
+              <p>Indicates the status of operation.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+                <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the &quot;errorText&quot; field&nbsp;for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>foundMacAddress</td>
+            <td>Optional</td>
             <td>String</td>
             <td>
-              <p>Indicates the hostname to be resolved.</p>
-              <p>The hostname must start with &quot;www.&quot; and must end with one of the following:</p>
+              <p>Indicates any MAC address if found&nbsp;for the IP address.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>Error Codes</strong>&quot; section of this method for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>arping failed: unreachable network</td>
+            <td>
+              <p>The network is unreachable, possibly due to no internet connection or the network interface is down.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>arping failed: mac address not found</td>
+            <td>
+              <p>The mac address for the given ipAddress was not found.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Unknown error</td>
+            <td>
+              <p>Error in the actual system call for arping or error in parsing response json object.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.nettools/arping &#39;{<br />
+        &nbsp; &nbsp;&quot;ifName&quot;:&quot;eth0&quot;,<br />
+        &nbsp; &nbsp;&quot;ipAddress&quot;:&quot;10.195.248.213&quot;<br />
+        }&#39;
+      </p>
+      <p>Response:</p>
+      <p>{&nbsp;&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
+        &nbsp;&nbsp;&nbsp;&quot;foundMacAddress&quot;:&quot;B8:CA:3A:81:A2:5B&quot;<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="checkhttp">checkhttp</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>nettools.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 13</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Creates a TCP socket and checks if it can successfully connect to the hostURL using the standard http port (port 80).</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>hostUrl</td>
+            <td>Required</td>
+            <td>string</td>
+            <td>
+              <p>Indicates the URL on which to test the http connection.</p>
+              <p>The URL must start with &quot;www.&quot; and must end with one of the following:</p>
               <ul>
                 <li>.org</li>
                 <li>.com&nbsp;</li>
@@ -96,15 +264,7 @@ toc: true
             </td>
           </tr>
           <tr>
-            <td>resolvedIpAddress</td>
-            <td>Optional</td>
-            <td>String array</td>
-            <td>
-              <p>Indicates the list of resolved IP addresses.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
+            <td>errorrText</td>
             <td>Optional</td>
             <td>String</td>
             <td>
@@ -131,23 +291,16 @@ toc: true
           </tr>
           <tr>
             <td>None</td>
-            <td>Invalid hostname</td>
+            <td>Invalid hostUrl</td>
             <td>
-              <p>If the hostname does not conform to the supported URL format, i.e it must start with &quot;www.&quot; and end with &quot;.org&quot; or &quot;.com&quot; or &quot;.net&quot; or &quot;.gov&quot; or &quot;.edu&quot; or &quot;.jp&quot; or &quot;.int&quot; or &quot;.mil&quot;.</p>
+              <p>The hostUrl does not conform to the supported URL format, i.e it must start with &quot;www.&quot; and end with &quot;.org&quot; or &quot;.com&quot; or &quot;.net&quot; or &quot;.gov&quot; or &quot;.edu&quot; or &quot;.jp&quot; or &quot;.int&quot; or &quot;.mil&quot;.</p>
             </td>
           </tr>
           <tr>
             <td>None</td>
-            <td>Error in resolving hostname</td>
+            <td>Error in http connection</td>
             <td>
-              <p>Error in the actual system call to resolve hostname.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>None</td>
-            <td>Unknown error</td>
-            <td>
-              <p>Error in parsing response json object.</p>
+              <p>Error in testing the http connection.</p>
             </td>
           </tr>
         </tbody>
@@ -158,16 +311,542 @@ toc: true
       <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
     </div>
     <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.nettools/resolvehostname &#39;{<br />
-        &nbsp; &nbsp;&quot;hostname&quot;:&quot;www.lge.com&quot;<br />
+      <p># luna-send -n 1 -f luna://com.webos.service.nettools/checkhttp &#39;{<br />
+        &nbsp; &nbsp;&quot;hostUrl&quot;:&quot;www.lge.com&quot;<br />
+        }&#39;
+      </p>
+      <p>Response:</p>
+      <p>{&nbsp;&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="createvlan">createVlan</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>nettools.management</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 13</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Creates a VLAN for the provided index and interface.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>index</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>VLAN ID, range 1 ~ 4094.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>interface</td>
+            <td>Required</td>
+            <td>Object: <a href="#object-interface">interface</a></td>
+            <td>
+              <p>Interface details to create VLAN tag.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>method</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>&quot;dhcp&quot; or &quot;manual&quot;</p>
+            </td>
+          </tr>
+          <tr>
+            <td>address</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Sets a new IP address.</p>
+              <p><strong>Note: </strong>Only when &#39;method&#39; is specified as &#39;manual&#39;.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>netmask</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Sets a new netmask.</p>
+              <p><strong>Note: </strong>Only when &#39;method&#39; is specified as &#39;manual&#39;.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>gateway</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Sets a new gateway IP address.</p>
+              <p><strong>Note: </strong>Only when &#39;method&#39; is specified as &#39;manual&#39;.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true</strong>: Indicates that the operation was successful.</li>
+                <li><strong>false</strong>: Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>105</td>
+            <td>Invalid Method</td>
+            <td>
+              <p>This message implies that there was an error because passed method does not exist.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>106</td>
+            <td>Invalid IP address</td>
+            <td>
+              <p>This message implies that there was an error because passed address parameters does not have a valid data.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>107</td>
+            <td>Invalid Netmask</td>
+            <td>
+              <p>This message implies that there was an error because passed netmask parameters does not have a valid data.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>108</td>
+            <td>Invalid Gateway</td>
+            <td>
+              <p>This message implies that there was an error because passed gateway parameters does not have a valid data.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>109</td>
+            <td>VLAN Index already Exist</td>
+            <td>
+              <p>This message implies that there is aready a VLAN Tag with the same index requested to create.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.nettools/createVlan &#39;{<br />
+        &nbsp; &nbsp;&quot;interface&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &quot;name&quot;:&quot;eth0&quot;<br />
+        &nbsp; &nbsp;},<br />
+        &nbsp; &nbsp;&quot;index&quot;:9<br />
         }&#39;
       </p>
       <p>Response:</p>
       <p>{<br />
-        &nbsp; &nbsp;&quot;resolvedIpAddresses&quot;:[<br />
-        &nbsp; &nbsp; &nbsp; &quot;172.229.208.172&quot;<br />
-        &nbsp; &nbsp;],<br />
-        &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+        &nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="deletevlan">deleteVlan</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>nettools.management</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 13</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Provided VLAN index will be deleted for the provided interface, if present.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>index</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>VLAN ID, range 1 ~ 4094.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>interface</td>
+            <td>Required</td>
+            <td>Object: <a href="#object-interface">interface</a></td>
+            <td>
+              <p>Interface details to delete VLAN tag</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true</strong>: Indicates that the operation was successful.</li>
+                <li><strong>false</strong>: Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>110</td>
+            <td>VLAN Index does not Exist</td>
+            <td>
+              <p>This message implies that there is no VLAN tag present for passed index.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.nettools/deleteVlan &#39;{<br />
+        &nbsp; &nbsp;&quot;interface&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &quot;name&quot;:&quot;eth0&quot;<br />
+        &nbsp; &nbsp;},<br />
+        &nbsp; &nbsp;&quot;index&quot;:9<br />
+        }&#39;
+      </p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="gethostname">gethostname</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>nettools.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 13</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Gets the hostname for the system.</p>
+    <p>The implementation uses a call to gethostname() in glibc.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>subscribe</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates if subscribe to get the notifications.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true</strong>: Subscribed for notifications</li>
+                <li><strong>false</strong>: Not subscribed</li>
+              </ul>
+              <p>Default: <strong>false</strong></p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the &quot;errorText&quot; field&nbsp;for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>hostname</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the current hostname of the system.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>Error Codes</strong>&quot; section of this method for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Subscription Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+                <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the &quot;errorText&quot; field&nbsp;for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>hostname</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the current hostname of the system.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Error in calling gethostname</td>
+            <td>
+              <p>Error in calling the actual system call gethostname().</p>
+            </td>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Unknown error</td>
+            <td>
+              <p>Error in parsing the response json object.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.nettools/gethostname &#39;{}&#39;</p>
+      <p>Response:</p>
+      <p>{&nbsp;&nbsp;<br />
+        &nbsp;&nbsp;&nbsp;&quot;hostname&quot;:&quot;nnnn6&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
         }
       </p>
     </div>
@@ -175,6 +854,11 @@ toc: true
   <h3 id="ping">ping</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>nettools.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 13</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>&quot;Ping&quot; an IPv4&nbsp;network address or hostname to determine if it is reachable. The maximum wait time is 5 seconds.</p>
     <p>The implementation uses a call to the system ping command: &quot;ping -c 1 -w 5 hostname ifName&quot;.</p>
@@ -372,6 +1056,11 @@ toc: true
   <h3 id="ping6">ping6</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>nettools.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 13</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Pings&nbsp;an IPv6 network address or host name to determine if it is reachable. The maximum amount of time the ping waits for a reply is 5 seconds.&nbsp;&nbsp;</p>
     <p>Internally, the implementation uses a call to the system ping command: &quot;ping6 -c 1 -w 5 hostname ifName&quot;.</p>
@@ -566,11 +1255,17 @@ toc: true
       </p>
     </div>
   </div>
-  <h3 id="checkhttp">checkhttp</h3>
+  <h3 id="resolvehostname">resolvehostname</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>nettools.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 13</li>
+      </ul>
+    </div>
     <h4>Description</h4>
-    <p>Creates a TCP socket and checks if it can successfully connect to the hostURL using the standard http port (port 80).</p>
+    <p>Performs a DNS request to resolve hostname to list all IP addresses that it maps to. This will return IPv4 or IPv6 addresses depending upon what the network interface supports.</p>
+    <p>The implementation uses a call to the POSIX.1-2001 getaddrinfo() function, please refer to RFC 2553 (https://www.ietf.org/rfc/rfc2553.txt).</p>
     <h4>Parameters</h4>
     <div class="table-container">
       <table class="table is-bordered is-fullwidth">
@@ -590,12 +1285,12 @@ toc: true
             </th>
           </tr>
           <tr>
-            <td>hostUrl</td>
+            <td>hostname</td>
             <td>Required</td>
-            <td>string</td>
+            <td>String</td>
             <td>
-              <p>Indicates the URL on which to test the http connection.</p>
-              <p>The URL must start with &quot;www.&quot; and must end with one of the following:</p>
+              <p>Indicates the hostname to be resolved.</p>
+              <p>The hostname must start with &quot;www.&quot; and must end with one of the following:</p>
               <ul>
                 <li>.org</li>
                 <li>.com&nbsp;</li>
@@ -643,7 +1338,15 @@ toc: true
             </td>
           </tr>
           <tr>
-            <td>errorrText</td>
+            <td>resolvedIpAddress</td>
+            <td>Optional</td>
+            <td>String array</td>
+            <td>
+              <p>Indicates the list of resolved IP addresses.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
             <td>Optional</td>
             <td>String</td>
             <td>
@@ -670,167 +1373,23 @@ toc: true
           </tr>
           <tr>
             <td>None</td>
-            <td>Invalid hostUrl</td>
+            <td>Invalid hostname</td>
             <td>
-              <p>The hostUrl does not conform to the supported URL format, i.e it must start with &quot;www.&quot; and end with &quot;.org&quot; or &quot;.com&quot; or &quot;.net&quot; or &quot;.gov&quot; or &quot;.edu&quot; or &quot;.jp&quot; or &quot;.int&quot; or &quot;.mil&quot;.</p>
+              <p>If the hostname does not conform to the supported URL format, i.e it must start with &quot;www.&quot; and end with &quot;.org&quot; or &quot;.com&quot; or &quot;.net&quot; or &quot;.gov&quot; or &quot;.edu&quot; or &quot;.jp&quot; or &quot;.int&quot; or &quot;.mil&quot;.</p>
             </td>
           </tr>
           <tr>
             <td>None</td>
-            <td>Error in http connection</td>
+            <td>Error in resolving hostname</td>
             <td>
-              <p>Error in testing the http connection.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Example</h4>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.nettools/checkhttp &#39;{<br />
-        &nbsp; &nbsp;&quot;hostUrl&quot;:&quot;www.lge.com&quot;<br />
-        }&#39;
-      </p>
-      <p>Response:</p>
-      <p>{&nbsp;&nbsp;<br />
-        &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-        }
-      </p>
-    </div>
-  </div>
-  <h3 id="arping">arping</h3>
-  <div>
-    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>nettools.operation</b></span></div>
-    <h4>Description</h4>
-    <p>Performs an ARP request to resolve IP address to mac address which can then be used to detect IP address conflicts.</p>
-    <p>The implementation uses a call to the system arping utility: &quot;arping -c 1 -f -I ifName ipaddress&quot;.</p>
-    <p>arping is part of the iputils package available from&nbsp;http://www.skbuff.net/iputils/.</p>
-    <h4>Parameters</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>ifName</td>
-            <td>Required</td>
-            <td>string</td>
-            <td>
-              <p>Indicates the network interface to use for the arping command.</p>
-              <p>Example: eth0</p>
-            </td>
-          </tr>
-          <tr>
-            <td>ipAddress</td>
-            <td>Required</td>
-            <td>string</td>
-            <td>
-              <p>Indicates the IP address for which the mac address needs to be resolved</p>
-              <p>Example: 192.168.1.100</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Call Returns</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>returnValue</td>
-            <td>Required</td>
-            <td>boolean</td>
-            <td>
-              <p>Indicates the status of operation.</p>
-              <p>Possible values are:</p>
-              <ul>
-                <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
-                <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the &quot;errorText&quot; field&nbsp;for details.</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>foundMacAddress</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates any MAC address if found&nbsp;for the IP address.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>Error Codes</strong>&quot; section of this method for details.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Error Codes Reference</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Error Code</p>
-            </th>
-            <th width="30%">
-              <p>Error Text</p>
-            </th>
-            <th width="55%">
-              <p>Error Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>None</td>
-            <td>arping failed: unreachable network</td>
-            <td>
-              <p>The network is unreachable, possibly due to no internet connection or the network interface is down.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>None</td>
-            <td>arping failed: mac address not found</td>
-            <td>
-              <p>The mac address for the given ipAddress was not found.</p>
+              <p>Error in the actual system call to resolve hostname.</p>
             </td>
           </tr>
           <tr>
             <td>None</td>
             <td>Unknown error</td>
             <td>
-              <p>Error in the actual system call for arping or error in parsing response json object.</p>
+              <p>Error in parsing response json object.</p>
             </td>
           </tr>
         </tbody>
@@ -841,15 +1400,16 @@ toc: true
       <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
     </div>
     <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.nettools/arping &#39;{<br />
-        &nbsp; &nbsp;&quot;ifName&quot;:&quot;eth0&quot;,<br />
-        &nbsp; &nbsp;&quot;ipAddress&quot;:&quot;10.195.248.213&quot;<br />
+      <p># luna-send -n 1 -f luna://com.webos.service.nettools/resolvehostname &#39;{<br />
+        &nbsp; &nbsp;&quot;hostname&quot;:&quot;www.lge.com&quot;<br />
         }&#39;
       </p>
       <p>Response:</p>
-      <p>{&nbsp;&nbsp;<br />
-        &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
-        &nbsp;&nbsp;&nbsp;&quot;foundMacAddress&quot;:&quot;B8:CA:3A:81:A2:5B&quot;<br />
+      <p>{<br />
+        &nbsp; &nbsp;&quot;resolvedIpAddresses&quot;:[<br />
+        &nbsp; &nbsp; &nbsp; &quot;172.229.208.172&quot;<br />
+        &nbsp; &nbsp;],<br />
+        &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
         }
       </p>
     </div>
@@ -857,6 +1417,11 @@ toc: true
   <h3 id="sethostname">sethostname</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>nettools.management</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 13</li>
+      </ul>
+    </div>
     <h4>Description</h4>
     <p>Sets a new hostname for the system.</p>
     <p>The implementation uses a call to sethostname() in glibc.</p>
@@ -979,605 +1544,95 @@ toc: true
       </p>
     </div>
   </div>
-  <h3 id="gethostname">gethostname</h3>
-  <div>
-    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>nettools.operation</b></span></div>
-    <h4>Description</h4>
-    <p>Gets the hostname for the system.</p>
-    <p>The implementation uses a call to gethostname() in glibc.</p>
-    <h4>Parameters</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>subscribe</td>
-            <td>Optional</td>
-            <td>Boolean</td>
-            <td>
-              <p>Indicates if subscribe to get the notifications.</p>
-              <p>Possible values are:</p>
-              <ul>
-                <li><strong>true</strong>: Subscribed for notifications</li>
-                <li><strong>false</strong>: Not subscribed</li>
-              </ul>
-              <p>Default: <strong>false</strong></p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Call Returns</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>returnValue</td>
-            <td>Required</td>
-            <td>Boolean</td>
-            <td>
-              <p>Indicates the status of operation.</p>
-              <p>Possible values are:</p>
-              <ul>
-                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the &quot;errorText&quot; field&nbsp;for details.</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>hostname</td>
-            <td>Required</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the current hostname of the system.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>Error Codes</strong>&quot; section of this method for details.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Subscription Returns</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>returnValue</td>
-            <td>Required</td>
-            <td>Boolean</td>
-            <td>
-              <p>Indicates the status of operation.</p>
-              <p>Possible values are:</p>
-              <ul>
-                <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
-                <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the &quot;errorText&quot; field&nbsp;for details.</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>hostname</td>
-            <td>Required</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the current hostname of the system.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Error Codes Reference</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Error Code</p>
-            </th>
-            <th width="30%">
-              <p>Error Text</p>
-            </th>
-            <th width="55%">
-              <p>Error Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>None</td>
-            <td>Error in calling gethostname</td>
-            <td>
-              <p>Error in calling the actual system call gethostname().</p>
-            </td>
-          </tr>
-          <tr>
-            <td>None</td>
-            <td>Unknown error</td>
-            <td>
-              <p>Error in parsing the response json object.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Example</h4>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.nettools/gethostname &#39;{}&#39;</p>
-      <p>Response:</p>
-      <p>{&nbsp;&nbsp;<br />
-        &nbsp;&nbsp;&nbsp;&quot;hostname&quot;:&quot;nnnn6&quot;,<br />
-        &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-        }
-      </p>
-    </div>
-  </div>
-  <h3 id="createvlan">createVlan</h3>
-  <div>
-    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>nettools.management</b></span></div>
-    <h4>Description</h4>
-    <p>Creates a VLAN for the provided index and interface.</p>
-    <h4>Parameters</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>index</td>
-            <td>Required</td>
-            <td>String</td>
-            <td>
-              <p>VLAN ID, range 1 ~ 4094.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>interface</td>
-            <td>Required</td>
-            <td>Object: <a href="#interface"> interface</a></td>
-            <td>
-              <p>Interface details to create VLAN tag.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>method</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>&quot;dhcp&quot; or &quot;manual&quot;</p>
-            </td>
-          </tr>
-          <tr>
-            <td>address</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Sets a new IP address.</p>
-              <p><strong>Note: </strong>Only when &#39;method&#39; is specified as &#39;manual&#39;.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>netmask</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Sets a new netmask.</p>
-              <p><strong>Note: </strong>Only when &#39;method&#39; is specified as &#39;manual&#39;.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>gateway</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Sets a new gateway IP address.</p>
-              <p><strong>Note: </strong>Only when &#39;method&#39; is specified as &#39;manual&#39;.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Call Returns</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>returnValue</td>
-            <td>Required</td>
-            <td>Boolean</td>
-            <td>
-              <p>Indicates the status of the operation.</p>
-              <p>Possible values are:</p>
-              <ul>
-                <li><strong>true</strong>: Indicates that the operation was successful.</li>
-                <li><strong>false</strong>: Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Error Codes Reference</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Error Code</p>
-            </th>
-            <th width="30%">
-              <p>Error Text</p>
-            </th>
-            <th width="55%">
-              <p>Error Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>105</td>
-            <td>Invalid Method</td>
-            <td>
-              <p>This message implies that there was an error because passed method does not exist.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>106</td>
-            <td>Invalid IP address</td>
-            <td>
-              <p>This message implies that there was an error because passed address parameters does not have a valid data.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>107</td>
-            <td>Invalid Netmask</td>
-            <td>
-              <p>This message implies that there was an error because passed netmask parameters does not have a valid data.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>108</td>
-            <td>Invalid Gateway</td>
-            <td>
-              <p>This message implies that there was an error because passed gateway parameters does not have a valid data.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>109</td>
-            <td>VLAN Index already Exist</td>
-            <td>
-              <p>This message implies that there is aready a VLAN Tag with the same index requested to create.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Example</h4>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.nettools/createVlan &#39;{<br />
-        &nbsp; &nbsp;&quot;interface&quot;:{<br />
-        &nbsp; &nbsp; &nbsp; &quot;name&quot;:&quot;eth0&quot;<br />
-        &nbsp; &nbsp;},<br />
-        &nbsp; &nbsp;&quot;index&quot;:9<br />
-        }&#39;
-      </p>
-      <p>Response:</p>
-      <p>{<br />
-        &nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true<br />
-        }
-      </p>
-    </div>
-  </div>
-  <h3 id="deletevlan">deleteVlan</h3>
-  <div>
-    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>nettools.management</b></span></div>
-    <h4>Description</h4>
-    <p>Provided VLAN index will be deleted for the provided interface, if present.</p>
-    <h4>Parameters</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>index</td>
-            <td>Required</td>
-            <td>String</td>
-            <td>
-              <p>VLAN ID, range 1 ~ 4094.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>interface</td>
-            <td>Required</td>
-            <td>Object: <a href="#interface"> interface</a></td>
-            <td>
-              <p>Interface details to delete VLAN tag</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Call Returns</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>returnValue</td>
-            <td>Required</td>
-            <td>Boolean</td>
-            <td>
-              <p>Indicates the status of the operation.</p>
-              <p>Possible values are:</p>
-              <ul>
-                <li><strong>true</strong>: Indicates that the operation was successful.</li>
-                <li><strong>false</strong>: Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Error Codes Reference</h4>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Error Code</p>
-            </th>
-            <th width="30%">
-              <p>Error Text</p>
-            </th>
-            <th width="55%">
-              <p>Error Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>110</td>
-            <td>VLAN Index does not Exist</td>
-            <td>
-              <p>This message implies that there is no VLAN tag present for passed index.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <h4>Example</h4>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.nettools/deleteVlan &#39;{<br />
-        &nbsp; &nbsp;&quot;interface&quot;:{<br />
-        &nbsp; &nbsp; &nbsp; &quot;name&quot;:&quot;eth0&quot;<br />
-        &nbsp; &nbsp;},<br />
-        &nbsp; &nbsp;&quot;index&quot;:9<br />
-        }&#39;
-      </p>
-      <p>Response:</p>
-      <p>{<br />
-        &nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true<br />
-        }
-      </p>
-    </div>
-  </div>
 </div>
 <h2 id="objects">Objects</h2>
 <div>
-  <h3 id="interface">interface</h3>
-  <p>Provides the name of interface</p>
-  <p>Sample example for &quot;interface&quot; object :</p>
-  <div class="code-bg-grey">
-    <p>
-      {<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&quot;name&quot;:&quot;eth0&quot;<br />
-      }
-    </p>
+  <h3 id="object-interface">interface</h3>
+  <div>
+    <p>Provides the name of interface</p>
+    <p>Sample example for &quot;interface&quot; object :</p>
+    <div class="code-bg-grey">
+      <p>
+        {<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;name&quot;:&quot;eth0&quot;<br />
+        }
+      </p>
+    </div>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>name</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Name of the interface</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
+</div>
+<h2 id="api-error-codes-reference">API Error Codes Reference</h2>
+<div>
   <div class="table-container">
     <table class="table is-bordered is-fullwidth">
       <tbody>
         <tr>
           <th width="15%">
-            <p>Name</p>
+            <p>Error Code</p>
           </th>
-          <th width="15%">
-            <p>Required</p>
+          <th width="30%">
+            <p>Error Text</p>
           </th>
-          <th width="15%">
-            <p>Type</p>
-          </th>
-          <th>
-            <p>Description</p>
+          <th width="55%">
+            <p>Error Description</p>
           </th>
         </tr>
         <tr>
-          <td>name</td>
-          <td>Required</td>
-          <td>String</td>
+          <td>101</td>
+          <td>Unknown error</td>
           <td>
-            <p>Name of the interface</p>
+            <p>This message implies that there was an error to perform the operation.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>102</td>
+          <td>Could not validate json message against schema</td>
+          <td>
+            <p>This message implies that there was an error because parameters passed to a method were not following the schema format.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>103</td>
+          <td>Invalid VLAN Index</td>
+          <td>
+            <p>This message implies that there was an error because passed index parameters does not have a valid data.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>104</td>
+          <td>Invalid Interface</td>
+          <td>
+            <p>This message implies that there was an error because passed interface does not exist.</p>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
-</div>
-<h2 id="api-error-codes-reference">API Error Codes Reference</h2>
-<div class="table-container">
-  <table class="table is-bordered is-fullwidth">
-    <tbody>
-      <tr>
-        <th width="15%">
-          <p>Error Code</p>
-        </th>
-        <th width="30%">
-          <p>Error Text</p>
-        </th>
-        <th width="55%">
-          <p>Error Description</p>
-        </th>
-      </tr>
-      <tr>
-        <td>101</td>
-        <td>Unknown error</td>
-        <td>
-          <p>This message implies that there was an error to perform the operation.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>102</td>
-        <td>Could not validate json message against schema</td>
-        <td>
-          <p>This message implies that there was an error because parameters passed to a method were not following the schema format.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>103</td>
-        <td>Invalid VLAN Index</td>
-        <td>
-          <p>This message implies that there was an error because passed index parameters does not have a valid data.</p>
-        </td>
-      </tr>
-      <tr>
-        <td>104</td>
-        <td>Invalid Interface</td>
-        <td>
-          <p>This message implies that there was an error because passed interface does not exist.</p>
-        </td>
-      </tr>
-    </tbody>
-  </table>
 </div>

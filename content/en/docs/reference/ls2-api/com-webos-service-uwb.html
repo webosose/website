@@ -1,0 +1,850 @@
+---
+title: com.webos.service.uwb
+date: 2023-05-22
+api_level: 23
+weight: 343
+toc: true
+---
+{{< caution >}}
+This API has been retired since [API level]({{< relref "ls2-api-index#api-levels" >}}) 22.
+{{< /caution >}}
+<h2 id="api-summary">API Summary</h2>
+<div>
+  <p>Provides UWB (<strong>Ultra Wideband</strong>) service for wireless connectivity based on IEEE 802.15.4a/z.&nbsp;This service connects to Luna bus to interact with other system components&nbsp;that require UWB services.</p>
+</div>
+<h2 id="overview-of-the-api">Overview of the API</h2>
+<div>
+  <p>This service&nbsp;is developed to support webOS devices to communicate via a UWB device (either embedded or externally connected) to remote UWB enabled devices.</p>
+  <p>The service supports the following:</p>
+  <ul>
+    <li>Discovery</li>
+    <li>Pairing</li>
+    <li>Session control</li>
+    <li>Ranging functionalities</li>
+  </ul>
+</div>
+<h2 id="methods">Methods</h2>
+<div>
+  <h3 id="getranginginfo">getRangingInfo</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>uwb.operation</b></span></div>
+    <div style="text-align: right;display: inline-block;float:right;"><span style="background: #FF4444;padding: 5px; width: 100px; text-align: center;color:#FBFBFB;margin-right: 5px;">Retired</span></div>
+    <div>
+      <ul>
+        <li>Added: API level 13</li>
+        <li>Retired: API level 22</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Retrieves ranging info for a session. Subscribe to this API to get a continuous notification of the ranging data.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>subscribe</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Subscribe for notifications on changes.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true:</strong>&nbsp;Subscribed.</li>
+                <li><strong>false:</strong>&nbsp;Not subscribed.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>sessionId</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The session ID to which the ranging data belongs.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>rangingInfo</td>
+            <td>Optional</td>
+            <td>Object: <a href="#object-ranginginfo">rangingInfo</a></td>
+            <td>
+              <p>Ranging information received from the UWB module.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>subscribed</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates if subscribed to get notifications.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true:</strong>&nbsp;Operation is successful.</li>
+                <li><strong>false:</strong>&nbsp;Operation has failed. Check the &#39;errorCode&#39; and &#39;errorText&#39; fields.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>The reason for the failure of the operation. See the &#39;API Error Codes Reference&#39; section for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Subscription Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>sessionId</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>Session ID to which the ranging data belongs.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>rangingInfo</td>
+            <td>Optional</td>
+            <td>Object: <a href="#object-ranginginfo">rangingInfo</a></td>
+            <td>
+              <p>Ranging information received from the UWB module.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>subscribed</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates if subscribed to get notifications.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send &nbsp;-n 1 -f luna://com.webos.service.uwb/getRangingInfo &#39;{}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;subscribed&quot;: false,<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp; &nbsp; &quot;sessionId&quot;: 0,<br />
+        &nbsp; &nbsp; &quot;rangingInfo&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;rangingDataLgeAirCond&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;condition&quot;: 1,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;remoteDeviceAddress&quot;: &quot;01&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;receivedData&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;status&quot;: &quot;Success&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;angle&quot;: 30,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;distance&quot;: 100<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ],<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;connectionStatus&quot;: false<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="getuwbservicestate">getUwbServiceState</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>uwb.operation</b></span></div>
+    <div style="text-align: right;display: inline-block;float:right;"><span style="background: #FF4444;padding: 5px; width: 100px; text-align: center;color:#FBFBFB;margin-right: 5px;">Retired</span></div>
+    <div>
+      <ul>
+        <li>Added: API level 13</li>
+        <li>Deprecated: API level 21</li>
+        <li>Retired: API level 22</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Retrieves the state of the UWB service.&nbsp;</p>
+    <p>If subscribe is set to true, the method sends an update if the values change.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>subscribe</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Subscribe for notifications on changes in&nbsp;the values.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true</strong>: Subscribed.</li>
+                <li><strong>false</strong>: Not subscribed.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>serviceAvailability</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the state of UWB service.&nbsp;</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true</strong>: Service is available.</li>
+                <li><strong>false</strong>: Service is not available</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>stateChangeReason</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason why the state has been changed.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>Unknown</strong>:&nbsp;Changed for an unknown reason.</li>
+                <li><strong>SessionStarted</strong>: Changed because a session started.</li>
+                <li><strong>AllSessionsClosed</strong>:&nbsp;Changed because all sessions were closed.</li>
+                <li><strong>SystemPolicy</strong>: Changed because of a device system change.</li>
+                <li><strong>SystemBoot</strong>: Used to signal the first adapter state message after boot.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+              <p>Possible values are: </p>
+              <ul>
+                <li><strong>true:</strong> Operation is successful.</li>
+                <li><strong>false:</strong> Operation has failed. Check the 'errorCode' and 'errorText' fields.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>The reason for the failure of the operation. See the 'API Error Codes Reference' section for details.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>subscribed</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates if subscribed to get notifications.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Subscription Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>subscribed</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>Indicates if subscribed to get notifications.</td>
+          </tr>
+          <tr>
+            <td>serviceAvailability</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the state of UWB service.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>stateChangeReason</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason why the state has been changed.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -f -n&nbsp;1&nbsp;luna://com.webos.service.uwb/getUwbServiceState &#39;{}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;subscribed&quot;: false,<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp; &nbsp; &quot;serviceAvailability&quot;: false<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="getuwbspecificinfo">getUwbSpecificInfo</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>uwb.operation</b></span></div>
+    <div style="text-align: right;display: inline-block;float:right;"><span style="background: #FF4444;padding: 5px; width: 100px; text-align: center;color:#FBFBFB;margin-right: 5px;">Retired</span></div>
+    <div>
+      <ul>
+        <li>Added: API level 13</li>
+        <li>Deprecated: API level 21</li>
+        <li>Retired: API level 22</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Provides the capabilities and features of the device (supported UWB protocols and parameters).</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>subscribe</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Subscribe for notifications on changes.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true:</strong> Subscribed.</li>
+                <li><strong>false:</strong> Not subscribed.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>modState</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the state of UWB module.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true</strong>: Module is normal.</li>
+                <li><strong>false</strong>: Module is not normally initiated.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>fwVersion</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>The firmware version of UWB module.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>fwCrc</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>The firmware CRC of UWB module.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+              <p>Possible values are: </p>
+              <ul>
+                <li><strong>true:</strong> Operation is successful.</li>
+                <li><strong>false:</strong> Operation has failed. Check the 'errorCode' and 'errorText' fields.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>The reason for the failure of the operation. See the 'API Error Codes Reference' section for details.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>subscribed</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>Indicates if subscribed to get notifications.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Subscription Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>subscribed</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates if subscribed to get notifications.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>modState</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the state of UWB module.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>fwVersion</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>The firmware version of UWB module.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>fwCrc</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>The firmware CRC of UWB module.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.&nbsp;</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send &nbsp;-n 1 -f luna://com.webos.service.uwb/getUwbSpecificInfo &#39;{}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;subscribed&quot;: false,<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp; &nbsp; &quot;fwVersion&quot;: &quot;0&quot;,<br />
+        &nbsp; &nbsp; &quot;modState&quot;: false,<br />
+        &nbsp; &nbsp; &quot;fwCrc&quot;: &quot;0&quot;<br />
+        }
+      </p>
+    </div>
+  </div>
+</div>
+<h2 id="objects">Objects</h2>
+<div>
+  <h3 id="object-rangingdatacommon">rangingDataCommon</h3>
+  <div>
+    <p>Ranging information for common standard protocol.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>remoteDeviceAddress</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>The address of the remote device.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>status</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>The status of the ranging measurement.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>Success</strong>: Ranging was successful.</li>
+                <li><strong>OutOfRange</strong>: The remote device is out of range.</li>
+                <li><strong>UnknownError</strong>: Unknown failures.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>receivedCommonData</td>
+            <td>Optional</td>
+            <td>Object: <a href="#object-receivedcommondata">receivedCommonData</a></td>
+            <td>
+              <p>The ranging information from the UWB module.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h3 id="object-rangingdatalgeaircond">rangingDataLgeAirCond</h3>
+  <div>
+    <p>Ranging information for LGE Air Conditioner product.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>RemoteDeviceAddress</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>The address of the remote device.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>connectionStatus</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>The connection status of the UWB module.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true</strong>: Connected.</li>
+                <li><strong>false</strong>: Disconnected.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>receivedData</td>
+            <td>Optional</td>
+            <td>Object</td>
+            <td>
+              <p>The ranging data from the UWB module when the <strong>connectionStatus </strong>is true.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h3 id="object-ranginginfo">rangingInfo</h3>
+  <div>
+    <p>Ranging information received from UWB module.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>rangingDataLgeAirCond</td>
+            <td>Optional</td>
+            <td>Object array: <a href="#object-rangingdatalgeaircond">rangingDataLgeAirCond</a></td>
+            <td>
+              <p>The ranging information received from UWB module for LGE Air Conditioner product.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>rangingDataCommon</td>
+            <td>Optional</td>
+            <td>Object array: <a href="#object-rangingdatacommon">rangingDataCommon</a></td>
+            <td>
+              <p>The ranging information received from UWB module for common standard protocol.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>rangingDataLgeAutom</td>
+            <td>Optional</td>
+            <td>Object array</td>
+            <td>
+              <p>The ranging information received from UWB module for LGE Automotive products.</p>
+              <p><strong>Note</strong>: These values will be extended for OEM-specific use cases/data-sheets.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>rangingDataLgeTv</td>
+            <td>Optional</td>
+            <td>Object array</td>
+            <td>
+              <p>The ranging information received from UWB module for LGE TV product.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h3 id="object-receivedcommondata">receivedCommonData</h3>
+  <div>
+    <p>Provide a ranging information from the UWB module.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>elapsedRealTimeNanos</td>
+            <td>Optional</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>The elapsed real time in nanoseconds when the ranging measurement occurred.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>distanceMeasure</td>
+            <td>Optional</td>
+            <td>Object</td>
+            <td>
+              <p>The values for calculating distance.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>aoaMeasure</td>
+            <td>Optional</td>
+            <td>Object</td>
+            <td>
+              <p>The values for calculating altitude angle.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
