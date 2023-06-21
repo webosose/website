@@ -93,7 +93,7 @@ This version corresponds to the [GitHub releases](https://github.com/webosose/bu
   - Adds UnifiedSinkBin to support video rendering on multiple SoCs
 - PulseAudio
   - Supports automatic gain control for microphone input
-- g-camera-piepeline
+- g-camera-pipeline
   - Supports dynamic zoom and auto PTZ features for cameras
 
 #### i18n / l10n
