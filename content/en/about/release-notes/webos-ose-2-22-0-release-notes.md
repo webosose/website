@@ -79,8 +79,6 @@ This version corresponds to the [GitHub releases](https://github.com/webosose/bu
 
 - Blink
   - Fixed an issue where the list scrolls even after the button is released
-- Chromium
-  - Upgrades webruntime to Chromium 108
 
 ### BSP
 
@@ -88,4 +86,4 @@ This version corresponds to the [GitHub releases](https://github.com/webosose/bu
 
 ## Known Issues
 
-- [The launchpad]({{< relref "webos-ose-ui-guide#launchpad" >}}) disappears after an app is added to [the app bar]({{< relref "webos-ose-ui-guide#app-bar" >}}). 
+- [The launchpad]({{< relref "webos-ose-ui-guide#launchpad" >}}) disappears after an app is added to [the app bar]({{< relref "webos-ose-ui-guide#app-bar" >}}).
