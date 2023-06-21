@@ -1,16 +1,18 @@
 ---
 title: User Guide
 display_title: Command-Line Interface User Guide
-date: 2023-02-17
+date: 2023-05-24
 weight: 10
 toc: true
 ---
 
-**Command-Line Interface (CLI)** of webOS Open Source Edition (OSE). It provides a collection of commands used for creating, packaging, installing, and launching apps or services in the command line environment. CLI lets you develop and test apps or services without using any IDE.
+**Command-Line Interface (CLI)** of webOS Open Source Edition (OSE) provides a collection of commands used for creating, packaging, installing, and launching apps or services in the command line environment. CLI lets you develop and test apps or services without using any IDE.
 
 ## Key Features
 
-CLI provides the following key features:
+CLI provides necessary functionality throughout the entire web app development process, from app creation to debugging and testing. The following figure shows CLI commands that can be used during each stage of the development process.
+
+{{< figure src="/images/docs/tools/cli/cli-workflow.png" alt="" caption="Development Workflow with CLI" width="1024px" >}}
 
   - **Creating Apps and Services**
     - Provides standard templates for webOS OSE apps and services
@@ -30,7 +32,7 @@ CLI provides the following key features:
     - Launches selected apps
     - Closes apps that are running
     - Provides the list of apps running on the target device
-  - **Debugging Apps and Services**
+  - **Debugging/Testing Apps and Services**
     - Enables Web Inspector for debugging web apps
     - Enables Node's Inspector for debugging JavaScript services
     - Provides web app information
@@ -77,32 +79,109 @@ Required version for each operating system are as follows:
 * Node.js (Use v10.24.1 to v14.15.1.)
 * npm
 
-## Installing CLI
+## How to Install
 
-You can install CLI using the following command. It is recommended to install CLI globally.
+CLI can be installed using Node Package Manager (npm). 
 
-``` shell
-$ npm install -g @webosose/ares-cli
+### npm Istallation
 
-# Check the installation.
-$ ares --version
-Version: 2.x.x
+Before installing the CLI, ensure that Node.js and npm are installed on your system. If they are not installed, refer to the following instructions.
+
+#### Node.js
+
+  1. Visit [the official Node.js website](https://nodejs.org) and download the recommended version for your operating system.
+  2. Run the installer and follow the installation instructions.
+  3. When finished, verify the installation by checking its version.
+
+```bash     
+node -v
+```
+
+#### npm
+
+The npm is included with the Node.js, so if you have successfully installed Node.js, you already have npm available for use. 
+
+Execute the following command to verify if the npm is available on your system.
+
+```bash
+npm -v
+```
+
+### CLI Installation
+
+Execute the following command in a terminal, using the `-g` option to install the CLI globally.
+
+```bash
+npm install -g @webosose/ares-cli
 ```
 
 {{< note >}}
-- For Linux and macOS, `sudo` command might be required depending on the environment.
-- After the installation, check if the installed version matches with the latest version of [CLI npm package](https://www.npmjs.com/package/@webosose/ares-cli).
-{{< /note >}}
+On Linux and macOS, this operation may require superuser privileges. 
+Therefore, it is recommended that you either switch to a superuser or use the `sudo` at the beginning of the the command.
 
-## CLI Workflow
+```shell
+# Switch to the superuser and excecute the command.
+$ sudo -s
+$ npm install -g @webosose/ares-cli
 
-webOS OSE CLI provides features for developing web apps throughout the whole development process. The figure below shows some of CLI commands that can be used during each stage of the development process.
+# Or, excecute the command with sudo.
+$ sudo npm install -g @webosose/ares-cli
+```
 
-{{< figure src="/images/docs/tools/cli/cli-workflow.png" alt="" caption="Development Workflow with CLI" width="700px" >}}
+{{< /note >}}  
 
-{{< note >}}
-For step-by-step instructions to create web apps and JS service using CLI commands, see [Creating Web Apps]({{< relref "developing-external-web-apps#creating-web-apps" >}}) and [Creating JS Services]({{< relref "developing-external-js-services#creating-js-services" >}}).
-{{< /note >}}
+Verify the installation by checking its version. Check if the version matches with the latest version of [CLI npm package](https://www.npmjs.com/package/@webosose/ares-cli).
+ 
+```bash
+ares --version
+```
+
+## How to Use
+
+With the CLI, you can develop various types of external apps or services. For detailed instructions, refer to the each tutorial.
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th><p>Development Type</p></th>
+        <th><p>Tutorial</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>External Web Apps</p></td>
+        <td>
+          <p>See the <a href="{{< relref "developing-external-web-apps">}}">Developing External Web Apps</a>.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>External JS Services</p></td>
+        <td>
+          <p>See the <a href="{{< relref "developing-external-js-services">}}">Developing External JS Services</a>.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>External QML Apps</p></td>
+        <td>
+          <p>See the <a href="{{< relref "developing-external-qml-apps">}}">Developing External QML Apps</a>.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>External Native Apps</p></td>
+        <td>
+          <p>See the <a href="{{< relref "developing-external-native-apps">}}">Developing External Native Apps</a>.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><p>External Native Services</p></td>
+        <td>
+          <p>See the <a href="{{< relref "developing-external-native-services">}}">Developing External Native Services</a>.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 ## CLI Commands
 
