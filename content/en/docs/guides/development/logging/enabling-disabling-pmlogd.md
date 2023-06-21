@@ -1,6 +1,6 @@
 ---
 title: Enabling and Disabling pmlogd
-date: 2019-11-20
+date: 2023-06-16
 weight: 40
 toc: true
 ---
@@ -72,9 +72,24 @@ You can figure out which logging system is enabled by checking the status of the
 
 This section describes the steps required to enable pmlogd instead of journald.
 
-### Step 1. Create systemd files for pmlogd
+### Step 1. Remove overlay mount
 
-First, create systemd files for pmlogd:
+Delete the overlay mount related configuration file.
+
+``` shell
+root@raspberrypi4:/# rm /var/luna/preferences/mount_overlay_enabled
+root@raspberrypi4:/# reboot
+```
+
+### Step 2. Create systemd files for pmlogd
+
+First, remount the file system as rw mode.
+
+``` shell
+root@raspberrypi4:/# mount -o remount,rw /
+```
+
+Second, create systemd files for pmlogd.
 
   - `pm-log-daemon.service`
   - `pm-klog-daemon.service`
@@ -215,7 +230,7 @@ fi
 ```
 {{< /code >}}
 
-### Step 2. Create symbolic link files
+### Step 3. Create symbolic link files
 
 Create symbolic link files to the pmlogd logging daemons.
 
@@ -225,9 +240,9 @@ root@raspberrypi4:/# ln -sf ../pm-log-daemon.service pm-log-daemon.service
 root@raspberrypi4:/# ln -sf ../pm-klog-daemon.service pm-klog-daemon.service
 ```
 
-### Step 3. Disable journald
+### Step 4. Disable journald
 
-To disable journald, execute the following commands:
+To disable journald, execute the following commands.
 
 ``` shell
 root@raspberrypi4:/# ln -sf /dev/null /etc/systemd/system/systemd-journal-catalog-update.service
@@ -236,11 +251,13 @@ root@raspberrypi4:/# ln -sf /dev/null /etc/systemd/system/systemd-journald.servi
 root@raspberrypi4:/# rm /lib/systemd/system/multi-user.target.wants/backup-log.service
 ```
 
-### Step 4. Reboot
+### Step 5. Restore overlay mount and Reboot
 
-Reboot the target.
+Restore overlay mount and reboot the target.
 
 ``` shell
+root@raspberrypi4:/# touch /var/luna/preferences/mount_overlay_enabled
+root@raspberrypi4:/# sync
 root@raspberrypi4:/# reboot
 ```
 
@@ -248,15 +265,28 @@ root@raspberrypi4:/# reboot
 
 This section describes the steps required to re-enable journald after pmlogd has been enabled.
 
-### Step 1. Remove pmlogd files
+### Step 1. Remove overlay mount
 
-First, remove files that are related to pmlogd.
+``` shell
+root@raspberrypi4:/# rm /var/luna/preferences/mount_overlay_enabled
+root@raspberrypi4:/# reboot
+```
+
+### Step 2. Remove pmlogd files
+
+First, remount the file system as rw mode.
+
+``` shell
+root@raspberrypi4:/# mount -o remount,rw /
+```
+
+Second, remove files that are related to pmlogd.
 
 ``` shell
 root@raspberrypi4:/# rm /etc/systemd/system/multi-user.target.wants/pm-*
 ```
 
-### Step 2. Enable journald
+### Step 3. Enable journald
 
 To enable journald, execute the following commands.
 
@@ -265,10 +295,12 @@ root@raspberrypi4:/# rm /etc/systemd/system/systemd-journal*
 root@raspberrypi4:/# ln -sf /lib/systemd/system/backup-log.service /lib/systemd/system/multi-user.target.wants/backup-log.service
 ```
 
-### Step 3. Reboot
+### Step 4. Restore overlay mount and Reboot
 
-Reboot the target.
+Restore overlay mount and reboot the target.
 
 ``` shell
+root@raspberrypi4:/# touch /var/luna/preferences/mount_overlay_enabled
+root@raspberrypi4:/# sync
 root@raspberrypi4:/# reboot
 ```
