@@ -1,6 +1,6 @@
 ---
 title: Developing External Native Services
-date: 2023-03-28
+date: 2023-06-14
 weight: 10
 toc: true
 ---
@@ -56,7 +56,6 @@ In this section, we will briefly explain webOS specific parts in `com.sample.ech
 
 {{< code "main.c" >}}
 ``` c {linenos=table}
-#include <lunaservice.h>
 #include <luna-service2/lunaservice.h>
 ...
 bool echo(LSHandle *sh, LSMessage *message, void *data);

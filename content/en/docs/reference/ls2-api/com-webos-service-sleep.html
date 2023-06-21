@@ -1,7 +1,7 @@
 ---
 title: com.webos.service.sleep
-date: 2023-05-22
-api_level: 23
+date: 2023-06-16
+api_level: 24
 weight: 295
 toc: true
 ---
@@ -23,6 +23,1257 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
 </div>
 <h2 id="methods">Methods</h2>
 <div>
+  <h3 id="com-palm-power-testsuspend">com/palm/power/TESTSuspend</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>sleep.management,sleep.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 24</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Schedule the IdleCheck thread to check if the device can suspend.</p>
+    <p><strong>Note:&nbsp;</strong>Used for developer testing purposes.</p>
+    <h4>Parameters</h4>
+    <p>None</p>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>returnValue is always&nbsp;<strong>true</strong></p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 luna://com.webos.service.sleep/com/palm/power/TESTSuspend &#39;{}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="com-palm-power-activityend">com/palm/power/activityEnd</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>sleep.management,sleep.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 24</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Cancel a previous request (identified by &quot;id&quot;) which was registered using activityStart.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>id</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>ID of activity that needs to be ended.</p>
+              <p>This ID should be the same as one specified while calling activityStart method</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>If the activityEnd method succeeds, returnValue will contain&nbsp;<strong>true</strong></p>
+              <p>If the activityEnd method fails, returnValue will contain&nbsp;<strong>false.&nbsp;</strong>The<strong>&nbsp;</strong>method may fail because of one the error conditions described in the Error Codes Reference table of this method. See the Error Code Reference table for more information.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p><strong>ErrorText&nbsp;</strong>contains the error text if the method fails. The method will return&nbsp;<strong>errorText&nbsp;</strong>only if it fails.</p>
+              <p>See the&nbsp;<strong>Error Codes Reference&nbsp;</strong>of this method for more details.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>Return -1 In case of error</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>-1</td>
+            <td>Malformed json</td>
+            <td>
+              <p>If the json object parsing fails</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n -f luna://com.webos.service.sleep/com/palm/power/activityEnd &#39;{&quot;id&quot;:&quot;Diagnostics activity&quot;}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="com-palm-power-activitystart">com/palm/power/activityStart</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>sleep.management,sleep.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 24</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>An activity is a specified time duration for which you do not want the system to suspend. This method requests that the system create an activity for &quot;duration&quot; (in milliseconds) with an associated &quot;id&quot; (activity name).</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>id</td>
+            <td>Required</td>
+            <td>string</td>
+            <td>
+              <p>ID of the activity , which can be any string as defined by the caller</p>
+            </td>
+          </tr>
+          <tr>
+            <td>duration_ms</td>
+            <td>Required</td>
+            <td>number</td>
+            <td>
+              <p>Duration of activity in milliseconds</p>
+              <p>This is the amount of time the caller does not want sleepd to suspend the system</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>If the activityStart method succeeds, returnValue will contain&nbsp;<strong>true</strong></p>
+              <p>If the activityStart method fails, returnValue will contain&nbsp;<strong>false.&nbsp;</strong>The<strong>&nbsp;</strong>method may fail because of one the error conditions described in the Error Codes Reference table of this method. See the Error Code Reference table for more information.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p><strong>ErrorText&nbsp;</strong>contains the error text if the method fails. The method will return&nbsp;<strong>errorText&nbsp;</strong>only if it fails.</p>
+              <p>See the&nbsp;<strong>Error Codes Reference&nbsp;</strong>of this method for more details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Activities frozen</td>
+            <td>
+              <p>This error indicates the system has decided to go to suspend and no new activities are accepted</p>
+            </td>
+          </tr>
+          <tr>
+            <td>-1</td>
+            <td>Malformed json</td>
+            <td>
+              <p>If json object parsing fails</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n -f luna://com.webos.service.sleep/com/palm/power/activityStart &#39;{&quot;id&quot;:&quot;Diagnostics activity&quot;, &quot;duration_ms&quot;:100}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="com-palm-power-clientcancelbyname">com/palm/power/clientCancelByName</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>sleep.management,sleep.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 24</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    Unregister the client by its name.
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>clientName</td>
+            <td>Required</td>
+            <td>string</td>
+            <td>
+              <p>Name of the client</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>If the clientCancelByName method succeeds, returnValue will contain&nbsp;<strong>true</strong></p>
+              <p>If the clientCancelByName method fails, returnValue will contain&nbsp;<strong>false.</strong></p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p><strong>ErrorText&nbsp;</strong>contains the error text if the method fails. The method will return&nbsp;<strong>errorText&nbsp;</strong>only if it fails.</p>
+              <p>See the&nbsp;<strong>Error Codes Reference&nbsp;</strong>of this method for more details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>-1</td>
+            <td>Invalid parameters</td>
+            <td>
+              <p><strong>clientName</strong>&nbsp;is invalid</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 luna://com.webos.service.sleep/com/palm/power/clientCancelByName &#39;{&quot;clientName&quot;:&quot;rdxd&quot;}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="com-palm-power-forcesuspend">com/palm/power/forceSuspend</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>sleep.management,sleep.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 24</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Force the device to go into suspend even with charger connected or any activity is still active.</p>
+    <p><strong>Note:&nbsp;</strong>Used for developer testing purposes.</p>
+    <h4>Parameters</h4>
+    <p>None</p>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>returnValue is always&nbsp;<strong>true</strong></p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 luna://com.webos.service.sleep/com/palm/power/forceSuspend &#39;{}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="com-palm-power-identify">com/palm/power/identify</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>sleep.management,sleep.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 24</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    Register a new client with the given name
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>clientName</td>
+            <td>Required</td>
+            <td>string</td>
+            <td>
+              <p>Name of the client</p>
+            </td>
+          </tr>
+          <tr>
+            <td>subscribe</td>
+            <td>Required</td>
+            <td>boolean</td>
+            <td>
+              <p>Should be always set to&nbsp;<strong>true</strong>, since subscription is necessary for this method.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>If the method succeeds, returnValue will contain&nbsp;<strong>true</strong>.</p>
+              <p>If the method fails, returnValue will contain&nbsp;<strong>false</strong>.&nbsp;The&nbsp;method may fail because of one the error conditions described in the Error Codes Reference table of this method. See the Error Code Reference table for more information.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>clientId</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>The new ID created for the client</p>
+            </td>
+          </tr>
+          <tr>
+            <td>subscribed</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Always&nbsp;<strong>true</strong></p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p><strong>errorText</strong>&nbsp;contains the error text if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.</p>
+              <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>Return -1 as errorCode</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>-1</td>
+            <td>Malformed json</td>
+            <td>
+              <p>If the json object parsing fails</p>
+            </td>
+          </tr>
+          <tr>
+            <td>-1</td>
+            <td>Invalid parameters</td>
+            <td>
+              <p>If client name is NULL or subscription is not set</p>
+            </td>
+          </tr>
+          <tr>
+            <td>-1</td>
+            <td>Unknown error</td>
+            <td>
+              <p>Unknown error</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 luna://com.webos.service.sleep/com/palm/power/identify &#39;{&quot;subscribe&quot;:true, &quot;clientName&quot;:&quot;rdxd&quot;}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&nbsp;&quot;subscribed&quot;:true,<br />
+        &nbsp; &nbsp;&nbsp;&quot;clientId&quot;:&quot;1HE7I2ej.4&quot;,<br />
+        &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="com-palm-power-preparesuspendack">com/palm/power/prepareSuspendAck</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>sleep.management,sleep.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 24</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Used by a client to respond (ack or nack) to the &quot;prepareSuspend&quot; signal.&nbsp;Once the client sends ack to the &quot;prepareSuspend&quot; signal, the client does not do any more operations and prepare itself for the system suspend.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>clientId</td>
+            <td>Required</td>
+            <td>string</td>
+            <td>
+              <p>ID of the client</p>
+            </td>
+          </tr>
+          <tr>
+            <td>ack</td>
+            <td>Required</td>
+            <td>boolean</td>
+            <td>
+              <p>To ack for prepareSuspend cycle, set ack to&nbsp;<strong>true</strong></p>
+              <p>To nack for prepareSuspend cycle, set ack to&nbsp;<strong>false</strong></p>
+              <p>This parameter needs to be set, else the method will return an error</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>If prepareSuspendAck call succeeds, returnValue will contain&nbsp;<strong>true.</strong></p>
+              <p>If prepareSuspendAck call fails, returnValue will contain&nbsp;<strong>false.&nbsp;</strong>The<strong>&nbsp;</strong>method may fail because of one the error conditions described in the Error Codes Reference table of this method. See the Error Code Reference table for more information.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p><strong>ErrorText&nbsp;</strong>contains the error text if the method fails. The method will return&nbsp;<strong>errorText&nbsp;</strong>only if it fails.</p>
+              <p>See the&nbsp;<strong>Error Codes Reference&nbsp;</strong>of this method for more details.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>Return errorCode as -1 if method call fails</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>-1</td>
+            <td>Invalid Parameters</td>
+            <td>
+              <p>ClientId is invalid or ack is not set</p>
+            </td>
+          </tr>
+          <tr>
+            <td>-1</td>
+            <td>Malformed json</td>
+            <td>
+              <p>If the json object parsing fails</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p>#&nbsp;luna-send -n 1 luna://com.webos.service.sleep/com/palm/power/prepareSuspendAck &#39;{&quot;clientId&quot;:&quot;VGb93LuP.2&quot;, &quot;ack&quot;:true}&#39;</p>
+      <p>Response:</p>
+      <p>{</p>
+      <p>&quot;returnValue&quot;:true</p>
+      <p>}</p>
+      <p>&nbsp;</p>
+    </div>
+  </div>
+  <h3 id="com-palm-power-preparesuspendregister">com/palm/power/prepareSuspendRegister</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>sleep.management,sleep.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 24</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    Register a client (already registered with "identify" call) for "prepare suspend" signal. This will add to the counter "sNumPrepareSuspend" before every polling to make a decision to proceed with the suspend action or postpone it later.
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>clientId</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>ID of the client as returned in the identify method call</p>
+            </td>
+          </tr>
+          <tr>
+            <td>register</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>To register a vote in total count for &quot;prepareSuspend&quot; voting cycle, set register to&nbsp;<strong>true</strong></p>
+              <p>To not register a vote in total count for &quot;prepareSuspend&quot; voting cycle, set register to&nbsp;<strong>false</strong></p>
+              <p>This parameter needs to be set, else the method will return an error</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>If prepareSuspendRegister call succeeds,&nbsp;returnValue will contain&nbsp;<strong>true.</strong></p>
+              <p>If prepareSuspendRegister call fails, returnValue will contain&nbsp;<strong>false.&nbsp;</strong>The<strong>&nbsp;</strong>method may fail because of one the error conditions described in the Error Codes Reference table of this method. See the Error Code Reference table for more information.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p><strong>ErrorText&nbsp;</strong>contains the error text if the method fails. The method will return&nbsp;<strong>errorText&nbsp;</strong>only if it fails.</p>
+              <p>See the&nbsp;<strong>Error Codes Reference&nbsp;</strong>of this method for more details.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>Return errorCode -1 if method call fails</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>-1</td>
+            <td>Invalid Parameters</td>
+            <td>
+              <p>clientId is invalid or register is not set</p>
+            </td>
+          </tr>
+          <tr>
+            <td>-1</td>
+            <td>Malformed json</td>
+            <td>
+              <p>If the json object parsing fails</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 luna://com.webos.service.sleep/com/palm/power/prepareSuspendRegister &#39;{&quot;clientId&quot;:&quot;MRw5pw2V.2&quot;, &quot;register&quot;:true}&#39;</p>
+      <p>Response:</p>
+      <p>{</p>
+      <p>&quot;returnValue&quot;:true</p>
+      <p>}</p>
+    </div>
+  </div>
+  <h3 id="com-palm-power-suspendrequestack">com/palm/power/suspendRequestAck</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>sleep.management,sleep.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 24</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Add the client&#39;s count in the total number of ACKs received for the &quot;suspend request&quot; signal.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>clientId</td>
+            <td>Optional</td>
+            <td>string</td>
+            <td>
+              <p>ID of the client as returned in the identify method call</p>
+            </td>
+          </tr>
+          <tr>
+            <td>ack</td>
+            <td>Required</td>
+            <td>boolean</td>
+            <td>
+              <p>To ack for suspendRequest cycle, set ack to&nbsp;<strong>true</strong></p>
+              <p>To nack for suspendRequest cycle, set ack to&nbsp;<strong>false</strong></p>
+              <p>This parameter needs to be set, else the method will return an error</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>If suspendRequestAck call succeeds, returnValue will contain&nbsp;<strong>true.</strong></p>
+              <p>If suspendRequestAck call fails, returnValue will contain&nbsp;<strong>false.&nbsp;</strong>The<strong>&nbsp;</strong>method may fail because of one the error conditions described in the Error Codes Reference table of this method. See the Error Code Reference table for more information.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p><strong>ErrorText&nbsp;</strong>contains the error text if the method fails. The method will return&nbsp;<strong>errorText&nbsp;</strong>only if it fails.</p>
+              <p>See the&nbsp;<strong>Error Codes Reference&nbsp;</strong>of this method for more details.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>return errorCode as -1 if method call fails</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>-1</td>
+            <td>Invalid Parameters</td>
+            <td>
+              <p>ClientId is invalid or ack is not set</p>
+            </td>
+          </tr>
+          <tr>
+            <td>-1</td>
+            <td>Malformed json</td>
+            <td>
+              <p>If the json object parsing fails</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 luna://com.webos.service.sleep/com/palm/power/suspendRequestAck &#39;{&quot;clientId&quot;:&quot;VVxhXwzw.2&quot;, &quot;ack&quot;:true}&#39;</p>
+      <p>Resposne:</p>
+      <p>{</p>
+      <p>&quot;returnValue&quot;:true</p>
+      <p>}</p>
+    </div>
+  </div>
+  <h3 id="com-palm-power-suspendrequestregister">com/palm/power/suspendRequestRegister</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>sleep.management,sleep.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 24</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    Register a client (already registered with "identify" call) for "suspend request" signal. This will add to the counter "sNumSuspendRequest" before every polling to make a decision to proceed with the suspend action or postpone it later.
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>clientId</td>
+            <td>Required</td>
+            <td>string</td>
+            <td>
+              <p>ID of the client as returned in the identify method call</p>
+            </td>
+          </tr>
+          <tr>
+            <td>register</td>
+            <td>Required</td>
+            <td>boolean</td>
+            <td>
+              <p>To register a vote in total count for &quot;suspendRequest&quot; voting cycle, set register to&nbsp;<strong>true</strong></p>
+              <p>To not register a vote in total count for &quot;suspendRequest&quot; voting cycle, set register to&nbsp;<strong>false</strong></p>
+              <p>This parameter needs to be set, else the method will return an error</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>If suspendRequestRegister call succeeds, returnValue will contain&nbsp;<strong>true.</strong></p>
+              <p>If suspendRequestRegister call fails, returnValue will contain&nbsp;<strong>false.&nbsp;</strong>The<strong>&nbsp;</strong>method may fail because of one the error conditions described in the Error Codes Reference table of this method. See the Error Code Reference table for more information.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p><strong>ErrorText&nbsp;</strong>contains the error text if the method fails. The method will return&nbsp;<strong>errorText&nbsp;</strong>only if it fails.</p>
+              <p>See the&nbsp;<strong>Error Codes Reference&nbsp;</strong>of this method for more details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>-1</td>
+            <td>Invalid parameters</td>
+            <td>
+              <p><strong>ClientId</strong>&nbsp;is invalid or&nbsp;<strong>register</strong>&nbsp;is not set</p>
+            </td>
+          </tr>
+          <tr>
+            <td>-1</td>
+            <td>Malformed json</td>
+            <td>
+              <p>An internal error occurred when parsing the JSON object being prepared as a response (extremely unlikely).</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 luna://com.webos.service.sleep/com/palm/power/suspendRequestRegister &#39;{&quot;clientId&quot;:&quot;/var/run/ls2/T4fb64.4&quot;, &quot;register&quot;:true}&#39;</p>
+    </div>
+  </div>
+  <h3 id="shutdown-testresetshutdownstate">shutdown/TESTresetShutdownState</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>sleep.management</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 24</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Called by test code to reset state machine to square 1.</p>
+    <p><strong>Note:&nbsp;</strong>Used for developer testing purposes.</p>
+    <h4>Parameters</h4>
+    <p>None</p>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>boolean</td>
+            <td>
+              <p>true if success</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 luna://com.webos.service.sleep/shutdown/TESTresetShutdownState &#39;{}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+        }
+      </p>
+    </div>
+  </div>
   <h3 id="shutdown-initiate">shutdown/initiate</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>sleep.management</b></span></div>
@@ -820,6 +2071,704 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         &nbsp;&nbsp;&quot;clientId&quot;:&quot;/var/run/ls2/T4fb64.5&quot;<br />
         }
       </p>
+    </div>
+  </div>
+  <h3 id="time-alarmadd">time/alarmAdd</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>sleep.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 24</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    Set alarm to fire in a fixed time in the future.
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>serviceName</td>
+            <td>Optional</td>
+            <td>string</td>
+            <td>Name of the service for which the alarm is to be added</td>
+          </tr>
+          <tr>
+            <td>key</td>
+            <td>Optional</td>
+            <td>string</td>
+            <td>identifier for the alarm</td>
+          </tr>
+          <tr>
+            <td>relative_time</td>
+            <td>Required</td>
+            <td>string</td>
+            <td>
+              <p>amount of relative time after which the alarm should go off. time format is hh:mm:ss (hours:minutes:seconds)</p>
+            </td>
+          </tr>
+          <tr>
+            <td>subscribe</td>
+            <td>Optional</td>
+            <td>boolean</td>
+            <td>true if the results are to be subscribed</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>alarmId</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>alarmId if the alarm was successfully added</p>
+            </td>
+          </tr>
+          <tr>
+            <td>subscribed</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>subscribed parameter is received only&nbsp;if subscribe parameter is sent during alarmAdd request</p>
+              <p><strong>true</strong>: if subscription is successful</p>
+              <p><strong>false</strong>: is subscription failed</p>
+              <p>&nbsp;</p>
+            </td>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <ul>
+                <li>If the&nbsp;method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false</strong>.&nbsp;</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Error message on failure</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Subscription Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>alarmId</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>alarmId of the subscribed alarm</p>
+            </td>
+          </tr>
+          <tr>
+            <td>fired</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p><strong>true</strong>: if the alarm has fired</p>
+              <p><strong>false</strong>: if the alarm has not fired</p>
+            </td>
+          </tr>
+          <tr>
+            <td>key</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>alarm identifier of the fired alarm</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Invalid format for alarm time</td>
+            <td>
+              <p>Payload format is incorrect</p>
+            </td>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Unknown error</td>
+            <td>
+              <p>Unknown error</p>
+            </td>
+          </tr>
+          <tr>
+            <td>-1</td>
+            <td>Malformed json</td>
+            <td>
+              <p>Invalid json data</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p>1. luna-send -n 1 luna://com.webos.service.sleep/time/alarmAdd &#39;{}&#39;</p>
+      <p>Response:<br />
+        {&quot;returnValue&quot;:false,&quot;errorText&quot;:&quot;Invalid format for alarm time.&quot;}
+      </p>
+      <p>2. luna-send -n 1 luna://com.webos.service.sleep/time/alarmAdd &#39;{&quot;serviceName&quot;:&quot;/var/run/ls2/tmp&quot;, &quot;key&quot;:&quot;key1&quot;, &quot;subscribe&quot;:false}&#39;</p>
+      <p>Response:<br />
+        {&quot;returnValue&quot;:false,&quot;errorText&quot;:&quot;Invalid format for alarm time.&quot;}
+      </p>
+      <p>3. luna-send -n 1 luna://com.webos.service.sleep/time/alarmAdd &#39;{&quot;serviceName&quot;:&quot;/var/run/ls2/tmp&quot;, &quot;key&quot;:&quot;key1&quot;, &quot;subscribe&quot;:true}&#39;</p>
+      <p>Response:<br />
+        {&quot;returnValue&quot;:false,&quot;errorText&quot;:&quot;Invalid format for alarm time.&quot;}
+      </p>
+      <p>4. luna-send -n 1 luna://com.webos.service.sleep/time/alarmAdd &#39;{&quot;relative_time&quot;:&quot;0:0:2&quot;}&#39;</p>
+      <p>Response:<br />
+        {&quot;alarmId&quot;:0}
+      </p>
+      <p>5. luna-send -n 1 luna://com.webos.service.sleep/time/alarmAdd &#39;{&quot;serviceName&quot;:&quot;/var/run/ls2/tmp&quot;, &quot;key&quot;:&quot;key1&quot;, &quot;relative_time&quot;:&quot;0:0:5&quot;}}&#39;</p>
+      <p>Response:<br />
+        {&quot;alarmId&quot;:4}
+      </p>
+      <p>6. luna-send -n 1 luna://com.webos.service.sleep/time/alarmAdd &#39;{&quot;serviceName&quot;:&quot;/var/run/ls2/tmp&quot;, &quot;key&quot;:&quot;key1&quot;, &quot;relative_time&quot;:&quot;0:0:3&quot;, &quot;subscribe&quot;:false}&#39;</p>
+      <p>Response:<br />
+        {&quot;alarmId&quot;:5,&quot;subscribed&quot;:false}
+      </p>
+      <p>7. luna-send -n 1 luna://com.webos.service.sleep/time/alarmAdd &#39;{&quot;serviceName&quot;:&quot;/var/run/ls2/tmp&quot;, &quot;key&quot;:&quot;key1&quot;, &quot;relative_time&quot;:&quot;0:0:3&quot;, &quot;subscribe&quot;:true}&#39;</p>
+      <p>Response:<br />
+        {&quot;alarmId&quot;:8,&quot;subscribed&quot;:true}
+      </p>
+      <p>8. luna-send -n 4 luna://com.webos.service.sleep/time/alarmAdd &#39;{&quot;serviceName&quot;:&quot;/var/run/ls2/tmp&quot;, &quot;key&quot;:&quot;key2&quot;, &quot;relative_time&quot;:&quot;0:0:3&quot;, &quot;subscribe&quot;:true}&#39;</p>
+      <p>Response:<br />
+        {&quot;alarmId&quot;:10,&quot;subscribed&quot;:true}
+      </p>
+      <p>Subscription Return:<br />
+        {&quot;alarmId&quot;:10,&quot;fired&quot;:true,&quot;key&quot;:&quot;key2&quot;} // on fire
+      </p>
+      <p>9. luna-send -n 3 luna://com.webos.service.sleep/time/alarmAdd &#39;{&quot;serviceName&quot;:&quot;com.webos.service.sleep&quot;, &quot;key&quot;:&quot;calendarAlarm&quot;, &quot;relative_time&quot;:&quot;0:0:4&quot;, &quot;subscribe&quot;:true}&#39;</p>
+      <p>Response:<br />
+        {&quot;alarmId&quot;:12,&quot;subscribed&quot;:true}
+      </p>
+      <p>Subscription Return:<br />
+        {&quot;alarmId&quot;:12,&quot;fired&quot;:true,&quot;key&quot;:&quot;calendarAlarm&quot;}&nbsp;//if key exists on fire
+      </p>
+      <p>10. luna-send -n 3 luna://com.webos.service.sleep/time/alarmAdd &#39;{&quot;serviceName&quot;:&quot;com.webos.service.sleep&quot;, &quot;relative_time&quot;:&quot;0:0:4&quot;, &quot;subscribe&quot;:true}&#39;</p>
+      <p>Response:<br />
+        {&quot;alarmId&quot;:13,&quot;subscribed&quot;:true}
+      </p>
+      <p>Subscription Return:<br />
+        {&quot;alarmId&quot;:13,&quot;fired&quot;:true}&nbsp;//without key on fire
+      </p>
+    </div>
+  </div>
+  <h3 id="time-alarmaddcalendar">time/alarmAddCalendar</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>sleep.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 24</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    Set a calendar event.
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>serviceName</td>
+            <td>Optional</td>
+            <td>string</td>
+            <td>Service name for which the alarm needs to be set</td>
+          </tr>
+          <tr>
+            <td>key</td>
+            <td>Optional</td>
+            <td>string</td>
+            <td>alarm identifier</td>
+          </tr>
+          <tr>
+            <td>date</td>
+            <td>Required</td>
+            <td>string</td>
+            <td>
+              <p>date at which alarm should fire.&nbsp;format is mm-dd-yyyy</p>
+            </td>
+          </tr>
+          <tr>
+            <td>time</td>
+            <td>Required</td>
+            <td>string</td>
+            <td>
+              <p>time at which alarm should fire.&nbsp;format is hh:mm:ss (0-23 hrs) (hh- hours, mm-minutes, ss-seconds)</p>
+            </td>
+          </tr>
+          <tr>
+            <td>subscribe</td>
+            <td>Optional</td>
+            <td>boolean</td>
+            <td>to subscribe to the results of this call</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>alarmId</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>alarm Id of the added calendar alarm if alarmAddCalendar is successful</p>
+            </td>
+          </tr>
+          <tr>
+            <td>subscribed</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>subscribed parameter is received only&nbsp;if subscribe parameter is sent during alarmAddCalendar request</p>
+              <p><strong>true</strong>: if subscription is successful</p>
+              <p><strong>false</strong>: is subscription failed</p>
+            </td>
+          </tr>
+          <tr>
+            <td>key</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>alarm identifier of the fired alarm if provided during the alarmAddCalendar request.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <ul>
+                <li>If the&nbsp;method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false</strong>.&nbsp;</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Error message on failure</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Subscription Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>alarmId</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>alarmId of the subscribed alarm</p>
+            </td>
+          </tr>
+          <tr>
+            <td>fired</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p><strong>true</strong>: if the alarm has fired</p>
+              <p><strong>false</strong>: if the alarm has not fired</p>
+            </td>
+          </tr>
+          <tr>
+            <td>key</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>alarm identifier of the fired alarm</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Invalid format for alarm time.</td>
+            <td>
+              <p>Invalid format for alarm time.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Unknown error</td>
+            <td>
+              <p>Unknown error</p>
+            </td>
+          </tr>
+          <tr>
+            <td>-1</td>
+            <td>malformed json object</td>
+            <td>
+              <p>Invalid json object</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p>1. luna-send -n 2 luna://com.webos.service.sleep/time/alarmAddCalendar &#39;{&quot;date&quot;:&quot;01-24-2020&quot;, &quot;time&quot;:&quot;10:01:03&quot;, &quot;subscribe&quot;:}&#39;</p>
+      <p>Response:<br />
+        {&quot;returnValue&quot;:false, &quot;errorCode&quot;:-1,&quot;errorText&quot;:&quot;Malformed json.&quot;}
+      </p>
+      <p>2. luna-send -n 1 luna://com.webos.service.sleep/time/alarmAddCalendar &#39;{}&#39;</p>
+      <p>Response:<br />
+        {&quot;returnValue&quot;:false,&quot;errorText&quot;:&quot;Invalid format for alarm time.&quot;}
+      </p>
+      <p>3. luna-send -n 1 luna://com.webos.service.sleep/time/alarmAddCalendar &#39;{&quot;serviceName&quot;:&quot;com.palm.X&quot;}&#39;</p>
+      <p>Response:<br />
+        {&quot;returnValue&quot;:false,&quot;errorText&quot;:&quot;Invalid format for alarm time.&quot;}
+      </p>
+      <p>4. luna-send -n 1 luna://com.webos.service.sleep/time/alarmAddCalendar &#39;{&quot;key&quot;:&quot;calendarAlarm&quot;}&#39;</p>
+      <p>Response:<br />
+        {&quot;returnValue&quot;:false,&quot;errorText&quot;:&quot;Invalid format for alarm time.&quot;}
+      </p>
+      <p>5. luna-send -n 1 luna://com.webos.service.sleep/time/alarmAddCalendar &#39;{&quot;serviceName&quot;:&quot;com.palm.X&quot;, &quot;key&quot;:&quot;calendarAlarm&quot;, &quot;date&quot;:&quot;23-01-2020&quot;, &quot;subscribe&quot;:false}&#39;</p>
+      <p>Response:<br />
+        {&quot;returnValue&quot;:false,&quot;errorText&quot;:&quot;Invalid format for alarm time.&quot;}
+      </p>
+      <p>6. luna-send -n 1 luna://com.webos.service.sleep/time/alarmAddCalendar &#39;{&quot;serviceName&quot;:&quot;com.palm.X&quot;, &quot;key&quot;:&quot;calendarAlarm&quot;, &quot;time&quot;:&quot;23:49:03&quot;, &quot;subscribe&quot;:false}&#39;</p>
+      <p>Response:<br />
+        {&quot;returnValue&quot;:false,&quot;errorText&quot;:&quot;Invalid format for alarm time.&quot;}
+      </p>
+      <p>7. luna-send -n 1 luna://com.webos.service.sleep/time/alarmAddCalendar &#39;{&quot;date&quot;:&quot;23-01-2020&quot;, &quot;time&quot;:&quot;49:03&quot;}&#39;</p>
+      <p>Response:<br />
+        {&quot;returnValue&quot;:false,&quot;errorText&quot;:&quot;Invalid format for alarm time.&quot;}
+      </p>
+      <p>8. luna-send -n 1 luna://com.webos.service.sleep/time/alarmAddCalendar &#39;{&quot;date&quot;:&quot;23-01-2020&quot;, &quot;time&quot;:&quot;23:52:03&quot;}&#39;</p>
+      <p>Response:<br />
+        {&quot;returnValue&quot;:false,&quot;errorText&quot;:&quot;Invalid format for alarm time.&quot;}
+      </p>
+      <p>9. luna-send -n 1 luna://com.webos.service.sleep/time/alarmAddCalendar &#39;{&quot;date&quot;:&quot;01-23-2020&quot;, &quot;time&quot;:&quot;23:52:03&quot;}&#39;</p>
+      <p>Response:<br />
+        {&quot;alarmId&quot;:14}
+      </p>
+      <p>10. luna-send -n 2 luna://com.webos.service.sleep/time/alarmAddCalendar &#39;{&quot;date&quot;:&quot;01-23-2020&quot;, &quot;time&quot;:&quot;23:56:03&quot;, &quot;subscribe&quot;:true}&#39; //already fired</p>
+      <p>Subscription Return:<br />
+        {&quot;alarmId&quot;:17,&quot;fired&quot;:true}
+      </p>
+      <p>Response:<br />
+        {&quot;alarmId&quot;:17,&quot;subscribed&quot;:true}
+      </p>
+      <p>11. luna-send -n 2 luna://com.webos.service.sleep/time/alarmAddCalendar &#39;{&quot;date&quot;:&quot;01-24-2020&quot;, &quot;time&quot;:&quot;10:00:03&quot;, &quot;subscribe&quot;:true}&#39; //not yet fired</p>
+      <p>Response:<br />
+        {&quot;alarmId&quot;:22,&quot;subscribed&quot;:true}
+      </p>
+      <p>Subscription Return:<br />
+        {&quot;alarmId&quot;:22,&quot;fired&quot;:true} //on fire
+      </p>
+      <p>12. luna-send -n 2 luna://com.webos.service.sleep/time/alarmAddCalendar &#39;{&quot;date&quot;:&quot;01-24-2020&quot;, &quot;time&quot;:&quot;10:01:03&quot;, &quot;subscribe&quot;:false}&#39; //no subscription</p>
+      <p>Response:<br />
+        {&quot;alarmId&quot;:23,&quot;subscribed&quot;:false}
+      </p>
+      <p>13. luna-send -n 2 luna://com.webos.service.sleep/time/alarmAddCalendar &#39;{&quot;date&quot;:&quot;01-23-2020&quot;, &quot;time&quot;:&quot;23:56:03&quot;, &quot;subscribe&quot;:false}&#39;</p>
+      <p>Response:<br />
+        {&quot;alarmId&quot;:26,&quot;subscribed&quot;:false}
+      </p>
+    </div>
+  </div>
+  <h3 id="time-alarmquery">time/alarmQuery</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>sleep.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 24</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Query for set of alarms identified by 'serviceName' &amp; 'key'.<br></p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>serviceName</td>
+            <td>Required</td>
+            <td>string</td>
+            <td>service name for which the alarm is being queried</td>
+          </tr>
+          <tr>
+            <td>key</td>
+            <td>Required</td>
+            <td>string</td>
+            <td>identifier for the alarm</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <ul>
+                <li>If the&nbsp;method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false</strong>.&nbsp;</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>alarms</td>
+            <td>Optional</td>
+            <td>Object array</td>
+            <td>
+              <p>An array of alarms identified by provided serviceName and key</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Error message if call fails</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>-1</td>
+            <td>malformed json object</td>
+            <td>
+              <p>Invalid json data</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p>1. luna-send -n 1 luna://com.webos.service.sleep/time/alarmQuery &#39;{&quot;serviceName&quot;:&quot;com.palm.ser2&quot;, &quot;key&quot;:&quot;alarmCalendar2&quot;}&#39;</p>
+      <p>Response:<br />
+        {&quot;alarms&quot;: []}
+      </p>
+      <p>2. luna-send -n 1 luna://com.webos.service.sleep/time/alarmQuery &#39;{&quot;serviceName&quot;:&quot;com.palm.ser2&quot;, &quot;key&quot;:&quot;alarmCalendar&quot;}&#39;</p>
+      <p>Response:<br />
+        {&quot;alarms&quot;: []}
+      </p>
+      <p>3. luna-send -n 1 luna://com.webos.service.sleep/time/alarmQuery &#39;{&quot;serviceName&quot;:&quot;com.palm.ser2&quot;}&#39;</p>
+      <p>Response:<br />
+        {&quot;returnValue&quot;:false,&quot;errorText&quot;:&quot;alarmQuery parameters are missing.&quot;}
+      </p>
+      <p>4. luna-send -n 1 luna://com.webos.service.sleep/time/alarmQuery &#39;{&quot;serviceName&quot;:&quot;&quot;, &quot;key&quot;:&quot;alarmCalendar2&quot;}&#39;</p>
+      <p>Response:<br />
+        {&quot;alarms&quot;: []}
+      </p>
+      <p>5. luna-send -n 1 luna://com.webos.service.sleep/time/alarmQuery &#39;{&quot;key&quot;:&quot;alarmCalendar2&quot;}&#39;</p>
+      <p>Response:<br />
+        {&quot;returnValue&quot;:false,&quot;errorText&quot;:&quot;alarmQuery parameters are missing.&quot;}
+      </p>
+    </div>
+  </div>
+  <h3 id="time-internalalarmfired">time/internalAlarmFired</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>sleep.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 24</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    Called when a RTC alarm is fired.
+    <h4>Parameters</h4>
+    <p>None</p>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 luna://com.webos.service.sleep/time/internalAlarmFired &#39;{}&#39;</p>
     </div>
   </div>
   <h3 id="timeout-clear">timeout/clear</h3>

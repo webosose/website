@@ -1,7 +1,7 @@
 ---
 title: com.webos.service.audio
-date: 2023-05-22
-api_level: 23
+date: 2023-06-15
+api_level: 24
 weight: 100
 toc: true
 ---
@@ -680,25 +680,6 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         }
       </p>
     </div>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.audio/UMI/mute &#39;{<br />
-        &nbsp; &nbsp;&quot;sink&quot;:&quot;ALSA&quot;,<br />
-        &nbsp; &nbsp;&quot;source&quot;:&quot;AMIXER&quot;,<br />
-        &nbsp; &nbsp;&quot;sourcePort&quot;:0,<br />
-        &nbsp; &nbsp;&quot;mute&quot;:1<br />
-        }&#39;
-      </p>
-      <p>Response:</p>
-      <p>{<br />
-        &nbsp; &nbsp; &quot;errorCode&quot;: 1,<br />
-        &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
-        &nbsp; &nbsp; &quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
-        }
-      </p>
-    </div>
   </div>
   <h3 id="checkaudioeffectstatus">checkAudioEffectStatus</h3>
   <div>
@@ -738,6 +719,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
                 <li>speech enhancement</li>
                 <li>gain control</li>
                 <li>beamforming</li>
+                <li>dynamic compressor</li>
               </ul>
             </td>
           </tr>
@@ -870,10 +852,22 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       </p>
     </div>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+      <p style="color:white;margin:5.0px;"><b>Example : Checks the status of the beamforming audio effect</b></p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -f -n 1 luna://com.webos.service.audio/checkAudioEffectStatus &#39;{&quot;effectName&quot;:&quot;beamforming&quot;}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;returnValue&quot; : true,<br />
+        &nbsp; &nbsp;&nbsp;&quot;enabled&quot;: true<br />
+        }
+      </p>
+    </div>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example : Checks the status of the dynamic compressor audio effect</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -f -n 1 luna://com.webos.service.audio/checkAudioEffectStatus &#39;{&quot;effectName&quot;:&quot;dynamic compressor&quot;}&#39;</p>
       <p>Response:</p>
       <p>{<br />
         &nbsp; &nbsp; &quot;returnValue&quot; : true,<br />
@@ -919,9 +913,10 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>
               <p>List of the available audio effects.&nbsp;Possible values are:</p>
               <ul>
-                <li><strong>speech enhancement</strong></li>
-                <li><strong>gain control</strong></li>
-                <li><strong>beamforming </strong>(not listed if none of the&nbsp;array microphones support beamforming)</li>
+                <li>speech enhancement</li>
+                <li>gain control</li>
+                <li>beamforming (not listed if none of the&nbsp;array microphones support beamforming)</li>
+                <li>dynamic compressor</li>
               </ul>
             </td>
           </tr>
@@ -1001,10 +996,232 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         &nbsp; &nbsp;&nbsp;&quot;audioEffectList&quot;: [<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &quot;speech enhancement&quot;,<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &quot;gain control&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;beamforming&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;beamforming&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;dynamic compressor&quot;<br />
         &nbsp; &nbsp; ]<br />
         }
       </p>
+    </div>
+  </div>
+  <h3 id="getaudioeffectsstatus">getAudioEffectsStatus</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>audio.query</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 24</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Gets the status of all the audio effects.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>subscribe</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Subscribe for notifications on changes to the status of audio effects.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true:</strong> Subscribed.</li>
+                <li><strong>false:</strong>&nbsp;(default) Not subscribed.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>subscribed</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates if subscribed to get notifications. Possible values are:</p>
+              <ul>
+                <li><strong>true:</strong>&nbsp;Subscribed.</li>
+                <li><strong>false:</strong>&nbsp;Not subscribed.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation. Possible values are:</p>
+              <ul>
+                <li><strong>true:</strong> Operation is successful.</li>
+                <li><strong>false:</strong> Operation has failed. Check the &#39;errorCode&#39; and &#39;errorText&#39; fields.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>The reason for the failure of the operation. See the &#39;Error Codes&#39; section of this method for details.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>status</td>
+            <td>Optional</td>
+            <td>Object array: <a href="#object-effectstatus">effectStatus</a></td>
+            <td>
+              <p>Indicates status of audio effects.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Subscription Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>subscribed</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates if subscribed to get notifications.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>status</td>
+            <td>Required</td>
+            <td>Object array: <a href="#object-effectstatus">effectStatus</a></td>
+            <td>
+              <p>Indicates status of audio effects.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates status of the operation.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Could not validate json message against schema</td>
+            <td>
+              <p>Input parameters provided are incorrect.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>15</td>
+            <td>Audiod Internal Error</td>
+            <td>
+              <p>Internal error</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -f -n 1 luna://com.webos.service.audio/getAudioEffectsStatus &#39;{&quot;subscribe&quot;:false }&#39;</p>
+      <p>Response:</p>
+      <p>{</p>
+      <p>&nbsp; &nbsp; &quot;subscribed&quot;: false,<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp; &nbsp; &quot;status&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;speech enhancement&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;enabled&quot;: false<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;gain control&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;enabled&quot;: false<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {&nbsp;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;beamforming&quot;, &nbsp;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;enabled&quot;: false &nbsp; &nbsp; &nbsp;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; },&nbsp;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;dynamic compressor&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;enabled&quot;: false<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; &nbsp;]
+      </p>
+      <p>}</p>
     </div>
   </div>
   <h3 id="getinputvolume">getInputVolume</h3>
@@ -3192,13 +3409,10 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>for Open</b></p>
+      <p style="color:white;margin:5.0px;"><b>Example : Get master volume</b></p>
     </div>
     <div class="code-bg-grey">
-      <p># luna-send -n i -f luna://com.webos.service.audio/master/getVolume &#39;{<br />
-        &nbsp; &nbsp;&quot;subscribe&quot;:true<br />
-        }&#39;
-      </p>
+      <p># luna-send -n i -f luna://com.webos.service.audio/master/getVolume &#39;{&quot;subscribe&quot;:true}&#39;</p>
       <p>Response:</p>
       <p>{<br />
         &nbsp; &nbsp;&quot;volumeStatus&quot;:{<br />
@@ -3631,24 +3845,6 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         &nbsp; &nbsp; &quot;mute&quot;: true,<br />
         &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
         &nbsp; &nbsp; &quot;soundOutput&quot;: &quot;pcm_output&quot;<br />
-        }
-      </p>
-    </div>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example: Unmute volume for sessionId 0</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p># luna-send -f -n 1 luna://com.webos.service.audio/master/muteVolume &#39;{<br />
-        &nbsp; &nbsp;&quot;soundOutput&quot;:&quot;alsa&quot;,<br />
-        &nbsp; &nbsp;&quot;mute&quot;:false,<br />
-        &nbsp; &nbsp;&quot;sessionId&quot;:0<br />
-        }&#39;
-      </p>
-      <p>Response:</p>
-      <p>{<br />
-        &nbsp; &nbsp; &quot;mute&quot;: false,<br />
-        &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-        &nbsp; &nbsp; &quot;soundOutput&quot;: &quot;alsa&quot;<br />
         }
       </p>
     </div>
@@ -4482,7 +4678,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>204</td>
-            <td>&quot;Volume control is not supported</td>
+            <td>Volume control is not supported</td>
             <td>
               <p>Invalid sound output value given</p>
             </td>
@@ -5419,6 +5615,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
                 <li>speech enhancement</li>
                 <li>gain control</li>
                 <li>beamforming</li>
+                <li>dynamic compressor</li>
               </ul>
             </td>
           </tr>
@@ -5568,6 +5765,17 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <div class="code-bg-grey">
       <p># luna-send -f -n 1 luna://com.webos.service.audio/setAudioEffect &#39;{&quot;effectName&quot;:&quot;beamforming&quot;, &quot;enabled&quot;:true}&#39;</p>
+      <p>Response:</p>
+      <p>{&nbsp;<br />
+        &nbsp; &nbsp;&nbsp;&quot;returnValue&quot; : true<br />
+        }
+      </p>
+    </div>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example : Enable dynamic compressor effect</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -f -n 1 luna://com.webos.service.audio/setAudioEffect &#39;{&quot;effectName&quot;:&quot;dynamic compressor&quot;, &quot;enabled&quot;:true}&#39;</p>
       <p>Response:</p>
       <p>{&nbsp;<br />
         &nbsp; &nbsp;&nbsp;&quot;returnValue&quot; : true<br />
@@ -5994,6 +6202,31 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>String</td>
             <td>
               <p>The audio output device.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Could not validate json message against schema</td>
+            <td>
+              <p>Invalid number of input parameters against defined schema of the method</p>
             </td>
           </tr>
         </tbody>
@@ -6487,10 +6720,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       <p style="color:white;margin:5.0px;"><b>Example code</b></p>
     </div>
     <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.audio/soundSettings/setSoundOut &#39;{<br />
-        &nbsp; &nbsp;&quot;soundOut&quot;:&quot;alsa&quot;<br />
-        }&#39;
-      </p>
+      <p># luna-send -n 1 -f luna://com.webos.service.audio/soundSettings/setSoundOut &#39;{&quot;soundOut&quot;:&quot;alsa&quot;}&#39;</p>
       <p>Response:</p>
       <p>{<br />
         &nbsp; &nbsp; &quot;soundOut&quot;: &quot;alsa&quot;,<br />
@@ -6730,10 +6960,16 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>String</td>
             <td>
-              <p>The event to be passed to audiod by the udev rule when USB soundcard is detected.It is a simple string defined by audiod.<br />
-                For example supported events are headset-removed, headset-inserted, headset-mic-inserted, usb-mic-inserted,<br />
-                usb-mic-removed, usb-headset-inserted, usb-headset-removed.
-              </p>
+              <p>The event to be passed to audiod by the udev rule when USB soundcard is detected.It is a simple string defined by audiod.&nbsp;For example supported events are:</p>
+              <ul>
+                <li>headset-removed</li>
+                <li>headset-inserted</li>
+                <li>headset-mic-inserted</li>
+                <li>usb-mic-inserted</li>
+                <li>usb-mic-removed</li>
+                <li>usb-headset-inserted</li>
+                <li>usb-headset-removed</li>
+              </ul>
             </td>
           </tr>
           <tr>
@@ -6741,7 +6977,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>Number</td>
             <td>
-              <p>sound card number as of now is being extracted from the device path where USB sound card is detected by udev.</p>
+              <p>Sound card number. As of now it is being extracted from the device path where USB sound card is detected by udev.</p>
             </td>
           </tr>
           <tr>
@@ -6749,7 +6985,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>Number</td>
             <td>
-              <p>device number as of now is being extracted from the device path where USB sound card is detected by udev.</p>
+              <p>Device number. As of now it is being extracted from the device path where USB sound card is detected by udev.</p>
             </td>
           </tr>
         </tbody>
@@ -6805,32 +7041,10 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 luna://com.webos.service.audio/udev/event &#39;{<br />
-        &nbsp; &nbsp;&quot;event&quot;:&quot;usb-mic-inserted&quot;,<br />
-        &nbsp; &nbsp;&quot;soundcard_no&quot;:&quot;1&quot;,<br />
-        &nbsp; &nbsp;&quot;device_no&quot;:&quot;0&quot;<br />
-        }&#39;
-      </p>
-    </div>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
       <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -n 1 luna://com.webos.service.audio/udev/event &#39;{&quot;event&quot;:&quot;headset-inserted&quot;}&#39;</p>
-      <p>Response:</p>
-      <p>{<br />
-        &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-        }
-      </p>
-    </div>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 luna://com.webos.service.audio/udev/event &#39;{&quot;event&quot;:&quot;headset-removed&quot;}&#39;</p>
       <p>Response:</p>
       <p>{<br />
         &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
@@ -7218,6 +7432,60 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       </table>
     </div>
   </div>
+  <h3 id="object-effectstatus">effectStatus</h3>
+  <div>
+    <p>Indicates the Name of audio effects and their status</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>name</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Name of the audio effect<br />
+                Supported Values:
+              </p>
+              <ul>
+                <li>speech enhancement</li>
+                <li>gain control</li>
+                <li>beamforming&nbsp;</li>
+                <li>dynamic compressor</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>enabled</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Status of the audio effect.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true:&nbsp;</strong>Audio effect is enabled.</li>
+                <li><strong>false:&nbsp;</strong>Audio effect is disabled.</li>
+              </ul>
+              <p><strong>Note:&nbsp;</strong>By default, all the audio effects are disabled</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
   <h3 id="object-sourceobject">sourceObject</h3>
   <div>
     <p>Indicates the list of active source connection</p>
@@ -7477,14 +7745,14 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         </tr>
         <tr>
           <td>3</td>
-          <td>Invalid volume control</td>
+          <td>Volume limit reached</td>
           <td>
             <p>AUDIOD_ERRORCODE_NOT_SUPPORT_VOLUME_CHANGE</p>
           </td>
         </tr>
         <tr>
           <td>3</td>
-          <td>Volume limit reached</td>
+          <td>Invalid volume control</td>
           <td>
             <p>AUDIOD_ERRORCODE_NOT_SUPPORT_VOLUME_CHANGE</p>
           </td>
@@ -7498,16 +7766,16 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         </tr>
         <tr>
           <td>17</td>
-          <td>Audiod internal error</td>
+          <td>Audiod Unknown Stream</td>
           <td>
-            <p>AUDIOD_ERRORCODE_FAILED_MIXER_CALL</p>
+            <p>A wrong streamType is requested.</p>
           </td>
         </tr>
         <tr>
           <td>17</td>
-          <td>Audiod Unknown Stream</td>
+          <td>Audiod internal error</td>
           <td>
-            <p>A wrong streamType is requested.</p>
+            <p>AUDIOD_ERRORCODE_FAILED_MIXER_CALL</p>
           </td>
         </tr>
         <tr>
@@ -7540,21 +7808,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         </tr>
         <tr>
           <td>22</td>
-          <td>Not supported</td>
-          <td>
-            <p>AUDIOD_ERRORCODE_NOT_SUPPORTED</p>
-          </td>
-        </tr>
-        <tr>
-          <td>22</td>
-          <td>Driver error</td>
-          <td>
-            <p>AUDIOD_ERRORCODE_NOT_SUPPORTED</p>
-          </td>
-        </tr>
-        <tr>
-          <td>22</td>
-          <td>Audio not connected</td>
+          <td>Connection not supported</td>
           <td>
             <p>AUDIOD_ERRORCODE_NOT_SUPPORTED</p>
           </td>
@@ -7568,7 +7822,21 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         </tr>
         <tr>
           <td>22</td>
-          <td>Connection not supported</td>
+          <td>Audio not connected</td>
+          <td>
+            <p>AUDIOD_ERRORCODE_NOT_SUPPORTED</p>
+          </td>
+        </tr>
+        <tr>
+          <td>22</td>
+          <td>Driver error</td>
+          <td>
+            <p>AUDIOD_ERRORCODE_NOT_SUPPORTED</p>
+          </td>
+        </tr>
+        <tr>
+          <td>22</td>
+          <td>Not supported</td>
           <td>
             <p>AUDIOD_ERRORCODE_NOT_SUPPORTED</p>
           </td>
