@@ -1,5 +1,5 @@
 ---
 title: "Beanviser"
-weight: 30
+weight: 50
 ---
 

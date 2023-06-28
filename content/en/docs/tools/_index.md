@@ -1,7 +1,7 @@
 ---
 title: Tools
 section_main: true
-date: 2023-01-09
+date: 2023-06-27
 weight: 50
 ---
 
@@ -32,7 +32,7 @@ Check the user guides, download links, and release notes for SDK tools.
 
 ### VS Code Extension
 
-* [Overview]({{< relref "vs-code-extension-overview" >}})
+* [Overview]({{< relref "vs-code-extension" >}})
 
 ### Emulator
 

@@ -1,16 +1,14 @@
 ---
-title: Overview
-display_title: VS Code Extension - webOS Studio
-date: 2022-12-29
-weight: 20
+title: webOS Studio - VS Code Extension
+date: 2023-06-27
+weight: 30
 toc: true
 ---
 
 webOS OSE provides an extension for [Microsoft Visual Studio Code](https://code.visualstudio.com/) (VS Code), **webOS Studio**, to help developers easily develop webOS OSE apps/services (web apps, Enact apps, JS services). 
 
-{{< note >}}
-This page only describes the overview of the extension. For more details, see the [documentation](https://marketplace.visualstudio.com/items?itemName=webOSSDK.webosstudio) in the marketplace.
-{{< /note >}}
+- [User Guide (VS Code marketplace)](https://marketplace.visualstudio.com/items?itemName=webOSSDK.webosstudio)
+- [Change Log (VS Code marketplace)](https://marketplace.visualstudio.com/items/webOSSDK.webosstudio/changelog)
 
 ## Key Features
 
@@ -24,21 +22,27 @@ webOS Studio provides the following key features:
 * Managing connected webOS devices
 * Managing images for [VirtualBox Emulator]({{< relref "emulator-user-guide" >}})
 * Analyzing IPK files
-* Project Wizard
+* Providing Project Wizard for GUI-based project configuration
 
 ## How to Install
 
-To install the extension, open VS Code and do the following:
+To install the extension, launch VS Code and do the following steps:
 
 1. Navigate to **View** > **Extensions**.
-2. Search for **webOS Studio** in the search bar and click the **Install** button. Once the installation is completed, you will see the ![webos Studio icon in Activity Bar](/images/docs/tools/vs-code-extension/webos-studio-icon.jpg) icon in **Activity Bar**.
-3. Click the icon to see the user interface of the extension:
-
-{{< figure src="/images/docs/tools/vs-code-extension/extension-interface.jpg" caption="Interface of the webOS Studio extension" >}}
+2. Search for **webOS Studio** in the search bar
+3. Click the **Install** button. 
+   
+{{< figure src="/images/docs/tools/vs-code-extension/install-webos-studio.jpg" alt="Installation steps for webOS Studio" caption="" >}}
+   
+Once the installation is completed, you will see the ![webos Studio icon in Activity Bar](/images/docs/tools/vs-code-extension/webos-studio-icon.jpg) icon in **Activity Bar**.
 
 ## How to Use
 
-The extension is designed on the basis of the typical workflow followed in webOS OSE app/service development. See the [documentation](https://marketplace.visualstudio.com/items?itemName=webOSSDK.webosstudio) in the marketplace.
+Click the ![webos Studio icon in Activity Bar](/images/docs/tools/vs-code-extension/webos-studio-icon.jpg) icon to see the user interface of the extension:
+
+{{< figure src="/images/docs/tools/vs-code-extension/extension-interface.jpg" caption="Interface of the webOS Studio extension" >}}
+
+The extension is designed on the basis of the typical workflow followed in webOS OSE app/service development. See the [user guide (VS Code marketplace)](https://marketplace.visualstudio.com/items?itemName=webOSSDK.webosstudio).
 
 ## FAQs
 

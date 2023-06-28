@@ -1,7 +1,7 @@
 ---
 title: "SDK Download"
-date: 2022-02-15
-weight: 5
+date: 2023-06-27
+weight: 10
 file_download: true
 toc: true
 ---
@@ -16,7 +16,7 @@ Command Line Interface (CLI) is installed using `npm`. For more information, see
 
 ## Visual Studio Code Extension
 
-Visual Studio (VS) Code Extension is installed using the Extensions view. For more information, see [VS Code User Guide](https://code.visualstudio.com/docs/editor/extension-marketplace#_install-an-extension) or [How to Install]({{< relref "vs-code-extension-overview#how-to-install" >}}).
+Visual Studio (VS) Code Extension is installed using the Extensions view. For more information, see [VS Code User Guide](https://code.visualstudio.com/docs/editor/extension-marketplace#_install-an-extension) or [How to Install]({{< relref "vs-code-extension#how-to-install" >}}).
 
 ## Emulator 
 
