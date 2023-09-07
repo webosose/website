@@ -1,11 +1,11 @@
 ---
 title: Applying Localization
-date: 2020-08-27
+date: 2023-08-17
 weight: 30
 toc: true
 ---
 
-When internationalization is done, your apps and services are ready for localization. You can extract localizable text from your code by using a localization tool and send those files to your translation team for translation into multiple languages and locales. By importing the translated files you'll get string resources for your apps and services. You can still write out string resources manually, without using the localization tool.
+When internationalization is done, your apps and services are ready for localization. You can extract localizable text from your code by using a localization tool and send those files to your translation team for translation into multiple languages and locales. By importing the translated files, you'll get string resources for your apps and services. You can still write out string resources manually, without using the localization tool.
 
 If you create string resources manually, they should follow the formats described in the [Resource Formats](#resource-formats) section. In other words, compose string resource files for multiple languages according to the format for the programming language of your apps and services. Refer to the [Resource Formats](#resource-formats) section for details. 
 
@@ -33,13 +33,13 @@ To run the localization tool, you need to check out the localization tool reposi
 The localization tool parses source codes along with XLIFF files and generates string resources in formats required by each programming language. Therefore, you must provide translation data in XLIFF format to use the localization tool.
 
 The localization process using the loctool is summarized below:
-1. Configure your project, extract all strings eligible for localization and export them in a set of XLIFF files with loctool.
+1. Configure your project, extract all strings eligible for localization, and export them in a set of XLIFF files with loctool.
 2. Submit the raw XLIFF files to your translator. Get back the translated files and apply them into the project again.
 3. Generate translated string resources by using the loctool.
 
 Detailed explanations of the entire process are given in the [loctool guide](https://github.com/iLib-js/loctool/blob/development/README.md) page.
 
-In addition, the loctool enables you to generate string resources files at build time. See [Generate String Resources at Build Time](#generating-string-resources-at-build-time) for details.
+In addition, the loctool enables you to generate string resource files at build time. See [Generate String Resources at Build Time](#generating-string-resources-at-build-time) for details.
 
 ### Working with XLIFF Files
 
@@ -150,32 +150,43 @@ You need to create a `project.json` configuration file for your project and conf
 
 For more information about configuring the loctool, please visit the [loctool project](https://github.com/iLib-js/loctool/blob/development/README.md#configuration) site.
 
-Here's an example for a webOS application.
+Here's an example of a webOS application.
 
 {{< code "project.json (Web) " true >}}
 ```json
 {
-    "name": "com.webos.app.home",
-    "id": "home",
+    "name": "com.webos.app.sample1",
+    "id": "sample1",
     "projectType": "webos-web",
     "sourceLocale": "en-KR",
-    "pseudoLocale": ["zxx-XX", "zxx-Cyrl-XX", "zxx-Hans-XX", "zxx-Hebr-XX"],
+    "pseudoLocale": {
+        "zxx-XX" : "debug",
+        "zxx-Hebr-XX" : "debug-rtl",   
+        "zxx-Cyrl-XX" : "debug-cyrillic",
+        "zxx-Hans-XX" : "debug-han-simplified"
+    },
     "resourceDirs": {
-         "json":"resources"
-     },
-     "resourceFileTypes": {
-         "json":"ilib-loctool-webos-json-resource"
-     },
+        "json":"resources"
+    },
+    "resourceFileTypes": {
+        "json":"ilib-loctool-webos-json-resource"
+    },
     "plugins": [
-         "ilib-loctool-webos-javascript",
-         "ilib-loctool-webos-appinfo-json"
-     ],
-     "excludes": [
-         "*"
-     ],
-     "includes": [
-         "src"
-     ]
+        "ilib-loctool-webos-javascript",
+        "ilib-loctool-webos-json"
+    ],
+    "excludes": [
+        ".*"
+    ],
+    "settings": {
+        "jsonMap": {
+            "mappings": {
+             "**/appinfo.json": {
+                    "template": "[dir]/[resourceDir]/[localeDir]/[filename]"
+                }
+            }
+        }
+    }
 }
 ```
 {{< /code >}}
@@ -183,27 +194,39 @@ Here's an example for a webOS application.
 {{< code "project.json (QML) " true >}}
 ```json
 {
-    "name": "ime-manager",
-    "id": "imemanager",
+    "name": "com.webos.app.sample2",
+    "id": "sample2",
     "projectType": "webos-qml",
     "sourceLocale": "en-KR",
-    "pseudoLocale": ["zxx-XX", "zxx-Cyrl-XX", "zxx-Hans-XX", "zxx-Hebr-XX"],
+    "pseudoLocale": {
+        "zxx-XX" : "debug",
+        "zxx-Hebr-XX" : "debug-rtl",   
+        "zxx-Cyrl-XX" : "debug-cyrillic",
+        "zxx-Hans-XX" : "debug-han-simplified"
+     },
     "resourceDirs": {
-         "ts":"resources"
+         "ts":"resources",
+         "json":"resources"
      },
      "resourceFileTypes": {
          "ts":"ilib-loctool-webos-ts-resource"
      },
     "plugins": [
          "ilib-loctool-webos-qml",
-         "ilib-loctool-webos-appinfo-json"
+         "ilib-loctool-webos-json"
      ],
      "excludes": [
-         "*"
+         ".*"
      ],
-     "includes": [
-         "src"
-     ]
+     "settings": {
+         "jsonMap": {
+             "mappings": {
+                 "**/appinfo.json": {
+                     "template": "[dir]/[resourceDir]/[localeDir]/[filename]"
+                 }
+             }
+         }
+     }
 }
 ```
 {{< /code >}}
@@ -214,15 +237,15 @@ The value of `id` property in `project.json` must be the same as xliff's directo
 
 #### Plugins
 
-The loctool provides a good number of plugins for a wide variety of file types and programming languages. The following table summarizes the plugins applicable for webOS development. Plugins are node modules that can be loaded into your project. When loading the plugins to your project, specify the plugin names and the ptojectType in the `plugins` and `projectType` properties of the `project.json` file.
+The loctool provides a good number of plugins for a wide variety of file types and programming languages. The following table summarizes the plugins applicable for webOS development. Plugins are node modules that can be loaded into your project. When loading the plugins to your project, specify the plugin names and the project type in the `plugins` and `projectType` properties of the `project.json` file.
 
-| type | plugins |projectType  |
-| --- | --- | --- |
-| javascript | [ilib-loctool-webos-javascript](https://github.com/iLib-js/ilib-loctool-webos-javascript), [ilib-loctool-webos-json-resource](https://github.com/iLib-js/ilib-loctool-webos-json-resource)  | webos-web |
-| c | [ilib-loctool-webos-c](https://github.com/iLib-js/ilib-loctool-webos-c), [ilib-loctool-webos-json-resource](https://github.com/iLib-js/ilib-loctool-webos-json-resource) | webos-c |
-| cpp | [ilib-loctool-webos-cpp](https://github.com/iLib-js/ilib-loctool-webos-cpp), [ilib-loctool-webos-json-resource](https://github.com/iLib-js/ilib-loctool-webos-json-resource) | webos-cpp |
-| qml | [ilib-loctool-webos-qml](https://github.com/iLib-js/ilib-loctool-webos-qml), [ilib-loctool-webos-ts-resource](https://github.com/iLib-js/ilib-loctool-webos-ts-resource) | webos-qml |
-| appinfo.json | [ilib-loctool-webos-appinfo-json](https://github.com/iLib-js/ilib-loctool-webos-appinfo-json) | - |
+| type | plugins | projectType  |
+| ---- | ------- | ------------ |
+| javascript | [ilib-loctool-webos-javascript](https://github.com/iLib-js/ilib-loctool-webos-javascript), [ilib-loctool-webos-json-resource](https://github.com/iLib-js/ilib-loctool-webos-json-resource)	| webos-web |
+| c	         | [ilib-loctool-webos-c](https://github.com/iLib-js/ilib-loctool-webos-c), [ilib-loctool-webos-json-resource](https://github.com/iLib-js/ilib-loctool-webos-json-resource)	| webos-c |
+| cpp        | [ilib-loctool-webos-cpp](https://github.com/iLib-js/ilib-loctool-webos-cpp), [ilib-loctool-webos-json-resource](https://github.com/iLib-js/ilib-loctool-webos-json-resource)	| webos-cpp |
+| qml        | [ilib-loctool-webos-qml](https://github.com/iLib-js/ilib-loctool-webos-qml), [ilib-loctool-webos-ts-resource](https://github.com/iLib-js/ilib-loctool-webos-ts-resource)	| webos-qml |
+| json       | [ilib-loctool-webos-json](https://github.com/iLib-js/ilib-loctool-webos-json) | - |
 
 ### Running the Localization Tool
 
@@ -242,7 +265,7 @@ The following commands show how to run the localization tool from the command li
 
 ### Generating String Resources at Build Time
 
-In order to enable the localization task during build, recipes need to be updated properly.
+In order to enable the localization task at build time, recipes need to be updated properly.
 
 To use the localization tool for generating string resources at build time, add the following line to the recipe to inherit the `webos_localizable` bbclass.
 
@@ -270,7 +293,7 @@ inherit webos_localizable
 
 #### Qt/QML
 
-For Qt/QML apps, the recipe must inherit `webos_qt_localization` instead of `webos_localizable`. The `webos_qt_localization` bbclass includes an additional process to convert a `.ts` file into a `.qm` file.
+For Qt/QML apps, the recipe must inherit `webos_qt_localization` instead of `webos_localizable`. The `webos_qt_localization` bbclass includes an additional process to convert a `.ts` file into a `.qml` file.
 
 {{< code "sample.bb for QML" true >}}
 ```bash
@@ -350,12 +373,12 @@ If you use the localization tool (loctool), `.qm` files for each locale are gene
 
 If you consider preventing the use of duplicate data, configure the structure of string resources as follows. Let's take an example of English where there may be other translation terms by region.
 
-| Term | en-US (English - USA) | en-GB (English - United Kingdom) |
-| --- | --- | --- |
-| All | All | All |
-| Hello | Hi | Hi |
-| Color | Color | Colour |
-| Subway | Subway | Underground |
+| Term   | en-US (English - USA) | en-GB (English - United Kingdom) |
+| ------ | --------------------- | -------------------------------- |
+| All    | All                   | All                              |
+| Hello  | Hi                    | Hi                               |
+| Color  | Color                 | Colour                           |
+| Subway | Subway                | Underground                      |
 
 To avoid duplicates, configure directories and files as follows:
 

@@ -1,7 +1,7 @@
 ---
 title: com.webos.service.audio
-date: 2023-06-15
-api_level: 24
+date: 2023-09-05
+api_level: 25
 weight: 100
 toc: true
 ---
@@ -10,7 +10,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
 {{< /note >}}
 <h2 id="api-summary">API Summary</h2>
 <div>
-  <p>Controls the audio policy of a webOS system. Implements audio routing (sending audio streams to the proper destinations) and setting volumes in different scenarios.</p>
+  <p>Controls the audio&nbsp;policy of a webOS system. Implements audio routing (sending audio streams to the proper destinations) and setting volumes in different scenarios.</p>
   <p>Its functionality is categorized into the following modules:</p>
   <ul>
     <li><strong>Master:</strong> Controls the master volume of audio output devices.</li>
@@ -720,6 +720,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
                 <li>gain control</li>
                 <li>beamforming</li>
                 <li>dynamic compressor</li>
+                <li>equalizer</li>
               </ul>
             </td>
           </tr>
@@ -875,6 +876,18 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         }
       </p>
     </div>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example : Checks the status of the equalizer audio effect</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -f -n 1 luna://com.webos.service.audio/checkAudioEffectStatus &#39;{&quot;effectName&quot;:&quot;equalizer&quot;}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;returnValue&quot; : true,<br />
+        &nbsp; &nbsp;&nbsp;&quot;enabled&quot;: true<br />
+        }
+      </p>
+    </div>
   </div>
   <h3 id="getaudioeffectlist">getAudioEffectList</h3>
   <div>
@@ -917,6 +930,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
                 <li>gain control</li>
                 <li>beamforming (not listed if none of the&nbsp;array microphones support beamforming)</li>
                 <li>dynamic compressor</li>
+                <li>equalizer</li>
               </ul>
             </td>
           </tr>
@@ -997,7 +1011,8 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         &nbsp; &nbsp; &nbsp; &nbsp; &quot;speech enhancement&quot;,<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &quot;gain control&quot;,<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &quot;beamforming&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;dynamic compressor&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;dynamic compressor&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;equalizer&quot;<br />
         &nbsp; &nbsp; ]<br />
         }
       </p>
@@ -1217,6 +1232,10 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         &nbsp; &nbsp; &nbsp; &nbsp; },&nbsp;<br />
         &nbsp; &nbsp; &nbsp; &nbsp; {<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;dynamic compressor&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;enabled&quot;: false<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; },&nbsp;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;equalizer&quot;,<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;enabled&quot;: false<br />
         &nbsp; &nbsp; &nbsp; &nbsp; }<br />
         &nbsp; &nbsp; &nbsp;]
@@ -1620,7 +1639,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>returnValue</td>
-            <td>Optional</td>
+            <td>Required</td>
             <td>Boolean</td>
             <td>
               <p>Indicates the status of the operation.</p>
@@ -1628,7 +1647,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>displayId</td>
-            <td>Optional</td>
+            <td>Required</td>
             <td>Number</td>
             <td>
               <p>The display ID with which the sound input device is associated.</p>
@@ -1654,7 +1673,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>1</td>
-            <td>Audiod invalid schema</td>
+            <td>Could not validate json message against schema</td>
             <td>
               <p>Error occurs due to wrong JSON request.</p>
             </td>
@@ -1787,7 +1806,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>soundOutput</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>String</td>
             <td>
               <p>The audio output device.</p>
@@ -1829,7 +1848,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>1</td>
-            <td>Audiod invalid schema</td>
+            <td>Could not validate json message against schema</td>
             <td>
               <p>Error occurs due to wrong JSON request.</p>
             </td>
@@ -3338,7 +3357,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>returnValue</td>
-            <td>Optional</td>
+            <td>Required</td>
             <td>Boolean</td>
             <td>
               <p>Indicates the status of the operation.</p>
@@ -5616,6 +5635,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
                 <li>gain control</li>
                 <li>beamforming</li>
                 <li>dynamic compressor</li>
+                <li>equalizer</li>
               </ul>
             </td>
           </tr>
@@ -5778,6 +5798,316 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       <p># luna-send -f -n 1 luna://com.webos.service.audio/setAudioEffect &#39;{&quot;effectName&quot;:&quot;dynamic compressor&quot;, &quot;enabled&quot;:true}&#39;</p>
       <p>Response:</p>
       <p>{&nbsp;<br />
+        &nbsp; &nbsp;&nbsp;&quot;returnValue&quot; : true<br />
+        }
+      </p>
+    </div>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example : Enable equalizer effect</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -f -n 1 luna://com.webos.service.audio/setAudioEffect &#39;{&quot;effectName&quot;:&quot;equalizer&quot;, &quot;enabled&quot;:true}&#39;</p>
+      <p>Response:</p>
+      <p>{&nbsp;<br />
+        &nbsp; &nbsp;&nbsp;&quot;returnValue&quot; : true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="setaudioequalizerbandlevel">setAudioEqualizerBandLevel</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>audio.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 25</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Sets the equalizer band level.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>band</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>Band index of the equalizer band.</p>
+              <p>Value range: [0, 5] (6 bands)</p>
+            </td>
+          </tr>
+          <tr>
+            <td>level</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>New gain (in decibels) for the specified band.</p>
+              <p>Value range: [-10, 10]</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+              <p>Possible values are: </p>
+              <ul>
+                <li><strong>true:</strong> Operation is successful.</li>
+                <li><strong>false:</strong> Operation has failed. Check the 'errorCode' and 'errorText' fields.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>The reason for the failure of the operation. See the 'API Error Codes Reference' section for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Could not validate json message against schema</td>
+            <td>
+              <p>Incorrect parameters are provided.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>15</td>
+            <td>Audiod Internal Error</td>
+            <td>
+              <p>Internal error</p>
+            </td>
+          </tr>
+          <tr>
+            <td>19</td>
+            <td>Invalid parameters</td>
+            <td>
+              <p>Invalid parameters error</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example : Set the equalizer band level</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -f -n 1 luna://com.webos.service.audio/setAudioEqualizerBandLevel &#39;{&quot;band&quot;:1, &quot;level&quot;:-5}&#39;</p>
+      <p>Response:&nbsp;</p>
+      <p>{<br />
+        &nbsp; &nbsp;&nbsp;&quot;returnValue&quot; : true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="setaudioequalizerpreset">setAudioEqualizerPreset</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>audio.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 25</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Sets the equalizer preset value.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>preset</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>ID of equalizer preset.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>0: CLASSIC</li>
+                <li>1: JAZZ</li>
+                <li>2: POP</li>
+                <li>3: ROCK</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+              <p>Possible values are: </p>
+              <ul>
+                <li><strong>true:</strong> Operation is successful.</li>
+                <li><strong>false:</strong> Operation has failed. Check the 'errorCode' and 'errorText' fields.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>The reason for the failure of the operation. See the 'API Error Codes Reference' section for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Could not validate json message against schema</td>
+            <td>
+              <p>Incorrect parameters are provided.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>15</td>
+            <td>Audiod Internal Error</td>
+            <td>
+              <p>Internal error</p>
+            </td>
+          </tr>
+          <tr>
+            <td>19</td>
+            <td>Invalid parameters</td>
+            <td>
+              <p>Invalid parameters error</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example: Set the equalizer preset</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p>#luna-send -f -n 1 luna://com.webos.service.audio/setAudioEqualizerPreset &#39;{&quot;preset&quot;:1}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
         &nbsp; &nbsp;&nbsp;&quot;returnValue&quot; : true<br />
         }
       </p>
@@ -6066,7 +6396,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>1</td>
-            <td>Audiod invalid schema</td>
+            <td>Could not validate json message against schema</td>
             <td>
               <p>Error occurs due to wrong JSON&nbsp;request.</p>
             </td>
@@ -6198,7 +6528,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>soundOutput</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>String</td>
             <td>
               <p>The audio output device.</p>
@@ -7434,7 +7764,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
   </div>
   <h3 id="object-effectstatus">effectStatus</h3>
   <div>
-    <p>Indicates the Name of audio effects and their status</p>
+    <p>Provides the name of the audio effects and their status.</p>
     <div class="table-container">
       <table class="table is-bordered is-fullwidth">
         <tbody>
@@ -7457,14 +7787,14 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>String</td>
             <td>
-              <p>Name of the audio effect<br />
-                Supported Values:
-              </p>
+              <p>Name of the audio effect.</p>
+              <p>Possible values are:</p>
               <ul>
                 <li>speech enhancement</li>
                 <li>gain control</li>
                 <li>beamforming&nbsp;</li>
                 <li>dynamic compressor</li>
+                <li>equalizer</li>
               </ul>
             </td>
           </tr>

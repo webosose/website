@@ -1,7 +1,7 @@
 ---
 title: com.webos.service.pdm
-date: 2023-06-15
-api_level: 24
+date: 2023-09-05
+api_level: 25
 weight: 250
 toc: true
 ---
@@ -684,7 +684,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Indicates grouping of sub devices. Possible values are:</p>
               <ul>
                 <li><strong>true</strong>&nbsp;-&nbsp;Groups sub-devices into subDeviceList which is part of videoDeviceList or audioDeviceList.</li>
-                <li><strong>false</strong>&nbsp;(default) - Provides videoDeviceList or audioDeviceList without subDeviceList (backward compatible).</li>
+                <li><strong>false</strong>&nbsp;(default) - Gives audioDeviceList&nbsp;without subDeviceList and videoDeviceList&nbsp;(backward compatible).</li>
               </ul>
             </td>
           </tr>
@@ -749,7 +749,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>nonStorageDeviceList</td>
             <td>Optional</td>
-            <td>Object: <a href="#object-nonstoragedevicelist">nonStorageDeviceList</a></td>
+            <td>Object array: <a href="#object-nonstoragedevicelist">nonStorageDeviceList</a></td>
             <td>
               <p>An array containing the information about the non-storage device that is currently connected.</p>
               <p><strong>Note: </strong>Returned only when&nbsp;&quot;<strong>category</strong>&quot; is NOT provided.</p>
@@ -758,7 +758,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>videoDeviceList</td>
             <td>Optional</td>
-            <td>Object: <a href="#object-videodevicelist">videoDeviceList</a></td>
+            <td>Object array: <a href="#object-videodevicelist">videoDeviceList</a></td>
             <td>
               <p>An array of video device lists connected.</p>
               <p><strong>Note: </strong>Returned only when &quot;<strong>category</strong>&quot; is&nbsp;&quot;<strong>Video</strong>&quot;.</p>
@@ -767,7 +767,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>audioDeviceList</td>
             <td>Optional</td>
-            <td>Object: <a href="#object-audiodevicelist">audioDeviceList</a></td>
+            <td>Object array: <a href="#object-audiodevicelist">audioDeviceList</a></td>
             <td>
               <p>An array of audio device list&nbsp;connected.</p>
               <p><strong>Note:</strong>&nbsp;Returned only when &quot;<strong>category</strong>&quot; is&nbsp;&quot;<strong>Audio</strong>&quot;.</p>
@@ -776,7 +776,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>netDeviceList</td>
             <td>Optional</td>
-            <td>Object: <a href="#object-netdevicelist">netDeviceList</a></td>
+            <td>Object array: <a href="#object-netdevicelist">netDeviceList</a></td>
             <td>
               <p>An array of net device list&nbsp;connected.</p>
               <p><strong>Note:</strong>&nbsp;Returned only when &quot;<strong>category</strong>&quot; is&nbsp;&quot;<strong>Net</strong>&quot;.</p>
@@ -837,38 +837,43 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>String</td>
             <td>
               <p>Power-on status of the device.</p>
+              <p><strong>Note:&nbsp;</strong>This value always defaults to &quot;<strong>normal</strong>&quot;.</p>
             </td>
           </tr>
           <tr>
             <td>nonStorageDeviceList</td>
             <td>Optional</td>
-            <td>Object: <a href="#object-nonstoragedevicelist">nonStorageDeviceList</a></td>
+            <td>Object array: <a href="#object-nonstoragedevicelist">nonStorageDeviceList</a></td>
             <td>
               <p>An array containing the information about the non-storage device that is currently connected.</p>
+              <p><strong>Note:&nbsp;</strong>Returned only when&nbsp;&quot;<strong>category</strong>&quot; is NOT provided.</p>
             </td>
           </tr>
           <tr>
             <td>videoDeviceList</td>
             <td>Optional</td>
-            <td>Object: <a href="#object-videodevicelist">videoDeviceList</a></td>
+            <td>Object array: <a href="#object-videodevicelist">videoDeviceList</a></td>
             <td>
               <p>An array of video devices&nbsp;connected.</p>
+              <p><strong>Note:&nbsp;</strong>Returned only when &quot;<strong>category</strong>&quot; is&nbsp;&quot;<strong>Video</strong>&quot;.</p>
             </td>
           </tr>
           <tr>
             <td>audioDeviceList</td>
             <td>Optional</td>
-            <td>Object: <a href="#object-audiodevicelist">audioDeviceList</a></td>
+            <td>Object array: <a href="#object-audiodevicelist">audioDeviceList</a></td>
             <td>
               <p>An array of audio devices connected.</p>
+              <p><strong>Note:</strong>&nbsp;Returned only when &quot;<strong>category</strong>&quot; is&nbsp;&quot;<strong>Audio</strong>&quot;.</p>
             </td>
           </tr>
           <tr>
             <td>netDeviceList</td>
             <td>Optional</td>
-            <td>Object: <a href="#object-netdevicelist">netDeviceList</a></td>
+            <td>Object array: <a href="#object-netdevicelist">netDeviceList</a></td>
             <td>
               <p>An array of net devices connected.</p>
+              <p><strong>Note:</strong>&nbsp;Returned only when &quot;<strong>category</strong>&quot; is&nbsp;&quot;<strong>Net</strong>&quot;.</p>
             </td>
           </tr>
         </tbody>
@@ -1887,7 +1892,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>String</td>
             <td>
-              <p>Type of the audio device card</p>
+              <p>Type of the audio device. e.g. Headphone, Wireless.</p>
             </td>
           </tr>
           <tr>
@@ -1895,7 +1900,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>Number</td>
             <td>
-              <p>Port number where the sound device is connected</p>
+              <p>Port number where the sound device is connected, it gives -1 for internal devices.</p>
             </td>
           </tr>
           <tr>
@@ -1906,9 +1911,11 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Speed of the sound device. Possible values are:</p>
               <ul>
                 <li>LOW</li>
+                <li>FULL</li>
                 <li>HIGH</li>
                 <li>SUPER</li>
               </ul>
+              <p><strong>Note&nbsp;</strong>:&nbsp;It will be&nbsp;LOW&nbsp;for built-in devices</p>
             </td>
           </tr>
           <tr>
@@ -2151,7 +2158,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>Number</td>
             <td>
-              <p>Port number to which&nbsp;the device is connected</p>
+              <p>Port number where the sound device is connected, it gives -1 for internal devices.</p>
             </td>
           </tr>
           <tr>
@@ -2204,7 +2211,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>String</td>
             <td>
-              <p>Type of the device</p>
+              <p>Type of the device.&nbsp;e.g : USB, HID, CAM etc</p>
             </td>
           </tr>
           <tr>
@@ -2223,9 +2230,11 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Speed of the device. Possible values are:</p>
               <ul>
                 <li>LOW</li>
+                <li>FULL</li>
                 <li>HIGH</li>
                 <li>SUPER</li>
               </ul>
+              <p><strong>Note&nbsp;</strong>: It will be&nbsp;LOW&nbsp;for built-in devices..</p>
             </td>
           </tr>
         </tbody>
@@ -2526,7 +2535,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>productName</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>String</td>
             <td>
               <p>Name of the product.</p>
@@ -2535,16 +2544,20 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>capabilities</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>String</td>
             <td>
               <p>Device capability attribute.</p>
-              <p><strong>Note: </strong>Applicable only for <strong>Video&nbsp;</strong>category.</p>
+              <p><strong>Note: </strong></p>
+              <ul>
+                <li>A separator (:) is used between multiple capability values.</li>
+                <li>Applicable only for <strong>Video&nbsp;</strong>category.</li>
+              </ul>
             </td>
           </tr>
           <tr>
             <td>version</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>String</td>
             <td>
               <p>Version of the product.</p>
@@ -2606,7 +2619,14 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>String</td>
             <td>
-              <p>Speed of the device</p>
+              <p>Speed of the sound device. Possible values are:</p>
+              <ul>
+                <li>LOW</li>
+                <li>FULL</li>
+                <li>HIGH</li>
+                <li>SUPER</li>
+              </ul>
+              <p><strong>Note&nbsp;</strong>:&nbsp;It will be&nbsp;LOW&nbsp;for built-in devices.</p>
             </td>
           </tr>
           <tr>
@@ -2614,7 +2634,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>String</td>
             <td>
-              <p>Type of the USB device</p>
+              <p>Type of the USB device.&nbsp;Possible values&nbsp;:&nbsp;CAM</p>
             </td>
           </tr>
           <tr>

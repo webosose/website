@@ -1,7 +1,7 @@
 ---
 title: com.webos.service.sdkagent
-date: 2023-06-15
-api_level: 24
+date: 2023-09-05
+api_level: 25
 weight: 280
 toc: true
 ---
@@ -156,14 +156,18 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;http://127.0.0.1:8086&quot;<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
         &nbsp; &nbsp; &nbsp; &nbsp; },<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;webOS.webProcessSize&quot;: {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;enabled&quot;: false<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; },<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &quot;global_tags&quot;: {<br />
         &nbsp; &nbsp; &nbsp; &nbsp; },<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &quot;inputs.mem&quot;: {<br />
         &nbsp; &nbsp; &nbsp; &nbsp; },<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &quot;inputs.swap&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;webOS.webProcessSize&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;enabled&quot;: true<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;webOS.processMonitoring&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;enabled&quot;:true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;process_name&quot;:[&quot;com.webos.app.home&quot;]<br />
         &nbsp; &nbsp; &nbsp; &nbsp; }<br />
         &nbsp; &nbsp; }<br />
         }
@@ -530,9 +534,11 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Object: <a href="#object-agent">agent</a></td>
             <td>
               <p>Config data for telegraf agent.</p>
-              <p><strong>Note: </strong>At least one of the parameters must be provided.<br />
-                The data object may be changed for each target platform, and wrong data values are not guaranteed by API.&nbsp;APIs only check the JSON form of data object.
-              </p>
+              <p><strong>Note: </strong></p>
+              <ul>
+                <li>At least one of the parameters must be provided.</li>
+                <li>The data object may be changed for each target platform, and wrong data values are not guaranteed by API.&nbsp;APIs only check the JSON form of data object.</li>
+              </ul>
             </td>
           </tr>
           <tr>
@@ -541,9 +547,11 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Object: <a href="#object-outputs-influxdb">outputs.influxdb</a></td>
             <td>
               <p>Config&nbsp;data for influxdb on host.</p>
-              <p><strong>Note:&nbsp;</strong>At least one of the parameters must be provided.<br />
-                The data object may be changed for each target platform, and wrong data values are not guaranteed by API.&nbsp;APIs only check the JSON form of data object.
-              </p>
+              <p><strong>Note:&nbsp;</strong></p>
+              <ul>
+                <li>At least one of the parameters must be provided.</li>
+                <li>The data object may be changed for each target platform, and wrong data values are not guaranteed by API.&nbsp;APIs only check the JSON form of data object.</li>
+              </ul>
             </td>
           </tr>
           <tr>
@@ -552,9 +560,24 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Object: <a href="#object-webos-webprocesssize">webOS.webProcessSize</a></td>
             <td>
               <p>Config data for webProcessSize.</p>
-              <p><strong>Note:&nbsp;</strong>At least one of the parameters must be provided.<br />
-                The data object may be changed for each target platform, and wrong data values are not guaranteed by API.&nbsp;APIs only check the JSON form of data object.
-              </p>
+              <p><strong>Note:&nbsp;</strong></p>
+              <ul>
+                <li>At least one of the parameters must be provided.</li>
+                <li>The data object may be changed for each target platform, and wrong data values are not guaranteed by API.&nbsp;APIs only check the JSON form of data object.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>webOS.processMonitoring</td>
+            <td>Optional</td>
+            <td>Object: <a href="#object-webos-processmonitoring">webOS.processMonitoring</a></td>
+            <td>
+              <p>Config data for processMonitoring.</p>
+              <p><strong>Note:&nbsp;</strong></p>
+              <ul>
+                <li>At least one of the parameters must be provided.</li>
+                <li>The data object may be changed for each target platform, and wrong data values are not guaranteed by API.&nbsp;APIs only check the JSON form of data object.</li>
+              </ul>
             </td>
           </tr>
         </tbody>
@@ -618,7 +641,8 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       <p># luna-send -f -n 1 luna://com.webos.service.sdkagent/collector/setConfig &#39;{<br />
         &nbsp; &nbsp;&nbsp;&quot;agent&quot;:{&quot;flush_interval&quot;:&quot;5s&quot;,&quot;interval&quot;:&quot;5s&quot;},<br />
         &nbsp; &nbsp;&nbsp;&quot;outputs.influxdb&quot;:{&quot;database&quot;:&quot;telegraf&quot;,&quot;urls&quot;:[&quot;http://192.168.0.6:8086&quot;]},<br />
-        &nbsp; &nbsp; &quot;webOS.webProcessSize&quot;:{&quot;enabled&quot;:true}<br />
+        &nbsp; &nbsp; &quot;webOS.webProcessSize&quot;:{&quot;enabled&quot;:true},<br />
+        &nbsp; &nbsp; &quot;webOS.processMonitoring&quot;:{&quot;enabled&quot;:true,&quot;process_name&quot;:[&quot;com.webos.app.home&quot;,&quot;com.webos.service.sdkagent&quot;]}<br />
         }&#39;
       </p>
       <p>Response:</p>
@@ -962,6 +986,46 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>String array</td>
             <td>
               <p>Indicates the influxdb host urls.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h3 id="object-webos-processmonitoring">webOS.processMonitoring</h3>
+  <div>
+    <p>Config data for processMonitoring.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>enabled</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Enables process monitoring data.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>process_name</td>
+            <td>Optional</td>
+            <td>String array</td>
+            <td>
+              <p>Process&nbsp;names for monitoring.</p>
             </td>
           </tr>
         </tbody>

@@ -1,7 +1,7 @@
 ---
 title: com.webos.service.camera2
-date: 2023-05-22
-api_level: 23
+date: 2023-09-06
+api_level: 25
 weight: 120
 toc: true
 ---
@@ -181,7 +181,39 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     <h4>Description</h4>
     <p>Gets the list of cameras connected to the webOS device.&nbsp;Returns IDs for each of the cameras connected to the device.</p>
     <h4>Parameters</h4>
-    <p>None</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>subscribe</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Subscribe for notifications on changes.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true:</strong>&nbsp;Subscribed.</li>
+                <li><strong>false:</strong>&nbsp;(default) Not subscribed.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <h4>Call Returns</h4>
     <div class="table-container">
       <table class="table is-bordered is-fullwidth">
@@ -223,6 +255,15 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </td>
           </tr>
           <tr>
+            <td>subscribed</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates if subscribed to get notifications.&nbsp;&nbsp;</p>
+              <p><strong>Note:&nbsp;</strong>Returns only if the subscribe is true.</p>
+            </td>
+          </tr>
+          <tr>
             <td>errorCode</td>
             <td>Optional</td>
             <td>Number</td>
@@ -236,6 +277,68 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>String</td>
             <td>
               <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Subscription Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>subscribed</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates if subscribed to get notifications.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>deviceList</td>
+            <td>Optional</td>
+            <td>Object array: <a href="#object-devicelist">deviceList</a></td>
+            <td>
+              <p>Indicates the list of cameras connected to the device.&nbsp;</p>
+              <p><strong>Note</strong>:&nbsp;The method returns an empty list if no camera is connected.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>API</strong>&nbsp;<strong>Error Codes Reference&quot;</strong>&nbsp;section for details.</p>
             </td>
           </tr>
         </tbody>
@@ -255,6 +358,48 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
         &nbsp;&nbsp;&nbsp;],<br />
         &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+        }
+      </p>
+    </div>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example : With subscription</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -i -f luna://com.webos.service.camera2/getCameraList &#39;{&quot;subscribe&quot;:true}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;subscribed&quot;:true,<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;:true,<br />
+        &nbsp; &nbsp; &quot;deviceList&quot;:[<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;id&quot;:&quot;camera1&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; ]<br />
+        }
+      </p>
+      <p>Subscription response: (when camera2 is connected)</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;:true,<br />
+        &nbsp; &nbsp; &quot;subscribed&quot;:true,<br />
+        &nbsp; &nbsp; &quot;deviceList&quot;:[<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;id&quot;:&quot;camera1&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;id&quot;:&quot;camera2&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; ]<br />
+        }
+      </p>
+      <p>Subscription response: (when camera1&nbsp;is disconnected)</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;:true,<br />
+        &nbsp; &nbsp; &quot;subscribed&quot;:true,<br />
+        &nbsp; &nbsp; &quot;deviceList&quot;:[<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;id&quot;:&quot;camera2&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; ]<br />
         }
       </p>
     </div>
@@ -335,44 +480,6 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </td>
           </tr>
           <tr>
-            <td>id</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the id of the camera.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>eventType</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates whether there is a change in camera format or properties.</p>
-              <p>Possible values are:</p>
-              <ul>
-                <li><strong>format:&nbsp;</strong>If there is a change in camera format.&nbsp;</li>
-                <li><strong>properties:&nbsp;</strong>If there is a change in camera properties.</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>propertiesInfo</td>
-            <td>Optional</td>
-            <td>Object: <a href="#object-camera-properties">camera_properties</a></td>
-            <td>
-              <p>Indicates the details of camera properties when <strong>eventType</strong> is <strong>properties</strong>.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>formatInfo</td>
-            <td>Optional</td>
-            <td>Object: <a href="#object-camera-format">camera_format</a></td>
-            <td>
-              <p>Returns the details of the camera format when <strong>eventType</strong> is <strong>format</strong>.</p>
-              <p><strong>Note: </strong>It may not return all the values mentioned in the <strong>formatInfo </strong>object.&nbsp;&nbsp;</p>
-            </td>
-          </tr>
-          <tr>
             <td>errorCode</td>
             <td>Optional</td>
             <td>Number</td>
@@ -388,49 +495,110 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
             </td>
           </tr>
+          <tr>
+            <td>subscribed</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates if subscribed to get notifications.&nbsp;</p>
+              <p><strong>Note:&nbsp;</strong>Returns only if the subscribe is true.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Subscription Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>subscribed</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates if subscribed to get notifications.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>eventType</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates whether there is a device error.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>preview_fault</strong>: If the device cannot send preview data due to an error during camera preview.</li>
+                <li><strong>capture_fault</strong>: If an error occurs during camera capture.</li>
+              </ul>
+              <p><strong>Note</strong>: Currently supports only preview_fault.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>id</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>ID of the camera.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>API</strong>&nbsp;<strong>Error Codes Reference&quot;</strong>&nbsp;section for details.</p>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example: With subscription</b></p>
+      <p style="color:white;margin:5.0px;"><b>Example : With subscription</b></p>
     </div>
     <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.camera2/getEventNotification &#39;{<br />
-        &nbsp; &nbsp;&quot;subscribe&quot;:true<br />
-        }&#39;
-      </p>
-      <p>Response (If no event received):&nbsp;</p>
+      <p># luna-send -i -f luna://com.webos.service.camera2/getEventNotification &#39;{&quot;subscribe&quot;:true}&#39;</p>
+      <p>Response:</p>
       <p>{<br />
-        &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+        &nbsp; &nbsp;&nbsp;&quot;subscribed&quot;:&nbsp;true,<br />
+        &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;:&nbsp;true<br />
         }
       </p>
-      <p>Response (If properties are changed) :</p>
+      <p>Subscription response: (If there is an error during camera preview)</p>
       <p>{<br />
-        &nbsp; &nbsp;&quot;id&quot;:&quot;camera1&quot;,<br />
-        &nbsp; &nbsp;&quot;eventType&quot;:&quot;properties&quot;,<br />
-        &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
-        &nbsp; &nbsp;&quot;propertiesInfo&quot;:{<br />
-        &nbsp; &nbsp; &nbsp; &quot;frequency&quot;:0,<br />
-        &nbsp; &nbsp; &nbsp; &quot;saturation&quot;:255,<br />
-        &nbsp; &nbsp; &nbsp; &quot;brightness&quot;:255,<br />
-        &nbsp; &nbsp; &nbsp; &quot;autoWhiteBalance&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &quot;contrast&quot;:100,<br />
-        &nbsp; &nbsp; &nbsp; &quot;whiteBalanceTemperature&quot;:0,<br />
-        &nbsp; &nbsp; &nbsp; &quot;gain&quot;:255,<br />
-        &nbsp; &nbsp; &nbsp; &quot;backlightCompensation&quot;:true,<br />
-        &nbsp; &nbsp; &nbsp; &quot;sharpness&quot;:255<br />
-        &nbsp; &nbsp;}<br />
-        }
-      </p>
-      <p>Response (If format changed to JPEG) :</p>
-      <p>{<br />
-        &nbsp; &nbsp;&quot;id&quot;:&quot;camera1&quot;,<br />
-        &nbsp; &nbsp;&quot;eventType&quot;:&quot;format&quot;,<br />
-        &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
-        &nbsp; &nbsp;&quot;formatInfo&quot;:{<br />
-        &nbsp; &nbsp; &nbsp; &quot;format&quot;:&quot;JPEG&quot;<br />
-        &nbsp; &nbsp;}<br />
+        &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;:&nbsp;true,<br />
+        &nbsp; &nbsp;&nbsp;&quot;id&quot;:&nbsp;&quot;camera1&quot;,<br />
+        &nbsp; &nbsp;&nbsp;&quot;eventType&quot;:&nbsp;&quot;preview_fault&quot;<br />
         }
       </p>
     </div>
@@ -495,7 +663,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>returnValue</td>
-            <td>Optional</td>
+            <td>Required</td>
             <td>Boolean</td>
             <td>
               <p>Indicates the status of the operation.</p>
@@ -610,22 +778,9 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>info</td>
             <td>Optional</td>
-            <td>Object array: <a href="#object-capture-info">capture_info</a></td>
+            <td>Object: <a href="#object-capture-info">capture_info</a></td>
             <td>
               <p>Returns information about the camera.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>returnValue</td>
-            <td>Required</td>
-            <td>Boolean</td>
-            <td>
-              <p>Indicates the status of the operation.</p>
-              <p>Possible values are:</p>
-              <ul>
-                <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
-                <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
-              </ul>
             </td>
           </tr>
           <tr>
@@ -644,6 +799,19 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
             </td>
           </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+                <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -652,28 +820,240 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       <p style="color:white;margin:5.0px;"><b>Example code</b></p>
     </div>
     <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.camera2/getInfo &#39;{&quot;id&quot;:&quot;camera1&quot;}&#39;</p>
+      <p># luna-send -n 1 -f luna://com.webos.service.camera2/getInfo &#39;{ &quot;id&quot;:&quot;camera1&quot;}&#39;<br />
+        &nbsp;
+      </p>
       <p>Response:</p>
       <p>{<br />
-        &nbsp; &nbsp;&quot;info&quot;:{<br />
-        &nbsp; &nbsp; &nbsp; &quot;type&quot;:&quot;camera&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &quot;builtin&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &quot;details&quot;:{<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;video&quot;:{<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;maxWidth&quot;:800,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;maxHeight&quot;:600,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;frameRate&quot;:30,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;format&quot;:&quot;YUV|JPEG|&quot;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;},<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;picture&quot;:{<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;maxWidth&quot;:800,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;maxHeight&quot;:600,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;format&quot;:&quot;YUV|JPEG|&quot;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}<br />
-        &nbsp; &nbsp; &nbsp; },<br />
-        &nbsp; &nbsp; &nbsp; &quot;name&quot;:&quot;Logitech, Inc.&quot;<br />
-        &nbsp; &nbsp;},<br />
-        &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+        &nbsp; &nbsp; &quot;info&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;type&quot;:&quot;camera&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;builtin&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;supported&quot;:true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;resolution&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;YUV&quot;:[<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;640,480,30&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;640,480,24&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;640,480,20&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;640,480,15&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;640,480,10&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;640,480,7&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;640,480,5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;160,90,30&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;160,90,24&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;160,90,20&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;160,90,15&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;160,90,10&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;160,90,7&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;160,90,5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;160,120,30&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;160,120,24&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;160,120,20&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;160,120,15&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;160,120,10&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;160,120,7&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;160,120,5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;176,144,30&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;176,144,24&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;176,144,20&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;176,144,15&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;176,144,10&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;176,144,7&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;176,144,5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;320,180,30&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;320,180,24&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;320,180,20&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;320,180,15&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;320,180,10&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;320,180,7&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;320,180,5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;320,240,30&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;320,240,24&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;320,240,20&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;320,240,15&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;320,240,10&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;320,240,7&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;320,240,5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;352,288,30&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;352,288,24&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;352,288,20&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;352,288,15&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;352,288,10&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;352,288,7&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;352,288,5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;432,240,30&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;432,240,24&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;432,240,20&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;432,240,15&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;432,240,10&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;432,240,7&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;432,240,5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;640,360,30&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;640,360,24&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;640,360,20&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;640,360,15&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;640,360,10&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;640,360,7&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;640,360,5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;800,448,30&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;800,448,24&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;800,448,20&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;800,448,15&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;800,448,10&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;800,448,7&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;800,448,5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;800,600,24&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;800,600,20&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;800,600,15&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;800,600,10&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;800,600,7&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;800,600,5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;864,480,24&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;864,480,20&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;864,480,15&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;864,480,10&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;864,480,7&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;864,480,5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;960,720,15&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;960,720,10&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;960,720,7&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;960,720,5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1024,576,15&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1024,576,10&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1024,576,7&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1024,576,5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1280,720,10&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1280,720,7&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1280,720,5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1600,896,7&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1600,896,5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1920,1080,5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;2560,1472,2&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ],<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;JPEG&quot;:[<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;640,480,30&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;640,480,24&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;640,480,20&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;640,480,15&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;640,480,10&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;640,480,7&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;640,480,5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;160,90,30&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;160,90,24&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;160,90,20&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;160,90,15&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;160,90,10&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;160,90,7&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;160,90,5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;160,120,30&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;160,120,24&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;160,120,20&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;160,120,15&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;160,120,10&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;160,120,7&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;160,120,5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;176,144,30&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;176,144,24&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;176,144,20&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;176,144,15&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;176,144,10&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;176,144,7&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;176,144,5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;320,180,30&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;320,180,24&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;320,180,20&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;320,180,15&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;320,180,10&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;320,180,7&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;320,180,5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;320,240,30&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;320,240,24&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;320,240,20&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;320,240,15&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;320,240,10&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;320,240,7&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;320,240,5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;352,288,30&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;352,288,24&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;352,288,20&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;352,288,15&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;352,288,10&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;352,288,7&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;352,288,5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;432,240,30&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;432,240,24&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;432,240,20&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;432,240,15&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;432,240,10&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;432,240,7&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;432,240,5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;640,360,30&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;640,360,24&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;640,360,20&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;640,360,15&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;640,360,10&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;640,360,7&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;640,360,5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;800,448,30&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;800,448,24&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;800,448,20&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;800,448,15&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;800,448,10&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;800,448,7&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;800,448,5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;800,600,30&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;800,600,24&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;800,600,20&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;800,600,15&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;800,600,10&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;800,600,7&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;800,600,5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;864,480,30&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;864,480,24&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;864,480,20&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;864,480,15&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;864,480,10&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;864,480,7&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;864,480,5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;960,720,30&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;960,720,24&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;960,720,20&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;960,720,15&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;960,720,10&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;960,720,7&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;960,720,5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1024,576,30&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1024,576,24&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1024,576,20&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1024,576,15&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1024,576,10&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1024,576,7&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1024,576,5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1280,720,30&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1280,720,24&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1280,720,20&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1280,720,15&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1280,720,10&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1280,720,7&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1280,720,5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1600,896,30&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1600,896,24&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1600,896,20&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1600,896,15&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1600,896,10&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1600,896,7&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1600,896,5&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1920,1080,30&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1920,1080,24&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1920,1080,20&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1920,1080,15&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1920,1080,10&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1920,1080,7&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1920,1080,5&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;:&quot;HD Pro Webcam C920.&quot;<br />
+        &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;:true<br />
         }
       </p>
     </div>
@@ -707,19 +1087,33 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </th>
           </tr>
           <tr>
-            <td>handle</td>
-            <td>Required</td>
-            <td>Number</td>
-            <td>
-              <p>Indicates the handle for the device obtained using the&nbsp;open() API.</p>
-            </td>
-          </tr>
-          <tr>
             <td>params</td>
             <td>Optional</td>
             <td>String array</td>
             <td>
               <p>Indicates the list of specific properties for which settings are&nbsp;returned.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>id</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the camera id for the device obtained using the&nbsp;getCameraList() API.</p>
+              <p><strong>Note:&nbsp;</strong>The camera must be opened first.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>subscribe</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Subscribe for notifications on changes.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true:</strong>&nbsp;Subscribed.</li>
+                <li><strong>false:</strong>&nbsp;(default)&nbsp;Not subscribed.</li>
+              </ul>
             </td>
           </tr>
         </tbody>
@@ -765,6 +1159,15 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </td>
           </tr>
           <tr>
+            <td>subscribed</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates if subscribed to get notifications.&nbsp;</p>
+              <p><strong>Note:&nbsp;</strong>Returns only if the subscription is true.</p>
+            </td>
+          </tr>
+          <tr>
             <td>errorCode</td>
             <td>Optional</td>
             <td>Number</td>
@@ -783,162 +1186,191 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         </tbody>
       </table>
     </div>
+    <h4>Subscription Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>subscribed</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates if subscribed to get notifications.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>id</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>ID of the camera.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>params</td>
+            <td>Optional</td>
+            <td>Object: <a href="#object-camera-properties">camera_properties</a></td>
+            <td>
+              <p>Indicates the current properties of the camera.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>API</strong>&nbsp;<strong>Error Codes Reference&quot;</strong>&nbsp;section for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example:  With handle</b></p>
+      <p style="color:white;margin:5.0px;"><b>Example : With ID and subscription</b></p>
     </div>
     <div class="code-bg-grey">
-      <p>#&nbsp;&nbsp;luna-send -n 1 -f luna://com.webos.service.camera2/getProperties &#39;{<br />
-        &nbsp; &nbsp;&quot;handle&quot;:502<br />
-        }&#39;
-      </p>
+      <p># luna-send -n 1&nbsp;-f luna://com.webos.service.camera2/getProperties&nbsp;&#39;{&quot;id&quot;:&quot;camera1&quot;,&nbsp;&quot;subscribe&quot;:true}&#39;</p>
       <p>Response:</p>
       <p>{<br />
-        &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-        &nbsp; &nbsp; &quot;params&quot;: {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;exposure&quot;: {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;: 10000,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;: 78,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;: 312,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;: 1,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;: 312<br />
+        &nbsp; &nbsp; &quot;subscribed&quot;:true,<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;:true,<br />
+        &nbsp; &nbsp; &quot;params&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;exposure&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;:10000,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;:78,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;:312,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;:1,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;:312<br />
         &nbsp; &nbsp; &nbsp; &nbsp; },<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;backlightCompensation&quot;: {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;: 3,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;: 0,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;: 0,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;: 1,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;: 0<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;backlightCompensation&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;:3,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;:0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;:0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;:1,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;:0<br />
         &nbsp; &nbsp; &nbsp; &nbsp; },<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;frequency&quot;: {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;: 2,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;: 0,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;: 1,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;: 1,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;: 1<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;frequency&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;:2,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;:0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;:1,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;:1,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;:1<br />
         &nbsp; &nbsp; &nbsp; &nbsp; },<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;saturation&quot;: {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;: 100,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;: 0,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;: 58,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;: 1,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;: 58<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;saturation&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;:100,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;:0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;:58,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;:1,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;:58<br />
         &nbsp; &nbsp; &nbsp; &nbsp; },<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;brightness&quot;: {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;: 64,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;: -64,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;: 0,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;: 1,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;: 0<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;brightness&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;:64,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;:-64,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;:0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;:1,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;:64<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; }<br />
+        }
+      </p>
+      <p>Subscription response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;subscribed&quot;:true,<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;:true,<br />
+        &nbsp; &nbsp; &quot;id&quot;:&quot;camera1&quot;,<br />
+        &nbsp; &nbsp; &quot;params&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;exposure&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;:10000,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;:78,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;:312,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;:1,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;:312<br />
         &nbsp; &nbsp; &nbsp; &nbsp; },<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;tilt&quot;: &quot;not support&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;sharpness&quot;: {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;: 7,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;: 1,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;: 2,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;: 1,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;: 2<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;backlightCompensation&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;:3,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;:0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;:0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;:1,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;:0<br />
         &nbsp; &nbsp; &nbsp; &nbsp; },<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;focusAbsolute&quot;: &quot;not support&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;contrast&quot;: {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;: 95,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;: 0,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;: 0,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;: 1,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;: 0<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;frequency&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;:2,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;:0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;:1,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;:1,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;:1<br />
         &nbsp; &nbsp; &nbsp; &nbsp; },<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;gamma&quot;: {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;: 300,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;: 100,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;: 100,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;: 1,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;: 100<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;saturation&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;:100,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;:0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;:58,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;:1,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;:58<br />
         &nbsp; &nbsp; &nbsp; &nbsp; },<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;autoWhiteBalance&quot;: {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;: 1,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;: 0,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;: 1,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;: 1,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;: 1<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; },<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;hue&quot;: {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;: 2000,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;: -2000,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;: 0,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;: 100,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;: 0<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; },<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;gain&quot;: &quot;not support&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;resolution&quot;: {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;YUV&quot;: [<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;640,480,25&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1920,1080,5&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1280,720,6&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;320,240,25&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1024,768,6&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1280,1024,6&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;160,120,25&quot;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ],<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;JPEG&quot;: [<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;640,480,25&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1920,1080,5&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1280,720,6&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;320,240,25&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1024,768,6&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;1280,1024,6&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;160,120,25&quot;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; },<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;autoFocus&quot;: &quot;not support&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;whiteBalanceTemperature&quot;: {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;: 6500,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;: 2800,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;: 4600,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;: 1,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;: 4600<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; },<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;autoExposure&quot;: {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;: 3,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;: 0,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;: 3,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;: 1,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;: 3<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; },<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;pan&quot;: &quot;not support&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;zoomAbsolute&quot;: &quot;not support&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;brightness&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;:64,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;:-64,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;:0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;:1,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;:64<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; }<br />
         &nbsp; &nbsp; }<br />
         }
       </p>
     </div>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example: With handle and params</b></p>
+      <p style="color:white;margin:5.0px;"><b>Example : With ID and params</b></p>
     </div>
     <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.camera2/getProperties &#39;{<br />
-        &nbsp; &nbsp;&quot;handle&quot;:502,<br />
-        &nbsp; &nbsp;&quot;params&quot;:[<br />
-        &nbsp; &nbsp; &nbsp; &quot;frequency&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &quot;saturation&quot;<br />
-        &nbsp; &nbsp;]<br />
-        }&#39;
-      </p>
-      <p>Response:<br />
-        {<br />
+      <p># luna-send -n 1 -f luna://com.webos.service.camera2/getProperties &#39;{&quot;id&quot;: &quot;camera1&quot;, &quot;params&quot;: [&quot;frequency&quot;,&nbsp;&quot;saturation&quot;]}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
         &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
         &nbsp; &nbsp; &quot;params&quot;: {<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &quot;saturation&quot;: {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;: 100,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;: 255,<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;: 0,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;: 58,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;: 128,<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;: 1,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;: 58<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;: 128<br />
         &nbsp; &nbsp; &nbsp; &nbsp; },<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &quot;frequency&quot;: {<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;: 2,<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;: 0,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;: 1,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;default&quot;: 2,<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;step&quot;: 1,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;: 1<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;value&quot;: 2<br />
         &nbsp; &nbsp; &nbsp; &nbsp; }<br />
         &nbsp; &nbsp; }<br />
         }
@@ -2851,14 +3283,6 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </td>
           </tr>
           <tr>
-            <td>resolution</td>
-            <td>Optional</td>
-            <td>Object</td>
-            <td>
-              <p>Indicates the supported format resolutions in string array format.</p>
-            </td>
-          </tr>
-          <tr>
             <td>saturation</td>
             <td>Optional</td>
             <td>Object: <a href="#object-camera-capability">camera_capability</a></td>
@@ -2915,14 +3339,6 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </th>
           </tr>
           <tr>
-            <td>details</td>
-            <td>Optional</td>
-            <td>Object: <a href="#object-details">details</a></td>
-            <td>
-              <p>Indicates the video and the picture details.</p>
-            </td>
-          </tr>
-          <tr>
             <td>name</td>
             <td>Optional</td>
             <td>String</td>
@@ -2950,44 +3366,20 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Indicates if the camera is built-in or not.</p>
             </td>
           </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <h3 id="object-details">details</h3>
-  <div>
-    <p>Indicates the picture and the video details of the camera device.</p>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
           <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>video</td>
+            <td>resolution</td>
             <td>Optional</td>
-            <td>Object: <a href="#object-video">video</a></td>
+            <td>Object</td>
             <td>
-              <p>Indicates the video information.</p>
+              <p>Indicates the supported format resolutions.</p>
             </td>
           </tr>
           <tr>
-            <td>picture</td>
+            <td>supported</td>
             <td>Optional</td>
-            <td>Object: <a href="#object-picture">picture</a></td>
+            <td>Boolean</td>
             <td>
-              <p>Indicates the image information.</p>
+              <p>Indicates whether the camera is supported.</p>
             </td>
           </tr>
         </tbody>
@@ -3297,24 +3689,17 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </td>
         </tr>
         <tr>
-          <td>19</td>
+          <td>20</td>
           <td>Parsing error</td>
           <td>
             <p>Luna command parsing error.</p>
           </td>
         </tr>
         <tr>
-          <td>22</td>
+          <td>23</td>
           <td>Param missing</td>
           <td>
             <p>One or more parameters are missing in luna command.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>23</td>
-          <td>Request Timeout</td>
-          <td>
-            <p>Requested operation&nbsp;is timed out.</p>
           </td>
         </tr>
         <tr>
@@ -3339,10 +3724,17 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </td>
         </tr>
         <tr>
-          <td>38</td>
+          <td>35</td>
           <td>Unknown error</td>
           <td>
-            <p>Unknown error.</p>
+            <p>Unknown error</p>
+          </td>
+        </tr>
+        <tr>
+          <td>38</td>
+          <td>Fail to open file</td>
+          <td>
+            <p>Fail&nbsp;to&nbsp;open&nbsp;file</p>
           </td>
         </tr>
         <tr>
@@ -3357,6 +3749,62 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <td>Cannot write at specified location</td>
           <td>
             <p>Cannot write at the specified location.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>46</td>
+          <td>Unsupported Memory Type</td>
+          <td>
+            <p>Error due to unsupported memory type</p>
+          </td>
+        </tr>
+        <tr>
+          <td>47</td>
+          <td>Wrong handle</td>
+          <td>
+            <p>Handle&nbsp;is not exist.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>48</td>
+          <td>Preview not started</td>
+          <td>
+            <p>Preview is not started.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>49</td>
+          <td>Handle is not in POSIXSHM mode</td>
+          <td>
+            <p>Handle is not in POSIXSHM mode</p>
+          </td>
+        </tr>
+        <tr>
+          <td>51</td>
+          <td>Failed to register pid with specified signal</td>
+          <td>
+            <p>Id of the signal is not valid.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>52</td>
+          <td>Must specify client pid</td>
+          <td>
+            <p>PID should be provided in the request.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>100</td>
+          <td>The subscribed camera is disconnected</td>
+          <td>
+            <p>&nbsp; The subscription is canceled because the camera is disconnected.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>105</td>
+          <td>Request Timeout</td>
+          <td>
+            <p>Requested operation&nbsp;is timed out.</p>
           </td>
         </tr>
       </tbody>
