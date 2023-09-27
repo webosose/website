@@ -1,6 +1,6 @@
 ---
 title: Developing Built-in Native Apps
-date: 2022-12-02
+date: 2023-09-27
 weight: 20
 toc: true
 ---
@@ -425,6 +425,11 @@ TARGET = nativeqt
 
 CONFIG += qt
 QT += core gui-private
+# if you use QT 6.x , you should include opengl. because opengl is not included by default.
+# but if you use QT 5.x under, opengl is included by default so you do not include opengl.
+greaterThan(QT_MAJOR_VERSION, 5) {
+    QT += opengl
+}
 
 CONFIG += link_pkgconfig
 PKGCONFIG += luna-service2 glib-2.0 pbnjson_cpp PmLogLib
@@ -451,12 +456,12 @@ A brief explanation of the above file:
 - Line(1) : Set `TARGET` name. It must be an executable file name of the app.
 - Line(3) : The `CONFIG` variable is a special variable that 'qmake' uses when generating a Makefile. qt is added to the list of existing values contained in `CONFIG`.
 - Line(4) : Link against the QtCore Module. Add '`gui-private`' to use private GUI include directories.
-- Line(6~7) : 'qmake' can configure the build process to make use of external libraries that are supported by [pkg-config](https://www.freedesktop.org/wiki/Software/pkg-config/), such as the luna-service2, glib, pbnjson, and PmLog libraries.
-- Line(9) : A list of source code files to be used when building the project.
-- Line(10) : A list of filenames of header (`.h`) files used when building the project.
-- Line(12) : Set installed directory on the target board. `INSTALL_APPDIR` would be `/usr/palm/applications/com.example.app.nativeqt ` on the target.
-- Line(14~20) : `*.files` specifies a path in project directory and `*.path` specifies the path to the file system to be installed on the target.
-- Line(22) : Add targets, icons, and appinfo files from the `INSTALLS` list.
+- Line(11~12) : 'qmake' can configure the build process to make use of external libraries that are supported by [pkg-config](https://www.freedesktop.org/wiki/Software/pkg-config/), such as the luna-service2, glib, pbnjson, and PmLog libraries.
+- Line(14) : A list of source code files to be used when building the project.
+- Line(15) : A list of filenames of header (`.h`) files used when building the project.
+- Line(17) : Set installed directory on the target board. `INSTALL_APPDIR` would be `/usr/palm/applications/com.example.app.nativeqt ` on the target.
+- Line(19~25) : `*.files` specifies a path in project directory and `*.path` specifies the path to the file system to be installed on the target.
+- Line(27) : Add targets, icons, and appinfo files from the `INSTALLS` list.
 
 For more details, see [qmake Project Files](http://doc.qt.io/archives/qt-4.8/qmake-project-files.html).
 
