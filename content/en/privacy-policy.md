@@ -1,6 +1,6 @@
 ---
 title: Privacy Policy
-date: 2019-05-21
+date: 2023-10-11
 ---
 
 This privacy policy applies only to the websites and services controlled by LG Electronics Inc. ("LGE") where this privacy policy is posted (collectively, the "Website"). BY USING THE WEBSITE, YOU CONSENT TO THE TERMS AND CONDITIONS OF THIS PRIVACY POLICY AND TO OUR PROCESSING OF PERSONAL INFORMATION FOR THE PURPOSES STATED BELOW. IF YOU DO NOT AGREE TO THE TERMS AND CONDITIONS OF THIS PRIVACY POLICY, PLEASE DO NOT USE THE WEBSITE.
@@ -143,6 +143,6 @@ If we learn of a security systems breach we may attempt to notify you electronic
 
 **L. Contacting LGE**
 
-If you have any questions about this privacy policy or our privacy practices, please contact us at [webosose@lge.com]. All information you provide in any written communication will also be covered by this policy.
+If you have any questions about this privacy policy or our privacy practices, please contact us at <develop@webosose.org>. All information you provide in any written communication will also be covered by this policy.
 
-Last Updated on: March 16, 2018
+Last Updated on: October 11, 2023
