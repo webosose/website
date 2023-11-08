@@ -1,7 +1,7 @@
 ---
 title: com.webos.service.activitymanager
-date: 2023-05-22
-api_level: 23
+date: 2023-10-31
+api_level: 27
 weight: 70
 toc: true
 ---
@@ -559,6 +559,75 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         &nbsp;&nbsp;&quot;subscribed&quot;: true<br />
         }
       </p>
+    </div>
+  </div>
+  <h3 id="callback-scheduledwakeup">callback/scheduledwakeup</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>activity.wakeup</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 26</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>A callback method indicating the scheduled time of the activities.</p>
+    <p><strong>Note:</strong> Do not use this method in your application or service.&nbsp;This method is only called by sleepd (com.webos.service.alarm) service.</p>
+    <h4>Parameters</h4>
+    <p>None</p>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>If the <strong>scheduledwakeup&nbsp;</strong>method succeeds, <strong>returnValue </strong>will contain&nbsp;<strong>true</strong>.</p>
+              <p>If the&nbsp;<strong>scheduledwakeup&nbsp;</strong>method fails, <strong>returnValue</strong> will contain&nbsp;<strong>false</strong>.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number (int64_t)</td>
+            <td>
+              <p><strong>errorCode</strong>&nbsp;contains the error code if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorCode</strong>&nbsp;only if it fails.</p>
+              <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p><strong>errorText</strong>&nbsp;contains the error text if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.</p>
+              <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.activitymanager/callback/scheduledwakeup &#39;{}&#39;</p>
     </div>
   </div>
   <h3 id="cancel">cancel</h3>
@@ -4396,7 +4465,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
   <h3 id="object-requirement">Requirement</h3>
   <div>
     <p>The <strong>Requirements </strong>are preconditions that the Activity Manager will ensure are met before an Activity will be run. Any number of requirements may be specified for a single Activity, and all must be met in order for the Activity to move to the&nbsp;<span style="color:#008000"><strong>satisfied&nbsp;</strong></span>state.&nbsp;<strong>Requirements&nbsp;</strong>can transition from the met state back to unmet if the condition the particular requirement is monitoring for no longer holds true.</p>
-    <p>The Requirements available on the system can be queried&nbsp;using <a href="#getManagerInfo"><strong>getManagerInfo&nbsp;</strong></a>method.</p>
+    <p>The Requirements available on the system can be queried&nbsp;using <a href="#getmanagerinfo"><strong>getManagerInfo&nbsp;</strong></a>method.</p>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
       <p style="color:white;margin:5.0px;"><b>Example</b></p>
     </div>
@@ -4716,7 +4785,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>and</td>
             <td>Optional</td>
-            <td>Object array: <a href="#trigger"> Trigger</a></td>
+            <td>Object array: <a href="#object-trigger">Trigger</a></td>
             <td>
               <p>The <strong>and</strong> field is used when combining multiple triggers to be combined with an &#39;and&#39; condition.</p>
             </td>
@@ -4724,7 +4793,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>or</td>
             <td>Optional</td>
-            <td>Object array: <a href="#trigger"> Trigger</a></td>
+            <td>Object array: <a href="#object-trigger">Trigger</a></td>
             <td>
               <p>The <strong>or</strong> field is used when combining multiple triggers to be combined with an &#39;or&#39; condition.</p>
             </td>
@@ -4760,6 +4829,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       <br />
       Note: All fields are optional, but if you do not set &quot;foreground&quot; or &quot;background&quot;, then you must set &quot;immediate&quot; and &quot;priority&quot;.
     </p>
+    <p>&nbsp;</p>
     <div class="table-container">
       <table class="table is-bordered is-fullwidth">
         <tbody>

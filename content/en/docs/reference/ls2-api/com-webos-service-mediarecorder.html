@@ -1,0 +1,1134 @@
+---
+title: com.webos.service.mediarecorder
+date: 2023-10-31
+api_level: 27
+weight: 238
+toc: true
+---
+{{< note >}}
+This API has been available since [API level]({{< relref "ls2-api-index#api-levels" >}}) 27.
+{{< /note >}}
+<h2 id="api-summary">API Summary</h2>
+<div>
+  <p>Provides an interface to record in&nbsp;a webOS device.</p>
+</div>
+<h2 id="overview-of-the-api">Overview of the API</h2>
+<div>
+  <p>NA</p>
+</div>
+<h2 id="methods">Methods</h2>
+<div>
+  <h3 id="close">close</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>mediarecorder.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 27</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Closes the recoder&nbsp;and releases all resources.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>recorderId</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>Unique ID of the recorder.</p>
+              <p><strong>Note: </strong>ID is obtained by using the open() API.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true</strong>&nbsp;:&nbsp;Indicates that the operation was successful.</li>
+                <li><strong>false</strong>&nbsp;:&nbsp;Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>The reason for the failure of the operation.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>100, 110, 300, 310, 710, 800</td>
+            <td>-</td>
+            <td>
+              <p>Check details of the relevant error codes in the &quot;API Error Codes Reference&quot; table below.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.mediarecorder/close &#39;{&quot;recorderId&quot;: 1234}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="open">open</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>mediarecorder.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 27</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Opens a new recorder.&nbsp;Returns a unique ID to the client that is used for subsequent operations to control the recorder.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>videoSrc</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Unique ID of the camera pipeline.</p>
+              <p><strong>Note: </strong></p>
+              <ul>
+                <li>You must provide both &quot;videoSrc&quot; and &quot;audioSrc&quot;, or either &quot;videoSrc&quot; or &quot;audioSrc&quot;.</li>
+                <li>ID&nbsp;can be obtained using the com.webos.media/load() API.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>audioSrc</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Name of the microphone device from which the audio data must be captured.</p>
+              <p><strong>Note:&nbsp;</strong></p>
+              <ul>
+                <li>You must provide both &quot;videoSrc&quot; and &quot;audioSrc&quot;, or either &quot;videoSrc&quot; or &quot;audioSrc&quot;.</li>
+                <li>Supports only one audio source (usb_mic0).</li>
+                <li>Audio recording alone is currently not supported,&nbsp;will be available in a future release.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true</strong>&nbsp;:&nbsp;Indicates that the operation was successful.</li>
+                <li><strong>false</strong>&nbsp;:&nbsp;Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>recorderId</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>Unique identifier&nbsp;to control the recorder.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>The reason for the failure of the operation.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>100, 110, 200, 210, 700</td>
+            <td>-</td>
+            <td>
+              <p>Check details of the relevant error codes in the &quot;API Error Codes Reference&quot; table below.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example : Camera recording with audio</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.mediarecorder/open &#39;{&quot;videoSource&quot;: &quot;_sAMEt6vNxFRzav&quot;,&quot;audioSource&quot;: &quot;usb_mic0&quot;}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
+        &nbsp; &nbsp;&nbsp;&quot;recorderId&quot;: 1234<br />
+        }
+      </p>
+    </div>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example : Camera recording without audio</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.mediarecorder/open &#39;{&quot;videoSource&quot;: &quot;_sAMEt6vNxFRzav&quot;}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
+        &nbsp; &nbsp;&nbsp;&quot;recorderId&quot;: 1234<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="setoutputfile">setOutputFile</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>mediarecorder.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 27</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Sets the path to store the streaming data.&nbsp;</p>
+    <p>The default file name is of the format &quot;RecordDDMMYYYY-HHMMSS&quot;, where DDMMYYYY-HHMMSS is current date and time.</p>
+    <p><strong>Note: </strong>If not explicitly set by calling this method, the default path is <strong>/media/internal/</strong>.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>recorderId</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>Unique ID of the recorder.</p>
+              <p><strong>Note: </strong>ID is obtained by using the open() API.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>path</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Absolute path to the directory where the recorded file&nbsp;must be saved.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>/media/internal/</li>
+                <li>/tmp/</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true</strong>&nbsp;:&nbsp;Indicates that the operation was successful.</li>
+                <li><strong>false</strong>&nbsp;:&nbsp;Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>The reason for the failure of the operation.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>100, 110, 300, 310, 400, 800, 900</td>
+            <td>-</td>
+            <td>
+              <p>Check details of the relevant error codes in the &quot;API Error Codes Reference&quot; table below.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.mediarecorder/setOutputFile &#39;{&quot;recorderId&quot;: 1234,&quot;path&quot;:&quot;/media/internal/&quot;}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="setoutputformat">setOutputFormat</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>mediarecorder.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 27</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Sets the specified&nbsp;format to store the streaming data.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>recorderId</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>Unique ID of the recorder.</p>
+              <p><strong>Note: </strong>ID is obtained by using the open() API.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>format</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Format in which data is stored.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>MPEG4</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true</strong>&nbsp;:&nbsp;Indicates that the operation was successful.</li>
+                <li><strong>false</strong>&nbsp;:&nbsp;Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>The reason for the failure of the operation.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>100, 110, 300, 310, 500, 510, 800</td>
+            <td>-</td>
+            <td>
+              <p>Check details of the relevant error codes in the &quot;API Error Codes Reference&quot; table below.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.mediarecorder/setOutputFormat &#39;{&quot;recorderId&quot;: 1234,&quot;format&quot;:&quot;MPEG4&quot;}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="start">start</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>mediarecorder.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 27</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Starts recording.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>recorderId</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>Unique ID of the recorder.</p>
+              <p><strong>Note: </strong>ID is obtained by using the open() API.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true</strong>&nbsp;:&nbsp;Indicates that the operation was successful.</li>
+                <li><strong>false</strong>&nbsp;:&nbsp;Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>The reason for the failure of the operation.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>100, 110, 300, 310, 600, 800</td>
+            <td>-</td>
+            <td>
+              <p>Check details of the relevant error codes in the &quot;API Error Codes Reference&quot; table below.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.mediarecorder/start&nbsp;&#39;{&quot;recorderId&quot;: 1234}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="stop">stop</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>mediarecorder.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 27</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Stops recording and saves the output to file.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>recorderId</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>Unique ID of the recorder.</p>
+              <p><strong>Note: </strong>ID is obtained by using the open() API.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true</strong>&nbsp;:&nbsp;Indicates that the operation was successful.</li>
+                <li><strong>false</strong>&nbsp;:&nbsp;Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>The reason for the failure of the operation.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>100, 110, 300, 310, 610, 800</td>
+            <td>-</td>
+            <td>
+              <p>Check details of the relevant error codes in the &quot;API Error Codes Reference&quot; table below.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.mediarecorder/stop&nbsp;&#39;{&quot;recorderId&quot;: 1234}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="takesnapshot">takeSnapshot</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>mediarecorder.operation</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 27</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Takes one video snapshot during recording and save the image to a file.</p>
+    <p>The default file name is of the format &quot;CaptureDDMMYYYY-HHMMSS&quot;, where DDMMYYYY-HHMMSS is current date and time.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>recorderId</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>Unique ID of the recorder.</p>
+              <p><strong>Note: </strong>ID is obtained by using the open() API.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>path</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Absolute path to the directory where the snapshot image must be saved.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>/media/internal/</li>
+                <li>/tmp/</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>format</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the format of the snapshot image.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>JPEG</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <ul>
+                <li><strong>true</strong>&nbsp;:&nbsp;Indicates that the operation was successful.</li>
+                <li><strong>false</strong>&nbsp;:&nbsp;Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>The reason for the failure of the operation.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>100, 110, 300, 310, 400, 500, 510, 620, 800, 900</td>
+            <td>-</td>
+            <td>
+              <p>Check details of the relevant error codes in the &quot;API Error Codes Reference&quot; table below.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.mediarecorder/takeSnapshot &#39;{&quot;recorderId&quot;: 1234,&quot;path&quot;:&quot;/media/internal/&quot;,&quot;format&quot;:&quot;JPEG&quot;}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+  </div>
+</div>
+<h2 id="api-error-codes-reference">API Error Codes Reference</h2>
+<div>
+  <div class="table-container">
+    <table class="table is-bordered is-fullwidth">
+      <tbody>
+        <tr>
+          <th width="15%">
+            <p>Error Code</p>
+          </th>
+          <th width="30%">
+            <p>Error Text</p>
+          </th>
+          <th width="55%">
+            <p>Error Description</p>
+          </th>
+        </tr>
+        <tr>
+          <td>100</td>
+          <td>JSON parsing error</td>
+          <td>
+            <p>There is an error during JSON parsing.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>110</td>
+          <td>JSON type error</td>
+          <td>
+            <p>Trying to access a JSON value with the incorrect data type.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>200</td>
+          <td>Source must be specified</td>
+          <td>
+            <p>Source not provided for recording action.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>210</td>
+          <td>Audio only recording is not supported</td>
+          <td>
+            <p>Audio recording alone is currently not supported, will be available in a future release.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>300</td>
+          <td>Recorder ID must be specified</td>
+          <td>
+            <p>Unique ID for the recorder not provided.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>310</td>
+          <td>Recorder ID is invalid</td>
+          <td>
+            <p>The provided recorder ID is not valid or does not exist.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>400</td>
+          <td>Path must be specified</td>
+          <td>
+            <p>Required path information is missing.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>500</td>
+          <td>Format must be specified</td>
+          <td>
+            <p>Required format&nbsp;information is missing.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>510</td>
+          <td>Unsupported format</td>
+          <td>
+            <p>The format is not supported.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>600</td>
+          <td>Failed to start recording</td>
+          <td>
+            <p>Attempt to begin recording process has failed.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>610</td>
+          <td>Failed to stop recording</td>
+          <td>
+            <p>Unsuccessful in stopping an ongoing recording.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>620</td>
+          <td>Snapshot capture failed</td>
+          <td>
+            <p>Snapshot attempt was not successful.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>700</td>
+          <td>Failed to open recorder</td>
+          <td>
+            <p>Opening the recorder was unsuccessful or encountered an error.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>710</td>
+          <td>Failed to close recorder</td>
+          <td>
+            <p>Closing the recorder was unsuccessful or encountered an error.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>800</td>
+          <td>Invalid state</td>
+          <td>
+            <p>The recorder is not in the appropriate state to perform the action.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>900</td>
+          <td>Cannot write at specified location</td>
+          <td>
+            <p>Cannot save or write data at the specified location.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

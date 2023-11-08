@@ -1,7 +1,7 @@
 ---
 title: com.webos.service.config
-date: 2023-05-22
-api_level: 23
+date: 2023-10-31
+api_level: 27
 weight: 130
 toc: true
 ---
@@ -49,7 +49,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
   <p>At the moment, there are various non-uniform ways to customize the behavior of various components. Some depend on json&nbsp;config files stored on the root file system and some depend on the file system flags. Such disparity makes it impossible to provide the mechanism or tools to customize the product as a whole.</p>
   <p>By specifying a common way to represent various flags and features, <strong>config </strong>service can provide a streamlined mechanism to our customers to customize the product.</p>
   <hr />
-  <p><span style="color:#0000FF"><strong>[config&nbsp;&amp; configs.json]</strong></span></p>
+  <p><strong>[config&nbsp;&amp; configs.json]</strong></p>
   <p><strong>config name</strong> : Configd sets config name&nbsp;as CONFIGS_JSON_FILENAME.NAME.</p>
   <ul>
     <li>If there is a key-value like&nbsp;&quot;compositorGeometry&quot;: &quot;1920x1080+0+0r0&quot; in&nbsp;com.webos.surfacemanager.json</li>
@@ -57,39 +57,31 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     <li>As config name contains file name, key should be added in related feature file, and it is recommended that&nbsp;users add&nbsp;feature file same as service name.&nbsp;</li>
   </ul>
   <p><strong>configs.json file structure :</strong> Both types of structures are supported for webOS</p>
-  <div class="table-container">
-    <table class="table is-bordered is-fullwidth">
-      <tbody>
-        <tr>
-          <th style="text-align:center">Just define key:value pair</td>
-          <th style="text-align:center">&nbsp;Define under &quot;configs&quot; category as array</td>
-        </tr>
-        <tr>
-          <td>
-            <p>com.webos.surfacemanager.json&nbsp;<br />
-              {<br />
-                &nbsp; &nbsp; &quot;compositorGeometry&quot;: &quot;1920x1080+0+0r0&quot;<br />
-              }
-            </p>
-          </td>
-          <td>
-            <p>{<br />
-              &nbsp; &nbsp; &quot;configs&quot; : [<br />
-              &nbsp; &nbsp; &nbsp; &nbsp; {<br />
-              &nbsp; &nbsp; &nbsp; &nbsp; &quot;data&quot;: {<br />
-              &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;compositorGeometry&quot; : &quot;1920x1080+0+0r0&quot;<br />
-              &nbsp; &nbsp; &nbsp; &nbsp; }<br />
-              &nbsp; &nbsp; }<br />
-              &nbsp;&nbsp; &nbsp;]<br />
-              }
-            </p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <ul>
+    <li>Just define key:value pair</li>
+    <div class="code-bg-grey">
+      <p>com.webos.surfacemanager.json&nbsp;<br />
+        {<br />
+          &nbsp;&nbsp;&quot;compositorGeometry&quot;: &quot;1920x1080+0+0r0&quot;<br />
+        }
+      </p>
+    </div>
+    <li>Define under "configs" category as array</li>
+    <div class="code-bg-grey">
+      <p>{<br />
+        &nbsp; &nbsp; &quot;configs&quot; : [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;data&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;compositorGeometry&quot; : &quot;1920x1080+0+0r0&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; }<br />
+        &nbsp;&nbsp; &nbsp;]<br />
+        }
+      </p>
+    </div>
+  </ul>
   <hr />
-  <p><span style="color:#0000FF"><strong>[Restriction of getConfig values]</strong></span></p>
+  <p><strong>[Restriction of getConfig values]</strong></p>
   <p>ACG is enabled on Configd and registered services can get configs via private or public bus. But for some cases, configs should be opened for only privileged services. To support this feature, configd allows to define permission by&nbsp;describing&nbsp;service name as array type at feature.json.</p>
   <p>To define permission, config values should be described as new format of feature.json like explained above. Permission field would be fetched same way as configs are fetched, and it means that permission would be replaced while fetching upper layers&#39; feature.json.&nbsp;</p>
   <p>Configd checks if requester is in the permitted service list, before&nbsp;returning getConfig and configd support servicename ended with asterisk.</p>
@@ -112,10 +104,302 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       }
     </p>
   </div>
-  <p>&nbsp;</p>
 </div>
 <h2 id="methods">Methods</h2>
 <div>
+  <h3 id="dump">dump</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>systemconfig.devutility</b></span></div>
+    <div style="text-align: right;display: inline-block;float:right;"><span style="background: #FFC966;padding: 5px; width: 100px; text-align: center;color:#333333;margin-right: 5px;">Deprecated</span></div>
+    <div>
+      <ul>
+        <li>Added: API level 27</li>
+        <li>Deprecated: API level 27</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>It is useful for debugging. It returns&nbsp;the list of all <strong>configs&nbsp;</strong>and current values.</p>
+    <h4>Parameters</h4>
+    <p>None</p>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>configs</td>
+            <td>Required</td>
+            <td>Object</td>
+            <td>
+              <p>Lists all <strong>configs&nbsp;</strong>and current values as a JSON&nbsp;object</p>
+            </td>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p><span style="color:rgb(0, 0, 0)">Indicates whether the execution succeeded.</span></p>
+              <ul>
+                <li><span style="color:rgb(0, 0, 0)">true: Success</span></li>
+                <li><span style="color:rgb(0, 0, 0)">false: Failure</span></li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number (int32_t)</td>
+            <td>
+              <p>Identifies the error. The&nbsp;method will return&nbsp;<strong>errorCode</strong>&nbsp;only if it fails.&nbsp;See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;for more details.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Describes the error. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails and errorCode is -1.&nbsp;See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;for more details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -f -n 1 luna://com.webos.service.config/dump &#39;{}&#39;</p>
+      <p>{</p>
+      <p style="margin-left:40px">&quot;configs&quot;: {</p>
+      <p style="margin-left:80px">&quot;system&quot;: {</p>
+      <p style="margin-left:120px">&quot;country&quot;: &quot;KR7&quot;,<br />
+        &quot;smartServiceCountry&quot;: &quot;KR7&quot;,<br />
+        &quot;enable_smart_service&quot;: true
+      </p>
+      <p style="margin-left:80px">},<br />
+        &quot;com.webos.service.config&quot;: {
+      </p>
+      <p style="margin-left:120px">&quot;selection&quot;: {</p>
+      <p style="margin-left:160px">&quot;smartservicecountry&quot;: &quot;KR7&quot;,<br />
+        &quot;devicename&quot;: &quot;m14tv&quot;,<br />
+        &quot;country&quot;: &quot;KR7&quot;,<br />
+        &quot;buildtype&quot;: &quot;DV&quot;,<br />
+        &quot;displaytype&quot;: &quot;OTHERS&quot;
+      </p>
+      <p style="margin-left:120px">}</p>
+      <p style="margin-left:80px">}</p>
+      <p style="margin-left:40px">},<br />
+        &quot;returnValue&quot;: true
+      </p>
+      <p>}</p>
+    </div>
+  </div>
+  <h3 id="fulldump">fullDump</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>systemconfig.devutility</b></span></div>
+    <div style="text-align: right;display: inline-block;float:right;"><span style="background: #FFC966;padding: 5px; width: 100px; text-align: center;color:#333333;margin-right: 5px;">Deprecated</span></div>
+    <div>
+      <ul>
+        <li>Added: API level 27</li>
+        <li>Deprecated: API level 27</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>It is useful for debugging. It returns the list of all <strong>configs</strong>&nbsp;including&nbsp;overridden&nbsp;values from all layers.</p>
+    <h4>Parameters</h4>
+    <p>None</p>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>configs</td>
+            <td>Required</td>
+            <td>Object array</td>
+            <td>
+              <p>Array of JSON&nbsp;objects with <strong>configName </strong>and value</p>
+            </td>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p><span style="color:rgb(0, 0, 0)">Indicates whether the execution succeeded.</span></p>
+              <ul>
+                <li><span style="color:rgb(0, 0, 0)">true: Success</span></li>
+                <li><span style="color:rgb(0, 0, 0)">false: Failure</span></li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -f -n 1 luna://com.webos.service.config/fullDump &#39;{}&#39;<br />
+        {
+      </p>
+      <p style="margin-left:40px">&quot;configs&quot;: [</p>
+      <p style="margin-left:80px">{</p>
+      <p style="margin-left:120px">&quot;/etc/configd-service/layers/base&quot;: {</p>
+      <p style="margin-left:160px">&quot;system&quot;: {</p>
+      <p style="margin-left:200px">&quot;country&quot;: &quot;Others&quot;,<br />
+        &quot;smartServiceCountry&quot;: &quot;Others&quot;,<br />
+        &quot;enable_smart_service&quot;: false
+      </p>
+      <p style="margin-left:160px">},<br />
+        &quot;com.webos.surfacemanager&quot;: {
+      </p>
+      <p style="margin-left:200px">&quot;volumeOSD&quot;: true</p>
+      <p style="margin-left:160px">},<br />
+        &quot;com.webos.service.applicationmanager&quot;: {
+      </p>
+      <p style="margin-left:200px">&quot;applications_smartservice&quot;: [</p>
+      <p style="margin-left:240px">&quot;com.webos.app.discovery&quot;,<br />
+        &quot;youtube.leanback.v4&quot;
+      </p>
+      <p style="margin-left:200px">],<br />
+        &quot;applications_broadcast&quot;: [
+      </p>
+      <p style="margin-left:240px">&quot;com.webos.app.livetv&quot;,<br />
+        &quot;com.webos.app.livemenuplayer&quot;,<br />
+        &quot;com.webos.app.browser&quot;,<br />
+        &quot;com.webos.app.tvuserguide&quot;,<br />
+        &quot;com.webos.app.smartshare&quot;,<br />
+        &quot;com.webos.app.connectionwizard&quot;,<br />
+        &quot;com.webos.app.miracast&quot;,<br />
+        &quot;com.webos.app.capturetv&quot;,<br />
+        &quot;com.webos.app.camera&quot;,<br />
+        &quot;com.webos.app.notificationcenter&quot;
+      </p>
+      <p style="margin-left:200px">],<br />
+        &quot;applications&quot;: [<br />
+        ],<br />
+        &quot;applications_exclude&quot;: [
+      </p>
+      <p style="margin-left:240px">&quot;com.webos.app.egallery&quot;</p>
+      <p style="margin-left:200px">]</p>
+      <p style="margin-left:160px">}</p>
+      <p style="margin-left:120px">}</p>
+      <p style="margin-left:80px">},<br />
+        {
+      </p>
+      <p style="margin-left:120px">&quot;/etc/configd-service/layers/country/KOR&quot;: {</p>
+      <p style="margin-left:160px">&quot;system&quot;: {</p>
+      <p style="margin-left:200px">&quot;country&quot;: &quot;KOR&quot;</p>
+      <p style="margin-left:160px">},<br />
+        &quot;com.webos.service.applicationmanager&quot;: {
+      </p>
+      <p style="margin-left:200px">&quot;applications_broadcast&quot;: [</p>
+      <p style="margin-left:240px">&quot;com.webos.app.livetv&quot;,<br />
+        &quot;com.webos.app.livemenuplayer&quot;,<br />
+        &quot;com.webos.app.browser&quot;,<br />
+        &quot;com.webos.app.tvuserguide&quot;,<br />
+        &quot;com.webos.app.connectionwizard&quot;,<br />
+        &quot;com.webos.app.egallery&quot;,<br />
+        &quot;com.webos.app.smartshare&quot;,<br />
+        &quot;com.webos.app.scheduler&quot;,<br />
+        &quot;com.webos.app.miracast&quot;,<br />
+        &quot;com.webos.app.tvguide&quot;,<br />
+        &quot;com.webos.app.capturetv&quot;,<br />
+        &quot;com.webos.app.camera&quot;,<br />
+        &quot;com.webos.app.discovery&quot;,<br />
+        &quot;com.webos.app.notificationcenter&quot;
+      </p>
+      <p style="margin-left:200px">]</p>
+      <p style="margin-left:160px">}</p>
+      <p style="margin-left:120px">}</p>
+      <p style="margin-left:80px">},<br />
+        {
+      </p>
+      <p style="margin-left:120px">&quot;/etc/configd-service/layers/smartservicecountry/KOR&quot;: {</p>
+      <p style="margin-left:160px">&quot;system&quot;: {</p>
+      <p style="margin-left:200px">&quot;smartServiceCountry&quot;: &quot;KOR&quot;</p>
+      <p style="margin-left:160px">},<br />
+        &quot;com.webos.service.applicationmanager&quot;: {
+      </p>
+      <p style="margin-left:200px">&quot;applications_smartservice&quot;: [</p>
+      <p style="margin-left:240px">&quot;com.webos.app.today&quot;,<br />
+        &quot;pooq&quot;,<br />
+        &quot;cj.eandm&quot;,<br />
+        &quot;ocncatchon&quot;,<br />
+        &quot;cine21&quot;,<br />
+        &quot;bugs&quot;,<br />
+        &quot;youtube.leanback.v4&quot;
+      </p>
+      <p style="margin-left:200px">]</p>
+      <p style="margin-left:160px">}</p>
+      <p style="margin-left:120px">}</p>
+      <p style="margin-left:80px">},</p>
+      <p style="margin-left:80px">{</p>
+      <p style="margin-left:120px">&quot;/etc/configd-service/layers/displaytype/OTHERS&quot;: {</p>
+      <p style="margin-left:160px">&quot;com.webos.service.applicationmanager&quot;: {</p>
+      <p style="margin-left:200px">&quot;applications_exclude&quot;: [</p>
+      <p style="margin-left:240px">&quot;com.webos.app.egallery&quot;</p>
+      <p style="margin-left:200px">]</p>
+      <p style="margin-left:160px">}</p>
+      <p style="margin-left:120px">}</p>
+      <p style="margin-left:80px">},<br />
+        {
+      </p>
+      <p style="margin-left:120px">&quot;/etc/configd-service/layers/buildtype/PV&quot;: {</p>
+      <p style="margin-left:160px">&quot;com.webos.service.applicationmanager&quot;: {</p>
+      <p style="margin-left:200px">&quot;applications_append&quot;: [</p>
+      <p style="margin-left:240px">&quot;com.lge.app.viewster&quot;,<br />
+        &quot;com.palm.app.bugreport&quot;,<br />
+        &quot;com.palm.app.enyo2sampler&quot;,<br />
+        &quot;com.webos.app.erossampler&quot;
+      </p>
+      <p style="margin-left:200px">]</p>
+      <p style="margin-left:160px">}</p>
+      <p style="margin-left:120px">}</p>
+      <p style="margin-left:80px">},<br />
+        {
+      </p>
+      <p style="margin-left:120px">&quot;/etc/configd-service/layers/devicename/m14tv&quot;: {</p>
+      <p style="margin-left:160px">&quot;com.webos.service.applicationmanager&quot;: {<br />
+        }
+      </p>
+      <p style="margin-left:120px">}</p>
+      <p style="margin-left:80px">}</p>
+      <p style="margin-left:40px">],</p>
+      <p style="margin-left:40px">&quot;returnValue&quot;: true</p>
+      <p>}</p>
+    </div>
+  </div>
   <h3 id="getconfigs">getConfigs</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>activity.query,-</b></span></div>
@@ -403,6 +687,65 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       <p># luna-send -n 1 luna://com.webos.service.config/reconfigure &#39;{}&#39;</p>
     </div>
   </div>
+  <h3 id="reloadconfigs">reloadConfigs</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>systemconfig.devutility</b></span></div>
+    <div style="text-align: right;display: inline-block;float:right;"><span style="background: #FFC966;padding: 5px; width: 100px; text-align: center;color:#333333;margin-right: 5px;">Deprecated</span></div>
+    <div>
+      <ul>
+        <li>Added: API level 27</li>
+        <li>Deprecated: API level 27</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Configd load configd db files. This load previous config values including user defined configs(by calling setConfigs)</p>
+    <h4>Parameters</h4>
+    <p>None</p>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Indicates whether the execution succeeded.</p>
+              <ul>
+                <li>true: Success</li>
+                <li>false: Failure</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -f -n 10 luna://com.webos.service.config/reloadConfigs &#39;{}&#39;<br />
+        {<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
+        }&nbsp;
+      </p>
+    </div>
+  </div>
   <h3 id="setconfigs">setConfigs</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>activity.operation,-</b></span></div>
@@ -520,7 +863,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
 </div>
 <h2 id="objects">Objects</h2>
 <div>
-  <h3 id="configs">configs</h3>
+  <h3 id="object-configs">configs</h3>
   <p>It contains full name of config and value pair.</p>
   <p>For example,</p>
   <div class="code-bg-grey">
@@ -549,35 +892,35 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         </tr>
         <tr>
           <td>-5</td>
-          <td>&quot;Response error&quot;</td>
+          <td>Response error</td>
           <td>
             <p>Make-up response payload error</p>
           </td>
         </tr>
         <tr>
           <td>-4</td>
-          <td>&quot;Json parsing error&quot;</td>
+          <td>Json parsing error</td>
           <td>
             <p>Json parsing error</p>
           </td>
         </tr>
         <tr>
           <td>-3</td>
-          <td>&quot;Invalid main database error&quot;</td>
+          <td>Invalid main database error</td>
           <td>
             <p>Main Database is invalid</p>
           </td>
         </tr>
         <tr>
           <td>-2</td>
-          <td>&quot;Invalid parameter error&quot;</td>
+          <td>Invalid parameter error</td>
           <td>
             <p>Invalid Parameter Error</p>
           </td>
         </tr>
         <tr>
           <td>-1</td>
-          <td>&quot;Unknown error&quot;</td>
+          <td>\Unknown error</td>
           <td>
             <p>Unknown Error</p>
           </td>

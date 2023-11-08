@@ -1,7 +1,7 @@
 ---
 title: com.webos.notification
-date: 2023-05-22
-api_level: 23
+date: 2023-10-31
+api_level: 27
 weight: 40
 toc: true
 ---
@@ -533,19 +533,6 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Object: <a href="#object-onclose">onclose</a></td>
             <td>
               <p>Defines the close action to be performed when an alert is closed.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>type</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Defines the button type in the alert. Possible values are:&nbsp;</p>
-              <ul>
-                <li>confirm</li>
-                <li>warning</li>
-                <li>progress</li>
-              </ul>
             </td>
           </tr>
           <tr>
@@ -1358,39 +1345,48 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       <p># luna-send -i -f -a com.webos.surfacemanager luna://com.webos.notification/getAlertNotification &#39;{&quot;subscribe&quot;:true}&#39;</p>
       <p>Response:</p>
       <p>{<br />
-        &nbsp; &nbsp;&quot;subscribed&quot;: true,<br />
-        &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
+        &nbsp; &nbsp;&nbsp;&quot;subscribed&quot;: true,<br />
+        &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: true<br />
         }
       </p>
       <p>Subscription Response:</p>
       <p>{<br />
-        &nbsp; &nbsp; &quot;alertInfo&quot;: {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;alertId&quot;: &quot;com.webos.surfacemanager-1583462810158&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;message&quot;: &quot;Hello World&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;sourceId&quot;: &quot;com.webos.surfacemanager&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;isNotiSave&quot;: false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;buttons&quot;: [<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;focus&quot;: false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;action&quot;: {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;label&quot;: &quot;Yes&quot;<br />
+        &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
+        &nbsp; &nbsp;&quot;alertAction&quot;:&quot;open&quot;,<br />
+        &nbsp; &nbsp;&quot;alertInfo&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &quot;iconPath&quot;:&quot;/usr/share/asm/130x130 usb-port2.png&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &quot;sourceId&quot;:&quot;com.webos.surfacemanager&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &quot;displayId&quot;:0,<br />
+        &nbsp; &nbsp; &nbsp; &quot;buttons&quot;:[<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;action&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;launchParams&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;id&quot;:&quot;youtube.leanback.v4&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;},<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;serviceURI&quot;:&quot;luna://com.webos.service.applicationmanager/&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;serviceMethod&quot;:&quot;launch&quot;<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;focus&quot;: false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;label&quot;: &quot;No&quot;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; ],<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;modal&quot;: false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;onFailAction&quot;: {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; },<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;isSysReq&quot;: false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;onCloseAction&quot;: {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; }<br />
-        &nbsp; &nbsp; },<br />
-        &nbsp; &nbsp; &quot;timestamp&quot;: &quot;1583462810158&quot;,<br />
-        &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-        &nbsp; &nbsp; &quot;alertAction&quot;: &quot;open&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;focus&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;label&quot;:&quot;launch&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}<br />
+        &nbsp; &nbsp; &nbsp; ],<br />
+        &nbsp; &nbsp; &nbsp; &quot;message&quot;:&quot;hello world&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &quot;isNotiSave&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &quot;iconUrl&quot;:&quot; [file:///usr/share/asm/130x130] &nbsp;usb-port2.png&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &quot;modal&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &quot;onCloseAction&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
+        &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &quot;progress&quot;:0,<br />
+        &nbsp; &nbsp; &nbsp; &quot;alertId&quot;:&quot;com.webos.surfacemanager-1690213268617&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &quot;type&quot;:&quot;progress&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &quot;title&quot;:&quot;this is to get alertInfo&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &quot;isSysReq&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &quot;onFailAction&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
+        &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp;},<br />
+        &nbsp; &nbsp;&quot;timestamp&quot;:&quot;1690213268617&quot;<br />
         }
       </p>
     </div>
@@ -2012,43 +2008,44 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
     </div>
     <div class="code-bg-grey">
-      <p># luna-send -i -f -a com.webos.surfacemanager&nbsp;luna://com.webos.notification/getToastNotification &#39;{<br />
-        &nbsp;&nbsp; &quot;subscribe&quot;:true<br />
-        }&#39;
-      </p>
+      <p># luna-send -i -f -a com.webos.surfacemanager luna://com.webos.notification/getToastNotification &#39;{&quot;subscribe&quot;:true}</p>
       <p>Response:</p>
       <p>{<br />
-        &nbsp; &nbsp;&quot;subscribed&quot;: true,<br />
-        &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
+        &nbsp; &nbsp;&nbsp;&quot;subscribed&quot;: true,<br />
+        &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: true<br />
         }
       </p>
-      <p>Subscription Response:</p>
+      <p>Subscription response:</p>
       <p>{<br />
-        &nbsp; &nbsp; &quot;message&quot;: &quot;hello world&quot;,<br />
-        &nbsp; &nbsp; &quot;iconPath&quot;: &quot;/usr/palm/notificationmgr/images/toast-notification-icon.png&quot;,<br />
-        &nbsp; &nbsp; &quot;type&quot;: &quot;standard&quot;,<br />
-        &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-        &nbsp; &nbsp; &quot;user&quot;: &quot;guest&quot;,<br />
-        &nbsp; &nbsp; &quot;title&quot;: &quot;&quot;,<br />
-        &nbsp; &nbsp; &quot;isCradleReq&quot;: false,<br />
-        &nbsp; &nbsp; &quot;sourceId&quot;: &quot;com.webos.app.notification&quot;,<br />
-        &nbsp; &nbsp; &quot;timestamp&quot;: &quot;1583463281128&quot;,<br />
-        &nbsp; &nbsp; &quot;onlyToast&quot;: true,<br />
-        &nbsp; &nbsp; &quot;isSysReq&quot;: false,<br />
-        &nbsp; &nbsp; &quot;schedule&quot;: {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;expire&quot;: 1586055281<br />
-        &nbsp; &nbsp; },<br />
-        &nbsp; &nbsp; &quot;iconUrl&quot;: &quot;file:///usr/palm/notificationmgr/images/toast-notification-icon.png&quot;,<br />
-        &nbsp; &nbsp; &quot;action&quot;: {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;launchParams&quot;: {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;id&quot;: &quot;com.webos.app.notification&quot;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; },<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;serviceMethod&quot;: &quot;launch&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;serviceURI&quot;: &quot;luna://com.webos.service.applicationmanager/&quot;<br />
-        &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp;&quot;iconUrl&quot;:&quot; [file:///usr/palm/notificationmgr/images/toast-notification-icon.png] &quot;,<br />
+        &nbsp; &nbsp;&quot;onlyToast&quot;:true,<br />
+        &nbsp; &nbsp;&quot;iconPath&quot;:&quot;/usr/palm/notificationmgr/images/toast-notification-icon.png&quot;,<br />
+        &nbsp; &nbsp;&quot;readStatus&quot;:false,<br />
+        &nbsp; &nbsp;&quot;isSysReq&quot;:false,<br />
+        &nbsp; &nbsp;&quot;message&quot;:&quot;hello world&quot;,<br />
+        &nbsp; &nbsp;&quot;sourceId&quot;:&quot;com.webos.app.test&quot;,<br />
+        &nbsp; &nbsp;&quot;isCradleReq&quot;:false,<br />
+        &nbsp; &nbsp;&quot;_kind&quot;:&quot;com.webos.notificationhistory:1&quot;,<br />
+        &nbsp; &nbsp;&quot;schedule&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &quot;expire&quot;:1692788497<br />
+        &nbsp; &nbsp;},<br />
+        &nbsp; &nbsp;&quot;type&quot;:&quot;standard&quot;,<br />
+        &nbsp; &nbsp;&quot;title&quot;:&quot;&quot;,<br />
+        &nbsp; &nbsp;&quot;user&quot;:&quot;guest&quot;,<br />
+        &nbsp; &nbsp;&quot;timesource&quot;:&quot;ntp&quot;,<br />
+        &nbsp; &nbsp;&quot;displayId&quot;:0,<br />
+        &nbsp; &nbsp;&quot;timestamp&quot;:&quot;1690196497182&quot;,<br />
+        &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
+        &nbsp; &nbsp;&quot;action&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &quot;launchParams&quot;:{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;id&quot;:&quot;com.webos.app.test&quot;<br />
+        &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &quot;serviceURI&quot;:&quot;palm://com.webos.applicationManager/&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &quot;serviceMethod&quot;:&quot;launch&quot;<br />
+        &nbsp; &nbsp;}<br />
         }
       </p>
     </div>
@@ -2125,7 +2122,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>removeAllNotiId</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>Boolean</td>
             <td>
               <p>Indicates whether all notifications were removed successfully.</p>
@@ -2149,7 +2146,8 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>Number</td>
             <td>
-              <p>Identifier of the display where the notification is to be displayed. Possible values are 0 and 1.</p>
+              <p>Identifier of the display where the notification is to be displayed.</p>
+              <p>Possible values are 0 and 1.</p>
             </td>
           </tr>
         </tbody>
@@ -2266,7 +2264,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>returnValue</td>
-            <td>Optional</td>
+            <td>Required</td>
             <td>Boolean</td>
             <td>
               <p>Indicates the status of operation. Possible values are:</p>
@@ -2550,6 +2548,38 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
 </div>
 <h2 id="objects">Objects</h2>
 <div>
+  <h3 id="object--activity">$activity</h3>
+  <div>
+    <p>Contains detailed information of an activity which is fired by the <strong>Actvity Manager</strong>. This object is returned from the <strong>Activity Manager.</strong> For more details, see&nbsp;<a href="/docs/reference/ls2-api/com-webos-service-activitymanager" target="_blank">com.webos.service.activitymanager</a>.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>activityId</td>
+            <td>Required</td>
+            <td>Number (uint64_t)</td>
+            <td>
+              <p>Activity Id that is fired.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
   <h3 id="object-action">action</h3>
   <div>
     <p>Describes the action parameter for the toast.</p>
@@ -2595,6 +2625,245 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>String</td>
             <td>
               <p>Contains LS2 Service URI.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h3 id="object-alertinfo">alertInfo</h3>
+  <div>
+    <p>Contains the alert information.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>appId</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>App ID related to this alert.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>timeout</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>Indicates milliseconds in time that the caller waits to dismiss an alert when the user does nothing.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>portType</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates port type.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>portName</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates port name.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>portIcon</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates port icon path.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>deviceName</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates device name.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>params</td>
+            <td>Optional</td>
+            <td>Object</td>
+            <td>
+              <p>Contains parameters when <strong>appId</strong> is launched.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>inputs</td>
+            <td>Optional</td>
+            <td>Object: <a href="#object-input">input</a></td>
+            <td>
+              <p>Contains information about an input alert.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>onFailAction</td>
+            <td>Optional</td>
+            <td>Object</td>
+            <td>
+              <p>&quot;onFailAction&quot;: { &quot;launchParams&quot;: { &quot;id&quot;: &quot;com.webos.app.browser&quot; }, &quot;serviceMethod&quot;: &quot;launch&quot;, &quot;serviceURI&quot;: &quot;com.webos.service.applicationmanager/&quot; }</p>
+            </td>
+          </tr>
+          <tr>
+            <td>sourceId</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>ID the application or service that created the alert notification.</p>
+              <p><strong>Format:</strong>&nbsp;URI</p>
+              <p><strong>Example:&nbsp;</strong>&quot;com.webos.surfacemanager&quot;</p>
+            </td>
+          </tr>
+          <tr>
+            <td>displayId</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>ID of the display where the notification is to be displayed. Possible values are 0 and 1.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>title</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Title information to be displayed for the alert.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>message</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Message to be displayed.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>iconUrl</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>File path to icon to be displayed.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>modal</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates whether the alert is a modal or non-modal&nbsp;notification.</p>
+              <p>Possible values are:&nbsp;</p>
+              <ul>
+                <li><strong>true</strong>: modal alert notification</li>
+                <li><strong>false</strong>: non-modal alert notification</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>type</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Defines the button type in the alert. Possible values are:&nbsp;</p>
+              <ul>
+                <li>confirm</li>
+                <li>warning</li>
+                <li>progress</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>isSysReq</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates whether the notification comes from an app or a system.</p>
+              <ul>
+                <li><strong>true</strong>: Notification comes from a system</li>
+                <li><strong>false</strong>: Notification comes from an app</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>isNotiSave</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicate whether the notification saved or not.</p>
+              <p>Possible values are:&nbsp;</p>
+              <ul>
+                <li><strong>true</strong>: Notification saved</li>
+                <li><strong>false</strong>: Notification not saved</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>onCloseAction</td>
+            <td>Optional</td>
+            <td>Object: <a href="#object-onclose">onclose</a></td>
+            <td>
+              <p>Indicates the action to be performed when close an alert.&nbsp;</p>
+            </td>
+          </tr>
+          <tr>
+            <td>buttons</td>
+            <td>Optional</td>
+            <td>Object array: <a href="#object-button">button</a></td>
+            <td>
+              <p>Defines the button label, and onclick action. Button specification is given in an array.</p>
+              <p>An example is:</p>
+              <p>&quot;buttons&quot;:[<br />
+                &nbsp; &nbsp; &nbsp; &nbsp;{&quot;label&quot;:&quot;button1&quot;, &quot;onclick&quot;:&quot;luna://com.webos.service.applicationmanager/launch&quot;, &quot;params&quot;:{&quot;id&quot;:&quot;com.webos.app.settings&quot;}},<br />
+                &nbsp; &nbsp; &nbsp; &nbsp; {&quot;label&quot;:&quot;button2&quot;, &quot;focus&quot;:true},<br />
+                &nbsp; &nbsp; &nbsp; &nbsp; {&quot;label&quot;:&quot;button3&quot;}<br />
+                ]
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td>alertId</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>The ID&nbsp;of the created alert notification. The ID is composed of the URI of the notification source, a dash, and the timestamp of the time when the notification was issued.</p>
+              <p><strong>Format:</strong>&nbsp;&quot;Source URI-Timestamp&quot;</p>
+              <p><strong>Example:</strong>&nbsp;&quot;com.webos.surfacemanager-1393548223764&quot;</p>
+            </td>
+          </tr>
+          <tr>
+            <td>timestamp</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Timestamp of the time when the notification was issued.</p>
+              <p>It indicates epoch time as milliseconds.&nbsp;</p>
+            </td>
+          </tr>
+          <tr>
+            <td>deviceIcon</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Connected device icon file name.</p>
             </td>
           </tr>
         </tbody>

@@ -20,20 +20,22 @@ You can figure out which logging system is enabled by checking the status of the
 ### journald (default)
 
   - Check the status of `systemd-journald.service`
-
     ``` shell
     root@raspberrypi4:/# systemctl status systemd-journald.service | tee
-    ● systemd-journald.service - Journal Service
-       Loaded: loaded (/usr/lib/systemd/system/systemd-journald.service; static; vendor preset: enabled)
-       Active: active (running) since Sat 2019-11-02 21:26:26 PDT; 1 weeks 3 days ago
-         Docs: man:systemd-journald.service(8)
-               man:journald.conf(5)
-     Main PID: 169 (systemd-journal)
-       Status: "Processing requests..."
-        Tasks: 1 (limit: 3493)
-       Memory: 10.1M
-       CGroup: /system.slice/systemd-journald.service
-               └─169 /usr/lib/systemd/systemd-journald
+    * systemd-journald.service - Journal Service
+         Loaded: loaded (/lib/systemd/system/systemd-journald.service; static)
+         Active: active (running) since Thu 2022-04-28 10:42:25 PDT; 1 year 6 months ago
+    TriggeredBy: * systemd-journald.socket
+                 * systemd-journald-dev-log.socket
+                 * systemd-journald-audit.socket
+           Docs: man:systemd-journald.service(8)
+                 man:journald.conf(5)
+       Main PID: 126 (systemd-journal)
+         Status: "Processing requests..."
+          Tasks: 1 (limit: 8797)
+            CPU: 2.059s
+         CGroup: /system.slice/systemd-journald.service
+                 `- 126 /lib/systemd/systemd-journald
     ```
 
   - Check the logging file: `/run/log/journal` directory
@@ -47,18 +49,18 @@ You can figure out which logging system is enabled by checking the status of the
 
   - Check the status of `pm-log-daemon.service`
 
-    ``` shell
-    root@raspberrypi4:/# systemctl status pm-log-daemon.service | tee
-    ● pm-log-daemon.service - webos - "pm-log-daemon.service"
-       Loaded: loaded (/etc/systemd/system/pm-log-daemon.service; enabled; vendor preset: enabled)
-       Active: active (running) since Sat 2019-11-02 21:26:28 PDT; 1 weeks 3 days ago
-      Process: 302 ExecStartPost=/bin/touch /tmp/pmlogdaemon/hub-ready (code=exited, status=0/SUCCESS)
-      Process: 295 ExecStartPre=/bin/mkdir -p /tmp/pmlogdaemon (code=exited, status=0/SUCCESS)
-     Main PID: 301 (PmLogDaemon)
-        Tasks: 2 (limit: 3493)
-       Memory: 1.0M
-       CGroup: /system.slice/pm-log-daemon.service
-               └─301 /usr/sbin/PmLogDaemon -z -f 6 -m
+	  ``` shell
+    root@raspberrypi4-64:~# systemctl status pm-log-daemon.service | tee
+    * pm-log-daemon.service - webos - "pm-log-daemon.service"
+         Loaded: loaded (/etc/systemd/system/pm-log-daemon.service; enabled; vendor preset: disabled)
+         Active: active (running) since Thu 2022-04-28 10:42:28 PDT; 1 year 6 months ago
+        Process: 401 ExecStartPre=/bin/mkdir -p /tmp/pmlogdaemon (code=exited, status=0/SUCCESS)
+        Process: 409 ExecStartPost=/bin/touch /tmp/pmlogdaemon/hub-ready (code=exited, status=0/SUCCESS)
+       Main PID: 408 (PmLogDaemon)
+          Tasks: 2 (limit: 8797)
+            CPU: 474ms
+         CGroup: /system.slice/pm-log-daemon.service
+                 `- 408 /usr/sbin/PmLogDaemon -z -f 6 -m
     ```
 
   - Check the logging file : `/var/log/messages*` file

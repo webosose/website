@@ -1,7 +1,7 @@
 ---
 title: com.webos.media
-date: 2023-05-22
-api_level: 23
+date: 2023-10-31
+api_level: 27
 weight: 30
 toc: true
 ---
@@ -824,7 +824,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>errorCode</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>Number</td>
             <td>
               <p>The error code for the operation.</p>
@@ -846,7 +846,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>errorText</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>String</td>
             <td>
               <p>Indicates the reason for the failure of the operation.&nbsp;</p>
@@ -867,6 +867,44 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>String</td>
             <td>
               <p>Media ID of the object.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>-1</td>
+            <td>Method &quot;getPipelineState&quot; for category &quot;/&quot; was not handled</td>
+            <td>
+              <p>JSON parsing fails.&nbsp;&nbsp;</p>
+              <div id="gtx-trans" style="position: absolute; left: -35px; top: -7px;">
+                <div class="gtx-trans-icon">&nbsp;</div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>0</td>
+            <td>No Error</td>
+            <td>
+              <p>when the returnValue is true</p>
+              <div id="gtx-trans" style="position: absolute; left: -5px; top: -7px;">
+                <div class="gtx-trans-icon">&nbsp;</div>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -1535,7 +1573,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>pipelineStatus</td>
-            <td>Optional</td>
+            <td>Required</td>
             <td>String</td>
             <td>
               <p>Indicates the pipeline status.</p>
@@ -1603,6 +1641,39 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>String</td>
             <td>
               <p>Indicates the reason for the failure of the operation.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>-1</td>
+            <td>Method &quot;notifyPipelineStatus&quot; for category &quot;/&quot; was not handled</td>
+            <td>
+              <p>JSON parsing fails.&nbsp;</p>
+              <p>&nbsp;</p>
+            </td>
+          </tr>
+          <tr>
+            <td>0</td>
+            <td>No Error</td>
+            <td>
+              <p>when the return value is true</p>
             </td>
           </tr>
         </tbody>
@@ -1893,13 +1964,13 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>resources</td>
             <td>Required</td>
-            <td>Object: <a href="#object-resources-new">resources_new</a></td>
+            <td>String</td>
             <td>
               <p>Resource list to be allocated.</p>
-              <p><strong>Note:</strong></p>
+              <p><strong>Note:&nbsp;</strong>Resources information must be provided as a stringified form of one of the following objects:</p>
               <ul>
-                <li>Resources information can be provided using either one of &#39;resources_new&#39; or &#39;resources&#39; object.</li>
-                <li>The &#39;resources_new&#39; object is supported to provide for backward compatibility.</li>
+                <li>resources (recommended)</li>
+                <li>resources_new (supported to provide&nbsp;backward compatibility)</li>
               </ul>
             </td>
           </tr>
@@ -1951,6 +2022,15 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>String</td>
             <td>
               <p>The reason for the failure of the operation. See the &#39;Error Codes&#39; section of this method for details.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>mediaId</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the unique identifier of the loaded media pipeline which is requested.</p>
+              <p><strong>Note: </strong>This parameter is returned only in error cases.</p>
             </td>
           </tr>
         </tbody>
@@ -2341,9 +2421,10 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>resources</td>
             <td>Required</td>
-            <td>Object: <a href="#object-resources">resources</a></td>
+            <td>String</td>
             <td>
-              <p>See &quot;resources&quot; object.</p>
+              <p>Resource information.</p>
+              <p><strong>Note: </strong>Resources information must be provided as a stringified form of one of the &quot;resources&quot; object.</p>
             </td>
           </tr>
           <tr>
@@ -2406,19 +2487,86 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         </tbody>
       </table>
     </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>-1</td>
+            <td>Method \&quot;release\&quot; for category \&quot;/\&quot; was not handled</td>
+            <td>
+              <p>JSON parsing fails.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>602</td>
+            <td>Invalid Payload</td>
+            <td>
+              <p>This error occurs when invalid payload is detected.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>603</td>
+            <td>Resources not Provided</td>
+            <td>
+              <p>This error occurs when argument &quot;resources&quot; is not provided.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>604</td>
+            <td>ConnectionId Not Provided</td>
+            <td>
+              <p>This error occurs when &quot;argument&quot; connection id is not provided.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>605</td>
+            <td>Invalid Connection</td>
+            <td>
+              <p>This error occurs when provided &quot;connection id&quot; is not available</p>
+            </td>
+          </tr>
+          <tr>
+            <td>607</td>
+            <td>Invalid Resource</td>
+            <td>
+              <p>This error occurs when provided with improper resource.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>608</td>
+            <td>Resource Release Error</td>
+            <td>
+              <p>This error occurs when there is failure in releasing resources.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
       <p style="color:white;margin:5.0px;"><b>Example code</b></p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -n 1 -f luna://com.webos.media/release &#39;{<br />
-        &nbsp; &nbsp;&quot;resources&quot;:&quot;[{\&quot;resource\&quot;:\&quot;DISP0\&quot;,\&quot;qty\&quot;:1,\&quot;index\&quot;:3},{\&quot;resource\&quot;:\&quot;VDEC\&quot;,\&quot;qty\&quot;:1,\&quot;index\&quot;:3},{\&quot;resource\&quot;:\&quot;ADEC\&quot;,\&quot;qty\&quot;:1,\&quot;index\&quot;:3}]&quot;,<br />
+        &nbsp; &nbsp;&quot;resources&quot;:&quot;[{\&quot;resource\&quot;:\&quot;DISP0\&quot;,\&quot;qty\&quot;:1,\&quot;index\&quot;:3},{\&quot;resource\&quot;:\&quot;VDEC\&quot;,\&quot;qty\&quot;:1,\&quot;index\&quot;:3},{\&quot;resource\&quot;:\&quot;ADEC\&quot;,\&quot;qty\&quot;:1,\&quot;index\&quot;:3}}]&quot;,<br />
         &nbsp; &nbsp;&quot;connectionId&quot;:&quot;_QY7tkX1XEfBct3&quot;<br />
         }&#39;
       </p>
       <p>Response:</p>
       <p>{<br />
-        &nbsp;&nbsp; &nbsp;&quot;returnValue&quot;: true<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
         }
       </p>
     </div>
@@ -2660,6 +2808,42 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>String</td>
             <td>
               <p>Indicates the unique identifier of the media object.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>-1</td>
+            <td>Method &quot;setPlayRate&quot; for category &quot;/&quot; was not handled</td>
+            <td>
+              <p>JSON parsing fails.&nbsp;</p>
+              <p>&nbsp;</p>
+            </td>
+          </tr>
+          <tr>
+            <td>0</td>
+            <td>No Error</td>
+            <td>
+              <p>when the returnValue is true</p>
+              <div id="gtx-trans" style="position: absolute; left: -1px; top: -7px;">
+                <div class="gtx-trans-icon">&nbsp;</div>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -4033,7 +4217,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>mediaId</td>
-            <td>Optional</td>
+            <td>Required</td>
             <td>String</td>
             <td>
               <p>Indicates the unique identifier of the media object to unsubscribe.</p>
@@ -4102,6 +4286,31 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         </tbody>
       </table>
     </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>-1</td>
+            <td>Method \&quot;unsubscribe\&quot; for category \&quot;/\&quot; was not handled</td>
+            <td>
+              <p>JSON parsing fails.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
       <p style="color:white;margin:5.0px;"><b>Example code</b></p>
@@ -4152,7 +4361,9 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Name of resource to acquire.</p>
               <p>Possible values are:</p>
               <ul>
-                <li>VDEC:&nbsp;Source of a&nbsp;video decoder.</li>
+                <li>VDEC: video decoder resources.</li>
+                <li>ADEC: audio decoder resources.</li>
+                <li>DISP: display resources.</li>
               </ul>
             </td>
           </tr>
@@ -4162,6 +4373,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Number</td>
             <td>
               <p>Quantity of resources to acquire.</p>
+              <p>Range: [1, 32] (depends on the configuration).</p>
               <p><strong>Note: </strong>Only applicable for the resource to be acquired.</p>
             </td>
           </tr>
@@ -4171,6 +4383,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Number</td>
             <td>
               <p>Specific index of resources to be released.</p>
+              <p>Range: [0, 31] (depends on the configuration).</p>
               <p><strong>Note: </strong>Only applicable for the resource to be released.</p>
             </td>
           </tr>
@@ -4851,6 +5064,15 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               </ul>
             </td>
           </tr>
+          <tr>
+            <td>cameraId</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Reserved.</p>
+              <p><strong>Note: </strong>Applications are&nbsp;advised not to use this parameter.</p>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -5034,6 +5256,18 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Number</td>
             <td>
               <p>Quantity of resource to acquire.</p>
+              <p><strong>Note:&nbsp;</strong>Below points applicable to&nbsp;Open and Open-Emulator&nbsp;as per current configuration</p>
+              <ol>
+                <li>
+                  Resource quantity range.
+                  <ol>
+                    <li>For VDEC 32.</li>
+                    <li>For ADEC 3.</li>
+                    <li>For DISP&nbsp;3.</li>
+                  </ol>
+                </li>
+                <li>It is mandatory for &quot;acquire&#39; and &#39;reacquire&quot; API means &#39;Required&#39; field for &#39;acquire&#39; and &#39;reacquire&#39; API is &#39;Yes&#39;</li>
+              </ol>
             </td>
           </tr>
           <tr>
@@ -5042,6 +5276,18 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Number</td>
             <td>
               <p>Specific index of resource to acquire.</p>
+              <p><strong>Note:&nbsp;</strong>Below points applicable to&nbsp;Open and Open-Emulator&nbsp;as per current configuration</p>
+              <ol>
+                <li>
+                  Resource range values.
+                  <ol>
+                    <li>For VDEC 0 - 31.</li>
+                    <li>For VDEC 0 - 3.</li>
+                    <li>For VDEC 0 - 3.</li>
+                  </ol>
+                </li>
+                <li>It is mandatory for &#39;release&#39;&nbsp;and &#39;reacquire&#39; API means &#39;Required&#39; field for &#39;release&#39;&nbsp;and &#39;reacquire&#39; API is &#39;Yes&#39;</li>
+              </ol>
             </td>
           </tr>
           <tr>
@@ -5055,6 +5301,13 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
                 <li>VDEC:&nbsp;Source of video decoder.</li>
                 <li>ADEC: Source of audio&nbsp;decoder.</li>
                 <li>DISPX:&nbsp;Display resource. X corresponds to display starting with 0. If a device has more than one display, there can be&nbsp;multiple display resources (example: DISP0, DISP1).</li>
+              </ul>
+              <p><strong>Note:</strong></p>
+              <ul>
+                <li>VDEC maximum resources count is 32 for current configuration.</li>
+                <li>ADEC maximum resources count is 3 for current configuration.</li>
+                <li>DISP maximum resources count is 3&nbsp;for current configuration.</li>
+                <li>It is mandatory for &#39;acquire&#39;,&nbsp;&#39;reacquire&#39; ND &#39;release&#39; API means &#39;Required&#39; field for &#39;acquire&#39;,&nbsp;&#39;reacquire&#39; and &#39;release&#39; API is &#39;Yes&#39;</li>
               </ul>
             </td>
           </tr>
@@ -5085,7 +5338,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>old</td>
             <td>Required</td>
-            <td>Object: <a href="#object-resourcedetails">ResourceDetails</a></td>
+            <td>Object array: <a href="#object-resourcedetails">ResourceDetails</a></td>
             <td>
               <p>The resources to be released.</p>
             </td>
@@ -5093,7 +5346,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>new</td>
             <td>Required</td>
-            <td>Object: <a href="#object-resourcedetails">ResourceDetails</a></td>
+            <td>Object array: <a href="#object-resourcedetails">ResourceDetails</a></td>
             <td>
               <p>The resources to be acquired.</p>
             </td>

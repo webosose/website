@@ -1,7 +1,7 @@
 ---
 title: com.webos.service.wifi
-date: 2023-05-22
-api_level: 23
+date: 2023-10-31
+api_level: 27
 weight: 360
 toc: true
 ---
@@ -22,6 +22,246 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
 </div>
 <h2 id="methods">Methods</h2>
 <div>
+  <h3 id="cancel">cancel</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>wifi.management</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 27</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Cancels&nbsp;an ongoing connection attempt. Once the connection is canceled, the state is switched back to idle and the credentials are not saved. If no connection attempt is in progress then calling this method will do nothing.</p>
+    <h4>Parameters</h4>
+    <p>None</p>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <ul>
+                <li>If the&nbsp;method succeeds,&nbsp;<strong>returnValue</strong>&nbsp;will contain <strong>true</strong>.</li>
+                <li>If the&nbsp;method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false</strong>.<span style="color:black">&nbsp;</span></li>
+              </ul>
+              <p>The&nbsp;method may fail because of one the error conditions described in the&nbsp;<strong>Error Codes Reference</strong>&nbsp;table of this method. See the&nbsp;<strong>Error Code Reference</strong>&nbsp;table for more information.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p><strong>errorCode</strong> contains the error code if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorCode</strong>&nbsp;only if it fails.</p>
+              <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p><strong>errorText</strong> contains the error text if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.</p>
+              <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Connman service unavailable</td>
+            <td>
+              <p>Error when <strong>webos-connman-adapter</strong> is not able to commmunicate with the <strong>connman&nbsp;</strong>daemon.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>WiFi technology unavailable</td>
+            <td>
+              <p>Error when the Wi-Fi technology is not available.</p>
+              <p>This could occur either because the <strong>wpa-supplicant</strong> daemon is not running, or <strong>connman </strong>is not able to communicate with <strong>wpa-supplicant</strong>&nbsp;or the device does not have Wi-Fi support.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>106</td>
+            <td>No service is connecting currently</td>
+            <td>
+              <p>There is no connection in progress, so this error indicates there is no connection to cancel.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>107</td>
+            <td>Failed to disconnect currently connecting service</td>
+            <td>
+              <p>Not able to disconnect currently connecting service due to unknown reasons.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.wifi/cancel &#39;{}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="cancelwps">cancelwps</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>wifi.management</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 27</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Cancels an ongoing WPS connection attempt.</p>
+    <h4>Parameters</h4>
+    <p>None</p>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <ul>
+                <li>If the&nbsp;method succeeds,&nbsp;<strong>returnValue</strong>&nbsp;will contain <strong>true</strong>.</li>
+                <li>If the&nbsp;method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false</strong>.<span style="color:black">&nbsp;</span></li>
+              </ul>
+              <p style="margin-left:0.0in">The&nbsp;method may fail because of one the error conditions described in the&nbsp;<strong>Error Codes Reference</strong>&nbsp;table of this method. See the&nbsp;<strong>Error Code Reference</strong>&nbsp;table for more information.<span style="color:black">&nbsp;</span></p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p><strong>errorCode</strong> contains the error code if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorCode</strong>&nbsp;only if it fails.</p>
+              <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p><strong>errorText</strong> contains the error text if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.</p>
+              <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Connman service unavailable</td>
+            <td>
+              <p>Error when <strong>webos-connman-adapter</strong> is not able to communicate with the <strong>connman</strong> daemon.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>WiFi technology unavailable</td>
+            <td>
+              <p>Error when the Wi-Fi technology is not available<br />
+                This could happen either because the <strong>wpa-supplicant</strong> daemon is not running, or <strong>connman</strong> is not able to communicate with <strong>wpa-supplicant</strong>&nbsp;or the device does not have Wi-Fi support.
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td>110</td>
+            <td>Error in cancelling WPS connection</td>
+            <td>
+              <p>Error in the actual call for cancelling the WPS connection process.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.wifi/cancelwps &#39;{}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+  </div>
   <h3 id="changenetwork">changeNetwork</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>wifi.management</b></span></div>
@@ -430,6 +670,139 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       <p>Response:</p>
       <p>{&nbsp;<br />
         &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="createwpspin">createwpspin</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>wifi.management</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 27</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Generates an 8 digit random PIN required for the WPS PIN connection method.&nbsp;</p>
+    <h4>Parameters</h4>
+    <p>None</p>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>wpspin</td>
+            <td>Required</td>
+            <td>string</td>
+            <td>
+              <p>An 8 digit random WPS pin.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <ul>
+                <li>If the&nbsp;method succeeds,&nbsp;<strong>returnValue</strong>&nbsp;will contain <strong>true</strong>.</li>
+                <li>If the&nbsp;method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false</strong>.<span style="color:black">&nbsp;</span></li>
+              </ul>
+              <p style="margin-left:0.0in">The&nbsp;method may fail because of one the error conditions described in the&nbsp;<strong>Error Codes Reference</strong>&nbsp;table of this method. See the&nbsp;<strong>Error Code Reference</strong>&nbsp;table for more information.<span style="color:black">&nbsp;</span></p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p><strong>errorCode</strong> contains the error code if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorCode</strong>&nbsp;only if it fails.</p>
+              <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p><strong>errorText</strong> contains the error text if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.</p>
+              <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Unknown error</td>
+            <td>
+              <p>An internal error occurred when parsing the JSON object being prepared as a response (extremely unlikely).</p>
+            </td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Connman service unavailable</td>
+            <td>
+              <p>Error when <strong>webos-connman-adapter</strong> is not able to communicate with the <strong>connman</strong> daemon.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>WiFi technology unavailable</td>
+            <td>
+              <p>Error when the Wi-Fi technology is not available.<br />
+                This could happen either because the <strong>wpa-supplicant</strong> daemon is not running, or <strong>connman</strong> is not able to communicate with <strong>wpa-supplicant</strong>&nbsp;or the device does not have Wi-Fi support.
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td>109</td>
+            <td>Error in generating wps pin</td>
+            <td>
+              <p>Error in opening /dev/urandom for random pin generation.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.wifi/createwpspin &#39;{}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
+        &nbsp; &nbsp;&quot;wpspin&quot;:&quot;17828642&quot;<br />
         }
       </p>
     </div>
@@ -1998,7 +2371,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </td>
           </tr>
           <tr>
-            <td>5</td>
+            <td>17</td>
             <td>WiFi technology unavailable</td>
             <td>
               <p>Error when the <strong>Wi-Fi</strong> technology is not available.</p>
@@ -2338,6 +2711,13 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Wi-Fi Direct is not enabled on the system.</p>
             </td>
           </tr>
+          <tr>
+            <td>177</td>
+            <td>Passphrase doesn&#39;t match the requirements</td>
+            <td>
+              <p>Length of Passphrase is shorter than 8 or longer than 64 valid character</p>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -2346,7 +2726,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       <p style="color:white;margin:5.0px;"><b>Example code</b></p>
     </div>
     <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.wifi/p2p/creategroup &#39;{&quot;ssid&quot;: &quot;group1&quot;, &quot;passPhrase&quot;: &quot;1234&quot; }&#39;</p>
+      <p># luna-send -n 1 -f luna://com.webos.service.wifi/p2p/creategroup &#39;{&quot;ssid&quot;: &quot;group1&quot;, &quot;passPhrase&quot;: &quot;12345678&quot; }&#39;</p>
       <p>Response:</p>
       <p>{<br />
         &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
@@ -2469,6 +2849,13 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>WiFi technology unavailable</td>
             <td>
               <p>Error when the Wi-Fi technology is not available. This could happen either because the <strong>wpa-supplicant</strong> daemon is not running, or <strong>connman </strong>is not able to communicate with <strong>wpa-supplicant</strong>&nbsp;or the device does not have Wi-Fi support.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td>Could not validate json message against schema</td>
+            <td>
+              <p>Invalid value of&nbsp;parameter</p>
             </td>
           </tr>
           <tr>
@@ -3366,8 +3753,8 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>peers</td>
-            <td>Required</td>
-            <td>Object: <a href="#object-wifipeerinfo">WifiPeerInfo</a></td>
+            <td>Optional</td>
+            <td>Object array: <a href="#object-wifipeers">WifiPeers</a></td>
             <td>
               <p>An array of Wi-Fi Peer Info objects. If there are no peers found&nbsp;then this array will be empty.</p>
             </td>
@@ -3460,7 +3847,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+      <p style="color:white;margin:5.0px;"><b>Example : One peer is found</b></p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -n 1 -f luna://com.webos.service.wifi/p2p/getgrouppeers &#39;{&quot;ssid&quot;: &quot;DIRECT-vG-[LG] webOS TV WEBOS1&quot;}&#39;</p>
@@ -3485,6 +3872,18 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
         &nbsp; &nbsp; &nbsp; &nbsp; }<br />
         &nbsp; &nbsp; ],<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;:true<br />
+        }
+      </p>
+    </div>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example : No peers are found</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.wifi/p2p/getgrouppeers &#39;{&quot;ssid&quot;: &quot;DIRECT-vG-[LG] webOS TV WEBOS1&quot;}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;peers&quot;:[],<br />
         &nbsp; &nbsp; &quot;returnValue&quot;:true<br />
         }
       </p>
@@ -3563,8 +3962,8 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>groups</td>
-            <td>Required</td>
-            <td>Object: <a href="#object-wifigroupinfo">WifiGroupInfo</a></td>
+            <td>Optional</td>
+            <td>Object array: <a href="#object-wifigroups">WifiGroups</a></td>
             <td>
               <p>Array of objects containing information on Wi-Fi Direct groups.</p>
             </td>
@@ -3617,7 +4016,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>groups</td>
             <td>Required</td>
-            <td>Object: <a href="#object-wifigroupinfo">WifiGroupInfo</a></td>
+            <td>Object array: <a href="#object-wifigroups">WifiGroups</a></td>
             <td>
               <p>Array of objects containing information on Wi-Fi Direct groups.</p>
             </td>
@@ -3679,18 +4078,19 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       <p># luna-send -n 1 -f luna://com.webos.service.wifi/p2p/getgroups &#39;{}&#39;</p>
       <p>Response:</p>
       <p>{<br />
-        &nbsp; &nbsp;&nbsp;&quot;subscribed&quot;: false,<br />
-        &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
-        &nbsp; &nbsp;&nbsp;&quot;groups&quot;: [<br />
-        &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;{<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;groupInfo&quot;: {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;owner&quot;: true,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;ssid&quot;: &quot;DIRECT-vG-[LG] webOS TV WEBOS1&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;tethering&quot;: false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;persistent&quot;: true<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;}<br />
-        &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;}<br />
-        &nbsp; &nbsp;&nbsp;]<br />
+        &nbsp; &quot;groups&quot;: [<br />
+        &nbsp;&nbsp;&nbsp; {<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;groupInfo&quot;: {<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;frequency&quot;: 5180,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;owner&quot;: true,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;persistent&quot;: true,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;ssid&quot;: &quot;DIRECT-test-group&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;tethering&quot;: false<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />
+        &nbsp;&nbsp;&nbsp; }<br />
+        &nbsp; ],<br />
+        &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp; &quot;subscribed&quot;: false<br />
         }
       </p>
     </div>
@@ -3760,7 +4160,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>subscribed</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>boolean</td>
             <td>
               <p>Indicates if subscribed to get notifications. Possible values are:</p>
@@ -4037,7 +4437,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>subscribed</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>boolean</td>
             <td>
               <p>Indicates if subscribed to get notifications. Possible values are:</p>
@@ -4049,7 +4449,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>peers</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>Object: <a href="#object-peerinfo">peerInfo</a></td>
             <td>
               <p>Array of objects containing information about the available peers.</p>
@@ -4202,7 +4602,39 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     <h4>Description</h4>
     <p>Gets the current state of Wi-Fi direct connection on this device.</p>
     <h4>Parameters</h4>
-    <p>None</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>subscribe</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong></li>
+                <li><strong>false</strong></li>
+              </ul>
+              <p><strong>Default value:</strong>&nbsp;false</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <h4>Call Returns</h4>
     <div class="table-container">
       <table class="table is-bordered is-fullwidth">
@@ -4275,6 +4707,18 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
             </td>
           </tr>
+          <tr>
+            <td>subscribed</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates if subscribed to get notifications. Possible values are:</p>
+              <ul>
+                <li><strong>true&nbsp;</strong>- Subscribed for changes.</li>
+                <li><strong>false&nbsp;</strong>- Not subscribed.</li>
+              </ul>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -4329,7 +4773,9 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         &nbsp; &nbsp;&nbsp;&quot;P2P&quot;: &quot;enabled&quot;,<br />
         &nbsp; &nbsp;&nbsp;&quot;listenState&quot;: &quot;disabled&quot;,<br />
         &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
-        &nbsp; &nbsp;&nbsp;&quot;persistentMode&quot;: &quot;disabled&quot;<br />
+        &nbsp; &nbsp;&nbsp;&quot;persistentMode&quot;: &quot;disabled&quot;,
+      </p>
+      <p>&nbsp; &nbsp; &nbsp;&quot;subscribed&quot;: false<br />
         }
       </p>
     </div>
@@ -4385,7 +4831,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </td>
           </tr>
           <tr>
-            <td>deviceType</td>
+            <td>wfdDeviceType</td>
             <td>Optional</td>
             <td>string</td>
             <td>
@@ -4393,7 +4839,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </td>
           </tr>
           <tr>
-            <td>wfdSessionAvailable</td>
+            <td>wfdSessionAvail</td>
             <td>Optional</td>
             <td>boolean</td>
             <td>
@@ -5826,6 +6272,8 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>boolean</td>
             <td>
               <p>Set to <strong>true </strong>to enable the Wi-Fi Display feature and&nbsp;<strong>false </strong>to disable.</p>
+              <p>When the parameter has already set false value, it can not be set false again.</p>
+              <p>Default value: false</p>
             </td>
           </tr>
           <tr>
@@ -5989,6 +6437,13 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Error in changing WFD rtsp port</td>
             <td>
               <p>Error in changing the RTSP port for Wi-Fi display parameters.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>131</td>
+            <td>Error in unregister service</td>
+            <td>
+              <p>Error in unregister service</p>
             </td>
           </tr>
         </tbody>
@@ -6418,6 +6873,150 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       <p>Response:</p>
       <p>{&nbsp;<br />
         &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="startwps">startwps</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>wifi.management</b></span></div>
+    <div>
+      <ul>
+        <li>Added: API level 27</li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Starts the WPS authentication process. If <strong>wpsPin </strong>argument is provided then the WPS-PIN&nbsp;method will be used, else WPS-PBC&nbsp;method will be used.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>wpsPin</td>
+            <td>Optional</td>
+            <td>string</td>
+            <td>
+              <p>Pin for WPS-PIN mode.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <ul>
+                <li>If the&nbsp;method succeeds,&nbsp;<strong>returnValue</strong>&nbsp;will contain <strong>true</strong>.</li>
+                <li>If the&nbsp;method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false</strong>.<span style="color:black">&nbsp;</span></li>
+              </ul>
+              <p style="margin-left:0.0in">The&nbsp;method may fail because of one the error conditions described in the&nbsp;<strong>Error Codes Reference</strong>&nbsp;table of this method. See the&nbsp;<strong>Error Code Reference</strong>&nbsp;table for more information.<span style="color:black">&nbsp;</span></p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p><strong>errorCode</strong> contains the error code if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorCode</strong>&nbsp;only if it fails.</p>
+              <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p><strong>errorText</strong> contains the error text if the&nbsp;method fails. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.</p>
+              <p>See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;of this method for more details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Unknown error</td>
+            <td>
+              <p>Error in starting the WPS authentication process.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Connman service unavailable</td>
+            <td>
+              <p>Error when <strong>webos-connman-adapter</strong> is not able to communicate with the <strong>connman</strong> daemon.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>WiFi technology unavailable</td>
+            <td>
+              <p>Error when the Wi-Fi technology is not available.<br />
+                This could happen either because the <strong>wpa-supplicant</strong> daemon is not running, or <strong>connman</strong> is not able to communicate with <strong>wpa-supplicant</strong>&nbsp;or the device does not have Wi-Fi support.
+              </p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.wifi/startwps &#39;{&quot;wpsPin&quot;: &quot;64889467&quot;}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
         }
       </p>
     </div>
@@ -7527,6 +8126,341 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
 </div>
 <h2 id="objects">Objects</h2>
 <div>
+  <h3 id="object-wifigroupinfo">WifiGroupInfo</h3>
+  <div>
+    <p>This object contains information on a Wi-Fi peer-to-peer group.</p>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p>
+        &quot;groupInfo&quot;: {<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;frequency&quot;: 5180,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;owner&quot;: true,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;ssid&quot;: &quot;DIRECT-vG-[LG] webOS TV WEBOS1&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;tethering&quot;: false,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;persistent&quot;: true<br />
+        }
+      </p>
+    </div>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>owner</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p><strong>true</strong> if we are the owner of a Wi-Fi direct group.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>ssid</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>SSID of the Wi-Fi Direct group.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>tethering</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p><strong>true</strong> if Wi-Fi Direct group is also tethering.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>persistent</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p><strong>true</strong> if Wi-Fi Direct group is persistent.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>frequency</td>
+            <td>Required</td>
+            <td>Number (int16_t)</td>
+            <td>
+              <p>Frequency value</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h3 id="object-wifigroups">WifiGroups</h3>
+  <div>
+    <p>Group information.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>groupInfo</td>
+            <td>Required</td>
+            <td>Object: <a href="#object-wifigroupinfo">WifiGroupInfo</a></td>
+            <td>
+              <p>Contains group information.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h3 id="object-wifipeerinfo">WifiPeerInfo</h3>
+  <div>
+    <p>This object contains information on a peer-to-peer client.</p>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p>
+        &quot;peerInfo&quot;: {<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;connected&quot;: true,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;configMethod&quot;: 128,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;deviceAddress&quot;: &quot;02:fc:ef:a0:d0:4a&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;peerIp&quot;: &quot;192.168.16.2&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;deviceName&quot;: &quot;Test Test&#39;s G3&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;groupOwner&quot;: false,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;wfdInfo&quot;: {<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;wfdSessionAvail&quot;: true,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;wfdCpSupport&quot;: true,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;wfdDeviceType&quot;: &quot;source&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;wfdRtspPort&quot;: 8554<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;},<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;signalLevel&quot;: 76<br />
+        }
+      </p>
+    </div>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>deviceName</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Device name.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>deviceAddress</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Device address.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>groupOwner</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Group owner.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>configMethod</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>Configuration method.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>signalLevel</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>Signal level.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>wfdInfo</td>
+            <td>Optional</td>
+            <td>Object: <a href="#object-wifiwfdinfo">WifiWfdInfo</a></td>
+            <td>
+              <p>WFD information.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>connected</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Connection status.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>peerIp</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>IPv4 address.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>invited</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p><strong>true</strong> if connecting, <strong>false</strong> if connection failed.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>serviceDiscoveryResponse</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>Service discovery response. Only sent on the first inquiry and never again.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h3 id="object-wifipeers">WifiPeers</h3>
+  <div>
+    <p>List of peers and the related info.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>peerInfo</td>
+            <td>Required</td>
+            <td>Object: <a href="#object-wifipeerinfo">WifiPeerInfo</a></td>
+            <td>
+              <p>Peer information.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h3 id="object-wifiwfdinfo">WifiWfdInfo</h3>
+  <div>
+    <p>This object contains information on the Wi-Fi Direct settings of a Wi-Fi Peer connection. It is used in Wi-Fi Peer Info and is only present when the connection uses Wi-Fi Direct.</p>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p>
+        &quot;WifiWfdInfo&quot;: {<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;wfdDeviceType&quot;: &quot;sink&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;wfdSessionAvail&quot;: true,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;wfdCpSupport&quot;: true,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;wfdRtspPort&quot;: 4321<br />
+        }
+      </p>
+    </div>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>wfdDeviceType</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Wi-Fi Direct device type. One of: <strong>source</strong>, <strong>primary-sink</strong>, <strong>secondary-sink</strong>, <strong>source</strong>.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>wfdSessionAvail</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p><strong>true</strong> if session is available, false otherwise.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>wfdCpSupport</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p><strong>true</strong> if Wi-Fi Direct content protection is supported, <strong>false</strong> otherwise.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>wfdRtspPort</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>Wi-Fi Direct Session Management Control Port.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
   <h3 id="object-bssinfo">bssInfo</h3>
   <div>
     <p>Information on one station in a Basic Service Set.</p>
@@ -7901,6 +8835,110 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       </table>
     </div>
   </div>
+  <h3 id="object-peerinfo">peerInfo</h3>
+  <div>
+    <p>Object including information about a peer.</p>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p>
+        &quot;peerInfo&quot;: {<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;groupOwner&quot;: false,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;signalLevel&quot;: 80,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;configMethod&quot;: 4488,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;deviceAddress&quot;: &quot;02:fc:ef:a0:d0:4a&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;deviceName&quot;: &quot;Test Test&#39;s G3&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;connected&quot;: false,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;deviceType&quot;: &quot;00010050f2040005&quot;,<br />
+        }
+      </p>
+    </div>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>deviceName</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Name of the peer.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>deviceAddress</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Address of the peer.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>groupOwner</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p><strong>true</strong>&nbsp;if the peer is the owner of the current active group,&nbsp;<strong>false</strong>&nbsp;otherwise.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>configMethod</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>Configuration methods supported by the peer.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>signalLevel</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>Signal level of the peer.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>peerIp</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>IP address of the peer if it is currently connected to our group.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>deviceType</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Device type of the peer.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>connected</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Connection status.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
   <h3 id="object-security">security</h3>
   <div>
     <p>This object is used to provide security information for establishing a connection.</p>
@@ -8093,6 +9131,58 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>Object: <a href="#object-securitytype">securityType</a></td>
             <td>Security type which was used to connect to the network the last time.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h3 id="object-wpsinfo">wpsInfo</h3>
+  <div>
+    <p>This is one of the parameters for the <strong>p2p/connect</strong> method to pass WPS information to connect to the peer. Atleast one of the two properties (<strong>wps</strong> or <strong>wpspin</strong>) is required to be set.</p>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p>
+        &quot;wpsInfo&quot;:{<br />
+        &quot;wps&quot;:true,<br />
+        &quot;wpspin&quot;: &quot;1234&quot;<br />
+        }
+      </p>
+    </div>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>wps</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>To enable wps mode, set <strong>wps</strong> to true</p>
+              <p>To disable wps mode, set <strong>wps</strong> to false</p>
+            </td>
+          </tr>
+          <tr>
+            <td>wpspin</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>WPS PIN if using WPS-PIN mode</p>
+            </td>
           </tr>
         </tbody>
       </table>
