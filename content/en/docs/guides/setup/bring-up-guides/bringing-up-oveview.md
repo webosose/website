@@ -1,6 +1,6 @@
 ---
 title: Bring-Up Overview
-date: 2021-11-05
+date: 2023-11-14
 weight: 10
 toc: true
 ---
@@ -51,7 +51,7 @@ The following picture shows a brief summary of bring-up process.
 
     Correct errors during running webOS OSE. Before starting this step, make sure that you understand the execution sequences of Luna Surface Manager (LSM) and Web Application Manager (WAM).
 
-For more details on the bring-up process, see [Yocto Mega Manual](https://www.yoctoproject.org/docs/current/mega-manual/mega-manual.html).
+For more details on the bring-up process, see [Yocto Project Manual](https://docs.yoctoproject.org/overview-manual/index.html).
 
 ## Verifying Bring-Up Process
 
