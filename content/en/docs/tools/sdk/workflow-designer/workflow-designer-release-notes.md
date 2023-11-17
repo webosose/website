@@ -1,10 +1,14 @@
 ---
 title: Release Notes
 display_title: Workflow Designer Release Notes
-date: 2019-12-23
+date: 2023-11-17
 weight: 20
 toc: true
 ---
+
+{{< caution >}}
+Workflow Designer is no longer maintained since December 2019.
+{{< /caution >}}
 
 This page provides the summary of each Workflow Designer release for webOS Open Source Edition (OSE).
 

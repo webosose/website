@@ -1,6 +1,6 @@
 ---
 title: "SDK Download"
-date: 2023-06-27
+date: 2023-11-17
 weight: 10
 file_download: true
 toc: true
@@ -37,6 +37,10 @@ Emulator is created as a virtual machine image when you build webOS OSE platform
 See the [Beanviser release notes]({{< relref "beanviser-release-notes" >}}).
 
 ## Workflow Designer
+
+{{< caution >}}
+Workflow Designer is no longer maintained since December 2019.
+{{< /caution >}}
 
 * Version: v1.0.3
 

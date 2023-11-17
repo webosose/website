@@ -1,10 +1,14 @@
 ---
 title: User Guide
 display_title: Workflow Designer User Guide
-date: 2020-03-06
+date: 2023-11-17
 weight: 10
 toc: true
 ---
+
+{{< caution >}}
+Workflow Designer is no longer maintained since December 2019.
+{{< /caution >}}
 
 Workflow Designer is a GUI-based utility which allows you to add AI logic to your web app, without actually modifying its source code. This makes your web app context-aware and therefore provides a better experience to your customers. For example, without updating the source code of your app, you can configure it to perform operations on voice instructions.
 
