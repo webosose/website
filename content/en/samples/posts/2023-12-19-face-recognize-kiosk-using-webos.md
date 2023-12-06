@@ -265,6 +265,8 @@ Before running the `deploy.sh` script, ensure you are in the project's root dire
 #### Requirements
 - The `deploy.sh` script should be located in the project's root directory.
 - An `icon.png` file should also be placed in the project's root directory.
+- Raspberry Pi with webOS set must be powered on
+- The local PC (from which you are deploying) and the Raspberry Pi must be connected to the same network for successful deployment.
 
 #### deploy.sh Script
 
