@@ -213,6 +213,54 @@ Server is running on port {port}.
 Connected
 ```
 
+## **Basic Setup Client**
+
+Before starting the setup process, ensure the following requirements are met:
+
+- **Raspberry Pi Setup**: You should have a Raspberry Pi that successfully boots with the webOS OSE image.
+- **Network Connection**: The Raspberry Pi and your local PC must be connected to the same network. This connection is essential for the setup process using the webOS OSE CLI from your local PC.
+- **Node.js on Local PC**: Node.js must be installed on your local PC as it is required to run the webOS OSE CLI. 
+
+### Setting Up Node.js on Your Local PC
+
+If you haven't installed Node.js on your local PC, follow these steps:
+
+1. Visit the [Node.js official website](https://nodejs.org/) and download the installer for your operating system.
+2. Run the downloaded installer and follow the prompts to complete the installation of Node.js.
+3. Once installed, verify the installation by running `node -v` in your command line or terminal. This will display the installed version of Node.js.
+
+### Installing the webOS OSE CLI
+
+After setting up Node.js, install the webOS OSE CLI by executing the following command:
+
+```bash
+$ npm install -g @webosose/ares-cli
+```
+### Verify webOS OSE CLI Installation
+
+After installing the webOS OSE CLI, you can verify its installation by running:
+
+```bash
+$ ares
+```
+This command will display a list of available ares commands, confirming that the webOS OSE CLI is correctly installed.
+
+### Device Setup Process
+To set up a new device for development, use the ares-setup-device command. This will guide you through the process of registering and configuring a new device for your development environment:
+
+```bash
+ares-setup-device
+```
+
+### Check Installed Devices
+To verify the devices that are already set up, use the following command:
+```bash
+$ ares-install -D
+```
+This will list all the devices that have been set up and are ready for development.
+
+Follow the on-screen prompts to complete the setup of your device.
+
 # **Recommendation Algorithm and Testing**
 
 ## **Algorithm Overview**
