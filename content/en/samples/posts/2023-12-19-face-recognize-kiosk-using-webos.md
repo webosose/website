@@ -260,11 +260,11 @@ Follow the on-screen prompts to complete the setup of your device.
 
 ### Deployment Script: deploy.sh
 
-Before running the `deploy.sh` script, ensure you are in the project's root directory, which is the parent directory where the `build` will be created. The `deploy.sh` script automates the building and deploying process of the project.
+Before running the `deploy.sh` script, ensure you are in the react project's root directory, which is the parent directory where the `build` will be created. The `deploy.sh` script automates the building and deploying process of the project.
 
 #### Requirements
-- The `deploy.sh` script should be located in the project's root directory.
-- An `icon.png` file should also be placed in the project's root directory.
+- The `deploy.sh` script should be located in the react project's root directory.
+- An `icon.png` file should also be placed in the react project's root directory.
 - Raspberry Pi with webOS set must be powered on
 - The local PC (from which you are deploying) and the Raspberry Pi must be connected to the same network for successful deployment.
 
@@ -272,7 +272,7 @@ Before running the `deploy.sh` script, ensure you are in the project's root dire
 
 The `deploy.sh` script performs the following actions:
 - Removes existing build and IPK directories.
-- Creates a new build of the project.
+- Creates a new build of the react project.
 - Generates the `appinfo.json` file and copies the `icon.png` file into the build directory.
 - Packages the application into an IPK file.
 - Installs and launches the app on the specified device.
