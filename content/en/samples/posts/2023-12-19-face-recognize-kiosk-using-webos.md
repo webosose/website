@@ -21,7 +21,7 @@ User Recognition:
 - The server will verify if the recognized user is a returning visitor.
 - In cases where user recognition is unsuccessful, an alternative authentication method will be provided.
 
-Real-Time Menu Recommendations and Reconfiguration through Web App:
+Menu Recommendations and Reconfiguration through Web App:
 - Real-Time Menu Recommendations and Reconfiguration through Web App:
 - User data registration will be facilitated both at the kiosk and in the server's database.
 - The web app will offer menu recommendations based on the user information.
