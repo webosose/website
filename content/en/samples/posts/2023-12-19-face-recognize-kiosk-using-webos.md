@@ -41,16 +41,18 @@ Our project was developed in an Apple Silicon environment, which provided us wit
 
 We recommend using a similar Apple Silicon-based environment for development to ensure compatibility and optimal performance.
 
-### Target Device Requirements
-A target device is a device that runs webOS OSE. To test apps and services on your target device, we recommend that you prepare the following set of hardware and peripheral devices.
+## Hardware Requirements for Client Device
 
-- For webOS OSE 2.0.0 or Higher
-- Raspberry Pi 4
-- microSD card (8 GB or larger) and microSD card reader device
-- HDMI-compatible touchscreen using USB interface, with 1920x1080 resolution
-- Micro HDMI to HDMI cable
-- Ethernet cable and internet connection
-- (Optional) Input devices such as a keyboard and a mouse
+For setting up the client device in this project, you will need the following hardware components:
+
+- **Raspberry Pi**: The core computing unit for the kiosk.
+- **MicroSD Card with webOS Image**: Use a microSD card loaded with the webOS image to boot the Raspberry Pi. For this project, we have used the pre-built webOS OSE 2.24.0 image for Raspberry Pi 4, which can be downloaded from [here](https://github.com/webosose/build-webos/releases/download/v2.24.0/webos-ose-2-24-0-raspberrypi4-64.tar.bz2).
+- **Touchscreen or Monitor**: A display unit to interact with the kiosk. A touchscreen is preferred for a more interactive experience.
+- **Optional Input Devices**: Devices like a mouse and keyboard for initial setup and troubleshooting.
+- **Power Supply and Cables**: A suitable power supply for the Raspberry Pi and screen, along with necessary cables such as HDMI for connectivity.
+
+Ensure that you have all these components available before proceeding with the setup of your client device for the signage solution project.
+
 
 > [webOS Offitial Docs](https://www.webosose.org/docs/guides/setup/system-requirements/)
 
