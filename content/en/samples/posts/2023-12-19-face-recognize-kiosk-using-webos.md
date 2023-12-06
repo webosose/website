@@ -171,7 +171,7 @@ PORT=p
 
 To create a database, execute the following code in MySQL.
 
-```sql
+```plaintext
 CREATE DATABASE <database name e.g. kioskDB>;
 ```
 
@@ -233,14 +233,14 @@ If you haven't installed Node.js on your local PC, follow these steps:
 
 After setting up Node.js, install the webOS OSE CLI by executing the following command:
 
-```bash
+```plaintext
 $ npm install -g @webosose/ares-cli
 ```
 ### Verify webOS OSE CLI Installation
 
 After installing the webOS OSE CLI, you can verify its installation by running:
 
-```bash
+```plaintext
 $ ares
 ```
 This command will display a list of available ares commands, confirming that the webOS OSE CLI is correctly installed.
@@ -248,8 +248,8 @@ This command will display a list of available ares commands, confirming that the
 ### Device Setup Process
 To set up a new device for development, use the ares-setup-device command. This will guide you through the process of registering and configuring a new device for your development environment:
 
-```bash
-ares-setup-device
+```plaintext
+$ ares-setup-device
 ```
 
 ### Check Installed Devices
@@ -260,6 +260,81 @@ $ ares-install -D
 This will list all the devices that have been set up and are ready for development.
 
 Follow the on-screen prompts to complete the setup of your device.
+
+### Deployment Script: deploy.sh
+
+Before running the `deploy.sh` script, ensure you are in the project's root directory, which is the parent directory where the `build` will be created. The `deploy.sh` script automates the building and deploying process of the project.
+
+#### Requirements
+- The `deploy.sh` script should be located in the project's root directory.
+- An `icon.png` file should also be placed in the project's root directory.
+
+#### deploy.sh Script
+
+The `deploy.sh` script performs the following actions:
+- Removes existing build and IPK directories.
+- Creates a new build of the project.
+- Generates the `appinfo.json` file and copies the `icon.png` file into the build directory.
+- Packages the application into an IPK file.
+- Installs and launches the app on the specified device.
+
+```bash
+#!/bin/bash
+
+# Remove build file.
+rm -rf build
+
+# Remove IPK file.
+rm -rf IPK
+
+# Build the project
+npm run build
+
+# Change to the build directory
+cd build
+
+# Create appinfo.json and add content
+printf '{\n "id": "kr.ac.knu.app.signage",\n "version": "1.0.0",\n "vendor": "My Company",\n "type": "web",\n "main": "index.html",\n "title": "new app",\n "icon": "icon.png",\n "requiredPermissions": [ "time.query", "activity.operation" ]\n}' > appinfo.json
+
+# Copy the icon.png file
+cp ../icon.png icon.png
+
+# Package the application
+ares-package . -o ../IPK
+
+# Change to the IPK directory
+cd ../IPK
+
+# Remove existing installation
+ares-install -d jongmal -r kr.ac.knu.app.signage
+
+# Install the new package
+ares-install -d jongmal kr.ac.knu.app.signage_1.0.0_all.ipk
+
+# Launch the app
+ares-launch -d jongmal kr.ac.knu.app.signage
+
+# Open inspector
+ares-inspect -d jongmal --app kr.ac.knu.app.signage
+
+# Change directory
+cd ..
+```
+
+### Setting Execution Permission
+After creating the deploy.sh script, change its execution permission with the following command:
+
+```plaintext
+$ chmod +x deploy.sh
+```
+To deploy your project, execute the deploy.sh script from the project's root directory:
+
+```plaintext
+$ ./deploy.sh
+```
+This script simplifies the deployment process, ensuring that your application is built, packaged, and deployed efficiently to your target device.
+
+
 
 # **Recommendation Algorithm and Testing**
 
