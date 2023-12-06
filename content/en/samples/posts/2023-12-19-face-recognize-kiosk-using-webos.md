@@ -146,3 +146,112 @@ $ deactivate
 ```
 
 
+## **NodeJS Server for Basic Setup Kiosk-API Guide**
+
+### **1.1. Install npm Modules**
+
+Install the necessary npm modules to run the project.
+
+```plaintext
+$ npm i
+```
+
+### **1.2. Create .env File**
+
+Create a **`.env`** file in the project's root directory and configure the database connection information, admin password, and port number.
+
+```plaintext
+DATABASE_URL="mysql://<database username e.g. root>:<database password e.g. 8246>@<database host e.g. localhost>:3306/<database name e.g. kioskDB>"
+PORT=p
+```
+
+### **1.3. Create Database**
+
+To create a database, execute the following code in MySQL.
+
+```sql
+CREATE DATABASE <database name e.g. kioskDB>;
+```
+
+### **1.4. Migrate Tables**
+
+Execute the migration to create database tables.
+
+```plaintext
+$ npx prisma migrate dev
+```
+
+### **2. Generate Dummy Data**
+
+Generate dummy data for testing using the following command.
+
+```plaintext
+$ npm run seed
+```
+
+If successful, the following message will be displayed:
+
+```plaintext
+Connected
+Success
+```
+
+### **3. Run the Program**
+
+To run the program, use the following command.
+
+```plaintext
+$ npm run start
+```
+
+If successful, you should see a message similar to the following:
+
+```plaintext
+Server is running on port {port}.
+Connected
+```
+
+# **Recommendation Algorithm and Testing**
+
+## **Algorithm Overview**
+
+In this project, collaborative user filtering is utilized. The algorithm measures the similarity of order histories among users to select N similar users. It then analyzes the order histories of these N users to recommend the most frequently ordered menu items. The algorithm primarily employs cosine similarity to measure the similarity between users and selects the recommendation target based on this similarity.
+
+## **Algorithm Flow**
+
+1. **Measuring User Similarity**: Pairing all users in the database and calculating cosine similarity to select N users with similar order histories.
+2. **Recruiting Similar Users**: Using cosine similarity as a criterion, selecting the top N users with the highest similarity.
+3. **Order History Analysis**: Summarizing the order histories of the selected N users and calculating the frequency of each menu item.
+4. **Selecting Recommended Menu**: Choosing the menu item with the highest frequency as the recommended item.
+
+## **Testing Method**
+
+Testing focuses on using dummy data to verify the accuracy and efficiency of the algorithm. Multiple tests are conducted to ensure that the expected results are achieved. Necessary measures are taken to improve the algorithm's performance based on the test results.
+
+### **Test Data Example:**
+
+- A: Ordered 5 bowls of ramen
+- B: Ordered 5 bowls of ramen, 3 pork cutlets
+- C: Ordered 5 bowls of ramen, 10 cheese pork cutlets (highest order frequency)
+- D: Ordered 5 bowls of ramen, 2 rice cakes in spicy sauce
+- E: Ordered 5 rolls of gimbap
+
+### **Test Configuration:**
+
+- Set N=3 to select the top 3 users with the highest similarity.
+- Combine the order histories of selected users B, C, D to recommend the most frequently ordered menu.
+
+## **Expected Results**
+
+The anticipated results from the test are as follows:
+
+- Similar Users: B, C, D
+- Combined Order History: 15 bowls of ramen, 3 pork cutlets, 10 cheese pork cutlets, 2 rice cakes in spicy sauce, 5 rolls of gimbap
+- Recommended Menu: Cheese Pork Cutlets (most frequently ordered)
+
+If the results align with expectations, it confirms the accuracy of the algorithm.
+
+## **Future Improvements**
+
+If any performance issues or accuracy concerns are identified during testing, efforts will be made to address those areas and enhance the algorithm for better efficiency and accuracy.
+
