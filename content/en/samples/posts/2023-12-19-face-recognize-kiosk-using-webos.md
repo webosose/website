@@ -7,6 +7,8 @@ toc: true
 thumbnail: th-face-recognize-kiosk.jpg
 ---
 
+#2023 2학기 종합설계프로젝트1 X LG전자
+
 ## Overview of Project
 
 This project is to implement an object detection model application by using You Only Look Once v3 ([YOLOv3](https://pjreddie.com/yolo/)) to identify and locate objects by means of voice command. Suppose a user asks the app about the whereabouts of an object.
