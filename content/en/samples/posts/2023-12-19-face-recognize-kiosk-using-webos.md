@@ -223,11 +223,8 @@ Before starting the setup process, ensure the following requirements are met:
 
 ### Setting Up Node.js on Your Local PC
 
-If you haven't installed Node.js on your local PC, follow these steps:
-
-1. Visit the [Node.js official website](https://nodejs.org/) and download the installer for your operating system.
-2. Run the downloaded installer and follow the prompts to complete the installation of Node.js.
-3. Once installed, verify the installation by running `node -v` in your command line or terminal. This will display the installed version of Node.js.
+If you haven't installed Node.js on your local PC, please complete the installation of Node.js.
+Once installed, verify the installation by running `node -v` in your command line or terminal. This will display the installed version of Node.js.
 
 ### Installing the webOS OSE CLI
 
