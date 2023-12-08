@@ -150,69 +150,82 @@ $ deactivate
 
 ## **NodeJS Server for Basic Setup Kiosk-API Guide**
 
-### **1.1. Install npm Modules**
+### Step 1: Navigate to the NODEJS Directory
+
+```jsx
+$ cd signage_solution/nodejs
+```
+
+### Step 2: **Install npm Modules**
 
 Install the necessary npm modules to run the project.
 
-```plaintext
+```
 $ npm i
+
 ```
 
-### **1.2. Create .env File**
+### Step 3: **Create .env File**
 
-Create a **`.env`** file in the project's root directory and configure the database connection information, admin password, and port number.
+Create a **`.env`** file in the nodejs project's root directory and configure the database connection information, admin password, and port number.
 
-```plaintext
+```
 DATABASE_URL="mysql://<database username e.g. root>:<database password e.g. 8246>@<database host e.g. localhost>:3306/<database name e.g. kioskDB>"
-PORT=p
+PORT=(the number what you want)
+
 ```
 
-### **1.3. Create Database**
+### Step 4: **Create Database**
 
-To create a database, execute the following code in MySQL.
+To create a database, open MySQL Shell and execute the following code.
 
-```plaintext
-CREATE DATABASE <database name e.g. kioskDB>;
+```sql
+CREATE DATABASE <database name> e.g. kioskDB;
+
 ```
 
-### **1.4. Migrate Tables**
+### Step 5: **Migrate Tables**
 
-Execute the migration to create database tables.
+Execute the migration to create database tables in mysql database.
 
-```plaintext
+```
 $ npx prisma migrate dev
+
 ```
 
-### **2. Generate Dummy Data**
+### Step 6: **Generate Dummy Data**
 
 Generate dummy data for testing using the following command.
 
-```plaintext
+```
 $ npm run seed
+
 ```
 
 If successful, the following message will be displayed:
 
-```plaintext
+```
 Connected
 Success
+
 ```
 
-### **3. Run the Program**
+### Step 7: **Run the Program**
 
 To run the program, use the following command.
 
-```plaintext
+```
 $ npm run start
+
 ```
 
 If successful, you should see a message similar to the following:
 
-```plaintext
+```
 Server is running on port {port}.
 Connected
-```
 
+```
 ## **Basic Setup Client**
 
 Before starting the setup process, ensure the following requirements are met:
