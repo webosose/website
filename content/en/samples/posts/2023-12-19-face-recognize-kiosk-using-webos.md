@@ -126,12 +126,12 @@ Create a `.env` file in the `/flask` directory. This file will store environment
 Here is an example of what the contents of the `.env` file might look like:
 
 ```plaintext
-user=<database username e.g. root>
-password=<database password e.g. 8246>
-host=<database host e.g. localhost>
-database_name=<database name e.g. kioskDB>
-sql_file_path=<path to SQL file e.g. ./db.sql>
-korean_font_path=<path to Korean font file e.g. /System/Library/Fonts/AppleSDGothicNeo.ttc>
+user=<database username> e.g. root
+password=<database password> e.g. pass
+host=<database host> e.g. localhost
+database_name=<database name> e.g. kioskDB
+sql_file_path=<path to SQL file> e.g. ./db.sql
+korean_font_path=<path to Korean font file> e.g. /System/Library/Fonts/AppleSDGothicNeo.ttc
 ```
 ### Step 7: Start the Flask Authentication Server
 Run the Flask app with the following command to start the authentication server:
