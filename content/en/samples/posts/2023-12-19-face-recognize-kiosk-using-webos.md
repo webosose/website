@@ -76,18 +76,18 @@ This guide provides step-by-step instructions for setting up and running the fac
 ### Step 1: Navigate to the Flask Directory<br/>
 First, navigate to the Flask directory in the project root. Use the following command:
 
-```Plain text
+```plaintext
 $ cd signage_solution/flask
 ```
 ### Step 2: Verify Python Installation<br/>
 Check if Python 3.9 is installed by running:
-```Plain text
+```plaintext
 $ python3.9 -V
 ```
 
 If Python 3.9 is not installed, you can install it using Homebrew on MacOS or download it from the Python website for Windows users:<br/>
 For MacOS:
-```Plain text
+```plaintext
 $ brew install python@3.9
 ```
 For Windows:<br/>
@@ -98,7 +98,7 @@ For Windows:<br/>
 ### Step 3: Set Up a Virtual Environment
 After installing Python 3.9, go back to `/signage_solution/flask` directory and set up a virtual environment named `env` using:
 
-```Plain text
+```plaintext
 $ python3.9 -m venv env
 ```
 Verify that the `env` folder has been created in the current directory.
@@ -106,11 +106,11 @@ Verify that the `env` folder has been created in the current directory.
 ### Step 4: Activate the Virtual Environment
 Activate the virtual environment with the following command:<br/>
 For MacOS/Linux:
-```Plain text
+```plaintext
 $ source env/bin/activate
 ```
 For Windows:
-```Plain text
+```plaintext
 $ env\Scripts\activate
 ```
 ### Step 5: Install Dependencies
@@ -152,7 +152,7 @@ $ deactivate
 
 ### Step 1: Navigate to the NODEJS Directory
 
-```jsx
+```plaintext
 $ cd signage_solution/nodejs
 ```
 
@@ -160,7 +160,7 @@ $ cd signage_solution/nodejs
 
 Install the necessary npm modules to run the project.
 
-```
+```plaintext
 $ npm i
 ```
 
@@ -168,7 +168,7 @@ $ npm i
 
 Create a **`.env`** file in the nodejs project's root directory and configure the database connection information, admin password, and port number.
 
-```
+```plaintext
 DATABASE_URL="mysql://<database username e.g. root>:<database password e.g. 8246>@<database host e.g. localhost>:3306/<database name e.g. kioskDB>"
 PORT=(the number what you want)
 ```
@@ -177,7 +177,7 @@ PORT=(the number what you want)
 
 To create a database, open MySQL Shell and execute the following code.
 
-```sql
+```plaintext
 CREATE DATABASE <database name> e.g. kioskDB;
 ```
 
@@ -185,7 +185,7 @@ CREATE DATABASE <database name> e.g. kioskDB;
 
 Execute the migration to create database tables in mysql database.
 
-```
+```plaintext
 $ npx prisma migrate dev
 ```
 
@@ -193,13 +193,13 @@ $ npx prisma migrate dev
 
 Generate dummy data for testing using the following command.
 
-```
+```plaintext
 $ npm run seed
 ```
 
 If successful, the following message will be displayed:
 
-```
+```plaintext
 Connected
 Success
 ```
@@ -208,13 +208,13 @@ Success
 
 To run the program, use the following command.
 
-```
+```plaintext
 $ npm run start
 ```
 
 If successful, you should see a message similar to the following:
 
-```
+```plaintext
 Server is running on port {port}.
 Connected
 ```
