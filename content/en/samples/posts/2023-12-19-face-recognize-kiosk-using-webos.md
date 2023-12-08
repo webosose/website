@@ -162,7 +162,6 @@ Install the necessary npm modules to run the project.
 
 ```
 $ npm i
-
 ```
 
 ### Step 3: **Create .env File**
@@ -172,7 +171,6 @@ Create a **`.env`** file in the nodejs project's root directory and configure th
 ```
 DATABASE_URL="mysql://<database username e.g. root>:<database password e.g. 8246>@<database host e.g. localhost>:3306/<database name e.g. kioskDB>"
 PORT=(the number what you want)
-
 ```
 
 ### Step 4: **Create Database**
@@ -181,7 +179,6 @@ To create a database, open MySQL Shell and execute the following code.
 
 ```sql
 CREATE DATABASE <database name> e.g. kioskDB;
-
 ```
 
 ### Step 5: **Migrate Tables**
@@ -190,7 +187,6 @@ Execute the migration to create database tables in mysql database.
 
 ```
 $ npx prisma migrate dev
-
 ```
 
 ### Step 6: **Generate Dummy Data**
@@ -199,7 +195,6 @@ Generate dummy data for testing using the following command.
 
 ```
 $ npm run seed
-
 ```
 
 If successful, the following message will be displayed:
@@ -207,7 +202,6 @@ If successful, the following message will be displayed:
 ```
 Connected
 Success
-
 ```
 
 ### Step 7: **Run the Program**
@@ -216,7 +210,6 @@ To run the program, use the following command.
 
 ```
 $ npm run start
-
 ```
 
 If successful, you should see a message similar to the following:
@@ -224,7 +217,6 @@ If successful, you should see a message similar to the following:
 ```
 Server is running on port {port}.
 Connected
-
 ```
 ## **Basic Setup Client**
 
