@@ -253,6 +253,7 @@ To set up a new device for development, use the ares-setup-device command. This 
 ```plaintext
 $ ares-setup-device
 ```
+![ares-setup-device](/images/samples/solutions/face-recognize-kiosk/setup-device.png)
 
 ### Check Installed Devices
 To verify the devices that are already set up, use the following command:
