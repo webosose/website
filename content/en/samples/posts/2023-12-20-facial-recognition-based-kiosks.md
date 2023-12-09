@@ -191,49 +191,49 @@ On your local PC, follow these steps:
 ```
     def homomorphic_filter(img):
     try:
-        # YUV color space로 Y에 대한 연산만 진행
+        # Only the calculation for Y with YUV color space
         img_YUV = cv2.cvtColor(img, cv2.COLOR_BGR2YUV)
         y = img_YUV[:, :, 0]
 
         rows = y.shape[0]
         cols = y.shape[1]
 
-        # illumination elements와 reflectance elements를 분리하기 위해 log를 취함
+        # Logs are taken to separate illumination elements and reflection elements
         imgLog = np.log1p(np.array(y, dtype='float') / 255)
 
         M = 2 * rows + 1
         N = 2 * cols + 1
 
-        # gaussian mask 생성 sigma = 10
+        # Generate gaussian mask, sigma = 10
         sigma = 10
         (X, Y) = np.meshgrid(np.linspace(0, N - 1, N), np.linspace(0, M - 1, M))
         Xc = np.ceil(N / 2)
         Yc = np.ceil(M / 2)
         gaussianNumerator = (X - Xc) ** 2 + (Y - Yc) ** 2
 
-        # low pass filter와 high pass filter 생성
+        # Create low pass filter and high pass filter
         LPF = np.exp(-gaussianNumerator / (2 * sigma * sigma))
         HPF = 1 - LPF
 
         LPF_shift = np.fft.ifftshift(LPF.copy())
         HPF_shift = np.fft.ifftshift(HPF.copy())
 
-        # Log를 씌운 이미지를 FFT해서 LPF와 HPF를 곱해 LF성분과 HF성분을 나눔
+        # The image covered with Log is FFTed and multiplied by LPF and HPF to divide the LF and HF components.
         img_FFT = np.fft.fft2(imgLog.copy(), (M, N))
         img_LF = np.real(np.fft.ifft2(img_FFT.copy() * LPF_shift, (M, N)))
         img_HF = np.real(np.fft.ifft2(img_FFT.copy() * HPF_shift, (M, N)))
 
-        # 각 LF, HF 성분에 scaling factor를 곱해주어 조명값과 반사값을 조절함
+        # The lighting and reflection values are controlled by multiplying each LF and HF component by the scaling factor.
         gamma1 = 0.3
         gamma2 = 0.7
         img_adjusting = gamma1 * img_LF[0:rows, 0:cols] + gamma2 * img_HF[0:rows, 0:cols]
 
-        # 조정된 데이터를 이제 exp 연산을 통해 이미지로 만들어줌
+        # The adjusted data is now made into an image through exp operations.
         img_exp = np.expm1(img_adjusting)
         img_exp = (img_exp - np.min(img_exp)) / (np.max(img_exp) - np.min(img_exp))
         img_out = np.array(255 * img_exp, dtype='uint8')
 
-        # 마지막으로 YUV에서 Y space를 filtering된 이미지로 교체해주고 RGB space로 converting
+        # Finally, YUV replaces Y space with a filtered image and converts it to RGB space.
         img_YUV[:, :, 0] = img_out
         result = cv2.cvtColor(img_YUV, cv2.COLOR_YUV2BGR)
 
@@ -250,11 +250,11 @@ On your local PC, follow these steps:
         height, width = image.shape[:2]
         target_height, target_width = target_size
 
-        # 이미지 비율 계산
+        # Calculate the image ratio.
         aspect_ratio = width / height
         target_aspect_ratio = target_width / target_height
 
-        # 이미지 비율에 따라 크기 조정
+        # Resize according to the image ratio.
         if aspect_ratio > target_aspect_ratio:
             new_width = target_width
             new_height = int(new_width / aspect_ratio)
@@ -262,10 +262,10 @@ On your local PC, follow these steps:
             new_height = target_height
             new_width = int(new_height * aspect_ratio)
 
-        # 이미지 크기 조정
+        # Resize the image.
         resized_image = cv2.resize(image, (new_width, new_height))
 
-        # 여백을 검은색으로 채우기
+        # Fill the margins with black
         padding_top = (target_height - new_height) // 2
         padding_bottom = target_height - new_height - padding_top
         padding_left = (target_width - new_width) // 2
@@ -288,15 +288,15 @@ On your local PC, follow these steps:
 
     try:
         img = functions.loadBase64Img(base64)
-        # 2. image -> face (얼굴 영역 추출)
+        # 2. image -> face (Face Area Extracted)
         face = DeepFace.extract_faces(img_path=img, target_size=target_size, detector_backend='ssd')[0]['facial_area']
         x, y, w, h = face['x'], face['y'], face['w'], face['h']
         face = img[y:y + h, x:x + w]
 
-        # 조명 조정
+        # Adjusting lighting
         face = homomorphic_filter(face)
 
-        # 이미지 크기 조정
+        # Resizing an image
         face = resize_with_padding(face, target_size)
 
         # 3. face -> embedding
@@ -353,7 +353,7 @@ On your local PC, follow these steps:
 
 ```
     def post(self,request):
-        # 1. 프론트 Face.js를 통해 5장의 base64 파일 POST (list)
+        # 1. 5 base64 files POST (list) via Front Face.js
         if request.method == 'POST':
             try:
                 face_bases = request.data.get('imageData')
@@ -366,7 +366,7 @@ On your local PC, follow these steps:
 
             # 3. vector-> embedding
             embedding_array =  np.array(target_embedding_list)
-            # 3. 모든 user의 정보 불러오기
+            # 3. Get information from all users
             user_table = User.objects.all()
 
             min_dist = 1e9
@@ -377,7 +377,7 @@ On your local PC, follow these steps:
                 try:
                     user_face_list = np.array(eval(user.user_face_info))
 
-                    # 4. 2번에서의 벡터와 user의 face info 거리 계산
+                    # 4. Calculate the vector and user's face info distance at number 2
                     distance = 1e9
                     for target in embedding_array:
                         distance = min(distance, identification(user_face_list, target))
@@ -399,7 +399,7 @@ On your local PC, follow these steps:
             else:
                 print("\nNone")
 
-            # 5. 거리가 임계값보다 낮고 최단 거리였던 user의 휴대폰 번호를 리턴
+            # 5. Returns the user's mobile phone number whose distance was below the threshold and the shortest distance
             return Response({"phone_number": phonenum, "name": name})
 ```
 
