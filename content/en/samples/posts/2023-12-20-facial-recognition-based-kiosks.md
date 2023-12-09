@@ -11,6 +11,7 @@ thumbnail: th-facial-recognition-based-kiosks.png
 
 The project demonstrates how to develop a face recognition-based kiosk that **recognizes the user's face** and **provides custom menu recommendations** and **menu lists**.
 
+
 The kiosk app provides the following features:
 
 - User registration
@@ -172,967 +173,235 @@ On your local PC, follow these steps:
         ![16](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/8190f164-fd48-4206-b16b-b4ebbf5b95b2)
 
 ## Code Implementation
+* If you want to see the source code, please click the [Git link](https://github.com/Cheetah-19/Kiosk_KNU)
 
 
-### User registration - Face.js, FaceReco.js
-* Take a picture of your face and send it to the server
-* Face.js is a photographic activity, and FaceReco.js is a page where you import Face.js and add css.
-
-#### Face.js
-```
-export default function Face(props) {
-    const navigate = useNavigate(); // useNavigate hook to get the navigate function
-    const videoRef = useRef(null);
-    const canvasRef = useRef(null);
-
-    // Add ref for timer id
-    const timerIdRef = useRef(null);
-
-    // Add state for remaining photos
-    const [remainingPhotos, setRemainingPhotos] = useState(9); // 10장으로 설정
-
-    const startVideo = async () => {
-        try {
-          if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            throw new Error('Camera not available on this browser');
-          }
-    
-          if (!videoRef.current.srcObject) {
-            const mediaStream = await navigator.mediaDevices.getUserMedia({ video: { width: 720, height: 720 } });
-    
-            if (videoRef.current) {
-              videoRef.current.srcObject = mediaStream;
-            }
-          }
-    
-          if (!videoRef.current.paused && !videoRef.current.ended) {
-            // Already playing - do nothing
-          } else {
-            await videoRef.current.play();
-          }
-    
-          setTimeout(() => {
-            timerIdRef.current = setInterval(captureFrame, 100);
-          }, 2000);
-    
-        } catch (error) {
-          console.log("Something went wrong!", error);
-        }
-      };
-    
-      const captureFrame = async () => {
-        if (remainingPhotos <= 0) return;
-    
-        if (videoRef.current && canvasRef.current) {
-          const context = canvasRef.current.getContext('2d');
-    
-          canvasRef.current.width = videoRef.current.videoWidth;
-          canvasRef.current.height = videoRef.current.videoHeight;
-    
-          context.drawImage(videoRef.current, 0, 0, videoRef.current.videoWidth, videoRef.current.videoHeight);
-    
-          const imgDataUrl = canvasRef.current.toDataURL('image/jpeg');
-    
-          props.setPhotos(prevPhotos => [...prevPhotos, imgDataUrl]);
-    
-          setRemainingPhotos(prevCount => prevCount - 1);
-        }
-      };
-    
-      useEffect(() => {
-        const startTimer = () => {
-          timerIdRef.current = setInterval(captureFrame, 100);
-        };
-    
-        const stopTimer = () => {
-          clearInterval(timerIdRef.current);
-        };
-    
-        startTimer();
-    
-        return () => {
-          stopTimer();
-        };
-      }, [props.setPhotos, remainingPhotos]);
-    
-      useEffect(() => {
-        startVideo();
-      }, []);
-
-    return (
-        <div id="video-container">
-            <video ref={videoRef} id="video-element"></video>
-            {/* Display remaining photos count */}
-            <p style={{ color: 'black', fontSize: '32px', marginTop: '20px' }}>{remainingPhotos+1}</p>
-            <canvas ref={canvasRef} style={{ display: 'none' }} />
-        </div>
-    );
-}
+### face_extractor.py 
+* You must name the model as a linear learning model that extracts faces.
 
 ```
-
-#### FaceReco.js
-```
-export default function FaceReco() {
-  const navigate = useNavigate(); // useNavigate hook to get the navigate function
-  const [alert, setAlert] = useState(false);
-
-  const [gotoPhoneNUm, setGotoPhoneNUm] = useState(false);
-  const [slide, setSlide] = useState(false);
-
-  const [photos, setPhotos] = useState([]); // photos 상태 추가
-
-  useEffect(() => {
-    setTimeout(() => { setAlert(true) }, 2200);
-  });
-
-  return (
-    <div>
-      <div>
-        <header>Easy KIOSK</header>
-      </div>
-      <div>
-        <div className="Top_text">
-          <div className="title"> 내 정보 등록하기 </div>
-        </div>
-        <div className="Middle_Menu">
-          <div id="inner-bg">
-            <div className="middle_count">
-              <div className="middle_count_text">1/5</div>
-            </div>
-            <div className="middle_title">
-              <div className="middle_title_text">얼굴정보 등록하기</div>
-            </div>
-            <div className="middle_camera">
-              {
-              alert ===  true ?
-              <Face setPhotos={setPhotos} />
-              :
-              <div id='face-img-container'>
-                <img src={face} style={{ width: '30%', margin: '0px 0px 40px 0px' }} />
-                <div>
-                  <span id='face-contents'>아이콘을 터치해</span><br />얼굴 정보를 등록해주세요.
-                </div>
-              </div>
-              }
-            </div>
-          </div>
-        </div>
-        <div className="Bottom_button">
-          <div className="right_section">
-            <div className="right_section">
-              <div id="right_button" onClick={() => {
-                  console.log(photos); // photos를 출력
-                  navigate("/username", { state: { photos } }); // 다음 페이지로 이동
-                }}>
-                <div className="button_text" > 다음으로 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+    # recognizer
+    model_name = 'VGG-Face'
+    target_size = functions.find_target_size(model_name)
 ```
 
-### User registration - UserName.js, PhoneNum.js
-* UserName : This is the page where you enter your name.
-* PhoneNum : This is the page where you enter your cell phone number.
-
-#### UserName.js
-```
-export default function FaceReco() {
-  const navigate = useNavigate(); // useNavigate hook to get the navigate function
-  const location = useLocation();
-  const photos = location.state.photos;
-
-  const [inputValue, setInputValue] = useState('');
-
-  const handleChange = (event) => {
-    if (/^\d+$/.test(event.target.value)) {
-      alert('숫자는 입력할 수 없습니다.');
-    } else if (event.target.value.split(' ').join('') !== event.target.value) {
-      alert('공백은 입력할 수 없습니다.');
-    } else {
-      setInputValue(event.target.value);
-    }
-  }
-
-  const handleNext = () => {
-    if (inputValue.trim().length === 0) {
-      alert('숫자 또는 공백을 입력할 수 없습니다.');
-    } else {
-      navigate('/PhoneNum', { state: { inputValue, photos } });
-    }
-  };
-
-  const goback = () => {
-    navigate('/', { state: { photos: [] } });
-  };
-
-  return (
-    <div>
-      <div>
-        <header>Easy KIOSK</header>
-      </div>
-      <div>
-        <div className="Top_text">
-          <div className="title"> 내 정보 등록하기 </div>
-        </div>
-        <div className="Middle_Menu">
-          <div id="inner-bg">
-            <div className="middle_count">
-              <div className="middle_count_text">2/5</div>
-            </div>
-            <div className="middle_title">
-              <div className="middle_title_text">이름 등록하기</div>
-            </div>
-            <div className="middle_camera">
-              <input className="input-des" type="text" value={inputValue} onChange={handleChange} placeholder="이름을 입력해주세요" />
-            </div>
-
-          </div>
-        </div>
-        <div className="Bottom_button">
-          <div className="left_section">
-            <div id="left_button" onClick={goback}>
-              <div className="button_text" > 이전으로 </div>
-            </div>
-          </div>
-          <div className="right_section">
-            <div id="right_button" onClick={() => {
-                console.log(photos); // photos를 출력
-                handleNext(); // 다음 페이지로 이동
-              }}>
-              <div className="button_text" > 다음으로 </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-```
-
-
-#### PhoneNum.js
+### face_extractor.py - homomorphic_filter()
+* This is a function that removes image illumination.
 
 ```
-export default function FaceReco() {
-  const navigate = useNavigate(); // useNavigate hook to get the navigate function
-    const location = useLocation();
-    const photos = location.state.photos;
-    const inputValue = location.state.inputValue;
-    const [PhoneNumber, setInputValue] = useState('');
-    //PhoneNum페이지로 input된 정보를 넘겨준다.
-    const handleChange = (event) => {
-      // '-'를 입력할 경우
-      if (!/^[0-9]*$/.test(event.target.value)) {
-        alert('0~9 이외의 값은 입력할 수 없습니다.');
-      } else {
-        setInputValue(event.target.value);
-      }
-    }
+    def homomorphic_filter(img):
+    try:
+        # YUV color space로 Y에 대한 연산만 진행
+        img_YUV = cv2.cvtColor(img, cv2.COLOR_BGR2YUV)
+        y = img_YUV[:, :, 0]
 
-    const handleNext = () => {
-      if (PhoneNumber.length !== 11) {
-        alert("핸드폰 번호는 11글자를 입력해야 합니다.");
-        return;
-      }
-      navigate('/Vegan_Religion_Check', { state: { inputValue, PhoneNumber, photos } });
-    };
+        rows = y.shape[0]
+        cols = y.shape[1]
 
-  const goback = () => {
-    navigate('/username', { state: { inputValue: null } });
-  };
+        # illumination elements와 reflectance elements를 분리하기 위해 log를 취함
+        imgLog = np.log1p(np.array(y, dtype='float') / 255)
 
-  return (
-    <div>
-      <div>
-        <header>Easy KIOSK</header>
-      </div>
-      <div>
-        <div className="Top_text">
-          <div className="title"> 내 정보 등록하기 </div>
-        </div>
-        <div className="Middle_Menu">
-          <div id="inner-bg">
-            <div className="middle_count">
-              <div className="middle_count_text">3/5</div>
-            </div>
-            <div className="middle_title">
-              <div className="middle_title_text">휴대폰번호 등록하기</div>
-            </div>
-            <div className="middle_camera">
-              <input className="input-des" type="text" value={PhoneNumber} onChange={handleChange} placeholder="휴대폰 번호를 입력해 주세요" />
-            </div>
+        M = 2 * rows + 1
+        N = 2 * cols + 1
 
-          </div>
-        </div>
-        <div className="Bottom_button">
-          <div className="left_section">
-            <div id="left_button" onClick={goback}>
-              <div className="button_text" > 이전으로 </div>
-            </div>
-          </div>
-          <div className="right_section">
-            <div id="right_button" onClick={() => {
-                console.log(photos); // photos를 출력
-                console.log(inputValue); // 이름 출력
-                console.log(PhoneNumber); // 번호 출력
-                handleNext(); // 다음 페이지로 이동
-              }}>
-              <div className="button_text"> 다음으로 </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-```
-### User registration - Vegan_Religion_Check.js, Allergy.js
-* Vegan_Religion_Check.js : This is a page for entering vegan and religious information.
-* Allergy : This is a page where you enter allergy information.
+        # gaussian mask 생성 sigma = 10
+        sigma = 10
+        (X, Y) = np.meshgrid(np.linspace(0, N - 1, N), np.linspace(0, M - 1, M))
+        Xc = np.ceil(N / 2)
+        Yc = np.ceil(M / 2)
+        gaussianNumerator = (X - Xc) ** 2 + (Y - Yc) ** 2
 
-#### Vegan_Religion_Check.js
+        # low pass filter와 high pass filter 생성
+        LPF = np.exp(-gaussianNumerator / (2 * sigma * sigma))
+        HPF = 1 - LPF
 
-```
-export default function FaceReco() {
-  const navigate = useNavigate();
-  const location = useLocation();
+        LPF_shift = np.fft.ifftshift(LPF.copy())
+        HPF_shift = np.fft.ifftshift(HPF.copy())
 
-  const photos = location.state.photos;
-  const PhoneNumber = location.state.PhoneNumber;
-  const inputValue = location.state.inputValue;
+        # Log를 씌운 이미지를 FFT해서 LPF와 HPF를 곱해 LF성분과 HF성분을 나눔
+        img_FFT = np.fft.fft2(imgLog.copy(), (M, N))
+        img_LF = np.real(np.fft.ifft2(img_FFT.copy() * LPF_shift, (M, N)))
+        img_HF = np.real(np.fft.ifft2(img_FFT.copy() * HPF_shift, (M, N)))
 
-  const [selectedItemId, setSelectedItemId] = useState("");
-  const [isUnchecked, setIsUnchecked] = useState(true); // uncheck 상태 여부를 추적하는 상태 추가
-  const [selectedReligion, setSelectedReligion] = useState(""); // 'None'으로 초기화
+        # 각 LF, HF 성분에 scaling factor를 곱해주어 조명값과 반사값을 조절함
+        gamma1 = 0.3
+        gamma2 = 0.7
+        img_adjusting = gamma1 * img_LF[0:rows, 0:cols] + gamma2 * img_HF[0:rows, 0:cols]
 
+        # 조정된 데이터를 이제 exp 연산을 통해 이미지로 만들어줌
+        img_exp = np.expm1(img_adjusting)
+        img_exp = (img_exp - np.min(img_exp)) / (np.max(img_exp) - np.min(img_exp))
+        img_out = np.array(255 * img_exp, dtype='uint8')
 
-  const handleNext = () => {
+        # 마지막으로 YUV에서 Y space를 filtering된 이미지로 교체해주고 RGB space로 converting
+        img_YUV[:, :, 0] = img_out
+        result = cv2.cvtColor(img_YUV, cv2.COLOR_YUV2BGR)
 
-      navigate("/Allergy", { state: { inputValue, PhoneNumber, photos, selectedItemId, selectedReligion } });
-  };
-
-  //이전으로
-  const resetPhotos = () => {
-    navigate('/PhoneNum', { state: { PhoneNumber: null } });
-  };
-
-  //비건 체크 박스
-  const handleUncheck = () => {
-    setIsUnchecked((prevValue) => {
-      if (prevValue) {
-        setSelectedItemId(""); // uncheck 상태이면 selectedItemId를 'None'으로 설정
-      }
-      return !prevValue; // 상태를 토글하여 변경
-    });
-  };
-
-
-  //드롭다운
-  const handleDropdownSelect = (selectedItemId) => {
-    setSelectedItemId(selectedItemId);
-    setIsUnchecked(false); // 드롭다운 선택 시 상태 변경
-  };
-
-  //종교 선택
-  const handleClickReligion = (religion) => {
-    if (selectedReligion === religion) {
-      setSelectedReligion(null);
-    } else {
-      setSelectedReligion(religion);
-    }
-  };
-
-  const dropdownItems = [
-    { id: 'Fruiterian', label: '프루테리언' },
-    { id: 'Vegan', label: '비건' },
-    { id: 'Lacto', label: '락토' },
-    { id: 'Ovo', label: '오보' },
-    { id: 'LactoOvo', label: '락토오보' },
-    { id: 'Pesco', label: '페스코' },
-    { id: 'Pollo', label: '폴로' },
-  ];
-
-
-  return (
-    <div>
-      <div>
-        <header>Easy KIOSK</header>
-      </div>
-      <div>
-        <div className="Top_text">
-          <div className="title"> 내 정보 등록하기 </div>
-        </div>
-        <div className="Middle_Menu">
-          <div id="inner-bg">
-            <div className="middle_count">
-              <div className="middle_count_text">4/5</div>
-            </div>
-            <div className="middle_title">
-              <div className="middle_title_text">기타 정보 등록하기</div>
-            </div>
-            <div className="middle_camera">
-              <div className="top_section">
-                해당되는 항목에 체크해주세요
-              </div>
-              <div className="middle_section">
-                <div className="row">
-                  <div className="left">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="4" height="4" viewBox="0 0 4 4">
-                      <circle cx="2" cy="2" r="2" fill="#FF7A00" />
-                    </svg>
-                  </div>
-                  <div className="center">비건 여부</div>
-                  <div className="right">
-                    <div
-                      id={`${isUnchecked ? 'uncheck' : 'check'}`}
-                      onClick={handleUncheck}
-                    ></div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="left">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="4" height="4" viewBox="0 0 4 4">
-                      <circle cx="2" cy="2" r="2" fill={isUnchecked ? '#D9D9D9' : '#FF7A00'} />
-                    </svg>
-                  </div>
-                  <div className="center_2" style={{ color: isUnchecked ? '#D9D9D9' : '#000000' }}>비건 유형</div>
-                  <div className="right_2">
-                    {/* 드롭다운 활성/비활성 상태에 따라 disabled 속성 추가 */}
-                    <select
-                      className="select-wrapper"
-                      onChange={(e) => handleDropdownSelect(e.target.value)}
-                      disabled={isUnchecked}
-                    >
-                      <option className="drop_text" value="">
-                        유형선택하기
-                      </option>
-                      {dropdownItems.map((item) => (
-                        <option key={item.id} value={item.id}>
-                          {item.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div className="bottom_section">
-                <div className="row_2">
-                  <div className="left">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="4" height="4" viewBox="0 0 4 4">
-                      <circle cx="2" cy="2" r="2" fill="#FF7A00" />
-                    </svg>
-                  </div>
-                  <div className="center">종교</div>
-                  <div className="right"></div>
-                </div>
-                <div className="row_2_button_area">
-                  <div className="line">
-                    <div
-                      className={`row_2_button_1 ${selectedReligion === "" ? 'selected' : ""}`}
-                      onClick={() => handleClickReligion("")}
-                    >
-                      해당없음
-                    </div>
-                    <div
-                      className={`row_2_button_1 ${selectedReligion === 'Islam' ? 'selected' : ''}`}
-                      id="Islam"
-                      onClick={() => handleClickReligion('Islam')}
-                    >
-                      이슬람교
-                    </div>
-                  </div>
-                  <div className="line">
-                    <div
-                      className={`row_2_button_1 ${selectedReligion === 'Hinduism' ? 'selected' : ''}`}
-                      id="Hinduism"
-                      onClick={() => handleClickReligion('Hinduism')}
-                    >
-                      힌두교
-                    </div>
-                    <div
-                      className={`row_2_button_1 ${selectedReligion === 'Buddhism' ? 'selected' : ''}`}
-                      id="Buddhism"
-                      onClick={() => handleClickReligion('Buddhism')}
-                    >
-                      불교
-                    </div>
-                  </div>
-                  <div className="line">
-                    <div
-                      className={`row_2_button_1 ${selectedReligion === 'Judaism' ? 'selected' : ''}`}
-                      id="Judaism"
-                      onClick={() => handleClickReligion('Judaism')}
-                    >
-                      유대교
-                    </div>
-                    <div
-                      className={`row_2_button_1 ${selectedReligion === 'Christian' ? 'selected' : ''}`}
-                      id="Christian"
-                      onClick={() => handleClickReligion('Christian')}
-                    >
-                      기독교
-                    </div>
-                  </div>
-                  <div className="line">
-                    <div
-                      className={`row_2_button_1 ${selectedReligion === 'Protestant' ? 'selected' : ''}`}
-                      id="Protestant"
-                      onClick={() => handleClickReligion('Protestant')}
-                    >
-                      개신교
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
-          </div>
-        </div>
-        <div className="Bottom_button">
-          <div className="left_section">
-            <div id="left_button" onClick={resetPhotos}>
-              <div className="button_text" > 이전으로 </div>
-            </div>
-          </div>
-          <div className="right_section">
-            <div id="right_button" onClick={() => {
-              console.log(photos); // photos를 출력
-              console.log(PhoneNumber);
-              console.log(inputValue);
-              console.log(selectedItemId);
-              console.log(selectedReligion);
-
-              handleNext(); // 다음 페이지로 이동
-            }}>
-              <div className="button_text" > 다음으로 </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+        return result
+    except:
+        pass
 ```
 
+### face_extractor.py - resize_with_padding()
+* This function adjusts the image size to the model target_size.
 
-#### Allergy.js
 ```
-export default function FaceReco() {
+    def resize_with_padding(image, target_size):
+        height, width = image.shape[:2]
+        target_height, target_width = target_size
 
-  const BASE_URL = 'https://kioskknu2023.run.goorm.site';
-  //const BASE_URL = 'http://127.0.0.1:8000';
+        # 이미지 비율 계산
+        aspect_ratio = width / height
+        target_aspect_ratio = target_width / target_height
 
-  const navigate = useNavigate(); // useNavigate hook to get the navigate function
-  const location = useLocation();
-  const photos = location.state.photos;
-  const inputValue = location.state.inputValue;
-  const PhoneNumber = location.state.PhoneNumber;
-  const selectedVeganItemId = location.state.selectedItemId;
-  const selectedReligion = location.state.selectedReligion;
+        # 이미지 비율에 따라 크기 조정
+        if aspect_ratio > target_aspect_ratio:
+            new_width = target_width
+            new_height = int(new_width / aspect_ratio)
+        else:
+            new_height = target_height
+            new_width = int(new_height * aspect_ratio)
 
-  //None 값이면 0으로 변경
-  if (typeof selectedReligion === "") {
-    selectedReligion = 0;
-  }
+        # 이미지 크기 조정
+        resized_image = cv2.resize(image, (new_width, new_height))
 
-  if (typeof selectedVeganItemId === "") {
-    selectedVeganItemId = 0;
-  }
+        # 여백을 검은색으로 채우기
+        padding_top = (target_height - new_height) // 2
+        padding_bottom = target_height - new_height - padding_top
+        padding_left = (target_width - new_width) // 2
+        padding_right = target_width - new_width - padding_left
+        padded_image = cv2.copyMakeBorder(resized_image, padding_top, padding_bottom, padding_left, padding_right, cv2.BORDER_CONSTANT, value=(0, 0, 0))
 
-  const [selectedAllergy, setSelectedAllergy] = useState([]); // 'None'으로 초기화
+        return padded_image
+```
 
-  const resetPhotos = () => {
-    navigate('/VeganCheck', { state: { inputValue, PhoneNumber, photos } });
-  };
+### face_extractor.py - extractor()
+* This function converts base64 to embedding.
+    1. base64 -> image
+    2. image -> face
+    3. face -> embedding
 
-  //알레르기 선택
-  const handleClickAllergy = (allergy) => {
-    if (allergy === "") {
-      setSelectedAllergy([]); // 해당없음을 누르면 selectedAllergy 배열에 "" 값만 남게 함
-    } else {
-      const index = selectedAllergy.indexOf(allergy);
-
-      if (index !== -1) {
-        const updatedAllergy = [...selectedAllergy];
-        updatedAllergy.splice(index, 1);
-        setSelectedAllergy(updatedAllergy);
-      } else {
-        // 해당없음 버튼을 선택해제하고 선택된 값들을 제거
-        const updatedAllergy = selectedAllergy.filter((item) => item !== "");
-        setSelectedAllergy([...updatedAllergy, allergy]);
-      }
-    }
-  };
-
-  //서버로 사용자의 입력값을 보내준다. 등록버튼 클릭 시 호출.
-  const handleNext = () => {
-    console.log(photos); // photos를 출력
-    console.log(PhoneNumber); // 핸드폰 번호 출력
-    console.log(inputValue);  // 이름 출력
-    console.log(selectedVeganItemId); // 선택된 비건 정보 출력
-    console.log(selectedReligion); // 선택된 종교 정보 출력
-    console.log(selectedAllergy); // 선택된 알레르기 정보 출력
-
-
-
-    // 서버로 데이터 전송
-    const postData = {
-      user_name: inputValue,
-      user_phonenum: PhoneNumber,
-      user_allergy: selectedAllergy,
-      user_face_info : photos.join('||')
-    };
-
-    if (selectedVeganItemId !== 0) {
-      postData.user_vegetarian = selectedVeganItemId;
-    }
-
-    if (selectedReligion !== 0) {
-      postData.religion = selectedReligion;
-    }
+```
+    def extractor(base64):
+    # 1. base64 -> image
     
-    axios.post(`${BASE_URL}/signup/`, postData)  // '서버 URL' 부분에 테스트할 서버 주소 넣어주면 됨.
-      .then(response => {
-        console.log(postData);
-        console.log(response.data);  // 요청 성공시 alert 하나 해줄 예정.
-        alert("사용자 등록이 완료되었습니다");
-        navigate("/complete", { state: { inputValue, PhoneNumber, photos, selectedVeganItemId, selectedReligion, selectedAllergy } });
 
-      })
-      .catch(error => {
-        console.log(postData);
-        console.error(error);
-        alert("사용자 등록이 실패했습니다. 다시 시도해주세요.");
-      });
+    try:
+        img = functions.loadBase64Img(base64)
+        # 2. image -> face (얼굴 영역 추출)
+        face = DeepFace.extract_faces(img_path=img, target_size=target_size, detector_backend='ssd')[0]['facial_area']
+        x, y, w, h = face['x'], face['y'], face['w'], face['h']
+        face = img[y:y + h, x:x + w]
 
-  };
+        # 조명 조정
+        face = homomorphic_filter(face)
 
+        # 이미지 크기 조정
+        face = resize_with_padding(face, target_size)
 
-  return (
-    <div>
-      <div>
-        <header>Easy KIOSK</header>
-      </div>
-      <div>
-        <div className="Top_text">
-          <div className="title"> 내 정보 등록하기 </div>
-        </div>
-        <div className="Middle_Menu">
-          <div id="inner-bg">
-            <div className="middle_count">
-              <div className="middle_count_text">5/5</div>
-            </div>
-            <div className="middle_title">
-              <div className="middle_title_text">알러지 정보 등록하기</div>
-            </div>
-            <div className="middle_camera">
-              <div className="top_section">
-                해당되는 항목에 체크해주세요
-              </div>
-              <div className="row_2_button_area_2">
-                <div className="button_pair">
-                  <div
-                    className={`row_2_button ${selectedAllergy.length === 0 ? 'selected' : ''}`}
-                    onClick={() => handleClickAllergy("")}
-                  >
-                    해당없음
-                  </div>
+        # 3. face -> embedding
+        embedding_img = DeepFace.represent(img_path=face, model_name=model_name, detector_backend='skip')[0]['embedding']
 
-                  <div
-                    className={`row_2_button ${selectedAllergy.includes('Buckwheat') ? 'selected' : ''}`}
-                    id="Buckwheat"
-                    onClick={() => handleClickAllergy('Buckwheat')}
-                  >
-                    메밀
-                  </div>
-                </div>
-
-                <div className="button_pair">
-                  <div
-                    className={`row_2_button ${selectedAllergy.includes('Wheat') ? 'selected' : ''}`}
-                    id="Wheat"
-                    onClick={() => handleClickAllergy('Wheat')}
-                  >
-                    밀
-                  </div>
-                  <div
-                    className={`row_2_button ${selectedAllergy.includes('Soybean') ? 'selected' : ''}`}
-                    id="Soybean"
-                    onClick={() => handleClickAllergy('Soybean')}
-                  >
-                    대두
-                  </div>
-
-                </div>
-
-                <div className="button_pair">
-                  <div
-                    className={`row_2_button ${selectedAllergy.includes('Walnut') ? 'selected' : ''}`}
-                    id="Walnut"
-                    onClick={() => handleClickAllergy('Walnut')}
-                  >
-                    호두
-                  </div>
-                  <div
-                    className={`row_2_button ${selectedAllergy.includes('Peanut') ? 'selected' : ''}`}
-                    id="Peanut"
-                    onClick={() => handleClickAllergy('Peanut')}
-                  >
-                    땅콩
-                  </div>
-
-                </div>
-
-                <div className="button_pair">
-                  <div
-                    className={`row_2_button ${selectedAllergy.includes('Peach') ? 'selected' : ''}`}
-                    id="Peach"
-                    onClick={() => handleClickAllergy('Peach')}
-                  >
-                    복숭아
-                  </div>
-                  <div
-                    className={`row_2_button ${selectedAllergy.includes('Tomato') ? 'selected' : ''}`}
-                    id="Tomato"
-                    onClick={() => handleClickAllergy('Tomato')}
-                  >
-                    토마토
-                  </div>
-
-                </div>
-
-                <div className="button_pair">
-                  <div
-                    className={`row_2_button ${selectedAllergy.includes('Pork') ? 'selected' : ''}`}
-                    id="Pork"
-                    onClick={() => handleClickAllergy('Pork')}
-                  >
-                    돼지고기
-                  </div>
-                  <div
-                    className={`row_2_button ${selectedAllergy.includes('Egg') ? 'selected' : ''}`}
-                    id="Egg"
-                    onClick={() => handleClickAllergy('Egg')}
-                  >
-                    난류
-                  </div>
-
-                </div>
-
-                <div className="button_pair">
-                  <div
-                    className={`row_2_button ${selectedAllergy.includes('Milk') ? 'selected' : ''}`}
-                    id="Milk"
-                    onClick={() => handleClickAllergy('Milk')}
-                  >
-                    우유
-                  </div>
-                  <div
-                    className={`row_2_button ${selectedAllergy.includes('Chicken') ? 'selected' : ''}`}
-                    id="Chicken"
-                    onClick={() => handleClickAllergy('Chicken')}
-                  >
-                    닭고기
-                  </div>
-
-                </div>
-
-                <div className="button_pair">
-                  <div
-                    className={`row_2_button ${selectedAllergy.includes('Beef') ? 'selected' : ''}`}
-                    id="Beef"
-                    onClick={() => handleClickAllergy('Beef')}
-                  >
-                    쇠고기
-                  </div>
-                  <div
-                    className={`row_2_button ${selectedAllergy.includes('Shrimp') ? 'selected' : ''}`}
-                    id="Shrimp"
-                    onClick={() => handleClickAllergy('Shrimp')}
-                  >
-                    새우
-                  </div>
-
-                </div>
-
-                <div className="button_pair">
-                  <div
-                    className={`row_2_button ${selectedAllergy.includes('Mackerel') ? 'selected' : ''}`}
-                    id="Mackerel"
-                    onClick={() => handleClickAllergy('Mackerel')}
-                  >
-                    고등어
-                  </div>
-                  <div
-                    className={`row_2_button ${selectedAllergy.includes('Mussels') ? 'selected' : ''}`}
-                    id="Mussels"
-                    onClick={() => handleClickAllergy('Mussels')}
-                  >
-                    홍합
-                  </div>
-
-                </div>
-
-                <div className="button_pair">
-                  <div
-                    className={`row_2_button ${selectedAllergy.includes('Abalone') ? 'selected' : ''}`}
-                    id="Abalone"
-                    onClick={() => handleClickAllergy('Abalone')}
-                  >
-                    전복
-                  </div>
-                  <div
-                    className={`row_2_button ${selectedAllergy.includes('Oyster') ? 'selected' : ''}`}
-                    id="Oyster"
-                    onClick={() => handleClickAllergy('Oyster')}
-                  >
-                    귤
-                  </div>
-
-                </div>
-
-                <div className="button_pair">
-                  <div
-                    className={`row_2_button ${selectedAllergy.includes('shellfish') ? 'selected' : ''}`}
-                    id="shellfish"
-                    onClick={() => handleClickAllergy('shellfish')}
-                  >
-                    조개류
-                  </div>
-                  <div
-                    className={`row_2_button ${selectedAllergy.includes('Crab') ? 'selected' : ''}`}
-                    id="Crab"
-                    onClick={() => handleClickAllergy('Crab')}
-                  >
-                    게
-                  </div>
-
-                </div>
-
-                <div className="button_pair">
-                  <div
-                    className={`row_2_button ${selectedAllergy.includes('Squid') ? 'selected' : ''}`}
-                    id="Squid"
-                    onClick={() => handleClickAllergy('Squid')}
-                  >
-                    오징어
-                  </div>
-                  <div
-                    className={`row_2_button ${selectedAllergy.includes('food_containing_Sulfite') ? 'selected' : ''}`}
-                    id="food_containing_Sulfite"
-                    onClick={() => handleClickAllergy('food_containing_Sulfite')}
-                  >
-                    아황산 포함식품
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="Bottom_button">
-          <div className="left_section">
-            <div id="left_button" onClick={resetPhotos}>
-              <div className="button_text" > 이전으로 </div>
-            </div>
-          </div>
-          <div className="right_section">
-            <div id="right_button" onClick={() => {
-              handleNext(); // 다음 페이지로 이동
-            }}>
-              <div className="button_text" > 등록하기 </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+        return embedding_img
+    except:
+        return None
 ```
 
-### User registration - Complete.js
-* This page tells you that your registration has been completed.
+### face_identification.py - findCosineDistance()
+* This function is a function that calculates the distance between a user's face info and the embedding of a photo taken from the front in the cosine similarity method.
 
 ```
-export default function FaceReco() {
-    const navigate = useNavigate(); // useNavigate hook to get the navigate function
-    const location = useLocation();
-    const photos = location.state.photos;
-    const inputValue = location.state.inputValue;
-    const PhoneNumber = location.state.PhoneNumber;
-    const selectedItemId = location.state.selectedItemId;
-    const selectedReligion = location.state.selectedReligion;
+    def findCosineDistance(db_list, target):
+        a = np.dot(db_list, target)
+        b = np.linalg.norm(db_list, axis=1)
+        c = np.sqrt(np.sum(np.multiply(target, target)))
 
-    const goback = () => {
-        navigate('/', { state: { photos: [] } });
-    };
-
-    return (
-        <div>
-            <div>
-                <header>Easy KIOSK</header>
-            </div>
-            <div>
-                <div className="Top_text">
-                    <div className="title"> 내 정보 등록하기 </div>
-                </div>
-                <div className="Middle_Menu">
-                    <div id="inner-bg_2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 46 46" fill="none">
-                            <path d="M32.2471 14.6224C32.98 13.8895 34.1689 13.8895 34.9018 14.6224C35.6347 15.3556 35.6347 16.5444 34.9018 17.2774L20.8029 31.3768C20.0697 32.1097 18.8809 32.1097 18.1479 31.3768L11.0982 24.3271C10.3653 23.5942 10.3653 22.4053 11.0982 21.6724C11.8314 20.9392 13.0202 20.9392 13.7532 21.6724L19.4754 27.3947L32.2471 14.6224ZM22.9999 0.5C29.2122 0.5 34.8378 3.01882 38.9095 7.09052C42.9812 11.162 45.5 16.7878 45.5 22.9999C45.5 29.2129 42.9814 34.8378 38.9095 38.9095C34.8378 42.9812 29.2122 45.5 22.9999 45.5C16.7871 45.5 11.162 42.9814 7.09052 38.9095C3.01831 34.8378 0.5 29.2129 0.5 22.9999C0.5 16.7878 3.01882 11.162 7.09052 7.09052C11.162 3.01831 16.7871 0.5 22.9999 0.5ZM36.2548 9.7452C32.8629 6.35355 28.1764 4.25546 22.9999 4.25546C17.8231 4.25546 13.1366 6.35355 9.7452 9.7452C6.35355 13.1369 4.25546 17.8236 4.25546 22.9999C4.25546 28.1769 6.35355 32.8634 9.7452 36.2548C13.1366 39.6465 17.8231 41.7443 22.9999 41.7443C28.1764 41.7443 32.8629 39.6465 36.2548 36.2548C39.6465 32.8634 41.7443 28.1769 41.7443 22.9999C41.7443 17.8236 39.6465 13.1369 36.2548 9.7452Z" fill="#FF7A00" />
-                        </svg>
-                    <div className="middle_text">
-                    등록이 완료되었습니다!
-                    </div>
-                    </div>
-                </div>
-                <div className="Bottom_button">
-                    <div className="left_section">
-                        <div id="left_button" onClick={() =>{
-                            console.log(photos); // photos를 출력
-                            console.log(PhoneNumber);
-                            console.log(inputValue);
-                            console.log(selectedItemId);
-                            console.log(selectedReligion);
-                            goback();
-                            }}>
-                            
-                            <div className="button_text" > 메인으로 </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-}
+        return 1 - (a / (b * c))
 ```
 
-### User Recognition - 
+### face_identification.py - identification()
+* This function returns the shortest distance between a user's face info and the embedding of a photo taken from the front.
 
+```
+    def identification(db_embedding_list, target_embedding):
+        return np.min(findCosineDistance(db_embedding_list, target_embedding))
+```
 
+### face_methods.py - base_to_vector(face_bases: list) -> list
+* This function converts a base64 list received from the front into an embeds list.
 
-### take_alter_command()
+```
+    def base_to_vector(face_bases: list) -> list:
+        embedding_list = []
+
+        for base in face_bases:
+            # base64 -> embedding
+            input_embedding = extractor(base)
+
+            if input_embedding is not None:
+                embedding_list.append(input_embedding)
+        return embedding_list
+```
+
+### views.py - post()
+* This function provides an indication of how facial recognition logins work.
+    1. 5 base64 files POST via Front Face.js
+    2. base64 -> image -> embedding
+    3. Get information from all users
+    4. Calculate the face info distance between embedding and user at number 2
+    5. Returns the user's mobile phone number whose distance was less than the threshold and the shortest distance.
+
+```
+    def post(self,request):
+        # 1. 프론트 Face.js를 통해 5장의 base64 파일 POST (list)
+        if request.method == 'POST':
+            try:
+                face_bases = request.data.get('imageData')
+            except:
+                return Response('')
+
+            # 2. base64 -> image -> vector
+            target_embedding_list = base_to_vector(face_bases)
+            print("Received face data from front")
+
+            # 3. vector-> embedding
+            embedding_array =  np.array(target_embedding_list)
+            # 3. 모든 user의 정보 불러오기
+            user_table = User.objects.all()
+
+            min_dist = 1e9
+            phonenum = None
+            name = None
+
+            for user in user_table:
+                try:
+                    user_face_list = np.array(eval(user.user_face_info))
+
+                    # 4. 2번에서의 벡터와 user의 face info 거리 계산
+                    distance = 1e9
+                    for target in embedding_array:
+                        distance = min(distance, identification(user_face_list, target))
+
+                    print(f"{user.user_name}: {distance}")
+
+                    if distance < min_dist:
+                        min_dist = distance
+
+                        # 거리가 임계값보다 낮을 때만 뽑음
+                        if min_dist < 0.2:
+                            phonenum = user.user_phonenum
+                            name = user.user_name
+                except:
+                    pass
+
+            if phonenum is not None:
+                print(f"\nSuccess\nname: {name}, phonenum: {phonenum}")
+            else:
+                print("\nNone")
+
+            # 5. 거리가 임계값보다 낮고 최단 거리였던 user의 휴대폰 번호를 리턴
+            return Response({"phone_number": phonenum, "name": name})
+```
 
 ### run_lg()
 
-#### YouTube
-
-#### Wikipedia
-
-#### Temperature and Weather
-
-#### Time
-
-#### Date
-
-#### Create Calendar Events
-
-#### List Calendar Events
-
-#### Delete Calendar Events
