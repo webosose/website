@@ -221,7 +221,7 @@ If successful, you should see a message similar to the following:
 Server is running on port {port}.
 Connected
 ```
-## **Basic Setup Client**
+## **Basic Setup Client With React**
 
 Before starting the setup process, ensure the following requirements are met:
 
