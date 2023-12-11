@@ -134,7 +134,6 @@ user=<database username> e.g. root
 password=<database password> e.g. pass
 host=<database host> e.g. localhost
 database_name=<database name> e.g. kioskDB
-sql_file_path=<path to SQL file> e.g. ./db.sql
 korean_font_path=<path to Korean font file> e.g. /System/Library/Fonts/AppleSDGothicNeo.ttc
 ```
 ### Step 7: Start the Flask Authentication Server
