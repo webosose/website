@@ -48,8 +48,9 @@ We recommend using a similar Apple Silicon-based environment for development to 
 For setting up the client device in this project, you will need the following hardware components:
 
 - **Raspberry Pi**: The core computing unit for the kiosk.
-- **MicroSD Card with webOS Image**: Use a microSD card loaded with the webOS image to boot the Raspberry Pi. For this project, we have used the pre-built webOS OSE 2.24.0 image for Raspberry Pi 4, which can be downloaded from [here](https://github.com/webosose/build-webos/releases/tag/v2.24.0). Additionally, if you need guidance on flashing the webOS Open Source Edition to your microSD card, please refer to [this guide](https://www.webosose.org/docs/guides/setup/flashing-webos-ose/) for detailed instructions.
+- **MicroSD Card with webOS Image**: Use a microSD card loaded with the webOS image to boot the Raspberry Pi. For this project, we have used the pre-built webOS OSE 2.24.0 image for Raspberry Pi 4, which can be downloaded from [here](https://github.com/webosose/build-webos/releases/tag/v2.24.0). Additionally, if you need guidance on flashing the webOS Open Source Edition to your microSD card, please refer to [this guide](#링크주소) for detailed instructions.
 - **Touchscreen or Monitor**: A display unit to interact with the kiosk. A touchscreen is preferred for a more interactive experience.
+- **Webcam**: An essential component for facial recognition or other interactive features. Ensure compatibility with the Raspberry Pi.
 - **Optional Input Devices**: Devices like a mouse and keyboard for initial setup and troubleshooting.
 - **Power Supply and Cables**: A suitable power supply for the Raspberry Pi and screen, along with necessary cables such as HDMI for connectivity.
 
