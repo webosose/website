@@ -1,11 +1,13 @@
 ---
 title: Facial recognition-based kiosks
-date: 2023-12-20
+date: 2023-12-12
 slug: facial-recognition-based-kiosks
 posttype: solution
 toc: true
 thumbnail: th-facial-recognition-based-kiosks.png
 ---
+
+**Author: Dahun Kim, Yeongjae Shin, Junseok Park, Seungwoon Lee, Donghyuk Shin**
 
 ## Overview of Project
 
@@ -163,14 +165,14 @@ On your local PC, follow these steps:
         * This ipk file is the app you install on Raspberry Pie's webOS.
 
   5. Installation
-    * In the code below, 'Raspberry' is the Devide name set by ssh set above.
-	* For 'com.domain.app_0.0.1_all.ipk', write the name of the completed ipk file after packaging.
+        * In the code below, 'Raspberry' is the Devide name set by ssh set above.
+	    * For 'com.domain.app_0.0.1_all.ipk', write the name of the completed ipk file after packaging.
      
-	        ares-install —device Rasberry com.domain.app_0.0.1_all.ipk
+	            ares-install —device Rasberry com.domain.app_0.0.1_all.ipk
 
         * if it becomes Success, it is Success, and the application will work successfully.
   
-        ![16](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/8190f164-fd48-4206-b16b-b4ebbf5b95b2)
+        ![18](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/5feb04b8-7d20-4f4c-b350-64afc260aaa6)
 
 ## Code Implementation
 * If you want to see the source code, please click the [Git link](https://github.com/Cheetah-19/Kiosk_KNU)
@@ -387,7 +389,7 @@ On your local PC, follow these steps:
                     if distance < min_dist:
                         min_dist = distance
 
-                        # 거리가 임계값보다 낮을 때만 뽑음
+                        # Pull only when the distance is lower than the threshold.
                         if min_dist < 0.2:
                             phonenum = user.user_phonenum
                             name = user.user_name
@@ -403,5 +405,109 @@ On your local PC, follow these steps:
             return Response({"phone_number": phonenum, "name": name})
 ```
 
-### run_lg()
+### recommendation.py
+* This function recommends menus to users based on their past order information and ingredient information in the menu.
+* Don't recommend ingredients that users can't eat
+
+```
+    def get_recommended(user_id):
+        # Menu and ingredients
+        menus_db = Menu.objects.all()
+        # Importing User Instances
+        user_instance = User.objects.get(user_phonenum = user_id)             
+
+        try:
+            user_preprocessed_data = PreprocessedData.objects.get(user=user_instance)
+            exclude_ingredient_str = user_preprocessed_data.excluded_ingredients
+        except PreprocessedData.DoesNotExist:
+            exclude_ingredient_str = ""
+
+
+        # Process of changing String to Set
+        # Split into commas after removing brackets
+        if exclude_ingredient_str == "empty":
+            excluded_ingredients = set() 
+        else :
+            exclude_ingredient_list = exclude_ingredient_str[1:-1].split(',')
+            #String -> Create set after integer conversion
+            excluded_ingredients = set(int(item.strip()) for item in exclude_ingredient_list)
+
+        menus = {}
+        for menu in menus_db:
+            ingredients = [ingredient.id for ingredient in menu.menu_ingredient.all()]
+            # Skip menus with excluded ingredients
+            if any(ingredient in excluded_ingredients for ingredient in ingredients):
+                continue
+            ingredients_str = " ".join([ingredient.ingredient_name for ingredient in menu.menu_ingredient.all()])
+            menus[menu.menu_name] = ingredients_str
+
+        # Order data: {Order number: {'user': User ID, 'menus': [Order menu list]}}
+        orders_db = Order.objects.filter(user=user_instance)
+
+        orders = {}
+        for order in orders_db:
+            ordered_items = Ordered_Item.objects.filter(order=order)
+            orders[order.order_num] = {'user': order.user.user_phonenum, 'menus': [item.menu.menu_name for item in ordered_items]}
+
+        # TF-IDF conversion
+        vectorizer = TfidfVectorizer()
+        tfidf_matrix = vectorizer.fit_transform(menus.values())
+        tfidf_features = np.array(tfidf_matrix.todense())
+
+        # Calculate cosine similarity
+        cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
+
+        # Extract menus from a user's past orders
+        past_orders = []
+        for order in orders.values():
+            if order['user'] == user_id:
+                past_orders.append(order['menus'])
+        
+        past_menus = []
+        for order in past_orders:
+            for menu in order:
+                past_menus.append(menu)           # ex) ["Salmon Salad", "Salmon Salad", "Psyburger", "Rice Noodles", and "Rice Noodles"] It comes out as "Salmon Salad", and the more you come out twice, the higher the weight.
+        
+
+        # Find menus similar to those ordered in the past
+        similar_menus = np.zeros(len(menus))
+        for menu in past_menus:
+            index = list(menus.keys()).index(menu)
+            similar_menus += cosine_sim[index]
+
+        # Functions to obtain indexes for similarity calculations
+        def get_index(menu):
+            menu_keys = list(menus.keys())
+            index = menu_keys.index(menu)
+            return similar_menus[index]
+
+        # Creating a Menu List
+        menu_list = list(menus.keys())
+
+        # Sorts menus in order of high similarity
+        sorted_menus = []
+        for menu in menu_list:
+            sorted_menus.append((menu, get_index(menu)))
+
+        sorted_menus.sort(key=lambda x: x[1], reverse=True)
+
+        # Extract only menu names
+        sorted_menus = [menu[0] for menu in sorted_menus]
+        recommended_menus = []
+        for recom in sorted_menus:
+            this_menu = Menu.objects.get(menu_name=recom)
+            this_serial = MenuSerializer(this_menu)
+            recommended_menus.append(this_serial.data)
+        # # Sort menus in order of high similarity
+        # sorted_menus = sorted(list(menus.keys()), key=lambda x: similar_menus[list(menus.keys()).index(x)], reverse=True)
+
+        # Previous orders are excluded from the recommendation list
+        #  recommended_menus = []
+        #  for menu in sorted_menus:
+        #      if menu not in past_menus:
+        #         recommended_menus.append(menu)
+        recommended_menus = recommended_menus[0:3]
+        return recommended_menus
+```
+
 
