@@ -1,7 +1,5 @@
 # webOS Open Source Edition website
 
-test
-
 This repository contains the documentation and all the other assets for the [webOSE Open Source Edition (OSE) website](https://www.webosose.org).
 
 ## Copyright and License Information
