@@ -7,701 +7,384 @@ toc: true
 thumbnail: th-face-recognize-kiosk.jpg
 ---
 
-## Overview of Project
+**Author: Jaeduck Oh**
 
-This project is to implement an object detection model application by using You Only Look Once v3 ([YOLOv3](https://pjreddie.com/yolo/)) to identify and locate objects by means of voice command. Suppose a user asks the app about the whereabouts of an object.
+# KNU Capstone design project for the second semester of 2023
 
-- If the object is present, the app, with the help of Google Text-to-Speech (TTS), informs the user about the total number of objects found and their directions. For example, the model reports, "The cup is present to your left but close to the center." 
-- If the object is not present, an audio file is played saying, "The object you are searching for is not found."
+## Project Overview
 
-This model can help a visually impaired user to find objects easily as shown in the following scenarios:
+### Background
+Small-scale business owners often face financial constraints that make it challenging to afford expensive signage solutions. Therefore, there is a growing need for an affordable, open-source-based signage solution that can be easily implemented without the high costs associated with traditional signage products. This proposal aims to develop a user-customized kiosk that recognizes users to recommend menus and dynamically update menu lists.
 
-![Object detection scenarios](/images/samples/solutions/object-detection/object-detection-scenario.png)
+### Project Objectives and Content
+User Recognition:
+- The kiosk will utilize a camera to identify users and check if they are returning visitors with previous visit and payment records.
+- Images captured by the kiosk camera will be sent to an image recognition server for user identification.
+- The server will verify if the recognized user is a returning visitor.
+- In cases where user recognition is unsuccessful, an alternative authentication method will be provided.
 
-Required object found (left-hand side image):
+Menu Recommendations and Reconfiguration through Web App:
+- Real-Time Menu Recommendations and Reconfiguration through Web App:
+- User data registration will be facilitated both at the kiosk and in the server's database.
+- The web app will offer menu recommendations based on the user information.
+- Menus will be dynamically altered based on user data (considering factors like allergies, etc.).
+> Note: Payment processing is not included in the scope of this project.
 
-- A visually impaired user asks the app to find a bench.
-- The app detects the bench in front and indicates that it is found.
-  
-Required object NOT found (right-hand side image):
-
-- A visually impaired user asks the app to find a laptop.
-- The app does not detect any laptop devices and indicates that it is not found.
-
-## Object Detection Model
-
-The object detection model is executed according to the following steps:
-
-![Object detection model diagram](/images/samples/solutions/object-detection/object-detection-model.jpg)
-
-1. A user speaks through the microphone to search for an object.
-2. The user speech is converted to text by using Google Speech-to-Text (STT).
-3. The trained YOLOv3 model is used for object detection.
-4. The object specified by the user is matched with the objects found.
-5. The app speaks out the status of the objects found (their presence and directions).
-6. The app displays the photo of the object.
-
-## Prepare a Target device
-
-You must prepare a target device, Raspberry Pi 4 (RPi 4), flashed with a webOS OSE image. Set your device up by performing the instructions mentioned at [Building webOS OSE](https://www.webosose.org/docs/guides/setup/building-webos-ose/). After you have performed the procedure, you have a fully functional webOS OSE target device. Note down the IP address of the device.
-
-{{< note >}}
-On the target device, create a Google account. This Google account is used later to configure the required Google services.
-{{< /note >}}
-
-### Connect Hardware Devices
-
-You need to connect the following items to the target device:
-
-- USB headphone
-- HD USB camera (better resolution required for better image detection)
-
-![HW connection](/images/samples/solutions/object-detection/object-detection-hw-connection.jpeg)
-
-### Configure the Audio Device
-
-Configure the audio output device. By default, the audio output is played on the USB headset. However, if you want the output on a Bluetooth speaker, follow these steps:
-
-1. Connect to the target device.
-2. Create a file named `.asoundrc` at path `~/` and add the following content:
-
-    ``` bash
-    pcm.!default {
-        type asym
-        playback.pcm {
-            type plug
-            slave.pcm pulse
-        }
-        capture.pcm {
-            type plug
-            slave.pcm "hw:1,0"
-        }
-    }
-    ```
-
-    This is an audio configuration file that handles playback audio on the runtime pulse availability of the audio device that is attached to the target device. For example, Bluetooth speakers and USB headsets.
-
-3. Save the file.
-
-### Download YOLO Components
-
-On the target device, prepare the following directories:
-
-- Create a directory named `ObjectDetection` in the `/home/root/` directory.
-- Create a directory named `picture` in the `/home/root/ObjectDetection/` directory.
-- Create a directory named `ObjectDetectionImage` in the `/media/internal/` directory to store processed images.
-
-You also need to download the following package files to the target device:
-
-<div class="table-container">
-  <table class="table is-bordered is-fullwidth">
-    <colgroup>
-      <col style="width: auto" />
-      <col style="width: auto" />
-    </colgroup>
-    <thead>
-      <tr class="header">
-        <th>Package</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>yolov3.cfg</td>
-        <td>
-          <p>The number of (output) channels of a layer is given by "filters" (as each filter produces one channel). The neural network model architecture is stored in the <code>yolov3.cfg</code> file.</p>
-          <ol>
-            <li>
-              <p>Go to the project directory.</p>
-              <code>cd /home/root/ObjectDetection/</code>
-            </li>
-            <li>
-              <p>Download the <code>yolov3.cfg</code> file.</p>
-              <code>wget https://raw.githubusercontent.com/pjreddie/darknet/master/cfg/yolov3.cfg</code>
-            </li>
-          </ol>
-        </td>
-      </tr>
-      <tr>
-        <td>yolo.weights</td>
-        <td>
-          <p>YOLO divides up the image into a grid of 19x19 cells: Each of these cells is responsible for predicting 5 bounding boxes. This network divides the image into regions and predicts bounding boxes and probabilities for each region. These bounding boxes are weighted by the predicted probabilities. The pre-trained weights of the neural network are stored in this file.</p>
-          <ol>
-            <li>
-              <p>Go to the project directory.</p>
-              <code>/home/root/ObjectDetection/ </code>
-            </li>
-            <li>
-              <p>Download the <code>yolo.weights</code> file.</p>
-              <code>wget https://pjreddie.com/media/files/yolov3.weights</code>
-          </ol>
-          {{< note >}}
-          File Size is big (around 150 MB) wait till download.
-          {{< /note >}}
-        </td>
-      </tr>
-      <tr>
-        <td>coco.names</td>
-        <td>
-          <p>Contains the names of the objects supported by the YOLO model.</p>
-          <ol>
-            <li>
-              <p>Go to the project directory.</p>
-              <code>cd /home/root/ObjectDetection/</code>
-            </li>
-            <li>
-              <p>Download the <code>coco.names</code> file.</p>
-              <code>wget https://raw.githubusercontent.com/pjreddie/darknet/master/data/coco.names</code>
-            </li>
-          </ol>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-### Install Python3 Packages
-
-You need to install some python packages on the target device. For easy installation of these packages, run the easy_setup.sh script as described below:
-
-1. Connect to the target device.
-
-2. Download the required shell script.
-
-    ``` shell
-    $ wget http://www.github.com/webosose/samples/blob/master/poc-apps/easy_setup.sh
-    ```
-
-3. Give execution permission to the shell script.
-
-    ``` shell
-    $ chmod 777 easy_setup.sh
-    ```
-
-4. Run the shell script to install the required Python packages.
-
-    ``` shell
-    $ ./easy_setup.sh
-    ```
-
-## Enable and Configure Google Services
-
-A service account is a special type of Google account intended to represent a non-human user that needs to authenticate and be authorized to access data in Google APIs. Typically, service accounts are used in scenarios such as running workloads on virtual machines (VMs).
-
-Follow these steps to prepare your Google service account and set up your services:
-
-1. Use the Google account you have created when preparing the target device to log in to the [Google Cloud Platform Console](https://console.cloud.google.com/).
-
-2. Select an existing project or create a new project and proceed with the remainder of the Google service configurations.
-
-3. Create a service account according to the following steps:
 
-    1. From the Google Cloud Console navigation menu, choose **IAM & Admin** > **Service Accounts**, then click **+ CREATE SERVICE ACCOUNT**.
-    2. In the Service account name field, enter a name. 
-    3. The Service account ID field is automatically updated based on this name. 
-    4. In the Service account description field, enter a description. For example, "Service account for quickstart".
-    5. Click **CREATE AND CONTINUE**.
-    6. Click Select a role field. Under Quick access, select **Basic** > **Owner**, and click **CONTINUE**.
-    7. Click **DONE** to finish creating the service account.
+## Hardware Specifications and Recommendations
 
-4. Add a service account key to your service account according to the following steps:
+### Development Environment Specifications
+Our project was developed in an Apple Silicon environment, which provided us with advanced computing capabilities and efficiency. Here are the details:
 
-    1. Click on the name of the Email address which has just been created from Step 3.
-    2. In the **KEYS** tab, click **ADD KEY**, then click **Create new key**.
-    3. Select **Key type** as **JSON** (default selected), then click **CREATE**. A JSON key file is downloaded to your local PC.
-    4. Save the key file and click **CLOSE**.
-    5. Rename the downloaded JSON file on your local PC to `gstt.json`.
-    6. Copy the `gstt.json` file to the `/home/root/ObjectDetection/` directory of the target device. 
-    7. Go to the `/home/root/ObjectDetection/` directory on the target device and enable the key by running the following command:
+- **Platform**: Apple Silicon (M1, M1 Pro, M1 Max, or later)
+- **Operating System**: macOS Big Sur or later
+- **Memory**: 8GB RAM or more
+- **Storage**: 256GB SSD or higher
 
-        ``` shell
-        $ export GOOGLE_APPLICATION_CREDENTIALS="/home/root/ObjectDetection/gstt.json"
-        ```
-5. Enable Google Speech-to-Text (STT).
+We recommend using a similar Apple Silicon-based environment for development to ensure compatibility and optimal performance.
 
-    1. Select the existing project that you created above.
-    2. In the search bar, type "Cloud Speech-to-Text API".
-    3. Click on the "Cloud Speech-to-Text API" search result.
-    4. Click **ENABLE**.
-    5. Click **ENABLE BILLING** > **CREATE BILLING ACCOUNT** to create your billing account.
+## Hardware Requirements for Client Device
 
-6. Enable Google Text-to-Speech (TTS).
+For setting up the client device in this project, you will need the following hardware components:
 
-    1. Select the existing project that you created above.
-    2. In the search bar, type "Cloud Text-to-Speech API".
-    3. Click on the "Cloud Text-to-Speech" search result.
-    4. Click **ENABLE**.
-    5. Click **ENABLE BILLING** > **CREATE BILLING ACCOUNT** to create your billing account.
-        
-{{< caution >}}
-You may be charged depending on your usage of the TTS and STT services.
-{{</ caution >}}
+- **Raspberry Pi**: The core computing unit for the kiosk.
+- **MicroSD Card with webOS Image**: Use a microSD card loaded with the webOS image to boot the Raspberry Pi. For this project, we have used the pre-built webOS OSE 2.24.0 image for Raspberry Pi 4, which can be downloaded from [here](https://github.com/webosose/build-webos/releases/tag/v2.24.0). Additionally, if you need guidance on flashing the webOS Open Source Edition to your microSD card, please refer to [this guide](https://www.webosose.org/docs/guides/setup/flashing-webos-ose/) for detailed instructions.
+- **Touchscreen or Monitor**: A display unit to interact with the kiosk. A touchscreen is preferred for a more interactive experience.
+- **Optional Input Devices**: Devices like a mouse and keyboard for initial setup and troubleshooting.
+- **Power Supply and Cables**: A suitable power supply for the Raspberry Pi and screen, along with necessary cables such as HDMI for connectivity.
 
-## Install the App
 
-Install the app on the target device by using the webOS OSE CLI from your local PC.
+Ensure that you have all these components available before proceeding with the setup of your client device for the signage solution project.
 
-On your local PC, follow these steps:
 
-1. Install the webOS OSE CLI.
+> [webOS Offitial Docs](https://www.webosose.org/docs/guides/setup/system-requirements/)
 
-    ``` shell
-    $ npm install -g @webosose/ares-cli
-    ```
+### Flask Server and Database Environment Recommendations
+For the server and database environment, it is crucial to consider the following setup for efficient model loading and data processing:
 
-2. Register the target device.
+- **Unified FlaskServer-Database Setup**: We highly recommend that the server hosting the Flask application and the database should be on the same computer system. This approach significantly speeds up the loading of the "per-user trained model data", ensuring faster response times and efficient operations.
 
-    ``` shell
-    $ ares-setup-device
-    ```
 
-    ![Registering an RPi4 board](/images/samples/solutions/object-detection/object-detection-setup-register-rpi4.png)
+This configuration is recommended to minimize latency and maximize the efficiency of the data processing, especially when dealing with large, user-specific trained models.
 
-    As shown in the above figure, select the add option and fill in the details of your RPi4 device and type "yes" for Save.
+### Additional Notes
+- Ensure a stable internet connection for seamless data transfers and cloud-based operations.
+- Regular backups and a consistent power supply are recommended for data protection.
 
-3. Download the following IPK to your local PC: `com.app.objectviewer_0.0.1_all.ipk`.
 
-4. Go to the directory where the IPK is downloaded, and install the IPK on the target device.
+## Face Recognition Server START Guide
 
-    ``` shell
-    $ ares-install --device target com.app.objectviewer_0.0.1_all.ipk
-    ```
+This guide provides step-by-step instructions for setting up and running the face recognition server as part of the signage solution project. Follow these steps to ensure the server is configured and operational.
 
-## Launch the App
+### Step 1: Navigate to the Flask Directory<br/>
+First, navigate to the Flask directory in the project root. Use the following command:
 
-On the target device, launch the installed app by following these steps:
-
-1. Go to the app directory.
-
-    ``` shell
-    $ cd /home/root/ObjectDetection/
-    ```
-
-2. Download the `CamImage.py` file and copy it to the `/home/root/ObjectDetection/` directory.
-
-3. Run the app.
-
-    ``` shell
-    $ python3 CamImage.py
-    ```
-
-4. Specify the object to be found by stating the hot word as "LG". For example, "LG find umbrella and bottle."
-
-5. An image that labels all the identified objects, is displayed on the monitor via the app.
-
-    ![Demo scenario detecting an umbrella](/images/samples/solutions/object-detection/object-detection-demo-umbrella.jpg)
-
-    You can see that the umbrella and bottle are identified.
-
-6. If the object requested by the user is present in the image, the audio output is "Umbrella found towards the left, bottle found towards right". If the object is not present, the audio output is "Umbrella and bottle not found".
-
-## Code Implementation
-
-The source code for the object detection app is available at the [samples](https://github.com/webosose/samples) git repository. To get a deeper understanding, refer to the snippets provided below, which explain some important parts of the implementation.
-
-### Importing Libraries
-
-Includes the necessary libraries on the target device when the program runs and executes.
-
-``` python
-import cv2
-import numpy as np
-import requests
-import os
-import pyaudio
-import wave
-from collections import Counter
+```plaintext
+$ cd signage_solution/flask
+```
+### Step 2: Verify Python Installation<br/>
+Check if Python 3.9 is installed by running:
+```plaintext
+$ python3.9 -V
 ```
 
-### talk()
+If Python 3.9 is not installed, you can install it using Homebrew on MacOS or download it from the Python website for Windows users:<br/>
+For MacOS:
+```plaintext
+$ brew install python@3.9
+```
+For Windows:<br/>
+- Download the Python 3.9 installer from the [official Python website](https://www.python.org/downloads/).
+- Run the installer and follow the prompts to install Python 3.9.
 
-This function helps to convert a text file into mp3 audio file and plays it to the user.
 
-1. This function is called with the passed parameter "text", which contains the output text.
-2. This function calls the Google TTS library then converts the text into mp3 file.
-3. The mpg123 player plays the converted mp3 file.
+### Step 3: Set Up a Virtual Environment
+After installing Python 3.9, go back to `/signage_solution/flask` directory and set up a virtual environment named `env` using:
 
-``` python
-def talk(text):
-    from gtts import gTTS
-    import os
-    mytext = text
-    language = 'en'
-    myobj = gTTS(text=mytext, lang=language, slow=False)
-    myobj.save("welcome.mp3")
-    os.system("mpg123 " + "welcome.mp3")
+```plaintext
+$ python3.9 -m venv env
+```
+Verify that the `env` folder has been created in the current directory.
+
+### Step 4: Activate the Virtual Environment
+Activate the virtual environment with the following command:<br/>
+For MacOS/Linux:
+```plaintext
+$ source env/bin/activate
+```
+For Windows:
+```plaintext
+$ env\Scripts\activate
+```
+### Step 5: Install Dependencies
+While in the virtual environment and in the flask directory, install the required dependencies:
+
+```Plain text
+$ pip install -r requirements.txt
+```
+### Step 6: Create the .env File
+
+Create a `.env` file in the `/flask` directory. This file will store environment-specific variables, which are essential for configuring the server settings.
+
+Here is an example of what the contents of the `.env` file might look like:
+
+```plaintext
+user=<database username> e.g. root
+password=<database password> e.g. pass
+host=<database host> e.g. localhost
+database_name=<database name> e.g. kioskDB
+sql_file_path=<path to SQL file> e.g. ./db.sql
+korean_font_path=<path to Korean font file> e.g. /System/Library/Fonts/AppleSDGothicNeo.ttc
+```
+### Step 7: Start the Flask Authentication Server
+Run the Flask app with the following command to start the authentication server:
+
+```plaintext
+$ python app.py
 ```
 
-### take_alter_command()
+Exiting the Virtual Environment
+To deactivate the virtual environment when you're finished, simply run:
 
-This function is called when the user makes voice command.
-
-1. This function calls the `voicein` function recursively until it collects the right input from the user.
-2. The `voicein` function sets the parameters, such as chunk and frame, to record the voice.
-3. This function initiates recording for 5 seconds and stops recording. After that, the recording is saved as a .wav file.
-4. With the help of Google Cloud, this function converts the .wav audio file to the text.
-5. If the user has not given any input voice, then the text must be empty and this functions repeatedly calls the `voicein` function.
-6. If the text is not empty, it gets converted into a lowercase text.
-7. From the lowercase text this function tries to identify the keyword "LG".
-
-    a. If the keyword "LG" is present in the text, this function returns the text for further operations.
-
-    b. Else, it repeats calling the `voicein` function.
-
-``` python
-def take_alter_command():
-    def voicein():
-        CHUNK = 515
-        FORMAT = pyaudio.paInt16
-        CHANNELS = 2
-        RATE = 44100
-        RECORD_SECONDS = 5
-        WAVE_OUTPUT_FILENAME = "output.wav"
-
-        p = pyaudio.PyAudio()
-
-        stream = p.open(format=FORMAT,
-                        channels=CHANNELS,
-                        rate=RATE,
-                        input=True,
-                        frames_per_buffer=CHUNK)
-        print("* recording")
-        
-        frames = []
-
-        for i in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
-            data = stream.read(CHUNK)
-            frames.append(data)
-        print("* done recording")
-        
-        stream.stop_stream()
-        stream.close()
-        p.terminate()
-
-        wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
-        wf.setnchannels(CHANNELS)
-        wf.setsampwidth(p.get_sample_size(FORMAT))
-        wf.setframerate(RATE)
-        wf.writeframes(b''.join(frames))
-        wf.close()
-        
-        from google.cloud import speech
-        import io
-
-        client = speech.SpeechClient()
-        speech_file = "/home/root/ObjectDetection/output.wav"
-       
-        with io.open(speech_file, "rb") as audio_file:
-            content = audio_file.read()
-
-        audio = speech.RecognitionAudio(content=content)
-        config = speech.RecognitionConfig(
-            encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
-            sample_rate_hertz=44100,
-            language_code="en-US",
-            audio_channel_count=2,
-        )
-
-        response = client.recognize(config=config, audio=audio)
-
-        # Each result is for a consecutive portion of the audio. Iterate through
-        # them to get the transcripts for the entire audio file.
-        
-        if len(response.results) == 0:
-            return voicein()
-        else: 
-            for result in response.results:
-                # The first alternative is the most likely one for this portion.
-                
-                print(u"Transcript: {}".format(result.alternatives[0].transcript))
-                resultvoice = (format(result.alternatives[0].transcript))
-                resultvoice = resultvoice.lower()
-                if 'lg' in resultvoice:
-                    outputvoice = resultvoice.replace('lg', '')       
-                    return outputvoice
-                else:
-                    return take_alter_command()
-                return resultvoice
-    text = voicein()
-    return text;
+```plaintext
+$ deactivate
 ```
 
-### run_lg()
 
-This function helps processing user voice input and runs the YOLO DNN model to process the result.
+## **NodeJS Server for Basic Setup Kiosk-API Guide**
 
-1. InputCommand calls the `take_alter_command` function and takes the input from the user.
-2. InputCommand converts the input text into lowercase and changes the exception words like "potted plant" to "pottedplant" as per `coco.names` file.
-3. The input text is then broken into single words and kept in a list named `ObjectToFind`.
-4. The YOLO configuration file and the weights file are then loaded by using DNN. This class allows to create and manipulate comprehensive artificial neural networks.
-5. All the names from the `coco.names` file is then stored in a list named `classes`.
-6. Then some operations to handle the camera are executed by using the camera2 service API.
-7. Then the captured images are processed and then the detected objects are labeled in those images accordingly.
-8. The processed images are stored locally. 
-9. If the confidence is more than 0.5 (50%), then a rectangular box is created around the object with the object name and confidence score and the object name is added to the "items" list.
-10. The object detection app then shows the processed image with the rectangular box and labels.
+### Step 1: Navigate to the NODEJS Directory
 
-``` python
-def run_lg():
-    InputCommand = take_alter_command()
-    InputCommand = InputCommand.lower()
-    if "potted plant" in InputCommand:
-        InputCommand = InputCommand.replace("potted plant", "pottedplant")
-    if "tv monitor" in InputCommand:
-        InputCommand = InputCommand.replace("tv monitor", "tvmonitor")
-    if "dining table" in InputCommand:
-        InputCommand = InputCommand.replace("dining table", "diningtable")
-    ObjectToFind = []
-    ObjectToFind = (InputCommand.split())
-    net = cv2.dnn.readNet('yolov3.weights', 'yolov3.cfg')
-
-    classes = []
-
-    with open('coco.names', 'r') as f:
-        classes = f.read().splitlines()
-     
-    os.system("luna-send -n 1 -f luna://com.webos.service.camera2/open '{"+'"id": "camera1"}'+"'"+">handle.txt")
-    f = open("handle.txt")
-    for i in f:
-        if "handle" in i:
-            h = i.replace('"handle":', '')
-            handle = h.replace(" ","")
-            
-    os.system("luna-send -n 1 -f luna://com.webos.service.camera2/setFormat '{"+'"handle": '+str(handle)+',"params":{"width": 1920,"height": 1080,"format": "JPEG", "fps": 30}}'+"'")
-    os.system("luna-send -n 1 -f luna://com.webos.service.camera2/startPreview '{"+'"handle": '+str(handle)+', "params": {"type":"sharedmemory","source":"0"}}'+"'")
-    os.system("rm /home/root/ObjectDetection/picture/*")
-    os.system("luna-send -n 1 -f luna://com.webos.service.camera2/startCapture '{"+'"handle": '+str(handle)+',"params":{"width": 1920,"height": 1080,"format": "JPEG","mode":"MODE_ONESHOT","nimage":6},"path":"/home/root/ObjectDetection/picture"}'+"'")
-    os.system("ls /home/root/ObjectDetection/picture >imgName.txt")
-    f = open("imgName.txt")
-    
-    val = 0
-    for i in f:
-        val = i
-
-    os.system("luna-send -n 1 -f luna://com.webos.service.camera2/stopPreview '{"+'"handle": '+str(handle)+"}'")
-    os.system("luna-send -n 1 -f luna://com.webos.service.camera2/close '{"+'"handle": '+str(handle)+"}'")
-    
-    if "" in val:
-        val = val.replace("", "")
-        
-    imgPath = '/home/root/ObjectDetection/picture/'+val
-    img = cv2.imread(imgPath)
-    height, width, _ = img.shape
-    center = (width/2)
-    
-    blob = cv2.dnn.blobFromImage(img, 1/255, (416, 416), (0,0,0), swapRB=True, crop=False)
-    net.setInput(blob)
-    output_layers_names = net.getUnconnectedOutLayersNames()
-    layesOutputs = net.forward(output_layers_names)
-
-    boxes = []
-    confidences = []
-    class_ids = []
-
-    for output in layesOutputs:
-        for detection in output:
-            scores = detection[5:]
-            class_id = np.argmax(scores)
-            confidence = scores[class_id]
-            if confidence > 0.5:
-                center_x = int(detection[0]*width)
-                center_y = int(detection[1]*height)
-                w = int(detection[2]*width)
-                h = int(detection[3]*height)
-
-                x = int(center_x - w/2)
-                y = int(center_y - h/2)
-
-                boxes.append([x, y, w, h])
-                confidences.append((float(confidence)))
-                class_ids.append(class_id)
-
-    indexes = cv2.dnn.NMSBoxes(boxes, confidences, 0.5, 0.4)
-    font = cv2.FONT_HERSHEY_PLAIN
-    colors = np.random.uniform(0, 255, size=(len(boxes), 3))
-
-    items = []
-    position = []
-    position2 = []
-
-    for i in indexes.flatten():
-        x, y, w, h = boxes[i]
-        label = str(classes[class_ids[i]])
-        items.append(label)
-        position.append(x)
-        position2.append(x+w)
-        confidence = str(round(confidences[i],2))
-        color = colors[i]
-        cv2.rectangle(img, (x,y), (x+w, y+h), color, 2)
-        cv2.putText(img, label +" "+ confidence, (x, y+20), font, 2, (255,255,255), 2)
-        
-    cv2.imwrite('/media/internal/ObjectDetectionImage/image.jpg',img)
-    temp = ("luna-send -n 1 luna://com.webos.applicationManager/launch '{"+'"id":"com.app.objectviewer", "params":{"imagePath": "/media/internal/ObjectDetectionImage/image.jpg", "imageLabel": "Test Image"}}'+"'")
-    temp2 = ("luna-send -n 1 -f luna://com.webos.applicationManager/closeByAppId '{"+'"id":"com.app.objectviewer"}'+"'")
-    os.system(temp2)
-    os.system(temp)
-    ObjectToFindLen = len(ObjectToFind)
-    ObjectToFindCount = 0
-    f=0
-    p1 = 0
-    p2 = 0
-    duplicate_dict = Counter(items)
-    dis = ((center*15)/100)
-    for i in ObjectToFind:
-        ObjectToFindCount = ObjectToFindCount + 1
-        if i in classes:
-            if i in items:
-                f=1
-                TotalObject = duplicate_dict[i]
-                if TotalObject == 1:
-                    coord = items.index(i)
-                    if((position[coord] <= center) and (position2[coord] >= center)):
-                        talk(i+" found in the center")
-                    if((position[coord] < center) and (position2[coord] <= center)):
-                        if (position2[coord] >= (center - dis)):
-                            talk(i+" found in the left but close to the center")
-                        elif (position[coord] <= dis):
-                            talk(i+" found towards the left most end")
-                        else:
-                            talk(i+" found in the left middle")
-                    if((position[coord] >= center) and (position2[coord] > center)):
-                        if (position[coord] <= (center + dis)):
-                            talk(i+" found in the right but close to the center")
-                        elif (position2[coord] >= (width - dis)):
-                            talk(i+" found towards the right most end")
-                        else:
-                            talk(i+" found in the right middle")
-                    
-                if TotalObject > 1:
-                    talk("total "+str(TotalObject)+" "+i+" found")
-                    w = 0
-                    objcountLeftCenter = 0
-                    objcountLeftMiddle = 0
-                    objcountLeftEnd = 0
-                    objcountRightCenter = 0
-                    objcountRightMiddle = 0
-                    objcountRightEnd = 0
-                    objcountCenter = 0
-                    
-                    for q in items:
-                        if q == i:
-                            if((position[w] <= center) and (position2[w] >= center)):
-                                objcountCenter = objcountCenter + 1
-                            if((position[w] < center) and (position2[w] <= center)):
-                                if (position2[w] >= (center - dis)):
-                                    objcountLeftCenter = objcountLeftCenter + 1
-                                elif (position[w] <= dis):
-                                    objcountLeftEnd = objcountLeftEnd + 1
-                                else:
-                                    objcountLeftMiddle = objcountLeftMiddle + 1
-                            if((position[w] >= center) and (position2[w] > center)):
-                                if (position[w] <= (center + dis)):
-                                    objcountRightCenter = objcountRightCenter + 1
-                                elif (position2[w] >= (width - dis)):
-                                    objcountRightEnd = objcountRightEnd + 1
-                                else:
-                                    objcountRightMiddle = objcountRightMiddle + 1
-                        w = w+1
-                    talk("out of which ")
-                    if objcountLeftCenter != 0:
-                        talk(str(objcountLeftCenter)+" "+i+" found in the left but close to the center")
-                    if objcountLeftMiddle != 0:
-                        talk(str(objcountLeftMiddle)+" "+i+" found in the left middle")
-                    if objcountLeftEnd != 0:
-                        talk(str(objcountLeftEnd)+" "+i+" found towards the left most end")  
-                    if objcountRightCenter != 0:
-                        talk(str(objcountRightCenter)+" "+i+" found in the right but close to the center") 
-                    if objcountRightMiddle != 0:
-                        talk(str(objcountRightMiddle)+" "+i+" found in the right middle")   
-                    if objcountRightEnd != 0:
-                        talk(str(objcountRightEnd)+" "+i+" found towards the right most end")    
-                    if objcountCenter != 0:
-                        talk(str(objcountCenter)+" "+i+" found in the center")   
-            else:
-                f=1
-                talk(i+" not found")
-              
-        else:
-            if ObjectToFindCount == ObjectToFindLen:
-                s=0
-                for i in ObjectToFind:
-                    s = s+1
-                    if s <= (len(ObjectToFind) - 1):
-                        val = (i+" "+ObjectToFind[s])
-                        if val in classes:
-                            if val in items:
-                                f=1
-                                TotalObject = duplicate_dict[val]
-                                if TotalObject == 1:
-                                    coord = items.index(val)
-                                    if((position[coord] <= center) and (position2[coord] >= center)):
-                                        talk(val+" found in the center")
-                                    if((position[coord] < center) and (position2[coord] <= center)):
-                                        if (position2[coord] >= (center - dis)):
-                                            talk(val+" found in the left but close to the center")
-                                        elif (position[coord] <= dis):
-                                            talk(val+" found towards the left most end")
-                                        else:
-                                            talk(val+" found in the left middle")
-                                    if((position[coord] >= center) and (position2[coord] > center)):
-                                        if (position[coord] <= (center + dis)):
-                                            talk(val+" found in the right but close to the center")
-                                        elif (position2[coord] >= (width - dis)):
-                                            talk(val+" found towards the right most end")
-                                        else:
-                                            talk(val+" found in the right middle")
-                                            
-                                if TotalObject > 1:
-                                    talk("total "+str(TotalObject)+" "+val+" found")
-                                    w = 0
-                                    objcountLeftCenter = 0
-                                    objcountLeftMiddle = 0
-                                    objcountLeftEnd = 0
-                                    objcountRightCenter = 0
-                                    objcountRightMiddle = 0
-                                    objcountRightEnd = 0
-                                    objcountCenter = 0
-                                    for q in items:
-                                        
-                                        if q == val:
-                                            if((position[w] <= center) and (position2[w] >= center)):
-                                                objcountCenter = objcountCenter + 1
-                                            if((position[w] < center) and (position2[w] <= center)):
-                                                if (position2[w] >= (center - dis)):
-                                                    objcountLeftCenter = objcountLeftCenter + 1
-                                                elif (position[w] <= dis):
-                                                    objcountLeftEnd = objcountLeftEnd + 1
-                                                else:
-                                                    objcountLeftMiddle = objcountLeftMiddle + 1
-                                            if((position[w] >= center) and (position2[w] > center)):
-                                                if (position[w] <= (center + dis)):
-                                                    objcountRightCenter = objcountRightCenter + 1
-                                                elif (position2[w] >= (width - dis)):
-                                                    objcountRightEnd = objcountRightEnd + 1
-                                                else:
-                                                    objcountRightMiddle = objcountRightMiddle + 1
-                                        w = w+1
-                                    talk("out of which ")
-                                    if objcountLeftCenter != 0:
-                                        talk(str(objcountLeftCenter)+" "+val+" found in the left but close to the center")
-                                    if objcountLeftMiddle != 0:
-                                        talk(str(objcountLeftMiddle)+" "+val+" found in the left middle")
-                                    if objcountLeftEnd != 0:
-                                        talk(str(objcountLeftEnd)+" "+val+" found towards the left most end")  
-                                    if objcountRightCenter != 0:
-                                        talk(str(objcountRightCenter)+" "+val+" found in the right but close to the center") 
-                                    if objcountRightMiddle != 0:
-                                        talk(str(objcountRightMiddle)+" "+val+" found in the right middle")   
-                                    if objcountRightEnd != 0:
-                                        talk(str(objcountRightEnd)+" "+val+" found towards the right most end")    
-                                    if objcountCenter != 0:
-                                        talk(str(objcountCenter)+" "+val+" found in the center")             
-                                        
-                            else:
-                                f=1
-                                talk(val+" not found")
-                    if s == (ObjectToFindLen -1) and f==0:
-                        talk("Sorry no object found")
-while True:
-    run_lg()
+```plaintext
+$ cd signage_solution/nodejs
 ```
+
+### Step 2: **Install npm Modules**
+
+Install the necessary npm modules to run the project.
+
+```plaintext
+$ npm i
+```
+
+### Step 3: **Create .env File**
+
+Create a **`.env`** file in the nodejs project's root directory and configure the database connection information, admin password, and port number.
+
+```plaintext
+DATABASE_URL="mysql://<database username e.g. root>:<database password e.g. 8246>@<database host e.g. localhost>:3306/<database name e.g. kioskDB>"
+PORT=(the number what you want)
+```
+
+### Step 4: **Create Database**
+
+To create a database, open MySQL Shell and execute the following code.
+
+```plaintext
+CREATE DATABASE <database name> e.g. kioskDB;
+```
+
+### Step 5: **Migrate Tables**
+
+Execute the migration to create database tables in mysql database.
+
+```plaintext
+$ npx prisma migrate dev
+```
+
+### Step 6: **Generate Dummy Data**
+
+Generate dummy data for testing using the following command.
+
+```plaintext
+$ npm run seed
+```
+
+If successful, the following message will be displayed:
+
+```plaintext
+Connected
+Success
+```
+
+### Step 7: **Run the Program**
+
+To run the program, use the following command.
+
+```plaintext
+$ npm run start
+```
+
+If successful, you should see a message similar to the following:
+
+```plaintext
+Server is running on port {port}.
+Connected
+```
+## **Basic Setup Client**
+
+Before starting the setup process, ensure the following requirements are met:
+
+- **Raspberry Pi Setup**: You should have a Raspberry Pi that successfully boots with the webOS OSE image.
+- **Network Connection**: The Raspberry Pi and your local PC must be connected to the same network. This connection is essential for the setup process using the webOS OSE CLI from your local PC.
+- **Node.js on Local PC**: Node.js must be installed on your local PC as it is required to run the webOS OSE CLI. 
+
+### Setting Up Node.js on Your Local PC
+
+If you haven't installed Node.js on your local PC, please complete the installation of Node.js.
+Once installed, verify the installation by running `node -v` in your command line or terminal. This will display the installed version of Node.js.
+
+### Installing the webOS OSE CLI
+
+After setting up Node.js, install the webOS OSE CLI by executing the following command:
+
+```plaintext
+$ npm install -g @webosose/ares-cli
+```
+### Verify webOS OSE CLI Installation
+
+After installing the webOS OSE CLI, you can verify its installation by running:
+
+```plaintext
+$ ares
+```
+This command will display a list of available ares commands, confirming that the webOS OSE CLI is correctly installed.
+
+### Device Setup Process
+To set up a new device for development, use the ares-setup-device command. This will guide you through the process of registering and configuring a new device for your development environment:
+
+```plaintext
+$ ares-setup-device
+```
+![ares-setup-device](/images/samples/solutions/face-recognize-kiosk/setup-device.png)
+
+### Check Installed Devices
+To verify the devices that are already set up, use the following command:
+```bash
+$ ares-install -D
+```
+This will list all the devices that have been set up and are ready for development.
+
+Follow the on-screen prompts to complete the setup of your device.
+
+### Deployment Script: deploy.sh
+
+Before running the `deploy.sh` script, ensure you are in the react project's root directory, which is the parent directory where the `build` will be created. The `deploy.sh` script automates the building and deploying process of the project.
+
+#### Requirements
+- The `deploy.sh` script should be located in the react project's root directory.
+- An `icon.png` file should also be placed in the react project's root directory.
+- Raspberry Pi with webOS set must be powered on
+- The local PC (from which you are deploying) and the Raspberry Pi must be connected to the same network for successful deployment.
+
+#### deploy.sh Script
+
+The `deploy.sh` script performs the following actions:
+- Removes existing build and IPK directories.
+- Creates a new build of the react project.
+- Generates the `appinfo.json` file and copies the `icon.png` file into the build directory.
+- Packages the application into an IPK file.
+- Installs and launches the app on the specified device.
+
+```bash
+#!/bin/bash
+
+# Remove build file.
+rm -rf build
+
+# Remove IPK file.
+rm -rf IPK
+
+# Build the project
+npm run build
+
+# Change to the build directory
+cd build
+
+# Create appinfo.json and add content
+printf '{\n "id": "kr.ac.knu.app.signage",\n "version": "1.0.0",\n "vendor": "My Company",\n "type": "web",\n "main": "index.html",\n "title": "new app",\n "icon": "icon.png",\n "requiredPermissions": [ "time.query", "activity.operation" ]\n}' > appinfo.json
+
+# Copy the icon.png file
+cp ../icon.png icon.png
+
+# Package the application
+ares-package . -o ../IPK
+
+# Change to the IPK directory
+cd ../IPK
+
+# Remove existing installation
+ares-install -d jongmal -r kr.ac.knu.app.signage
+
+# Install the new package
+ares-install -d jongmal kr.ac.knu.app.signage_1.0.0_all.ipk
+
+# Launch the app
+ares-launch -d jongmal kr.ac.knu.app.signage
+
+# Open inspector
+ares-inspect -d jongmal --app kr.ac.knu.app.signage
+
+# Change directory
+cd ..
+```
+
+### Setting Execution Permission
+After creating the deploy.sh script, change its execution permission with the following command:
+
+```plaintext
+$ chmod +x deploy.sh
+```
+To deploy your project, execute the deploy.sh script from the project's root directory:
+
+```plaintext
+$ ./deploy.sh
+```
+This script simplifies the deployment process, ensuring that your application is built, packaged, and deployed efficiently to your target device.
+
+
+
+# **Recommendation Algorithm and Testing**
+
+## **Algorithm Overview**
+
+In this project, collaborative user filtering is utilized. The algorithm measures the similarity of order histories among users to select N similar users. It then analyzes the order histories of these N users to recommend the most frequently ordered menu items. The algorithm primarily employs cosine similarity to measure the similarity between users and selects the recommendation target based on this similarity.
+
+## **Algorithm Flow**
+
+1. **Measuring User Similarity**: Pairing all users in the database and calculating cosine similarity to select N users with similar order histories.
+2. **Recruiting Similar Users**: Using cosine similarity as a criterion, selecting the top N users with the highest similarity.
+3. **Order History Analysis**: Summarizing the order histories of the selected N users and calculating the frequency of each menu item.
+4. **Selecting Recommended Menu**: Choosing the menu item with the highest frequency as the recommended item.
+
+## **Testing Method**
+
+Testing focuses on using dummy data to verify the accuracy and efficiency of the algorithm. Multiple tests are conducted to ensure that the expected results are achieved. Necessary measures are taken to improve the algorithm's performance based on the test results.
+
+### **Test Data Example:**
+
+- A: Ordered 5 bowls of ramen
+- B: Ordered 5 bowls of ramen, 3 pork cutlets
+- C: Ordered 5 bowls of ramen, 10 cheese pork cutlets (highest order frequency)
+- D: Ordered 5 bowls of ramen, 2 rice cakes in spicy sauce
+- E: Ordered 5 rolls of gimbap
+
+### **Test Configuration:**
+
+- Set N=3 to select the top 3 users with the highest similarity.
+- Combine the order histories of selected users B, C, D to recommend the most frequently ordered menu.
+
+## **Expected Results**
+
+The anticipated results from the test are as follows:
+
+- Similar Users: B, C, D
+- Combined Order History: 15 bowls of ramen, 3 pork cutlets, 10 cheese pork cutlets, 2 rice cakes in spicy sauce, 5 rolls of gimbap
+- Recommended Menu: Cheese Pork Cutlets (most frequently ordered)
+
+If the results align with expectations, it confirms the accuracy of the algorithm.
+
+## **Future Improvements**
+
+If any performance issues or accuracy concerns are identified during testing, efforts will be made to address those areas and enhance the algorithm for better efficiency and accuracy.
+
