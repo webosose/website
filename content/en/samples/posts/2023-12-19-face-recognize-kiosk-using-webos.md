@@ -73,84 +73,6 @@ This configuration is recommended to minimize latency and maximize the efficienc
 - Regular backups and a consistent power supply are recommended for data protection.
 
 
-## Face Recognition Server START Guide
-
-This guide provides step-by-step instructions for setting up and running the face recognition server as part of the signage solution project. Follow these steps to ensure the server is configured and operational.
-
-### Step 1: Navigate to the Flask Directory<br/>
-First, navigate to the Flask directory in the project root. Use the following command:
-
-```plaintext
-$ cd signage_solution/flask
-```
-### Step 2: Verify Python Installation<br/>
-Check if Python 3.9 is installed by running:
-```plaintext
-$ python3.9 -V
-```
-
-If Python 3.9 is not installed, you can install it using Homebrew on MacOS or download it from the Python website for Windows users:<br/>
-For MacOS:
-```plaintext
-$ brew install python@3.9
-```
-For Windows:<br/>
-- Download the Python 3.9 installer from the [official Python website](https://www.python.org/downloads/).
-- Run the installer and follow the prompts to install Python 3.9.
-
-
-### Step 3: Set Up a Virtual Environment
-After installing Python 3.9, go back to `/signage_solution/flask` directory and set up a virtual environment named `env` using:
-
-```plaintext
-$ python3.9 -m venv env
-```
-Verify that the `env` folder has been created in the current directory.
-
-### Step 4: Activate the Virtual Environment
-Activate the virtual environment with the following command:<br/>
-For MacOS/Linux:
-```plaintext
-$ source env/bin/activate
-```
-For Windows:
-```plaintext
-$ env\Scripts\activate
-```
-### Step 5: Install Dependencies
-While in the virtual environment and in the flask directory, install the required dependencies:
-
-```Plain text
-$ pip install -r requirements.txt
-```
-### Step 6: Create the .env File
-
-Create a `.env` file in the `/flask` directory. This file will store environment-specific variables, which are essential for configuring the server settings.
-
-Here is an example of what the contents of the `.env` file might look like:
-
-```plaintext
-user=<database username> e.g. root
-password=<database password> e.g. pass
-host=<database host> e.g. localhost
-database_name=<database name> e.g. kioskDB
-korean_font_path=<path to Korean font file> e.g. /System/Library/Fonts/AppleSDGothicNeo.ttc
-```
-### Step 7: Start the Flask Authentication Server
-Run the Flask app with the following command to start the authentication server:
-
-```plaintext
-$ python app.py
-```
-
-Exiting the Virtual Environment
-To deactivate the virtual environment when you're finished, simply run:
-
-```plaintext
-$ deactivate
-```
-
-
 ## **NodeJS Server for Basic Setup Kiosk-API Guide**
 
 ### Step 1: Navigate to the NODEJS Directory
@@ -233,6 +155,88 @@ If successful, you should see a message similar to the following:
 Server is running on port {port}.
 Connected
 ```
+
+## Face Recognition Server START Guide
+
+This guide provides step-by-step instructions for setting up and running the face recognition server as part of the signage solution project. Follow these steps to ensure the server is configured and operational.
+
+### Step 1: Navigate to the Flask Directory<br/>
+First, navigate to the Flask directory in the project root. Use the following command:
+
+```plaintext
+$ cd signage_solution/flask
+```
+### Step 2: Verify Python Installation<br/>
+Check if Python 3.9 is installed by running:
+```plaintext
+$ python3.9 -V
+```
+
+If Python 3.9 is not installed, you can install it using Homebrew on MacOS or download it from the Python website for Windows users:<br/>
+For MacOS:
+```plaintext
+$ brew install python@3.9
+```
+For Windows:<br/>
+- Download the Python 3.9 installer from the [official Python website](https://www.python.org/downloads/).
+- Run the installer and follow the prompts to install Python 3.9.
+
+
+### Step 3: Set Up a Virtual Environment
+After installing Python 3.9, go back to `/signage_solution/flask` directory and set up a virtual environment named `env` using:
+
+```plaintext
+$ python3.9 -m venv env
+```
+Verify that the `env` folder has been created in the current directory.
+
+### Step 4: Activate the Virtual Environment
+Activate the virtual environment with the following command:<br/>
+For MacOS/Linux:
+```plaintext
+$ source env/bin/activate
+```
+For Windows:
+```plaintext
+$ env\Scripts\activate
+```
+### Step 5: Install Dependencies
+While in the virtual environment and in the flask directory, install the required dependencies:
+
+```Plain text
+$ pip install -r requirements.txt
+```
+### Step 6: Create the .env File
+
+Create a `.env` file in the `/flask` directory. This file will store environment-specific variables, which are essential for configuring the server settings.
+
+Here is an example of what the contents of the `.env` file might look like:
+
+```plaintext
+user=<database username> e.g. root
+password=<database password> e.g. pass
+host=<database host> e.g. localhost
+database_name=<database name> e.g. kioskDB
+korean_font_path=<path to Korean font file> e.g. /System/Library/Fonts/AppleSDGothicNeo.ttc
+```
+### Step 7: Start the Flask Authentication Server
+Run the Flask app with the following command to start the authentication server:
+
+```plaintext
+$ python app.py
+```
+
+Exiting the Virtual Environment
+To deactivate the virtual environment when you're finished, simply run:
+
+```plaintext
+$ deactivate
+```
+
+
+
+
+
 ## **Basic Setup Client With React**
 
 Before starting the setup process, ensure the following requirements are met:
