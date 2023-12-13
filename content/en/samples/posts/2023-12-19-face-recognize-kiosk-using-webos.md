@@ -206,8 +206,20 @@ If successful, the following message will be displayed:
 Connected
 Success
 ```
+### Step 7: **Terminate Seed Command**
 
-### Step 7: **Run the Program**
+After successfully generating dummy data using the `npm run seed` command, you may need to terminate the seed command to proceed with other tasks or steps. Follow the step below to gracefully stop the running process:
+
+
+### Terminate Seed Command:
+
+In your command-line interface where the seed command is running, press `Ctrl + C`.
+
+```bash
+$ Ctrl + C
+```
+
+### Step 8: **Run the Program**
 
 To run the program, use the following command.
 
