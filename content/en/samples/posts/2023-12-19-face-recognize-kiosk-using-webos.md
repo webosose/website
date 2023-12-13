@@ -389,7 +389,7 @@ Our recommended algorithm aims to provide users with menu suggestions based on u
 In this scenario, it is challenging to extract similar users, as the algorithm relies on user history. Consequently, the recommendation algorithm may not operate optimally when the user has not placed any orders.
 
 2. When the user has a diverse history of tried menus:<br/>
-Our algorithm selects menus that the user has not tried yet. However, if the user has a wide variety of tried menus, it becomes difficult to make recommendations. In such cases, the algorithm may not be able to provide suggestions effectively.<br/>
+Our algorithm selects menus that the user has not tried yet. However, if the user has a wide variety of tried menus, it becomes difficult to make recommendations. In such cases, the algorithm may not be able to provide suggestions effectively.<br/><br/>
 Please be mindful of these potential limitations in the algorithmic process, as they could lead to instances where the recommendation process does not yield results.
 
 ## **Testing Method**
