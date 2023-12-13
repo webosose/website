@@ -381,7 +381,7 @@ In this project, collaborative user filtering is utilized. The algorithm measure
 3. **Order History Analysis**: Summarizing the order histories of the selected N users and calculating the frequency of each menu item.
 4. **Selecting Recommended Menu**: Choosing the menu item with the highest frequency as the recommended item.
 
-## **Algorithm features and a point of note
+## **Algorithm features and a point of note**
 
 Our recommended algorithm aims to provide users with menu suggestions based on user-based collaborative filtering, extracting similar users who have tried menus that the target user has not yet experienced. However, there are situations in which the recommendation algorithm may not function effectively.
 
