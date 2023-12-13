@@ -385,11 +385,11 @@ In this project, collaborative user filtering is utilized. The algorithm measure
 
 Our recommended algorithm aims to provide users with menu suggestions based on user-based collaborative filtering, extracting similar users who have tried menus that the target user has not yet experienced. However, there are situations in which the recommendation algorithm may not function effectively.
 
-- 1.When the user has never placed an order:
+1. When the user has never placed an order:<br/>
 In this scenario, it is challenging to extract similar users, as the algorithm relies on user history. Consequently, the recommendation algorithm may not operate optimally when the user has not placed any orders.
 
-- 2.When the user has a diverse history of tried menus:
-Our algorithm selects menus that the user has not tried yet. However, if the user has a wide variety of tried menus, it becomes difficult to make recommendations. In such cases, the algorithm may not be able to provide suggestions effectively.
+2. When the user has a diverse history of tried menus:<br/>
+Our algorithm selects menus that the user has not tried yet. However, if the user has a wide variety of tried menus, it becomes difficult to make recommendations. In such cases, the algorithm may not be able to provide suggestions effectively.<br/>
 Please be mindful of these potential limitations in the algorithmic process, as they could lead to instances where the recommendation process does not yield results.
 
 ## **Testing Method**
