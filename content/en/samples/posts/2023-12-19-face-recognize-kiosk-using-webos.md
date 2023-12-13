@@ -382,6 +382,169 @@ In this project, collaborative user filtering is utilized. The algorithm measure
 3. **Order History Analysis**: Summarizing the order histories of the selected N users and calculating the frequency of each menu item.
 4. **Selecting Recommended Menu**: Choosing the menu item with the highest frequency as the recommended item.
 
+## **Recommend.py**
+
+```plaintext
+function JaccardSimilarity(targetUserOrders, userOrders) {
+  // Extracting menuID values and creating new sets
+  const set1 = new Set(targetUserOrders.map(order => order.menuID));
+  const set2 = new Set(userOrders.menuIDList.map(order => order.menuID));
+
+  // Calculating intersection and union sets
+  const intersection = new Set([...set1].filter(x => set2.has(x)));
+  const union = new Set([...set1, ...set2]);
+
+  // Calculating sizes of intersection and union sets
+  const intersectionSize = intersection.size;
+  const unionSize = union.size;
+
+  // Calculating and returning Jaccard similarity coefficient
+  return unionSize === 0 ? 0 : intersectionSize / unionSize;
+}
+```
+
+<br/>
+The JaccardSimilarity function calculates the Jaccard similarity coefficient between two sets of menuIDs representing user orders. This coefficient is a measure of similarity between two sets and is defined as the size of the intersection of the sets divided by the size of their union.
+<br/><br/>
+
+```plaintext
+/**
+ * Asynchronous function to retrieve the most ordered menu among the menus ordered by top similar users.
+ *
+ * @param {Array} topSimilarUsers - An array of objects representing the top similar users.
+ * @param {Array} targetUserOrders - An array of objects representing menu orders for the target user.
+ * @returns {Object} - An object containing the most ordered menuID.
+ */
+async function getMostOrderedMenu(topSimilarUsers, targetUserOrders) {
+  const menuFrequency = new Map();
+
+  // Iterating through the top similar users
+  for (const similarUser of topSimilarUsers) {
+    // Retrieving menu orders for the current similar user
+    const userMenus = await prisma.menuOrderInfo.findMany({
+      where: {
+        userID: similarUser.userId,
+      },
+      select: {
+        menuID: true,
+      },
+    });
+
+    // Updating menu frequency based on the orders of the current similar user
+    userMenus.forEach(menu => {
+      // Checking if the menu is not present in the target user's orders
+      if (!targetUserOrders.some(order => order.menuID === menu.menuID)) {
+        const currentCount = menuFrequency.get(menu.menuID) || 0;
+        menuFrequency.set(menu.menuID, currentCount + 1);
+      }
+    });
+  }
+
+  // Finding the menu with the highest frequency
+  let mostOrderedMenu = null;
+  let maxFrequency = 0;
+
+  menuFrequency.forEach((count, menuID) => {
+    if (count > maxFrequency) {
+      mostOrderedMenu = { menuID };
+      maxFrequency = count;
+    }
+  });
+
+  return mostOrderedMenu;
+}
+```
+<br/>
+
+<br/>
+The getMostOrderedMenu function aims to identify the menu that is most frequently ordered among the menus ordered by users who are considered the most similar to the target user. The function takes a list of top similar users and the target user's orders as input, and it utilizes a Map to track the frequency of each menu across the similar users' orders.
+<br/><br/>
+
+
+```plaintext
+/**
+ * Asynchronous function to recommend a menu for a target user based on the orders of other users.
+ *
+ * @param {string} targetUserId - The ID of the target user.
+ * @param {number} N - The number of top similar users to consider.
+ * @returns {Object} - An object containing the menuID of the recommended menu.
+ */
+async function recommendMenuForUser(targetUserId, N) {
+  // Retrieving orders of the target user
+  const targetUserOrders = await prisma.menuOrderInfo.findMany({
+    where: {
+      userID: targetUserId,
+    },
+    select: {
+      menuID: true,
+    },
+  });
+
+  // Retrieving orders of all users
+  const usersMenuOrders = await prisma.menuOrderInfo.findMany({
+    select: {
+      user: {
+        select: {
+          user_id: true,
+        },
+      },
+      menu: {
+        select: {
+          menu_id: true,
+        },
+      },
+    },
+  });
+
+  // Creating a structure to store all users' orders
+  const allUsersOrders = usersMenuOrders.reduce((result, order) => {
+    const userId = order.user.user_id;
+    const menuId = order.menu.menu_id;
+
+    const existingUser = result.find(user => user.userId === userId);
+
+    if (existingUser) {
+      existingUser.menuIDList.push({
+        menuID: menuId,
+      });
+    } else {
+      result.push({
+        userId,
+        menuIDList: [{
+          menuID: menuId,
+        }],
+      });
+    }
+    return result;
+  }, []);
+
+  // Measuring similarity between the target user and other users
+  const similarUsers = [];
+
+  for (const userOrders of allUsersOrders) {
+    const similarity = JaccardSimilarity(targetUserOrders, userOrders);
+    similarUsers.push({ userId: userOrders.userId, similarity });
+  }
+
+  // Sorting users based on similarity in descending order
+  similarUsers.sort((a, b) => b.similarity - a.similarity);
+
+  // Retrieving the top N similar users
+  const topSimilarUsers = similarUsers.slice(0, N);
+
+  // Selecting the most ordered menu among the top similar users
+  const mostOrderedMenu = await getMostOrderedMenu(topSimilarUsers, targetUserOrders);
+
+  return mostOrderedMenu;
+}
+```
+<br/>
+
+The recommendMenuForUser function is designed to recommend a menu for a target user based on the orders of other users. It utilizes Jaccard similarity to measure the similarity between the target user's orders and the orders of other users, and then selects the most frequently ordered menu among the top similar users.
+
+<br/><br/>
+
+
 ## **Algorithm features and a point of note**
 
 Our recommended algorithm aims to provide users with menu suggestions based on user-based collaborative filtering, extracting similar users who have tried menus that the target user has not yet experienced. However, there are situations in which the recommendation algorithm may not function effectively.
