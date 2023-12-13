@@ -575,8 +575,11 @@ Second,Testing focuses on using dummy data to verify the accuracy and efficiency
 - Combine the order histories of selected users B, C, D to recommend the most frequently ordered menu.
 
 ## **Expected Results**
+First, we saw results and contents by logging:<br/>
+![recommend1](/images/samples/solutions/face-recognize-kiosk/recommend1.png)
+![recommend2](/images/samples/solutions/face-recognize-kiosk/recommend2.png)
 
-The anticipated results from the test are as follows:
+Next, The anticipated results from the test are as follows:
 
 - Similar Users: B, C, D
 - Combined Order History: 15 bowls of ramen, 3 pork cutlets, 10 cheese pork cutlets, 2 rice cakes in spicy sauce, 5 rolls of gimbap
