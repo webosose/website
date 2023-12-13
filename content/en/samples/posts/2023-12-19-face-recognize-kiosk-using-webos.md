@@ -382,7 +382,7 @@ In this project, collaborative user filtering is utilized. The algorithm measure
 3. **Order History Analysis**: Summarizing the order histories of the selected N users and calculating the frequency of each menu item.
 4. **Selecting Recommended Menu**: Choosing the menu item with the highest frequency as the recommended item.
 
-## **Recommend.py**
+## **recommend.js**
 
 ```plaintext
 function JaccardSimilarity(targetUserOrders, userOrders) {
