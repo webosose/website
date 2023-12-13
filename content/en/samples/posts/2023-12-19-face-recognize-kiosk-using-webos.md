@@ -395,7 +395,7 @@ Please be mindful of these potential limitations in the algorithmic process, as 
 
 ## **Testing Method**
 First, we confirmed that similarity is correct by logging.<br/>
-Testing focuses on using dummy data to verify the accuracy and efficiency of the algorithm. Multiple tests are conducted to ensure that the expected results are achieved. Necessary measures are taken to improve the algorithm's performance based on the test results.
+Second,Testing focuses on using dummy data to verify the accuracy and efficiency of the algorithm. Multiple tests are conducted to ensure that the expected results are achieved. Necessary measures are taken to improve the algorithm's performance based on the test results.
 
 
 ### **Test Data Example:**
