@@ -25,7 +25,12 @@ The kiosk app provides the following features:
 
 You must have a target device (RPi 4) with webOS OSE. Please refer to the [Building webOS](https://www.webosose.org/docs/guides/setup/building-webos-ose/)
 
-
+The hardware, Software we used {<br />
+Raspberry pi : Raspberry PI 4 Model B 8GB <br />
+OS : webos ose 2-24-0<br />
+Camera : ROYCHE RPC-20F FHD webcam<br />
+Touch display : Raspberry Pi Display 10.1-Inch Touch Screen LCD
+}
 
 ### Raspberry pi
 * HardWare : [Raspberry PI 4 Model B 8GB](https://smartstore.naver.com/eleparts/products/4799825062?n_media=11068&n_query=%EB%9D%BC%EC%A6%88%EB%B2%A0%EB%A6%AC%ED%8C%8C%EC%9D%B44&n_rank=4&n_ad_group=grp-a001-02-000000007238914&n_ad=nad-a001-02-000000229608972&n_campaign_type=2&n_mall_id=ncp_1nlzbo_01&n_mall_pid=4799825062&n_ad_group_type=2&n_match=3&NaPm=ct%3Dlpihmmrs%7Cci%3D0Au0003H1knzI6qsyfp7%7Ctr%3Dpla%7Chk%3D9ad14e585bbe9eea74201d2e1f1481527ed653e7)
@@ -80,20 +85,31 @@ You must have a target device (RPi 4) with webOS OSE. Please refer to the [Build
     ![11](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/3f2edb87-7a3c-4c05-8dd7-0b0c24286da1)
  * If you assemble the components well on the touch display and power the raspberry pie, you can see that the screen is coming out well.
 
+### Camera
+* HardWare : [ROYCHE RPC-20F FHD webcam](https://prod.danawa.com/info/?pcode=13386197)
+
+* Webos is only available on cameras that support V4L2(Vedio for Linux 2).
+* In version 2.23, the camera didn't work, and in version 2.24, it worked normally.
+* You can use it right away by connecting the camera to the Raspberry Pie usb.
+
 
 ### Building a CLI Environment
-   1. Install Node.js [Link](https://nodejs.org/en)
+1. Install Node.js [Link](https://nodejs.org/en)
     * If the installation is successful, you can check the version by executing the command below.
         
             node -v
 
-   2. Install npm
+2. Install npm and React-scripts
    	* npm is included in Node.js, so if Node.js is installed successfully, npm is already available.
    	* You can check if the npm is installed well through the command below.
+    * React-scripts are required when you build a project later.
 
  	        npm -v
 
-   3. CLI Installation
+            npm install react-scripts 
+        
+
+3. CLI Installation
     *  Use the -g option to run the following command on the terminal to install the CLI globally.
 
 	        npm install –g @webosose/ares-cli
@@ -144,8 +160,9 @@ On your local PC, follow these steps:
         <img width="789" alt="14" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/6cbb0492-6400-4927-b2b6-de58753b5f09">
 
   3. Overwrite the built content over the folder you created (in this case 'sampleApp').
-    
+
             npm run build
+        
 
         * When you build a project, a build file will be created.
         <img width="737" alt="스크린샷 2023-12-06 오후 10 06 55" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/a133af50-dc41-4e2e-8313-7c5688a0622f">
@@ -174,11 +191,27 @@ On your local PC, follow these steps:
   
         ![18](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/5feb04b8-7d20-4f4c-b350-64afc260aaa6)
 
+## How to use
+1. Connect the camera to the raspberry pie.
+2. Connecting Raspberry Pie to the Internet.
+3. Change your unique server address (Please refer to the Url.js part of Code Implementation)
+4. Run the installed application.
+
 ## Code Implementation
 * If you want to see the source code, please click the [Git link](https://github.com/Cheetah-19/Kiosk_KNU)
 
+### Url.js
+* This file can set the server address at once.
+* You can put your personal server address inside.
+* You can change it from the file in the two paths below.
+    * frontend/kiosk_page/src/constants/Url.js ( Server setup address for kiosk page )
+    * frontend/register/src/constants/Url.js ( Server setup address for user registration page )
 
-### face_extractor.py 
+```
+    export const BASE_URL = 'http://127.0.0.1:8000';
+```
+
+### face_extractor.py
 * You must name the model as a linear learning model that extracts faces.
 
 ```
@@ -187,9 +220,10 @@ On your local PC, follow these steps:
     target_size = functions.find_target_size(model_name)
 ```
 
-### face_extractor.py - homomorphic_filter()
-* This is a function that removes image illumination.
+### face_extractor.py
+* homomorphic_filter()
 
+* This is a function that removes image illumination.
 ```
     def homomorphic_filter(img):
     try:
@@ -243,10 +277,9 @@ On your local PC, follow these steps:
     except:
         pass
 ```
+* resize_with_padding()
 
-### face_extractor.py - resize_with_padding()
 * This function adjusts the image size to the model target_size.
-
 ```
     def resize_with_padding(image, target_size):
         height, width = image.shape[:2]
@@ -276,13 +309,12 @@ On your local PC, follow these steps:
 
         return padded_image
 ```
+* extractor()
 
-### face_extractor.py - extractor()
 * This function converts base64 to embedding.
     1. base64 -> image
     2. image -> face
     3. face -> embedding
-
 ```
     def extractor(base64):
     # 1. base64 -> image
@@ -309,7 +341,9 @@ On your local PC, follow these steps:
         return None
 ```
 
-### face_identification.py - findCosineDistance()
+### face_identification.py
+* findCosineDistance()
+
 * This function is a function that calculates the distance between a user's face info and the embedding of a photo taken from the front in the cosine similarity method.
 
 ```
@@ -320,8 +354,8 @@ On your local PC, follow these steps:
 
         return 1 - (a / (b * c))
 ```
+* identification()
 
-### face_identification.py - identification()
 * This function returns the shortest distance between a user's face info and the embedding of a photo taken from the front.
 
 ```
@@ -329,7 +363,9 @@ On your local PC, follow these steps:
         return np.min(findCosineDistance(db_embedding_list, target_embedding))
 ```
 
-### face_methods.py - base_to_vector(face_bases: list) -> list
+### face_methods.py
+* base_to_vector(face_bases: list) -> list
+
 * This function converts a base64 list received from the front into an embeds list.
 
 ```
@@ -345,7 +381,9 @@ On your local PC, follow these steps:
         return embedding_list
 ```
 
-### views.py - post()
+### views.py
+* post()
+
 * This function provides an indication of how facial recognition logins work.
     1. 5 base64 files POST via Front Face.js
     2. base64 -> image -> embedding
