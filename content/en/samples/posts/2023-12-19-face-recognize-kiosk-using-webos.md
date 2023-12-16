@@ -72,6 +72,8 @@ This configuration is recommended to minimize latency and maximize the efficienc
 - Ensure a stable internet connection for seamless data transfers and cloud-based operations.
 - Regular backups and a consistent power supply are recommended for data protection.
 
+## **Pre - Guidance**
+We would like to inform you that our architecture is built to work on one local pc, so you don't need multiple pcs and you can use them comfortably. The guide will explain under the assumption that all components are set on one PC. This assumption will work correctly under the assumption that you divide into multiple servers and set each server network setting correctly.
 
 ## **NodeJS Server for Basic Setup Kiosk-API Guide**
 This guide provides step-by-step instructions for setting up and running the kiosk server and database as part of the signage solution project. Follow these steps to ensure the server is configured and operational.
