@@ -74,9 +74,18 @@ This configuration is recommended to minimize latency and maximize the efficienc
 
 
 ## **NodeJS Server for Basic Setup Kiosk-API Guide**
+This guide provides step-by-step instructions for setting up and running the kiosk server and database as part of the signage solution project. Follow these steps to ensure the server is configured and operational.
+
+## Prerequisites
+
+Before getting started, make sure you have the following software installed on your system:
+
+- **Node.js:** Make sure you have Node.js installed. You can download it [here](https://nodejs.org/).
+
+- **MySQL 8.0:** Ensure that MySQL version 8.0 is installed on your machine. You can find the installation instructions [here](https://dev.mysql.com/doc/mysql-installation-excerpt/8.0/en/).
 
 ### Step 1: Navigate to the NODEJS Directory
-
+First, navigate to the nodejs directory in the project root. Use the following command:
 ```plaintext
 $ cd signage_solution/nodejs
 ```
@@ -92,18 +101,27 @@ $ npm i
 ### Step 3: **Create .env File**
 
 Create a **`.env`** file in the nodejs project's root directory and configure the database connection information, admin password, and port number.
+Here is an example of what the contents of the .env file might look like:
 
 ```plaintext
 DATABASE_URL="mysql://<database username e.g. root>:<database password e.g. 8246>@<database host e.g. localhost>:3306/<database name e.g. kioskDB>"
-PORT=(the number what you want)
+PORT=(the number what you want to change default port number is 4000)
 ```
 
 ### Step 4: **Create Database**
 
-To create a database, open MySQL Shell and execute the following code.
+To create a database, open MySQL Shell and start your MySQL server 
+```bash
+$ mysql -u root -p
+```
+then execute the following code.
 
 ```plaintext
 CREATE DATABASE <database name> e.g. kioskDB;
+```
+If successful, stop your MySQL server by execute the following command.
+```bash
+$ quit
 ```
 
 ### Step 5: **Migrate Tables**
@@ -152,7 +170,7 @@ $ npm run start
 If successful, you should see a message similar to the following:
 
 ```plaintext
-Server is running on port {port}.
+Server is running on port {port number (default port number is 4000)}.
 Connected
 ```
 
