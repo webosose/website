@@ -255,7 +255,7 @@ Once installed, verify the installation by running `node -v` in your command lin
 After setting up Node.js, install the webOS OSE CLI by executing the following command:
 
 ```plaintext
-$ npm install -g @webosose/ares-cli
+$ sudo npm install -g @webosose/ares-cli
 ```
 ### Verify webOS OSE CLI Installation
 
@@ -283,12 +283,6 @@ $ ares-install -D
 This will list all the devices that have been set up and are ready for development.
 
 Follow the on-screen prompts to complete the setup of your device.
-
-### Navigate to the React Directory
-Move to react project's root directory
-```plaintext
-$ cd signage_solution/react_signage
-```
 
 ### Deployment Script: deploy.sh
 
@@ -352,6 +346,12 @@ ares-inspect -d jongmal —app kr.ac.knu.app.signage
 
 # Change directory
 cd ..
+```
+
+### Navigate to the React Directory
+Move to react project's root directory
+```plaintext
+$ cd signage_solution/react_signage
 ```
 
 ### Setting Execution Permission
