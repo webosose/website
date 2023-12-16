@@ -391,7 +391,7 @@ This script simplifies the deployment process, ensuring that your application is
 
 ## **Algorithm Overview**
 
-In this project, collaborative user filtering is utilized. The algorithm measures the similarity of order histories among users to select N similar users. It then analyzes the order histories of these N users to recommend the most frequently ordered menu items. The algorithm primarily employs jaccard similarity to measure the similarity between users and selects the recommendation target based on this similarity.
+In this project, collaborative user filtering is utilized. The algorithm measures the similarity of order histories among users to select N similar users. It then analyzes the order histories of these N users to recommend the most frequently ordered menu item. The algorithm primarily employs jaccard similarity to measure the similarity between users and selects the recommendation target based on this similarity.
 
 ## **Algorithm Flow**
 
