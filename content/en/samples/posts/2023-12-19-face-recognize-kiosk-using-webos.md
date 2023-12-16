@@ -7,7 +7,7 @@ toc: true
 thumbnail: th-face-recognize-kiosk.jpg
 ---
 
-**Author: Jaeduck Oh**
+**Author: Bokyeong Ju, Minsu Lee, Yusu Noh, Hyunsoo Kim, Jino Yoon**
 
 # KNU Capstone design project for the second semester of 2023
 
