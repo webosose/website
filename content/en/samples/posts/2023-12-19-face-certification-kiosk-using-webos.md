@@ -214,7 +214,7 @@ It's a face recognition model library supported by OpenCV using this algorithm.
 <p align="center">
   <img src="/images/samples/solutions/face-recognize-kiosk/LBP_2.jpeg"    
        alt="LBP_2"
-       style="width: 70%;">
+       style="width: 90%;">
 </p>
 
 >[image source link](https://towardsdatascience.com/face-recognition-how-lbph-works-90ec258c3d6b)
@@ -353,7 +353,7 @@ def face_detector(img, size = 0.5):
 
 <h3 align="center">🖼️ Register user's face 🖼️</h3>
 <p align="center">
-    <img style="width: 49%;" alt="User Face Registration" src="https://github.com/noFlowWater/signage_solution/assets/112642604/f4fa27ea-f77b-4dc8-8914-bfe9d90eddf7">
+    <img style="width: 90%;" alt="User Face Registration" src="https://github.com/noFlowWater/signage_solution/assets/112642604/f4fa27ea-f77b-4dc8-8914-bfe9d90eddf7">
 </p>
 
 - `load_user_models` loads face recognition models from the database into the global `users_models` list, executed on the server before clients send images:
