@@ -27,6 +27,7 @@ thumbnail: th-face-certification-kiosk.jpg
     <a href="https://github.com/noFlowWater/signage_solution/issues">Request Feature</a>
   </p>
 </div>
+<br />
 
 <!-- TABLE OF CONTENTS -->
 <details>
