@@ -206,16 +206,19 @@ This binary number is used to extract texture features of each pixel.
 <br/>
 
 It's a face recognition model library supported by OpenCV using this algorithm.
-<p align="center" style="display: flex; justify-content: space-between;">
+<p align="center">
   <img src="/images/samples/solutions/face-recognize-kiosk/LBP_1.jpeg" 
        alt="LBP_1" 
        style="width: 70%;">
+</p>
+<p align="center">
   <img src="/images/samples/solutions/face-recognize-kiosk/LBP_2.jpeg"    
        alt="LBP_2"
        style="width: 70%;">
-  
-  > [image_from](https://towardsdatascience.com/face-recognition-how-lbph-works-90ec258c3d6b)
 </p>
+
+>[image source link](https://towardsdatascience.com/face-recognition-how-lbph-works-90ec258c3d6b)
+
 
 - Related Link: [LBPHFaceRecognizer in OpenCV](https://docs.opencv.org/4.7.0/df/d25/classcv_1_1face_1_1LBPHFaceRecognizer.html)
 <br/>
