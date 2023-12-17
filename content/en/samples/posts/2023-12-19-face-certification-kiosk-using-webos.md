@@ -41,7 +41,8 @@ thumbnail: th-face-certification-kiosk.jpg
     </li>
     <li><a href="#specifications">Specifications</a></li>
     <li><a href="#getting-started">Getting Started</a></li>
-    <li><a href="#usage-screenshot">Usage Screenshot</a></li>
+    <li><a href="#face-recognition-code">Face Recognition Code</a></li>
+    <li><a href="#recommendation-algorithm-and-testing">Recommendation Algorithm and Testing</a></li>
     <li><a href="#contact">Contact</a></li>
   </ol>
 </details>
@@ -181,171 +182,360 @@ Proceed with the project in the following order:
 Each step is detailed in the `README.md` file of the respective folder, allowing you to sequentially progress and gather the necessary information.
 
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- USAGE EXAMPLES -->
-## Usage Screenshot 
-
-
-<details>
-  <summary>🖼️ Home 🖼️</summary>
-  <p align="center" style="display: flex; justify-content: space-between;">
-    <img style="width: 49%;" alt="홈 화면" src="https://github.com/noFlowWater/signage_solution/assets/112642604/966af761-2f10-447f-90cb-241577823e90">
-  </p>
-</details>
-<details>
-<summary>🖼️ User 🖼️</summary>
-<br>
-
-### Select User Mode
-<details>
-  <summary>🖼️ 1. Select User Mode 🖼️</summary>
-  <p align="center" style="display: flex; justify-content: space-between;">
-    <img style="width: 49%;" alt="사용자 모드 선택" src="https://github.com/noFlowWater/signage_solution/assets/112642604/211d6ba5-61ba-488c-bff9-eb5d333f68a8">
-  </p>
-</details>
-
-### User Registration
-
-<details>
-  <summary>🖼️ 1. Enter User Basic Information 🖼️</summary>
-  <p align="center" style="display: flex; justify-content: space-between;">
-    <img style="width: 49%;" alt="사용자 기본정보 입력" src="https://github.com/noFlowWater/signage_solution/assets/112642604/142c1e9f-d351-465c-b968-f7da5d178d3a">
-  </p>
-</details>
-
-<details>
-  <summary>🖼️ 2. Register user's face 🖼️</summary>
-  <p align="center" style="display: flex; justify-content: space-between;">
-    <img style="width: 49%;" alt="사용자 얼굴 등록" src="https://github.com/noFlowWater/signage_solution/assets/112642604/f4fa27ea-f77b-4dc8-8914-bfe9d90eddf7">
-  </p>
-</details>
-
-<details>
-  <summary>🖼️ 3. Select User Allergy 🖼️</summary>
-  <p align="center" style="display: flex; justify-content: space-between;">
-    <img style="width: 49%;" alt="사용자 알러지 선택" src="https://github.com/noFlowWater/signage_solution/assets/112642604/c4d73443-6c36-4eb9-8caf-a15b70af8eae">
-  </p>
-</details>
-
-### User Login
-
-<details>
-  <summary>🖼️ 1. User Authentication 🖼️</summary>
-  <p align="center" style="display: flex; justify-content: space-between;">
-    <img style="width: 49%;" alt="사용자 인식" src="https://github.com/noFlowWater/signage_solution/assets/112642604/999e78e4-031e-4ee0-885a-2683735138b9">
-    <img style="width: 49%;" alt="사용자 확인" src="https://github.com/noFlowWater/signage_solution/assets/112642604/f8ba2823-7dd0-420a-8adc-106e66505853">
-  </p>
-</details>
-
-<details>
-  <summary>🖼️ 2. User Alternate Authentication 🖼️</summary>
-  <p align="center" style="display: flex; justify-content: space-between;">
-    <img style="width: 49%;" alt="대체 인증" src="https://github.com/noFlowWater/signage_solution/assets/112642604/05f5b522-1237-4f15-a699-8b89271df2d8">
-  </p>
-</details>
-
-### Menu 
-
-<details>
-  <summary>🖼️ 1. Custom Menu recommendation 🖼️</summary>
-  <p align="center" style="display: flex; justify-content: space-between;">
-    <img style="width: 49%;" alt="메뉴 추천" src="https://github.com/noFlowWater/signage_solution/assets/112642604/101989ca-4f2f-42ef-be41-31651c4bacf6">
-  </p>
-</details>
-
-<details>
-  <summary>🖼️ 2. Check Menu Allergy/Soldout, Detail 🖼️</summary>
-  <p align="center" style="display: flex; justify-content: space-between;">
-    <img style="width: 49%;" alt="알러지:매진 확인" src="https://github.com/noFlowWater/signage_solution/assets/112642604/40395041-7485-4749-878e-212477655be5">
-    <img style="width: 49%;" alt="알러지 확인창" src="https://github.com/noFlowWater/signage_solution/assets/112642604/0bd82e2d-221d-4d94-ad35-da4a7d5be4f0">
-  </p>
-</details>
-
-<details>
-  <summary>🖼️ 3. Check Shopping Cart & Pay 🖼️</summary>
-  <p align="center" style="display: flex; justify-content: space-between;">
-    <img style="width: 49%;" alt="장바구니 확인" src="https://github.com/noFlowWater/signage_solution/assets/112642604/58823132-e6b8-4b13-a667-04b4f535ec82">
-    <img style="width: 49%;" alt="결제 완료" src="https://github.com/noFlowWater/signage_solution/assets/112642604/a0d01536-a62a-4bc7-aac4-8cc9555f21dd">
-  </p>
-</details>
-
-</details>
-<details>
-<summary>🖼️ Admin 🖼️</summary>
-<br>
-
-### Administrator Login
-
-<details>
-  <summary>🖼️ 1. Administrator Login 🖼️</summary>
-  <p align="center" style="display: flex; justify-content: space-between;">
-    <img style="width: 49%;" alt="관리자 로그인" src="https://github.com/noFlowWater/signage_solution/assets/112642604/e73aef73-ac9e-4c6e-b058-7fe5dcd4463c">
-  </p>
-</details>
-
-<details>
-  <summary>🖼️ 2. Administrator Login Failure 🖼️</summary>
-  <p align="center" style="display: flex; justify-content: space-between;">
-    <img style="width: 49%;" alt="관리자 비밀번호 체크" src="https://github.com/noFlowWater/signage_solution/assets/112642604/83ae69bb-9e44-4482-bb19-297c15e288d5">
-  </p>
-</details>
-
-### Administrator Menu Management
-
-<details>
-  <summary>🖼️ 1. Administrator Menu List 🖼️</summary>
-  <p align="center" style="display: flex; justify-content: space-between;">
-    <img style="width: 49%;" alt="관리자 홈" src="https://github.com/noFlowWater/signage_solution/assets/112642604/6d8d6f01-440e-4b0c-96f8-2c8d2ba21fc9">
-  </p>
-</details>
-
-<details>
-  <summary>🖼️ 2. Administrator Menu Details 🖼️</summary>
-  <p align="center" style="display: flex; justify-content: space-between;">
-    <img style="width: 49%;" alt="관리자 메뉴 상세보기" src="https://github.com/noFlowWater/signage_solution/assets/112642604/5bca34f5-1ab6-49a9-8e0b-bdf6257eb0b2">
-  </p>
-</details>
-
-
-<details>
-  <summary>🖼️ 3. Administrator Menu Registration and Deletion 🖼️</summary>
-  <p align="center" style="display: flex; justify-content: space-between;">
-    <img src="https://github.com/noFlowWater/signage_solution/assets/112642604/bdb89e7e-4208-4aea-9f93-90c3daece562" 
-           alt="관리자 메뉴 등록" 
-           style="width: 49%;">
-    <img src="https://github.com/noFlowWater/signage_solution/assets/112642604/4433ee82-b9fa-43dd-a325-8b84be381131"    
-           alt="관리자 메뉴 수정"
-           style="width: 49%;">
-  </p>
-</details>
-
-### Administrator Password Change
-
-<details>
-  <summary>🖼️ 1. Changing Password (fail 1) 🖼️</summary>
-  <p align="center" style="display: flex; justify-content: space-between;">
-    <img style="width: 49%;" alt="admin_change_password_1" src="https://github.com/noFlowWater/signage_solution/assets/112642604/3e66a0d8-ec91-4464-9f4a-6c32f2c897e7">
-  </p>
-</details>
-
-<details>
-  <summary>🖼️ 2. Changing Password (fail 2) 🖼️</summary>
-  <p align="center" style="display: flex; justify-content: space-between;">
-    <img style="width: 49%;" alt="admin_change_password_2" src="https://github.com/noFlowWater/signage_solution/assets/112642604/435dae5a-4e51-480d-8a18-9c6921775a97">
-  </p>
-</details>
-
-<details>
-  <summary>🖼️ 3. Changing Password (success) 🖼️</summary>
-  <p align="center" style="display: flex; justify-content: space-between;">
-    <img style="width: 49%;" alt="admin_change_password_3" src="https://github.com/noFlowWater/signage_solution/assets/112642604/73223ce7-e487-4bbc-80ba-ffc505fd58c3">
-  </p>
-</details>
-
-</details>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+# **Face Recognition Code**
+
+Reference GitHub: [Facial Recognition Repository](https://github.com/subhamroy021/Facial-Recognition.git)
+
+- Pre-trained XML file using the Haar Algorithm.
+  Download the classifier for face detection from the link below:
+  - Link: [Haarcascades on GitHub](https://github.com/opencv/opencv/tree/master/data/haarcascades)
+
+### What is LBPHFaceRecognizer?
+LBPH stands for Local Binary Patterns Histograms.
+<br/>
+The LBP algorithm represents the surrounding values in binary, calculating the value subsequently.
+<br/>
+Binary values are generated based on the relative brightness difference between the central pixel and its neighbors. 
+<br/>
+If a neighboring pixel is brighter than the center, it's represented as 1; otherwise, 0.
+<br/>
+This binary number is used to extract texture features of each pixel.
+<br/>
+
+It's a face recognition model library supported by OpenCV using this algorithm.
+<p align="center" style="display: flex; justify-content: space-between;">
+  <img src="/images/samples/solutions/face-recognize-kiosk/LBP_1.jpeg" 
+       alt="LBP_1" 
+       style="width: 70%;">
+  <img src="/images/samples/solutions/face-recognize-kiosk/LBP_2.jpeg"    
+       alt="LBP_2"
+       style="width: 70%;">
+  
+  > [image_from](https://towardsdatascience.com/face-recognition-how-lbph-works-90ec258c3d6b)
+</p>
+
+- Related Link: [LBPHFaceRecognizer in OpenCV](https://docs.opencv.org/4.7.0/df/d25/classcv_1_1face_1_1LBPHFaceRecognizer.html)
+<br/>
+
+
+- `face_detector` function for face detection:
+```python
+import cv2
+face_classifier = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+
+def face_detector(img, size = 0.5):
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    faces = face_classifier.detectMultiScale(gray,1.3,5,minSize=(210,210)) #얼굴 최소 크기. 이것보다 작으면 무시
+
+    if faces is():
+        return img,[]
+
+    for(x,y,w,h) in faces:
+        cv2.rectangle(img, (x,y),(x+w,y+h),(0,255,255),2)
+        roi = img[y:y+h, x:x+w]
+        roi = cv2.resize(roi, (200,200))
+
+    return img,roi
+```
+1. Load the `haarcascade_frontalface_default.xml` classifier using `cv2.CascadeClassifier` from OpenCV.
+2. The `face_detector` function performs face detection on the input image.
+3. First, convert the image to grayscale (`cv2.cvtColor`).
+4. Use the `detectMultiScale` function to detect faces in the image, returning the position and size of each face.
+5. For detected faces, draw rectangles on the image to highlight the faces (`cv2.rectangle`).
+
+
+
+- `receive_data` process client-sent image data for user registration:
+  ```python
+  @socketio.on("data_for_storage")
+  def receive_data(client_id,data):
+      image = data.get("image")
+      phone_number = data.get("phoneNumber")
+      name = data.get("name")
+  
+      if phone_number not in user_counts:
+          user_counts[phone_number] = 0
+  
+      # global face_detected_count
+      try:
+          # Decode the base64-encoded image data
+          face = base64_to_image(image)
+          image, roi = face_detector(face)  # roi는 사용하지 않으므로 무시합니다.
+          if len(roi) > 0: #얼굴이 1개 이상 검출 시,
+              # Face detected, increment the count
+              # face_detected_count 증가
+              user_counts[phone_number] += 1
+              if user_counts[phone_number] <= 100:
+                  print(str(user_counts[phone_number]) +" / "+name +" / "+ phone_number +" / "+ client_id)
+                  # Optionally, emit the processed image with face boxes back to the client
+                  _, buffer = cv2.imencode('.jpg', image)
+                  processed_image = base64.b64encode(buffer).decode('utf-8')
+                  emit("processed_image", f"data:image/jpeg;base64,{processed_image}", room=client_id)
+                  # Save the image to the server
+                  createFolder(f'./temp/{phone_number}')
+                  cv2.imwrite(f'./temp/{phone_number}/{user_counts[phone_number]}.jpg', roi)
+                  # Optionally, emit a message indicating a successful save
+                  # emit("image_saved", {"count": face_detected_count})
+              else:
+                  # If 100 images have been saved, you can emit a message to stop sending images
+                  emit("stop_sending", {"message": "100 face images have been saved"}, room=client_id)
+  
+                  # 모델 100장 학습 시키고
+                  data_path = f'./temp/{phone_number}/'
+                  onlyfiles = [f for f in listdir(data_path) if isfile(join(data_path,f))]
+  
+                  Training_Data, Labels = [], []
+  
+                  for i, files in enumerate(onlyfiles):
+                      image_path = data_path + onlyfiles[i]
+                      images = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+                      Training_Data.append(np.asarray(images, dtype=np.uint8))
+                      Labels.append(i)
+                  try:
+                      Labels = np.asarray(Labels, dtype=np.int32)
+                      model = cv2.face.LBPHFaceRecognizer_create()
+                      model.train(np.asarray(Training_Data), np.asarray(Labels))
+                      # 모델 저장
+                      model.save(f'./temp/{phone_number}/trained_model_{phone_number}.yml')
+                      print(f"{phone_number}'s Model Training Complete!!!!!")
+  
+                      # 전달받은 유저 아이디에 매핑되게 디비에 저장
+                      # 모델 파일을 이진 형식으로 읽기
+                      with open(f'./temp/{phone_number}/trained_model_{phone_number}.yml', 'rb') as file:
+                          model_data = file.read()
+                      
+                      userId = str(uuid.uuid4())
+                      # 데이터베이스에 사용자 정보와 모델 데이터 저장
+                      insert_user_query = "INSERT INTO User (user_id, user_name, phoneNumber, user_face_model) VALUES (%s, %s, %s, %s)"
+                      cursor.execute(insert_user_query, (userId, name, phone_number, model_data))
+                      conn.commit()
+  
+                      # 성공한 경우
+                      print(f"> User {name} with phone number {phone_number} has been successfully registered.")
+                      emit("registration_result", {"status": "success",
+                                                  "message": "registered successfully",
+                                                  "user_id": f"{userId}",
+                                                  "name": f"{name}",
+                                                  "phone_number": f"{phone_number}"}, room=client_id)
+                  except Exception as e:
+                      # 실패한 경우
+                      print(f"> An error occurred during user registration: {e}")
+                      emit("registration_result", {"status": "failed",
+                                   "error": str(e)}, room=client_id)
+                      
+                  # 경로에 있는 이미지와 경로 삭제
+                  temp_path = f'./temp/{phone_number}'
+                  shutil.rmtree(temp_path)
+                  print(f"Images and directory {temp_path} have been deleted")
+                  # 등록완료!
+                  
+          else:
+              # No face detected, optionally emit a message indicating failure to detect a face
+              emit("face_not_detected", {"message": "No face detected in the image"}, room=client_id)
+      except Exception as e:
+          print(f"An error occurred: {e}")
+  ```
+
+1. Use the `@socketio.on("data_for_storage")` decorator to **set as event handler**.
+2. Extract data such as images, phone numbers, and names.
+3. Decode the Base64-encoded image data and **detect faces** using the `face_detector` function.
+4. Count the number of times a face is detected and **temporarily store the image on the server**.
+5. When 100 images of a specific user are collected, use them to **train a face recognition model**.
+6. **Save the trained model in the database**.
+7. If **user registration is successful**, **transmit the result to the client**.
+
+
+<h3 align="center">🖼️ Register user's face 🖼️</h3>
+<p align="center">
+    <img style="width: 49%;" alt="User Face Registration" src="https://github.com/noFlowWater/signage_solution/assets/112642604/f4fa27ea-f77b-4dc8-8914-bfe9d90eddf7">
+</p>
+
+- `load_user_models` loads face recognition models from the database into the global `users_models` list, executed on the server before clients send images:
+  ```python
+  def load_user_models(cursor):
+    """
+    Load user models from the database and add them to the global users_models list.
+    :param cursor: Database cursor to execute the query
+    """
+    global users_models
+
+    try:
+        # 모든 사용자의 모델 데이터와 이름 검색
+        fetch_models_query = "SELECT user_id, user_name, user_face_model FROM User"
+        cursor.execute(fetch_models_query)
+
+        # 검색 결과 처리
+        for (user_id, user_name, model_data) in cursor.fetchall():
+            # 이미 리스트에 모델이 있는지 확인
+            if any(user_id == loaded_id for loaded_id, _, _ in users_models):
+                continue  # 이미 로드된 모델이면 건너뛰기
+            
+            temp_model_path = f"temp_model_{user_id}.yml"
+            with open(temp_model_path, "wb") as file:
+                file.write(model_data)
+
+            # 모델 로드
+            model = cv2.face.LBPHFaceRecognizer_create()
+            model.read(temp_model_path)
+
+            # 모델과 사용자 이름을 튜플로 묶어 리스트에 추가
+            users_models.append((user_id, user_name, model))
+
+            # 로드된 임시 파일 삭제
+            os.remove(temp_model_path)
+
+        # 사용자 모델 로드 확인
+        for user_id, user_name, model in users_models:
+            print(f"Model for {user_name} (ID: {user_id}) loaded.")
+        return True
+
+    except Exception as e:
+        print(f"An error occurred while loading user models: {e}")
+        return False
+  ```
+1. Search for model data and names of all users stored in the database.
+2. For each found user, save their model data to a temporary file and load it as a face recognition model in OpenCV.
+3. Add the loaded models to the `users_models` list with user IDs and names, then delete the temporary files.
+4. Verify the successful loading of all user models.
+
+
+- `recognize_face_in_image` identifies faces in images and returns the user with the highest confidence, aiding in user authentication within `handle_image_upload`:
+  ```python
+  def recognize_face_in_image(image):
+    """
+    Recognizes a face in the given image using the users_models list.
+    Returns the user ID, name, and confidence of the most recognized user.
+    """
+    highest_confidence = 0
+    recognized_user_id = None
+    recognized_user_name = ""
+
+    for user_id, user_name, model in users_models:
+        result = model.predict(image)
+        confidence = int(100 * (1 - (result[1]) / 300))
+        if confidence > highest_confidence:
+            highest_confidence = confidence
+            recognized_user_id = user_id
+            recognized_user_name = user_name
+
+    return recognized_user_id, recognized_user_name, highest_confidence
+  ```
+
+1. Use face recognition models from the global `users_models` list to **predict faces in images**.
+2. **Calculate confidence scores** from the results of each model, reflecting how similar the user is to the detected face.
+3. Determine and return the ID and name of the user with the **highest confidence**.
+
+
+- `determine_most_recognized_user` analyzes temporarily stored images for a given client ID to determine the most recognized user, playing a key role in user authentication within `handle_image_upload`.
+  ```python
+  def determine_most_recognized_user(client_id):
+    client_dir = os.path.join(TEMP_IMAGE_DIR, client_id)
+    user_predictions = Counter()
+
+    if os.path.exists(client_dir):
+        for filename in os.listdir(client_dir):
+            # 파일 이름에서 인식된 사용자 ID와 이름 추출
+            parts = filename.split('_')
+            recognized_user_id = parts[0]
+            recognized_user_name = parts[1]
+
+            user_predictions[(recognized_user_id, recognized_user_name)] += 1
+
+    # 가장 많이 예측된 사용자의 ID와 이름 찾기
+    if user_predictions:
+        (most_common_user_id, most_common_user_name), _ = user_predictions.most_common(1)[0]
+        return most_common_user_id, most_common_user_name
+    else:
+        return None, None  # 예측된 사용자가 없는 경우
+  ```
+
+1. Check for the existence of a temporary image directory for the client ID.
+2. Analyze each image file's name to extract recognized users' IDs and names, tallying their recognition frequency.
+3. Use a `Counter` object to determine and return the ID and name of the most recognized user.
+   
+
+
+- `handle_image_upload` processes images sent by clients for **user recognition and authentication**:
+  ```python
+  @socketio.on('upload_image')
+  def handle_image_upload(client_id, data):
+      image_data = data['image']
+      
+      # 유저가 처음 데이터를 보내는 경우, 딕셔너리에 초기값 0 설정
+      if client_id not in client_face_counts:
+          client_face_counts[client_id] = 0
+  
+      face = base64_to_image(image_data)
+      image, face = face_detector(face)
+      try:
+          if len(face) > 0:
+              face = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
+  
+              recognized_user_id, recognized_user_name, highest_confidence = recognize_face_in_image(face)
+              
+              if highest_confidence > 75:
+                  # 30장의 사진이 모였는지 확인
+                  if client_face_counts[client_id] >= 30:
+                      # 이미지가 30장 미만이면 함수를 종료합니다.
+                      if not is_30_images_collected(client_id):
+                          return
+                      
+                      emit("stop_sending", {"message": "30 face images have been saved"}, room=client_id)
+                      
+                      # 예측값 집계
+                      most_common_user_id, most_common_user_name = determine_most_recognized_user(client_id)
+                      
+                      # 클라이언트에 결과 반환
+                      emit('user_recognized', {
+                                                  'predicted_user_name': most_common_user_name, 
+                                                  'predicted_user_id':most_common_user_id
+                                              }, room=client_id)
+                      print(f">>> most_common_user : {most_common_user_name}")
+  
+                      # 임시 저장소 정리
+                      clear_temp_storage(client_id)
+                  else:
+                      image = putTextWithKorean(image, f"Unlocked: {recognized_user_name} / {highest_confidence}", (75, 200), korean_font_path, 20, (0, 255, 0))
+                      # 얼굴 인식 횟수 증가 및 임시 이미지 저장
+                      client_face_counts[client_id] += 1
+                      emit("send_success", {"message": f"{client_face_counts[client_id]}send_success"}, room=client_id)
+                      save_temp_image(client_id, face, recognized_user_id, recognized_user_name)
+                      print("!", end="")
+                      sys.stdout.flush()  # 수동으로 flush   
+              else:
+                  image = putTextWithKorean(image, "Locked", (75, 200), korean_font_path, 20, (0, 0, 255))
+          else:
+              image = putTextWithKorean(image, "Face Not Found", (75, 200), korean_font_path, 20, (255, 0, 0))
+          
+          # 이미지 처리 및 송출
+          frame_resized = cv2.resize(image, (640, 360))
+          encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]
+          _, frame_encoded = cv2.imencode(".jpg", frame_resized, encode_param)
+          processed_img_data = base64.b64encode(frame_encoded).decode()
+          b64_src = "data:image/jpg;base64,"
+          processed_img_data = b64_src + processed_img_data
+          emit("image_processed", processed_img_data, room=client_id)
+              
+      except Exception as e:
+          print(f"Error: {e}")
+  ```
+
+
+1. Use the `@socketio.on('upload_image')` decorator to **set as event handler**.
+2. **Detect faces** in the image using the `face_detector` function.
+3. Call the `recognize_face_in_image` function to **identify the user and calculate confidence** based on the recognized face.
+4. If confidence meets a certain threshold, temporarily store the user's image on the server. Use stored images (up to 30) to **determine the most recognized user** (using `determine_most_recognized_user`).
+5. If confidence is low or no face is detected, display a corresponding message on the image.
+6. **Transmit the processed image to the client** after resizing, encoding, and converting to Base64.
+<h3 align="center">🖼️ User Authentication 🖼️</h3>
+<p align="center" style="display: flex; justify-content: space-between;">
+  <img style="width: 49%;" alt="사용자 인식" src="https://github.com/noFlowWater/signage_solution/assets/112642604/999e78e4-031e-4ee0-885a-2683735138b9">
+  <img style="width: 49%;" alt="사용자 확인" src="https://github.com/noFlowWater/signage_solution/assets/112642604/f8ba2823-7dd0-420a-8adc-106e66505853">
+</p>
+  
 
 
 
