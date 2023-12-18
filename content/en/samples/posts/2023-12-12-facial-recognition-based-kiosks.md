@@ -220,19 +220,17 @@ On your local PC, follow these steps:
     export const BASE_URL = 'http://127.0.0.1:8000';
 ```
 
-### face_extractor.py
-* You must name the model as a linear learning model that extracts faces.
+### face_recognition/extractor.py
+* You must specify a pre-training model name for facial recognition.
 
 ```
     # recognizer
     model_name = 'VGG-Face'
     target_size = functions.find_target_size(model_name)
 ```
-
-### face_extractor.py
 * homomorphic_filter()
 
-* This is a function that removes image illumination.
+* This is a function that controls image illumination.
 ```
     def homomorphic_filter(img):
     try:
@@ -278,7 +276,7 @@ On your local PC, follow these steps:
         img_exp = (img_exp - np.min(img_exp)) / (np.max(img_exp) - np.min(img_exp))
         img_out = np.array(255 * img_exp, dtype='uint8')
 
-        # Finally, YUV replaces Y space with a filtered image and converts it to RGB space.
+        # YUV replaces Y space with a filtered image and converts it to RGB space.
         img_YUV[:, :, 0] = img_out
         result = cv2.cvtColor(img_YUV, cv2.COLOR_YUV2BGR)
 
@@ -326,11 +324,10 @@ On your local PC, follow these steps:
     3. face -> embedding
 ```
     def extractor(base64):
-    # 1. base64 -> image
-    
-
     try:
+        # 1. base64 -> image
         img = functions.loadBase64Img(base64)
+
         # 2. image -> face (Face Area Extracted)
         face = DeepFace.extract_faces(img_path=img, target_size=target_size, detector_backend='ssd')[0]['facial_area']
         x, y, w, h = face['x'], face['y'], face['w'], face['h']
@@ -350,7 +347,7 @@ On your local PC, follow these steps:
         return None
 ```
 
-### face_identification.py
+### face_recognition/identification.py
 * findCosineDistance()
 
 * This function is a function that calculates the distance between a user's face info and the embedding of a photo taken from the front in the cosine similarity method.
@@ -372,10 +369,10 @@ On your local PC, follow these steps:
         return np.min(findCosineDistance(db_embedding_list, target_embedding))
 ```
 
-### face_methods.py
-* base_to_vector(face_bases: list) -> list
+### face_recognition/base2vector.py
+* base_to_vector()
 
-* This function converts a base64 list received from the front into an embeds list.
+* This function converts a base64 list received from the front into an embedding list.
 
 ```
     def base_to_vector(face_bases: list) -> list:
@@ -390,7 +387,50 @@ On your local PC, follow these steps:
         return embedding_list
 ```
 
-### views.py
+### face_recognition/checker.py
+* Input size must be specified according to Keras CNN model (150 x 150)
+
+```
+    target_size = (150, 150)
+    model = load_model('./face_recognition/mask_model.h5')
+```
+* isFace()
+* This function determines whether your face is well detected or whether you are wearing a mask.
+```
+    def isFace(base64):
+        try:
+            # 1. base64 -> image
+            img = functions.loadBase64Img(base64)
+
+            # 2. image -> face (Extracting Face Areas)
+            face = DeepFace.extract_faces(img_path=img, target_size=target_size, detector_backend='ssd')[0]['facial_area']
+            x, y, w, h = face['x'], face['y'], face['w'], face['h']
+            face = img[y:y + h, x:x + w]
+
+            # Adjusting lighting
+            face = homomorphic_filter(face)
+
+            # Resizing an image
+            face = resize_with_padding(face, target_size)
+
+            # Image preprocessing
+            face = face[:, :, ::-1]
+            face = face.astype(np.float64) / 255.0
+
+            # Determining whether or not to wear a mask
+            face = np.expand_dims(face, axis=0)
+            value = model.predict(face)
+
+            print(value)
+            if value <= 0.5:
+                return False
+            else:
+                return True
+        except:
+            return False
+```
+
+### login/views.py
 * post()
 
 * This function provides an indication of how facial recognition logins work.
@@ -401,58 +441,78 @@ On your local PC, follow these steps:
     5. Returns the user's mobile phone number whose distance was less than the threshold and the shortest distance.
 
 ```
-    def post(self,request):
-        # 1. 5 base64 files POST (list) via Front Face.js
-        if request.method == 'POST':
-            try:
-                face_bases = request.data.get('imageData')
-            except:
-                return Response('')
-
-            # 2. base64 -> image -> vector
-            target_embedding_list = base_to_vector(face_bases)
-            print("Received face data from front")
-
-            # 3. vector-> embedding
-            embedding_array =  np.array(target_embedding_list)
-            # 3. Get information from all users
-            user_table = User.objects.all()
-
-            min_dist = 1e9
-            phonenum = None
-            name = None
-
-            for user in user_table:
+    class FaceLoginView(APIView):
+        def post(self,request):
+            # 1. 5 base64 files POST (list) via Front Face.js
+            if request.method == 'POST':
                 try:
-                    user_face_list = np.array(eval(user.user_face_info))
-
-                    # 4. Calculate the vector and user's face info distance at number 2
-                    distance = 1e9
-                    for target in embedding_array:
-                        distance = min(distance, identification(user_face_list, target))
-
-                    print(f"{user.user_name}: {distance}")
-
-                    if distance < min_dist:
-                        min_dist = distance
-
-                        # Pull only when the distance is lower than the threshold.
-                        if min_dist < 0.2:
-                            phonenum = user.user_phonenum
-                            name = user.user_name
+                    face_bases = request.data.get('imageData')
                 except:
-                    pass
+                    return Response('')
 
-            if phonenum is not None:
-                print(f"\nSuccess\nname: {name}, phonenum: {phonenum}")
+                # 2. base64 -> image -> vector
+                target_embedding_list = base_to_vector(face_bases)
+                print("Received face data from front")
+
+                # 3. vector-> embedding
+                embedding_array =  np.array(target_embedding_list)
+                # 3. Get information from all users
+                user_table = User.objects.all()
+
+                min_dist = 1e9
+                phonenum = None
+                name = None
+
+                for user in user_table:
+                    try:
+                        user_face_list = np.array(eval(user.user_face_info))
+
+                        # 4. Calculate the vector and user's face info distance at number 2
+                        distance = 1e9
+                        for target in embedding_array:
+                            distance = min(distance, identification(user_face_list, target))
+
+                        print(f"{user.user_name}: {distance}")
+
+                        if distance < min_dist:
+                            min_dist = distance
+
+                            # Pull only when the distance is lower than the threshold.
+                            if min_dist < 0.2:
+                                phonenum = user.user_phonenum
+                                name = user.user_name
+                    except:
+                        pass
+
+                if phonenum is not None:
+                    print(f"\nSuccess\nname: {name}, phonenum: {phonenum}")
+                else:
+                    print("\nNone")
+
+                # 5. Returns the user's mobile phone number whose distance was below the threshold and the shortest distance
+                return Response({"phone_number": phonenum, "name": name})
+```
+### signup/views.py
+* post()
+* This function checks if it is a suitable face photo during the membership registration process.
+```
+    class FaceCheckView(APIView):
+        def post(self, request):
+            face_base = request.data.get('imageData')
+
+            # Face extracted
+            if isFace(face_base):
+                print("No mask")
+                return Response({'result': True})
+            # Face not extracted
             else:
-                print("\nNone")
-
-            # 5. Returns the user's mobile phone number whose distance was below the threshold and the shortest distance
-            return Response({"phone_number": phonenum, "name": name})
+                print("mask")
+                return Response({'result': False}, status=400)
 ```
 
-### recommendation.py
+
+### menu/recommendation.py
+* get_recommended()
 * This function recommends menus to users based on their past order information and ingredient information in the menu.
 * Don't recommend ingredients that users can't eat
 
@@ -556,5 +616,3 @@ On your local PC, follow these steps:
         recommended_menus = recommended_menus[0:3]
         return recommended_menus
 ```
-
-
