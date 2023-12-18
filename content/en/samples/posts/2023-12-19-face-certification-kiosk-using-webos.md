@@ -20,11 +20,11 @@ thumbnail: th-face-certification-kiosk.jpg
     It's a webOS-based signage solution kiosk example project that verificate the face of registered users and makes custom recommendations.
     <br />
     <br />
-    <a href="https://github.com/noFlowWater/signage_solution">View Demo</a>
+    <a href="https://youtu.be/V7H0JUiSZ7Y">🎥 View Demo</a>
     ·
-    <a href="https://github.com/noFlowWater/signage_solution/issues">Report Bug</a>
+    <a href="https://github.com/noFlowWater/signage_solution/issues">🐞 Report Bug</a>
     ·
-    <a href="https://github.com/noFlowWater/signage_solution/issues">Request Feature</a>
+    <a href="https://github.com/noFlowWater/signage_solution/issues">💬 Request Feature</a>
   </p>
 </div>
 <br />
