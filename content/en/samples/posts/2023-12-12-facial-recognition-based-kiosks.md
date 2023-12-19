@@ -104,9 +104,13 @@ Touch display : Raspberry Pi Display 10.1-Inch Touch Screen LCD
    	* You can check if the npm is installed well through the command below.
     * React-scripts are required when you build a project later.
 
+    * qrcode.react is for generating QR code in the future.
+
  	        npm -v
 
             npm install react-scripts 
+
+            npm install qrcode.react
         
 
 3. CLI Installation
@@ -190,6 +194,85 @@ On your local PC, follow these steps:
         * if it becomes Success, it is Success, and the application will work successfully.
   
         ![18](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/5feb04b8-7d20-4f4c-b350-64afc260aaa6)
+## How to set up a server
+1. (Recommended) Virtual Environment Settings
+    * We recommend that you set the Python version to version 3.11 using anaconda, etc.
+    * You can choose between the two methods below.
+    1) [Anaconda](https://www.anaconda.com/)
+        * Create a virtual environment.
+
+                conda create -n 'virtual environment name' python=3.11
+
+            ![21](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/cf385c44-85ad-4d40-9d00-ec09664961bd)
+
+        * Enable the virtual environment.
+
+                conda activate 'virtual environment name'
+
+            ![22](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/8e5d8bab-61c6-46f4-8657-57a9af8227ac)
+    
+    2) Virtualenv enabled version (simple)
+
+                pip install virtualenv
+                virtualenv 'virtual environment name' —python=<Python version>
+            
+        * (For linux) Enable the virtual environment with source 'virtual environment name'/bin/activate.
+
+        * (For window cmd) Navigate to the directory where the virtual environment is installed.
+
+        * It will be in the directory where you created the virtualenv command.
+        * Run .\'Virtual Environment Name'\Scripts\activate to activate the virtual environment.
+
+2. The server code was written in Django. Install Django and restframework.
+* If the installation does not work well in the next installation, I recommend turning off and off the terminal.
+
+        pip install django 
+        pip install djangorestframework django-cors-headers 
+        pip install drf-yasg 
+
+* The following is the installation of the facial recognition-related library.
+
+        pip install scikit-learn
+        pip install deepface
+
+* Go to the backend folder on the terminal and run python manage.py run server 0.0.0.0:<port number>
+
+        python manage.py runserver 0.0.0.0:<port number>
+    * At this time, please enter the port number you want to use
+    * If you see the screen below after running, it's a success.
+    
+        ![23](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/dca1a421-7fa4-4a4b-81b0-aea5c67b6244)
+
+3. Changing Port Forwarding & Variables for Server Connections
+* Verify the local ip address of the server running with ipconfig
+    * Verify the IPv4 address of the wireless LAN.
+
+        ![24](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/ed02c030-48c5-42fc-8d17-0c790f01a739)
+
+    * Port forwarding on your router settings page.
+* Saves the port number port forwarded from 
+    * frontend/kiosk_page/src/constant/Url.js
+    * frontend/register/src/constant/Url.js 
+    * with the authorized ip (https://www.findip.kr/) ) in the BASE_URL variable.
+    ![25](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/1ff4c30c-ef76-4376-99ba-f0ac43d96a00)
+    ![26](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/e562a9d9-524e-4985-b159-ee51c19aed8c)
+
+4. Distributing register pages
+* Build frontend regitser via npm run build.
+    ![27](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/621f488c-f3df-4432-ba32-bf505dc29cbe)
+    * In github, create a 'repository named'.github.io
+        * ex. baegopabobjo.github.io
+    ![28](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/feea2cd5-10d8-4346-8232-569e00619967)
+    * Upload the files in the register/build folder to the repository created.
+
+    ![29](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/60bdf4d0-d9a4-42a0-b5e8-1eb23dce13e8)
+    * After about 10 minutes, you can go to https://<Your Nickname>.github.io to view the distributed page.
+
+5. Add register address to server
+* Add the address of the register page distributed in github to CORS_ORIGIN_WHITELIST in backend/django_react_project/settings.py .
+    ![30](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/87c94f6d-0792-496d-8730-ef57115b8c40)
+
+* If you're done so far, your server is ready! Now it's time to start the app.
 
 ## How to use
 1. Connect the camera to the raspberry pie.
@@ -199,12 +282,34 @@ On your local PC, follow these steps:
 5. You can sign up for membership through the QR code that appeared on the first screen.
 6. You need to register your face information, name, mobile phone number, vegan status, religion, and allergy by signing up for membership.
 
-    <img width="30%" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/bad5d665-65c0-41f3-839a-73a2b35dae78">
-    <img width="30%" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/9f5c919f-e630-4d0f-a7f3-45de15f5ada1">
-    <img width="30%" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/f95fc192-a1fc-42a4-a2eb-70603a42dd83">
-    <img width="30%" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/53e8d30c-6617-4c80-a175-03cce27cac87">
-    <img width="30%" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/7ceba5d5-22c9-4ba9-9908-bc8afc0d9c2c">
-    <img width="30%" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/145134a1-5461-4e90-b6a1-969298c50eb9">
+    * <img width="30%" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/bad5d665-65c0-41f3-839a-73a2b35dae78">
+    * This page allows you to register your face.
+    * <img width="30%" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/9f5c919f-e630-4d0f-a7f3-45de15f5ada1">
+    * This page allows you to register your name.
+    * <img width="30%" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/f95fc192-a1fc-42a4-a2eb-70603a42dd83">
+    * This page allows you to register your mobile phone number.
+    * <img width="30%" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/53e8d30c-6617-4c80-a175-03cce27cac87">
+    * This page allows you to register whether you are vegan or religious.
+    * <img width="30%" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/7ceba5d5-22c9-4ba9-9908-bc8afc0d9c2c">
+    * This page allows you to register whether you are allergic.
+    * <img width="30%" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/145134a1-5461-4e90-b6a1-969298c50eb9">
+    * This page tells you that your payment has been completed.
+
+    * If registered, you can log in with your face information and cell phone number.
+    
+
+7. Log in with your registered face information or cell phone number.
+* If you press the login button above, you will automatically attempt to log in through facial recognition.
+    <img width="50%" alt="31" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/96006ef1-7b7f-4ea8-b8b6-716abd60ff44">
+
+* You can log in with your cell phone number by pressing the button below.
+
+    <img width="50%" alt="32" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/385cee9e-9116-4d71-a9eb-f9a3565a558e">
+
+* If you successfully log in, you can use the kiosk with a menu tailored to your information!
+
+    <img width="50%" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/fcae8dfa-07fb-4cf9-905b-b39231a4a340">
+
 
 ## Code Implementation
 * If you want to see the source code, please click the [Git link](https://github.com/Cheetah-19/Kiosk_KNU)
