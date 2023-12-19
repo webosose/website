@@ -240,13 +240,18 @@ On your local PC, follow these steps:
  
         * If it's Success, it's Success.
    
+    * It becomes Success, creates a folder, and you can see that it contains the settings.
+
+        <img width="789" alt="14" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/6cbb0492-6400-4927-b2b6-de58753b5f09">
+
         * app id : You can omit the app as an id that distinguishes it.
         * title : The title of the application.
         * version : You can specify a version.
 
-        * It becomes Success, creates a folder, and you can see that it contains the settings.
-   
-        <img width="789" alt="14" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/6cbb0492-6400-4927-b2b6-de58753b5f09">
+    * You must allow camera permission to do face recognition in appinfo.json.
+    
+        <img width="300" alt="14" src="https://github.com/baegopababjo/website/assets/95912522/05a07ec1-f80e-466f-95f5-feeff382cf2d">
+
 
   3. Overwrite the built content over the folder you created (in this case 'sampleApp').
 
