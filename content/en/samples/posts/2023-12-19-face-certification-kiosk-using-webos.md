@@ -113,7 +113,7 @@ Client Environment
 <br/>
 
 <!--SPECIFICATIONS-->
-# Specifications
+## Specifications
 
 ### Development Environment Specifications
 Our project was developed in an Apple Silicon environment, which provided us with advanced computing capabilities and efficiency. Here are the details:
@@ -143,7 +143,7 @@ Ensure that you have all these components available before proceeding with the s
 > [webOS Offitial Docs](https://www.webosose.org/docs/guides/setup/system-requirements/)
 
 <!-- GETTING STARTED -->
-# Getting Started
+## Getting Started
 
 This guide will help you set up and run the project in your local environment. Follow these steps to get started.
 
@@ -173,7 +173,7 @@ Proceed with the project in the following order:
 
 Each step is detailed in the `README.md` file of the respective folder, allowing you to sequentially progress and gather the necessary information.
 
-# **Face Recognition Code**
+## Face Recognition Code
 
 Reference GitHub: [Facial Recognition Repository](https://github.com/subhamroy021/Facial-Recognition.git)
 
@@ -531,20 +531,20 @@ def face_detector(img, size = 0.5):
 
 
 
-# **Recommendation Algorithm and Testing**
+## Recommendation Algorithm and Testing
 
-## **Algorithm Overview**
+### Algorithm Overview
 
 In this project, collaborative user filtering is utilized. The algorithm measures the similarity of order histories among users to select N similar users. It then analyzes the order histories of these N users to recommend the most frequently ordered menu item. The algorithm primarily employs jaccard similarity to measure the similarity between users and selects the recommendation target based on this similarity.
 
-## **Algorithm Flow**
+### Algorithm Flow
 
 1. **Measuring User Similarity**: Pairing all users in the database and calculating jaccard similarity to select N users with similar order histories.
 2. **Recruiting Similar Users**: Using cosin jaccard similarity as a criterion, selecting the top N users with the highest similarity.
 3. **Order History Analysis**: Summarizing the order histories of the selected N users and calculating the frequency of each menu item.
 4. **Selecting Recommended Menu**: Choosing the menu item with the highest frequency as the recommended item.
 
-## **recommend.js**
+### recommend.js
 
 ```javascript
 function JaccardSimilarity(targetUserOrders, userOrders) {
@@ -707,7 +707,7 @@ The recommendMenuForUser function is designed to recommend a menu for a target u
 <br/><br/>
 
 
-## **Algorithm features and a point of note**
+### Algorithm features and a point of note
 
 Our recommended algorithm aims to provide users with menu suggestions based on user-based collaborative filtering, extracting similar users who have tried menus that the target user has not yet experienced. However, there are situations in which the recommendation algorithm may not function effectively.
 
@@ -718,12 +718,12 @@ In this scenario, it is challenging to extract similar users, as the algorithm r
 Our algorithm selects menus that the user has not tried yet. However, if the user has a wide variety of tried menus, it becomes difficult to make recommendations. In such cases, the algorithm may not be able to provide suggestions effectively.<br/><br/>
 Please be mindful of these potential limitations in the algorithmic process, as they could lead to instances where the recommendation process does not yield results.
 
-## **Testing Method**
+### Testing Method
 First, we confirmed that similarity is correct by logging.<br/>
 Second,Testing focuses on using dummy data to verify the accuracy and efficiency of the algorithm. Multiple tests are conducted to ensure that the expected results are achieved. Necessary measures are taken to improve the algorithm's performance based on the test results.
 
 
-### **Test Data Example:**
+#### Test Data Example:
 
 - A: Ordered 5 bowls of ramen
 - B: Ordered 5 bowls of ramen, 3 pork cutlets
@@ -731,12 +731,12 @@ Second,Testing focuses on using dummy data to verify the accuracy and efficiency
 - D: Ordered 5 bowls of ramen, 2 rice cakes in spicy sauce
 - E: Ordered 5 rolls of gimbap
 
-### **Test Configuration:**
+#### Test Configuration:
 
 - Set N=3 to select the top 3 users with the highest similarity.
 - Combine the order histories of selected users B, C, D to recommend the most frequently ordered menu.
 
-## **Expected Results**
+### Expected Results
 First, we saw results and contents by logging:<br/>
 ![recommend1](/images/samples/solutions/face-recognize-kiosk/recommend1.png)
 ![recommend2](/images/samples/solutions/face-recognize-kiosk/recommend2.png)
@@ -749,7 +749,7 @@ Next, The anticipated results from the test are as follows:
 
 If the results align with expectations, it confirms the accuracy of the algorithm.
 
-## **Future Improvements**
+### Future Improvements
 
 If any performance issues or accuracy concerns are identified during testing, efforts will be made to address those areas and enhance the algorithm for better efficiency and accuracy.
 
