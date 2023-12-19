@@ -6,7 +6,7 @@ posttype: solution
 toc: true
 thumbnail: th-face-certification-kiosk.jpg
 ---
-<a name="readme-top"></a>
+
 **Author: Bokyeong Ju, Minsu Lee, Yusu Noh, Hyunsoo Kim, Jinno Yun**
 
 <!-- PROJECT LOGO -->
@@ -112,9 +112,6 @@ Client Environment
 [![LG][LG]][LG-url][![Raspberry][Raspberry]][Raspberry-url]
 <br/>
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 <!--SPECIFICATIONS-->
 # Specifications
 
@@ -144,9 +141,6 @@ Ensure that you have all these components available before proceeding with the s
 
 
 > [webOS Offitial Docs](https://www.webosose.org/docs/guides/setup/system-requirements/)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 <!-- GETTING STARTED -->
 # Getting Started
@@ -178,10 +172,6 @@ Proceed with the project in the following order:
 - Finally, [Get Start for React for Deploy to webOS Client Device](https://github.com/noFlowWater/signage_solution/tree/main/react_signage/README.md)
 
 Each step is detailed in the `README.md` file of the respective folder, allowing you to sequentially progress and gather the necessary information.
-
-
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 # **Face Recognition Code**
 
@@ -776,10 +766,6 @@ If any performance issues or accuracy concerns are identified during testing, ef
 ### 💡 이민수 ([ohyatt](https://github.com/ohyatt)) : [minsoo030232@gmail.com](mailto:minsoo030232@gmail.com)
 
 ### 💡 김현수 ([beoldshoe](https://github.com/beoldshoe)) : [howeve18@gmail.com](mailto:howeve18@gmail.com)
-
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
