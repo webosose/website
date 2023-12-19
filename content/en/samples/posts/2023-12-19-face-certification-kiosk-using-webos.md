@@ -9,8 +9,6 @@ thumbnail: th-face-certification-kiosk.jpg
 <a name="readme-top"></a>
 **Author: Bokyeong Ju, Minsu Lee, Yusu Noh, Hyunsoo Kim, Jinno Yun**
 
-
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
