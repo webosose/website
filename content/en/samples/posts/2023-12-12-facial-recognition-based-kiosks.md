@@ -230,7 +230,7 @@ On your local PC, follow these steps:
         pip install djangorestframework django-cors-headers 
         pip install drf-yasg 
 
-* The following is the installation of the facial recognition-related library.
+* The following is the installation of a library related to face recognition and menu recommendations.
 
         pip install scikit-learn
         pip install deepface
@@ -271,6 +271,11 @@ On your local PC, follow these steps:
 5. Add register address to server
 * Add the address of the register page distributed in github to CORS_ORIGIN_WHITELIST in backend/django_react_project/settings.py .
     ![30](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/87c94f6d-0792-496d-8730-ef57115b8c40)
+
+6. Add register address to kiosk page
+* In front/kiosk_page/src/kiosk/QR.js, change the value of the QR tag to the address of the register page distributed to github.
+    ![34](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/c99b7456-0c67-4878-9478-46f58a2a0301)
+
 
 * If you're done so far, your server is ready! Now it's time to start the app.
 
