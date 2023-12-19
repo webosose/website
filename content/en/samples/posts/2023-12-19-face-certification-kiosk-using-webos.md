@@ -9,41 +9,31 @@ thumbnail: th-face-certification-kiosk.jpg
 
 **Author: Bokyeong Ju, Minsu Lee, Yusu Noh, Hyunsoo Kim, Jinno Yun**
 
-<!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <h3 align="center">Face Certification Kiosk Using webOS</h3>
+This project is a webOS-based kiosk sample solution that supports face recognition login and personalized recommendations.
 
+<div align="center">
   <p align="center">
-    It's a webOS-based signage solution kiosk example project that verificate the face of registered users and makes custom recommendations.
-    <br />
-    <br />
-    <a href="https://youtu.be/V7H0JUiSZ7Y">🎥 View Demo</a>
+    <a href="https://youtu.be/V7H0JUiSZ7Y">🎥 View Demo (Korean)</a>
     ·
     <a href="https://github.com/noFlowWater/signage_solution/issues">🐞 Report Bug</a>
     ·
     <a href="https://github.com/noFlowWater/signage_solution/issues">💬 Request Feature</a>
   </p>
 </div>
-<br />
 
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>🗂️ Table of Contents 🗂️</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li><a href="#specifications">Specifications</a></li>
-    <li><a href="#getting-started">Getting Started</a></li>
-    <li><a href="#face-recognition-code">Face Recognition Code</a></li>
-    <li><a href="#recommendation-algorithm-and-testing">Recommendation Algorithm and Testing</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ol>
-</details>
+
+
+----
+
+**Table of Contents**
+
+- [About The Project](#about-the-project)
+  - [Built With](#built-with)
+- [Specifications](#specifications)
+- [Getting Started](#getting-started)
+- [Face Recognition Code](#face-recognition-code)
+- [Recommendation Algorithm and Testing](#recommendation-algorithm-and-testing)
+- [Contact](#contact)
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
@@ -59,6 +49,7 @@ thumbnail: th-face-certification-kiosk.jpg
 
 
 ### Background
+
 Small-scale business owners often face financial constraints that make it challenging to afford expensive signage solutions. Therefore, there is a growing need for an affordable, open-source-based signage solution that can be easily implemented without the high costs associated with traditional signage products. This proposal aims to develop a user-customized kiosk that recognizes users to recommend menus and dynamically update menu lists.
 
 ### Project Objectives and Content
@@ -151,7 +142,7 @@ This guide will help you set up and run the project in your local environment. F
 
 > **Note:** For effective data processing, we recommend hosting both the **Flask application and database on the same system**. This setup reduces latency and improves operational efficiency, especially for large, user-specific models.
 
-## Installation
+### Installation
 
 The process for installing and setting up the project is as follows. This template does not rely on any external dependencies or services.
 
