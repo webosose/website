@@ -118,6 +118,91 @@ Touch display : Raspberry Pi Display 10.1-Inch Touch Screen LCD
 
 	        npm install –g @webosose/ares-cli
 
+## How to set up a server
+1. (Recommended) Virtual Environment Settings
+    * We recommend that you set the Python version to version 3.11 using anaconda, etc.
+    * You can choose between the two methods below.
+        1) Anaconda
+            * Create a virtual environment.
+
+                    conda create -n 'virtual environment name' python=3.11
+
+                ![21](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/cf385c44-85ad-4d40-9d00-ec09664961bd)
+
+            * Enable the virtual environment.
+
+                    conda activate 'virtual environment name'
+
+                ![22](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/8e5d8bab-61c6-46f4-8657-57a9af8227ac)
+
+        2) Virtualenv enabled version (simple)
+
+                    pip install virtualenv
+                    virtualenv 'virtual environment name'
+                    --python=<Python version>
+                
+            * (For linux) Enable the virtual environment with source 'virtual environment name'/bin/activate.
+
+            * (For window cmd) Navigate to the directory where the virtual environment is installed.
+
+            * It will be in the directory where you created the virtualenv command.
+            * Run .\'Virtual Environment Name'\Scripts\activate to activate the virtual environment.
+
+2. The server code was written in Django. Install Django and restframework.
+    * If the installation does not work well in the next installation, I recommend turning off and off the terminal.
+
+            pip install django 
+            pip install djangorestframework django-cors-headers 
+            pip install drf-yasg 
+
+    * The following is the installation of a library related to face recognition and menu recommendations.
+
+            pip install scikit-learn
+            pip install deepface
+
+    * Go to the backend folder on the terminal and run python manage.py run server 0.0.0.0:<port number>
+
+            python manage.py runserver 0.0.0.0:<port number>
+        * At this time, please enter the port number you want to use
+        * If you see the screen below after running, it's a success.
+        
+            ![23](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/dca1a421-7fa4-4a4b-81b0-aea5c67b6244)
+
+3. Setting Port-Forwarding & Changing variables for Server Connections
+    * Verify the local ip address of the server running with ipconfig
+        * Verify the IPv4 address of the wireless LAN.
+
+            ![24](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/ed02c030-48c5-42fc-8d17-0c790f01a739)
+
+        * Port forwarding on your router settings page.
+    * Saves the port number port forwarded from 
+        * frontend/kiosk_page/src/constant/Url.js
+        * frontend/register/src/constant/Url.js 
+        * with the authorized ip (https://www.findip.kr/) in the BASE_URL variable.
+        ![25](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/1ff4c30c-ef76-4376-99ba-f0ac43d96a00)
+        ![26](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/e562a9d9-524e-4985-b159-ee51c19aed8c)
+
+4. Deploying register page
+    * Build frontend regitser via npm run build.
+        ![27](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/621f488c-f3df-4432-ba32-bf505dc29cbe)
+        * In github, create a 'username'.github.io
+            * ex. Lucerna00.github.io
+        ![28](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/feea2cd5-10d8-4346-8232-569e00619967)
+        * Upload the files in the register/build folder to the repository created.
+
+        ![29](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/60bdf4d0-d9a4-42a0-b5e8-1eb23dce13e8)
+        * After about 10 minutes, you can go to https://'username'.github.io to view the deployed page.
+
+5. Add register address to server
+    * Add the address of the deployed register page to CORS_ORIGIN_WHITELIST in backend/django_react_project/settings.py.
+        ![30](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/87c94f6d-0792-496d-8730-ef57115b8c40)
+
+6. Add register address to kiosk page
+    * In frontend/kiosk_page/src/kiosk/QR.js, change the value of the QR tag to the address of the deployed register page.
+        ![34](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/c99b7456-0c67-4878-9478-46f58a2a0301)
+
+
+If you're done so far, your server is ready! Now it's time to start the app.
 
 ## Install the App
 
@@ -194,90 +279,6 @@ On your local PC, follow these steps:
         * if it becomes Success, it is Success, and the application will work successfully.
   
         ![18](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/5feb04b8-7d20-4f4c-b350-64afc260aaa6)
-## How to set up a server
-1. (Recommended) Virtual Environment Settings
-    * We recommend that you set the Python version to version 3.11 using anaconda, etc.
-    * You can choose between the two methods below.
-    1) Anaconda
-        * Create a virtual environment.
-
-                conda create -n 'virtual environment name' python=3.11
-
-            ![21](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/cf385c44-85ad-4d40-9d00-ec09664961bd)
-
-        * Enable the virtual environment.
-
-                conda activate 'virtual environment name'
-
-            ![22](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/8e5d8bab-61c6-46f4-8657-57a9af8227ac)
-    
-    2) Virtualenv enabled version (simple)
-
-                pip install virtualenv
-                virtualenv 'virtual environment name' —python=<Python version>
-            
-        * (For linux) Enable the virtual environment with source 'virtual environment name'/bin/activate.
-
-        * (For window cmd) Navigate to the directory where the virtual environment is installed.
-
-        * It will be in the directory where you created the virtualenv command.
-        * Run .\'Virtual Environment Name'\Scripts\activate to activate the virtual environment.
-
-2. The server code was written in Django. Install Django and restframework.
-* If the installation does not work well in the next installation, I recommend turning off and off the terminal.
-
-        pip install django 
-        pip install djangorestframework django-cors-headers 
-        pip install drf-yasg 
-
-* The following is the installation of a library related to face recognition and menu recommendations.
-
-        pip install scikit-learn
-        pip install deepface
-
-* Go to the backend folder on the terminal and run python manage.py run server 0.0.0.0:<port number>
-
-        python manage.py runserver 0.0.0.0:<port number>
-    * At this time, please enter the port number you want to use
-    * If you see the screen below after running, it's a success.
-    
-        ![23](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/dca1a421-7fa4-4a4b-81b0-aea5c67b6244)
-
-3. Changing Port Forwarding & Variables for Server Connections
-* Verify the local ip address of the server running with ipconfig
-    * Verify the IPv4 address of the wireless LAN.
-
-        ![24](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/ed02c030-48c5-42fc-8d17-0c790f01a739)
-
-    * Port forwarding on your router settings page.
-* Saves the port number port forwarded from 
-    * frontend/kiosk_page/src/constant/Url.js
-    * frontend/register/src/constant/Url.js 
-    * with the authorized ip (https://www.findip.kr/) in the BASE_URL variable.
-    ![25](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/1ff4c30c-ef76-4376-99ba-f0ac43d96a00)
-    ![26](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/e562a9d9-524e-4985-b159-ee51c19aed8c)
-
-4. Distributing register pages
-* Build frontend regitser via npm run build.
-    ![27](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/621f488c-f3df-4432-ba32-bf505dc29cbe)
-    * In github, create a 'username'.github.io
-        * ex. Lucerna00.github.io
-    ![28](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/feea2cd5-10d8-4346-8232-569e00619967)
-    * Upload the files in the register/build folder to the repository created.
-
-    ![29](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/60bdf4d0-d9a4-42a0-b5e8-1eb23dce13e8)
-    * After about 10 minutes, you can go to https://'username'.github.io to view the distributed page.
-
-5. Add register address to server
-* Add the address of the register page distributed in github to CORS_ORIGIN_WHITELIST in backend/django_react_project/settings.py .
-    ![30](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/87c94f6d-0792-496d-8730-ef57115b8c40)
-
-6. Add register address to kiosk page
-* In frontend/kiosk_page/src/kiosk/QR.js, change the value of the QR tag to the address of the register page distributed to github.
-    ![34](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/c99b7456-0c67-4878-9478-46f58a2a0301)
-
-
-* If you're done so far, your server is ready! Now it's time to start the app.
 
 ## How to use
 1. Connect the camera to the raspberry pie.
