@@ -198,7 +198,7 @@ On your local PC, follow these steps:
 1. (Recommended) Virtual Environment Settings
     * We recommend that you set the Python version to version 3.11 using anaconda, etc.
     * You can choose between the two methods below.
-    1) [Anaconda](https://www.anaconda.com/)
+    1) Anaconda
         * Create a virtual environment.
 
                 conda create -n 'virtual environment name' python=3.11
@@ -253,27 +253,27 @@ On your local PC, follow these steps:
 * Saves the port number port forwarded from 
     * frontend/kiosk_page/src/constant/Url.js
     * frontend/register/src/constant/Url.js 
-    * with the authorized ip (https://www.findip.kr/) ) in the BASE_URL variable.
+    * with the authorized ip (https://www.findip.kr/) in the BASE_URL variable.
     ![25](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/1ff4c30c-ef76-4376-99ba-f0ac43d96a00)
     ![26](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/e562a9d9-524e-4985-b159-ee51c19aed8c)
 
 4. Distributing register pages
 * Build frontend regitser via npm run build.
     ![27](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/621f488c-f3df-4432-ba32-bf505dc29cbe)
-    * In github, create a 'repository named'.github.io
-        * ex. baegopabobjo.github.io
+    * In github, create a 'username'.github.io
+        * ex. Lucerna00.github.io
     ![28](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/feea2cd5-10d8-4346-8232-569e00619967)
     * Upload the files in the register/build folder to the repository created.
 
     ![29](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/60bdf4d0-d9a4-42a0-b5e8-1eb23dce13e8)
-    * After about 10 minutes, you can go to https://<Your Nickname>.github.io to view the distributed page.
+    * After about 10 minutes, you can go to https://'username'.github.io to view the distributed page.
 
 5. Add register address to server
 * Add the address of the register page distributed in github to CORS_ORIGIN_WHITELIST in backend/django_react_project/settings.py .
     ![30](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/87c94f6d-0792-496d-8730-ef57115b8c40)
 
 6. Add register address to kiosk page
-* In front/kiosk_page/src/kiosk/QR.js, change the value of the QR tag to the address of the register page distributed to github.
+* In frontend/kiosk_page/src/kiosk/QR.js, change the value of the QR tag to the address of the register page distributed to github.
     ![34](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/c99b7456-0c67-4878-9478-46f58a2a0301)
 
 
