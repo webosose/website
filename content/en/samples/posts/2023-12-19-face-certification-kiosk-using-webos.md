@@ -21,8 +21,6 @@ This project is a webOS-based kiosk sample solution that supports face recogniti
   </p>
 </div>
 
-
-
 ----
 
 **Table of Contents**
@@ -35,8 +33,7 @@ This project is a webOS-based kiosk sample solution that supports face recogniti
 - [Recommendation Algorithm and Testing](#recommendation-algorithm-and-testing)
 - [Contact](#contact)
 
-<!-- ABOUT THE PROJECT -->
-## About The Project
+## About This Project
 
 <p align="center" style="display: flex; justify-content: space-between;">
     <img src="https://github.com/noFlowWater/signage_solution/assets/112642604/92e7cb81-0ae1-4640-b070-065fe28a68ec" 
@@ -50,90 +47,78 @@ This project is a webOS-based kiosk sample solution that supports face recogniti
 
 ### Background
 
-Small-scale business owners often face financial constraints that make it challenging to afford expensive signage solutions. Therefore, there is a growing need for an affordable, open-source-based signage solution that can be easily implemented without the high costs associated with traditional signage products. This proposal aims to develop a user-customized kiosk that recognizes users to recommend menus and dynamically update menu lists.
+Small-scale business owners often face financial constraints that make it challenging to afford expensive kiosk solutions. Therefore, there is a growing need for affordable, open-source kiosk solutions that can be easily implemented.
 
-### Project Objectives and Content
-User Verification:
-- The kiosk will utilize a camera to identify users and check if they are returning visitors with payment records.
-- Images captured by the kiosk camera will be sent to an image process server for user identification.
-- The server will verify if the recognized user is a returning visitor.
-- In cases where user verification is unsuccessful, an alternative authentication method is provided.
+This project is a kiosk demo that **recommends menus to customers** and **dynamically updates the menu list**.
 
-Custom Menu Recommendations and Reconfiguration through Web App:
-- User data registration will be facilitated both at the kiosk and in the server's database.
-- The web app will offer menu recommendations based on user information.
-- Menus will be dynamically altered based on user data (considering factors like allergies, etc.).
-- Menu recommendations will operate using a **user collaborative filtering algorithm** based on the order history of registered users.
-- 
-🖼️ System Architecture 🖼️
-<img src="https://github.com/noFlowWater/signage_solution/assets/112642604/248f7596-9c3f-4de7-a14a-638547a09816" alt="System Architecture" style="width: 99%;">
+### Architecture Overview
 
-🖼️ Database ERD 🖼️
-<img src="https://github.com/noFlowWater/signage_solution/assets/112642604/db15a09a-faa7-4797-8f58-b865d7965681" alt="Database ERD" style="width: 99%;">
+{{< figure src="https://github.com/noFlowWater/signage_solution/assets/112642604/248f7596-9c3f-4de7-a14a-638547a09816" link="https://github.com/noFlowWater/signage_solution/assets/112642604/248f7596-9c3f-4de7-a14a-638547a09816" target="_blank" alt="" caption="System Architecture (Click image to open larger view)" >}}
 
+{{< figure src="https://github.com/noFlowWater/signage_solution/assets/112642604/db15a09a-faa7-4797-8f58-b865d7965681" link="https://github.com/noFlowWater/signage_solution/assets/112642604/db15a09a-faa7-4797-8f58-b865d7965681" target="_blank" alt="" caption="Database Entity Relationship Diagram (Click image to open larger view)" >}}
 
-### Built With
-Frontend
-<br/><br/>
-[![React][React.js]][React-url][![npm][npm]][npm-url][![Bootstrap][Bootstrap.com]][Bootstrap-url][![JavaScript][JavaScript.js]][JavaScript-url][![Figma][Figma]][Figma-url]
-<br/>
+### Key Features
 
-Face Identify Server 
-<br/><br/>
-[![Flask][Flask]][Flask-url][![OpenCV][OpenCV]][OpenCV-url][![Python][Python.org]][Python-url]
-<br/>
+#### User Verification
 
-Kiosk API Server
-<br/><br/>
-[![Nodejs][Nodejs]][Nodejs-url][![npm][npm]][npm-url][![Prisma][Prisma]][Prisma-url][![JavaScript][JavaScript.js]][JavaScript-url]
-<br/>
-  
-Database
-<br/><br/>
-[![MySQL][MySQL]][MySQL-url][![Prisma][Prisma]][Prisma-url]
-<br/>
+User verification with face recognition works in the following steps:
 
-Development Environment
-<br/><br/>
-[![macOS][macOS]][macOS-url]
-<br/>
+1. The kiosk's camera captures the image of the customer.
+2. The captured image is sent to an image process server for user identification.
+3. The server checks to see if the customer is a returning visitor with a payment history.
+    1. If the customer has ever visited, the kiosk shows personalized menus to the customer and dynamically updates the menu list.
+    2. If not, the kiosk provides an alternative authentication method to the customer.
 
-Client Environment
-<br/><br/>
-[![LG][LG]][LG-url][![Raspberry][Raspberry]][Raspberry-url]
-<br/>
+#### Personalized Menu Recommendations
 
-<!--SPECIFICATIONS-->
-## Specifications
+Once customers register their data, the kiosk will recommend a customized menu for each customer.
 
-### Development Environment Specifications
-Our project was developed in an Apple Silicon environment, which provided us with advanced computing capabilities and efficiency. Here are the details:
+- Data registration is performed on both the kiosk and server database.
+- The web app offers personalized menu recommendations based on the customer data.
+- The recommended menus will be changed based on customer data (for example, allergies).
+- [User-based collaborative filtering](https://www.geeksforgeeks.org/user-based-collaborative-filtering/) is used as the recommendation algorithm. It is based on the order history of registered customers.
 
-- **Platform**: Apple Silicon (M1, M1 Pro, M1 Max, or later)
-- **Operating System**: macOS Big Sur or later
-- **Memory**: 8GB RAM or more
-- **Storage**: 256GB SSD or higher
+### Tech Stack
 
-We recommend using a similar Apple Silicon-based environment for development to ensure compatibility
+| Category | Technology |
+|----------|------------|
+| Frontend | [![React][React.js]][React-url][![npm][npm]][npm-url][![Bootstrap][Bootstrap.com]][Bootstrap-url][![JavaScript][JavaScript.js]][JavaScript-url][![Figma][Figma]][Figma-url] |
+| Face Identify Server | [![Flask][Flask]][Flask-url][![OpenCV][OpenCV]][OpenCV-url][![Python][Python.org]][Python-url] |
+| Kiosk API Server | [![Nodejs][Nodejs]][Nodejs-url][![npm][npm]][npm-url][![Prisma][Prisma]][Prisma-url][![JavaScript][JavaScript.js]][JavaScript-url] |
+| Database | [![MySQL][MySQL]][MySQL-url][![Prisma][Prisma]][Prisma-url] |
+| Development Environment | [![macOS][macOS]][macOS-url] |
 
-### Hardware Requirements for Client Device
+## Hardware Requirements
 
-For setting up the client device in this project, you will need the following hardware components:
+For setting up the client device of this project, you need the following hardwares:
 
-- **Raspberry Pi 4 4GB**(+@): The core computing unit for the kiosk.
-- **MicroSD Card with webOS Image**: Use a microSD card loaded with the webOS image to boot the Raspberry Pi. For this project, we have used the pre-built webOS OSE 2.24.0 image for Raspberry Pi 4, which can be downloaded from [here](https://github.com/webosose/build-webos/releases/tag/v2.24.0). Additionally, if you need guidance on flashing the webOS Open Source Edition to your microSD card, please refer to [flashing webos-ose guide](https://www.webosose.org/docs/guides/setup/flashing-webos-ose/) for detailed instructions.
-- **Touchscreen or Monitor**: A display unit to interact with the kiosk. A touchscreen is preferred for a more interactive experience.<br/> we use [this](https://www.icbanq.com/P009842845)
-- **Webcam**: An essential component for facial recognition or other interactive features. Ensure compatibility with the Raspberry Pi.
-- **Optional Input Devices**: Devices like a mouse and keyboard for initial setup and troubleshooting.
-- **Power Supply and Cables**: A suitable power supply for the Raspberry Pi and screen, along with necessary cables such as HDMI for connectivity.
+{{< note >}}
+See also [System Requirements]({{< relref "system-requirements" >}}).
+{{< /note >}}
 
+<dl>
+<dt>Raspberry Pi 4 Model B 4GB (+@)</dt>
+<dd>The core computing unit for the kiosk.</dd>
+<dt>MicroSD Card with webOS OSE Image</dt>
+<dd>To use the webOS OSE on the Raspberry Pi 4, a MicroSD card is used.<ul><li><strong>webOS OSE 2.24.0</strong> is used in this project. You can get the pre-built image in <a href="https://github.com/webosose/build-webos/releases/tag/v2.24.0">webOS OSE GitHub</a>.</li><li>To install a webOS OSE image on a MicroSD card, use the following guide  <a href="https://www.webosose.org/docs/guides/setup/flashing-webos-ose/">Flashing webOS OSE</a>.</li></ul></dd>
+<dt>Touchscreen or Monitor</dt>
+<dd>The display device that interacts with the kiosk. We recommend using a touchscreen for a more interactive experience. We use <a href="https://www.icbanq.com/P009842845">this (Korean website)</a>.</dd>
+<dt>Webcam</dt>
+<dd>An essential component for facial recognition or other interactive features. Make sure that your camera is compatible with the Raspberry Pi 4.</dd>
+<dt>Optional Input Devices</dt>
+<dd>Devices like a keyboard and mouse for initial setup and troubleshooting.</dd>
+<dt>Power Supply and Cables</dt>
+<dd>A power supply suitable for your Raspberry Pi and screen, and cables such as HDMI for connectivity.</dd>
+</dl>
 
-Ensure that you have all these components available before proceeding with the setup of your client device for the signage solution project.
+{{< note >}}
+Our team developed this project using Apple silicon computers. To ensure compatibility, **we recommend using a similar Apple silicon-based environment** for development. The followings are the specs for the computer we used:
+- SoC: Apple Silicon (M1, M1 Pro, M1 Max, or later)
+- OS: macOS Big Sur or later
+- Memory: 8GB or more
+- Storage: 256GB or higher
+{{< /note >}}
 
-
-> [webOS Offitial Docs](https://www.webosose.org/docs/guides/setup/system-requirements/)
-
-<!-- GETTING STARTED -->
 ## Getting Started
 
 This guide will help you set up and run the project in your local environment. Follow these steps to get started.
