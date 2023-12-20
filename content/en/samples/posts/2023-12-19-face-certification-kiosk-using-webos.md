@@ -90,11 +90,11 @@ Once customers register their data, the kiosk will recommend a customized menu f
 
 ## Hardware Requirements
 
-For setting up the client device of this project, you need the following hardwares:
+For setting up this project, you need a **client device** and **host PC**.
 
-{{< note >}}
-See also [System Requirements]({{< relref "system-requirements" >}}).
-{{< /note >}}
+### Client Device
+
+We used a Raspberry Pi 4 with webOS OSE as the client device.
 
 <dl>
 <dt>Raspberry Pi 4 Model B 4GB (+@)</dt>
@@ -111,13 +111,13 @@ See also [System Requirements]({{< relref "system-requirements" >}}).
 <dd>A power supply suitable for your Raspberry Pi and screen, and cables such as HDMI for connectivity.</dd>
 </dl>
 
-{{< note >}}
+### Host PC
+
 Our team developed this project using Apple silicon computers. To ensure compatibility, **we recommend using a similar Apple silicon-based environment** for development. The followings are the specs for the computer we used:
 - SoC: Apple Silicon (M1, M1 Pro, M1 Max, or later)
 - OS: macOS Big Sur or later
 - Memory: 8GB or more
 - Storage: 256GB or higher
-{{< /note >}}
 
 ## Getting Started
 
