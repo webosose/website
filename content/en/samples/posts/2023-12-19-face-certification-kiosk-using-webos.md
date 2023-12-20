@@ -119,35 +119,44 @@ Our team developed this project using Apple silicon computers. To ensure compati
 - Memory: 8GB or more
 - Storage: 256GB or higher
 
-## Getting Started
+## Installation
 
-This guide will help you set up and run the project in your local environment. Follow these steps to get started.
+This section describeds how to set up this project on your client device and host PC.
 
-> **Note:** This guide is tailored for a setup on **a single local PC**. It can also be adapted for multi-server environments, accommodating both centralized and distributed systems efficiently.
-
-> **Note:** For effective data processing, we recommend hosting both the **Flask application and database on the same system**. This setup reduces latency and improves operational efficiency, especially for large, user-specific models.
-
-### Installation
-
-The process for installing and setting up the project is as follows. This template does not rely on any external dependencies or services.
+{{< note "Before You Begin" >}}
+- This guide is based on using **a single host PC**. It can also be adapted for multi-server environments to efficiently accommodate both centralized and distributed systems.
+- To process data effectively, we recommend hosting both the **Flask application** and **database** on the same computer. This reduces latency and improves operational efficiency, especially for larger, user-specific models.
+{{< /note >}}
 
 1. Clone the repository.
+
    ```sh
    git clone https://github.com/noFlowWater/signage_solution.git
    ```
+   
 2. Move into the cloned directory.
-   ```sh
-   cd signage_solution
-   ```
-After cloning and moving into the directory, you will find three folders in the project directory:<br/>
-`react`, `flask`, `nodejs`.
 
-Proceed with the project in the following order:
-- First, [Get Start for Kiosk API Server & Init Database](https://github.com/noFlowWater/signage_solution/tree/main/nodejs/README.md)
-- Then, [Get Start for Face Authentication Server](https://github.com/noFlowWater/signage_solution/tree/main/flask/README.md)
-- Finally, [Get Start for React for Deploy to webOS Client Device](https://github.com/noFlowWater/signage_solution/tree/main/react_signage/README.md)
+    ```sh
+    cd signage_solution
+    ```
 
-Each step is detailed in the `README.md` file of the respective folder, allowing you to sequentially progress and gather the necessary information.
+    After moving into the directory, you will find the following three directories: 
+
+    ```sh
+    signage_solution
+      |- flask
+      |- nodejs
+      |- react_signage
+      |- ...
+    ```
+
+3. Follow the guides in the following links:
+
+    1. [Getting Started - NodeJS Kiosk-API Server & Init Database](https://github.com/noFlowWater/signage_solution/tree/main/nodejs/README.md)
+    2. [Getting Started - Face Recognition Server](https://github.com/noFlowWater/signage_solution/tree/main/flask/README.md)
+    3. [Getting Started - React App](https://github.com/noFlowWater/signage_solution/tree/main/react_signage/README.md)
+
+    Each link has step-by-step setup guide for `nodejs`, `flask`, and `react_signage` directories.
 
 ## Face Recognition Code
 
