@@ -527,45 +527,50 @@ def handle_image_upload(client_id, data):
   <img style="width: 49%;" alt="Verifying user" src="https://github.com/noFlowWater/signage_solution/assets/112642604/f8ba2823-7dd0-420a-8adc-106e66505853">
 </p>
 
+### Recommendation Algorithm
 
-### Recommendation Algorithm and Testing
+In this project, [**user-based collaborative filtering**](https://en.wikipedia.org/wiki/Collaborative_filtering) is used for recommendation algorithm.
 
-#### Algorithm Overview
-
-In this project, collaborative user filtering is utilized. The algorithm measures the similarity of order histories among users to select N similar users. It then analyzes the order histories of these N users to recommend the most frequently ordered menu item. The algorithm primarily employs jaccard similarity to measure the similarity between users and selects the recommendation target based on this similarity.
+The algorithm measures the similarity of order history among users, and select N similar users. It analyzes the order history of these N users to recommend the most frequently ordered menu. The algorithm uses [Jaccard similarity](https://en.wikipedia.org/wiki/Jaccard_index) to measure the similarity between users, and selects the recommendation target based on this similarity.
 
 #### Algorithm Flow
 
-1. **Measuring User Similarity**: Pairing all users in the database and calculating jaccard similarity to select N users with similar order histories.
-2. **Recruiting Similar Users**: Using cosin jaccard similarity as a criterion, selecting the top N users with the highest similarity.
-3. **Order History Analysis**: Summarizing the order histories of the selected N users and calculating the frequency of each menu item.
-4. **Selecting Recommended Menu**: Choosing the menu item with the highest frequency as the recommended item.
+1. **Measuring User Similarity**: Pairing all users in the database and calculating Jaccard similarity to select N users with similar order histories.
+2. **Selecting Simiilar Users**: Using Jaccard similarity, selecting the top N users with the highest similarity.
+3. **Analyzing Order History**: Summarizing the order history of the selected N users and calculating the frequency of each menu item.
+4. **Selecting Recommended Menu**: Selecting the menu with the highest frequency as the recommended items.
 
-#### recommend.js
+#### JaccardSimilarity
+
+The `JaccardSimilarity` function calculates the Jaccard similarity coefficient between two sets of menuIDs representing user orders. This coefficient is a measure of similarity between two sets and is defined as the size of the intersection of the sets divided by the size of their union.
+
+{{< code "nodejs/src/routes/recommendation.js" >}}
 
 ```javascript
 function JaccardSimilarity(targetUserOrders, userOrders) {
-  // Extracting menuID values and creating new sets
+  // Extract menuID values and creating new sets
   const set1 = new Set(targetUserOrders.map(order => order.menuID));
   const set2 = new Set(userOrders.menuIDList.map(order => order.menuID));
 
-  // Calculating intersection and union sets
+  // Calculate intersection and union sets
   const intersection = new Set([...set1].filter(x => set2.has(x)));
   const union = new Set([...set1, ...set2]);
 
-  // Calculating sizes of intersection and union sets
+  // Calculate sizes of intersection and union sets
   const intersectionSize = intersection.size;
   const unionSize = union.size;
 
-  // Calculating and returning Jaccard similarity coefficient
+  // Calculate and return Jaccard similarity coefficient
   return unionSize === 0 ? 0 : intersectionSize / unionSize;
 }
 ```
+{{< /code >}}
 
-<br/>
-The JaccardSimilarity function calculates the Jaccard similarity coefficient between two sets of menuIDs representing user orders. This coefficient is a measure of similarity between two sets and is defined as the size of the intersection of the sets divided by the size of their union.
-<br/><br/>
+#### getMostOrderedMenu
 
+The `getMostOrderedMenu` function identifies the menu that is most frequently ordered by users who are considered the most similar to the target user. The function takes a list of top similar users and the target user's orders as input. It uses a map to track the frequency of each menu across the similar users' orders.
+
+{{< code "nodejs/src/routes/recommendation.js" >}}
 ```javascript
 /**
  * Asynchronous function to retrieve the most ordered menu among the menus ordered by top similar users.
@@ -577,9 +582,9 @@ The JaccardSimilarity function calculates the Jaccard similarity coefficient bet
 async function getMostOrderedMenu(topSimilarUsers, targetUserOrders) {
   const menuFrequency = new Map();
 
-  // Iterating through the top similar users
+  // Iterate through the top similar users
   for (const similarUser of topSimilarUsers) {
-    // Retrieving menu orders for the current similar user
+    // Retrieve menu orders for the current similar user
     const userMenus = await prisma.menuOrderInfo.findMany({
       where: {
         userID: similarUser.userId,
@@ -589,7 +594,7 @@ async function getMostOrderedMenu(topSimilarUsers, targetUserOrders) {
       },
     });
 
-    // Updating menu frequency based on the orders of the current similar user
+    // Update menu frequency based on the orders of the current similar user
     userMenus.forEach(menu => {
       // Checking if the menu is not present in the target user's orders
       if (!targetUserOrders.some(order => order.menuID === menu.menuID)) {
@@ -599,7 +604,7 @@ async function getMostOrderedMenu(topSimilarUsers, targetUserOrders) {
     });
   }
 
-  // Finding the menu with the highest frequency
+  // Find the menu with the highest frequency
   let mostOrderedMenu = null;
   let maxFrequency = 0;
 
@@ -613,13 +618,13 @@ async function getMostOrderedMenu(topSimilarUsers, targetUserOrders) {
   return mostOrderedMenu;
 }
 ```
-<br/>
+{{< /code >}}
 
-<br/>
-The getMostOrderedMenu function aims to identify the menu that is most frequently ordered among the menus ordered by users who are considered the most similar to the target user. The function takes a list of top similar users and the target user's orders as input, and it utilizes a Map to track the frequency of each menu across the similar users' orders.
-<br/><br/>
+#### recommendMenuForUser
 
+The `recommendMenuForUser` function recommends a menu for the target user based on other users' orders. It utilizes Jaccard similarity to measure the similarity between the target user's orders and other users' orders. Then, it selects the most frequently ordered menu among the top similar users.
 
+{{< code "nodejs/src/routes/recommendation.js" >}}
 ```javascript
 /**
  * Asynchronous function to recommend a menu for a target user based on the orders of other users.
@@ -629,7 +634,7 @@ The getMostOrderedMenu function aims to identify the menu that is most frequentl
  * @returns {Object} - An object containing the menuID of the recommended menu.
  */
 async function recommendMenuForUser(targetUserId, N) {
-  // Retrieving orders of the target user
+  // Retrieve orders of the target user
   const targetUserOrders = await prisma.menuOrderInfo.findMany({
     where: {
       userID: targetUserId,
@@ -639,7 +644,7 @@ async function recommendMenuForUser(targetUserId, N) {
     },
   });
 
-  // Retrieving orders of all users
+  // Retrieve orders of all users
   const usersMenuOrders = await prisma.menuOrderInfo.findMany({
     select: {
       user: {
@@ -655,7 +660,7 @@ async function recommendMenuForUser(targetUserId, N) {
     },
   });
 
-  // Creating a structure to store all users' orders
+  // Create a structure to store all users' orders
   const allUsersOrders = usersMenuOrders.reduce((result, order) => {
     const userId = order.user.user_id;
     const menuId = order.menu.menu_id;
@@ -677,7 +682,7 @@ async function recommendMenuForUser(targetUserId, N) {
     return result;
   }, []);
 
-  // Measuring similarity between the target user and other users
+  // Measure similarity between the target user and other users
   const similarUsers = [];
 
   for (const userOrders of allUsersOrders) {
@@ -685,56 +690,51 @@ async function recommendMenuForUser(targetUserId, N) {
     similarUsers.push({ userId: userOrders.userId, similarity });
   }
 
-  // Sorting users based on similarity in descending order
+  // Sort users based on similarity in descending order
   similarUsers.sort((a, b) => b.similarity - a.similarity);
 
-  // Retrieving the top N similar users
+  // Retrieve the top N similar users
   const topSimilarUsers = similarUsers.slice(0, N);
 
-  // Selecting the most ordered menu among the top similar users
+  // Select the most ordered menu among the top similar users
   const mostOrderedMenu = await getMostOrderedMenu(topSimilarUsers, targetUserOrders);
 
   return mostOrderedMenu;
 }
 ```
-<br/>
+{{< /code >}}
 
-The recommendMenuForUser function is designed to recommend a menu for a target user based on the orders of other users. It utilizes Jaccard similarity to measure the similarity between the target user's orders and the orders of other users, and then selects the most frequently ordered menu among the top similar users.
+#### Algorithm Features and Notes
 
-<br/><br/>
+Our recommendation algorithm provides the following features:
 
+- Suggesting menu based on user-based collaborative filtering
+- Extracting similar users who tried menus that the target user has not yet experienced.
 
-#### Algorithm features and a point of note
+However, there are also situations where the recommendation algorithm may not work effectively. Note that these limitations in the algorithm may cause the recommendation process to produce no results.
 
-Our recommended algorithm aims to provide users with menu suggestions based on user-based collaborative filtering, extracting similar users who have tried menus that the target user has not yet experienced. However, there are situations in which the recommendation algorithm may not function effectively.
+<dl>
+<dt>When user has never placed an order before</dt>
+<dd>In this scenario, it is challenging to extract similar users, because the algorithm relies on user history. Consequently, the recommendation algorithm may not operate optimally when the user has not placed any orders before.</dd>
+<dt>When the user has tried too different menus before</dt>
+<dd>Our algorithm selects menus that the user has not tried yet. However, if the user has a wide variety of tried menus, it becomes difficult to make recommendations. In such cases, the algorithm may not be able to provide suggestions effectively.
+</dd>
+</dl>
 
-**1. When the user has never placed an order:**<br/>
-In this scenario, it is challenging to extract similar users, as the algorithm relies on user history. Consequently, the recommendation algorithm may not operate optimally when the user has not placed any orders.
+#### Testing Method
 
-**2. When the user has a diverse history of tried menus:**<br/>
-Our algorithm selects menus that the user has not tried yet. However, if the user has a wide variety of tried menus, it becomes difficult to make recommendations. In such cases, the algorithm may not be able to provide suggestions effectively.<br/><br/>
-Please be mindful of these potential limitations in the algorithmic process, as they could lead to instances where the recommendation process does not yield results.
+1. Check that similarity is correct by logging.
+2. Use dummy data to verify the accuracy and efficiency of the algorithm. Multiple tests are conducted to ensure that the expected results are achieved. Necessary measures are taken to improve the algorithm's performance based on the test results.
 
-### Testing Method
-First, we confirmed that similarity is correct by logging.<br/>
-Second,Testing focuses on using dummy data to verify the accuracy and efficiency of the algorithm. Multiple tests are conducted to ensure that the expected results are achieved. Necessary measures are taken to improve the algorithm's performance based on the test results.
+| Item | Description |
+|------|-------------|
+| Data Examples | <ul><li>A: Ordered 5 bowls of ramen</li><li>B: Ordered 5 bowls of ramen, 3 pork cutlets</li><li>C: Ordered 5 bowls of ramen, 10 cheese pork cutlets (highest order frequency)</li><li>D: Ordered 5 bowls of ramen, 2 rice cakes in spicy sauce</li><li>E: Ordered 5 rolls of gimbap</li></ul>
+| Configuration | <ul><li>Set N=3 to select the top 3 users with the highest similarity.</li><li>Combine the order histories of selected users B, C, D to recommend the most frequently ordered menu. </li></ul> |
 
+##### Results
 
-##### Test Data Example:
+First, we saw results and contents by logging:
 
-- A: Ordered 5 bowls of ramen
-- B: Ordered 5 bowls of ramen, 3 pork cutlets
-- C: Ordered 5 bowls of ramen, 10 cheese pork cutlets (highest order frequency)
-- D: Ordered 5 bowls of ramen, 2 rice cakes in spicy sauce
-- E: Ordered 5 rolls of gimbap
-
-##### Test Configuration:
-
-- Set N=3 to select the top 3 users with the highest similarity.
-- Combine the order histories of selected users B, C, D to recommend the most frequently ordered menu.
-
-#### Expected Results
-First, we saw results and contents by logging:<br/>
 ![recommend1](/images/samples/solutions/face-recognize-kiosk/recommend1.png)
 ![recommend2](/images/samples/solutions/face-recognize-kiosk/recommend2.png)
 
@@ -746,10 +746,9 @@ Next, The anticipated results from the test are as follows:
 
 If the results align with expectations, it confirms the accuracy of the algorithm.
 
-#### Future Improvements
+##### Future Improvements
 
 If any performance issues or accuracy concerns are identified during testing, efforts will be made to address those areas and enhance the algorithm for better efficiency and accuracy.
-
 
 ## Contact
 
