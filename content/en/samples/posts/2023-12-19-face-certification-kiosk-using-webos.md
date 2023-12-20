@@ -156,7 +156,7 @@ This section describeds how to set up this project on your client device and hos
     2. [Getting Started - Face Recognition Server](https://github.com/noFlowWater/signage_solution/tree/main/flask/README.md)
     3. [Getting Started - React App](https://github.com/noFlowWater/signage_solution/tree/main/react_signage/README.md)
 
-    Each link has step-by-step setup guide for `nodejs`, `flask`, and `react_signage` directories.
+    Each link has step-by-step setup guide for `nodejs`, `flask`, and `react_signage` directories. You **MUST be set in the order of the links above**.  
 
 ## Face Recognition Code
 
