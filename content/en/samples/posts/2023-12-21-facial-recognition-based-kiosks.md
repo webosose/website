@@ -99,21 +99,32 @@ Touch display : Raspberry Pi Display 10.1-Inch Touch Screen LCD
         
             node -v
 
-2. Install npm and React-scripts
+2. Install npm and React
    	* npm is included in Node.js, so if Node.js is installed successfully, npm is already available.
    	* You can check if the npm is installed well through the command below.
-    * React-scripts are required when you build a project later.
+    * React are required when you build a project later and sign up.
 
-    * qrcode.react is for generating QR code in the future.
 
- 	        npm -v
+            npm -v
 
-            npm install react-scripts 
+            npm install -g create-react-app
 
-            npm install qrcode.react
-        
+3. Git clone our project. [link](https://github.com/Cheetah-19/Kiosk_KNU.git)
+    * Once you have cloned, please run the following command
 
-3. CLI Installation
+    * from Kiosk_KNU/frontend/kiosk_page
+
+            npm install react-scripts
+            npm install axios
+            npm install react-bootstrap bootstrap
+
+    * from Kiosk_KNU/frontend/register
+
+            npm install react-scripts
+            npm install axios
+    
+
+4. CLI Installation
     *  Use the -g option to run the following command on the terminal to install the CLI globally.
 
 	        npm install –g @webosose/ares-cli
@@ -237,6 +248,14 @@ On your local PC, follow these steps:
   3. Overwrite the built content over the folder you created (in this case 'sampleApp').
 
             npm run build
+        
+        * If you get an error such as Can't resolve 'react-dom', please execute the command below and try again.
+
+                npm install
+        
+        * If you get an error such as Can't save 'bootstrap/dist/css/bootstrap.css', please execute the following command from the ./Kiosk_KNU location.
+
+                npm install react-bootstrap bootstrap
         
 
         * When you build a project, a build file will be created.
