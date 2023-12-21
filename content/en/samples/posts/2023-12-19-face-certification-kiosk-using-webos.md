@@ -62,7 +62,7 @@ User verification with face recognition works in the following steps:
 Once customers register their data, the kiosk will recommend a customized menu for each customer.
 
 - Data registration is performed on both the kiosk and server database.
-- The web app offers personalized menu recommendations based on the customer data.
+- The web app offers personalized menu recommendations based on customer data.
 - The recommended menus will be changed based on customer data (for example, allergies).
 - [User-based collaborative filtering](https://www.geeksforgeeks.org/user-based-collaborative-filtering/) is used as the recommendation algorithm. It is based on the order history of registered customers.
 
@@ -78,7 +78,7 @@ Once customers register their data, the kiosk will recommend a customized menu f
 
 ## Hardware Requirements
 
-For setting up this project, you need a **client device** and **host PC**.
+To set up this project, you need a **client device** and **host PC**.
 
 ### Client Device
 
@@ -88,7 +88,7 @@ We used a Raspberry Pi 4 with webOS OSE as the client device.
 <dt>Raspberry Pi 4 Model B 4GB (+@)</dt>
 <dd>The core computing unit for the kiosk.</dd>
 <dt>MicroSD Card with webOS OSE Image</dt>
-<dd>To use the webOS OSE on the Raspberry Pi 4, a MicroSD card is used.<ul><li><strong>webOS OSE 2.24.0</strong> is used in this project. You can get the pre-built image in <a href="https://github.com/webosose/build-webos/releases/tag/v2.24.0">webOS OSE GitHub</a>.</li><li>To install a webOS OSE image on a MicroSD card, use the following guide  <a href="https://www.webosose.org/docs/guides/setup/flashing-webos-ose/">Flashing webOS OSE</a>.</li></ul></dd>
+<dd>To use the webOS OSE on the Raspberry Pi 4, a MicroSD card is used.<ul><li><strong>webOS OSE 2.24.0</strong> is used in this project. You can get the pre-built image in <a href="https://github.com/webosose/build-webos/releases/tag/v2.24.0">webOS OSE GitHub</a>.</li><li>To install a webOS OSE image on a MicroSD card, use the following guide: <a href="https://www.webosose.org/docs/guides/setup/flashing-webos-ose/">Flashing webOS OSE</a>.</li></ul></dd>
 <dt>Touchscreen or Monitor</dt>
 <dd>The display device that interacts with the kiosk. We recommend using a touchscreen for a more interactive experience. We use <a href="https://www.icbanq.com/P009842845">this (Korean website)</a>.</dd>
 <dt>Webcam</dt>
@@ -101,7 +101,7 @@ We used a Raspberry Pi 4 with webOS OSE as the client device.
 
 ### Host PC
 
-Our team developed this project using Apple silicon computers. To ensure compatibility, **we recommend using a similar Apple silicon-based environment** for development. The followings are the specs for the computer we used:
+Our team developed this project using Apple silicon computers. To ensure compatibility, **we recommend using a similar Apple silicon-based environment** for development. The following are the specs for the computer we used:
 - SoC: Apple Silicon (M1, M1 Pro, M1 Max, or later)
 - OS: macOS Big Sur or later
 - Memory: 8GB or more
@@ -109,7 +109,7 @@ Our team developed this project using Apple silicon computers. To ensure compati
 
 ## Installation
 
-This section describeds how to set up this project on your client device and host PC.
+This section describes how to set up this project on your client device and host PC.
 
 {{< note "Before You Begin" >}}
 - This guide is based on using **a single host PC**. It can also be adapted for multi-server environments to efficiently accommodate both centralized and distributed systems.
@@ -144,14 +144,14 @@ This section describeds how to set up this project on your client device and hos
     2. [Getting Started - Face Recognition Server](https://github.com/noFlowWater/signage_solution/tree/main/flask/README.md)
     3. [Getting Started - React App](https://github.com/noFlowWater/signage_solution/tree/main/react_signage/README.md)
 
-    Each link has step-by-step setup guide for `nodejs`, `flask`, and `react_signage` directories. You **MUST be set in the order of the links above**.  
+    Each link has a step-by-step setup guide for `nodejs`, `flask`, and `react_signage` directories. You **MUST be set in the order of the links above**.  
 
 ## Source Code
 
 ### Face Recognition
 
 - Reference GitHub: [Facial Recognition Repository](https://github.com/subhamroy021/Facial-Recognition.git)
-- Pre-trained XML file using the Haar Algorithm is used. You can download the classifier for face detection from [Haarcascades on GitHub](https://github.com/opencv/opencv/tree/master/data/haarcascades).
+- A pre-trained XML file using the Haar Algorithm is used (`haarcascade_frontalface_default.xml`). You can download the classifier for face detection from [Haarcascades on GitHub](https://github.com/opencv/opencv/tree/master/data/haarcascades).
 
 #### LBPHFaceRecognizer
 
@@ -206,7 +206,7 @@ def face_detector(img, size = 0.5):
 
 #### receive_data
 
-`receive_data` processes image data sent by client for user registration.
+`receive_data` processes image data sent by the client for user registration.
 
 {{< code "flask/app.py">}}
 ```python
@@ -305,7 +305,7 @@ def receive_data(client_id,data):
 3. Decode the Base64-encoded image data and **detect faces** using the `face_detector` function.
 4. Count the number of times a face is detected and **temporarily store the image on the server**.
 5. When 100 images of a specific user are collected, use them to **train a face recognition model**.
-6. **Store the trained model into the database**.
+6. **Store the trained model in the database**.
 7. If user registration is successful, **transmit the result to the client**.
 
 {{< figure src="https://github.com/noFlowWater/signage_solution/assets/112642604/f4fa27ea-f77b-4dc8-8914-bfe9d90eddf7" alt="" caption="Registering User Face" >}}
@@ -325,7 +325,7 @@ def load_user_models(cursor):
   global users_models
 
   try:
-      # Find model data and name for all users
+      # Find model data and names for all users
       fetch_models_query = "SELECT user_id, user_name, user_face_model FROM User"
       cursor.execute(fetch_models_query)
 
@@ -333,7 +333,7 @@ def load_user_models(cursor):
       for (user_id, user_name, model_data) in cursor.fetchall():
           # Check if the model is already contained in the list
           if any(user_id == loaded_id for loaded_id, _, _ in users_models):
-              continue  # Skip if model already loaded
+              continue  # Skip if the model has already loaded
           
           temp_model_path = f"temp_model_{user_id}.yml"
           with open(temp_model_path, "wb") as file:
@@ -439,7 +439,7 @@ def determine_most_recognized_user(client_id):
 def handle_image_upload(client_id, data):
     image_data = data['image']
     
-    # If a user sends data for the first time, set intial value 0 to the dictionary
+    # If a user sends data for the first time, set the intial value 0 to the dictionary
     if client_id not in client_face_counts:
         client_face_counts[client_id] = 0
 
@@ -454,7 +454,7 @@ def handle_image_upload(client_id, data):
             if highest_confidence > 75:
                 # Check that 30 photos have been collected
                 if client_face_counts[client_id] >= 30:
-                    # If the number of collected images belows 30, stop the function
+                    # If the number of collected images is below 30, stop the function
                     if not is_30_images_collected(client_id):
                         return
                     
@@ -517,16 +517,16 @@ def handle_image_upload(client_id, data):
 
 ### Recommendation Algorithm
 
-In this project, [**user-based collaborative filtering**](https://en.wikipedia.org/wiki/Collaborative_filtering) is used for recommendation algorithm.
+In this project, [**user-based collaborative filtering**](https://en.wikipedia.org/wiki/Collaborative_filtering) is used for the recommendation algorithm.
 
-The algorithm measures the similarity of order history among users, and select N similar users. It analyzes the order history of these N users to recommend the most frequently ordered menu. The algorithm uses [Jaccard similarity](https://en.wikipedia.org/wiki/Jaccard_index) to measure the similarity between users, and selects the recommendation target based on this similarity.
+The algorithm measures the order history similarity among users and selects N similar users It analyzes the order history of these N users to recommend the most frequently ordered menu. The algorithm uses [Jaccard similarity](https://en.wikipedia.org/wiki/Jaccard_index) to measure the similarity between users and selects the recommendation target based on this similarity.
 
 #### Algorithm Flow
 
-1. **Measuring User Similarity**: Pairing all users in the database and calculating Jaccard similarity to select N users with similar order histories.
-2. **Selecting Simiilar Users**: Using Jaccard similarity, selecting the top N users with the highest similarity.
-3. **Analyzing Order History**: Summarizing the order history of the selected N users and calculating the frequency of each menu item.
-4. **Selecting Recommended Menu**: Selecting the menu with the highest frequency as the recommended items.
+1. **Measuring User Similarity**: Pair all users in the database and calculate Jaccard similarity to select N users with similar order histories.
+2. **Selecting Similar Users**: Using Jaccard similarity, select the top N users with the highest similarity.
+3. **Analyzing Order History**: Summarize the order history of the selected N users and calculate the frequency of each menu item.
+4. **Selecting Recommended Menu**: Select the menu with the highest frequency as the recommended items.
 
 #### JaccardSimilarity
 
@@ -556,7 +556,7 @@ function JaccardSimilarity(targetUserOrders, userOrders) {
 
 #### getMostOrderedMenu
 
-The `getMostOrderedMenu` function identifies the menu that is most frequently ordered by users who are considered the most similar to the target user. The function takes a list of top similar users and the target user's orders as input. It uses a map to track the frequency of each menu across the similar users' orders.
+The `getMostOrderedMenu` function identifies the menu that is most frequently ordered by users who are considered the most similar to the target user. The function takes a list of top similar users and the target user's orders as input. It uses a map to track the frequency of each menu across similar users' orders.
 
 {{< code "nodejs/src/routes/recommendation.js" >}}
 ```javascript
@@ -702,8 +702,8 @@ Our recommendation algorithm provides the following features:
 However, there are also situations where the recommendation algorithm may not work effectively. Note that these limitations in the algorithm may cause the recommendation process to produce no results.
 
 <dl>
-<dt>When user has never placed an order before</dt>
-<dd>In this scenario, it is challenging to extract similar users, because the algorithm relies on user history. Consequently, the recommendation algorithm may not operate optimally when the user has not placed any orders before.</dd>
+<dt>When the user has never placed an order before</dt>
+<dd>In this scenario, it is challenging to extract similar users because the algorithm relies on user history. Consequently, the recommendation algorithm may not operate optimally when the user has not placed any orders before.</dd>
 <dt>When the user has tried too different menus before</dt>
 <dd>Our algorithm selects menus that the user has not tried yet. However, if the user has a wide variety of tried menus, it becomes difficult to make recommendations. In such cases, the algorithm may not be able to provide suggestions effectively.
 </dd>
@@ -711,7 +711,7 @@ However, there are also situations where the recommendation algorithm may not wo
 
 #### Testing Method
 
-1. Check that similarity is correct by logging.
+1. Check that the similarity is correct by logging.
 2. Use dummy data to verify the accuracy and efficiency of the algorithm. Multiple tests are conducted to ensure that the expected results are achieved. Necessary measures are taken to improve the algorithm's performance based on the test results.
 
 | Item | Description |
