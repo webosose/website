@@ -1,6 +1,6 @@
 ---
 title: Face Certification Kiosk Using webOS
-date: 2023-12-19
+date: 2023-12-21
 slug: face-certification-kiosk-using-webos
 posttype: solution
 toc: true
