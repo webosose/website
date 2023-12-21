@@ -1,6 +1,6 @@
 ---
 title: Facial recognition-based kiosks
-date: 2023-12-12
+date: 2023-12-21
 slug: facial-recognition-based-kiosks
 posttype: solution
 toc: true
