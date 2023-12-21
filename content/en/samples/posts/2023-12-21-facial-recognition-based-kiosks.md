@@ -37,7 +37,8 @@ Touch display : Raspberry Pi Display 10.1-Inch Touch Screen LCD
 
 * OS : [webos ose](https://github.com/webosose/build-webos/releases)
 
-1. Download webos image from [webos ose](https://github.com/webosose/build-webos/releases) 
+1. Download webos image from [webos ose](https://github.com/webosose/build-webos/releases)
+ 
      <img width="899" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/1f147666-4f88-4db0-bac5-4f7d88631648">
 
     {{< note >}}
@@ -47,6 +48,7 @@ Touch display : Raspberry Pi Display 10.1-Inch Touch Screen LCD
 
 2. Extracting image files
     * Uncompressed using the [7-zip](https://www.7-zip.org/) program
+        
         ![1](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/ed374a79-e867-4a87-a388-56b2023ef70f)
 
     * You can decompress it.
@@ -63,6 +65,7 @@ Touch display : Raspberry Pi Display 10.1-Inch Touch Screen LCD
         ![5](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/d80c904e-979f-46ca-8dd1-951add57e53c) 
 
     * Uncompressed creates a folder called webos-ose-2-24-0-raspberrypi4-64.
+
         ![6](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/be9e14e9-4aeb-4eb9-adc4-3fb449fbf6d5) 
         
     * When you enter the folder, you'll find a .mic file, which means the Image file is ready.
@@ -76,14 +79,20 @@ Touch display : Raspberry Pi Display 10.1-Inch Touch Screen LCD
 4. Image flushing to sd card
     * Image flushing to sd card using program : [Win 32 Disk Imager](https://sourceforge.net/projects/win32diskimager/) 
     * Please select the .mic file obtained above, select the SD card you formatted, and press the Write button.
-    ![8](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/2c0252ba-a718-4e1b-9857-593a12b6f12a)
+
+        ![8](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/2c0252ba-a718-4e1b-9857-593a12b6f12a)
+
     * It's taking some time.
-    ![9](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/2cf967ab-8a65-4c13-8abd-a0cec6607281)
+
+        ![9](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/2cf967ab-8a65-4c13-8abd-a0cec6607281)
+
     * Done! Now when you insert the SD card into the bottom of the Raspberry Pi and boot it up, WebOs will boot normally!
         {{< note >}}
         If you insert the sd card into the sd reader and insert it into USB on its own, it will not boot! Make sure you remove the sd card separately and insert it into the bottom of the Raspberry Pi!
         {{< /note >}}
-    ![10](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/5015e33f-8ff7-44e4-8ad6-8976d0befe53)
+
+        ![10](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/5015e33f-8ff7-44e4-8ad6-8976d0befe53)
+    
     * If Writing Successful appears, you have successfully flushing the image on the sd card.
 
 ### Touch display
@@ -91,6 +100,7 @@ Touch display : Raspberry Pi Display 10.1-Inch Touch Screen LCD
 * HardWare : [Raspberry Pi Display 10.1-Inch Touch Screen LCD](https://smartstore.naver.com/mcuboard/products/5006590307?NaPm=ct%3Dlpihmuhk%7Cci%3D2d0b272112d74fa2c41384d2a3b0e4a94ff945f5%7Ctr%3Dsls%7Csn%3D186400%7Chk%3D991293f6377b661f14470419dc8bc00fa26ea908)
 
     ![11](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/3f2edb87-7a3c-4c05-8dd7-0b0c24286da1)
+    
  * If you assemble the components well on the touch display and power the Raspberry Pi, you can see that the screen is coming out well.
 
 ### Camera
