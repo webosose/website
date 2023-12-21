@@ -21,18 +21,6 @@ This project is a webOS-based kiosk sample solution that supports face recogniti
   </p>
 </div>
 
-----
-
-**Table of Contents**
-
-- [About The Project](#about-the-project)
-  - [Built With](#built-with)
-- [Specifications](#specifications)
-- [Getting Started](#getting-started)
-- [Face Recognition Code](#face-recognition-code)
-- [Recommendation Algorithm and Testing](#recommendation-algorithm-and-testing)
-- [Contact](#contact)
-
 ## About This Project
 
 <p align="center" style="display: flex; justify-content: space-between;">
