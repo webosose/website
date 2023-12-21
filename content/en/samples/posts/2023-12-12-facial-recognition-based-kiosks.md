@@ -183,23 +183,17 @@ Touch display : Raspberry Pi Display 10.1-Inch Touch Screen LCD
         ![26](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/e562a9d9-524e-4985-b159-ee51c19aed8c)
 
 4. Deploying register page
-    * Build frontend regitser via npm run build.
-        ![27](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/621f488c-f3df-4432-ba32-bf505dc29cbe)
-        * In github, create a 'username'.github.io
-            * ex. Lucerna00.github.io
-        ![28](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/feea2cd5-10d8-4346-8232-569e00619967)
-        * Upload the files in the register/build folder to the repository created.
+    * Deploy frontend regitser via npm run start.
+        ![27](https://github.com/Lucerna00/Lucerna00.github.io/assets/95912522/5deb6aa9-0b6a-4d9c-94f0-7f9bbd029c8e)
 
-        ![29](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/60bdf4d0-d9a4-42a0-b5e8-1eb23dce13e8)
-        * After about 10 minutes, you can go to https://'username'.github.io to view the deployed page.
 
 5. Add register address to server
     * Add the address of the deployed register page to CORS_ORIGIN_WHITELIST in backend/django_react_project/settings.py.
-        ![30](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/87c94f6d-0792-496d-8730-ef57115b8c40)
+        ![30](https://github.com/Lucerna00/Lucerna00.github.io/assets/95912522/6f175d50-b8f0-4f6e-87b7-8f0435e78703)
 
 6. Add register address to kiosk page
     * In frontend/kiosk_page/src/kiosk/QR.js, change the value of the QR tag to the address of the deployed register page.
-        ![34](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/c99b7456-0c67-4878-9478-46f58a2a0301)
+        ![34](https://github.com/Lucerna00/Lucerna00.github.io/assets/95912522/a8f25924-4b20-4862-9b98-7ef726941076)
 
 
 If you're done so far, your server is ready! Now it's time to start the app.
