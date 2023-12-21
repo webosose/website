@@ -159,12 +159,12 @@ This section describes how to set up this project on your client device and host
 Binary values are generated based on the relative brightness difference between the central pixel and its neighbors. If a neighboring pixel is brighter than the center, it's represented as 1; otherwise, 0. This binary number is used to extract the texture features of each pixel.
 
 <p align="center">
-  <img src="/images/samples/solutions/face-recognize-kiosk/LBP_1.jpeg" 
+  <img src="/images/samples/solutions/facial-recognition-kiosk/LBP_1.jpeg" 
        alt="LBP_1" 
        style="width: 70%;">
 </p>
 <p align="center">
-  <img src="/images/samples/solutions/face-recognize-kiosk/LBP_2.jpeg"    
+  <img src="/images/samples/solutions/facial-recognition-kiosk/LBP_2.jpeg"    
        alt="LBP_2"
        style="width: 90%;">
 </p>
@@ -722,8 +722,8 @@ However, there are also situations where the recommendation algorithm may not wo
 
 First, we saw results and contents by logging:
 
-![recommend1](/images/samples/solutions/face-recognize-kiosk/recommend1.png)
-![recommend2](/images/samples/solutions/face-recognize-kiosk/recommend2.png)
+![recommend1](/images/samples/solutions/facial-recognition-kiosk/recommend1.png)
+![recommend2](/images/samples/solutions/facial-recognition-kiosk/recommend2.png)
 
 Next, The anticipated results from the test are as follows:
 
