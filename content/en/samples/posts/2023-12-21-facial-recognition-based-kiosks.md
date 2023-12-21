@@ -182,19 +182,6 @@ Touch display : Raspberry Pi Display 10.1-Inch Touch Screen LCD
         ![25](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/1ff4c30c-ef76-4376-99ba-f0ac43d96a00)
         ![26](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/e562a9d9-524e-4985-b159-ee51c19aed8c)
 
-4. Deploying register page
-    * Deploy frontend regitser via npm run start.
-        ![27](https://github.com/Lucerna00/Lucerna00.github.io/assets/95912522/5deb6aa9-0b6a-4d9c-94f0-7f9bbd029c8e)
-
-
-5. Add register address to server
-    * Add the address of the deployed register page to CORS_ORIGIN_WHITELIST in backend/django_react_project/settings.py.
-        ![30](https://github.com/Lucerna00/Lucerna00.github.io/assets/95912522/6f175d50-b8f0-4f6e-87b7-8f0435e78703)
-
-6. Add register address to kiosk page
-    * In frontend/kiosk_page/src/kiosk/QR.js, change the value of the QR tag to the address of the deployed register page.
-        ![34](https://github.com/Lucerna00/Lucerna00.github.io/assets/95912522/a8f25924-4b20-4862-9b98-7ef726941076)
-
 
 If you're done so far, your server is ready! Now it's time to start the app.
 
@@ -284,8 +271,11 @@ On your local PC, follow these steps:
 2. Connecting Raspberry Pie to the Internet.
 3. Change your unique server address (Please refer to the Url.js part of Code Implementation)
 4. Run the installed application.
-5. You can sign up for membership through the QR code that appeared on the first screen.
-6. You need to register your face information, name, mobile phone number, vegan status, religion, and allergy by signing up for membership.
+5. You must go to the kiosk/register file and proceed with membership registration using the command below to log in.
+
+        npm start
+
+6. When the membership registration page is launched, you can register your information to sign up.
 
     * <img width="30%" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/bad5d665-65c0-41f3-839a-73a2b35dae78">
     * This page allows you to register your face.
