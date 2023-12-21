@@ -1,10 +1,10 @@
 ---
-title: Face Certification Kiosk Using webOS
+title: Facial Recognition Kiosk Using webOS
 date: 2023-12-21
-slug: face-certification-kiosk-using-webos
+slug: facial-recognition-kiosk-using-webos
 posttype: solution
 toc: true
-thumbnail: th-face-certification-kiosk.jpg
+thumbnail: th-facial-recognition-kiosk.jpg
 ---
 
 **Author: Bokyeong Ju, Minsu Lee, Yusu Noh, Hyunsoo Kim, Jinno Yun**
@@ -31,7 +31,6 @@ This project is a webOS-based kiosk sample solution that supports face recogniti
          alt="User Menu Recommendation Algorithm" 
          style="width: 49%;">
 </p>
-
 
 ### Background
 
