@@ -26,19 +26,20 @@ The kiosk app provides the following features:
 You must have a target device (RPi 4) with webOS OSE. Please refer to the [Building webOS](https://www.webosose.org/docs/guides/setup/building-webos-ose/)
 
 The hardware, Software we used {<br />
-Raspberry pi : Raspberry PI 4 Model B 8GB <br />
+Raspberry Pi : Raspberry Pi 4 Model B 8GB <br />
 OS : webos ose 2-24-0<br />
 Camera : ROYCHE RPC-20F FHD webcam<br />
 Touch display : Raspberry Pi Display 10.1-Inch Touch Screen LCD
 }
 
-### Raspberry pi
-* HardWare : [Raspberry PI 4 Model B 8GB](https://smartstore.naver.com/eleparts/products/4799825062?n_media=11068&n_query=%EB%9D%BC%EC%A6%88%EB%B2%A0%EB%A6%AC%ED%8C%8C%EC%9D%B44&n_rank=4&n_ad_group=grp-a001-02-000000007238914&n_ad=nad-a001-02-000000229608972&n_campaign_type=2&n_mall_id=ncp_1nlzbo_01&n_mall_pid=4799825062&n_ad_group_type=2&n_match=3&NaPm=ct%3Dlpihmmrs%7Cci%3D0Au0003H1knzI6qsyfp7%7Ctr%3Dpla%7Chk%3D9ad14e585bbe9eea74201d2e1f1481527ed653e7)
+### Raspberry Pi
+* HardWare : [Raspberry Pi 4 Model B 8GB](https://smartstore.naver.com/eleparts/products/4799825062?n_media=11068&n_query=%EB%9D%BC%EC%A6%88%EB%B2%A0%EB%A6%AC%ED%8C%8C%EC%9D%B44&n_rank=4&n_ad_group=grp-a001-02-000000007238914&n_ad=nad-a001-02-000000229608972&n_campaign_type=2&n_mall_id=ncp_1nlzbo_01&n_mall_pid=4799825062&n_ad_group_type=2&n_match=3&NaPm=ct%3Dlpihmmrs%7Cci%3D0Au0003H1knzI6qsyfp7%7Ctr%3Dpla%7Chk%3D9ad14e585bbe9eea74201d2e1f1481527ed653e7)
 
 * OS : [webos ose](https://github.com/webosose/build-webos/releases)
 
 1. Download webos image from [webos ose](https://github.com/webosose/build-webos/releases) 
      <img width="899" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/1f147666-4f88-4db0-bac5-4f7d88631648">
+
     {{< note >}}
     We have installed version 2-24-0 as of December 2023.
     {{< /note >}}
@@ -46,17 +47,24 @@ Touch display : Raspberry Pi Display 10.1-Inch Touch Screen LCD
 
 2. Extracting image files
     * Uncompressed using the [7-zip](https://www.7-zip.org/) program
-    ![1](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/ed374a79-e867-4a87-a388-56b2023ef70f)
+        ![1](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/ed374a79-e867-4a87-a388-56b2023ef70f)
+
     * You can decompress it.
 
         ![2](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/03555465-ac71-4b42-b756-ee4412a94e8d) 
+
     * A folder called webos-ose-2-24-0-raspberrypi4-64.tar is created.
-    ![3](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/f8e1629b-020f-422a-8267-04e1c93c48ce)
+
+        ![3](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/f8e1629b-020f-422a-8267-04e1c93c48ce)
+
     * If you enter the folder, there is a .tar file, and you can proceed with decompressing it.
-    ![4](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/a863fbc4-99cc-4150-bea7-ab89cae26c73) 
-    ![5](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/d80c904e-979f-46ca-8dd1-951add57e53c) 
+
+        ![4](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/a863fbc4-99cc-4150-bea7-ab89cae26c73)
+        ![5](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/d80c904e-979f-46ca-8dd1-951add57e53c) 
+
     * Uncompressed creates a folder called webos-ose-2-24-0-raspberrypi4-64.
-    ![6](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/be9e14e9-4aeb-4eb9-adc4-3fb449fbf6d5) 
+        ![6](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/be9e14e9-4aeb-4eb9-adc4-3fb449fbf6d5) 
+        
     * When you enter the folder, you'll find a .mic file, which means the Image file is ready.
 
 
@@ -71,9 +79,9 @@ Touch display : Raspberry Pi Display 10.1-Inch Touch Screen LCD
     ![8](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/2c0252ba-a718-4e1b-9857-593a12b6f12a)
     * It's taking some time.
     ![9](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/2cf967ab-8a65-4c13-8abd-a0cec6607281)
-    * Done! Now when you insert the SD card into the bottom of the raspberry pie and boot it up, WebOs will boot normally!
+    * Done! Now when you insert the SD card into the bottom of the Raspberry Pi and boot it up, WebOs will boot normally!
         {{< note >}}
-        If you insert the sd card into the sd reader and insert it into USB on its own, it will not boot! Make sure you remove the sd card separately and insert it into the bottom of the raspberry pie!
+        If you insert the sd card into the sd reader and insert it into USB on its own, it will not boot! Make sure you remove the sd card separately and insert it into the bottom of the Raspberry Pi!
         {{< /note >}}
     ![10](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/5015e33f-8ff7-44e4-8ad6-8976d0befe53)
     * If Writing Successful appears, you have successfully flushing the image on the sd card.
@@ -83,14 +91,14 @@ Touch display : Raspberry Pi Display 10.1-Inch Touch Screen LCD
 * HardWare : [Raspberry Pi Display 10.1-Inch Touch Screen LCD](https://smartstore.naver.com/mcuboard/products/5006590307?NaPm=ct%3Dlpihmuhk%7Cci%3D2d0b272112d74fa2c41384d2a3b0e4a94ff945f5%7Ctr%3Dsls%7Csn%3D186400%7Chk%3D991293f6377b661f14470419dc8bc00fa26ea908)
 
     ![11](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/3f2edb87-7a3c-4c05-8dd7-0b0c24286da1)
- * If you assemble the components well on the touch display and power the raspberry pie, you can see that the screen is coming out well.
+ * If you assemble the components well on the touch display and power the Raspberry Pi, you can see that the screen is coming out well.
 
 ### Camera
 * HardWare : [ROYCHE RPC-20F FHD webcam](https://prod.danawa.com/info/?pcode=13386197)
 
 * Webos is only available on cameras that support V4L2(Vedio for Linux 2).
 * In version 2.23, the camera didn't work, and in version 2.24, it worked normally.
-* You can use it right away by connecting the camera to the Raspberry Pie usb.
+* You can use it right away by connecting the camera to the Raspberry Pi usb.
 
 
 ### Building a CLI Environment
@@ -159,21 +167,16 @@ Touch display : Raspberry Pi Display 10.1-Inch Touch Screen LCD
             * It will be in the directory where you created the virtualenv command.
             * Run .\'Virtual Environment Name'\Scripts\activate to activate the virtual environment.
 
-2. The server code was written in Django. Install Django and restframework.
+2. The server code was written in Django. Install Django and the required package.
     * If the installation does not work well in the next installation, I recommend turning off and off the terminal.
+    * Go to the backend folder on the terminal and run pip install -r requirements.txt
 
-            pip install django 
-            pip install djangorestframework django-cors-headers 
-            pip install drf-yasg 
+            pip install -r requirements.txt
 
-    * The following is the installation of a library related to face recognition and menu recommendations.
+    * Run python manage.py runserver 0.0.0.0:'port number'
 
-            pip install scikit-learn
-            pip install deepface
-
-    * Go to the backend folder on the terminal and run python manage.py run server 0.0.0.0:<port number>
-
-            python manage.py runserver 0.0.0.0:<port number>
+            python manage.py runserver 0.0.0.0:'port number'
+            
         * At this time, please enter the port number you want to use
         * If you see the screen below after running, it's a success.
         
@@ -189,7 +192,7 @@ Touch display : Raspberry Pi Display 10.1-Inch Touch Screen LCD
     * Saves the port number port forwarded from 
         * frontend/kiosk_page/src/constant/Url.js
         * frontend/register/src/constant/Url.js 
-        * with the authorized ip (https://www.findip.kr/) in the BASE_URL variable.
+        * with the public IP (https://www.findip.kr/) in the BASE_URL variable.
         ![25](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/1ff4c30c-ef76-4376-99ba-f0ac43d96a00)
         ![26](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/e562a9d9-524e-4985-b159-ee51c19aed8c)
 
@@ -213,7 +216,7 @@ On your local PC, follow these steps:
 
     - Add : Add Mode
     - Name : Please name the device.
-    - IP address : You can write down the IP address of the raspberry pie.
+    - IP address : You can write down the IP address of the Raspberry Pi.
     - Port : I set the port number as 22. (When I used another port, I got a package error.)
     - User : You can set it to root.
     - Description : You can skip it. (skip = Enter)
@@ -259,7 +262,9 @@ On your local PC, follow these steps:
         
 
         * When you build a project, a build file will be created.
+        
         <img width="737" alt="스크린샷 2023-12-06 오후 10 06 55" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/a133af50-dc41-4e2e-8313-7c5688a0622f">
+
         * You can see that a 'build' folder has been created.
         * You can 'overlay' the contents of the file inside the sampleApp folder created above.
 
@@ -273,7 +278,7 @@ On your local PC, follow these steps:
 
         * If it's Success, it's Success.
         * If you look at the picture above, there is com.domain.app_0.0.1.ipk.
-        * This ipk file is the app you install on Raspberry Pie's webOS.
+        * This ipk file is the app you install on Raspberry Pi's webOS.
 
   5. Installation
         * In the code below, 'Raspberry' is the Devide name set by ssh set above.
@@ -286,8 +291,8 @@ On your local PC, follow these steps:
         ![18](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/5feb04b8-7d20-4f4c-b350-64afc260aaa6)
 
 ## How to use
-1. Connect the camera to the raspberry pie.
-2. Connecting Raspberry Pie to the Internet.
+1. Connect the camera to the Raspberry Pi.
+2. Connecting Raspberry Pi to the Internet.
 3. Change your unique server address (Please refer to the Url.js part of Code Implementation)
 4. Run the installed application.
 5. You must go to the kiosk/register file and proceed with membership registration using the command below to log in.
@@ -314,6 +319,7 @@ On your local PC, follow these steps:
 
 7. Log in with your registered face information or cell phone number.
 * If you press the login button above, you will automatically attempt to log in through facial recognition.
+
     <img width="50%" alt="31" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/96006ef1-7b7f-4ea8-b8b6-716abd60ff44">
 
 * You can log in with your cell phone number by pressing the button below.
@@ -591,22 +597,22 @@ On your local PC, follow these steps:
                         for target in embedding_array:
                             distance = min(distance, identification(user_face_list, target))
 
-                        print(f"{user.user_name}: {distance}")
+                        #print(f"{user.user_name}: {distance}")
 
                         if distance < min_dist:
                             min_dist = distance
 
                             # Pull only when the distance is lower than the threshold.
-                            if min_dist < 0.2:
+                            if min_dist <= 0.15:
                                 phonenum = user.user_phonenum
                                 name = user.user_name
                     except:
                         pass
 
                 if phonenum is not None:
-                    print(f"\nSuccess\nname: {name}, phonenum: {phonenum}")
+                    print(f"Success\nname: {name}, phonenum: {phonenum}")
                 else:
-                    print("\nNone")
+                    print("None")
 
                 # 5. Returns the user's mobile phone number whose distance was below the threshold and the shortest distance
                 return Response({"phone_number": phonenum, "name": name})
