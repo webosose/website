@@ -70,8 +70,8 @@ Once customers register their data, the kiosk will recommend a customized menu f
 
 | Category | Technology |
 |----------|------------|
-| Frontend | [![React][React.js]][React-url][![npm][npm]][npm-url][![Bootstrap][Bootstrap.com]][Bootstrap-url][![JavaScript][JavaScript.js]][JavaScript-url][![Figma][Figma]][Figma-url] |
-| Face Identify Server | [![Flask][Flask]][Flask-url][![OpenCV][OpenCV]][OpenCV-url][![Python][Python.org]][Python-url] |
+| Frontend | [![React][React.js]][React-url][![npm][npm]][npm-url][![Bootstrap][Bootstrap.com]][Bootstrap-url][![Socket.io][Socket.io]][Socket.io-url][![JavaScript][JavaScript.js]][JavaScript-url][![Figma][Figma]][Figma-url] |
+| Face Identify Server | [![Flask][Flask]][Flask-url][![OpenCV][OpenCV]][OpenCV-url][![Socket.io][Socket.io]][Socket.io-url][![Python][Python.org]][Python-url] |
 | Kiosk API Server | [![Nodejs][Nodejs]][Nodejs-url][![npm][npm]][npm-url][![Prisma][Prisma]][Prisma-url][![JavaScript][JavaScript.js]][JavaScript-url] |
 | Database | [![MySQL][MySQL]][MySQL-url][![Prisma][Prisma]][Prisma-url] |
 | Development Environment | [![macOS][macOS]][macOS-url] |
@@ -784,6 +784,9 @@ If any performance issues or accuracy concerns are identified during testing, ef
 
 [OpenCV]: https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=fff
 [OpenCV-url]: https://opencv.org/
+
+[Socket.io]: https://img.shields.io/badge/Socket.io-010101?style=for-the-badge&logo=socketdotio&logoColor=fff
+[Socket.io-url]: https://socket.io/
 
 [npm]: https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=fff
 [npm-url]: https://www.npmjs.com/
