@@ -40,7 +40,7 @@ This project is a kiosk demo that **recommends menus to customers** and **dynami
 
 ### Architecture Overview
 
-{{< figure src="https://github.com/noFlowWater/signage_solution/assets/112642604/248f7596-9c3f-4de7-a14a-638547a09816" link="https://github.com/noFlowWater/signage_solution/assets/112642604/248f7596-9c3f-4de7-a14a-638547a09816" target="_blank" alt="" caption="System Architecture (Click image to open larger view)" >}}
+{{< figure src="https://github.com/noFlowWater/signage_solution/assets/112642604/7e142fd6-f8c1-4aeb-afb7-12106b938a5f" link="https://github.com/noFlowWater/signage_solution/assets/112642604/7e142fd6-f8c1-4aeb-afb7-12106b938a5f" target="_blank" alt="" caption="System Architecture (Click image to open larger view)" >}}
 
 {{< figure src="https://github.com/noFlowWater/signage_solution/assets/112642604/db15a09a-faa7-4797-8f58-b865d7965681" link="https://github.com/noFlowWater/signage_solution/assets/112642604/db15a09a-faa7-4797-8f58-b865d7965681" target="_blank" alt="" caption="Database Entity Relationship Diagram (Click image to open larger view)" >}}
 
