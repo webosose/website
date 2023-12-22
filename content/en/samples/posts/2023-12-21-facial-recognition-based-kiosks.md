@@ -9,17 +9,16 @@ thumbnail: th-facial-recognition-based-kiosks.png
 
 **Author: Dahun Kim, Yeongjae Shin, Junseok Park, Seungwoon Lee, Donghyuk Shin**
 
-## Overview of Project
+## Overview of the Project
 
-The project demonstrates how to develop a face recognition-based kiosk that **recognizes the user's face** and **provides custom menu recommendations** and **menu lists**.
+This project demonstrates how to develop a face recognition-based kiosk that **recognizes the user's face** and **provides customized menu recommendation** and **menu lists**.
 
+Key features are as follows:
 
-The kiosk app provides the following features:
-
-- User registration
+- User Registration
 - User Recognition
-- User Custom Menu Recommendations
-- Kiosk Order Processing
+- Customized Menu Recommendation
+- Order Placement
 
 ## Prepare the Target device
 
