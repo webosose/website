@@ -176,16 +176,21 @@ Touch display : Raspberry Pi Display 10.1-Inch Touch Screen LCD
             * It will be in the directory where you created the virtualenv command.
             * Run .\'Virtual Environment Name'\Scripts\activate to activate the virtual environment.
 
-2. The server code was written in Django. Install Django and the required package.
+2. The server code was written in Django. Install Django and restframework.
     * If the installation does not work well in the next installation, I recommend turning off and off the terminal.
-    * Go to the backend folder on the terminal and run pip install -r requirements.txt
 
-            pip install -r requirements.txt
+            pip install django 
+            pip install djangorestframework django-cors-headers 
+            pip install drf-yasg 
 
-    * Run python manage.py runserver 0.0.0.0:'port number'
+    * The following is the installation of a library related to face recognition and menu recommendations.
+
+            pip install scikit-learn
+            pip install deepface
+
+    * Go to the backend folder on the terminal and run python manage.py run server 0.0.0.0:'port number'
 
             python manage.py runserver 0.0.0.0:'port number'
-            
         * At this time, please enter the port number you want to use
         * If you see the screen below after running, it's a success.
         
