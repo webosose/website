@@ -115,9 +115,9 @@ Touch display : Raspberry Pi Display 10.1-Inch Touch Screen LCD
 
 
 ### Building a CLI Environment
-    {{< note >}}
-    if there is something like Korean in the file path, you have to change it to English.
-    {{< /note >}}
+{{< note >}}
+if there is something like Korean in the file path, you have to change it to English.
+{{< /note >}}
 
 1. Install Node.js [Link](https://nodejs.org/en)
     * If the installation is successful, you can check the version by executing the command below.
@@ -182,7 +182,7 @@ Touch display : Raspberry Pi Display 10.1-Inch Touch Screen LCD
             * (For window cmd) Navigate to the directory where the virtual environment is installed.
 
             * It will be in the directory where you created the virtualenv command.
-            * Run .\'Virtual Environment Name’\Scripts\activate to activate the virtual environment.
+            * Run .\\'Virtual Environment Name’\Scripts\activate to activate the virtual environment.
 
 2. The server code was written in Django. Install Django and restframework.
     * If the installation does not work well in the next installation, I recommend turning off and off the terminal.
