@@ -24,6 +24,10 @@ Key features are as follows:
 
 You must have a target device (RPi 4) with webOS OSE. Please refer to the [Building webOS](https://www.webosose.org/docs/guides/setup/building-webos-ose/)
 
+{{< note >}}
+Both Windows and Linux environments are possible, but we recommend Linux environments.
+{{< /note >}}
+
 The hardware, Software we used {<br />
 Raspberry Pi : Raspberry Pi 4 Model B 8GB <br />
 OS : webos ose 2-24-0<br />
@@ -111,6 +115,10 @@ Touch display : Raspberry Pi Display 10.1-Inch Touch Screen LCD
 
 
 ### Building a CLI Environment
+    {{< note >}}
+    if there is something like Korean in the file path, you have to change it to English.
+    {{< /note >}}
+
 1. Install Node.js [Link](https://nodejs.org/en)
     * If the installation is successful, you can check the version by executing the command below.
         
@@ -174,7 +182,7 @@ Touch display : Raspberry Pi Display 10.1-Inch Touch Screen LCD
             * (For window cmd) Navigate to the directory where the virtual environment is installed.
 
             * It will be in the directory where you created the virtualenv command.
-            * Run .\'Virtual Environment Name'\Scripts\activate to activate the virtual environment.
+            * Run .\'Virtual Environment Name’\Scripts\activate to activate the virtual environment.
 
 2. The server code was written in Django. Install Django and restframework.
     * If the installation does not work well in the next installation, I recommend turning off and off the terminal.
@@ -263,6 +271,10 @@ On your local PC, follow these steps:
 
 
   3. Overwrite the built content over the folder you created (in this case 'sampleApp').
+{{< note >}}
+You must navigate to the folder you want to build and run it (frontend/kiosk_page in this case)
+{{< /note >}}
+
 
             npm run build
         
@@ -309,11 +321,17 @@ On your local PC, follow these steps:
 2. Connecting Raspberry Pi to the Internet.
 3. Change your unique server address (Please refer to the Url.js part of Code Implementation)
 4. Run the installed application.
-5. You must go to the kiosk/register file and proceed with membership registration using the command below to log in.
+5. You must go to the frontend/register file and proceed with membership registration using the command below to log in.
 
         npm start
 
 6. When the membership registration page is launched, you can register your information to sign up.
+
+    {{< note >}}
+        * The face model is downloaded from the server when you first do face recognition. I recommend you turn the server back on when you see the cmd window and see that the face model has been downloaded from the server.
+        * Please note that downloading files before signing up for membership is fast, and the model downloading after signing up for membership is large, so it takes time.
+
+    {{< /note >}}
 
     * <img width="30%" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/bad5d665-65c0-41f3-839a-73a2b35dae78">
     * This page allows you to register your face.
@@ -325,6 +343,7 @@ On your local PC, follow these steps:
     * This page allows you to register whether you are vegan or religious.
     * <img width="30%" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/7ceba5d5-22c9-4ba9-9908-bc8afc0d9c2c">
     * This page allows you to register whether you are allergic.
+    * When you press the Finish button on the Allergy Check page, the face model is downloaded, which may take time to sign up for the first time. Check the server to see what is downloaded.
     * <img width="30%" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/145134a1-5461-4e90-b6a1-969298c50eb9">
     * This page tells you that your payment has been completed.
 
@@ -755,3 +774,7 @@ On your local PC, follow these steps:
         recommended_menus = recommended_menus[0:3]
         return recommended_menus
 ```
+
+# Contact
+* Kim Da Hun
+* 
