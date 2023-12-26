@@ -344,6 +344,7 @@ You must navigate to the folder you want to build and run it (frontend/kiosk_pag
     * <img width="30%" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/7ceba5d5-22c9-4ba9-9908-bc8afc0d9c2c">
     * This page allows you to register whether you are allergic.
     * When you press the Finish button on the Allergy Check page, the face model is downloaded, which may take time to sign up for the first time. Check the server to see what is downloaded.
+    * After that, if face recognition doesn't work well, turn on the server again and try it
     * <img width="30%" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/145134a1-5461-4e90-b6a1-969298c50eb9">
     * This page tells you that your payment has been completed.
 
