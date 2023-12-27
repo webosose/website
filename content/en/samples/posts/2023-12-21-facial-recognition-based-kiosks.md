@@ -51,24 +51,154 @@ Make sure that your host PC **supports a camera** to record. This camera is requ
 
 This section provides a step-by-step guide to set up the project.
 
-### Server
+{{< note "Before You Begin" >}}
+- We highly recommend using [Python](https://www.python.org/) 3.11.
+- Any non-English character in file paths might cause unexpected error. Change it into English character.
+- The host PC and target device **MUST** be on the same network.
+{{< /note >}}
 
-- Install Node.js
-- 
+### Kiosk Server (On Host PC)
 
+A kiosk server runs on your host PC. Setting up a server involves the following steps:
 
-First, you have to **install [Node.js](https://nodejs.org/en)** on your host PC. Verify the installation by entering the following commands on your terminal:
+1. Setting up prerequisites
+2. Setting up the virtual environment
+3. Running the server
 
-```bash
-node -v # Print your Node.js version
-```
+#### Setting Up Prerequisites
 
+1. you have to **install [Node.js](https://nodejs.org/en)** on your host PC. Verify the installation by entering the following commands on your terminal:
 
+    ```bash
+    node -v # Print your Node.js version
+    ```
 
+2. Install `create-react-app`.
 
+    ```bash
+    npm install -g create-react-app
+    ```
 
+3. Clone the project repository.
 
-#### 
+    ```bash
+    git clone https://github.com/Cheetah-19/Kiosk_KNU
+    ```
+
+4. Install the required libraries
+
+    1. Go to `Kiosk_KNU/frontend/kiosk_page` and enter the following commands:
+
+        ```bash
+        npm install react-scripts
+        npm install axios
+        npm install react-bootstrap bootstrap
+        ```
+
+    2. Go to `Kiosk_KNU/frontend/register` and enter the following commands:
+
+        ```bash
+        npm install react-scripts
+        npm install axios
+        ```
+
+#### Setting Up the Virtual Environment
+
+1. Go back to your project root directory.
+2. Activate the virtual environment. Choose one of the following two methods:
+
+    1. **Using Anaconda (Recommended)**
+
+        1. Install [Anaconda](https://www.anaconda.com/).
+        2. Create a virtual environment.
+
+            ```bash
+            conda create -n <VIRTUAL ENVIRONMENT NAME> python=3.11
+
+            # Example
+            # conda create -n kiosktest python=3.11
+            ```
+        
+        3. Activate the virtual envrionment.
+
+            ```bash
+            conda activate <VIRTUAL ENVIRONMENT NAME>
+
+            # Example
+            # conda activate kiosktest
+            ```
+
+            Once the virtual environment is activated, you'll see the preceding parentheses in your terminal.
+
+            ```bash
+            # Preceding (kiosktest) means the name of your virtual environment
+            (kiosktest) root@testuser#
+            ```
+
+    2. **Using `virtualenv` (Simpler)**
+
+        1. Install `virtualenv`.
+
+            ```bash
+            pip install virtualenv
+            ```
+
+        2. Create a virtual environment.
+
+            ```bash
+            virtualenv <VIRTUAL ENVIRONMENT NAME> --python=<PYTHON VERSION>
+
+            # Example
+            # virtualenv kiosktest --python=python3.11
+            ```
+
+        3. Activate the virtual environment.
+
+            ```bash
+            # For Ubuntu and Mac
+            source <VIRTUAL ENVIRONMENT NAME>/bin/activate
+
+            # For Windows
+            # Note that using backslash (\) in the path
+            .\\<VIRTUAL ENVIRONMENT NAME>\Scripts\activate
+            ```
+
+3. In this virtual environment terminal, proceed to the following step: [Running the Server](#running-the-server).
+
+#### Running the Server
+
+1. Install [Django](https://www.djangoproject.com/) and other frameworks.
+
+    ```bash
+    pip install django 
+    pip install djangorestframework django-cors-headers 
+    pip install drf-yasg 
+    ```
+
+2. Install libraries for menu recommendation and face recognition.
+
+    ```bash
+    pip install scikit-learn
+    pip install deepface
+    ```
+
+3. Go to the `Kiosk_KNU/backend` directory.
+4. Run the server with a specified port number. **This port number will be used in later.**
+
+    ```bash
+    python manage.py runserver 0.0.0.0:<PORT NUMBER>
+
+    # Example
+    python manage.py runserver 0.0.0.0:8000
+    ```
+
+    If you succeed, you'll see the following messages.
+
+    ![23](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/dca1a421-7fa4-4a4b-81b0-aea5c67b6244)
+
+Your server is ready! **Don't turn off this server terminal.**
+
+Now it's time to set up the kiosk app. 
 
 ### App
 
@@ -81,97 +211,8 @@ node -v # Print your Node.js version
     ```
 
 
-### Building a CLI Environment
-{{< note >}}
-if there is something like Korean in the file path, you have to change it to English.
-{{< /note >}}
 
-1. Install Node.js [Link](https://nodejs.org/en)
-    * If the installation is successful, you can check the version by executing the command below.
-        
-            node -v
-
-2. Install npm and React
-   	* npm is included in Node.js, so if Node.js is installed successfully, npm is already available.
-   	* You can check if the npm is installed well through the command below.
-    * React are required when you build a project later and sign up.
-
-
-            npm -v
-
-            npm install -g create-react-app
-
-3. Git clone our project. [link](https://github.com/Cheetah-19/Kiosk_KNU.git)
-    * Once you have cloned, please run the following command
-
-    * from Kiosk_KNU/frontend/kiosk_page
-
-            npm install react-scripts
-            npm install axios
-            npm install react-bootstrap bootstrap
-
-    * from Kiosk_KNU/frontend/register
-
-            npm install react-scripts
-            npm install axios
-    
-
-4. CLI Installation
-    *  Use the -g option to run the following command on the terminal to install the CLI globally.
-
-	        npm install –g @webosose/ares-cli
-
-## How to set up a server
-1. (Recommended) Virtual Environment Settings
-    * We recommend that you set the Python version to version 3.11 using anaconda, etc.
-    * You can choose between the two methods below.
-        1) Anaconda
-            * Create a virtual environment.
-
-                    conda create -n 'virtual environment name' python=3.11
-
-                ![21](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/cf385c44-85ad-4d40-9d00-ec09664961bd)
-
-            * Enable the virtual environment.
-
-                    conda activate 'virtual environment name'
-
-                ![22](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/8e5d8bab-61c6-46f4-8657-57a9af8227ac)
-
-        2) Virtualenv enabled version (simple)
-
-                    pip install virtualenv
-                    virtualenv 'virtual environment name'
-                    --python=<Python version>
-                
-            * (For linux) Enable the virtual environment with source 'virtual environment name'/bin/activate.
-
-            * (For window cmd) Navigate to the directory where the virtual environment is installed.
-
-            * It will be in the directory where you created the virtualenv command.
-            * Run .\\'Virtual Environment Name’\Scripts\activate to activate the virtual environment.
-
-2. The server code was written in Django. Install Django and restframework.
-    * If the installation does not work well in the next installation, I recommend turning off and off the terminal.
-
-            pip install django 
-            pip install djangorestframework django-cors-headers 
-            pip install drf-yasg 
-
-    * The following is the installation of a library related to face recognition and menu recommendations.
-
-            pip install scikit-learn
-            pip install deepface
-
-    * Go to the backend folder on the terminal and run python manage.py run server 0.0.0.0:'port number'
-
-            python manage.py runserver 0.0.0.0:'port number'
-        * At this time, please enter the port number you want to use
-        * If you see the screen below after running, it's a success.
-        
-            ![23](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/dca1a421-7fa4-4a4b-81b0-aea5c67b6244)
-
-3. Setting Port-Forwarding & Changing variables for Server Connections
+1. Setting Port-Forwarding & Changing variables for Server Connections
     * Verify the local ip address of the server running with ipconfig
         * Verify the IPv4 address of the wireless LAN.
 
@@ -185,8 +226,6 @@ if there is something like Korean in the file path, you have to change it to Eng
         ![25](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/1ff4c30c-ef76-4376-99ba-f0ac43d96a00)
         ![26](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/e562a9d9-524e-4985-b159-ee51c19aed8c)
 
-
-If you're done so far, your server is ready! Now it's time to start the app.
 
 ## Install the App
 
