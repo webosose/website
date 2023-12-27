@@ -9,7 +9,7 @@ thumbnail: th-facial-recognition-based-kiosks.png
 
 **Author: Dahun Kim, Yeongjae Shin, Junseok Park, Seungwoon Lee, Donghyuk Shin**
 
-## Overview of the Project
+## Overview
 
 This project demonstrates how to develop a face recognition-based kiosk that **recognizes the user's face** and **provides customized menu recommendation** and **menu lists**.
 
@@ -20,94 +20,61 @@ Key features are as follows:
 - Customized Menu Recommendation
 - Order Placement
 
-## Prepare the Target device
+## Hardware Requirements
 
-You must have a target device (RPi 4) with webOS OSE. Please refer to the [Building webOS](https://www.webosose.org/docs/guides/setup/building-webos-ose/)
+To set up this project, you need a **target device** and **host PC**.
 
-The hardware, Software we used {<br />
-Raspberry Pi : Raspberry Pi 4 Model B 8GB <br />
-OS : webos ose 2-24-0<br />
-Camera : ROYCHE RPC-20F FHD webcam<br />
-Touch display : Raspberry Pi Display 10.1-Inch Touch Screen LCD
-}
+### Target Device
 
-### Raspberry Pi
-* HardWare : [Raspberry Pi 4 Model B 8GB](https://smartstore.naver.com/eleparts/products/4799825062?n_media=11068&n_query=%EB%9D%BC%EC%A6%88%EB%B2%A0%EB%A6%AC%ED%8C%8C%EC%9D%B44&n_rank=4&n_ad_group=grp-a001-02-000000007238914&n_ad=nad-a001-02-000000229608972&n_campaign_type=2&n_mall_id=ncp_1nlzbo_01&n_mall_pid=4799825062&n_ad_group_type=2&n_match=3&NaPm=ct%3Dlpihmmrs%7Cci%3D0Au0003H1knzI6qsyfp7%7Ctr%3Dpla%7Chk%3D9ad14e585bbe9eea74201d2e1f1481527ed653e7)
+You need a Raspberry Pi 4 with webOS OSE as the target device.
 
-* OS : [webos ose](https://github.com/webosose/build-webos/releases)
+| Hardware | Description |
+|----------|-------------|
+| [Raspberry Pi 4 Model B](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/) (8GB) | The core computing unit for the kiosk. |
+| MicroSD Card with webOS OSE Image | A MicroSD for flashing webOS OSE. <ul><li>webOS OSE 2.24.0 is used in this project. You can get the pre-built image in <a href="https://github.com/webosose/build-webos/releases/tag/v2.24.0">webOS OSE GitHub</a>.</li><li>To install a webOS OSE image on a MicroSD card, use the following guide: <a hreaf="https://www.webosose.org/docs/guides/setup/flashing-webos-ose/">Flashing webOS OSE.</a></li></ul> |
+| Touchscreen or Monitor | The display device that interacts with the kiosk. We recommend using a touchscreen for a more interactive experience. We used <a href="https://www.sunfounder.com/products/10inch-touchscreen-for-raspberrypi">SunFounder 10.1 Touchscreen</a>. |
+| Camera | webOS OSE supports V4L2 (Video for Linux 2) cameras. We used <a href="https://prod.danawa.com/info/?pcode=13386197">ROYCHE RPC-20F FHD webcam (Korean website)</a>.
 
-1. Download webos image from [webos ose](https://github.com/webosose/build-webos/releases)
- 
-     <img width="899" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/1f147666-4f88-4db0-bac5-4f7d88631648">
+### Host PC
 
-    {{< note >}}
-    We have installed version 2-24-0 as of December 2023.
-    {{< /note >}}
+Host PC is required to run the kiosk server.
 
+We'd implemented this project on Windows and Ubuntu. To ensure compatibility, we recommend using a similar development environment.
 
-2. Extracting image files
-    * Uncompressed using the [7-zip](https://www.7-zip.org/) program
-        
-        ![1](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/ed374a79-e867-4a87-a388-56b2023ef70f)
+Make sure that your host PC **supports a camera** to record. This camera is required in the [registrating your face section](#signing-up-the-account).
 
-    * You can decompress it.
+## Project setup
 
-        ![2](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/03555465-ac71-4b42-b756-ee4412a94e8d) 
+This section provides a step-by-step guide to set up the project.
 
-    * A folder called webos-ose-2-24-0-raspberrypi4-64.tar is created.
+### Server
 
-        ![3](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/f8e1629b-020f-422a-8267-04e1c93c48ce)
-
-    * If you enter the folder, there is a .tar file, and you can proceed with decompressing it.
-
-        ![4](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/a863fbc4-99cc-4150-bea7-ab89cae26c73)
-        ![5](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/d80c904e-979f-46ca-8dd1-951add57e53c) 
-
-    * Uncompressed creates a folder called webos-ose-2-24-0-raspberrypi4-64.
-
-        ![6](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/be9e14e9-4aeb-4eb9-adc4-3fb449fbf6d5) 
-        
-    * When you enter the folder, you'll find a .mic file, which means the Image file is ready.
+- Install Node.js
+- 
 
 
-3. Formatting SD Cards
-    * You can refer to it and format the SD card. - [Flashing webOS Open Source Edition](https://www.webosose.org/docs/guides/setup/flashing-webos-ose/) 
-    * Windows 10 default format doesn't matter!
+First, you have to **install [Node.js](https://nodejs.org/en)** on your host PC. Verify the installation by entering the following commands on your terminal:
+
+```bash
+node -v # Print your Node.js version
+```
 
 
-4. Image flushing to sd card
-    * Image flushing to sd card using program : [Win 32 Disk Imager](https://sourceforge.net/projects/win32diskimager/) 
-    * Please select the .mic file obtained above, select the SD card you formatted, and press the Write button.
 
-        ![8](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/2c0252ba-a718-4e1b-9857-593a12b6f12a)
 
-    * It's taking some time.
 
-        ![9](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/2cf967ab-8a65-4c13-8abd-a0cec6607281)
 
-    * Done! Now when you insert the SD card into the bottom of the Raspberry Pi and boot it up, WebOs will boot normally!
-        {{< note >}}
-        If you insert the sd card into the sd reader and insert it into USB on its own, it will not boot! Make sure you remove the sd card separately and insert it into the bottom of the Raspberry Pi!
-        {{< /note >}}
+#### 
 
-        ![10](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/5015e33f-8ff7-44e4-8ad6-8976d0befe53)
-    
-    * If Writing Successful appears, you have successfully flushing the image on the sd card.
+### App
 
-### Touch display
+[webOS OSE Command-Line Interface (CLI)]({{< relref "cli-user-guide" >}})
 
-* HardWare : [Raspberry Pi Display 10.1-Inch Touch Screen LCD](https://smartstore.naver.com/mcuboard/products/5006590307?NaPm=ct%3Dlpihmuhk%7Cci%3D2d0b272112d74fa2c41384d2a3b0e4a94ff945f5%7Ctr%3Dsls%7Csn%3D186400%7Chk%3D991293f6377b661f14470419dc8bc00fa26ea908)
+    To install CLI, enter the following command on your terminal.
 
-    ![11](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/3f2edb87-7a3c-4c05-8dd7-0b0c24286da1)
-    
- * If you assemble the components well on the touch display and power the Raspberry Pi, you can see that the screen is coming out well.
-
-### Camera
-* HardWare : [ROYCHE RPC-20F FHD webcam](https://prod.danawa.com/info/?pcode=13386197)
-
-* Webos is only available on cameras that support V4L2(Vedio for Linux 2).
-* In version 2.23, the camera didn't work, and in version 2.24, it worked normally.
-* You can use it right away by connecting the camera to the Raspberry Pi usb.
+    ```bash
+    npm install -g @webosose/ares-cli
+    ```
 
 
 ### Building a CLI Environment
