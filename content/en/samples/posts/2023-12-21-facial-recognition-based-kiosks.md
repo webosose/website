@@ -777,5 +777,8 @@ You must navigate to the folder you want to build and run it (frontend/kiosk_pag
 ```
 
 # Contact
-* Kim Da Hun
-* 
+* Dahun Kim ([Github](https://github.com/baegopababjo)) : ekgns1106@naver.com
+* Yeongjae Shin ([Github](https://github.com/Apoliasm)) : aji5820@naver.com
+* Junseok Park ([Github](https://github.com/Lucerna00)) : pjs3859811@naver.com
+* Seungwoon Lee ([Github](https://github.com/Usimth)) : syjsir@gmail.com
+* Donghyuk Shin ([Github](https://github.com/WannaBeTop)) : optimuslove0223@icloud.com
