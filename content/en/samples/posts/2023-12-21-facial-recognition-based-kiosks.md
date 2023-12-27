@@ -47,7 +47,7 @@ Both Windows and Linux environments are possible, but we recommend Linux environ
 
 Make sure that your host PC **supports a camera** to record. This camera is required in the [registrating your face section](#signing-up-the-account).
 
-## Project setup
+## Project Setup
 
 This section provides a step-by-step guide to set up the project.
 
@@ -155,7 +155,7 @@ A kiosk server runs on your host PC. Setting up a server involves the following 
         3. Activate the virtual environment.
 
             ```bash
-            # For Ubuntu and Mac
+            # For Ubuntu and macOS
             source <VIRTUAL ENVIRONMENT NAME>/bin/activate
 
             # For Windows
@@ -183,7 +183,7 @@ A kiosk server runs on your host PC. Setting up a server involves the following 
     ```
 
 3. Go to the `Kiosk_KNU/backend` directory.
-4. Run the server with a specified port number. **This port number will be used in later.**
+4. Run the server with a specified port number. **Make sure you note this port number.** This number will be used in the [Setting Up the Server Connection](#setting-up-the-server-connection).
 
     ```bash
     python manage.py runserver 0.0.0.0:<PORT NUMBER>
@@ -200,7 +200,18 @@ Your server is ready! **Don't turn off this server terminal.**
 
 Now it's time to set up the kiosk app. 
 
-### App
+### Kiosk App
+
+A kiosk app runs on your target device (Raspberry Pi). Setting up an app involves the following steps:
+
+1. Setting up webOS OSE CLI
+2. Creating an app
+3. Setting up the server connection
+4. Building the app
+5. Packaging and Installing the app
+
+
+#### Setting Up webOS OSE CLI
 
 [webOS OSE Command-Line Interface (CLI)]({{< relref "cli-user-guide" >}})
 
@@ -211,6 +222,20 @@ Now it's time to set up the kiosk app.
     ```
 
 
+
+#### Setting Up the Server Connection
+
+1. Find an IP address of your server (host PC).
+
+    ```bash
+    # For Ubuntu and macOS
+    ifconfig
+
+    # For Windows
+    ipconfig
+    ```
+
+2. 
 
 1. Setting Port-Forwarding & Changing variables for Server Connections
     * Verify the local ip address of the server running with ipconfig
@@ -226,6 +251,30 @@ Now it's time to set up the kiosk app.
         ![25](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/1ff4c30c-ef76-4376-99ba-f0ac43d96a00)
         ![26](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/e562a9d9-524e-4985-b159-ee51c19aed8c)
 
+#### Packaging and Installing the App
+
+1. 
+
+4. Packaging
+     - You can change only the part of 'sampleApp' from the code below to the project name you want. (sampleApp = folder name)
+    
+	        ares-package ./sampleApp
+
+        <img width="418" alt="15" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/395c1cc3-c671-4e50-923e-6c146c8b21f2">
+
+        * If it's Success, it's Success.
+        * If you look at the picture above, there is com.domain.app_0.0.1.ipk.
+        * This ipk file is the app you install on Raspberry Pi's webOS.
+
+  5. Installation
+        * In the code below, 'Raspberry' is the Devide name set by ssh set above.
+	    * For 'com.domain.app_0.0.1_all.ipk', write the name of the completed ipk file after packaging.
+     
+	            ares-install —device Rasberry com.domain.app_0.0.1_all.ipk
+
+        * if it becomes Success, it is Success, and the application will work successfully.
+  
+        ![18](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/5feb04b8-7d20-4f4c-b350-64afc260aaa6)
 
 ## Install the App
 
@@ -301,26 +350,7 @@ You must navigate to the folder you want to build and run it (frontend/kiosk_pag
         * You can 'overlay' the contents of the file inside the sampleApp folder created above.
 
 
-  4. Packaging
-     - You can change only the part of 'sampleApp' from the code below to the project name you want. (sampleApp = folder name)
-    
-	        ares-package ./sampleApp
-
-        <img width="418" alt="15" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/395c1cc3-c671-4e50-923e-6c146c8b21f2">
-
-        * If it's Success, it's Success.
-        * If you look at the picture above, there is com.domain.app_0.0.1.ipk.
-        * This ipk file is the app you install on Raspberry Pi's webOS.
-
-  5. Installation
-        * In the code below, 'Raspberry' is the Devide name set by ssh set above.
-	    * For 'com.domain.app_0.0.1_all.ipk', write the name of the completed ipk file after packaging.
-     
-	            ares-install —device Rasberry com.domain.app_0.0.1_all.ipk
-
-        * if it becomes Success, it is Success, and the application will work successfully.
   
-        ![18](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/5feb04b8-7d20-4f4c-b350-64afc260aaa6)
 
 ## How to use
 1. Connect the camera to the Raspberry Pi.
