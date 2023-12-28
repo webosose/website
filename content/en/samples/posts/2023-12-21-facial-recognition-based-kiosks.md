@@ -369,7 +369,7 @@ The kiosk app is created on the host PC and installed on your target device (Ras
     ares-install -d ose com.domain.app_1.0.0_all.ipk
     ```
 
-Now, your kiosk app is ready on the target device.
+Now, you ready to use the kiosk on the target device.
 
 ## How to Use
 
