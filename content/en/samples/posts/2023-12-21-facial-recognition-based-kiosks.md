@@ -59,7 +59,7 @@ This section provides a step-by-step guide to set up the project.
 
 ### Kiosk Server (On Host PC)
 
-A kiosk server runs on your host PC. Setting up a server involves the following steps:
+The kiosk server runs on your host PC. Setting up a server involves the following steps:
 
 1. Setting up prerequisites
 2. Setting up the virtual environment
@@ -202,7 +202,7 @@ Now it's time to set up the kiosk app.
 
 ### Kiosk App
 
-A kiosk app runs on your target device (Raspberry Pi). Setting up an app involves the following steps:
+The kiosk app is created on the host PC and installed on your target device (Raspberry Pi). Setting up an app involves the following steps:
 
 1. Setting up webOS OSE CLI
 2. Creating an app
