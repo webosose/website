@@ -1,10 +1,10 @@
 ---
-title: Facial recognition-based kiosks
-date: 2023-12-21
-slug: facial-recognition-based-kiosks
+title: Facial Recognition Kiosk Using webOS (Another Ver.)
+date: 2023-12-28
+slug: facial-recognition-kiosk-using-webos-2
 posttype: solution
 toc: true
-thumbnail: th-facial-recognition-based-kiosks.png
+thumbnail: th-facial-recognition-kiosk.png
 ---
 
 **Author: Dahun Kim, Yeongjae Shin, Junseok Park, Seungwoon Lee, Donghyuk Shin**
@@ -35,7 +35,7 @@ You need a Raspberry Pi 4 with webOS OSE as the target device.
 | Hardware | Description |
 |----------|-------------|
 | [Raspberry Pi 4 Model B](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/) (8GB) | The core computing unit for the kiosk. |
-| MicroSD Card with webOS OSE Image | A MicroSD for flashing webOS OSE. <ul><li>webOS OSE 2.24.0 is used in this project. You can get the pre-built image in <a href="https://github.com/webosose/build-webos/releases/tag/v2.24.0">webOS OSE GitHub</a>.</li><li>To install a webOS OSE image on a MicroSD card, use the following guide: <a hreaf="https://www.webosose.org/docs/guides/setup/flashing-webos-ose/">Flashing webOS OSE.</a></li></ul> |
+| MicroSD Card with webOS OSE Image | A MicroSD for flashing webOS OSE. <ul><li>webOS OSE 2.24.0 is used in this project. You can get the pre-built image in <a href="https://github.com/webosose/build-webos/releases/tag/v2.24.0">webOS OSE GitHub</a>.</li><li>To install a webOS OSE image on a MicroSD card, use the following guide: <a href="https://www.webosose.org/docs/guides/setup/flashing-webos-ose/">Flashing webOS OSE.</a></li></ul> |
 | Touchscreen or Monitor | The display device that interacts with the kiosk. We recommend using a touchscreen for a more interactive experience. We used <a href="https://www.sunfounder.com/products/10inch-touchscreen-for-raspberrypi">SunFounder 10.1 Touchscreen</a>. |
 | Camera | webOS OSE supports V4L2 (Video for Linux 2) cameras. We used <a href="https://prod.danawa.com/info/?pcode=13386197">ROYCHE RPC-20F FHD webcam (Korean website)</a>.
 
@@ -49,7 +49,7 @@ We'd implemented this project on Windows and Ubuntu. To ensure compatibility, we
 Both Windows and Linux environments are possible, but we recommend Linux environments.
 {{< /note >}}
 
-Make sure that your host PC **supports a camera** to record. This camera is required in the [registrating your face section](#signing-up-the-account).
+Make sure that your host PC **supports a camera** to record. This camera is required in [Creating an Account](#creating-an-account).
 
 ## Project Setup
 
@@ -89,7 +89,7 @@ The kiosk server runs on your host PC. Setting up a server involves the followin
     git clone https://github.com/Cheetah-19/Kiosk_KNU
     ```
 
-4. Install the required libraries
+4. Install the required libraries.
 
     1. Go to `Kiosk_KNU/frontend/kiosk_page` and enter the following commands:
 
@@ -167,7 +167,7 @@ The kiosk server runs on your host PC. Setting up a server involves the followin
             .\\<VIRTUAL ENVIRONMENT NAME>\Scripts\activate
             ```
 
-3. In this virtual environment terminal, proceed to the following step: [Running the Server](#running-the-server).
+3. Proceed the next step ([Running the Server](#running-the-server)) in this virtual environment terminal.
 
 #### Running the Server
 
@@ -187,7 +187,7 @@ The kiosk server runs on your host PC. Setting up a server involves the followin
     ```
 
 3. Go to the `Kiosk_KNU/backend` directory.
-4. Run the server with a specified port number. **Make sure you note this port number.** This number will be used in the [Setting Up the Server Connection](#setting-up-the-server-connection).
+4. Run the server with a specified port number. **Note down this port number.** This number will be used in [Creating a Kiosk App](#creating-a-kiosk-app).
 
     ```bash
     python manage.py runserver 0.0.0.0:<PORT NUMBER>
@@ -211,7 +211,6 @@ The kiosk app is created on the host PC and installed on your target device (Ras
 1. Setting up webOS OSE CLI
 2. Creating a kiosk app
 3. Packaging and Installing the app
-
 
 #### Setting Up webOS OSE CLI
 
@@ -644,7 +643,7 @@ def identification(db_embedding_list, target_embedding):
 
 This function converts a base64 list received from the front into an embedding list.
 
-{{< code "backend/face_recognition/identification.py" >}}
+{{< code "backend/face_recognition/base2vector.py" >}}
 ```python
 def base_to_vector(face_bases: list) -> list:
     embedding_list = []
@@ -722,7 +721,7 @@ This function configures how facial recognition login works.
 4. Calculate the face info distance between embedding and user.
 5. Returns the user's phone number whose distance was less than the threshold and the shortest distance.
 
-{{< code "backend/face_recognition/extractor.py" >}}
+{{< code "backend/login/views.py" >}}
 ```python
 class FaceLoginView(APIView):
     def post(self,request):
@@ -783,7 +782,7 @@ class FaceLoginView(APIView):
 
 This function checks if it is a proper face photo during the membership registration process.
 
-{{< code "backend/face_recognition/extractor.py/FaceCheckView()" >}}
+{{< code "backend/signup/views.py" >}}
 ```python
 class FaceCheckView(APIView):
     def post(self, request):
