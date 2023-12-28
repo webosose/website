@@ -325,7 +325,7 @@ The kiosk app is created on the host PC and installed on your target device (Ras
     npm run build
     ```
 
-    If it succeed, `build` directory will be generated.
+    If it succeeds, `build` directory will be generated.
 
     <img width="737" alt="스크린샷 2023-12-06 오후 10 06 55" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/a133af50-dc41-4e2e-8313-7c5688a0622f">
 
@@ -377,55 +377,80 @@ Now, you ready to use the kiosk on the target device.
 
 ## How to Use
 
-1. Connect the camera to the Raspberry Pi.
-2. Connecting Raspberry Pi to the Internet.
-3. Change your unique server address (Please refer to the Url.js part of Code Implementation)
-4. Run the installed application.
-5. You must go to the frontend/register file and proceed with membership registration using the command below to log in.
+### Launching the Server and App
 
-        npm start
+1. Connect a camera to the target device.
+2. (Optional) If your host PC doesn't have built-in camera, connect a camera to your host PC.
+3. Check that the host PC and target device's networks are working well.
+4. Launch the server.
+5. Launch the installed kiosk app.
 
-6. When the membership registration page is launched, you can register your information to sign up.
+    {{< figure src="/images/samples/solutions/face-recognition-based-kiosk/default-screen.jpg" alt="Default screen of the kiosk app" caption="" >}}
 
-    {{< note >}}
-        * The face model is downloaded from the server when you first do face recognition. I recommend you turn the server back on when you see the cmd window and see that the face model has been downloaded from the server.
-        * Please note that downloading files before signing up for membership is fast, and the model downloading after signing up for membership is large, so it takes time.
+### Creating an Account
 
-    {{< /note >}}
+To use the face recognition, you have to create an account and register information first.
 
-    * <img width="30%" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/bad5d665-65c0-41f3-839a-73a2b35dae78">
-    * This page allows you to register your face.
-    * <img width="30%" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/9f5c919f-e630-4d0f-a7f3-45de15f5ada1">
-    * This page allows you to register your name.
-    * <img width="30%" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/f95fc192-a1fc-42a4-a2eb-70603a42dd83">
-    * This page allows you to register your mobile phone number.
-    * <img width="30%" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/53e8d30c-6617-4c80-a175-03cce27cac87">
-    * This page allows you to register whether you are vegan or religious.
-    * <img width="30%" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/7ceba5d5-22c9-4ba9-9908-bc8afc0d9c2c">
-    * This page allows you to register whether you are allergic.
-    * When you press the Finish button on the Allergy Check page, the face model is downloaded, which may take time to sign up for the first time. Check the server to see what is downloaded.
-    * After that, if face recognition doesn't work well, turn on the server again and try it
-    * <img width="30%" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/145134a1-5461-4e90-b6a1-969298c50eb9">
-    * This page tells you that your payment has been completed.
+1. (On the host PC) Go to the `frontend/register` directory and execute the following command.
 
-    * If registered, you can log in with your face information and cell phone number.
+    ```bash
+    npm start
+    ```
+
+    A registration page will be launched on the browser. 
+
+    <img width="40%" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/bad5d665-65c0-41f3-839a-73a2b35dae78">
+
+    After a while, face registeration process will start.
+
+    {{< figure src="/images/samples/solutions/face-recognition-based-kiosk/register-face.png" width="40%" class="align-left" alt="Face registration process" caption="" >}}
+
+    {{< caution >}}
+    The face model is downloaded from the internet when you first register your face. We recommend **re-launching the server** after the download is complete.
+
+    You can check the download progress on the server terminal.
+    {{< /caution >}}
+
+2. Enter your name.
+
+    <img width="40%" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/9f5c919f-e630-4d0f-a7f3-45de15f5ada1">
+
+3. Enter your phone number.
+
+    <img width="40%" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/f95fc192-a1fc-42a4-a2eb-70603a42dd83">
+
+4. If you are a vegan, enable the checkbox and fill in the detailed type. And select your religion.
+
+    <img width="40%" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/53e8d30c-6617-4c80-a175-03cce27cac87">
+
+5. Select your allergens.
+
+    <img width="40%" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/7ceba5d5-22c9-4ba9-9908-bc8afc0d9c2c">
+
+    After you finish entering the allergen information, the face model will be downloaded. If it succeeds, you will see a completion page. If it failed, re-launch the server and registration page, and try it again.
+
+    <img width="40%" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/145134a1-5461-4e90-b6a1-969298c50eb9">
+
+### Logging In and Placing an Order
+
+Now, you can log in with your face or phone number.
     
-
-7. Log in with your registered face information or cell phone number.
-* If you press the login button above, you will automatically attempt to log in through facial recognition.
+1. Go to the target device and launch the kiosk app.
+2. If you click (or touch) the login button above, you will automatically attempt to log in with facial recognition.
 
     <img width="50%" alt="31" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/96006ef1-7b7f-4ea8-b8b6-716abd60ff44">
 
-* You can log in with your cell phone number by pressing the button below.
+    During the face recognition process, you can log in with your phone number by pressing the button below.
 
     <img width="50%" alt="32" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/385cee9e-9116-4d71-a9eb-f9a3565a558e">
 
-* If you successfully log in, you can use the kiosk with a menu tailored to your information!
+3. If you succeed to log in, you can place an order!
 
     <img width="50%" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/fcae8dfa-07fb-4cf9-905b-b39231a4a340">
 
 
 ## Code Implementation
+
 * If you want to see the source code, please click the [Git link](https://github.com/Cheetah-19/Kiosk_KNU)
 
 ### Url.js
