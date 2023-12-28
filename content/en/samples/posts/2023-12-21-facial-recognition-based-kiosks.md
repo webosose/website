@@ -20,6 +20,10 @@ Key features are as follows:
 - Customized Menu Recommendation
 - Order Placement
 
+{{< note >}}
+The primary language of this project is **Korean**.
+{{< /note >}}
+
 ## Hardware Requirements
 
 To set up this project, you need a **target device** and **host PC**.
