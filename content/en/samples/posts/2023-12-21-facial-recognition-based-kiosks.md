@@ -205,10 +205,8 @@ Now it's time to set up the kiosk app.
 The kiosk app is created on the host PC and installed on your target device (Raspberry Pi). Setting up an app involves the following steps:
 
 1. Setting up webOS OSE CLI
-2. Creating an app
-3. Setting up the server connection
-4. Building the app
-5. Packaging and Installing the app
+2. Creating a kiosk app
+3. Packaging and Installing the app
 
 
 #### Setting Up webOS OSE CLI
@@ -265,136 +263,116 @@ The kiosk app is created on the host PC and installed on your target device (Ras
     For more details about `ares-setup-device`, refer to the [CLI documentation]({{< relref "cli-user-guide#ares-setup-device" >}}).
     {{< /note >}}
 
-#### Setting Up the Server Connection
+#### Creating a Kiosk App
 
-1. Find an IP address of your server (host PC).
+1. Create a dummy app.
 
     ```bash
-    # For Ubuntu and macOS
-    ifconfig
+    ares-generate -t webapp <YOUR APP NAME>
 
-    # For Windows
-    ipconfig
+    # Example
+    ares-generate -t webapp sampleApp
     ```
 
-2. 
+    If it succeeds, an app directory (`<YOUR APP NAME>`) will be generated under the current directory. 
 
-1. Setting Port-Forwarding & Changing variables for Server Connections
-    * Verify the local ip address of the server running with ipconfig
-        * Verify the IPv4 address of the wireless LAN.
+2. Open `appinfo.json` in the generated directory. And add `allowVideoCapture`, `allowAudioCapture`, and `enableWebOSVDA` as follows. These parameters allow camera permission on the target device.
 
-            ![24](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/ed02c030-48c5-42fc-8d17-0c790f01a739)
+    ```json
+    {
+        "id": "com.domain.app",
+        "version": "1.0.0",
+        "vendor": "My Company",
+        "type": "web",
+        "main": "index.html",
+        "title": "new app",
+        "icon": "icon.png",
+        "allowVideoCapture": true,  <- Add this parameter
+        "allowAudioCapture": true,  <- Add this parameter
+        "enableWebOSVDA": true,     <- Add this parameter
+        "requiredPermissions": [
+            "time.query",
+            "activity.operation"
+        ]
+    }
+    ```
 
-        * Port forwarding on your router settings page.
-    * Saves the port number port forwarded from 
-        * frontend/kiosk_page/src/constant/Url.js
-        * frontend/register/src/constant/Url.js 
-        * with the public IP (https://www.findip.kr/) in the BASE_URL variable.
-        ![25](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/1ff4c30c-ef76-4376-99ba-f0ac43d96a00)
-        ![26](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/e562a9d9-524e-4985-b159-ee51c19aed8c)
+3. Set up a connection with the server.
+
+    1. Check the IP address of the server (host PC).
+    2. Set up the IP address and port number of the server. Use the port number you set in [Running the Server](#running-the-server).
+
+        {{< code "frontend/kiosk_page/src/constants/Url.js" >}}
+        ```javascript
+        export const BASE_URL = 'http://<SERVER IP>:<PORT NUMBER>'
+        ```
+        {{< /code >}}
+
+        {{< code "frontend/register/src/constants/Url.js" >}}
+        ```javascript
+        export const BASE_URL = 'http://<SERVER IP>:<PORT NUMBER>'
+        ```
+        {{< /code >}}
+
+4. Go to the `frontend/kiosk_page` directory.
+5. Build the source code.
+
+    ```bash
+    npm run build
+    ```
+
+    If it succeed, `build` directory will be generated.
+
+    <img width="737" alt="스크린샷 2023-12-06 오후 10 06 55" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/a133af50-dc41-4e2e-8313-7c5688a0622f">
+
+    {{< note "Trouble Shooting Guide" >}}
+    - **Can’t resolve ‘react-dom’** Error:
+        - Execute `npm install`
+    - **Can’t save ‘bootstrap/dist/css/bootstrap.css’** Error:
+        - Execute `npm install react-bootstrap strap` under the root directory (`Kiosk_KNU`).
+    {{< /note >}}
+
+6. Copy the files in the `build` directory and paste them into the dummy app directory. **Overwrite** the `index.html` file.
+
+    Directory hierarchy of the dummy app will be as follows: 
+
+    ```
+    Dummy app
+    |- static/
+    |- appinfo.json
+    |- asset-manifest.json
+    |- favicon.ico
+    |- icon.png
+    |- index.html
+    ```
 
 #### Packaging and Installing the App
 
-1. 
+1. Go back to the directory where the dummy app is located.
+2. Package the dummy app. An `.ipk` file will be generated.
 
-4. Packaging
-     - You can change only the part of 'sampleApp' from the code below to the project name you want. (sampleApp = folder name)
-    
-	        ares-package ./sampleApp
+    ```bash
+    ares-package <PATH TO YOUR APP>
 
-        <img width="418" alt="15" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/395c1cc3-c671-4e50-923e-6c146c8b21f2">
+    # Example
+    ares-package ./sampleApp
+    ```
 
-        * If it's Success, it's Success.
-        * If you look at the picture above, there is com.domain.app_0.0.1.ipk.
-        * This ipk file is the app you install on Raspberry Pi's webOS.
+3. Install the `.ipk` file to the target device.
 
-  5. Installation
-        * In the code below, 'Raspberry' is the Devide name set by ssh set above.
-	    * For 'com.domain.app_0.0.1_all.ipk', write the name of the completed ipk file after packaging.
-     
-	            ares-install —device Rasberry com.domain.app_0.0.1_all.ipk
+    `<TARGET DEVICE>` is the name you set using `ares-setup-device`.
 
-        * if it becomes Success, it is Success, and the application will work successfully.
-  
-        ![18](https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/5feb04b8-7d20-4f4c-b350-64afc260aaa6)
+    ```bash
+    ares-install -d <TARGET DEVICE> <IPK FILE>
 
-## Install the App
+    # Example
+    ares-install -d ose com.domain.app_1.0.0_all.ipk
+    ```
 
-Install the app on the target device by using the webOS OSE CLI from your local PC.
+Now, your kiosk app is ready on the target device.
 
-On your local PC, follow these steps:
+## How to Use
 
-1. SSH Settings
-    * Device settings are required for ssh connections.
-
-	        ares-setup-device 
- 
-        <img width="566" alt="12" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/17ff7663-0290-433c-8a12-016ea5cc8487">
-
-    * If you look at the picture above, you can see that a new device has been added.
-
-    - Add : Add Mode
-    - Name : Please name the device.
-    - IP address : You can write down the IP address of the Raspberry Pi.
-    - Port : I set the port number as 22. (When I used another port, I got a package error.)
-    - User : You can set it to root.
-    - Description : You can skip it. (skip = Enter)
-    - Authentication : Choose whether you want to use the password or ssh key as the permission setting. I chose the password because the password is simpler than the ssh key.
-    - Password : You can set the password. (skip = Enter)
-    - Default : It's N in the picture, but it's more convenient to choose Y.
-    - Save : Please save it as Y.
-
-2. Installing the webOS OSE app
-    * You must create an app using template.
-    * You can change only the part of 'sampleApp' from the code below to the project name you want. (sampleApp = folder name)
-
-	        ares-generate -t webapp sampleApp
-
-        <img width="483" alt="13" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/620b1604-5726-481b-a2fb-6f9afef7f91a">
- 
-        * If it's Success, it's Success.
-   
-    * It becomes Success, creates a folder, and you can see that it contains the settings.
-
-        <img width="789" alt="14" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/6cbb0492-6400-4927-b2b6-de58753b5f09">
-
-        * app id : You can omit the app as an id that distinguishes it.
-        * title : The title of the application.
-        * version : You can specify a version.
-
-    * You must allow camera permission to do face recognition in appinfo.json.
-    
-        <img width="300" alt="14" src="https://github.com/baegopababjo/website/assets/95912522/05a07ec1-f80e-466f-95f5-feeff382cf2d">
-
-
-  3. Overwrite the built content over the folder you created (in this case 'sampleApp').
-{{< note >}}
-You must navigate to the folder you want to build and run it (frontend/kiosk_page in this case)
-{{< /note >}}
-
-
-            npm run build
-        
-        * If you get an error such as Can't resolve 'react-dom', please execute the command below and try again.
-
-                npm install
-        
-        * If you get an error such as Can't save 'bootstrap/dist/css/bootstrap.css', please execute the following command from the ./Kiosk_KNU location.
-
-                npm install react-bootstrap bootstrap
-        
-
-        * When you build a project, a build file will be created.
-        
-        <img width="737" alt="스크린샷 2023-12-06 오후 10 06 55" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/a133af50-dc41-4e2e-8313-7c5688a0622f">
-
-        * You can see that a 'build' folder has been created.
-        * You can 'overlay' the contents of the file inside the sampleApp folder created above.
-
-
-  
-
-## How to use
 1. Connect the camera to the Raspberry Pi.
 2. Connecting Raspberry Pi to the Internet.
 3. Change your unique server address (Please refer to the Url.js part of Code Implementation)
