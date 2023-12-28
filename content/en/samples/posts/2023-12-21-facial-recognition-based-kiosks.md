@@ -448,131 +448,240 @@ Now, you can log in with your face or phone number.
 
     <img width="50%" alt="image" src="https://github.com/Cheetah-19/Kiosk_KNU/assets/29055106/fcae8dfa-07fb-4cf9-905b-b39231a4a340">
 
-
 ## Code Implementation
 
-* If you want to see the source code, please click the [Git link](https://github.com/Cheetah-19/Kiosk_KNU)
+**Source code**: [GitHub link](https://github.com/Cheetah-19/Kiosk_KNU)
 
 ### Url.js
-* This file can set the server address at once.
-* You can put your personal server address inside.
-* You can change it from the file in the two paths below.
-    * frontend/kiosk_page/src/constants/Url.js ( Server setup address for kiosk page )
-    * frontend/register/src/constants/Url.js ( Server setup address for user registration page )
 
+This file configures the server's network address.
+
+There are two `Url.js` files in this project.
+
+- `frontend/kiosk_page/src/constants/Url.js`: Server address setup for kiosk page
+- `frontend/register/src/constants/Url.js`: Server address setup for user registration page
+
+{{< code "Url.js" >}}
+```javascript
+export const BASE_URL = 'http://127.0.0.1:8000';
 ```
-    export const BASE_URL = 'http://127.0.0.1:8000';
+{{< /code >}}
+
+### backend/face_recognition/extractor.py
+
+This file specifies a pre-training model for face recognition.
+
+{{< code "backend/face_recognition/extractor.py" >}}
+```python
+# recognizer
+model_name = 'VGG-Face'
+target_size = functions.find_target_size(model_name)
 ```
+{{< /code >}}
 
-### face_recognition/extractor.py
-* You must specify a pre-training model name for facial recognition.
+#### homomorphic_filter()
 
+This function controls image illumination.
+
+{{< code "backend/face_recognition/extractor.py" >}}
+```python
+def homomorphic_filter(img):
+try:
+    # Only the calculation for Y with YUV color space
+    img_YUV = cv2.cvtColor(img, cv2.COLOR_BGR2YUV)
+    y = img_YUV[:, :, 0]
+
+    rows = y.shape[0]
+    cols = y.shape[1]
+
+    # Logs are taken to separate illumination elements and reflection elements
+    imgLog = np.log1p(np.array(y, dtype='float') / 255)
+
+    M = 2 * rows + 1
+    N = 2 * cols + 1
+
+    # Generate gaussian mask, sigma = 10
+    sigma = 10
+    (X, Y) = np.meshgrid(np.linspace(0, N - 1, N), np.linspace(0, M - 1, M))
+    Xc = np.ceil(N / 2)
+    Yc = np.ceil(M / 2)
+    gaussianNumerator = (X - Xc) ** 2 + (Y - Yc) ** 2
+
+    # Create low pass filter and high pass filter
+    LPF = np.exp(-gaussianNumerator / (2 * sigma * sigma))
+    HPF = 1 - LPF
+
+    LPF_shift = np.fft.ifftshift(LPF.copy())
+    HPF_shift = np.fft.ifftshift(HPF.copy())
+
+    # The image covered with Log is FFTed and multiplied by LPF and HPF to divide the LF and HF components.
+    img_FFT = np.fft.fft2(imgLog.copy(), (M, N))
+    img_LF = np.real(np.fft.ifft2(img_FFT.copy() * LPF_shift, (M, N)))
+    img_HF = np.real(np.fft.ifft2(img_FFT.copy() * HPF_shift, (M, N)))
+
+    # The lighting and reflection values are controlled by multiplying each LF and HF component by the scaling factor.
+    gamma1 = 0.3
+    gamma2 = 0.7
+    img_adjusting = gamma1 * img_LF[0:rows, 0:cols] + gamma2 * img_HF[0:rows, 0:cols]
+
+    # The adjusted data is now made into an image through exp operations.
+    img_exp = np.expm1(img_adjusting)
+    img_exp = (img_exp - np.min(img_exp)) / (np.max(img_exp) - np.min(img_exp))
+    img_out = np.array(255 * img_exp, dtype='uint8')
+
+    # YUV replaces Y space with a filtered image and converts it to RGB space.
+    img_YUV[:, :, 0] = img_out
+    result = cv2.cvtColor(img_YUV, cv2.COLOR_YUV2BGR)
+
+    return result
+except:
+    pass
 ```
-    # recognizer
-    model_name = 'VGG-Face'
-    target_size = functions.find_target_size(model_name)
+{{< /code >}}
+
+#### resize_with_padding()
+
+This function adjusts the image size to the model `target_size`.
+
+{{< code "backend/face_recognition/extractor.py" >}}
+```python
+def resize_with_padding(image, target_size):
+    height, width = image.shape[:2]
+    target_height, target_width = target_size
+
+    # Calculate the image ratio.
+    aspect_ratio = width / height
+    target_aspect_ratio = target_width / target_height
+
+    # Resize according to the image ratio.
+    if aspect_ratio > target_aspect_ratio:
+        new_width = target_width
+        new_height = int(new_width / aspect_ratio)
+    else:
+        new_height = target_height
+        new_width = int(new_height * aspect_ratio)
+
+    # Resize the image.
+    resized_image = cv2.resize(image, (new_width, new_height))
+
+    # Fill the margins with black
+    padding_top = (target_height - new_height) // 2
+    padding_bottom = target_height - new_height - padding_top
+    padding_left = (target_width - new_width) // 2
+    padding_right = target_width - new_width - padding_left
+    padded_image = cv2.copyMakeBorder(resized_image, padding_top, padding_bottom, padding_left, padding_right, cv2.BORDER_CONSTANT, value=(0, 0, 0))
+
+    return padded_image
 ```
-* homomorphic_filter()
+{{< /code >}}
 
-* This is a function that controls image illumination.
+#### extractor()
+
+This function converts base64 string into embedding.
+
+1. base64 -> image
+2. image -> face
+3. face -> embedding
+
+{{< code "backend/face_recognition/extractor.py" >}}
+```python
+def extractor(base64):
+try:
+    # 1. base64 -> image
+    img = functions.loadBase64Img(base64)
+
+    # 2. image -> face (Face Area Extracted)
+    face = DeepFace.extract_faces(img_path=img, target_size=target_size, detector_backend='ssd')[0]['facial_area']
+    x, y, w, h = face['x'], face['y'], face['w'], face['h']
+    face = img[y:y + h, x:x + w]
+
+    # Adjusting lighting
+    face = homomorphic_filter(face)
+
+    # Resizing an image
+    face = resize_with_padding(face, target_size)
+
+    # 3. face -> embedding
+    embedding_img = DeepFace.represent(img_path=face, model_name=model_name, detector_backend='skip')[0]['embedding']
+
+    return embedding_img
+except:
+    return None
 ```
-    def homomorphic_filter(img):
-    try:
-        # Only the calculation for Y with YUV color space
-        img_YUV = cv2.cvtColor(img, cv2.COLOR_BGR2YUV)
-        y = img_YUV[:, :, 0]
+{{< /code >}}
 
-        rows = y.shape[0]
-        cols = y.shape[1]
+### backend/face_recognition/identification.py
 
-        # Logs are taken to separate illumination elements and reflection elements
-        imgLog = np.log1p(np.array(y, dtype='float') / 255)
+#### findCosineDistance()
 
-        M = 2 * rows + 1
-        N = 2 * cols + 1
+This function calculates the distance between a user's face info and the embedding of the photo taken from the front using the cosine similarity.
 
-        # Generate gaussian mask, sigma = 10
-        sigma = 10
-        (X, Y) = np.meshgrid(np.linspace(0, N - 1, N), np.linspace(0, M - 1, M))
-        Xc = np.ceil(N / 2)
-        Yc = np.ceil(M / 2)
-        gaussianNumerator = (X - Xc) ** 2 + (Y - Yc) ** 2
+{{< code "backend/face_recognition/identification.py" >}}
+```python
+def findCosineDistance(db_list, target):
+    a = np.dot(db_list, target)
+    b = np.linalg.norm(db_list, axis=1)
+    c = np.sqrt(np.sum(np.multiply(target, target)))
 
-        # Create low pass filter and high pass filter
-        LPF = np.exp(-gaussianNumerator / (2 * sigma * sigma))
-        HPF = 1 - LPF
-
-        LPF_shift = np.fft.ifftshift(LPF.copy())
-        HPF_shift = np.fft.ifftshift(HPF.copy())
-
-        # The image covered with Log is FFTed and multiplied by LPF and HPF to divide the LF and HF components.
-        img_FFT = np.fft.fft2(imgLog.copy(), (M, N))
-        img_LF = np.real(np.fft.ifft2(img_FFT.copy() * LPF_shift, (M, N)))
-        img_HF = np.real(np.fft.ifft2(img_FFT.copy() * HPF_shift, (M, N)))
-
-        # The lighting and reflection values are controlled by multiplying each LF and HF component by the scaling factor.
-        gamma1 = 0.3
-        gamma2 = 0.7
-        img_adjusting = gamma1 * img_LF[0:rows, 0:cols] + gamma2 * img_HF[0:rows, 0:cols]
-
-        # The adjusted data is now made into an image through exp operations.
-        img_exp = np.expm1(img_adjusting)
-        img_exp = (img_exp - np.min(img_exp)) / (np.max(img_exp) - np.min(img_exp))
-        img_out = np.array(255 * img_exp, dtype='uint8')
-
-        # YUV replaces Y space with a filtered image and converts it to RGB space.
-        img_YUV[:, :, 0] = img_out
-        result = cv2.cvtColor(img_YUV, cv2.COLOR_YUV2BGR)
-
-        return result
-    except:
-        pass
+    return 1 - (a / (b * c))
 ```
-* resize_with_padding()
+{{< /code >}}
 
-* This function adjusts the image size to the model target_size.
+#### identification()
+
+This function returns the shortest distance between a user's face info and the embedding of the photo taken from the front.
+
+{{< code "backend/face_recognition/identification.py" >}}
+```python
+def identification(db_embedding_list, target_embedding):
+    return np.min(findCosineDistance(db_embedding_list, target_embedding))
 ```
-    def resize_with_padding(image, target_size):
-        height, width = image.shape[:2]
-        target_height, target_width = target_size
+{{< /code >}}
 
-        # Calculate the image ratio.
-        aspect_ratio = width / height
-        target_aspect_ratio = target_width / target_height
+### backend/face_recognition/base2vector.py
 
-        # Resize according to the image ratio.
-        if aspect_ratio > target_aspect_ratio:
-            new_width = target_width
-            new_height = int(new_width / aspect_ratio)
-        else:
-            new_height = target_height
-            new_width = int(new_height * aspect_ratio)
+#### base_to_vector()
 
-        # Resize the image.
-        resized_image = cv2.resize(image, (new_width, new_height))
+This function converts a base64 list received from the front into an embedding list.
 
-        # Fill the margins with black
-        padding_top = (target_height - new_height) // 2
-        padding_bottom = target_height - new_height - padding_top
-        padding_left = (target_width - new_width) // 2
-        padding_right = target_width - new_width - padding_left
-        padded_image = cv2.copyMakeBorder(resized_image, padding_top, padding_bottom, padding_left, padding_right, cv2.BORDER_CONSTANT, value=(0, 0, 0))
+{{< code "backend/face_recognition/identification.py" >}}
+```python
+def base_to_vector(face_bases: list) -> list:
+    embedding_list = []
 
-        return padded_image
+    for base in face_bases:
+        # base64 -> embedding
+        input_embedding = extractor(base)
+
+        if input_embedding is not None:
+            embedding_list.append(input_embedding)
+    return embedding_list
 ```
-* extractor()
+{{< /code >}}
 
-* This function converts base64 to embedding.
-    1. base64 -> image
-    2. image -> face
-    3. face -> embedding
+### backend/face_recognition/checker.py
+
+Input size must be specified according to Keras CNN model (150 x 150).
+
+{{< code "backend/face_recognition/checker.py" >}}
+```python
+target_size = (150, 150)
+model = load_model('./face_recognition/mask_model.h5')
 ```
-    def extractor(base64):
+{{< /code >}}
+
+#### isFace()
+
+This function determines whether your face is well detected and whether you are wearing a mask.
+
+{{< code "backend/face_recognition/checker.py" >}}
+```python
+def isFace(base64):
     try:
         # 1. base64 -> image
         img = functions.loadBase64Img(base64)
 
-        # 2. image -> face (Face Area Extracted)
+        # 2. image -> face (Extracting Face Areas)
         face = DeepFace.extract_faces(img_path=img, target_size=target_size, detector_backend='ssd')[0]['facial_area']
         x, y, w, h = face['x'], face['y'], face['w'], face['h']
         face = img[y:y + h, x:x + w]
@@ -583,283 +692,222 @@ Now, you can log in with your face or phone number.
         # Resizing an image
         face = resize_with_padding(face, target_size)
 
-        # 3. face -> embedding
-        embedding_img = DeepFace.represent(img_path=face, model_name=model_name, detector_backend='skip')[0]['embedding']
+        # Image preprocessing
+        face = face[:, :, ::-1]
+        face = face.astype(np.float64) / 255.0
 
-        return embedding_img
-    except:
-        return None
-```
+        # Determining whether or not to wear a mask
+        face = np.expand_dims(face, axis=0)
+        value = model.predict(face)
 
-### face_recognition/identification.py
-* findCosineDistance()
-
-* This function is a function that calculates the distance between a user's face info and the embedding of a photo taken from the front in the cosine similarity method.
-
-```
-    def findCosineDistance(db_list, target):
-        a = np.dot(db_list, target)
-        b = np.linalg.norm(db_list, axis=1)
-        c = np.sqrt(np.sum(np.multiply(target, target)))
-
-        return 1 - (a / (b * c))
-```
-* identification()
-
-* This function returns the shortest distance between a user's face info and the embedding of a photo taken from the front.
-
-```
-    def identification(db_embedding_list, target_embedding):
-        return np.min(findCosineDistance(db_embedding_list, target_embedding))
-```
-
-### face_recognition/base2vector.py
-* base_to_vector()
-
-* This function converts a base64 list received from the front into an embedding list.
-
-```
-    def base_to_vector(face_bases: list) -> list:
-        embedding_list = []
-
-        for base in face_bases:
-            # base64 -> embedding
-            input_embedding = extractor(base)
-
-            if input_embedding is not None:
-                embedding_list.append(input_embedding)
-        return embedding_list
-```
-
-### face_recognition/checker.py
-* Input size must be specified according to Keras CNN model (150 x 150)
-
-```
-    target_size = (150, 150)
-    model = load_model('./face_recognition/mask_model.h5')
-```
-* isFace()
-* This function determines whether your face is well detected or whether you are wearing a mask.
-```
-    def isFace(base64):
-        try:
-            # 1. base64 -> image
-            img = functions.loadBase64Img(base64)
-
-            # 2. image -> face (Extracting Face Areas)
-            face = DeepFace.extract_faces(img_path=img, target_size=target_size, detector_backend='ssd')[0]['facial_area']
-            x, y, w, h = face['x'], face['y'], face['w'], face['h']
-            face = img[y:y + h, x:x + w]
-
-            # Adjusting lighting
-            face = homomorphic_filter(face)
-
-            # Resizing an image
-            face = resize_with_padding(face, target_size)
-
-            # Image preprocessing
-            face = face[:, :, ::-1]
-            face = face.astype(np.float64) / 255.0
-
-            # Determining whether or not to wear a mask
-            face = np.expand_dims(face, axis=0)
-            value = model.predict(face)
-
-            print(value)
-            if value <= 0.5:
-                return False
-            else:
-                return True
-        except:
+        print(value)
+        if value <= 0.5:
             return False
+        else:
+            return True
+    except:
+        return False
 ```
+{{< /code >}}
 
-### login/views.py
-* post()
+### backend/login/views.py
 
-* This function provides an indication of how facial recognition logins work.
-    1. 5 base64 files POST via Front Face.js
-    2. base64 -> image -> embedding
-    3. Get information from all users
-    4. Calculate the face info distance between embedding and user at number 2
-    5. Returns the user's mobile phone number whose distance was less than the threshold and the shortest distance.
+#### post()
 
-```
-    class FaceLoginView(APIView):
-        def post(self,request):
-            # 1. 5 base64 files POST (list) via Front Face.js
-            if request.method == 'POST':
+This function configures how facial recognition login works.
+
+1. 5 base64 files will be POSTed through `frontend/register/src/Face.js`.
+2. Convert the files: base64 -> image -> embedding.
+3. Get information of all users.
+4. Calculate the face info distance between embedding and user.
+5. Returns the user's phone number whose distance was less than the threshold and the shortest distance.
+
+{{< code "backend/face_recognition/extractor.py" >}}
+```python
+class FaceLoginView(APIView):
+    def post(self,request):
+        # 1. 5 base64 files POST (list) via Front Face.js
+        if request.method == 'POST':
+            try:
+                face_bases = request.data.get('imageData')
+            except:
+                return Response('')
+
+            # 2. base64 -> image -> vector
+            target_embedding_list = base_to_vector(face_bases)
+            print("Received face data from front")
+
+            # 3. vector-> embedding
+            embedding_array =  np.array(target_embedding_list)
+            # 3. Get information from all users
+            user_table = User.objects.all()
+
+            min_dist = 1e9
+            phonenum = None
+            name = None
+
+            for user in user_table:
                 try:
-                    face_bases = request.data.get('imageData')
+                    user_face_list = np.array(eval(user.user_face_info))
+
+                    # 4. Calculate the vector and user's face info distance at number 2
+                    distance = 1e9
+                    for target in embedding_array:
+                        distance = min(distance, identification(user_face_list, target))
+
+                    #print(f"{user.user_name}: {distance}")
+
+                    if distance < min_dist:
+                        min_dist = distance
+
+                        # Pull only when the distance is lower than the threshold.
+                        if min_dist <= 0.15:
+                            phonenum = user.user_phonenum
+                            name = user.user_name
                 except:
-                    return Response('')
+                    pass
 
-                # 2. base64 -> image -> vector
-                target_embedding_list = base_to_vector(face_bases)
-                print("Received face data from front")
-
-                # 3. vector-> embedding
-                embedding_array =  np.array(target_embedding_list)
-                # 3. Get information from all users
-                user_table = User.objects.all()
-
-                min_dist = 1e9
-                phonenum = None
-                name = None
-
-                for user in user_table:
-                    try:
-                        user_face_list = np.array(eval(user.user_face_info))
-
-                        # 4. Calculate the vector and user's face info distance at number 2
-                        distance = 1e9
-                        for target in embedding_array:
-                            distance = min(distance, identification(user_face_list, target))
-
-                        #print(f"{user.user_name}: {distance}")
-
-                        if distance < min_dist:
-                            min_dist = distance
-
-                            # Pull only when the distance is lower than the threshold.
-                            if min_dist <= 0.15:
-                                phonenum = user.user_phonenum
-                                name = user.user_name
-                    except:
-                        pass
-
-                if phonenum is not None:
-                    print(f"Success\nname: {name}, phonenum: {phonenum}")
-                else:
-                    print("None")
-
-                # 5. Returns the user's mobile phone number whose distance was below the threshold and the shortest distance
-                return Response({"phone_number": phonenum, "name": name})
-```
-### signup/views.py
-* post()
-* This function checks if it is a suitable face photo during the membership registration process.
-```
-    class FaceCheckView(APIView):
-        def post(self, request):
-            face_base = request.data.get('imageData')
-
-            # Face extracted
-            if isFace(face_base):
-                print("No mask")
-                return Response({'result': True})
-            # Face not extracted
+            if phonenum is not None:
+                print(f"Success\nname: {name}, phonenum: {phonenum}")
             else:
-                print("mask")
-                return Response({'result': False}, status=400)
+                print("None")
+
+            # 5. Returns the user's mobile phone number whose distance was below the threshold and the shortest distance
+            return Response({"phone_number": phonenum, "name": name})
 ```
+{{< /code >}}
 
+### backend/signup/views.py
 
-### menu/recommendation.py
-* get_recommended()
-* This function recommends menus to users based on their past order information and ingredient information in the menu.
-* Don't recommend ingredients that users can't eat
+#### post()
 
+This function checks if it is a proper face photo during the membership registration process.
+
+{{< code "backend/face_recognition/extractor.py/FaceCheckView()" >}}
+```python
+class FaceCheckView(APIView):
+    def post(self, request):
+        face_base = request.data.get('imageData')
+
+        # Face extracted
+        if isFace(face_base):
+            print("No mask")
+            return Response({'result': True})
+        # Face not extracted
+        else:
+            print("mask")
+            return Response({'result': False}, status=400)
 ```
-    def get_recommended(user_id):
-        # Menu and ingredients
-        menus_db = Menu.objects.all()
-        # Importing User Instances
-        user_instance = User.objects.get(user_phonenum = user_id)             
+{{< /code >}}
 
-        try:
-            user_preprocessed_data = PreprocessedData.objects.get(user=user_instance)
-            exclude_ingredient_str = user_preprocessed_data.excluded_ingredients
-        except PreprocessedData.DoesNotExist:
-            exclude_ingredient_str = ""
+### backend/menu/recommendation.py
+
+#### get_recommended()
+
+This function makes menu recommendations to users based on their past orders and the ingredients of the menu. This function will not recommend menus that the user is allergic to.
+
+{{< code "backend/menu/recommendation.py" >}}
+```python
+def get_recommended(user_id):
+    # Menu and ingredients
+    menus_db = Menu.objects.all()
+    # Importing User Instances
+    user_instance = User.objects.get(user_phonenum = user_id)             
+
+    try:
+        user_preprocessed_data = PreprocessedData.objects.get(user=user_instance)
+        exclude_ingredient_str = user_preprocessed_data.excluded_ingredients
+    except PreprocessedData.DoesNotExist:
+        exclude_ingredient_str = ""
 
 
-        # Process of changing String to Set
-        # Split into commas after removing brackets
-        if exclude_ingredient_str == "empty":
-            excluded_ingredients = set() 
-        else :
-            exclude_ingredient_list = exclude_ingredient_str[1:-1].split(',')
-            #String -> Create set after integer conversion
-            excluded_ingredients = set(int(item.strip()) for item in exclude_ingredient_list)
+    # Process of changing String to Set
+    # Split into commas after removing brackets
+    if exclude_ingredient_str == "empty":
+        excluded_ingredients = set() 
+    else :
+        exclude_ingredient_list = exclude_ingredient_str[1:-1].split(',')
+        #String -> Create set after integer conversion
+        excluded_ingredients = set(int(item.strip()) for item in exclude_ingredient_list)
 
-        menus = {}
-        for menu in menus_db:
-            ingredients = [ingredient.id for ingredient in menu.menu_ingredient.all()]
-            # Skip menus with excluded ingredients
-            if any(ingredient in excluded_ingredients for ingredient in ingredients):
-                continue
-            ingredients_str = " ".join([ingredient.ingredient_name for ingredient in menu.menu_ingredient.all()])
-            menus[menu.menu_name] = ingredients_str
+    menus = {}
+    for menu in menus_db:
+        ingredients = [ingredient.id for ingredient in menu.menu_ingredient.all()]
+        # Skip menus with excluded ingredients
+        if any(ingredient in excluded_ingredients for ingredient in ingredients):
+            continue
+        ingredients_str = " ".join([ingredient.ingredient_name for ingredient in menu.menu_ingredient.all()])
+        menus[menu.menu_name] = ingredients_str
 
-        # Order data: {Order number: {'user': User ID, 'menus': [Order menu list]}}
-        orders_db = Order.objects.filter(user=user_instance)
+    # Order data: {Order number: {'user': User ID, 'menus': [Order menu list]}}
+    orders_db = Order.objects.filter(user=user_instance)
 
-        orders = {}
-        for order in orders_db:
-            ordered_items = Ordered_Item.objects.filter(order=order)
-            orders[order.order_num] = {'user': order.user.user_phonenum, 'menus': [item.menu.menu_name for item in ordered_items]}
+    orders = {}
+    for order in orders_db:
+        ordered_items = Ordered_Item.objects.filter(order=order)
+        orders[order.order_num] = {'user': order.user.user_phonenum, 'menus': [item.menu.menu_name for item in ordered_items]}
 
-        # TF-IDF conversion
-        vectorizer = TfidfVectorizer()
-        tfidf_matrix = vectorizer.fit_transform(menus.values())
-        tfidf_features = np.array(tfidf_matrix.todense())
+    # TF-IDF conversion
+    vectorizer = TfidfVectorizer()
+    tfidf_matrix = vectorizer.fit_transform(menus.values())
+    tfidf_features = np.array(tfidf_matrix.todense())
 
-        # Calculate cosine similarity
-        cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
+    # Calculate cosine similarity
+    cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
 
-        # Extract menus from a user's past orders
-        past_orders = []
-        for order in orders.values():
-            if order['user'] == user_id:
-                past_orders.append(order['menus'])
-        
-        past_menus = []
-        for order in past_orders:
-            for menu in order:
-                past_menus.append(menu)           # ex) ["Salmon Salad", "Salmon Salad", "Psyburger", "Rice Noodles", and "Rice Noodles"] It comes out as "Salmon Salad", and the more you come out twice, the higher the weight.
-        
+    # Extract menus from a user's past orders
+    past_orders = []
+    for order in orders.values():
+        if order['user'] == user_id:
+            past_orders.append(order['menus'])
+    
+    past_menus = []
+    for order in past_orders:
+        for menu in order:
+            past_menus.append(menu) # ex) ["Salmon Salad", "Salmon Salad", "Psyburger", "Rice Noodles", and "Rice Noodles"] It comes out as "Salmon Salad", and the more you come out twice, the higher the weight.
+    
 
-        # Find menus similar to those ordered in the past
-        similar_menus = np.zeros(len(menus))
-        for menu in past_menus:
-            index = list(menus.keys()).index(menu)
-            similar_menus += cosine_sim[index]
+    # Find menus similar to those ordered in the past
+    similar_menus = np.zeros(len(menus))
+    for menu in past_menus:
+        index = list(menus.keys()).index(menu)
+        similar_menus += cosine_sim[index]
 
-        # Functions to obtain indexes for similarity calculations
-        def get_index(menu):
-            menu_keys = list(menus.keys())
-            index = menu_keys.index(menu)
-            return similar_menus[index]
+    # Functions to obtain indexes for similarity calculations
+    def get_index(menu):
+        menu_keys = list(menus.keys())
+        index = menu_keys.index(menu)
+        return similar_menus[index]
 
-        # Creating a Menu List
-        menu_list = list(menus.keys())
+    # Creating a Menu List
+    menu_list = list(menus.keys())
 
-        # Sorts menus in order of high similarity
-        sorted_menus = []
-        for menu in menu_list:
-            sorted_menus.append((menu, get_index(menu)))
+    # Sorts menus in order of high similarity
+    sorted_menus = []
+    for menu in menu_list:
+        sorted_menus.append((menu, get_index(menu)))
 
-        sorted_menus.sort(key=lambda x: x[1], reverse=True)
+    sorted_menus.sort(key=lambda x: x[1], reverse=True)
 
-        # Extract only menu names
-        sorted_menus = [menu[0] for menu in sorted_menus]
-        recommended_menus = []
-        for recom in sorted_menus:
-            this_menu = Menu.objects.get(menu_name=recom)
-            this_serial = MenuSerializer(this_menu)
-            recommended_menus.append(this_serial.data)
-        # # Sort menus in order of high similarity
-        # sorted_menus = sorted(list(menus.keys()), key=lambda x: similar_menus[list(menus.keys()).index(x)], reverse=True)
+    # Extract only menu names
+    sorted_menus = [menu[0] for menu in sorted_menus]
+    recommended_menus = []
+    for recom in sorted_menus:
+        this_menu = Menu.objects.get(menu_name=recom)
+        this_serial = MenuSerializer(this_menu)
+        recommended_menus.append(this_serial.data)
+    # Sort menus in order of high similarity
+    # sorted_menus = sorted(list(menus.keys()), key=lambda x: similar_menus[list(menus.keys()).index(x)], reverse=True)
 
-        # Previous orders are excluded from the recommendation list
-        #  recommended_menus = []
-        #  for menu in sorted_menus:
-        #      if menu not in past_menus:
-        #         recommended_menus.append(menu)
-        recommended_menus = recommended_menus[0:3]
-        return recommended_menus
+    # Previous orders are excluded from the recommendation list
+    #  recommended_menus = []
+    #  for menu in sorted_menus:
+    #      if menu not in past_menus:
+    #         recommended_menus.append(menu)
+    recommended_menus = recommended_menus[0:3]
+    return recommended_menus
 ```
+{{< /code >}}
 
 ## Contact
 * Dahun Kim ([Github](https://github.com/baegopababjo)) : ekgns1106@naver.com
