@@ -213,15 +213,57 @@ A kiosk app runs on your target device (Raspberry Pi). Setting up an app involve
 
 #### Setting Up webOS OSE CLI
 
-[webOS OSE Command-Line Interface (CLI)]({{< relref "cli-user-guide" >}})
+[Command-Line Interface (CLI)]({{< relref "cli-user-guide" >}}) is a tool for managing webOS OSE target devices.
 
-    To install CLI, enter the following command on your terminal.
+1. On the host PC, enter the following command on your terminal to install CLI.
 
     ```bash
     npm install -g @webosose/ares-cli
     ```
 
+2. Turn on the target device. Make sure that the target device is connected to the internet and on the same network as the host PC.
 
+3. Register your target device on CLI. Enter the following command.
+
+    ```bash
+    ares-setup-device
+    ```
+
+    Then the interactive mode will be displayed.
+
+    ```sh
+    name                deviceinfo                connection  profile
+    ------------------  ------------------------  ----------  -------       
+    emulator (default)  developer@127.0.0.1:6622  ssh         ose
+
+    ** You can modify the device info in the above list, or add new device.
+    ? Select (Use arrow keys)
+    > add
+    modify
+    remove
+    set default
+    ```
+    
+4. Select `add` and fill in the other fields as follows:
+    
+    {{< figure src="/images/samples/solutions/face-recognition-based-kiosk/ares-setup-device.png" caption="" alt="Interactive mode using ares-setup-device" class="align-left" >}}
+    
+    | Field | Description |
+    |-------|-------------|
+    | Select | Select `add` mode. |
+    | Device name | This name will be used as an ID of your target device. <br /> **We recommend using a short name.** |
+    | IP address | IP address of your target device. |
+    | Port | Press the Enter key. Don't change the default value (`22`). |
+    | SSH user | Press the Enter key. Don't change the default value (`root`). |
+    | Description | Additional description for the target device. <br /> (You can skip this step by pressing the **Enter** key.) |
+    | Authentication | Select `password`. |
+    | Password | Password You can skip this step by pressing the **Enter** key. |
+    | Set default | This option sets your target device as the default device. <br /> Choose whatever you want. |
+    | Save | Enter `Y` to save this configurations. |
+
+    {{< note >}}
+    For more details about `ares-setup-device`, refer to the [CLI documentation]({{< relref "cli-user-guide#ares-setup-device" >}}).
+    {{< /note >}}
 
 #### Setting Up the Server Connection
 
