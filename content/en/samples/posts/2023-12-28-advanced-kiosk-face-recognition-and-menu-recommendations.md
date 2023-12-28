@@ -1,10 +1,10 @@
 ---
-title: Facial Recognition Kiosk Using webOS (Another Ver.)
+title: Advanced Kiosk - Face Recognition and Menu Recommendations
 date: 2023-12-28
-slug: facial-recognition-kiosk-using-webos-2
+slug: advanced-kiosk-face-recognition-and-menu-recommendations
 posttype: solution
 toc: true
-thumbnail: th-facial-recognition-kiosk.png
+thumbnail: th-advanced-kiosk-face-recognition-and-menu-recommendations.png
 ---
 
 **Author: Dahun Kim, Yeongjae Shin, Junseok Park, Seungwoon Lee, Donghyuk Shin**
@@ -247,7 +247,7 @@ The kiosk app is created on the host PC and installed on your target device (Ras
     
 4. Select `add` and fill in the other fields as follows:
     
-    {{< figure src="/images/samples/solutions/face-recognition-based-kiosk/ares-setup-device.png" caption="" alt="Interactive mode using ares-setup-device" class="align-left" >}}
+    {{< figure src="/images/samples/solutions/advanced-kiosk-face-recognition-and-menu-recommendations/ares-setup-device.png" caption="" alt="Interactive mode using ares-setup-device" class="align-left" >}}
     
     | Field | Description |
     |-------|-------------|
@@ -384,7 +384,7 @@ Now, you ready to use the kiosk on the target device.
 4. Launch the server.
 5. Launch the installed kiosk app.
 
-    {{< figure src="/images/samples/solutions/face-recognition-based-kiosk/default-screen.jpg" alt="Default screen of the kiosk app" caption="" >}}
+    {{< figure src="/images/samples/solutions/advanced-kiosk-face-recognition-and-menu-recommendations/default-screen.jpg" alt="Default screen of the kiosk app" caption="" >}}
 
 ### Creating an Account
 
@@ -402,7 +402,7 @@ To use the face recognition, you have to create an account and register informat
 
     After a while, face registeration process will start.
 
-    {{< figure src="/images/samples/solutions/face-recognition-based-kiosk/register-face.png" width="40%" class="align-left" alt="Face registration process" caption="" >}}
+    {{< figure src="/images/samples/solutions/advanced-kiosk-face-recognition-and-menu-recommendations/register-face.png" width="40%" class="align-left" alt="Face registration process" caption="" >}}
 
     {{< caution >}}
     The face model is downloaded from the internet when you first register your face. We recommend **re-launching the server** after the download is complete.
