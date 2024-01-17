@@ -1,11 +1,11 @@
 ---
 title: appinfo.json
-date: 2023-02-01
+date: 2024-01-17
 weight: 10
 toc: true
 ---
 
-Apps are required to have metadata before they can be packaged. This metadata is stored in a file called `appinfo.json`.
+`appinfo.json` contains various metadata of apps, such as an app ID and type.
 
 webOS device uses `appinfo.json` to identify the app, its icon, and other information that is needed to launch the app. `appinfo.json` is located in the app's root directory and contains a single JSON object.
 
@@ -45,12 +45,22 @@ Here are little tips that might help you with JSON syntax:
 - Type: `String`
 - Required: `Yes`
 
-App ID, e.g. "com.newco.app.myapp". Every app has a unique ID, formed from reverse DNS naming conventions. App Bar uses the ID to uniquely identify your application and displays it with the title. The application ID is unique, set once, and cannot be changed after publishing the application.
+App ID
 
-- Start the ID with the reverse domain of company/institution. (Recommended)
-- For app developers, the ID cannot start with the following reverse domain names: com.palm, com.webos, com.lge, com.palmdts. We recommend that platform developers who implement built-in apps and services can only use those names.
-- Finish the ID with subdomain app.app-name. (Recommended)
-- The ID **must** consist only of lowercase letters (a-z), digits (0-9), minus signs, and periods. It must be at least two characters long and must start with an alphanumeric character.
+Every app has a unique ID, in a form of reversed DNS naming conventions. (e.g., `com.domain.app`) Using this ID, the [App Bar]({{< relref "webos-ose-ui-guide#app-bar" >}}) idetifies your app and displays it with the title. Each app ID is unique, sets once, and cannot be changed after publishing the app.
+
+Here are naming rules for the app ID:
+
+- Use lowercase (`a`-`z`), number digits (`0`-`9`), minus sign (`-`), and period (`.`).
+
+    {{< caution >}}
+    If you develop a JS service, do not use minus sign (`-`) in your app ID. It causes an unexpected error.
+    {{< /caution >}}
+
+- Must be at least two characters long.
+- Start with an alphanumeric character.
+- Don't start with the following names: `com.palm`, `com.webos`, `com.lge`, `com.palmdts`. Only the platform developers who implement built-in apps and services can use those names.
+- (Optional) Start with the reverse domain of company/institution.
 
 ### title
 
@@ -179,6 +189,77 @@ Indicates the minimum amount of memory in megabytes required to run the app.
 - Required: `No`
 
 Specifies the required [Access Control Group (ACG)]({{< relref "security-guide" >}}) names associated with the LS2 API methods used in the app. The ACG names associated with each method can be found in their respective [LS2 API Reference]({{< relref "ls2-api-index" >}}).
+    
+### allowAudioCapture
+
+- Type: `Boolean`
+- Requires: `No`
+
+Indicates whether to allow access to audio capture devices.
+
+Possible values are:
+
+- `true`: Allow audio capture.
+- `false`: (default) Disallow audio capture.
+
+{{< note >}}
+Note: Added in API level 28.
+{{< /note >}}
+
+### allowVideoCapture
+
+- Type: `Boolean`
+- Requires: `No`
+
+This indicates whether to allow access to video capture devices.
+
+Possible values are:
+
+- `true`: Allow video capture.
+- `false`: (default) Disallow video capture.
+
+### locationHint
+
+- Type: `String`
+- Requires: `No`
+
+This property allows a Wayland client to ask the compositor to place its shell surface (main window) at a specific position expressed as cardinal points. 
+
+Possible values are:
+
+- `center` (default) 
+- `north`
+- `west`
+- `south`
+- `east`
+- `northwest`
+- `northeast`
+- `southwest`
+- `southeast`
+
+### thirdPartyCookiesPolicy	
+
+- Type: `String`
+- Requires: `No`
+
+This indicates whether to allow third-party cookies or not.
+
+Possible values are: 
+
+- `allow`: (default) Allow third-party cookies
+- `deny`: Disallow third party cookies
+
+### useUnlimitedMediaPolicy
+
+- Type: `Boolean`
+- Requires: `No`
+
+This indicates whether the strict media policy will be relaxed.
+
+Possible values are:
+
+- `true`: Relax the strict media policy.
+- `false`: (default) The strict media policy applies
 
 ## Example
 

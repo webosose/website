@@ -1,7 +1,7 @@
 ---
 title: com.webos.service.audio
-date: 2023-10-31
-api_level: 27
+date: 2024-01-17
+api_level: 28
 weight: 100
 toc: true
 ---
@@ -462,7 +462,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>audio</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>Object array: <a href="#object-audio">audio</a></td>
             <td>
               <p>Audio connection details.</p>
@@ -721,6 +721,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
                 <li>beamforming</li>
                 <li>dynamic compressor</li>
                 <li>equalizer</li>
+                <li>bass boost</li>
               </ul>
             </td>
           </tr>
@@ -888,6 +889,18 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         }
       </p>
     </div>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example: Check the status of the bass boost audio effect</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -f -n 1 luna://com.webos.service.audio/checkAudioEffectStatus &#39;{&quot;effectName&quot;:&quot;bass boost&quot;}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;returnValue&quot; : true,<br />
+        &nbsp; &nbsp;&nbsp;&quot;enabled&quot;: true<br />
+        }
+      </p>
+    </div>
   </div>
   <h3 id="getaudioeffectlist">getAudioEffectList</h3>
   <div>
@@ -931,6 +944,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
                 <li>beamforming (not listed if none of the&nbsp;array microphones support beamforming)</li>
                 <li>dynamic compressor</li>
                 <li>equalizer</li>
+                <li>bass boost</li>
               </ul>
             </td>
           </tr>
@@ -1013,6 +1027,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         &nbsp; &nbsp; &nbsp; &nbsp; &quot;beamforming&quot;,<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &quot;dynamic compressor&quot;,<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &quot;equalizer&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;bass boost&quot;<br />
         &nbsp; &nbsp; ]<br />
         }
       </p>
@@ -1237,6 +1252,10 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         &nbsp; &nbsp; &nbsp; &nbsp; {<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;equalizer&quot;,<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;enabled&quot;: false<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; },&nbsp;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;name&quot;: &quot;bass boost&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;enabled&quot;: false<br />
         &nbsp; &nbsp; &nbsp; &nbsp; }<br />
         &nbsp; &nbsp; &nbsp;]
       </p>
@@ -1384,7 +1403,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;API Error Codes Reference&quot; section for details.</p>
+              <p>Indicates the reason for the failure of the operation.</p>
             </td>
           </tr>
         </tbody>
@@ -1410,7 +1429,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>subscribed</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>Boolean</td>
             <td>
               <p>Indicates if the input volume is subscribed to get the notifications.</p>
@@ -1419,7 +1438,6 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
                 <li><strong>true:</strong>&nbsp;Subscribed for notifications.</li>
                 <li><strong>false:</strong>&nbsp;Not subscribed.</li>
               </ul>
-              <p><strong>Note: </strong>Always returns <strong>true</strong>.</p>
             </td>
           </tr>
           <tr>
@@ -1433,12 +1451,12 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
                 <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
                 <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
               </ul>
-              <p><strong>Note: </strong>Always returns value&nbsp;as&nbsp;<strong>true</strong>.</p>
+              <p>&nbsp;</p>
             </td>
           </tr>
           <tr>
             <td>streamType</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>String</td>
             <td>
               <p>Indicates the stream name of the input volume to be applied. Check &quot;Parameters&quot; section for list of possible values.</p>
@@ -1446,11 +1464,50 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>volume</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>Number</td>
             <td>
               <p>Returns the value of applied volume in case of success.</p>
               <p>Possible range: 0-100</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Could not validate json message against schema</td>
+            <td>
+              <p>Error occurs due to wrong json request.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>15</td>
+            <td>Audiod Internal Error</td>
+            <td>
+              <p>Internal error</p>
+            </td>
+          </tr>
+          <tr>
+            <td>17</td>
+            <td>Audiod Unknown Stream</td>
+            <td>
+              <p>A wrong streamType is requested.</p>
             </td>
           </tr>
         </tbody>
@@ -1461,20 +1518,12 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
     </div>
     <div class="code-bg-grey">
-      <p># luna-send -n i -f luna://com.webos.service.audio/getInputVolume &#39;{<br />
+      <p># luna-send -i -f luna://com.webos.service.audio/getInputVolume &#39;{<br />
         &nbsp; &nbsp;&quot;streamType&quot;:&quot;default1&quot;,<br />
         &nbsp; &nbsp;&quot;subscribe&quot;:true<br />
         }&#39;
       </p>
       <p>Response:</p>
-      <p>{<br />
-        &nbsp; &nbsp;&quot;subscribed&quot;:true,<br />
-        &nbsp; &nbsp;&quot;volume&quot;:50,<br />
-        &nbsp; &nbsp;&quot;streamType&quot;:&quot;default1&quot;,<br />
-        &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-        }
-      </p>
-      <p>Subscription response:</p>
       <p>{<br />
         &nbsp; &nbsp;&quot;subscribed&quot;:true,<br />
         &nbsp; &nbsp;&quot;volume&quot;:100,<br />
@@ -1743,13 +1792,13 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>subscribe</td>
             <td>Optional</td>
-            <td>String</td>
+            <td>Boolean</td>
             <td>
               <p>Subscribe for notifications on changes in&nbsp;the sound output device.</p>
               <p>Possible values are:</p>
               <ul>
                 <li><strong>true</strong>: Subscribed.</li>
-                <li><strong>false</strong>: Not subscribed.</li>
+                <li><strong>false</strong>: <strong>(default)&nbsp;</strong>Not subscribed.</li>
               </ul>
             </td>
           </tr>
@@ -2438,9 +2487,8 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Possible values are:</p>
               <ul>
                 <li><strong>true:&nbsp;</strong>Subscribed for notifications.</li>
-                <li><strong>false:&nbsp;</strong>Not subscribed .</li>
+                <li><strong>false: (default)&nbsp;</strong>Not subscribed .</li>
               </ul>
-              <p>Default: <strong>false</strong></p>
             </td>
           </tr>
           <tr>
@@ -2492,11 +2540,6 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Boolean</td>
             <td>
               <p>Indicates if subscribed to get the notifications.</p>
-              <p>Possible values are:</p>
-              <ul>
-                <li><strong>true:&nbsp;</strong>Subscribed for notifications.</li>
-                <li><strong>false:&nbsp;</strong>Not subscribed.</li>
-              </ul>
             </td>
           </tr>
           <tr>
@@ -2512,7 +2555,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;API Error Codes Reference&quot; section for details.</p>
+              <p>Indicates the reason for the failure of the operation.</p>
             </td>
           </tr>
           <tr>
@@ -2550,33 +2593,61 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Boolean</td>
             <td>
               <p>Indicates the status of the operation.</p>
-              <p>Possible values are:</p>
-              <ul>
-                <li><strong>true</strong>: Indicates that the operation was successful.</li>
-                <li><strong>false</strong>: Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
-              </ul>
             </td>
           </tr>
           <tr>
             <td>subscribed</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>Boolean</td>
             <td>
               <p>Indicates if subscribed to get the notifications.</p>
-              <p>Possible values are:</p>
-              <ul>
-                <li><strong>true:&nbsp;</strong>Subscribed for notifications.</li>
-                <li><strong>false:&nbsp;</strong>Not subscribed.</li>
-              </ul>
-              <p><strong>Note</strong>: Always returns <strong>true</strong></p>
             </td>
           </tr>
           <tr>
             <td>streamObject</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>Object array: <a href="#object-streamobject">streamObject</a></td>
             <td>
               <p>Indicates the list of active connections.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Could not validate json message against schema</td>
+            <td>
+              <p>Error occurs due to wrong json request.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>15</td>
+            <td>Audiod Internal Error</td>
+            <td>
+              <p>Internal error</p>
+            </td>
+          </tr>
+          <tr>
+            <td>17</td>
+            <td>Audiod Unknown Stream</td>
+            <td>
+              <p>A wrong streamType is requested.</p>
             </td>
           </tr>
         </tbody>
@@ -2587,7 +2658,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       <p style="color:white;margin:5.0px;"><b>With subscription</b></p>
     </div>
     <div class="code-bg-grey">
-      <p># luna-send -n i -f luna://com.webos.service.audio/getStreamStatus &#39;{<br />
+      <p># luna-send -i -f luna://com.webos.service.audio/getStreamStatus &#39;{<br />
         &nbsp; &nbsp;&quot;streamType&quot;:&quot;default1&quot;,<br />
         &nbsp; &nbsp;&quot;subscribe&quot;:true<br />
         }&#39;
@@ -2602,23 +2673,6 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;muteStatus&quot;:false,<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;sink&quot;:&quot;sink&quot;,<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;streamType&quot;:&quot;default1&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;activeStatus&quot;:false<br />
-        &nbsp; &nbsp; &nbsp; }<br />
-        &nbsp; &nbsp;],<br />
-        &nbsp; &nbsp;&quot;subscribed&quot;:true,<br />
-        &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-        }
-      </p>
-      <p>Subscription response:</p>
-      <p>{<br />
-        &nbsp; &nbsp;&quot;streamObject&quot;:[<br />
-        &nbsp; &nbsp; &nbsp; {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;policyStatus&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;source&quot;:&quot;source&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;inputVolume&quot;:100,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;muteStatus&quot;:false,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;sink&quot;:&quot;sink&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;streamType&quot;:&quot;default2&quot;,<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;activeStatus&quot;:true<br />
         &nbsp; &nbsp; &nbsp; }<br />
         &nbsp; &nbsp;],<br />
@@ -3323,7 +3377,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+              <p>Indicates the reason for the failure of the operation.</p>
             </td>
           </tr>
           <tr>
@@ -3784,7 +3838,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+              <p>Indicates the reason for the failure of the operation.&nbsp;</p>
             </td>
           </tr>
           <tr>
@@ -3837,6 +3891,13 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Audiod Internal error</td>
             <td>
               <p>Internal error</p>
+            </td>
+          </tr>
+          <tr>
+            <td>19</td>
+            <td>Invalid muteVolume Parameters requested</td>
+            <td>
+              <p>Wrong parameters in request</p>
             </td>
           </tr>
           <tr>
@@ -4241,7 +4302,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+              <p>Indicates the reason for the failure of the operation.&nbsp;</p>
             </td>
           </tr>
           <tr>
@@ -4442,7 +4503,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+              <p>Indicates the reason for the failure of the operation.</p>
             </td>
           </tr>
           <tr>
@@ -4484,6 +4545,13 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Audiod&nbsp;Internal error</td>
             <td>
               <p>Internal error</p>
+            </td>
+          </tr>
+          <tr>
+            <td>19</td>
+            <td>Invalid volumeDown Parameters requested</td>
+            <td>
+              <p>Wrong parameters in request</p>
             </td>
           </tr>
           <tr>
@@ -4653,7 +4721,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+              <p>Indicates the reason for the failure of the operation.</p>
             </td>
           </tr>
           <tr>
@@ -5353,7 +5421,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>format</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>String</td>
             <td>
               <p>Indicates the sample format to be set.</p>
@@ -5361,20 +5429,20 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <ul>
                 <li>PA_SAMPLE_S16LE</li>
                 <li>PA_SAMPLE_S24LE</li>
-                <li>PA_SAMPLE_S32LE</li>
+                <li>PA_SAMPLE_S32LE <strong>(Default)</strong></li>
               </ul>
             </td>
           </tr>
           <tr>
             <td>sampleRate</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>Number</td>
             <td>
               <p>Indicates the sample rate to be set.</p>
               <p>Possible rates are:</p>
               <ul>
                 <li>44100</li>
-                <li>48000</li>
+                <li>48000&nbsp;<strong>(Default)</strong></li>
                 <li>32000</li>
                 <li>22500</li>
               </ul>
@@ -5382,14 +5450,14 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>channels</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>Number</td>
             <td>
               <p>Indicates the number of audio channels to be used while playing the file.</p>
               <p>Possible values are:</p>
               <ul>
                 <li>1 (mono)</li>
-                <li>2 (stereo)</li>
+                <li>2 (stereo)&nbsp;<strong>(Default)</strong></li>
                 <li>3</li>
                 <li>4</li>
                 <li>5</li>
@@ -5436,7 +5504,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;API Error Codes Reference&quot; section for details.</p>
+              <p>Indicates the reason for the failure of the operation.&nbsp;</p>
             </td>
           </tr>
           <tr>
@@ -5445,6 +5513,66 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Number</td>
             <td>
               <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Could not validate json message against schema</td>
+            <td>
+              <p>Error occurs due to wrong json request.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>19</td>
+            <td>Invalid file format</td>
+            <td>
+              <p>Invaild file format &nbsp;provided&nbsp;</p>
+            </td>
+          </tr>
+          <tr>
+            <td>19</td>
+            <td>Invalid virtual sink name</td>
+            <td>
+              <p>Invaild virtual sink name provided&nbsp;</p>
+            </td>
+          </tr>
+          <tr>
+            <td>19</td>
+            <td>Invalid sample format</td>
+            <td>
+              <p>Invaild sample format provided&nbsp;</p>
+            </td>
+          </tr>
+          <tr>
+            <td>19</td>
+            <td>Invalid channel count</td>
+            <td>
+              <p>Invaild channel count provided&nbsp;</p>
+            </td>
+          </tr>
+          <tr>
+            <td>19</td>
+            <td>Invalid sample rate</td>
+            <td>
+              <p>Invaild sample rate provided&nbsp;</p>
             </td>
           </tr>
         </tbody>
@@ -5644,6 +5772,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
                 <li>beamforming</li>
                 <li>dynamic compressor</li>
                 <li>equalizer</li>
+                <li>bass boost</li>
               </ul>
             </td>
           </tr>
@@ -5815,6 +5944,17 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <div class="code-bg-grey">
       <p># luna-send -f -n 1 luna://com.webos.service.audio/setAudioEffect &#39;{&quot;effectName&quot;:&quot;equalizer&quot;, &quot;enabled&quot;:true}&#39;</p>
+      <p>Response:</p>
+      <p>{&nbsp;<br />
+        &nbsp; &nbsp;&nbsp;&quot;returnValue&quot; : true<br />
+        }
+      </p>
+    </div>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example: Enable bass boost effect</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -f -n 1 luna://com.webos.service.audio/setAudioEffect &#39;{&quot;effectName&quot;:&quot;bass boost&quot;, &quot;enabled&quot;:true}&#39;</p>
       <p>Response:</p>
       <p>{&nbsp;<br />
         &nbsp; &nbsp;&nbsp;&quot;returnValue&quot; : true<br />
@@ -6259,7 +6399,53 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;API Error Codes Reference&quot; section for details.</p>
+              <p>Indicates the reason for the failure of the operation.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Could not validate json message against schema</td>
+            <td>
+              <p>Error occurs due to wrong json request.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Volume Not in Range</td>
+            <td>
+              <p>Error occurs due to invalid volume level.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>15</td>
+            <td>Audiod Internal Error</td>
+            <td>
+              <p>Internal error</p>
+            </td>
+          </tr>
+          <tr>
+            <td>17</td>
+            <td>Audiod Unknown Stream</td>
+            <td>
+              <p>A wrong streamType is requested.</p>
             </td>
           </tr>
         </tbody>
@@ -6514,7 +6700,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Possible values are:</p>
               <ul>
                 <li><strong>true</strong>:<strong> </strong>Operation is successful.</li>
-                <li><strong>false</strong>:<strong> </strong>Operation has failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.&nbsp;See the <strong>&quot;API Error Codes Reference&quot;</strong> section for details.</li>
+                <li><strong>false</strong>:<strong> </strong>Operation has failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.&nbsp;</li>
               </ul>
             </td>
           </tr>
@@ -6565,6 +6751,13 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Could not validate json message against schema</td>
             <td>
               <p>Invalid number of input parameters against defined schema of the method</p>
+            </td>
+          </tr>
+          <tr>
+            <td>204</td>
+            <td>Audiod Unknown soundOutput</td>
+            <td>
+              <p>Invalid sound output value given</p>
             </td>
           </tr>
         </tbody>
@@ -7011,7 +7204,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>soundOut</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>String</td>
             <td>
               <p>Indicates the audio output device.</p>
@@ -7097,7 +7290,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>name</td>
-            <td>Optional</td>
+            <td>Required</td>
             <td>String</td>
             <td>
               <p>Name of the system sound.</p>
@@ -7153,6 +7346,52 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
                 <li>If the method succeeds, <strong>returnValue</strong> will contain <strong>true</strong>.</li>
                 <li>If the method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false</strong>.</li>
               </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Could not validate json message against schema</td>
+            <td>
+              <p>Error occurs due to wrong json request.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Missing &#39;name&#39; string parameter.</td>
+            <td>
+              <p>&#39;name&#39; parameter is missed.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Invalid &#39;name&#39; string parameter value or file not found</td>
+            <td>
+              <p>Invalid &#39;name&#39; parameter is provided.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Invalid &#39;sink&#39; string parameter value or file not found.</td>
+            <td>
+              <p>Invalid &#39;sink&#39; parameter is provided.</p>
             </td>
           </tr>
         </tbody>
@@ -7217,49 +7456,10 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
     </div>
     <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.audio/systemsounds/playFeedback &#39;{}&#39;</p>
-      <p>Response:</p>
-      <p>{<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&quot;errorCode&quot;: 2,<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: false,<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&quot;errorText&quot;: &quot;Missing &#39;name&#39; string parameter.&quot;<br />
-        }
-      </p>
-    </div>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.audio/systemsounds/playFeedback &#39;{&quot;namex&quot;: &quot;voicestart&quot;}&#39;</p>
-      <p>Response:</p>
-      <p>{<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&quot;errorCode&quot;: 1,<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: false,<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&quot;errorText&quot;: &quot;Could not validate json message against schema&quot;<br />
-        }
-      </p>
-    </div>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
-    </div>
-    <div class="code-bg-grey">
       <p># luna-send -n 1 -f luna://com.webos.service.audio/systemsounds/playFeedback &#39;{&quot;name&quot;: &quot;shutter&quot;}&#39;</p>
       <p>Response:</p>
       <p>{<br />
         &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true<br />
-        }
-      </p>
-    </div>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example scenario</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.audio/systemsounds/playFeedback &#39;{&quot;name&quot;: &quot;shutter_test&quot;}&#39;</p>
-      <p>Response:</p>
-      <p>{<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&quot;errorCode&quot;: 3,<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: false,<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&quot;errorText&quot;: &quot;Invalid &#39;name&#39; string parameter value or file not found.&quot;<br />
         }
       </p>
     </div>
@@ -7803,6 +8003,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
                 <li>beamforming&nbsp;</li>
                 <li>dynamic compressor</li>
                 <li>equalizer</li>
+                <li>bass boost</li>
               </ul>
             </td>
           </tr>
@@ -8075,22 +8276,15 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </td>
         </tr>
         <tr>
-          <td>1</td>
-          <td>Not a valid json message</td>
-          <td>
-            <p>Wrong JSON message format</p>
-          </td>
-        </tr>
-        <tr>
           <td>3</td>
-          <td>Volume limit reached</td>
+          <td>Invalid volume control</td>
           <td>
             <p>AUDIOD_ERRORCODE_NOT_SUPPORT_VOLUME_CHANGE</p>
           </td>
         </tr>
         <tr>
           <td>3</td>
-          <td>Invalid volume control</td>
+          <td>Volume limit reached</td>
           <td>
             <p>AUDIOD_ERRORCODE_NOT_SUPPORT_VOLUME_CHANGE</p>
           </td>
@@ -8146,21 +8340,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         </tr>
         <tr>
           <td>22</td>
-          <td>Connection not supported</td>
-          <td>
-            <p>AUDIOD_ERRORCODE_NOT_SUPPORTED</p>
-          </td>
-        </tr>
-        <tr>
-          <td>22</td>
-          <td>Soundout type not supported</td>
-          <td>
-            <p>AUDIOD_ERRORCODE_NOT_SUPPORTED</p>
-          </td>
-        </tr>
-        <tr>
-          <td>22</td>
-          <td>Audio not connected</td>
+          <td>Not supported</td>
           <td>
             <p>AUDIOD_ERRORCODE_NOT_SUPPORTED</p>
           </td>
@@ -8174,7 +8354,21 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         </tr>
         <tr>
           <td>22</td>
-          <td>Not supported</td>
+          <td>Audio not connected</td>
+          <td>
+            <p>AUDIOD_ERRORCODE_NOT_SUPPORTED</p>
+          </td>
+        </tr>
+        <tr>
+          <td>22</td>
+          <td>Soundout type not supported</td>
+          <td>
+            <p>AUDIOD_ERRORCODE_NOT_SUPPORTED</p>
+          </td>
+        </tr>
+        <tr>
+          <td>22</td>
+          <td>Connection not supported</td>
           <td>
             <p>AUDIOD_ERRORCODE_NOT_SUPPORTED</p>
           </td>

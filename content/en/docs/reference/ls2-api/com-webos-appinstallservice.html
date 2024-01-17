@@ -1,7 +1,7 @@
 ---
 title: com.webos.appInstallService
-date: 2023-10-31
-api_level: 27
+date: 2024-01-17
+api_level: 28
 weight: 10
 toc: true
 ---
@@ -173,7 +173,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Number</td>
             <td>
               <p>The current installation status.&nbsp;</p>
-              <p>See the&nbsp;<strong>statusValue&nbsp;</strong>parameter (in Subscription Return) of the&nbsp;<strong>install&nbsp;</strong>method&nbsp;for more information.</p>
+              <p>See the&nbsp;<strong>statusValue&nbsp;</strong>property (in Subscription Return) of the&nbsp;<strong>install&nbsp;</strong>method&nbsp;for more information.</p>
             </td>
           </tr>
           <tr>
@@ -345,7 +345,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Number</td>
             <td>
               <p>The current&nbsp;app removal status.</p>
-              <p>See the <strong>statusValue&nbsp;</strong>parameter (in Subscription Return) of the <strong>install </strong>method&nbsp;for more information.</p>
+              <p>See the <strong>statusValue&nbsp;</strong>property (in Subscription Return) of the <strong>remove&nbsp;</strong>method&nbsp;for more information.</p>
             </td>
           </tr>
           <tr>
@@ -524,7 +524,8 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>Number</td>
             <td>
-              <p>The current installation&nbsp;status. Possible values are:</p>
+              <p>The current installation&nbsp;status.</p>
+              <p>Possible values are:</p>
               <ul>
                 <li><strong>0 </strong>-&nbsp;Unknown</li>
                 <li><strong>6&nbsp;</strong>-&nbsp;Need to download ipk file</li>
@@ -535,36 +536,23 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
                 <li><strong>12</strong> - Request install ipk file to applicationinstallerutility</li>
                 <li><strong>13</strong> - Installing ipk file is starting</li>
                 <li><strong>17</strong> - Installing ipk is complete</li>
-                <li><strong>18</strong> - Need to remove ipk file</li>
-                <li><strong>19</strong> - Request remove ipk file to applicationinstallerutility</li>
-                <li><strong>21</strong> - Removing ipk is complete</li>
                 <li><strong>22 </strong>- Install operation is cancelled</li>
                 <li><strong>23</strong> - Install operation is complete with error during download</li>
                 <li><strong>24</strong> - Install operation is complete with error during installing ipk</li>
-                <li><strong>25</strong> - Remove operation is complete with error</li>
                 <li><strong>26</strong> - appinstalld internal status. It&#39;ll be deprecated.</li>
                 <li><strong>27</strong> - Need to install role &amp; service files</li>
                 <li><strong>28</strong> - Request install role &amp; service files internally</li>
                 <li><strong>29</strong> - Installing role &amp; service files is complete</li>
                 <li><strong>30</strong> - All install operations are complete successfully</li>
-                <li><strong>31 </strong>- All remove operations are complete successfully</li>
                 <li><strong>32</strong> - Need to close app</li>
-                <li><strong>33 </strong>- Request close app to sam</li>
-                <li><strong>34 </strong>- App close is complete</li>
+                <li><strong>33</strong> - Request close app to sam</li>
+                <li><strong>34</strong> - App close is complete</li>
                 <li><strong>35 </strong>- Need to parse ipk file</li>
                 <li><strong>36</strong> - Request parse ipk file internally</li>
                 <li><strong>37</strong> - Parsing ipk file is complete</li>
-                <li><strong>38 </strong>- Need to remove role &amp; service files</li>
-                <li><strong>39</strong> - Request remove role &amp; service files internally</li>
-                <li><strong>40 </strong>- Remove role &amp; service files is complete</li>
-                <li><strong>41</strong> - Prepare to remove app</li>
-                <li><strong>42</strong> - Start to remove app</li>
                 <li><strong>256</strong> - Need to install right object</li>
                 <li><strong>257</strong> - Request installing right object to securitymanager</li>
                 <li><strong>258</strong> - Installing right object is complete</li>
-                <li><strong>259</strong> - Need to uninstall right object</li>
-                <li><strong>260 </strong>- Request uninstalling right object to securitymanager</li>
-                <li><strong>261 </strong>- Uninstalling right object is complete</li>
                 <li><strong>262 </strong>- Need to get ipk information from server</li>
                 <li><strong>263 </strong>- Request ipk information to server</li>
                 <li><strong>264 </strong>- Getting ipk information is complete</li>
@@ -574,6 +562,9 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
                 <li><strong>268 </strong>- Need to verify ipk file</li>
                 <li><strong>269 </strong>- Request verify ipk file to securitymanager</li>
                 <li><strong>270 </strong>- Verifying ipk file is complete</li>
+                <li><strong>271 -&nbsp;</strong>Ipk verifying with pkgverifier needed</li>
+                <li><strong>272</strong>&nbsp;- Ipk verifying with pkgverifier requested</li>
+                <li><strong>273</strong>&nbsp;- Ipk verifying with pkgverifier completed</li>
               </ul>
             </td>
           </tr>
@@ -596,6 +587,31 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         </tbody>
       </table>
     </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>-2</td>
+            <td>Varies</td>
+            <td>
+              <p>For details, check &quot;API Error Codes Reference&quot; table.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
       <p style="color:white;margin:5.0px;"><b>Example code</b></p>
@@ -607,20 +623,10 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         &nbsp; &nbsp;&nbsp; &nbsp; &quot;subscribe&quot;:true&nbsp;<br />
         }&#39;
       </p>
-      <p>&nbsp;</p>
-      <p>Example response for a successful call:&nbsp;</p>
+      <p>Response:&nbsp;</p>
       <p>{&nbsp;<br />
         &nbsp; &quot;subscribed&quot;: true,&nbsp;<br />
         &nbsp;&nbsp;&quot;returnValue&quot;: true&nbsp;<br />
-        }&nbsp;
-      </p>
-      <p>&nbsp;</p>
-      <p>Example response for a failed call:&nbsp;</p>
-      <p>{&nbsp;<br />
-        &nbsp; &quot;subscribed&quot;: false,&nbsp;<br />
-        &nbsp; &quot;errorCode&quot;: -2,&nbsp;<br />
-        &nbsp; &quot;returnValue&quot;: false,&nbsp;<br />
-        &nbsp; &quot;errorText&quot;: &quot;Missing required key is required but it is missing&quot;&nbsp;<br />
         }
       </p>
     </div>
@@ -756,6 +762,14 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </th>
           </tr>
           <tr>
+            <td>details</td>
+            <td>Required</td>
+            <td>Object: <a href="#object-details">details</a></td>
+            <td>
+              <p>Contains detailed information of the&nbsp;progress of app removal.</p>
+            </td>
+          </tr>
+          <tr>
             <td>id</td>
             <td>Required</td>
             <td>String</td>
@@ -769,15 +783,55 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Number</td>
             <td>
               <p>The current app removal status.</p>
-              <p>See the&nbsp;<strong>statusValue&nbsp;</strong>parameter (in Subscription Return) of the&nbsp;<strong>install&nbsp;</strong>method&nbsp;for more information.</p>
+              <ul>
+                <li><strong>18</strong> - Need to remove ipk file</li>
+                <li><strong>19</strong> - Request remove ipk file to applicationinstallerutility</li>
+                <li><strong>21</strong> - Removing ipk is complete</li>
+                <li><strong>25</strong> - Remove operation is complete with error</li>
+                <li><strong>31</strong> - All remove operations are complete successfully</li>
+                <li><strong>32</strong> - Need to close app</li>
+                <li><strong>33</strong> - Request close app to sam</li>
+                <li><strong>34</strong> - App close is complete</li>
+                <li><strong>38</strong> - Need to remove role &amp; service files</li>
+                <li><strong>39</strong> - Request remove role &amp; service files internally</li>
+                <li><strong>40</strong> - Remove role &amp; service files is complete</li>
+                <li><strong>41</strong> - Prepare to remove app</li>
+                <li><strong>42</strong> - Start to remove app</li>
+                <li><strong>43&nbsp;</strong>- removing data needed</li>
+                <li><strong>44&nbsp;</strong>- removing data</li>
+                <li><strong>45&nbsp;</strong>- removing data completed</li>
+                <li><strong>46&nbsp;</strong>- removing jail requested</li>
+                <li><strong>47&nbsp;</strong>- removing jail</li>
+                <li><strong>48 -&nbsp;</strong>removing jail completed</li>
+                <li><strong>259</strong> - Need to uninstall right object</li>
+                <li><strong>260</strong> - Request uninstalling right object to securitymanager</li>
+                <li><strong>261</strong> - Uninstalling right object is complete</li>
+              </ul>
             </td>
           </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
           <tr>
-            <td>details</td>
-            <td>Required</td>
-            <td>Object: <a href="#object-details">details</a></td>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>-2</td>
+            <td>Varies</td>
             <td>
-              <p>Contains detailed information of the&nbsp;progress of app removal.</p>
+              <p>For details, check &quot;API Error Codes Reference&quot; table.</p>
             </td>
           </tr>
         </tbody>
@@ -788,25 +842,11 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       <p style="color:white;margin:5.0px;"><b>Example code</b></p>
     </div>
     <div class="code-bg-grey">
-      <p># luna-send -i -f luna://com.webos.appInstallService/remove &#39;{<br />
-        &nbsp; &nbsp;&nbsp;&quot;id&quot;:&quot;com.test.app.hello&quot;,<br />
-        &nbsp; &nbsp;&nbsp;&quot;subscribe&quot;:true<br />
-        }&#39;
-      </p>
-      <p>&nbsp;</p>
-      <p>Example response for a successful call:&nbsp;</p>
+      <p># luna-send -i -f luna://com.webos.appInstallService/remove &#39;{&quot;id&quot;:&quot;com.test.app.hello&quot;,&quot;subscribe&quot;:true}&#39;</p>
+      <p>Response:&nbsp;</p>
       <p>{&nbsp;<br />
         &nbsp; &nbsp;&quot;subscribed&quot;: true,&nbsp;<br />
         &nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: true&nbsp;<br />
-        }
-      </p>
-      <p>&nbsp;</p>
-      <p>Example response for a failed call:&nbsp;</p>
-      <p>{<br />
-        &nbsp;&nbsp;&nbsp; &quot;subscribed&quot;: false,<br />
-        &nbsp;&nbsp;&nbsp; &quot;errorCode&quot;: -2,<br />
-        &nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: false,<br />
-        &nbsp;&nbsp;&nbsp; &quot;errorText&quot;: &quot;Missing required key is required but it is missing&quot;<br />
         }
       </p>
     </div>
@@ -1072,6 +1112,23 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>String</td>
             <td>
               <p>Client who calls the operation request.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+              <p><strong>Note: </strong>Only appears during app installation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>reason</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.</p>
             </td>
           </tr>
         </tbody>

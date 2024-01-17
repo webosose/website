@@ -1,7 +1,7 @@
 ---
 title: com.webos.surfacemanager
-date: 2023-10-31
-api_level: 27
+date: 2024-01-15
+api_level: 28
 weight: 370
 toc: true
 ---
@@ -20,7 +20,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
 <div>
   <h3 id="capturecompositoroutput">captureCompositorOutput</h3>
   <div>
-    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>surfacemanager.devutility</b></span></div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>arescli.interface</b></span></div>
     <div>
       <ul>
         <li>Added: API level 11</li>
@@ -697,7 +697,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
   </div>
   <h3 id="getforegroundappinfo">getForegroundAppInfo</h3>
   <div>
-    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>webgateway</b></span></div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>surfacemanager.query</b></span></div>
     <div>
       <ul>
         <li>Added: API level 11</li>
@@ -765,7 +765,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>foregroundAppInfo</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>Object array: <a href="#object-foregroundappinfo">foregroundAppInfo</a></td>
             <td>
               <p>Information about a surface that is shown in the foreground.</p>
@@ -822,7 +822,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>foregroundAppInfo</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>Object array: <a href="#object-foregroundappinfo">foregroundAppInfo</a></td>
             <td>
               <p>Information about a surface that is shown in the foreground.</p>
@@ -854,6 +854,38 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
                 <li><strong>false:&nbsp;</strong>Not subscribed.</li>
               </ul>
               <p>Default:&nbsp;<strong>false</strong></p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>-1001</td>
+            <td>Invalid parameter type</td>
+            <td>
+              <p>Indicates that parameter is invalid.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>-1000</td>
+            <td>Json parse error</td>
+            <td>
+              <p>Indicates that JSON format is invalid</p>
             </td>
           </tr>
         </tbody>
@@ -935,6 +967,88 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         &nbsp; &nbsp; &nbsp; }<br />
         &nbsp; &nbsp;],<br />
         &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+        }
+      </p>
+    </div>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example: Multiview (side-by-side)</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 luna://com.webos.surfacemanager/getForegroundAppInfo &#39;{}&#39;<br />
+        {<br />
+        &nbsp; &nbsp; &quot;foregroundAppInfo&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;appId&quot;: &quot;com.webos.app.livetv&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;displayId&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;multiview&quot;: true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;params&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;pip&quot;: false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;primary&quot;: true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;processId&quot;: &quot;2419&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;viewType&quot;: &quot;mvsxs&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;windowGroup&quot;: true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;windowGroupOwner&quot;: true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;windowGroupOwnerId&quot;: &quot;&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;windowType&quot;: &quot;_WEBOS_WINDOW_TYPE_CARD&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;appId&quot;: &quot;com.webos.app.browser&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;displayId&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;multiview&quot;: true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;params&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;pip&quot;: false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;primary&quot;: false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;processId&quot;: &quot;22382&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;viewType&quot;: &quot;mvsxs&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;windowGroup&quot;: false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;windowType&quot;: &quot;_WEBOS_WINDOW_TYPE_CARD&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; ],<br />
+        &nbsp; &nbsp; &quot;mode&quot;: &quot;multiview&quot;,<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5.0px;"><b>Example: Multiview (picture-in-picture)</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 luna://com.webos.surfacemanager/getForegroundAppInfo &#39;{}&#39;<br />
+        {<br />
+        &nbsp; &nbsp; &quot;foregroundAppInfo&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;appId&quot;: &quot;com.webos.app.livetv&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;displayId&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;multiview&quot;: true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;params&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;pip&quot;: false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;primary&quot;: true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;processId&quot;: &quot;2419&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;viewType&quot;: &quot;mvpip&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;windowGroup&quot;: true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;windowGroupOwner&quot;: true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;windowGroupOwnerId&quot;: &quot;&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;windowType&quot;: &quot;_WEBOS_WINDOW_TYPE_CARD&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;appId&quot;: &quot;com.webos.app.browser&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;displayId&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;multiview&quot;: true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;params&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;pip&quot;: true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;primary&quot;: false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;processId&quot;: &quot;22382&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;viewType&quot;: &quot;mvpip&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;windowGroup&quot;: false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;windowType&quot;: &quot;_WEBOS_WINDOW_TYPE_CARD&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; ],<br />
+        &nbsp; &nbsp; &quot;mode&quot;: &quot;multiview&quot;,<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
         }
       </p>
     </div>
@@ -1258,7 +1372,58 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>Boolean</td>
             <td>
-              <p>Whether it is a &ldquo;main&rdquo; app as determined by UX policy</p>
+              <p>Indicates if it is a &quot;main&quot; app as determined by UX policy.</p>
+              <p>Default: <strong>false</strong></p>
+            </td>
+          </tr>
+          <tr>
+            <td>multiview</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicate whether multivew executes or not.&nbsp;</p>
+              <p>default:&nbsp;<strong>false</strong></p>
+            </td>
+          </tr>
+          <tr>
+            <td>pip</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicate whether&nbsp;the multi-view mode is pip or not.</p>
+              <p>default: <strong>false</strong></p>
+            </td>
+          </tr>
+          <tr>
+            <td>viewType</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates additional information about multiview.</p>
+              <p>Possible Values are:&nbsp;&nbsp;</p>
+              <ul dir="auto">
+                <li><strong>normal</strong> -&nbsp;fullscreen normal view</li>
+                <li dir="ltr"><strong>mvsxs</strong> -&nbsp;multiview and side-by-side</li>
+                <li dir="ltr"><strong>mvpip</strong> -&nbsp;multiview and picture-in-picture</li>
+              </ul>
+              <p>default: <strong>normal</strong></p>
+            </td>
+          </tr>
+          <tr>
+            <td>displayId</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>Indicates the id of display associated with the surface.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>params</td>
+            <td>Optional</td>
+            <td>Object</td>
+            <td>
+              <p>Indicates the object parameter associated with the surface.</p>
+              <p><strong>Note</strong>: Empty object(=<strong>{}</strong>) if it has no value.</p>
             </td>
           </tr>
         </tbody>
