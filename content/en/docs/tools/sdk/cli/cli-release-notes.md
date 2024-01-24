@@ -1,7 +1,7 @@
 ---
 title: Release Notes
 display_title: Command-Line Interface Release Notes
-date: 2024-01-16
+date: 2024-01-24
 weight: 20
 toc: true
 two_depth_toc: true
@@ -134,7 +134,7 @@ The following table shows the compatibility between webOS OSE and CLI.
 
 ## v2.4.0 (February 2023)
 
-This version is compatible with **webOS OSE 2.19.1** ~ **webOS OSE 2.24.0**. See below for the new and changed features in this release.
+This version is compatible with **webOS OSE 2.19.1** ~ **webOS OSE 2.25.0**. See below for the new and changed features in this release.
 
 ### New features
 
