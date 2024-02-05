@@ -1,6 +1,6 @@
 ---
 title: Developing Built-in JS Services
-date: 2023-05-11
+date: 2024-01-29
 weight: 20
 toc: true
 ---
@@ -22,6 +22,7 @@ js-services/
 └── com.example.service.js/
     ├── files/sysbus/
     │   ├── com.example.service.js.api.json.in
+    │   ├── com.example.service.js.groups.json.in
     │   ├── com.example.service.js.perm.json.in
     │   ├── com.example.service.js.role.json.in
     │   └── com.example.service.js.service.in
@@ -176,7 +177,11 @@ This file configures the service metadata and points to the main service file. I
 
 ### LS2 Configuration Files
 
-To register and execute a service through LS2, it is necessary to create a Service Configuration file, a Role file, and Permission files. You must create a `files/sysbus` directory in your project so that the configuration files are installed in the right place on the target.
+To register and execute a service through LS2, it is necessary to create a Service Configuration file, Role file, Permission file, and Groups file. You must create a `files/sysbus` directory in your project so that the configuration files are installed in the right place on the target.
+
+{{< note >}}
+This section briefly describes about configuration files. For more details, see [Security Guide]({{< relref "security-guide" >}}).
+{{< /note >}}
 
 #### Service Configuration File
 
@@ -205,6 +210,7 @@ This file contains allowed service names for each component and individual secur
 {
     "appId":"com.example.service.js",
     "type": "regular",
+    "trustLevel": "oem",
     "allowedNames": [
         "com.example.service.js"
     ],
@@ -222,8 +228,9 @@ This file contains allowed service names for each component and individual secur
 
 A brief explanation of the above file:
 
-- Line(4~6) : `allowedNames` - Names that this service is allowed to register. It can be an array of any valid service name strings, empty array [] for none, and empty string "" for an unnamed service.
-- Line(7~14) : The permissions for the service.
+- Line(4) : Set the [trust level]({{< relref "security-guide#trust-levels" >}}) of the service.
+- Line(5~7) : `allowedNames` - Names that this service is allowed to register. It can be an array of any valid service name strings, empty array [] for none, and empty string "" for an unnamed service.
+- Line(8~15) : The permissions for the service.
     - `outbound` : Array of services that this service is allowed to send requests to. It can include strings of any valid service names. Use "\*" for all, empty array [] for none, and empty string "" for unnamed services. It's possible to use a wildcard (*) at the end of a string.
 
 #### Client Permission File
@@ -246,12 +253,12 @@ A brief explanation of the above file:
 
 #### API Permission File
 
-This file defines what methods are included into security groups this component provides.
+This file defines ACG values of the service and methods those ACG values contain.
 
 {{< code "com.example.service.js.api.json.in" >}}
 ``` json {linenos=table}
 {
-    "com.example.service.js.group": [
+    "examplejsservice.acgvalue": [
         "com.example.service.js/*"
     ]
 }
@@ -260,7 +267,24 @@ This file defines what methods are included into security groups this component 
 
 A brief explanation of the above file:
 
-- Line(3) : Set this service's group name and specify the methods that belong to the group. In this example, the group name is set to "com.example.service.js.group", and all methods of `com.example.service.js` are added to this group.
+- Line(3) : Set an ACG value and specify the methods that belong to the ACG value. In this example, the ACG value is "examplejsservice.acgvalue", and all methods of `com.example.service.js` are added to this value.
+
+#### Groups File
+
+This file defines the trust levels of each ACG value.
+
+{{< code "com.example.service.js.groups.json.in" >}}
+``` json {linenos=table}
+{
+    "allowedNames": [ "com.example.service.js" ],
+    "examplejsservice.acgvalue": [ "oem" ]
+}
+```
+{{< /code >}}
+
+A brief explanation of the above file:
+
+- Line(3) : Set the trust level for `examplejsservice.acgvalue` as `oem`. So the APIs in `examplejsservice.acgvalue` have the `oem` trust level.
 
 ### CMakeLists.txt
 
@@ -404,6 +428,7 @@ After building the service, you must verify its functionality.
     ├── README.md
     ├── files/sysbus
     │   ├── com.example.service.js.api.json.in
+    │   ├── com.example.service.js.groups.json.in
     │   ├── com.example.service.js.perm.json.in
     │   ├── com.example.service.js.role.json.in
     │   └── com.example.service.js.service.in
