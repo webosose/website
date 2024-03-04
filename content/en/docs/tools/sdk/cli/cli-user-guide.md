@@ -1,12 +1,16 @@
 ---
 title: User Guide
 display_title: Command-Line Interface User Guide
-date: 2023-05-24
+date: 2024-02-13
 weight: 10
 toc: true
 ---
 
 **Command-Line Interface (CLI)** of webOS Open Source Edition (OSE) provides a collection of commands used for creating, packaging, installing, and launching apps or services in the command line environment. CLI lets you develop and test apps or services without using any IDE.
+
+{{< note >}}
+The npm package name of the CLI has been changed (from `@webosose/ares-cli` to `@webos-tools/cli`) since v3.0.0 (March 4, 2024). See [How to Install](#how-to-install).
+{{< /note >}}
 
 ## Key Features
 
@@ -60,7 +64,7 @@ Required version for each operating system are as follows:
     <tbody>
       <tr>
         <td><p>Linux</p></td>
-        <td><p>Ubuntu 18.04 LTS 64-bit</p></td>
+        <td><p>Ubuntu 20.04 LTS 64-bit</p></td>
       </tr>
       <tr>
         <td><p>macOS</p></td>
@@ -76,14 +80,14 @@ Required version for each operating system are as follows:
 
 ### Software Tools
 
-* Node.js (Use v10.24.1 to v14.15.1.)
+* Node.js (Use v14.15.1 to v16.20.2)
 * npm
 
 ## How to Install
 
 CLI can be installed using Node Package Manager (npm). 
 
-### npm Istallation
+### Step 01. Installing npm
 
 Before installing the CLI, ensure that Node.js and npm are installed on your system. If they are not installed, refer to the following instructions.
 
@@ -107,33 +111,43 @@ Execute the following command to verify if the npm is available on your system.
 npm -v
 ```
 
-### CLI Installation
+### Step 02. Installing CLI
 
-Execute the following command in a terminal, using the `-g` option to install the CLI globally.
+{{< caution >}}
+If the CLI is already installed globally, we highly recommend uninstalling the previous CLI globally.
 
 ```bash
-npm install -g @webosose/ares-cli
+# Uninstall the CLI globally
+$ npm uninstall -g @webosose/ares-cli
 ```
 
-{{< note >}}
-On Linux and macOS, this operation may require superuser privileges. 
-Therefore, it is recommended that you either switch to a superuser or use the `sudo` at the beginning of the the command.
+```bash
+# Verify whether uninstalled the previous CLI
+$ ares --version
+ares: command not found
+```
+{{< /caution >}}
 
-```shell
-# Switch to the superuser and excecute the command.
-$ sudo -s
-$ npm install -g @webosose/ares-cli
+Execute the following command in a terminal, using the `-g` option to install the CLI globally. For Linux and macOS users, the `sudo` privilege might be required.
 
-# Or, excecute the command with sudo.
-$ sudo npm install -g @webosose/ares-cli
+```bash
+npm install -g @webos-tools/cli
 ```
 
-{{< /note >}}  
-
-Verify the installation by checking its version. Check if the version matches with the latest version of [CLI npm package](https://www.npmjs.com/package/@webosose/ares-cli).
+Verify the installation by checking its version. Check if the version matches with the latest version of [CLI npm package](https://www.npmjs.com/package/@webos-tools/cli).
  
 ```bash
 ares --version
+```
+
+### Step 03. Setting Up the OSE Profile
+
+CLI supports multi-webOS platforms since v3.0.0 (default profile: `tv`). To use the CLI on webOS OSE, you **MUST change** your profile to `ose`.
+
+To set up the profile, enter the following command:
+
+``` shell
+$ ares-config --profile ose
 ```
 
 ## How to Use
@@ -197,6 +211,10 @@ The following table shows the available CLI commands.
     </thead>
     <tbody>
       <tr>
+        <td><p><a href="#ares-config">ares-config</a></p></td>
+        <td><p>Configures webOS CLI.</p></td>
+      </tr>
+      <tr>
         <td><p><a href="#ares">ares</a></p></td>
         <td><p>Provides the help menu for using the <code>ares</code> commands.</p></td>
       </tr>
@@ -251,6 +269,129 @@ The following table shows the available CLI commands.
     </tbody>
   </table>
 </div>
+
+### ares-config
+
+This command configures the CLI profile. You can change the profile at any time.
+
+#### History
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th style="width:15%"><p>Version</p></th>
+        <th><p>Changes</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>v3.0.0</p></td>
+        <td><p>Added in.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+#### Usages
+
+```shell
+ares-config
+
+ares-config --profile|-p DEVICE_PROFILE
+
+ares-config --profile-details|-c
+
+ares-config --version|-V
+
+ares-config --help|-h
+```
+
+#### Options
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th style="width:15%"><p>Option</p></th>
+        <th><p>Parameter</p></th>
+        <th><p>Description</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>-p, --profile</p></td>
+        <td><p>DEVICE_PROFILE</p></td>
+        <td><p>Specifies the CLI profile.</p></td>
+      </tr>
+      <tr>
+        <td><p>-c, --profile-details</p></td>
+        <td><p>None</p></td>
+        <td>
+          <p>Prints current configured profile.</p> 
+      </tr>
+      <tr>
+        <td><p>-h, --help</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints help messages.</p></td>
+      </tr>
+      <tr>
+        <td><p>-V, --version</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints the version of CLI.</p></td>
+      </tr>
+      <tr>
+        <td><p>-v</p></td>
+        <td><p>None</p></td>
+        <td><p>Prints verbose output.</p></td>
+      </tr>
+      <tr>
+        <td><p>--level</p></td>
+        <td><p>LEVEL</p></td>
+        <td><p>Sets the level of logs as <code>LEVEL</code> and prints the logs.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+#### Parameters
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth">
+    <thead>
+      <tr class="header">
+        <th><p>Parameter</p></th>
+        <th><p>Description</p></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>DEVICE_PROFILE</p></td>
+        <td><p>A profile of the target device. Possible values are as follows:<ul><li>tv (default, for webOS TV)</li><li>ose</li></ul></p></td>
+      </tr>
+      <tr>
+        <td><p>LEVEL</p></td>
+        <td><p>A priority of logs (e.g., silly, verbose, info, warn, error)</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+#### Examples
+
+Here are some examples of the different uses:
+
+* Configure profile for platform (ose)
+
+    ``` shell
+    ares-config -p ose
+    ```
+
+* Currently configured profile
+
+    ``` shell
+    ares-config -c
+    ```
 
 ### ares
 

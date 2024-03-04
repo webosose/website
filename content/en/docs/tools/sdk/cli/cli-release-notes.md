@@ -1,7 +1,7 @@
 ---
 title: Release Notes
 display_title: Command-Line Interface Release Notes
-date: 2024-01-24
+date: 2024-03-04
 weight: 20
 toc: true
 two_depth_toc: true
@@ -42,8 +42,12 @@ The following table shows the compatibility between webOS OSE and CLI.
     </thead>
     <tbody>
       <tr>
-        <td class="middle-border-left" rowspan="8" ><p>2.4.0</p></td>
-        <td><p>2.25.0</p></td>
+        <td class="middle-border-left"><p>3.0.0</p></td>
+        <td style="border-bottom: none;"><p>2.25.0</p></td>
+      </tr>
+      <tr>
+        <td class="middle-border-left" rowspan="8"><p>2.4.0</p></td>
+        <td><p style="visibility: hidden;">dummy text</p></td>
       </tr>
       <tr>
         <td><p>2.24.0</p></td>
@@ -131,6 +135,24 @@ The following table shows the compatibility between webOS OSE and CLI.
     </tbody>
   </table>
 </div>
+
+## v3.0.0 (March 2024)
+
+This version is compatible with **webOS OSE 2.25.0**. See below for the new and changed features in this release.
+
+* Moved repository from @webosose/ares-cli to [@webos-tools/cli](https://github.com/webos-tools/cli).
+* Integrated with the webOS TV CLI. In the future, we plan to support multiple webOS platforms with a single CLI.
+* Added profiles for changing support platforms, default profile is `tv`. Each profile has different supported commands, options, help, and templates.
+
+### New features
+
+* Supports Node.js v16.20.2.
+* Added a new command, `ares-config`. For more details, see [CLI User Guide]({{< relref "cli-user-guide" >}}).
+* Supports to live reloading using `ares-launch --hosted` option.
+
+### Fixed issues
+
+* Fixed to minify by default for JavaScript files in service directory when using `ares-package`.
 
 ## v2.4.0 (February 2023)
 

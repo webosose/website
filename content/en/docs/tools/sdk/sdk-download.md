@@ -1,6 +1,6 @@
 ---
 title: "SDK Download"
-date: 2023-11-17
+date: 2024-03-04
 weight: 10
 file_download: true
 toc: true
@@ -9,8 +9,6 @@ toc: true
 This page describes how to install webOS Open Source Edition (OSE) SDKs.
 
 ## Command-Line Interface
-
-* Version: v2.4.0
 
 Command Line Interface (CLI) is installed using `npm`. For more information, see [CLI User Guide]({{< relref "cli-user-guide" >}}).
 
