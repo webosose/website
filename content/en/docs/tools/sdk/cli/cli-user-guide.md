@@ -9,7 +9,7 @@ toc: true
 **Command-Line Interface (CLI)** of webOS Open Source Edition (OSE) provides a collection of commands used for creating, packaging, installing, and launching apps or services in the command line environment. CLI lets you develop and test apps or services without using any IDE.
 
 {{< note >}}
-The npm package name of the CLI has been changed (from `@webosose/ares-cli` to `@webos-tools/cli`) since v3.0.0 (March 4, 2024). See [How to Install](#how-to-install).
+The npm package name of the CLI has been changed (from `@webosose/ares-cli` to `@webos-tools/cli`) since v3.0.2 (March 4, 2024). See [How to Install](#how-to-install).
 {{< /note >}}
 
 ## Key Features
@@ -142,7 +142,7 @@ ares --version
 
 ### Step 03. Setting Up the OSE Profile
 
-CLI supports multi-webOS platforms since v3.0.0 (default profile: `tv`). To use the CLI on webOS OSE, you **MUST change** your profile to `ose`.
+CLI supports multi-webOS platforms since v3.0.2 (default profile: `tv`). To use the CLI on webOS OSE, you **MUST change** your profile to `ose`.
 
 To set up the profile, enter the following command:
 
@@ -286,7 +286,7 @@ This command configures the CLI profile. You can change the profile at any time.
     </thead>
     <tbody>
       <tr>
-        <td><p>v3.0.0</p></td>
+        <td><p>v3.0.2</p></td>
         <td><p>Added in.</p></td>
       </tr>
     </tbody>

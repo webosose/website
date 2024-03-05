@@ -42,7 +42,7 @@ The following table shows the compatibility between webOS OSE and CLI.
     </thead>
     <tbody>
       <tr>
-        <td class="middle-border-left"><p>3.0.0</p></td>
+        <td class="middle-border-left"><p>3.0.2</p></td>
         <td style="border-bottom: none;"><p>2.25.0</p></td>
       </tr>
       <tr>
@@ -136,7 +136,7 @@ The following table shows the compatibility between webOS OSE and CLI.
   </table>
 </div>
 
-## v3.0.0 (March 2024)
+## v3.0.2 (March 2024)
 
 This version is compatible with **webOS OSE 2.25.0**. See below for the new and changed features in this release.
 
