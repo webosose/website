@@ -1,6 +1,6 @@
 ---
 title: Bring-Up Overview
-date: 2023-11-14
+date: 2024-03-18
 weight: 10
 toc: true
 ---
@@ -14,22 +14,22 @@ A bring-up process is a series of tasks to migrate a specific platform to a new 
 This page describes how to bring up webOS OSE from scratch.
 
 {{< note >}}
-We recommend to use the target board which supports meta layer files for the Yocto build, but this is not required.
+We recommend using the target board, which supports meta-layer files for the Yocto build, but this is not required.
 {{< /note >}}
 
 ## Bring-up Process
 
-The following picture shows a brief summary of bring-up process.
+The following picture shows a brief summary of the bring-up process.
 
 <img src="/images/docs/guides/setup/summary-of-bring-up-process.png" width="65%" alt="A process to bring up a webOS OSE">
 
 1. **Preparing Yocto SoC BSPs**: 
 
-    First, you need to prepare BSP for your SoC board. The BSP files contain the information to support a specific hardware. These files are usually provided by SoC makers and depend on the type of your SoC board. 
+    First, you need to prepare BSP for your SoC board. The BSP files contain information to support specific hardware. These files are usually provided by SoC makers and depend on the type of your SoC board. 
 
-2. **Replacing meta layers**: 
+2. **Replacing meta-layers**: 
 
-    A meta layer is a set of files which determine how to build a target. You need to add, change, and remove meta layers specific for your hardware target.
+    A meta-layer is a set of files that determine how to build a target. You need to add, change, and remove meta-layers specific to your hardware target.
     
 3. **Changing the machine configuration files**: 
     
@@ -45,13 +45,13 @@ The following picture shows a brief summary of bring-up process.
 
 6. **Installing an image**
  
-    Modify or add tasks to create an image format which is installable on your SoC board.
+    Modify or add tasks to create an image format that is installable on your SoC board.
 
 7. **Handling runtime errors**
 
     Correct errors during running webOS OSE. Before starting this step, make sure that you understand the execution sequences of Luna Surface Manager (LSM) and Web Application Manager (WAM).
 
-For more details on the bring-up process, see [Yocto Project Manual](https://docs.yoctoproject.org/overview-manual/index.html).
+For more details on the bring-up process, see the [Yocto Project Manual](https://docs.yoctoproject.org/overview-manual/index.html).
 
 ## Verifying Bring-Up Process
 
@@ -77,4 +77,4 @@ ls-monitor -l | grep -E "surfacemanager|webappmanager|applicationManager|sam"
 ```
 {{< /note >}}
 
-If all the steps work fine, then you succeed to bring up webOS OSE.
+If all the steps work fine, then you succeed in bringing up webOS OSE.
