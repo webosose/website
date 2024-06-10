@@ -1,7 +1,7 @@
 ---
 title: com.webos.service.location
-date: 2023-05-22
-api_level: 23
+date: 2024-05-27
+api_level: 29
 weight: 230
 toc: true
 ---
@@ -24,7 +24,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
   </ul>
   <p><strong>Note:</strong> The location service provider is also called a location source and location handler.</p>
   <p>&nbsp;</p>
-  <p><strong>Google Geocoding API Key</strong></p>
+  <p id="google-geocoding-api-key"><strong>Google Geocoding API Key</strong></p>
   <p>To&nbsp;use the GeoCoding functionality, you must have the Geocoding API keys&nbsp;to authenticate requests associated with your project for usage and billing purposes. You must perform the following steps:</p>
   <ol>
     <li>Sign up and create a billing account with&nbsp;<a href="https://developers.google.com/maps/gmp-get-started" rel="nofollow">Google Maps Platform</a>.</li>
@@ -36,17 +36,17 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     <li>
       Write encrypted key in file&nbsp;<strong>/etc/location/wsp.conf</strong>&nbsp;present&nbsp;on your device. Create following file:
       <div class="code-bg-grey">
-        <p>{<br />
-          &nbsp; &nbsp;&nbsp;&quot;wpsName&quot;:&nbsp;&quot;google&quot;,<br />
-          &nbsp; &nbsp;&nbsp;&quot;apiKey&quot;:&nbsp;&quot;ENCRYPTED_GEOCODING_KEY&quot;,<br />
-          &nbsp; &nbsp;&nbsp;&quot;services&quot;: [<br />
-          &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;{<br />
-          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;features&quot;: [&quot;geocode&quot;,&nbsp;&quot;reverseGeocode&quot;],<br />
-          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;url&quot;:&nbsp;&quot;https://maps.googleapis.com/maps/api/geocode/json?&quot;<br />
-          &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;}<br />
-          &nbsp; &nbsp;&nbsp;]<br />
-          }
-        </p>
+      <p>{<br />
+        &nbsp; &nbsp;&nbsp;&quot;wpsName&quot;:&nbsp;&quot;google&quot;,<br />
+        &nbsp; &nbsp;&nbsp;&quot;apiKey&quot;:&nbsp;&quot;ENCRYPTED_GEOCODING_KEY&quot;,<br />
+        &nbsp; &nbsp;&nbsp;&quot;services&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;{<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;features&quot;: [&quot;geocode&quot;,&nbsp;&quot;reverseGeocode&quot;],<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;url&quot;:&nbsp;&quot;https://maps.googleapis.com/maps/api/geocode/json?&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;}<br />
+        &nbsp; &nbsp;&nbsp;]<br />
+        }
+      </p>
       </div>
     </li>
     <li>If the location service is already running, reboot the device.</li>
@@ -59,7 +59,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>location.query</b></span></div>
     <div>
       <ul>
-        <li>Added: API level 11</li>
+        <li>Added: <strong><code>API level 11</code></strong></li>
       </ul>
     </div>
     <h4>Description</h4>
@@ -85,7 +85,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>subscribe</td>
             <td>Optional</td>
-            <td>boolean</td>
+            <td>Boolean</td>
             <td>
               <p>Subscribe for notifications.</p>
               <p>Possible values are:</p>
@@ -128,7 +128,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>returnValue</td>
             <td>Required</td>
-            <td>boolean</td>
+            <td>Boolean</td>
             <td>
               <p>Indicates the status of the operation.</p>
               <p>Possible values are:</p>
@@ -149,7 +149,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>errorText</td>
             <td>Optional</td>
-            <td>string</td>
+            <td>String</td>
             <td>
               <p>Indicates the reason for the failure of the operation. See the &quot;API Error Codes Reference&quot; section for details.</p>
             </td>
@@ -217,7 +217,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+      <p style="color:white;margin:5px;"><b>Example code</b></p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -f -n 1 luna://com.webos.service.location/getAllLocationHandlers &#39;{}&#39;</p>
@@ -244,7 +244,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>location.query</b></span></div>
     <div>
       <ul>
-        <li>Added: API level 11</li>
+        <li>Added: <strong><code>API level 11</code></strong></li>
       </ul>
     </div>
     <h4>Description</h4>
@@ -255,13 +255,13 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       <li>
         Prerequisite:
         <ul>
-          <li>Set up the Geocoding API key as described in&nbsp;<a href="#overview-of-the-api">Google Geocoding API Key</a>.&nbsp;</li>
+          <li>Set up the Geocoding API key as described in&nbsp;<a href="#google-geocoding-api-key">Google Geocoding API Key</a>.&nbsp;</li>
           <li>Enable network location provider state by:<br />
             # luna-send -f -n 1 luna://com.webos.service.location/<strong>setState </strong>&#39;{&quot;Handler&quot;:&quot;network&quot;,&quot;state&quot;:true}&#39;
           </li>
         </ul>
       </li>
-      <li>For more details:&nbsp;<a href="https://developers.google.com/maps/documentation/geocoding/?hl=en" style="font-size: 10pt; line-height: 13pt; background-color: transparent;">https://developers.google.com/maps/documentation/geocoding/?hl=en</a>.</li>
+      <li>For more details, <a href="https://developers.google.com/maps/documentation/geocoding/?hl=en">Google official documents</a>.</li>
     </ul>
     <h4>Parameters</h4>
     <div class="table-container">
@@ -284,7 +284,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>address</td>
             <td>Required</td>
-            <td>string</td>
+            <td>String</td>
             <td>
               <p>Indicates formatted user-readable address lines.</p>
               <p><strong>Note:&nbsp;</strong>Either address&nbsp;or <strong>component</strong> parameter&nbsp;is required for the <strong>getGeoCodeLocation</strong> service to transform the address successfully.</p>
@@ -310,7 +310,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>language</td>
             <td>Optional</td>
-            <td>string</td>
+            <td>String</td>
             <td>
               <p>Indicates the language through which the results are displayed.</p>
             </td>
@@ -318,7 +318,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>region</td>
             <td>Optional</td>
-            <td>string</td>
+            <td>String</td>
             <td>
               <p>Indicates the region code, specified as a ccTLD (&quot;top-level domain&quot;) a two-character value.</p>
             </td>
@@ -355,7 +355,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>returnValue</td>
             <td>Required</td>
-            <td>boolean</td>
+            <td>Boolean</td>
             <td>
               <p>Indicates the status of the operation.</p>
               <p>Possible values are:</p>
@@ -376,7 +376,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>errorText</td>
             <td>Optional</td>
-            <td>string</td>
+            <td>String</td>
             <td>
               <p>Indicates the reason for the failure of the operation. See the &quot;API Error Codes Reference&quot; section for details.</p>
             </td>
@@ -386,7 +386,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+      <p style="color:white;margin:5px;"><b>Example code</b></p>
     </div>
     <div class="code-bg-grey">
       <p>#&nbsp;luna-send -f -n 1 luna://com.webos.service.location/getGeoCodeLocation &#39;{<br />
@@ -487,7 +487,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>location.query</b></span></div>
     <div>
       <ul>
-        <li>Added: API level 11</li>
+        <li>Added: <strong><code>API level 11</code></strong></li>
       </ul>
     </div>
     <h4>Description</h4>
@@ -587,7 +587,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>errorText</td>
             <td>Optional</td>
-            <td>string</td>
+            <td>String</td>
             <td>
               <p>Indicates the reason for the failure of the operation. See the &quot;API Error Codes Reference&quot; section for details.</p>
             </td>
@@ -660,7 +660,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+      <p style="color:white;margin:5px;"><b>Example code</b></p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -f -n 1 luna://com.webos.service.location/getGpsStatus &#39;{}&#39;</p>
@@ -685,7 +685,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>location.query</b></span></div>
     <div>
       <ul>
-        <li>Added: API level 11</li>
+        <li>Added: <strong><code>API level 11</code></strong></li>
       </ul>
     </div>
     <h4>Description</h4>
@@ -771,7 +771,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>requiresNetwork</td>
             <td>Optional</td>
-            <td>boolean</td>
+            <td>Boolean</td>
             <td>
               <p>Indicates whether the location handler requires a network.</p>
               <ul>
@@ -783,7 +783,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>requiresCell</td>
             <td>Optional</td>
-            <td>boolean</td>
+            <td>Boolean</td>
             <td>
               <p>Indicates whether the location handler requires a cell.</p>
               <ul>
@@ -795,7 +795,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>monetaryCost</td>
             <td>Optional</td>
-            <td>boolean</td>
+            <td>Boolean</td>
             <td>
               <p>Indicates whether the location handler is allowed to charge the user.</p>
               <ul>
@@ -807,7 +807,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>returnValue</td>
             <td>Required</td>
-            <td>boolean</td>
+            <td>Boolean</td>
             <td>
               <p>Indicates the status of the operation.</p>
               <p>Possible values are:</p>
@@ -828,7 +828,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>errorText</td>
             <td>Optional</td>
-            <td>string</td>
+            <td>String</td>
             <td>
               <p>Indicates the reason for the failure of the operation. See the &quot;API Error Codes Reference&quot; section for details.</p>
             </td>
@@ -838,7 +838,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+      <p style="color:white;margin:5px;"><b>Example code</b></p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -f -n 1 luna://com.webos.service.location/getLocationHandlerDetails &#39;{<br />
@@ -863,7 +863,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>location.query</b></span></div>
     <div>
       <ul>
-        <li>Added: API level 11</li>
+        <li>Added: <strong><code>API level 11</code></strong></li>
       </ul>
     </div>
     <h4>Description</h4>
@@ -894,7 +894,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>subscribe</td>
             <td>Optional</td>
-            <td>boolean</td>
+            <td>Boolean</td>
             <td>
               <p>Subscribe for notifications.</p>
               <p>Possible values are:</p>
@@ -926,7 +926,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>Handler</td>
             <td>Optional</td>
-            <td>string</td>
+            <td>String</td>
             <td>
               <p>Indicates the type of location service provider.</p>
               <p>Possible values are :</p>
@@ -1185,7 +1185,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example</b></p>
+      <p style="color:white;margin:5px;"><b>Example</b></p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -f -n 1 luna://com.webos.service.location/getLocationUpdates &#39;{<br />
@@ -1209,7 +1209,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       </p>
     </div>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example</b></p>
+      <p style="color:white;margin:5px;"><b>Example</b></p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -f -i luna://com.webos.service.location/getLocationUpdates &#39;{<br />
@@ -1253,7 +1253,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>location.query</b></span></div>
     <div>
       <ul>
-        <li>Added: API level 11</li>
+        <li>Added: <strong><code>API level 11</code></strong></li>
       </ul>
     </div>
     <h4>Description</h4>
@@ -1265,13 +1265,13 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       <li>
         Prerequisite:
         <ul>
-          <li>Set up the Geocoding API key as described in&nbsp;<a href="#overview-of-the-api">Google Geocoding API Key</a>.</li>
+          <li>Set up the Geocoding API key as described in&nbsp;<u>Overview&nbsp;of the API &gt; &quot;Google Geocoding API Key&quot;</u>.&nbsp;</li>
           <li>Enable network location provider state by:<br />
             # luna-send -f -n 1 luna://com.webos.service.location/<strong>setState&nbsp;</strong>&#39;{&quot;Handler&quot;:&quot;network&quot;,&quot;state&quot;:true}&#39;
           </li>
         </ul>
       </li>
-      <li>For more details:&nbsp;<a href="https://developers.google.com/maps/documentation/geocoding/?hl=en" style="font-size: 10pt; line-height: 13pt; background-color: transparent;">https://developers.google.com/maps/documentation/geocoding/?hl=en</a>.</li>
+      <li>For more details, <a href="https://developers.google.com/maps/documentation/geocoding/?hl=en">Google official documents</a>.</li>
     </ul>
     <h4>Parameters</h4>
     <div class="table-container">
@@ -1294,7 +1294,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>latitude</td>
             <td>Required</td>
-            <td>double</td>
+            <td>Number (double)</td>
             <td>
               <p>Indicates latitude.</p>
               <p>Possible range: -90.0 ~ 90.0(in degrees).</p>
@@ -1303,7 +1303,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>longitude</td>
             <td>Required</td>
-            <td>double</td>
+            <td>Number (double)</td>
             <td>
               <p>Indicates longitude.</p>
               <p>Possible range: -180.0 ~ 180.0.(in degrees).</p>
@@ -1312,7 +1312,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>language</td>
             <td>Optional</td>
-            <td>string</td>
+            <td>String</td>
             <td>
               <p>Indicates the language in which the address(result) is returned.</p>
             </td>
@@ -1365,7 +1365,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>returnValue</td>
             <td>Required</td>
-            <td>boolean</td>
+            <td>Boolean</td>
             <td>
               <p>Indicates the status of the operation.</p>
               <p>Possible values are:</p>
@@ -1386,7 +1386,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>errorText</td>
             <td>Optional</td>
-            <td>string</td>
+            <td>String</td>
             <td>
               <p>Indicates the reason for the failure of the operation. See the &quot;API Error Codes Reference&quot; section for details.</p>
             </td>
@@ -1396,7 +1396,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+      <p style="color:white;margin:5px;"><b>Example code</b></p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -f -n 1 luna://com.webos.service.location/getReverseLocation &#39;{<br />
@@ -2041,7 +2041,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>location.query</b></span></div>
     <div>
       <ul>
-        <li>Added: API level 11</li>
+        <li>Added: <strong><code>API level 11</code></strong></li>
       </ul>
     </div>
     <h4>Description</h4>
@@ -2067,7 +2067,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>Handler</td>
             <td>Required</td>
-            <td>string</td>
+            <td>String</td>
             <td>
               <p>Indicates the type of location service provider.</p>
               <p>Possible values are :</p>
@@ -2080,7 +2080,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>subscribe</td>
             <td>Optional</td>
-            <td>boolean</td>
+            <td>Boolean</td>
             <td>
               <p>Subscribe for notifications.</p>
               <p>Possible values are:</p>
@@ -2128,7 +2128,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>returnValue</td>
             <td>Required</td>
-            <td>boolean</td>
+            <td>Boolean</td>
             <td>
               <p>Indicates the status of the operation.</p>
               <p>Possible values are:</p>
@@ -2149,7 +2149,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>errorText</td>
             <td>Optional</td>
-            <td>string</td>
+            <td>String</td>
             <td>
               <p>Indicates the reason for the failure of the operation. See the &quot;API Error Codes Reference&quot; section for details.</p>
             </td>
@@ -2222,7 +2222,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+      <p style="color:white;margin:5px;"><b>Example code</b></p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -f -n 1 luna://com.webos.service.location/getState &#39;{&quot;Handler&quot;:&quot;network&quot;}&#39;</p>
@@ -2252,7 +2252,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>location.operation</b></span></div>
     <div>
       <ul>
-        <li>Added: API level 11</li>
+        <li>Added: <strong><code>API level 11</code></strong></li>
       </ul>
     </div>
     <h4>Description</h4>
@@ -2343,7 +2343,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+      <p style="color:white;margin:5px;"><b>Example code</b></p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -n 1 -f luna://com.webos.service.location/mock/disable&#39;{<br />
@@ -2363,7 +2363,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>location.operation</b></span></div>
     <div>
       <ul>
-        <li>Added: API level 11</li>
+        <li>Added: <strong><code>API level 11</code></strong></li>
       </ul>
     </div>
     <h4>Description</h4>
@@ -2454,7 +2454,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+      <p style="color:white;margin:5px;"><b>Example code</b></p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -n 1 -f luna://com.webos.service.location/mock/enable&nbsp;&#39;{<br />
@@ -2474,7 +2474,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>location.operation</b></span></div>
     <div>
       <ul>
-        <li>Added: API level 11</li>
+        <li>Added: <strong><code>API level 11</code></strong></li>
       </ul>
     </div>
     <h4>Description</h4>
@@ -2574,7 +2574,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+      <p style="color:white;margin:5px;"><b>Example code</b></p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -n 1 -f luna://com.webos.service.location/mock/setLocation &#39;{<br />
@@ -2605,7 +2605,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>location.operation</b></span></div>
     <div>
       <ul>
-        <li>Added: API level 11</li>
+        <li>Added: <strong><code>API level 11</code></strong></li>
       </ul>
     </div>
     <h4>Description</h4>
@@ -2709,7 +2709,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5.0px;"><b>Example code</b></p>
+      <p style="color:white;margin:5px;"><b>Example code</b></p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -f -n 1 luna://com.webos.service.location/setState &#39;{<br />
@@ -2979,107 +2979,6 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       </table>
     </div>
   </div>
-  <h3 id="object-satellite">satellite</h3>
-  <div>
-    <p>Contains satellite information.</p>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>index</td>
-            <td>Required</td>
-            <td>Number</td>
-            <td>
-              <p>Indicates the index of the satellite.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>azimuth</td>
-            <td>Required</td>
-            <td>Number (double)</td>
-            <td>
-              <p>Indicates the azimuth value of the satellite(in degrees).</p>
-            </td>
-          </tr>
-          <tr>
-            <td>elevation</td>
-            <td>Required</td>
-            <td>Number (double)</td>
-            <td>
-              <p>Indicates the elevation of the satellite(in degrees).</p>
-            </td>
-          </tr>
-          <tr>
-            <td>prn</td>
-            <td>Required</td>
-            <td>Number</td>
-            <td>
-              <p>Indicates the PRN (pseudo-random number) for the satellite.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>snr</td>
-            <td>Required</td>
-            <td>Number (double)</td>
-            <td>
-              <p>Indicates the signal to noise ratio for the satellite.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>hasAlmanac</td>
-            <td>Required</td>
-            <td>Boolean</td>
-            <td>
-              <p>Indicates whether the GPS engine has almanac data for the satellite.</p>
-              <p>Possible values are :</p>
-              <ul>
-                <li><strong>true</strong>: GPS engine has almanac data for the satellite.</li>
-                <li><strong>false</strong>: GPS engine has no almanac data for the satellite.</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>hasEphemeris</td>
-            <td>Required</td>
-            <td>Boolean</td>
-            <td>
-              <p>Indicates whether the GPS engine has ephemeris data for the satellite.</p>
-              <ul>
-                <li><strong>true</strong>: GPS engine has ephemeris data for the satellite.</li>
-                <li><strong>false</strong>: GPS engine has no ephemeris data for the satellite.&nbsp;</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>usedInFix</td>
-            <td>Required</td>
-            <td>Boolean</td>
-            <td>
-              <p>Indicates whether&nbsp;<span style="color:rgb(34, 34, 34)">the satellite was used by the GPS engine in calculating the most recent GPS fix.</span></p>
-              <ul>
-                <li><strong>true</strong>: Satellite was used.</li>
-                <li><strong>false</strong>: Satellite was not used.</li>
-              </ul>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
 </div>
 <h2 id="api-error-codes-reference">API Error Codes Reference</h2>
 <div>
@@ -3186,13 +3085,6 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <td>Failed to get the WSP feature&#39;s URL in conf file</td>
           <td>
             <p>Indicates that <strong>url</strong>&nbsp;file&nbsp;is missing or its value is empty.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>27</td>
-          <td>Invalid WSP Setup Configuration</td>
-          <td>
-            <p>Indicates that the WSP setup configuration is invalid.</p>
           </td>
         </tr>
       </tbody>

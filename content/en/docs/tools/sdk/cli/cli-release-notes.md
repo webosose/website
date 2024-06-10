@@ -1,7 +1,7 @@
 ---
 title: Release Notes
 display_title: Command-Line Interface Release Notes
-date: 2024-03-04
+date: 2024-06-05
 weight: 20
 toc: true
 two_depth_toc: true
@@ -42,7 +42,10 @@ The following table shows the compatibility between webOS OSE and CLI.
     </thead>
     <tbody>
       <tr>
-        <td class="middle-border-left"><p>3.0.2</p></td>
+        <td class="middle-border-left" rowspan="2"><p>3.0.2</p></td>
+        <td><p>2.26.0</p></td>
+      </tr>
+      <tr>
         <td style="border-bottom: none;"><p>2.25.0</p></td>
       </tr>
       <tr>
@@ -138,7 +141,7 @@ The following table shows the compatibility between webOS OSE and CLI.
 
 ## v3.0.2 (March 2024)
 
-This version is compatible with **webOS OSE 2.25.0**. See below for the new and changed features in this release.
+This version is compatible with **webOS OSE 2.25.0** ~ **webOS OSE 2.26.0**. See below for the new and changed features in this release.
 
 * Moved repository from @webosose/ares-cli to [@webos-tools/cli](https://github.com/webos-tools/cli).
 * Integrated with the webOS TV CLI. In the future, we plan to support multiple webOS platforms with a single CLI.
