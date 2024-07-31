@@ -1,6 +1,6 @@
 ---
 title: Emulator Launcher
-date: 2023-05-15
+date: 2024-07-26
 weight: 20
 toc: true
 ---
@@ -19,9 +19,11 @@ If you're not familiar with webOS OSE's emulator, please refer to [VirtualBox Em
 
 ## System Requirements
 
-Currently, Emulator Launcher does not support macOS. 
+See [Emulator System Requirements]({{< relref "emulator-user-guide#system-requirements" >}}).
 
-If you use Windows or Ubuntu, see [Emulator System Requirements]({{< relref "emulator-user-guide#system-requirements" >}}).
+{{< caution >}}
+webOS OSE Emulator doesn't support Apple Silicon Mac. (VirtualBox v6.1.x doesn't support Apple Silicon Mac.)
+{{< /caution >}}
 
 ## Installation
 

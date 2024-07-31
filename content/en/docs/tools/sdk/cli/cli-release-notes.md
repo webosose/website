@@ -1,7 +1,7 @@
 ---
 title: Release Notes
 display_title: Command-Line Interface Release Notes
-date: 2024-06-05
+date: 2024-07-17
 weight: 20
 toc: true
 two_depth_toc: true
@@ -42,7 +42,7 @@ The following table shows the compatibility between webOS OSE and CLI.
     </thead>
     <tbody>
       <tr>
-        <td class="middle-border-left" rowspan="2"><p>3.0.2</p></td>
+        <td class="middle-border-left" rowspan="2"><p>3.1.0<br />3.0.2</p></td>
         <td><p>2.26.0</p></td>
       </tr>
       <tr>
@@ -139,6 +139,25 @@ The following table shows the compatibility between webOS OSE and CLI.
   </table>
 </div>
 
+## v3.1.0 (July 2024)
+
+This version is compatible with **webOS OSE 2.25.0** ~ **webOS OSE 2.26.0**. See below for the new and changed features in this release.
+
+* Upgrade node modules: `shelljs` (v0.8.5), `async` (v3.2.5), `ssh2` (v1.15.0), `tar` (v6.2.0).
+
+### Changed Features
+
+* `ares-setup-device`
+  * Allowed localhost as a target IP address.
+  * Added port number validation(range: 1-65535).
+  * Enhanced usability of the `--add` and `--remove` options.
+
+### Fixed Issues
+
+* Fixed an issue where `ares-config --profile` did not work after installing CLI with the root user on Mac/Linux.
+* Fixed an issue where `ares-log --output --follow` did not print the JSON output in a single line.
+* Fixed an issue where `ares-generate` did not use the webapp template as the default template (Execute `ares-generate` without the `--template` option).
+
 ## v3.0.2 (March 2024)
 
 This version is compatible with **webOS OSE 2.25.0** ~ **webOS OSE 2.26.0**. See below for the new and changed features in this release.
@@ -147,13 +166,13 @@ This version is compatible with **webOS OSE 2.25.0** ~ **webOS OSE 2.26.0**. See
 * Integrated with the webOS TV CLI. In the future, we plan to support multiple webOS platforms with a single CLI.
 * Added profiles for changing support platforms, default profile is `tv`. Each profile has different supported commands, options, help, and templates.
 
-### New features
+### New Features
 
 * Supports Node.js v16.20.2.
 * Added a new command, `ares-config`. For more details, see [CLI User Guide]({{< relref "cli-user-guide" >}}).
 * Supports to live reloading using `ares-launch --hosted` option.
 
-### Fixed issues
+### Fixed Issues
 
 * Fixed to minify by default for JavaScript files in service directory when using `ares-package`.
 
@@ -161,7 +180,7 @@ This version is compatible with **webOS OSE 2.25.0** ~ **webOS OSE 2.26.0**. See
 
 This version is compatible with **webOS OSE 2.19.1** ~ **webOS OSE 2.25.0**. See below for the new and changed features in this release.
 
-### New features
+### New Features
 
 * We have released a new JavaScript API, see [CLI API Reference]({{< relref "cli-api-reference" >}}). You can use features of existing CLI commands through this API. Supported commands are as follows: 
 
@@ -169,11 +188,11 @@ This version is compatible with **webOS OSE 2.19.1** ~ **webOS OSE 2.25.0**. See
 
 * Now `ares-device --system-info` shows the Node.js version of the target device.
 
-### Changed features
+### Changed Features
 
 * Guide messages for `ares-inspect --service` are updated.
 
-### Fixed issues
+### Fixed Issues
 
 * Now `ares-device --resource-monitor --list` shows the list of JS services properly.
 
@@ -181,7 +200,7 @@ This version is compatible with **webOS OSE 2.19.1** ~ **webOS OSE 2.25.0**. See
 
 This version is compatible with **webOS OSE 2.15.0** ~ **webOS OSE 2.19.1**. See below for the new and changed features in this release.
 
-### New features
+### New Features
 
 * Supports to look up pmlog messages of the target device in `ares-log`.
 * Supports to monitor resource usage of the target device in `ares-device`.
@@ -190,11 +209,11 @@ This version is compatible with **webOS OSE 2.15.0** ~ **webOS OSE 2.19.1**. See
 * Added a feature to print information of the connected target device.
 * Supports to show level-applied logs using the `--level` option of each command.
 
-### Changed features
+### Changed Features
 
 * Updated the minimum supported Node.js version from v8.12.0 to v10.24.1.
 
-### Fixed issues
+### Fixed Issues
 
 * Fixed a bug that prevented opening the browser specified in the environment variables when using `ares-inspect --open`.
 * Fixed a bug related to the callback function error when using `ares-package`.
@@ -204,11 +223,11 @@ This version is compatible with **webOS OSE 2.15.0** ~ **webOS OSE 2.19.1**. See
 
 This version is compatible with **webOS OSE 2.11.0** ~ **webOS OSE 2.14.1**. See below for the new and changed features in this release.
 
-### New features
+### New Features
 
 * Added a new command, `ares-log`. For more details, see [CLI User Guide]({{< relref "cli-user-guide#ares-log">}}).
 
-### Changed features
+### Changed Features
 
 * Categorized error messages and added user tips for each error message.
 * Updated the naming rule for the `DEVICE_NAME` parameter in the `ares-setup-device` command.
@@ -219,11 +238,11 @@ This version is compatible with **webOS OSE 2.11.0** ~ **webOS OSE 2.14.1**. See
 
 This version is compatible with **webOS OSE 2.10.0**. See below for the new and changed features in this release.
 
-### New features
+### New Features
 
 * Supports screen capture in the `ares-device` command. (`--capture-screen` option)
 
-### Changed features
+### Changed Features
 
 * Updated the template of `appinfo.json` to apply new ACG groups. 
 
@@ -231,7 +250,7 @@ This version is compatible with **webOS OSE 2.10.0**. See below for the new and 
     Template files generated by CLI v2.0.3 or older are not compatible with webOS OSE 2.10.0 or higher.
     {{< /caution >}}
 
-### Fixed issues
+### Fixed Issues
 
 * Fixed an issue that environment variables using the `ares-shell -r` command were different from environment variables of the target device.
 
@@ -239,7 +258,7 @@ This version is compatible with **webOS OSE 2.10.0**. See below for the new and 
 
 This version is compatible with **webOS OSE 2.9.0**. See below for the new and changed features in this release.
 
-### Changed features
+### Changed Features
 
 * Updated help message of the `ares` command.
 * Updated the README file.
@@ -248,18 +267,18 @@ This version is compatible with **webOS OSE 2.9.0**. See below for the new and c
 
 This version is compatible with **webOS OSE 2.8.0**. See below for the new and changed features in this release.
 
-### New features
+### New Features
 
 * Released the source code to [GitHub](https://github.com/webosose/ares-cli). 
 * Published the CLI package to [npm](https://www.npmjs.com/package/@webosose/ares-cli).
 * Added `ares-device` command. This command replaces `ares-device-info`.
 
-### Changed features
+### Changed Features
 
 * Supports Node.js v14.15.1.
 * Updated the README file.
 
-### Fixed issues
+### Fixed Issues
 
 * Added a logic for checking `ares-setup-device`'s parameter and fixed typos.
 
@@ -267,7 +286,7 @@ This version is compatible with **webOS OSE 2.8.0**. See below for the new and c
 
 This version is compatible with **webOS OSE 2.8.0**. See below for the new and changed features in this release.
 
-### Changed features
+### Changed Features
 
 * Updated the source code through static analysis (ESLint and JSHint).
 * Updated JS service template.
@@ -276,16 +295,16 @@ This version is compatible with **webOS OSE 2.8.0**. See below for the new and c
 
 This version is compatible with **webOS OSE 2.7.0**. See below for the new and changed features in this release.
 
-### New features
+### New Features
 
 * Added a new command, `ares-device-info`. For more details, see [CLI User Guide]({{< relref "cli-user-guide#ares-device-info">}}).
 
-### Changed features
+### Changed Features
 
 * Organized and unified error messages.
 * Updated the README file.
 
-### Removed features
+### Removed Features
 
 * Removed `pmloglib.Context` in the JS service template.
 
@@ -293,27 +312,27 @@ This version is compatible with **webOS OSE 2.7.0**. See below for the new and c
 
 This version is compatible with **webOS OSE 2.6.0**. See below for the new and changed features in this release.
 
-### New features
+### New Features
 
 * Supports to launch Web Inspector on dual display (`–-display` option) in `ares-inspect`.
 * Supports to set a default device (`-–default` option) in `ares-setup-device`.
 * Supports to run a web app without installation ( `--hosted` option) in `ares-launch`.
 
-### Changed features
+### Changed Features
 
 * Updated Node.js version to v8.12.0.
 * Updated descriptions in `--help` option.
 
-### Removed features
+### Removed Features
 
 * Removed a Git dependency in `ares-generate`.
 * Removed Enyo features in `ares-package` and `ares-generate`.
 
-### Fixed issues
+### Fixed Issues
 
 * Fixed typos.
 
-### Known issues
+### Known Issues
 
 * Screencast feature of Web Inspector is not working on OSE emulator.
 
@@ -321,13 +340,13 @@ This version is compatible with **webOS OSE 2.6.0**. See below for the new and c
 
 This version is compatible with **webOS OSE 2.5.0**. See below for the new and changed features in this release.
 
-### Changed features
+### Changed Features
 
 * Updated QML template
     * Added `applications` group to the permission of QML app.
     * Set `displayAffinity` in QML template.
 
-### Fixed issues
+### Fixed Issues
 
 * Corrected typos in QML template.
 
@@ -335,27 +354,27 @@ This version is compatible with **webOS OSE 2.5.0**. See below for the new and c
 
 This version is compatible with **webOS OSE 2.4.0**. See below for the new and changed features in this release.
 
-### New features
+### New Features
 
 * Supports web app launch on dual displays.
 
-### Changed features
+### Changed Features
 
 * Changed web app and JS service templates.
 * Changed `version` property in `appinfo.json` to optional.
 * Changed a default value of `title` property to `new app` in `appinfo.json` template.
 * Updated dependent npm.
 
-### Removed features
+### Removed Features
 
 * Deleted a file and properties related to `largeIcon` in the template.
 
-### Fixed issues
+### Fixed Issues
 
 * Fixed a bug related to `-v` option.
 * Fixed correct machine architecture in packaging file.
 
-### Known issues
+### Known Issues
 
 * webOS OSE cannot launch the same web app on different displays at the same time.
     * For example, if you launch a web app on display 0 and then launch the same app on display 1, it just re-launch the app on display 0. (Nothing happened on display 1.)
@@ -368,15 +387,15 @@ This version is compatible with **webOS OSE 2.4.0**. See below for the new and c
 
 This version is compatible with **webOS OSE 2.1.0**. See below for the new and changed features in this release.
 
-### New features
+### New Features
 
 * Added a QML app template.
 
-### Changed features
+### Changed Features
 
 * Changed template names, `basic` and `webappicon` to `webapp` and `icon`.
 
-### Known issues
+### Known Issues
 
 * When you install an app using `ares-install`, the icon of the app is not displayed on Home Launcher.
 
@@ -384,30 +403,30 @@ This version is compatible with **webOS OSE 2.1.0**. See below for the new and c
 
 This version is compatible with **webOS OSE 2.0.0**. See below for the new, changed, and removed features along with fixed issues and known issues in this release.
 
-### New features
+### New Features
 
 * Added a web app template that uses the WebOSSerivceBridge API.
 * Added a feature to check the validity of `version` in `appinfo.json` when packaging an app, which checks whether each version number is 9 digits or less.
 * Added a guide text regarding the default target device to the CLI help.
 
-### Changed features
+### Changed Features
 
 * Changed to show appInstallService's error text when app installation fails.
 * Changed the icon images generated by executing `ares-generate --template` to new images.
 
-### Removed features
+### Removed Features
 
 * Removed the `webOS.js` library.
 * `ares-inspect --service` option cannot be used with the `--open` option.
 * Removed EULA that appeared on CLI when executing a command for the first time, which was replaced by EULA that appears on the developer site when downloading the CLI package.
 
-### Fixed issues
+### Fixed Issues
 
 * Enabled the `ares-inspect --service` option.
 * Fixed an issue where `ares-inspect --open` option cannot open a browser on Windows.
 * Fixed to create a `.ssh` directory after executing `ares-setup-device`.
 
-### Known issues
+### Known Issues
 
 * When you install or uninstall an app using `ares-install`, a running Home Launcher disappears from the screen. To make the app listed on Home Launcher, you must reboot the target device.
     * After rebooting the target device, the external app is listed on Home Launcher, but the icon of the app is not displayed.
@@ -416,19 +435,19 @@ This version is compatible with **webOS OSE 2.0.0**. See below for the new, chan
 
 See below for the new and changed features, bug fixes, and known issues in this release.
 
-### New features
+### New Features
 
 * Added a feature to check the version rule of your app when you package your app.
 * Added a feature to check if `id` and `version` exist in the `appinfo.json` file of your app when you package your app.
 * Added a feature to add read permission to all files of your app when you package your app.
 
-### Changed features
+### Changed Features
 
 * Updated templates (changed usable webOS APIs and how to use PmLog, `appinfo.json`).
 * Changed the scenario to prompt you whether to overwrite an existing folder when creating a project. Now, CLI prompts you whether to overwrite the folder as soon as you executes the `ares-generate` command with the existing folder name. In older versions, CLI prompts you when you enter your app information.
 * Changed the CLI folder structure due to code refactoring.
 
-### Bug fixes
+### Bug Fixes
 
 * Fixed an issue where `ares-setup-device --reset` does not print the reset device list.
 
@@ -438,7 +457,7 @@ See below for the new and changed features, bug fixes, and known issues in this 
 
 ## v1.8.1 (July 2018)
 
-### New and changed features
+### New and Changed Features
 
 * Changed the package filenames (from `webos-ose-cli-rpi_sdk-*.*` to `ares-webos-cli-ose_sdk-*.*`).
 
@@ -450,7 +469,7 @@ See below for the new and changed features, bug fixes, and known issues in this 
 
 This is the first official release of CLI for webOS OSE. For a detailed list of key features, see [key features]({{< relref "cli-user-guide#key-features">}}).
 
-### Known issues
+### Known Issues
 
 * Web Inspector and Node Inspector work on Blink-based browsers (Chrome and Opera) but not on non-Blink browsers (Internet Explorer, FireFox, and Safari).
 

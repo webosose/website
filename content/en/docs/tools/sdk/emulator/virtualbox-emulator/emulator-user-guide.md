@@ -1,7 +1,7 @@
 ---
 title: User Guide
 display_title: VirtualBox Emulator User Guide
-date: 2023-02-28
+date: 2024-07-26
 weight: 10
 toc: true
 ---
@@ -12,7 +12,7 @@ The emulator runs as a virtual machine on VirtualBox and supports host platforms
 
 {{< caution >}}
 * The VirtualBox-based emulator (64-bit) is supported by webOS OSE 2.14.0 or higher.
-* webOS OSE emulator requires VirtualBox version 6.1 or higher, which can be installed on 64-bit host platforms only.
+* webOS OSE emulator requires VirtualBox version 6.1.x, which can be installed on 64-bit host platforms only.
 * Make sure that Intel® Virtualization Technology (Intel® VT) is enabled in the host PC.
 {{< /caution >}}
 
@@ -42,9 +42,9 @@ The emulator requires the following environments.
     * macOS
         * macOS Sierra (10.12) or higher (64-bit)
   
-        {{< note >}}
-        The emulator does not support Mac computers with Apple silicon.
-        {{< /note >}}
+        {{< caution >}}
+        The emulator does not support Apple Silicon Mac.
+        {{< /caution >}}
 
     * Windows
         * Windows 7 (64-bit)

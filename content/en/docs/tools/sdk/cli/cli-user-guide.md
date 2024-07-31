@@ -1,7 +1,7 @@
 ---
 title: User Guide
 display_title: Command-Line Interface User Guide
-date: 2024-02-13
+date: 2024-07-18
 weight: 10
 toc: true
 ---
@@ -1016,6 +1016,10 @@ This command displays a list of registered target devices. You can add, modify, 
     </thead>
     <tbody>
       <tr>
+        <td><p>v3.1.0</p></td>
+        <td><p>Updates rules for the <code>DEVICE_INFO</code> parameter.</p></td>
+      </tr>
+      <tr>
         <td><p>v2.3.1</p></td>
         <td><p>Supports the <code>--level</code> option.</p></td>
       </tr>
@@ -1153,14 +1157,22 @@ ares-setup-device --help|-h
           <p>The available keys are as follows:</p>
           <ul>
             <li>
-              <p><strong>name</strong>: Target device name</p>
+              <p><strong>name</strong>: Target device's name</p>
               <ul>
-               <li><p>The target device name should consist of letters, numbers, hyphen (<code>-</code>), underscore (<code>_</code>), and number sign (<code>#</code>) and start with letters or underscore (<code>_</code>).</p></li>
+               <li><p>The target device name should not start with '%' or '$'.</p></li>
               </ul>
             </li>
-            <li><p><strong>description</strong>: Target device description</p></li>
-            <li><p><strong>host</strong>: Target device host address</p></li>
-            <li><p><strong>port</strong>: Target device port number</p></li>
+            <li><p><strong>description</strong>: Target device's description</p></li>
+            <li><p><strong>host</strong>: Target device's host address</p></li>
+              <ul>
+                <li><p>You can use <code>localhost</code> as the host.</p></li>
+              </ul>
+            <li>
+              <p><strong>port</strong>: Target device's port number</p>
+              <ul>
+                <li><p>The port number must be between 1 and 65535.</p></li>
+              </ul>
+            </li>
             <li>
               <p><strong>username</strong>: Username for accessing the target device</p>
               <ul>

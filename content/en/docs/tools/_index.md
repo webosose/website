@@ -1,7 +1,7 @@
 ---
 title: Tools
 section_main: true
-date: 2023-06-27
+date: 2024-07-31
 weight: 50
 ---
 
@@ -10,7 +10,7 @@ This section provides resources required to use the tools for webOS Open Source 
 * [SDK](#sdk)
     * [Download]({{< relref "sdk-download" >}})
     * [Command-Line Interface](#command-line-interface)
-    * [VS Code Extension](#vs-code-extension)
+    * [webOS Studio - VS Code Extension](#webos-studio-vs-code-extension)
     * [Emulator](#emulator)
     * [Beanviser](#beanviser)
     * [Workflow Designer](#workflow-designer)
@@ -30,7 +30,7 @@ Check the user guides, download links, and release notes for SDK tools.
 * [Release Notes]({{< relref "cli-release-notes" >}})
 * [API Reference]({{< relref "cli-api-reference" >}})
 
-### VS Code Extension
+### webOS Studio - VS Code Extension
 
 * [Overview]({{< relref "vs-code-extension" >}})
 

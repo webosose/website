@@ -1,6 +1,6 @@
 ---
 title: webOS Studio - VS Code Extension
-date: 2024-03-04
+date: 2024-07-26
 weight: 30
 toc: true
 ---
@@ -9,10 +9,10 @@ toc: true
 
 Key features are as follows:
 
-- Managing the lifecyle of webOS apps and services
-- Managing connected webOS devices and emulators
-- Providing many convenience features for webOS development
-- Running ESLint on Enact apps
+- Manage the development lifecyle of webOS apps and services
+- Install webOS SDKs from VS Code
+- Suggest LS2 APIs as you type in VS Code
+- Support real-time log viewer for webOS devices
 
 {{< note >}}
 See also the [Change Log | VS Code marketplace](https://marketplace.visualstudio.com/items/webOSSDK.webosstudio/changelog).
@@ -30,7 +30,9 @@ To install the extension, launch VS Code and do the following steps:
    
 Then you will see the ![webos Studio icon in Activity Bar](/images/docs/tools/vs-code-extension/webos-studio-icon.jpg) icon in **Activity Bar**.
 
-Once the installation is completed, see the [Setup Guide | VS Code marketplace](https://marketplace.visualstudio.com/items?itemName=webOSSDK.webosstudio#setup)
+{{< caution >}}
+Once the installation is completed, follow the [Setup Guide | VS Code marketplace](https://marketplace.visualstudio.com/items?itemName=webOSSDK.webosstudio#setup)
+{{< /caution >}}
 
 ## UI Overview
 
@@ -40,14 +42,15 @@ Click the ![webos Studio icon in Activity Bar](/images/docs/tools/vs-code-extens
 
 | Component | Description |
 | --------- | ----------- |
-| Apps in workspace | Lists apps in the workspace. The workspace of webOS Studio is different from that of VS Code. For more details, refer to [webOS Studio \| VS Code marketplace](https://marketplace.visualstudio.com/items?itemName=webOSSDK.webosstudio). |
-| Known device | Lists the known devices registed by webOS Studio or [CLI]({{< relref "cli-user-guide" >}}). <br /><br /> By default, a dummy emulator device is listed in the view. This device requires VirtualBox emulator on your computer. See the [Emulator Manager](#emulator-manager) section. |
-| Package manager | Manages SDKs for webOS app developement.  |
-| Emulator Manager | Lists installed images in [VirtualBox Emulator]({{< relref "emulator-user-guide" >}}). |
-| Simulator | Only for webOS TV. |
-| Quick Launcher | Lists links to webOS Studio documents and tools. |
-| Command Palette | Enters and executes various commands. (Shortcut: `Ctrl` + `Shift` + `P`) |
+| APPS IN WORKSPACE | Lists apps in the workspace. The workspace of webOS Studio is different from that of VS Code. For more details, refer to [webOS Studio \| VS Code marketplace](https://marketplace.visualstudio.com/items?itemName=webOSSDK.webosstudio). |
+| KNOWN DEVICE | Lists the known devices registered by webOS Studio or [CLI]({{< relref "cli-user-guide" >}}). <br /><br /> By default, a dummy emulator image is listed in the view. To use it, you have to install VirtualBox Emulator. See the [Emulator Manager](#emulator-manager) section. |
+| PACKAGE MANAGER | Lists available webOS SDKs for the current profile. |
+| SIMULATOR MANAGER | This is only for [webOS TV](https://webostv.developer.lge.com/). |
+| EMULATOR MANAGER | Lists installed [VirtualBox Emulator]({{< relref "emulator-user-guide" >}}) images. |
+| QUICK LAUNCHER | Provides links to webOS Studio documents and tools. |
+| Command Palette | Executes various commands. (Shortcut for Windows/Linux: `Ctrl` + `Shift` + `P`, for macOS: `Command` + `Shift` + `P`) For a full list of supported commands, see [Command Palette](https://marketplace.visualstudio.com/items?itemName=webOSSDK.webosstudio#command-palette). |
 | Notification Area | Shows notification messages for completion, errors, and more about the extension. |
+| Status Bar | Changes webOS Studio's profile. |
 
 ## Basic Usage
 
@@ -63,7 +66,7 @@ This section explains a typical development flow of webOS apps and services usin
 
     ![Add the known device](/images/docs/tools/vs-code-extension/adding-known-device.gif)
 
-3. (Optional) Set the device as the default device. Actions that don't specify the target device will be performed on the default device.
+3. (Optional) Set the device as the default device. Actions that don't specify the webOS device will be performed on the default device.
 
     ![Set the default device](/images/docs/tools/vs-code-extension/set-default-device.png)
 
@@ -82,7 +85,7 @@ Then the **Project Wizard** window will be displayed.
 
 | Item | Description |
 |------|-------------|
-| webOS Product | A target platform which this app/service will be installed on. |
+| webOS Product | A target platform which this app/service will be installed on. This option also changes the webOS Studio's profile. |
 | API Version | An API level of webOS. Different versions of the webOS platform support different levels of APIs. See [API Levels](https://www.webosose.org/docs/reference/ls2-api/ls2-api-index/#api-levels). |
 
 #### Second Screen
@@ -124,7 +127,7 @@ While you editing an app, You can preview the app UI before installing it.
 In the **APPS IN WORKSPACE** view, 
 
 1. Right-click the app.
-2. Click **Preview Application**.
+2. Click **Preview App**.
 3. The preview of the app is automatically launched on the IDE.
 
 ![Start the app preview](/images/docs/tools/vs-code-extension/starting-the-preview.png)
@@ -132,6 +135,10 @@ In the **APPS IN WORKSPACE** view,
 In the preview, you can modify the source codes and check the results instantly.
 
 ![Changing colors using auto reload](/images/docs/tools/vs-code-extension/auto-reload-changing-colors.gif)
+
+You can also change the resolution of the preview.
+
+![Resolution menu for the app preview](/images/docs/tools/vs-code-extension/app-preview-change-resolution.png)
 
 ### Packaging / Installing / Launching
 
@@ -143,7 +150,7 @@ Typical steps to install webOS apps are as follows:
 
 The above three steps are triggered sequentially by clicking the **Run App** button in the **APPS IN WORKSPACE** view.
 
-![The run app button](/images/docs/tools/vs-code-extension/run-app-button.jpg)
+![The run app button](/images/docs/tools/vs-code-extension/run-app-button.png)
 
 Then, enter the information about the app. If you use the default information, just press the Enter key.
 
@@ -171,8 +178,8 @@ You can debug apps or services that are installed on [the known devices](#adding
 
 #### Prerequisites
 
-- Apps or services are installed on target devices
-    - The target devices or emulators should be registered as the known devices.
+- Apps or services are installed on webOS devices
+    - The webOS devices or emulators should be registered as the known devices.
 - (For inspector debugging) Chromium-based browser
 
 #### Start a Debugging Session - App 
@@ -236,7 +243,7 @@ You can debug apps or services that are installed on [the known devices](#adding
         ![Debugging a service with IDE](/images/docs/tools/vs-code-extension/debugging-service-with-ide.png)
 
 {{< note >}}
-Every time you restart a debug session, the packaged app will be closed on the target device. If you want to check the behavior of the app, relaunch the app manually.
+Every time you restart a debug session, the packaged app will be closed on the webOS device. If you want to check the behavior of the app, relaunch the app manually.
 
 ![Relaunch the app](/images/docs/tools/vs-code-extension/relaunch-the-app.png)
 {{< /note >}}
@@ -280,7 +287,7 @@ The **PROBLEMS** panel shows the result messages.
 
 To clean the Lint messages from the panel, click **Clear Lint**.
 
-![Clear lint](/images/docs/tools/vs-code-extension/clear-lint.jpg)
+![Clear lint](/images/docs/tools/vs-code-extension/clear-lint.png)
 
 ## Other Features
 
@@ -294,8 +301,8 @@ Auto-completion suggests a list of available [LS2 APIs]({{< relref "introduction
 
 Key features are as follows:
 
-- Auto-completing API strings using the `Tab` key
-- Providing a list of available LS2 APIs (services, methods, and parameters)
+- Providing auto-completion of API strings using the `Tab` key
+- Listing available LS2 APIs (services, methods, and parameters)
 - Providing descriptions for each LS2 API
 - Providing links to API documentation webpages
 
@@ -360,6 +367,8 @@ Type `new LS2Request` to use [Enact webos Library](https://enactjs.com/docs/modu
       <li>
         <p>The config file is generated in your project folder. You can check the API level in the config file.</p>
         <img src="/images/docs/tools/vs-code-extension/generated-config-file.jpg" alt="Generated config file">
+        <p>If the API level in the config file is not supported by the current profile, an error notification will be displayed. Currently supported API levels in the OSE profile are 20, 21, 22, 23, 24, 25, 27, 28, 29. See also, <a href="/docs/reference/ls2-api/ls2-api-index/#api-levels">API Levels</a></p>
+        <img src="/images/docs/tools/vs-code-extension/api-level-config-mismatch.png" alt="Error pop-up for mismatch between API level and the current profile">
       </li>
     </ol>
   </dd>
@@ -367,41 +376,84 @@ Type `new LS2Request` to use [Enact webos Library](https://enactjs.com/docs/modu
 
 ### Package Manager
 
-Package Manager manages SDKs for webOS app developement. Users can install and uninstall SDKs with a simple click.
+Package Manager manages SDKs for webOS app development. Users can install and uninstall SDKs with a simple click.
 
 ![Package manager UI](/images/docs/tools/vs-code-extension/package-manager-ui.png)
 
-In order to launch the Package Manager on Windows, VS Code has to be opened in administrator permission. On Mac and Ubuntu, the system prompts you for the root user password during component installation.
+{{< note >}}
+- For Windows: Open VS Code with administrator permissions. 
+- For Mac and Ubuntu: the system prompts you for the root user password during component installation.
+{{< /note >}}
 
-When a user runs the Package Manager for the first time, a pop-up message for selecting directory will show up. Once the directory is set, all SDKs are installed in this directory.
+#### Prerequisites
+
+To use the Package Manager, you have to prepare the followings: 
+
+1. Set a directory for the Package manager
+2. (Only for emulator) Install required softwares
+
+##### Setting a Directory
+
+When the user runs webOS Studio for the first time, a pop-up for selecting a directory will show up. This directory stores configurations and downloaded files for the Package Manager.
 
 ![Configuring a directory for Package Manager](/images/docs/tools/vs-code-extension/configure-a-package-manager-directory.png)
 
-Some SDKs require prerequisite software before they are installed. In this case, Package Manager checks if the software is installed. If not, it will download, extract, and install the software. A list of prerequisites for each SDK is shown in the next section.
+To change the set directory, follow the below steps:
 
-#### Prerequisites
+1. Change the directory name or delete the directory. (We recommend changing the directory name.)
+2. Restart VS Code. Then the pop-up for selecting the directory will show up.
 
-The following table lists software prerequisites for each SDK.
+You can check the current set directory at the bottom of the Package Manager view.
 
-| SDK | Prerequisites |
-| ------- | ------------- |
-| webOS OSE Emulator | <ul> <li>Python: 3.0 or higher</li> <li>VirtualBox: 6.1.0 or higher</li> <li><a href="/docs/tools/sdk/emulator/virtualbox-emulator/emulator-launcher/">Emualtor Launcher</a>: 0.9.4 or higher</li> </ul> |
-| [Workflow Designer]({{< relref "workflow-designer-user-guide" >}}) | None |
-| Resource Monitor | None |
+![Checking the set directory](/images/docs/tools/vs-code-extension/check-the-set-directory.png)
 
-{{< note >}}
-For TV-related packages, see the [webOS TV developer website](https://webostv.developer.lge.com/).
-{{< /note >}}
+##### (Optional) Installing Required Softwares
+
+webOS OSE Emulator requires [Emulator Launcher]({{< relref "emulator-launcher" >}}). Install it before use the emualtor feature.
+
+{{< caution >}}
+webOS OSE Emulator doesn't support Apple Silicon Mac. (VirtualBox v6.1.x doesn't support Apple Silicon Mac.)
+{{< /caution >}}
+
+#### Package Auto Update
+
+From webOS Studio v2.1.0, the Package Manager automatically updates the package list.
+
+Every time the VS Code launches (the webOS Studio extension launches), the extension checks if the newer version of SDKs exist. If the newer version exists, the list will be updated automatically.
+
+![Updating a package list](/images/docs/tools/vs-code-extension/package-auto-update.png)
+
+This update is also reflected in the Package Manager component.
+
+![Updated package list](/images/docs/tools/vs-code-extension/update-package-list.png)
+
+#### Trouble Shooting Guide for Package Manager
+
+<dl>
+  <dt>Q) Failed to install emulator SDKs</dt>
+  <dd>
+    <p>If you got a below error, you have to manually install <a href="https://www.virtualbox.org/wiki/Download_Old_Builds_6_1">VirtualBox 6.1.x</a> and then try to install again.</p>
+    <img src="/images/docs/tools/vs-code-extension/virtualbox-installation-error.png" alt="Failed to install the VirtualBox">
+    <img src="/images/docs/tools/vs-code-extension/emulator-installation-failed.png" alt="Failed to install an emulator SDK using Package Manager">
+  </dd>
+</dl>
 
 ### Emulator Manager
 
-You can manage webOS emulator (VirtualBox) images in VS Code. By default, any webOS emulator images installed in VirtualBox are listed in the **EMULATOR MANAGER** view.
+You can manage webOS emulator ([VirtualBox](https://www.virtualbox.org/)) images in VS Code. By default, any webOS emulator images installed in VirtualBox are listed in the **EMULATOR MANAGER** view.
+
+{{< caution >}}
+webOS OSE Emulator doesn't support Apple Silicon Mac. (VirtualBox v6.1.x doesn't support Apple Silicon Mac.)
+{{< /caution >}}
 
 #### Prerequisites
 
-- [VirtualBox](https://www.virtualbox.org/) must be installed on your computer. (Supported version: 6.1 or higher)
-- webOS emulator image (`.vmdk`) is required. For how to make the image, refer to [Emulator User Guide](https://www.webosose.org/docs/tools/sdk/emulator/virtualbox-emulator/emulator-user-guide/).
-- [Emulator Launcher](https://www.webosose.org/docs/tools/sdk/emulator/virtualbox-emulator/emulator-launcher/) is required. Execute `webOS: Install Emulator Launcher` in the Command Palette (`Ctrl` + `Shift` + `P`).
+| Item | Description |
+| ---- | ----------- |
+| Python | 3.0 or higher | 
+| Emulator | [VirtualBox](https://www.virtualbox.org/) must be installed on your computer. (Required version: 6.1.x) |
+| Emulator Image | An emulator image for webOS OSE (`.vmdk`) is required. You can [download it from our GitHub](https://github.com/webosose/build-webos/releases) or [build it your own]({{< relref "building-webos-ose" >}}). |
+| Emulator Launcher | [Emulator Launcher]({{< relref "emulator-launcher" >}}) is also required. (v0.9.4 or higher) Execute `webOS: Install Emulator Launcher` in the Command Palette (`Ctrl` + `Shift` + `P`). |
 
 #### How to Manage Emulator Images
 
@@ -441,13 +493,109 @@ You can analyze the file size of the app or services in the IPK file.
 
 4. Click the **Compare IPK** button to load another IPK. (For example, the older version of the original file)
 
-    ![Compare IPK files](/images/docs/tools/vs-code-extension/compare-ipks.jpg)
+    ![Compare IPK files](/images/docs/tools/vs-code-extension/compare-ipks.png)
+
+    Each color means the following:
+
+    - Red: Files or directories have the same name but different size.
+    - Green: Files or directories exist on only one IPK.
+    - None: Files or directories are the same.
 
 ### Process Log
 
 webOS Studio has many internal utility commands including ares-cli, enact-cli, and VirtualBox utility. In the **OUTPUT** panel, you can check the output logs of these commands. Developers might find out helpful information to debug their apps or services.
 
 ![Process log in the output panel](/images/docs/tools/vs-code-extension/output-panel.png)
+
+#### Trouble Shooting Guide for Process Log
+
+<dl>
+  <dt>Q) Log messages are broken</dt>
+  <dd>
+    <p>If you get broken log messages (see the below screenshot), use Unicode UTF-8 on your computer.</p>
+    <img src="/images/docs/tools/vs-code-extension/broken-logs.png" alt="Broken log messages">
+  </dd>
+</dl>
+
+### Log Viewer
+
+The Log Viewer displays log messages of the webOS device. 
+
+![Log Viewer](/images/docs/tools/vs-code-extension/log-viewer.png)
+
+#### Features
+
+Key features are as follows:
+
+- Displaying real-time log messages of the webOS device.
+- Supporting multiple log formats ([Journal log]({{< relref "viewing-logs-journald" >}}) or [PM log]({{< relref "viewing-logs-pmlogd" >}}))
+- Filtering and searching log messages
+- Exporting/Importing the log messages
+
+#### Displaying Real-Time Logs
+
+To start the real-time logs, execute `webOS: Start Log Viewer` in the Command Palette (`Ctrl` + `Shift` + `P`).
+
+![Starting the Log Viewer](/images/docs/tools/vs-code-extension/start-log-viewer.png)
+
+{{< note >}}
+Log Viewer receives log messages from the default device. (See the step 3 of the [Adding Known Devices](#adding-known-devices) section.)
+
+For Emulator, use `root` for its user name. If your user name is not `root`, change it using the **Modify Device** button.
+
+![Modifying the Emulator username](/images/docs/tools/vs-code-extension/modify-emulator-username.png)
+{{< /note >}}
+
+Then the **LOG VIEWER** panel will be displayed on the bottom.
+
+![Log Viewer panel](/images/docs/tools/vs-code-extension/log-viewer-panel.png)
+
+To visualize the priority of the log messages, the Log Viewer displays log messages in three colors: white, orange, and red.
+
+- White (default): Normal log messages
+    
+    ![White log](/images/docs/tools/vs-code-extension/log-viewer-white-log.png)
+
+- Orange: Warning messages
+    
+    ![Orange log](/images/docs/tools/vs-code-extension/log-viewer-orange-log.png)
+
+- Red: Emergency, alert, critical, and error log messages
+    
+    ![Red log](/images/docs/tools/vs-code-extension/log-viewer-red-log.png)
+
+#### Switching the Log format
+
+If you want to switch the log format from PM log to Journal log, click the **Switch to Journal log** button as follows (vice versa):
+
+![Switching the log format](/images/docs/tools/vs-code-extension/switch-the-log-format.png)
+
+This job will reboot the webOS device and take a few minutes.
+
+#### Filtering and Seaching Logs
+
+Each column provides the filter option. You can filter out log messages you don't want to.
+
+![Filtering log messages](/images/docs/tools/vs-code-extension/filter-logs.png)
+
+Especially on the **Message** column, you can combine keywords using **OR** and **AND** options. These options filter out log messages which don't contain the keywords you entered.
+
+![Filtering the message column](/images/docs/tools/vs-code-extension/filter-message-column.png)
+
+To search log messages, enter a keyword to the search box.
+
+![Searching log messages](/images/docs/tools/vs-code-extension/search-logs.png)
+
+#### Import and Export Logs
+
+You can import or export logs as follows:
+
+![Import and export log messages](/images/docs/tools/vs-code-extension/import-export-logs.png)
+
+| Action | Description | 
+| ------ | ----------- |
+| Import&nbsp;Log | Import webOS log file (`.zip`). |
+| Export&nbsp;Log | Export log messages in the current **Log Viewer** panel. Output files will be generated with `.zip` and `.weboslog` extensions. |
 
 ### Resource Monitor
 
@@ -468,7 +616,7 @@ Developers can set the default dashboad for the Resource Monitor, which is calle
 2. To launch the Resource Monitor, do the one of the followings:
 
     - In the **QUICK LAUNCHER** view, click the **Resource Monitoring**.
-    - Execute `webOS OSE: Launch Resource Monitoring` in the **Command Palatte**.
+    - Execute `webOS OSE: Launch Resource Monitoring` in the **Command Palette**.
     
     {{< note >}}
     You can have multiple Resource Monitor tabs running at once.
@@ -521,7 +669,7 @@ Grafana provides many user-made dashboards. These dashboards can be searched and
 
     ![Go to the import menu](/images/docs/tools/vs-code-extension/go-to-import-menu.png)
 
-2. Enter the ID of dashboards and click the **Load** button. <br />Recommeded IDs are 928, 5955, 2381.
+2. Enter the ID of dashboards and click the **Load** button. <br />Recommended IDs are 928, 5955, 2381.
 
     ![search the dashboard](/images/docs/tools/vs-code-extension/search-dashboards.png)
 
