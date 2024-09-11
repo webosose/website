@@ -1,6 +1,6 @@
 ---
 title: Overview
-date: 2020-09-29
+date: 2024-09-10
 weight: 10
 toc: true
 ---
@@ -28,7 +28,7 @@ For details, see [Architecture Overview]({{< relref "architecture-overview" >}})
 
 In a webOS system, web apps are categorized by the packaging/delivery method as follows:
 
-- **External Web App**
+- **Downloadable Web App**
     - The web app is installed on the webOS target device.
     - This approach helps 3<sup>rd</sup> party developers to create a web app running on webOS devices.
 - **Built-in Web App**

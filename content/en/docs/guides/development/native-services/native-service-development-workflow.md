@@ -1,15 +1,15 @@
 ---
 title: Native Service Development Workflow
-date: 2020-03-13
+date: 2024-09-10
 weight: 20
 toc: true
 ---
 
 This page outlines the steps to develop native services for webOS Open Source Edition (OSE).
 
-## External Native Services
+## Downloadable Native Services
 
-Developing an external native service requires the following steps:
+Developing a downloadable native service requires the following steps:
 
 1. Implement
 
@@ -34,7 +34,7 @@ Developing an external native service requires the following steps:
     - Installing the service on the target using the CLI
     - Launching the dummy app or entering commands using a terminal
 
-For a step-by-step tutorial with detailed instructions, see [Developing External Native Services]({{< relref "developing-external-native-services" >}}).
+For a step-by-step tutorial with detailed instructions, see [Developing Downloadable Native Services]({{< relref "developing-downloadable-native-services" >}}).
 
 ## Built-in Native Services
 

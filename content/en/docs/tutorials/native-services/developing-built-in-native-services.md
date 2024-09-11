@@ -1,6 +1,7 @@
 ---
-title: Developing Built-in Native Services
-date: 2024-01-29
+title: Built-in Native Services
+display_title: Developing Built-in Native Services
+date: 2024-09-10
 weight: 20
 toc: true
 ---

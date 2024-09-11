@@ -30,7 +30,7 @@ $ ares-install ./com.dual.webapp.sample_1.0.0_all.ipk -d [your-target-device]
 ```
 
 {{< note >}}
-For more details on the above procedure, refer to [Developing External Web Apps]({{< relref "developing-external-web-apps" >}}).
+For more details on the above procedure, refer to [Developing Downloadable Web Apps]({{< relref "developing-downloadable-web-apps" >}}).
 {{< /note >}}
 
 If the installation succeed, the app card of the installed sample appears in Home Launcher.

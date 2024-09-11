@@ -1,15 +1,15 @@
 ---
 title: Native App Development Workflow
-date: 2020-01-17
+date: 2024-09-10
 weight: 20
 toc: true
 ---
 
 This page outlines the steps to develop native apps for webOS Open Source Edition (OSE).
 
-## External Native Apps
+## Downloadable Native Apps
 
-Developing an external native app requires the following steps:
+Developing a downloadable native app requires the following steps:
 
 1. Implement
 
@@ -33,7 +33,7 @@ Developing an external native app requires the following steps:
     - Installing the app on the target using the CLI
     - Launching the app
 
-For a step-by-step tutorial with detailed instructions, see [Developing External Native Apps]({{< relref "developing-external-native-apps" >}}).
+For a step-by-step tutorial with detailed instructions, see [Developing Downloadable Native Apps]({{< relref "developing-downloadable-native-apps" >}}).
 
 ## Built-in Native Apps
 

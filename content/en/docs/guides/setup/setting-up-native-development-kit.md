@@ -1,11 +1,11 @@
 ---
 title: Native Development Kit Setup
-date: 2023-03-28
+date: 2024-09-10
 weight: 90
 toc: true
 ---
 
-To build [external native apps]({{< relref "developing-external-native-apps" >}}) or [services]({{< relref "developing-external-native-services" >}}) for webOS Open Source Edition (OSE), you need to install Native Development Kit (NDK) on your computer.
+To build [downloadable native apps]({{< relref "developing-downloadable-native-apps" >}}) or [services]({{< relref "developing-downloadable-native-services" >}}) for webOS Open Source Edition (OSE), you need to install Native Development Kit (NDK) on your computer.
 
 The NDK is a set of tools that include toolchains, libraries, and header files. This guide describes how to build and install the NDK on your computer.
 
@@ -94,7 +94,7 @@ Output messages might or might not be displayed depending on your computer's set
 
 ## Next Steps
 
-Now you ready to build external native apps or services. Check the following guides:
+Now you ready to build downloadable native apps or services. Check the following guides:
 
-- [Developing External Native Apps]({{< relref "developing-external-native-apps">}})
-- [Developing External Native Services]({{< relref "developing-external-native-services">}})
+- [Developing Downloadable Native Apps]({{< relref "developing-downloadable-native-apps">}})
+- [Developing Downloadable Native Services]({{< relref "developing-downloadable-native-services">}})

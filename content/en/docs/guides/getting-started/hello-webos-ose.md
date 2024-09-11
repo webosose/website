@@ -1,6 +1,6 @@
 ---
 title: "Hello, webOS OSE!"
-date: 2022-12-27
+date: 2024-09-10
 weight: 10
 toc: true
 ---
@@ -40,18 +40,18 @@ You need to create an image for the desired target and prepare the target enviro
 
 ## Your First webOS OSE App
 
-If you finished setting up the environment, it's time to start developing your first app running on webOS OSE, which will be an external web app.
+If you finished setting up the environment, it's time to start developing your first app running on webOS OSE, which will be a downloadable web app.
 
 ### Install CLI
 
-To develop an external web app, you will use Command-Line Interface (CLI), which is provided as a part of webOS OSE SDK. You can also use CLI to develop external JavaScript (JS) services.
+To develop a downloadable web app, you will use Command-Line Interface (CLI), which is provided as a part of webOS OSE SDK. You can also use CLI to develop downloadable JavaScript (JS) services.
 
 Proceed to [install CLI]({{< relref "cli-user-guide#installing-cli" >}}) for your operating system.
 
-### Develop the External Web App
+### Develop the Downloadable Web App
 
-Follow the steps described in the [Developing External Web Apps]({{< relref "developing-external-web-apps" >}}) tutorial.
+Follow the steps described in the [Developing Downloadable Web Apps]({{< relref "developing-downloadable-web-apps" >}}) tutorial.
 
 ## What's Next
 
-* If you are interested in developing an external JS service, which will be packaged along with the web app you've just created, check the [Developing External JS Services]({{< relref "developing-external-js-services" >}}) tutorial.
+* If you are interested in developing a downloadable JS service, which will be packaged along with the web app you've just created, check the [Developing Downloadable JS Services]({{< relref "developing-downloadable-js-services" >}}) tutorial.

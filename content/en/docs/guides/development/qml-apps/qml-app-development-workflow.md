@@ -1,19 +1,19 @@
 ---
 title: QML App Development Workflow
-date: 2020-01-16
+date: 2024-09-10
 weight: 20
 toc: true
 ---
 
 This page outlines the steps to develop QML apps for webOS Open Source Edition (OSE).
 
-## External QML Apps
+## Downloadable QML Apps
 
-To develop an external QML app, the Command-Line Interface (CLI) tool is used.
+To develop a downloadable QML app, the Command-Line Interface (CLI) tool is used.
 
 In general, the steps described in [CLI Workflow]({{< relref "cli-user-guide#cli-workflow" >}}) are applied.
 
-For a step-by-step tutorial, see [Developing External QML Apps]({{< relref "developing-external-qml-apps" >}}).
+For a step-by-step tutorial, see [Developing Downloadable QML Apps]({{< relref "developing-downloadable-qml-apps" >}}).
 
 ## Built-in QML Apps
 

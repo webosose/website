@@ -1,6 +1,6 @@
 ---
 title: Security Guide
-date: 2022-12-02
+date: 2024-09-10
 weight: 40
 toc: true
 ---
@@ -92,8 +92,8 @@ The following table shows the files related to ACG and trust level.
         <td rowspan="2"><p>No need to set up. Trust level is set to <code>OEM</code> automatically.</p></td>
       </tr>
       <tr>
-        <td><p>External Service</p></td>
-        <td><p>Set up the <code>requiredPermissions</code> property in <a href="/docs/guides/development/configuration-files/appinfo-json/">appinfo.json</a> of the app packaged with the external service.</p></td>
+        <td><p>Downloadable Service</p></td>
+        <td><p>Set up the <code>requiredPermissions</code> property in <a href="/docs/guides/development/configuration-files/appinfo-json/">appinfo.json</a> of the app packaged with the downloadable service.</p></td>
       </tr>
       <tr>
         <td><p>Built-in Service</p></td>
@@ -103,13 +103,13 @@ The following table shows the files related to ACG and trust level.
   </table>
 </div>
 
-### For Apps and External Services
+### For Apps and Downloadable Services
 
-If you develop apps or external services, all you need to do is set up the `appinfo.json` file.
+If you develop apps or downloadable services, all you need to do is set up the `appinfo.json` file.
 
 1. Make a list of services --- which can be LS2 APIs or custom services.
 2. Find ACG values for each service. See [Appendix. How to Find ACG Values of APIs](#appendix-how-to-find-acg-values-of-apis).
-3. Add the ACG values to the `requiredPermissions` property in `appinfo.json`. In case of external services, use the `appinfo.json` file of the app packaged together with the service.
+3. Add the ACG values to the `requiredPermissions` property in `appinfo.json`. In case of downloadable services, use the `appinfo.json` file of the app packaged together with the service.
 4. Then app installer service automatically generates the configuration files during installation of your app or service.
 
 The following example shows how to set up an ACG value at the `appinfo.json` file. This app can access to services whose ACG value is `acg3`.

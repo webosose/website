@@ -1,9 +1,43 @@
 ---
-title: Developing Built-in Web Apps
-date: 2022-12-02
+title: Built-in Web Apps
+display_title: Developing Built-in Web Apps
+date: 2024-09-10
 weight: 20
 toc: true
 ---
+
+A **built-in web app** is a web app that is installed with the webOS OSE platform at build time.
+
+{{< note "Downloadable vs. Built-In" >}}
+In webOS OSE, apps and services are divided into two categories: downloadable and built-in.
+
+- **Downloadable** apps/services are installed by appinstalld service. This service automatically generates several configurations for the apps/services. (such as trust level)
+- **Built-in** apps/services are built and installed by developers. Developers can **customize** configurations to suit their needs.
+{{< /note >}}
+
+This tutorial shows a step-by-step guide for creating a built-in web app from scratch.
+
+## Prerequisites
+
+Before you begin, prepare the followings:
+
+- [webOS OSE platform source code](https://github.com/webosose/build-webos)
+- [Samples repository](https://github.com/webosose/samples)
+
+{{< note >}}
+If you already prepared the above things, you can skip this section.
+{{< /note >}}
+
+### Platform Source Code
+
+Since the built-in web app is installed at build time, you need the webOS OSE platform source code.
+
+Download the platform source code.
+
+``` bash
+git clone https://github.com/webosose/build-webos.git
+```
+
 
 A built-in web app is a web app that is packaged with webOS OSE platform at a build time. Built-in web apps have the following features:
 

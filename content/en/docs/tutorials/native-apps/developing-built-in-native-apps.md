@@ -1,6 +1,7 @@
 ---
-title: Developing Built-in Native Apps
-date: 2023-09-27
+title: Built-in Native Apps
+display_title: Developing Built-in Native Apps
+date: 2024-09-11
 weight: 20
 toc: true
 ---

@@ -1,7 +1,7 @@
 ---
 title: User Guide
 display_title: Command-Line Interface User Guide
-date: 2024-07-18
+date: 2024-09-10
 weight: 10
 toc: true
 ---
@@ -152,7 +152,7 @@ $ ares-config --profile ose
 
 ## How to Use
 
-With the CLI, you can develop various types of external apps or services. For detailed instructions, refer to the each tutorial.
+With the CLI, you can develop various types of downloadable apps or services. For detailed instructions, refer to the each tutorial.
 
 <div class="table-container">
   <table class="table is-bordered is-fullwidth">
@@ -164,33 +164,33 @@ With the CLI, you can develop various types of external apps or services. For de
     </thead>
     <tbody>
       <tr>
-        <td><p>External Web Apps</p></td>
+        <td><p>Downloadable Web Apps</p></td>
         <td>
-          <p>See the <a href="{{< relref "developing-external-web-apps">}}">Developing External Web Apps</a>.</p>
+          <p>See the <a href="{{< relref "developing-downloadable-web-apps">}}">Developing Downloadable Web Apps</a>.</p>
         </td>
       </tr>
       <tr>
-        <td><p>External JS Services</p></td>
+        <td><p>Downloadable JS Services</p></td>
         <td>
-          <p>See the <a href="{{< relref "developing-external-js-services">}}">Developing External JS Services</a>.</p>
+          <p>See the <a href="{{< relref "developing-downloadable-js-services">}}">Developing Downloadable JS Services</a>.</p>
         </td>
       </tr>
       <tr>
-        <td><p>External QML Apps</p></td>
+        <td><p>Downloadable QML Apps</p></td>
         <td>
-          <p>See the <a href="{{< relref "developing-external-qml-apps">}}">Developing External QML Apps</a>.</p>
+          <p>See the <a href="{{< relref "developing-downloadable-qml-apps">}}">Developing Downloadable QML Apps</a>.</p>
         </td>
       </tr>
       <tr>
-        <td><p>External Native Apps</p></td>
+        <td><p>Downloadable Native Apps</p></td>
         <td>
-          <p>See the <a href="{{< relref "developing-external-native-apps">}}">Developing External Native Apps</a>.</p>
+          <p>See the <a href="{{< relref "developing-downloadable-native-apps">}}">Developing Downloadable Native Apps</a>.</p>
         </td>
       </tr>
       <tr>
-        <td><p>External Native Services</p></td>
+        <td><p>Downloadable Native Services</p></td>
         <td>
-          <p>See the <a href="{{< relref "developing-external-native-services">}}">Developing External Native Services</a>.</p>
+          <p>See the <a href="{{< relref "developing-downloadable-native-services">}}">Developing Downloadable Native Services</a>.</p>
         </td>
       </tr>
     </tbody>
@@ -966,19 +966,19 @@ Here are some examples of the different uses:
     ares-package -e "testCode1" -e "README.md" -e "*.txt" samplePrj
     ```
 
-* Creating a package file with an external JS service
+* Creating a package file with a downloadable JS service
 
     ```shell
     ares-package sampleApp sampleService
     ```
 
-* Creating a package file with multiple external JS services
+* Creating a package file with multiple downloadable JS services
 
     ```shell
     ares-package sampleApp sampleServiceA sampleServiceB
     ```
 
-* Creating a package file with an external JS service (using absolute path)
+* Creating a package file with a downloadable JS service (using absolute path)
 
     ```shell
     # Windows

@@ -1,6 +1,6 @@
 ---
 title: Bring-Up Overview
-date: 2024-03-18
+date: 2024-09-10
 weight: 10
 toc: true
 ---
@@ -59,7 +59,7 @@ Once you've done the bring-up process, you can go through the following checklis
 
 1. Swipe up the display and check whether Home Launcher is displayed.
 2. Click the apps in Home Launch and check whether the apps are launched properly.
-3. Check whether the sample native app is working properly. For details on how to install and run the sample app, see [Developing External Native Apps](/docs/tutorials/native-apps/developing-external-native-apps/).
+3. Check whether the sample native app is working properly. For details on how to install and run the sample app, see [Developing Downloadable Native Apps](/docs/tutorials/native-apps/developing-downloadable-native-apps/).
 
 {{< note >}}
 You can verify the basic operation of LSM, WAM, System and Application Manager (SAM) using the following command:

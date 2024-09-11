@@ -1,7 +1,7 @@
 ---
 title: Release Notes
 display_title: Command-Line Interface Release Notes
-date: 2024-07-17
+date: 2024-09-10
 weight: 20
 toc: true
 two_depth_toc: true
@@ -429,7 +429,7 @@ This version is compatible with **webOS OSE 2.0.0**. See below for the new, chan
 ### Known Issues
 
 * When you install or uninstall an app using `ares-install`, a running Home Launcher disappears from the screen. To make the app listed on Home Launcher, you must reboot the target device.
-    * After rebooting the target device, the external app is listed on Home Launcher, but the icon of the app is not displayed.
+    * After rebooting the target device, the downloadable app is listed on Home Launcher, but the icon of the app is not displayed.
 
 ## v1.9.4 (June 2019)
 

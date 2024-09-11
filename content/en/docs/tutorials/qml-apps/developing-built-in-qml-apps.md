@@ -1,6 +1,7 @@
 ---
-title: Developing Built-in QML Apps
-date: 2022-12-02
+title: Built-in QML Apps
+display_title: Developing Built-in QML Apps
+date: 2024-09-10
 weight: 20
 toc: true
 ---

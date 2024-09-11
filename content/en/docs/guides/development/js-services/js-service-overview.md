@@ -1,6 +1,6 @@
 ---
 title: Overview
-date: 2018-05-12
+date: 2024-09-10
 weight: 10
 toc: true
 ---
@@ -30,7 +30,7 @@ Node.js was originally created as a framework for server-side JavaScript applica
 
 In a webOS system, JS services are categorized by the packaging/delivery method as follows:
 
-- **External JS Service**
+- **Downloadable JS Service**
     - The JS service is installed on the webOS target device.
     - This approach helps 3<sup>rd</sup> party developers to create a JS service running on webOS devices.
 - **Built-in JS Service**
@@ -38,5 +38,5 @@ In a webOS system, JS services are categorized by the packaging/delivery method 
     - This approach is used by platform developers and contributors to add a JS service that enhances the functionality of the platform.
 
 {{< note >}}
-Currently, an external JS service must be packaged within a web app.
+Currently, a downloadable JS service must be packaged within a web app.
 {{< /note >}}

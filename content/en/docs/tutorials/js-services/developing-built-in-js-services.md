@@ -1,6 +1,7 @@
 ---
-title: Developing Built-in JS Services
-date: 2024-01-29
+title: Built-in JS Services
+display_title: Developing Built-in JS Services
+date: 2024-09-10
 weight: 20
 toc: true
 ---
@@ -157,7 +158,7 @@ This section describes how to prepare the configuration files required to build 
 
 ### package.json
 
-This file configures the service metadata and points to the main service file. It is required for packaging (related with Node.js) and must be located in the project root directory. For more details, see [Creating JS services]({{< relref "developing-external-js-services#creating-js-services" >}}).
+This file configures the service metadata and points to the main service file. It is required for packaging (related with Node.js) and must be located in the project root directory. For more details, see [Creating JS services]({{< relref "developing-downloadable-js-services#creating-js-services" >}}).
 
 {{< code "package.json" >}}
 ``` json

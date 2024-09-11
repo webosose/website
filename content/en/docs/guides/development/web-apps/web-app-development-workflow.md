@@ -1,19 +1,19 @@
 ---
 title: Web App Development Workflow
-date: 2018-05-12
+date: 2024-09-10
 weight: 20
 toc: true
 ---
 
 This page outlines the steps to develop web apps for webOS Open Source Edition (OSE).
 
-## External Web Apps
+## Downloadable Web Apps
 
-To develop an external web app, the Command-Line Interface (CLI) tool is used.
+To develop a downloadable web app, the Command-Line Interface (CLI) tool is used.
 
 In general, the steps described in [CLI Workflow]({{< relref "cli-user-guide#cli-workflow" >}}) are applied.
 
-For a step-by-step tutorial, see [Developing External Web Apps]({{< relref "developing-external-web-apps" >}}).
+For a step-by-step tutorial, see [Developing Downloadable Web Apps]({{< relref "developing-downloadable-web-apps" >}}).
 
 ## Built-in Web Apps
 

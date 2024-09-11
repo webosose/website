@@ -1,19 +1,19 @@
 ---
 title: JS Service Development Workflow
-date: 2018-05-12
+date: 2024-09-10
 weight: 20
 toc: true
 ---
 
 This page outlines the steps to develop JS services for webOS Open Source Edition (OSE).
 
-## External JS Services
+## Downloadable JS Services
 
-To develop an external JS service, the Command-Line Interface (CLI) tool is used.
+To develop a downloadable JS service, the Command-Line Interface (CLI) tool is used.
 
 In general, the steps described in [CLI Workflow]({{< relref "cli-user-guide#cli-workflow" >}}) are applied.
 
-For a step-by-step tutorial, see [Developing External JS Services]({{< relref "developing-external-js-services" >}}).
+For a step-by-step tutorial, see [Developing Downloadable JS Services]({{< relref "developing-downloadable-js-services" >}}).
 
 ## Built-in JS Services
 
