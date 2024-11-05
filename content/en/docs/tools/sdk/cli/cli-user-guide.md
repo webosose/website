@@ -1,7 +1,7 @@
 ---
 title: User Guide
 display_title: Command-Line Interface User Guide
-date: 2024-09-10
+date: 2024-09-20
 weight: 10
 toc: true
 ---
@@ -454,7 +454,7 @@ ares --help|-h
         <td><p>None</p></td>
         <td>
           <p>Prints help messages of <code>COMMAND</code>.</p> 
-          <p><code>COMMAND</code> is entered using postfix of the <code>ares</code> commands. For more details, see <a href="#examples">Examples</a>.</p></td>
+          <p><code>COMMAND</code> is entered using postfix of the <code>ares</code> commands. For more details, see <a href="#examples-1">Examples</a>.</p></td>
       </tr>
       <tr>
         <td><p>-h, --help</p></td>
@@ -595,7 +595,7 @@ ares-generate --help|-h
             <li>qmlapp</li>
             <li>qmlappinfo</li>
           </ul>
-          <p>For more information about each template, see <a href="#parameters">Parameters</a>.</p>
+          <p>For more information about each template, see <a href="#parameters-2">Parameters</a>.</p>
         </td>
       </tr>
       <tr>
@@ -728,7 +728,7 @@ ares-generate --help|-h
         <td><p>SERVICE_NAME</p></td>
         <td>
           <p>The ID of a service</p> 
-          <p>This ID should be a sub-domain of the app ID to which the service belongs. For more details, see <a href="#examples-1">Examples</a>.</p>
+          <p>This ID should be a sub-domain of the app ID to which the service belongs. For more details, see <a href="#examples-2">Examples</a>.</p>
         </td>
       </tr>
       <tr>
@@ -846,7 +846,7 @@ ares-package --help|-h
       <tr>
         <td><p>-e, --app-exclude</p></td>
         <td><p>EX_DIR</p></td>
-        <td><p>Excludes directories or files when you package the source code. For more details on how to use this option, see <a href="#examples-2">Examples</a>.</p></td>
+        <td><p>Excludes directories or files when you package the source code. For more details on how to use this option, see <a href="#examples-3">Examples</a>.</p></td>
       </tr>
       <tr>
         <td><p>-r, --rom</p></td>
@@ -1078,17 +1078,17 @@ ares-setup-device --help|-h
       <tr>
         <td><p>-a, --add</p></td>
         <td><p>TARGET_NAME</p></td>
-        <td><p>Adds a target device with the specified information. For more details, see <a href="#examples-3">Examples</a>.</p></td>
+        <td><p>Adds a target device with the specified information. For more details, see <a href="#examples-4">Examples</a>.</p></td>
       </tr>
       <tr>
         <td><p>-m, --modify</p></td>
         <td><p>TARGET_NAME</p></td>
-        <td><p>Modifies target device's information except a target device's name. For more details, see <a href="#examples-3">Examples</a>.</p></td>
+        <td><p>Modifies target device's information except a target device's name. For more details, see <a href="#examples-4">Examples</a>.</p></td>
       </tr>
       <tr>
         <td><p>-i, --info</p></td>
         <td><p>DEVICE_INFO</p></td>
-        <td><p>Sets information for the target device. For more details on <code>DEVICE_INFO</code>, see <a href="#parameter-2">Parameters</a>.</p></td>
+        <td><p>Sets information for the target device. For more details on <code>DEVICE_INFO</code>, see <a href="#parameters-4">Parameters</a>.</p></td>
       </tr>
       <tr>
         <td><p>-r, --remove</p></td>
@@ -1153,7 +1153,7 @@ ares-setup-device --help|-h
       <tr>
         <td><p>DEVICE_INFO</p></td>
         <td>
-          <p>Information of the target device in the format of <code>"key=value"</code> or a JSON-type string: <code>"{'key1':'value1', 'key2':'value2', ...}"</code>. For more details, see <a href="#examples-3">Examples</a>.</p>
+          <p>Information of the target device in the format of <code>"key=value"</code> or a JSON-type string: <code>"{'key1':'value1', 'key2':'value2', ...}"</code>. For more details, see <a href="#examples-4">Examples</a>.</p>
           <p>The available keys are as follows:</p>
           <ul>
             <li>
@@ -1611,7 +1611,7 @@ ares-launch --help|-h
       <tr>
         <td><p>-p, --params</p></td>
         <td><p>PARAMS</p></td>
-        <td><p>Launches an application with specified parameters. For more details, see <code>PARAMS</code> in <a href="#parameters-4">Parameters</a> and <a href="#examples-5">Examples</a>.</p></td>
+        <td><p>Launches an application with specified parameters. For more details, see <code>PARAMS</code> in <a href="#parameters-6">Parameters</a> and <a href="#examples-6">Examples</a>.</p></td>
       </tr>
       <tr>
         <td><p>-H, --hosted</p></td>
@@ -2733,7 +2733,7 @@ Here are some examples of the different uses:
 This command shows, filters, and saves logs collected by journald.
 
 {{< note >}}
-To display logs and help messages properly, you must set the logging daemon of CLI to same as that of the target device. For more details on how to check and change the logging daemon, see `--current-daemon` and `--switch-daemon` in [Options](#options-12).
+To display logs and help messages properly, you must set the logging daemon of CLI to same as that of the target device. For more details on how to check and change the logging daemon, see `--current-daemon` and `--switch-daemon` in [Options](#options-13).
 {{</ note >}}
 
 For more information about analyzing journal logs, see [Viewing Logs when journald is Enabled]({{< relref "viewing-logs-journald" >}}).
@@ -3024,7 +3024,7 @@ Here are some examples of the different uses:
 This command shows, filters, and saves logs collected by pmlogd.
 
 {{< note >}}
-To print logs and help messages properly, you must set the logging daemon of CLI to same as that of the target device. For more details on how to check and change the logging daemon, see `--current-daemon` and `--switch-daemon` in [Options](#options-13).
+To print logs and help messages properly, you must set the logging daemon of CLI to same as that of the target device. For more details on how to check and change the logging daemon, see `--current-daemon` and `--switch-daemon` in [Options](#options-14).
 {{</ note >}}
 
 For more information about analyzing pmlog logs, see [Viewing Logs when pmlogd is Enabled]({{< relref "viewing-logs-pmlogd" >}}).
