@@ -1,7 +1,7 @@
 ---
 title: User Guide
 display_title: VirtualBox Emulator User Guide
-date: 2024-07-26
+date: 2024-10-14
 weight: 10
 toc: true
 ---
@@ -107,7 +107,7 @@ Download the same version of Extension Pack as your installed version of Virtual
 Build the webOS OSE image for the emulator in [Building webOS OSE]({{< relref "building-webos-ose" >}}).
 
 * Make sure you set up the build for the emulator at the [configuration step]({{< relref "building-webos-ose#configuring-the-build" >}}).
-* After the build is completed, check that the resulting image (`webos-image-qemux86-64-master-*.wic.vmdk`) has been created properly.
+* After the build is completed, check that the resulting image (`webos-image-qemux86-64-master-*.wic.vmdk.gz`) has been created properly.
 
 ## Setting Up the Virtual Machine in VirtualBox
 
@@ -308,7 +308,7 @@ vboxmanage setextradata webos-image GUI/ScaleFactor <scale_factor>
 To attach the webOS OSE emulator image (`.vmdk`) to the virtual machine, type:
 
 ```shell
-vboxmanage storageattach webos-image --storagectl webos-image --type hdd --port 0 --device 0 --medium </path/to/image/webos-image-qemux86-64-master-**.wic.vmdk>
+vboxmanage storageattach webos-image --storagectl webos-image --type hdd --port 0 --device 0 --medium </path/to/image/webos-image-qemux86-64-master-**.wic.vmdk.gz>
 ```
 
 To launch the virtual machine, type the following in a command shell:

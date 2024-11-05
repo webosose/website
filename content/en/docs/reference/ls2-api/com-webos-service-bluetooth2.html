@@ -1,7 +1,7 @@
 ---
 title: com.webos.service.bluetooth2
-date: 2024-05-27
-api_level: 29
+date: 2024-10-30
+api_level: 30
 weight: 110
 toc: true
 ---
@@ -1462,12 +1462,12 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Boolean</td>
             <td>
               <p>Indicates if subscribed to get notifications.</p>
+              <p><strong>Note:</strong> Set&nbsp;to&nbsp;<strong>true</strong>, since caller must subscribe to this method.</p>
               <p>Possible values are:</p>
               <ul>
-                <li><strong>true:</strong>&nbsp;Subscribed for notifications.</li>
-                <li><strong>false:</strong>&nbsp;Not subscribed.</li>
+                <li>true: Subscribed.</li>
+                <li>false: Not subscribed.</li>
               </ul>
-              <p><strong>Note:</strong> Set&nbsp;<strong>subscribe</strong> to&nbsp;<strong>true</strong>.&nbsp;The caller must subscribe to this method.</p>
             </td>
           </tr>
         </tbody>
@@ -1499,8 +1499,8 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Indicates the status of the operation.</p>
               <p>Possible values are:</p>
               <ul>
-                <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
-                <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. Check the method's 'Error Codes' section for failure details (errorCode and/or errorText).</li>
               </ul>
             </td>
           </tr>
@@ -2767,7 +2767,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>adapters</td>
             <td>Required</td>
-            <td>Object array: <a href="#object-bluetooth2adapterstatus">bluetooth2AdapterStatus</a></td>
+            <td>Object array: <a href="#object-bluetooth2adapter">bluetooth2Adapter</a></td>
             <td>
               <p>Contains information of all the adapters currently available in the system.</p>
               <p><strong>Note:</strong></p>
@@ -2781,7 +2781,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>errorCode</td>
             <td>Optional</td>
-            <td>String</td>
+            <td>Number</td>
             <td>
               <p>The error code for the failed operation.</p>
             </td>
@@ -2827,10 +2827,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       <p style="color:white;margin:5px;"><b>Example code</b></p>
     </div>
     <div class="code-bg-grey">
-      <p># luna-send -i -f luna://com.webos.service.bluetooth2/adapter/queryAvailable &#39;{<br />
-        &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;subscribe&quot;:true<br />
-        }&#39;
-      </p>
+      <p># luna-send -i -f luna://com.webos.service.bluetooth2/adapter/queryAvailable &#39;{&quot;subscribe&quot;:true}&#39;</p>
       <p>Response:</p>
       <p>{&nbsp;&nbsp;<br />
         &nbsp;&nbsp;&nbsp;&quot;subscribed&quot;:false,<br />
@@ -2850,7 +2847,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
         }
       </p>
-      <p>Subscription return:&nbsp;</p>
+      <p>Subscription response:&nbsp;</p>
       <p>{&nbsp;&nbsp;<br />
         &nbsp;&nbsp;&nbsp;&quot;subscribed&quot;:false,<br />
         &nbsp;&nbsp;&nbsp;&quot;adapters&quot;:[&nbsp;&nbsp;<br />
@@ -4052,7 +4049,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>adapterAddress</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>String</td>
             <td>
               <p>Indicates the address of the adapter.</p>
@@ -4060,7 +4057,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>subscribed</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>Boolean</td>
             <td>
               <p>Indicates if subscribed to get notifications.</p>
@@ -4124,7 +4121,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>subscribed</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>Boolean</td>
             <td>
               <p>Indicates if subscribed to get notifications.</p>
@@ -4138,7 +4135,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>address</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>String</td>
             <td>
               <p>Indicates the address (bdaddr) of the remote device.</p>
@@ -4146,7 +4143,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>adapterAddress</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>String</td>
             <td>
               <p>Indicates the address of the adapter.</p>
@@ -4154,7 +4151,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>requestId</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>String</td>
             <td>
               <p>Indicates the unique ID of a request.</p>
@@ -4196,17 +4193,10 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </th>
           </tr>
           <tr>
-            <td>101, 103, 104, 143, 144</td>
-            <td>See API Error Codes Reference</td>
+            <td>101, 103, 104, 143, 144, 161, 162</td>
+            <td>Depends on error code</td>
             <td>
-              <p>See the <strong>API Error Codes Reference</strong>&nbsp;section.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>161</td>
-            <td>Adapter is turned off</td>
-            <td>
-              <p>The Bluetooth adapter is turned off.</p>
+              <p>For details of a specific error code,&nbsp;see the <strong>API Error Codes Reference</strong>&nbsp;section.</p>
             </td>
           </tr>
         </tbody>
@@ -4334,7 +4324,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>adapterAddress</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>String</td>
             <td>
               <p>Indicates the address of the adapter.</p>
@@ -4342,7 +4332,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>subscribed</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>Boolean</td>
             <td>
               <p>Indicates if subscribed to get notifications.</p>
@@ -4406,7 +4396,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>subscribed</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>Boolean</td>
             <td>
               <p>Indicates if subscribed to get notifications.</p>
@@ -4420,7 +4410,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>address</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>String</td>
             <td>
               <p>Indicates the address (bdaddr) of the remote device.</p>
@@ -4428,7 +4418,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>adapterAddress</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>String</td>
             <td>
               <p>Indicates the address of the adapter.</p>
@@ -4436,7 +4426,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>requestId</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>String</td>
             <td>
               <p>Indicates the unique ID of a request.</p>
@@ -4478,17 +4468,10 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </th>
           </tr>
           <tr>
-            <td>101, 103, 104, 143, 144</td>
-            <td>See API Error Codes Reference</td>
+            <td>101, 103, 104, 143, 144, 161, 162</td>
+            <td>Depends on error code</td>
             <td>
-              <p>See the <strong>API Error Codes Reference</strong>&nbsp;section.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>161</td>
-            <td>Adapter is turned off</td>
-            <td>
-              <p>The Bluetooth adapter is turned off.</p>
+              <p>For details of an error code, see the <strong>API Error Codes Reference</strong>&nbsp;section.</p>
             </td>
           </tr>
         </tbody>
@@ -6088,7 +6071,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>adapterAddress</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>String</td>
             <td>
               <p>Indicates the address of the adapter.</p>
@@ -6112,7 +6095,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>subscribed</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>Boolean</td>
             <td>
               <p>Indicates if subscribed to get notifications.</p>
@@ -6159,7 +6142,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>subscribed</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>Boolean</td>
             <td>
               <p>Indicates if subscribed to get notifications.</p>
@@ -6172,7 +6155,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>disconnectByRemote</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>String</td>
             <td>
               <p>Indicates whether the remote device or the local user initiated the disconnection.</p>
@@ -6185,7 +6168,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>adapterAddress</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>String</td>
             <td>
               <p>Indicates the address of the adapter.</p>
@@ -6226,38 +6209,10 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </th>
           </tr>
           <tr>
-            <td>102, 103, 105, 106, 127, 143, 144</td>
-            <td>See API Error Codes Reference</td>
+            <td>102, 103, 105, 106, 127, 128, 129, 130, 131, 143, 144</td>
+            <td>Depends on error code</td>
             <td>
-              <p>See the <strong>API Error Codes Reference</strong>&nbsp;section.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>128</td>
-            <td>Device is already connecting</td>
-            <td>
-              <p><span style="background-color:rgb(244, 244, 244)">The remote Bluetooth device is already connecting to AVRCP profile, so another connection cannot be opened.</span></p>
-            </td>
-          </tr>
-          <tr>
-            <td>129</td>
-            <td>Device is not paired</td>
-            <td>
-              <p>The remote Bluetooth device is not paired, so AVRCP connection cannot be opened.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>130</td>
-            <td>Failed to connect with remote device</td>
-            <td>
-              <p><span style="background-color:rgb(244, 244, 244)">The remote Bluetooth device cannot be connected to AVRCP profile.</span></p>
-            </td>
-          </tr>
-          <tr>
-            <td>131</td>
-            <td>Already connected</td>
-            <td>
-              <p>The remote Bluetooth device is already connected to the adapter&#39;s AVRCP profile, so another connection cannot be opened.</p>
+              <p>For details of an error code, see the <strong>API Error Codes Reference</strong>&nbsp;section.</p>
             </td>
           </tr>
         </tbody>
@@ -6375,7 +6330,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>adapterAddress</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>String</td>
             <td>
               <p>Indicates the address of the adapter.</p>
@@ -6416,17 +6371,10 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </th>
           </tr>
           <tr>
-            <td>102, 105, 106, 127, 143, 144</td>
-            <td>See API Error Codes Reference</td>
+            <td>102, 105, 106, 127, 132, 143, 144</td>
+            <td>Depends on error code</td>
             <td>
-              <p>See the <strong>API Error Codes Reference</strong>&nbsp;section.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>132</td>
-            <td>Failed to disconnect from remote device</td>
-            <td>
-              <p><span style="background-color:rgb(244, 244, 244)">The AVRCP connection with the remote Bluetooth device could not be closed.</span></p>
+              <p>For details of an error code, see the <strong>API Error Codes Reference</strong>&nbsp;section.</p>
             </td>
           </tr>
         </tbody>
@@ -8047,8 +7995,21 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </td>
           </tr>
           <tr>
+            <td>subscribed</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates if subscribed to get notifications.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true:&nbsp;</strong>Subscribed for notifications</li>
+                <li><strong>false:&nbsp;</strong>Not subscribed</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
             <td>connecting</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>Boolean</td>
             <td>
               <p>Indicates whether the connection&nbsp;request is currently being processed.</p>
@@ -8061,7 +8022,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>connected</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>Boolean</td>
             <td>
               <p>Indicates if the connection is open.</p>
@@ -8074,7 +8035,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>adapterAddress</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>String</td>
             <td>
               <p>Indicates the address of the adapter.</p>
@@ -8132,7 +8093,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>subscribed</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>Boolean</td>
             <td>
               <p>Indicates if subscribed to get notifications.</p>
@@ -8145,7 +8106,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>connecting</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>Boolean</td>
             <td>
               <p>Indicates whether the connection&nbsp;request is currently being processed.</p>
@@ -8158,7 +8119,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>connected</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>Boolean</td>
             <td>
               <p>Indicates if the connection is open.</p>
@@ -8171,7 +8132,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>adapterAddress</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>String</td>
             <td>
               <p>Indicates the address of the adapter.</p>
@@ -8212,17 +8173,10 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </th>
           </tr>
           <tr>
-            <td>102, 105, 106, 127, 143, 144</td>
-            <td>See API Error Codes Reference</td>
+            <td>102, 105, 106, 127, 133, 143, 144</td>
+            <td>Depends on error code</td>
             <td>
-              <p>See the <strong>API Error Codes Reference</strong>&nbsp;section.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>133</td>
-            <td>Failed to retrieve state for remote device</td>
-            <td>
-              <p><span style="background-color:rgb(244, 244, 244)">The AVRCP connection status of the remote Bluetooth device cannot be retrieved.</span></p>
+              <p>For details of an error code, see the <strong>API Error Codes Reference</strong>&nbsp;section.</p>
             </td>
           </tr>
         </tbody>
@@ -10145,7 +10099,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>adapterAddress</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>String</td>
             <td>
               <p>Indicates the address of the adapter.</p>
@@ -10153,7 +10107,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>requestId</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>String</td>
             <td>
               <p>Indicates the unique ID of a request.</p>
@@ -10195,31 +10149,10 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </th>
           </tr>
           <tr>
-            <td>127, 143, 144</td>
-            <td>See API Error Codes Reference</td>
+            <td>127, 143, 144, 186, 187, 188</td>
+            <td>Depends on error code</td>
             <td>
-              <p>See <strong>API Error Codes Reference</strong>.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>186</td>
-            <td>Required &#39;requestId&#39; parameter is not supplied</td>
-            <td>
-              <p><strong>requestId</strong> parameter is missing in arguments.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>187</td>
-            <td>Request is currently not allowed</td>
-            <td>
-              <p>The TG (Target)&nbsp;is not awaiting for media play status request.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>188</td>
-            <td>The supplied requestId does not exist</td>
-            <td>
-              <p>The supplied <strong>requestId</strong> does not exist, hence the method cannot be completed.</p>
+              <p>For details of an error code, see <strong>API Error Codes Reference</strong>&nbsp;section.</p>
             </td>
           </tr>
         </tbody>
@@ -10238,24 +10171,16 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;album&quot;:&quot;disney&nbsp;frozen&quot;,<br />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;genre&quot;:&quot;pop&quot;,<br />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;trackNumber&quot;:1,<br />
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;trackCount&quot;:3,<br />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;duration&quot;:225<br />
         &nbsp;&nbsp;&nbsp;}<br />
         }&#39;
       </p>
-      <p>&nbsp;</p>
-      <p>Response for a successful call:</p>
+      <p>Response:</p>
       <p>{&nbsp;&nbsp;<br />
         &nbsp;&nbsp;&nbsp;&quot;requestId&quot;:&quot;001&quot;,<br />
         &nbsp;&nbsp;&nbsp;&quot;adapterAddress&quot;:&quot;00:00:c5:99:f5:87&quot;,<br />
         &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-        }
-      </p>
-      <p>&nbsp;</p>
-      <p>Response for a failed call: If the supplied requestId does not exist</p>
-      <p>{&nbsp;&nbsp;<br />
-        &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:188,<br />
-        &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
-        &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;The&nbsp;supplied&nbsp;requestId&nbsp;does&nbsp;not&nbsp;exist&quot;<br />
         }
       </p>
     </div>
@@ -10353,7 +10278,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>adapterAddress</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>String</td>
             <td>
               <p>Indicates the address of the adapter.</p>
@@ -10361,7 +10286,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>requestId</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>String</td>
             <td>
               <p>The unique ID of a request.&nbsp;</p>
@@ -10403,31 +10328,10 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </th>
           </tr>
           <tr>
-            <td>127, 143, 144</td>
-            <td>See API Error Codes Reference</td>
+            <td>127, 143, 144, 186, 187, 188</td>
+            <td>Depends on error code</td>
             <td>
-              <p>See<strong> API Error Codes Reference</strong>.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>186</td>
-            <td>Required &#39;requestId&#39; parameter is not supplied</td>
-            <td>
-              <p><strong>requestId</strong> parameter is missing in arguments.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>187</td>
-            <td>Request is currently not allowed</td>
-            <td>
-              <p>The TG (Target) is not waiting for media playstatus request.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>188</td>
-            <td>The supplied requestId does not exist</td>
-            <td>
-              <p>The supplied<strong> requestId</strong> does not exist, hence the method cannot be completed.</p>
+              <p>For details of an error code, see the<strong> API Error Codes Reference</strong>&nbsp;section.</p>
             </td>
           </tr>
         </tbody>
@@ -10447,20 +10351,11 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         &nbsp;&nbsp;&nbsp;}<br />
         }&#39;
       </p>
-      <p>&nbsp;</p>
-      <p>Response for a successful call:</p>
+      <p>Response:</p>
       <p>{&nbsp;&nbsp;<br />
         &nbsp;&nbsp;&nbsp;&quot;requestId&quot;:&quot;001&quot;,<br />
         &nbsp;&nbsp;&nbsp;&quot;adapterAddress&quot;:&quot;00:00:c5:99:f5:87&quot;,<br />
         &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
-        }
-      </p>
-      <p>&nbsp;</p>
-      <p>Response for a failed call: If the supplied requestId does not exist</p>
-      <p>{&nbsp;&nbsp;<br />
-        &nbsp;&nbsp;&nbsp;&quot;errorCode&quot;:188,<br />
-        &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:false,<br />
-        &nbsp;&nbsp;&nbsp;&quot;errorText&quot;:&quot;The&nbsp;supplied&nbsp;requestId&nbsp;does&nbsp;not&nbsp;exist&quot;<br />
         }
       </p>
     </div>
@@ -11132,13 +11027,12 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates if subscribed to get notifications.</p>
-              <p>&nbsp;Possible values are:</p>
+              <p>Subscribe to this method if you require notifications about any changes in its response</p>
+              <p>Possible values are:</p>
               <ul>
-                <li><strong>true:</strong>&nbsp;Subscribed for notifications.</li>
-                <li><strong>false:</strong>&nbsp;Not subscribed.</li>
+                <li>true: Subscribed.</li>
+                <li>false (Default): Not subscribed.</li>
               </ul>
-              <p><strong>Default:</strong>&nbsp;false</p>
             </td>
           </tr>
           <tr>
@@ -11180,12 +11074,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates if subscribed to get notifications.</p>
-              <p>Possible values are:</p>
-              <ul>
-                <li><strong>true:</strong>&nbsp;Subscribed for notifications.</li>
-                <li><strong>false:</strong>&nbsp;Not subscribed.</li>
-              </ul>
+              <p>Indicates status of subscription (check &#39;subscribe&#39; parameter).</p>
             </td>
           </tr>
           <tr>
@@ -11193,13 +11082,12 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates the status of the operation.</p>
+              <p>Indicates status of method execution.</p>
               <p>Possible values are:</p>
               <ul>
-                <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
-                <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. Check the method's 'Error Codes' section for failure details (errorCode and/or errorText).</li>
               </ul>
-              <p><strong>Note: returnValue</strong>&nbsp;will&nbsp;always&nbsp;contain&nbsp;true&nbsp;unless the request for subscription fails.</p>
             </td>
           </tr>
           <tr>
@@ -11216,22 +11104,6 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Object array: <a href="#object-bluetooth2devicestatus">bluetooth2DeviceStatus</a></td>
             <td>
               <p>Contains&nbsp;status information of all the devices known to the system, not just the ones whose status has been changed.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;Error Codes Reference&quot; section of this method for details.</p>
             </td>
           </tr>
         </tbody>
@@ -11260,12 +11132,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates if subscribed to get notifications.</p>
-              <p>Possible values are:</p>
-              <ul>
-                <li><strong>true:&nbsp;</strong>Subscribed for notifications.</li>
-                <li><strong>false:&nbsp;</strong>&nbsp;Not subscribed.</li>
-              </ul>
+              <p>Indicates status of subscription (check &#39;subscribe&#39; parameter).</p>
             </td>
           </tr>
           <tr>
@@ -11273,13 +11140,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates the status of the operation.</p>
-              <p>Possible values are:</p>
-              <ul>
-                <li><strong>true:</strong>&nbsp;Indicates that the operation was successful.</li>
-                <li><strong>false:</strong>&nbsp;Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
-              </ul>
-              <p><strong>Note: returnValue</strong>&nbsp;will&nbsp;<strong>always</strong>&nbsp;contain&nbsp;<strong>true</strong>&nbsp;unless the request for subscription fails.</p>
+              <p>Indicates status of method execution.</p>
             </td>
           </tr>
           <tr>
@@ -11296,22 +11157,6 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Object array: <a href="#object-bluetooth2devicestatus">bluetooth2DeviceStatus</a></td>
             <td>
               <p>Contains the&nbsp;status information of&nbsp;all the devices known to the system, and not just the ones whose status has been changed.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;Error Codes Reference&quot; section of this method for details.</p>
             </td>
           </tr>
         </tbody>
@@ -11333,10 +11178,10 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </th>
           </tr>
           <tr>
-            <td>101, 143, 144</td>
-            <td>See API Error Codes Reference</td>
+            <td>101, 143, 144, 162</td>
+            <td>Depends on error code</td>
             <td>
-              <p><span style="color:rgb(0, 0, 0)">See <strong>API Error Codes Reference</strong>.</span></p>
+              <p>For details of specific error code, see the &#39;API Error codes Reference&#39; table</p>
             </td>
           </tr>
         </tbody>
@@ -11654,12 +11499,12 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates whether to set&nbsp;a remote device as a trusted device. Possible values are:</p>
+              <p>Indicates whether to set&nbsp;a remote device as a trusted device.</p>
+              <p>Possible values are:</p>
               <ul>
-                <li><strong>true </strong>- Sets it as a trusted device.&nbsp;</li>
-                <li><strong>false </strong>- Sets it as a untrusted device.&nbsp;</li>
+                <li>true: Sets it as a trusted device</li>
+                <li>false (Default): Sets it as a untrusted device.</li>
               </ul>
-              <p><strong>Default value</strong>: false</p>
             </td>
           </tr>
           <tr>
@@ -11667,12 +11512,12 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates whether to&nbsp;block (if set) or unblock (if reset) a remote device for pairing and profile connections. Possible values are:</p>
+              <p>Indicates whether to&nbsp;block (if set) or unblock (if reset) a remote device for pairing and profile connections.</p>
+              <p>Possible values are:</p>
               <ul>
-                <li><strong>true </strong>- Blocks incoming connections.&nbsp;Any incoming connection&nbsp;from the device will be immediately rejected. Also, device drivers will&nbsp;be removed and no new ones will be probed as long as the device is blocked.</li>
-                <li><strong>false </strong>- Unblocks&nbsp;connections.&nbsp;</li>
+                <li>true: Blocks incoming connections. Any incoming connection from the device will be immediately rejected. Also, device drivers will be removed and no new ones will be probed as long as the device is blocked.</li>
+                <li>false (Default): Unblocks connections.</li>
               </ul>
-              <p><strong>Default value</strong>: false</p>
             </td>
           </tr>
         </tbody>
@@ -11704,25 +11549,17 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Indicates the status of operation.</p>
               <p>Possible values are:</p>
               <ul>
-                <li><strong>true: </strong>Indicates that the operation was successful.</li>
-                <li><strong>false: </strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. Check the method's 'Error Codes' section for failure details (errorCode and/or errorText).</li>
               </ul>
             </td>
           </tr>
           <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
+            <td>adapterAddress</td>
+            <td>Required</td>
             <td>String</td>
             <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>Error Codes Reference</strong>&quot; section of this method for details.</p>
+              <p>Indicates the address of the adapter.</p>
             </td>
           </tr>
         </tbody>
@@ -11744,24 +11581,10 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </th>
           </tr>
           <tr>
-            <td>5, 101, 105, 106, 143, 144</td>
-            <td>See API Error Codes Reference</td>
+            <td>5, 6, 101, 105, 106, 143, 144, 148, 149</td>
+            <td>Depends on error code</td>
             <td>
-              <p>See&nbsp;<strong>API Error Codes Reference</strong>.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>148</td>
-            <td>No property state has changed</td>
-            <td>
-              <p><span style="line-height:1.6em">Either no parameters are supplied to the </span><strong style="line-height:1.6em">device/setState</strong><span style="line-height:1.6em"> method or the parameters have no state change from their earlier value.</span></p>
-            </td>
-          </tr>
-          <tr>
-            <td>149</td>
-            <td>Failed to set device properties</td>
-            <td>
-              <p>The Bluetooth stack fails to set the supplied device properties for the given device.</p>
+              <p>For details of specific error code, see the &#39;API Error codes Reference&#39; table.</p>
             </td>
           </tr>
         </tbody>
@@ -11778,7 +11601,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         }&#39;
       </p>
       <p>Response:</p>
-      <p>{&nbsp;&nbsp;<br />
+      <p>{<br />
         &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
         }
       </p>
@@ -17554,7 +17377,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       </ul>
     </div>
     <h4>Description</h4>
-    <p>Start the broadcasting of the Bluetooth&nbsp;Low Energy advertisement.</p>
+    <p>Starts broadcasting the Bluetooth&nbsp;Low Energy advertisement.</p>
     <h4>Parameters</h4>
     <div class="table-container">
       <table class="table is-bordered is-fullwidth">
@@ -33650,7 +33473,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>txPower</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>Number</td>
             <td>
               <p>Indicates the transmission power level of the remote device.</p>
@@ -33672,7 +33495,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>manufacturerData</td>
             <td>Required</td>
-            <td>Number (uint8_t) array</td>
+            <td>Object: <a href="#object-bluetooth2gattmanufacturerdata">bluetooth2GattManufacturerData</a></td>
             <td>
               <p>Indicates manufacturer-specific company ID&nbsp;and data (if advertised from the remote device, else it will be blank).</p>
             </td>
@@ -33835,6 +33658,55 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>String</td>
             <td>
               <p>Unique identifier of the descriptor</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h3 id="object-bluetooth2gattmanufacturerdata">bluetooth2GattManufacturerData</h3>
+  <div>
+    <p>Indicates manufacturer-specific company ID&nbsp;and data (if advertised from the remote device, else it will be blank) and&nbsp;scanResponse data&nbsp;</p>
+    <p>Note: If defined&nbsp;SCAN_RECORD only&nbsp;companyId and&nbsp;data will be available, if not all parameters visible&nbsp;</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>companyId</td>
+            <td>Optional</td>
+            <td>Number (int8_t) array</td>
+            <td>
+              <p>Company identifier assigned by the Bluetooth SIG</p>
+            </td>
+          </tr>
+          <tr>
+            <td>data</td>
+            <td>Optional</td>
+            <td>Number (int8_t) array</td>
+            <td>
+              <p>Data of the&nbsp;advertiser</p>
+            </td>
+          </tr>
+          <tr>
+            <td>scanRecord</td>
+            <td>Optional</td>
+            <td>Number (int8_t) array</td>
+            <td>
+              <p>Indicates the service data of the remote device (if advertised from the remote device, else it will be blank).</p>
             </td>
           </tr>
         </tbody>
@@ -34491,6 +34363,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
   <h3 id="object-bluetooth2mediametadata">bluetooth2MediaMetaData</h3>
   <div>
     <p>Contains information about a media metadata value.</p>
+    <p>Note : string parameters accepts empty string as some meta data doesn&#39;t have particular info, and number parameters accepts non negative numbers</p>
     <div class="table-container">
       <table class="table is-bordered is-fullwidth">
         <tbody>
@@ -34510,7 +34383,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>title</td>
-            <td>Optional</td>
+            <td>Required</td>
             <td>String</td>
             <td>
               <p>Indicates the title of the media.</p>
@@ -34518,7 +34391,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>artist</td>
-            <td>Optional</td>
+            <td>Required</td>
             <td>String</td>
             <td>
               <p>Indicates the name of the artist.</p>
@@ -34526,7 +34399,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>album</td>
-            <td>Optional</td>
+            <td>Required</td>
             <td>String</td>
             <td>
               <p>Indicates the name of album.</p>
@@ -34534,7 +34407,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>genre</td>
-            <td>Optional</td>
+            <td>Required</td>
             <td>String</td>
             <td>
               <p>Indicates the genre of the media.</p>
@@ -34542,7 +34415,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>trackNumber</td>
-            <td>Optional</td>
+            <td>Required</td>
             <td>Number</td>
             <td>
               <p>Indicates the track number of the media.</p>
@@ -34550,7 +34423,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>trackCount</td>
-            <td>Optional</td>
+            <td>Required</td>
             <td>Number</td>
             <td>
               <p>Indicates the total number of tracks in the album.</p>
@@ -34558,7 +34431,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>duration</td>
-            <td>Optional</td>
+            <td>Required</td>
             <td>Number</td>
             <td>
               <p>Indicates the playing time of the media in milliseconds.</p>
@@ -35218,7 +35091,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>duration</td>
-            <td>Optional</td>
+            <td>Required</td>
             <td>Number</td>
             <td>
               <p>Indicates the number representing the current track length in milliseconds.</p>
@@ -35226,7 +35099,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>position</td>
-            <td>Optional</td>
+            <td>Required</td>
             <td>Number</td>
             <td>
               <p>Indicates the number representing the current playing time in milliseconds.</p>
@@ -35234,7 +35107,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>status</td>
-            <td>Optional</td>
+            <td>Required</td>
             <td>String</td>
             <td>
               <p>Indicates the string representing the play status.</p>
@@ -35444,7 +35317,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>category</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>String</td>
             <td>
               <p>Indicates the LS2 category methods that can access the&nbsp;service class.</p>
@@ -35705,8 +35578,50 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </td>
         </tr>
         <tr>
+          <td>128</td>
+          <td>Device is already connecting</td>
+          <td>
+            <p>Indicates that the&nbsp;remote Bluetooth device is already connected&nbsp;to the profile, hence&nbsp;another connection cannot be opened.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>129</td>
+          <td>Device is not paired</td>
+          <td>
+            <p>The remote Bluetooth device is not paired, so connection cannot be opened.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>130</td>
+          <td>Failed to connect with remote device</td>
+          <td>
+            <p>The remote Bluetooth device cannot be connected to the profile.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>131</td>
+          <td>Already connected</td>
+          <td>
+            <p>The remote Bluetooth device is already connected to the adapter&#39;s &lt;profilename&gt; profile, so another connection cannot be opened.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>132</td>
+          <td>Failed to disconnect from remote device</td>
+          <td>
+            <p>Indicates that<strong>&nbsp;</strong>the&nbsp;connection with the remote Bluetooth device could not be closed.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>133</td>
+          <td>Failed to retrieve state for remote device</td>
+          <td>
+            <p>The connection status of the remote Bluetooth device cannot be retrieved.</p>
+          </td>
+        </tr>
+        <tr>
           <td>136</td>
-          <td>Device is not connected</td>
+          <td>Device is not connected to profile</td>
           <td>
             <p>The remote Bluetooth device is not connected to our Bluetooth adapter via the profile.</p>
           </td>
@@ -35738,6 +35653,27 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <td>
             <p>One or more of the parameters do not have the correct parameter type. See the <strong>&quot;Parameters&quot;</strong>&nbsp;table to know the expected data type for each input parameter.</p>
             <p><strong>Note</strong>: Any required parameter missing will be a different error return based on the missing key.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>148</td>
+          <td>No property state has changed</td>
+          <td>
+            <p>Either no parameters are supplied to the device/setState method or the parameters have no state change from their earlier value.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>149</td>
+          <td>Failed to set device properties</td>
+          <td>
+            <p>The Bluetooth stack fails to set the supplied device properties for the given device.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>161</td>
+          <td>Adapter is turned off</td>
+          <td>
+            <p>The Bluetooth adapter is turned off.</p>
           </td>
         </tr>
         <tr>
@@ -35829,6 +35765,27 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <td>Required &#39;address&#39; parameter is not supplied</td>
           <td>
             <p>The&nbsp;<strong>address</strong>&nbsp;parameter is mandatory, but was not supplied by the caller of the method.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>186</td>
+          <td>Required &#39;requestId&#39; parameter is not supplied</td>
+          <td>
+            <p><strong>requestId</strong>&nbsp;parameter is missing in arguments.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>187</td>
+          <td>Request is currently not allowed</td>
+          <td>
+            <p>The TG (Target)&nbsp;is not awaiting for media play status request.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>188</td>
+          <td>The supplied requestId does not exist</td>
+          <td>
+            <p>The supplied&nbsp;<strong>requestId</strong>&nbsp;does not exist, hence the method cannot be completed.</p>
           </td>
         </tr>
         <tr>

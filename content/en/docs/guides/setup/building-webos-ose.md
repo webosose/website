@@ -1,7 +1,7 @@
 ---
 title: Building webOS OSE
 display_title: Building webOS Open Source Edition
-date: 2023-04-27
+date: 2024-10-14
 weight: 20
 toc: true
 ---
@@ -153,8 +153,8 @@ To check if the image has been built successfully, check the following directori
   * 32-bit: `BUILD/deploy/images/raspberrypi3/webos-image-raspberrypi3.rootfs.rpi-sdimg`.
   * 64-bit: `BUILD/deploy/images/raspberrypi3-64/webos-image-raspberrypi3-64.rootfs.rpi-sdimg`.
 * For the emulator, the resulting image will be created at
-  * 32-bit: `BUILD/deploy/images/qemux86/webos-image-qemux86-master-*-wic.vmdk`.
-  * 64-bit: `BUILD/deploy/images/qemux86-64/webos-image-qemux86-64-master-*-wic.vmdk`.
+  * 32-bit: `BUILD/deploy/images/qemux86/webos-image-qemux86-master-*-wic.vmdk.gz`.
+  * 64-bit: `BUILD/deploy/images/qemux86-64/webos-image-qemux86-64-master-*-wic.vmdk.gz`.
 
 If the built image exists, move on to the [Next Steps]({{< relref "#next-steps" >}}).
 

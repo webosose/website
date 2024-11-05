@@ -1,7 +1,7 @@
 ---
 title: com.webos.service.connectionmanager
-date: 2024-06-05
-api_level: 29
+date: 2024-10-30
+api_level: 30
 weight: 150
 toc: true
 ---
@@ -203,12 +203,12 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>Boolean</td>
             <td>
-              <p>Subscribe to this method to get notified&nbsp;on changes to the status of the network connection. Possible values are:</p>
+              <p>Subscribe to this method to get notified&nbsp;on changes to the status of the network connection.</p>
+              <p>Possible values are:</p>
               <ul>
-                <li><strong>true </strong>- Get notifications</li>
-                <li><strong>false </strong>- Notifications are not required</li>
+                <li>true: Subscribed.</li>
+                <li>false (Default): Not subscribed.</li>
               </ul>
-              <p><strong>Default value:</strong>&nbsp;false</p>
             </td>
           </tr>
         </tbody>
@@ -294,22 +294,6 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
                 <li><strong>true </strong>- Indicates that the operation was successful.</li>
                 <li><strong>false </strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
               </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
             </td>
           </tr>
         </tbody>
@@ -422,7 +406,6 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <div class="code-bg-grey">
       <p># luna-send -n 1 -f luna://com.webos.service.connectionmanager/getStatus &#39;{}&#39;</p>
-      <p>&nbsp;</p>
       <p>Response:</p>
       <p>{<br />
         &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
@@ -484,12 +467,12 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>Boolean</td>
             <td>
-              <p>Subscribe to be notified of changes in interfaces.&nbsp;Possible values are:</p>
+              <p>Subscribe to be notified of changes in interfaces.</p>
+              <p>Possible values are:</p>
               <ul>
-                <li><strong>true&nbsp;</strong>- Get notifications</li>
-                <li><strong>false&nbsp;</strong>- Notifications are not required</li>
+                <li>true: Subscribed.</li>
+                <li>false (Default): Not subscribed.</li>
               </ul>
-              <p><strong>Default value:</strong>&nbsp;false</p>
             </td>
           </tr>
         </tbody>
@@ -518,7 +501,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>Object: <a href="#object-wifiinfo">wifiInfo</a></td>
             <td>
-              <p style="text-align: left;">Information about the&nbsp;Wi-Fi interface.<br></p>
+              <p style="text-align:left">Information about the&nbsp;Wi-Fi interface.</p>
             </td>
           </tr>
           <tr>
@@ -551,22 +534,6 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
                 <li><strong>true&nbsp;</strong>- Subscribed for changes</li>
                 <li><strong>false&nbsp;</strong>- Not subscribed</li>
               </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
             </td>
           </tr>
         </tbody>
@@ -778,22 +745,6 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </td>
           </tr>
           <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes&quot;</strong>&nbsp;section of this method for details.</p>
-            </td>
-          </tr>
-          <tr>
             <td>sampleInterval</td>
             <td>Optional</td>
             <td>Number</td>
@@ -866,15 +817,15 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>sampleInterval</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>Number</td>
             <td>
-              <p>The time duration for sampling data activity in msec.</p>
+              <p>The time duration for sampling data activity (in milliseconds).</p>
             </td>
           </tr>
           <tr>
             <td>wired</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>Object: <a href="#object-datastats">dataStats</a></td>
             <td>
               <p>Indicates the data activity for the wired interface.</p>
@@ -882,7 +833,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>wifi</td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>Object: <a href="#object-datastats">dataStats</a></td>
             <td>
               <p>Indicates the data activity for the Wi-Fi interface.</p>
@@ -1225,27 +1176,12 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <p>Indicates the status of operation.&nbsp;</p>
+              <p>Possible values are:</p>
               <ul>
-                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. Check the method&#39;s &#39;Error Codes&#39; section for failure details (errorCode and/or errorText).</li>
               </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
             </td>
           </tr>
         </tbody>
@@ -1420,27 +1356,12 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <p>Indicates the status of operation.&nbsp;</p>
+              <p>Possible values are:</p>
               <ul>
-                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. Check the method&#39;s &#39;Error Codes&#39; section for failure details (errorCode and/or errorText).</li>
               </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
             </td>
           </tr>
         </tbody>
@@ -1581,27 +1502,12 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <p>Indicates the status of operation.&nbsp;</p>
+              <p>Possible values are:</p>
               <ul>
-                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. Check the method&#39;s &#39;Error Codes&#39; section for failure details (errorCode and/or errorText).</li>
               </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes&quot;</strong>&nbsp;section of this method for details.</p>
             </td>
           </tr>
         </tbody>
@@ -1784,25 +1690,9 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Indicates the status of operation.</p>
               <p>Possible values are:</p>
               <ul>
-                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. Check the method&#39;s &#39;Error Codes&#39; section for failure details (errorCode and/or errorText).</li>
               </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes&quot;</strong>&nbsp;section of this method for details.</p>
             </td>
           </tr>
         </tbody>
@@ -1892,6 +1782,25 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       <p>Response:</p>
       <p>{<br />
         &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+        }
+      </p>
+    </div>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5px;"><b>Example scenario</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f luna://com.webos.service.connectionmanager/setipv4 &#39;{<br />
+        &nbsp; &nbsp;&nbsp;&quot;ssid&quot;: &quot;Connectivity&quot;,<br />
+        &nbsp; &nbsp;&nbsp;&quot;method&quot;: &quot;manual&quot;,<br />
+        &nbsp; &nbsp;&nbsp;&quot;address&quot;: &quot;192.168.1.42&quot;,<br />
+        &nbsp; &nbsp;&nbsp;&quot;netmask&quot;: &quot;255.255.255.0&quot;,<br />
+        &nbsp; &nbsp;&nbsp;&quot;gateway&quot;: &quot;192.168.1.1&quot;,<br />
+        &nbsp; &nbsp;&nbsp;&quot;interfaceName&quot; : &quot;eth0&quot;<br />
+        }&#39;
+      </p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
         }
       </p>
     </div>
@@ -2004,27 +1913,12 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <p>Indicates the status of operation.</p>
+              <p>Possible values are:</p>
               <ul>
-                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. Check the method&#39;s &#39;Error Codes&#39; section for failure details (errorCode and/or errorText).</li>
               </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
             </td>
           </tr>
         </tbody>
@@ -2201,27 +2095,12 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <p>Indicates the status of operation.&nbsp;</p>
+              <p>Possible values are:</p>
               <ul>
-                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. Check the method&#39;s &#39;Error Codes&#39; section for failure details (errorCode and/or errorText).</li>
               </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
             </td>
           </tr>
         </tbody>
@@ -2976,23 +2855,6 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
   <h3 id="object-wiredinfo">wiredInfo</h3>
   <div>
     <p>The object containing the MAC address of the <strong>wired </strong>interface.</p>
-    <p>An example would look like:</p>
-    <div class="code-bg-grey">
-      <p>{<br />
-        &nbsp; &nbsp;&quot;macAddress&quot;:&quot;aa:bb:cc:dd:ee&quot;,<br />
-        &nbsp; &nbsp;&quot;interfaces&quot;:[<br />
-        &nbsp; &nbsp; &nbsp; {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;name&quot;:&quot;eth0&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;macAddress&quot;:&quot;DC:A6:32:AF:7C:3B&quot;<br />
-        &nbsp; &nbsp; &nbsp; },<br />
-        &nbsp; &nbsp; &nbsp; {<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;name&quot;:&quot;eth1&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;macAddress&quot;:&quot;DC:A6:32:AF:7C:3C&quot;<br />
-        &nbsp; &nbsp; &nbsp; }<br />
-        &nbsp; &nbsp;]<br />
-        }
-      </p>
-    </div>
     <div class="table-container">
       <table class="table is-bordered is-fullwidth">
         <tbody>

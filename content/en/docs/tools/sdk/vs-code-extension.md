@@ -1,6 +1,6 @@
 ---
 title: webOS Studio - VS Code Extension
-date: 2024-07-26
+date: 2024-11-04
 weight: 30
 toc: true
 ---
@@ -367,7 +367,7 @@ Type `new LS2Request` to use [Enact webos Library](https://enactjs.com/docs/modu
       <li>
         <p>The config file is generated in your project folder. You can check the API level in the config file.</p>
         <img src="/images/docs/tools/vs-code-extension/generated-config-file.jpg" alt="Generated config file">
-        <p>If the API level in the config file is not supported by the current profile, an error notification will be displayed. Currently supported API levels in the OSE profile are 20, 21, 22, 23, 24, 25, 27, 28, 29. See also, <a href="/docs/reference/ls2-api/ls2-api-index/#api-levels">API Levels</a></p>
+        <p>If the API level in the config file is not supported by the current profile, an error notification will be displayed. Currently supported API levels in the OSE profile are 20-25, 27-29, and 31. See also, <a href="/docs/reference/ls2-api/ls2-api-index/#api-levels">API Levels</a></p>
         <img src="/images/docs/tools/vs-code-extension/api-level-config-mismatch.png" alt="Error pop-up for mismatch between API level and the current profile">
       </li>
     </ol>

@@ -1,7 +1,7 @@
 ---
 title: com.webos.service.location
-date: 2024-05-27
-api_level: 29
+date: 2024-10-30
+api_level: 30
 weight: 230
 toc: true
 ---
@@ -23,30 +23,33 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     <li>Mock: Enables to test location features with fake information.</li>
   </ul>
   <p><strong>Note:</strong> The location service provider is also called a location source and location handler.</p>
-  <p>&nbsp;</p>
   <p id="google-geocoding-api-key"><strong>Google Geocoding API Key</strong></p>
   <p>To&nbsp;use the GeoCoding functionality, you must have the Geocoding API keys&nbsp;to authenticate requests associated with your project for usage and billing purposes. You must perform the following steps:</p>
   <ol>
     <li>Sign up and create a billing account with&nbsp;<a href="https://developers.google.com/maps/gmp-get-started" rel="nofollow">Google Maps Platform</a>.</li>
     <li>Follow steps to get&nbsp;<a href="https://developers.google.com/maps/documentation/geocoding/get-api-key" rel="nofollow">GeoCoding API key</a>.</li>
     <li>Encrypt generated GeoCoding key&nbsp;with base64 encoding, execute following command in terminal<br />
-      $&nbsp;<strong>echo&nbsp;&quot;GEOCODING_KEY&quot;&nbsp;| base64</strong><br />
-      &lt;&lt;ENCRYPTED_GEOCODING_KEY&gt;&gt;
+      <div class="code-bg-grey">
+        <p>
+          $&nbsp;<strong>echo&nbsp;&quot;GEOCODING_KEY&quot;&nbsp;| base64</strong><br />
+          &lt;&lt;ENCRYPTED_GEOCODING_KEY&gt;&gt;
+        </p>
+      </div>
     </li>
     <li>
       Write encrypted key in file&nbsp;<strong>/etc/location/wsp.conf</strong>&nbsp;present&nbsp;on your device. Create following file:
       <div class="code-bg-grey">
-      <p>{<br />
-        &nbsp; &nbsp;&nbsp;&quot;wpsName&quot;:&nbsp;&quot;google&quot;,<br />
-        &nbsp; &nbsp;&nbsp;&quot;apiKey&quot;:&nbsp;&quot;ENCRYPTED_GEOCODING_KEY&quot;,<br />
-        &nbsp; &nbsp;&nbsp;&quot;services&quot;: [<br />
-        &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;{<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;features&quot;: [&quot;geocode&quot;,&nbsp;&quot;reverseGeocode&quot;],<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;url&quot;:&nbsp;&quot;https://maps.googleapis.com/maps/api/geocode/json?&quot;<br />
-        &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;}<br />
-        &nbsp; &nbsp;&nbsp;]<br />
-        }
-      </p>
+        <p>{<br />
+          &nbsp; &nbsp;&nbsp;&quot;wpsName&quot;:&nbsp;&quot;google&quot;,<br />
+          &nbsp; &nbsp;&nbsp;&quot;apiKey&quot;:&nbsp;&quot;ENCRYPTED_GEOCODING_KEY&quot;,<br />
+          &nbsp; &nbsp;&nbsp;&quot;services&quot;: [<br />
+          &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;{<br />
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;features&quot;: [&quot;geocode&quot;,&nbsp;&quot;reverseGeocode&quot;],<br />
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;url&quot;:&nbsp;&quot;https://maps.googleapis.com/maps/api/geocode/json?&quot;<br />
+          &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;}<br />
+          &nbsp; &nbsp;&nbsp;]<br />
+          }
+        </p>
       </div>
     </li>
     <li>If the location service is already running, reboot the device.</li>
@@ -256,12 +259,16 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         Prerequisite:
         <ul>
           <li>Set up the Geocoding API key as described in&nbsp;<a href="#google-geocoding-api-key">Google Geocoding API Key</a>.&nbsp;</li>
-          <li>Enable network location provider state by:<br />
-            # luna-send -f -n 1 luna://com.webos.service.location/<strong>setState </strong>&#39;{&quot;Handler&quot;:&quot;network&quot;,&quot;state&quot;:true}&#39;
+          <li>Enable network location provider state by:
+            <div class="code-bg-grey">
+              <p>
+                # luna-send -f -n 1 luna://com.webos.service.location/<strong>setState </strong>&#39;{&quot;Handler&quot;:&quot;network&quot;,&quot;state&quot;:true}&#39;
+              </p>
+            </div>
           </li>
         </ul>
       </li>
-      <li>For more details, <a href="https://developers.google.com/maps/documentation/geocoding/?hl=en">Google official documents</a>.</li>
+      <li>For more details, see <a href="https://developers.google.com/maps/documentation/geocoding/?hl=en">Google official documents</a>.</li>
     </ul>
     <h4>Parameters</h4>
     <div class="table-container">
@@ -478,6 +485,231 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}<br />
         &nbsp; &nbsp; &nbsp; ]<br />
         &nbsp; &nbsp;}<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="getgpssatellitedata">getGpsSatelliteData</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>location.query</b></span></div>
+    <div>
+      <ul>
+        <li>Added: <strong><code>API level 30</code></strong></li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Gets the satellite information.</p>
+    <p><strong>Prerequisite</strong>: The GPS feature of the device has to be powered <strong>ON</strong>.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>subscribe</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates whether to subscribe to related events.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true</strong>: Subscribe.</li>
+                <li><strong>false</strong>: Do not subscribe.</li>
+              </ul>
+              <p>Default: <strong>true</strong></p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true:</strong>&nbsp;Indicates that the operation was successful.</li>
+                <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>visibleSatellites</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>Indicates the number of visible (detectable) satellites.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>satellites</td>
+            <td>Optional</td>
+            <td>Object array: <a href="#object-satellite">satellite</a></td>
+            <td>
+              <p>Contains each satellite&#39;s information in an object array.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation. See the &quot;API Error Codes Reference&quot; section for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Subscription Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true:</strong>&nbsp;Indicates that the operation was successful.</li>
+                <li><strong>false:</strong>&nbsp;Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>visibleSatellites</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>Indicates the number of visible (i.e., detectable) satellites.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>satellites</td>
+            <td>Optional</td>
+            <td>Object array: <a href="#object-satellite">satellite</a></td>
+            <td>
+              <p>Contains each satellite&#39;s information in an object array.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation. See the &quot;Error Codes&quot; section of this method for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5px;"><b>Example code</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -f -n 1 luna://com.webos.service.location/getGpsSatelliteData &#39;{}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&quot;visibleSatellites&quot;:25,<br />
+        &nbsp; &nbsp;&quot;satellites&quot;:[<br />
+        &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;prn&quot;:1,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;index&quot;:0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;azimuth&quot;:64,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;snr&quot;:0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;elevation&quot;:15,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;usedInFix&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;hasAlmanac&quot;:true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;hasEphemeris&quot;:true<br />
+        &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;prn&quot;:2,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;index&quot;:1,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;azimuth&quot;:265,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;snr&quot;:0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;elevation&quot;:11,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;usedInFix&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;hasAlmanac&quot;:true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;hasEphemeris&quot;:true<br />
+        &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;prn&quot;:68,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;index&quot;:24,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;azimuth&quot;:49,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;snr&quot;:0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;elevation&quot;:49,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;usedInFix&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;hasAlmanac&quot;:false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&quot;hasEphemeris&quot;:false<br />
+        &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp;],<br />
+        &nbsp; &nbsp;&quot;errorCode&quot;:0,<br />
+        &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
         }
       </p>
     </div>
@@ -1248,6 +1480,213 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       </p>
     </div>
   </div>
+  <h3 id="getnmeadata">getNmeaData</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>location.query</b></span></div>
+    <div>
+      <ul>
+        <li>Added: <strong><code>API level 30</code></strong></li>
+      </ul>
+    </div>
+    <h4>Description</h4>
+    <p>Gets a NMEA&nbsp;sentence from a GPS receiver.</p>
+    <h4>Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>subscribe</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates whether to subscribe to related events.</p>
+              <ul>
+                <li><strong>true</strong>: Subscribe.</li>
+                <li><strong>false</strong>: Do not subscribe.</li>
+              </ul>
+              <p>Default: <strong>true</strong></p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true:</strong>&nbsp;Indicates that the operation was successful.</li>
+                <li><strong>false:</strong>&nbsp;Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>timestamp</td>
+            <td>Optional</td>
+            <td>Number (int64_t)</td>
+            <td>
+              <p>Indicates the time when a raw NMEA sentence is received from the satellite(in milliseconds).</p>
+            </td>
+          </tr>
+          <tr>
+            <td>nmea</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Contains the NMEA sentence.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation. See the &quot;API Error Codes Reference&quot; section for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Subscription Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates the status of the operation.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
+                <li><strong>false:</strong>&nbsp;Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>timestamp</td>
+            <td>Optional</td>
+            <td>Number (int64_t)</td>
+            <td>
+              <p>Indicates the time when a raw NMEA sentence is received from the satellite(in milliseconds).</p>
+            </td>
+          </tr>
+          <tr>
+            <td>nmea</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Contains the NMEA sentence.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation. See the &quot;API Error Codes Reference&quot; section for details.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Example</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5px;"><b>Example code</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -f -n 1 luna://com.webos.service.location/getNmeaData &#39;{}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp;&quot;timestamp&quot;:1410848850316,<br />
+        &nbsp; &nbsp;&quot;nmea&quot;:&quot;$GPGSV,4,1,13,01,13,067,,02,13,268,,04,33,060,,06,46,286,*7A&quot;,<br />
+        &nbsp; &nbsp;&quot;errorCode&quot;:0,<br />
+        &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+        }
+      </p>
+      <p>Subscription response:<br />
+        {<br />
+        &nbsp; &nbsp;&quot;timestamp&quot;:1410848850316,<br />
+        &nbsp; &nbsp;&quot;nmea&quot;:&quot;$GPGSV,4,1,13,01,13,067,,02,13,268,,04,33,060,,06,46,286,*7A&quot;,<br />
+        &nbsp; &nbsp;&quot;errorCode&quot;:0,<br />
+        &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+        }
+      </p>
+      <p>{<br />
+        &nbsp; &nbsp;&quot;timestamp&quot;:1410848862346,<br />
+        &nbsp; &nbsp;&quot;nmea&quot;:&quot;$GPGSV,4,2,13,01,13,069,,02,13,265,,04,33,060,,03,46,286,*7A&quot;,<br />
+        &nbsp; &nbsp;&quot;errorCode&quot;:0,<br />
+        &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
+        }
+      </p>
+    </div>
+  </div>
   <h3 id="getreverselocation">getReverseLocation</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>location.query</b></span></div>
@@ -1265,13 +1704,17 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       <li>
         Prerequisite:
         <ul>
-          <li>Set up the Geocoding API key as described in&nbsp;<u>Overview&nbsp;of the API &gt; &quot;Google Geocoding API Key&quot;</u>.&nbsp;</li>
-          <li>Enable network location provider state by:<br />
-            # luna-send -f -n 1 luna://com.webos.service.location/<strong>setState&nbsp;</strong>&#39;{&quot;Handler&quot;:&quot;network&quot;,&quot;state&quot;:true}&#39;
+          <li>Set up the Geocoding API key as described in <a href="#google-geocoding-api-key">Overview of the API > Google Geocoding API Key</a>.</li>
+          <li>Enable network location provider state by:
+            <div class="code-bg-grey">
+              <p>
+                # luna-send -f -n 1 luna://com.webos.service.location/<strong>setState&nbsp;</strong>&#39;{&quot;Handler&quot;:&quot;network&quot;,&quot;state&quot;:true}&#39;
+              </p>
+            </div>
           </li>
         </ul>
       </li>
-      <li>For more details, <a href="https://developers.google.com/maps/documentation/geocoding/?hl=en">Google official documents</a>.</li>
+      <li>For more details, see<a href="https://developers.google.com/maps/documentation/geocoding/?hl=en"> Google official documents</a>.</li>
     </ul>
     <h4>Parameters</h4>
     <div class="table-container">
@@ -2973,6 +3416,107 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>
               <p>Indicates latitude.</p>
               <p>Possible Range: -90.0 ~90.0(in degrees).</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h3 id="object-satellite">satellite</h3>
+  <div>
+    <p>Contains satellite information.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>index</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>Indicates the index of the satellite.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>azimuth</td>
+            <td>Required</td>
+            <td>Number (double)</td>
+            <td>
+              <p>Indicates the azimuth value of the satellite(in degrees).</p>
+            </td>
+          </tr>
+          <tr>
+            <td>elevation</td>
+            <td>Required</td>
+            <td>Number (double)</td>
+            <td>
+              <p>Indicates the elevation of the satellite(in degrees).</p>
+            </td>
+          </tr>
+          <tr>
+            <td>prn</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>Indicates the PRN (pseudo-random number) for the satellite.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>snr</td>
+            <td>Required</td>
+            <td>Number (double)</td>
+            <td>
+              <p>Indicates the signal to noise ratio for the satellite.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>hasAlmanac</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates whether the GPS engine has almanac data for the satellite.</p>
+              <p>Possible values are :</p>
+              <ul>
+                <li><strong>true</strong>: GPS engine has almanac data for the satellite.</li>
+                <li><strong>false</strong>: GPS engine has no almanac data for the satellite.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>hasEphemeris</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates whether the GPS engine has ephemeris data for the satellite.</p>
+              <ul>
+                <li><strong>true</strong>: GPS engine has ephemeris data for the satellite.</li>
+                <li><strong>false</strong>: GPS engine has no ephemeris data for the satellite.&nbsp;</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>usedInFix</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates whether&nbsp;<span style="color:rgb(34, 34, 34)">the satellite was used by the GPS engine in calculating the most recent GPS fix.</span></p>
+              <ul>
+                <li><strong>true</strong>: Satellite was used.</li>
+                <li><strong>false</strong>: Satellite was not used.</li>
+              </ul>
             </td>
           </tr>
         </tbody>
