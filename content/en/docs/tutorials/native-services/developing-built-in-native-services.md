@@ -1,64 +1,517 @@
 ---
 title: Built-in Native Services
 display_title: Developing Built-in Native Services
-date: 2024-09-10
+date: 2024-10-02
 weight: 20
 toc: true
 ---
 
-To create a built-in native service, you must write the source code and prepare the required configuration files.
+A **built-in native service** is a native service that is installed with the webOS OSE platform at build time.
 
-For easier understanding, the process to create a built-in JS service is explained using using a sample service in [Sample Code Repository](https://github.com/webosose/samples). The sample service has the following features:
+{{< note "Downloadable vs. Built-In" >}}
+In webOS OSE, apps and services can be classified into two types based on how they are installed on the target device.
 
-* Has a method named **`hello`** that responds with the string "Hello, Native Service!!".
-* Calls `com.webos.service.systemservice/clock/getTime` method and prints the UTC time on the log.
+- **Downloadable** apps/services are installed by the appinstalld service. The appinstalld service creates webOS configurations based on files created by developers. (such as trust level) Developers can modify only certain parts of the app/service settings.
+- **Built-in** apps/services are built and installed by developers. Developers can **customize** app/service's configurations to suit their needs.
+{{< /note >}}
 
-The directory structure of the sample service must be as follows:
+This tutorial shows a step-by-step guide for creating a built-in native service from scratch.
+
+## Prerequisites
+
+Before you begin, prepare the following:
+
+- [Samples repository](https://github.com/webosose/samples)
+- [webOS OSE platform source code](https://github.com/webosose/build-webos)
+
+{{< note >}}
+If you already prepared the above things, you can skip this section.
+{{< /note >}}
+
+### Samples Repository
+
+The samples repository provides basic sample codes for webOS OSE apps and services.
+
+Download the samples repository.
 
 ``` bash
-native-services/built-in/
+git clone https://github.com/webosose/samples.git
+```
+
+The directory structure of the sample native app will be as follows:
+
+```
+samples/native-services/built-in/
 ├── build-config/
+│   ├── com.example.service.native/
+    │   └── com.example.service.native.service
 │   ├── com.example.service.native.bb
 │   └── webos-local.conf
 └── com.example.service.native/
     ├── files/
-    │   ├── sysbus/
-    │   │   ├── com.example.service.native.api.json.in
-    │   │   ├── com.example.service.native.groups.json.in
-    │   │   ├── com.example.service.native.perm.json.in
-    │   │   ├── com.example.service.native.role.json.in
-    │   │   └── com.example.service.native.service.in
-    │   └── systemd/
+    │   └── sysbus/
+    │       ├── com.example.service.native.api.json.in
+    │       ├── com.example.service.native.groups.json.in
+    │       ├── com.example.service.native.perm.json.in
+    │       ├── com.example.service.native.role.json.in
     │       └── com.example.service.native.service.in
     ├── CMakeLists.txt
     ├── main.cpp
     └── README.md
 ```
 
-Developing a built-in native service requires the following steps:
+### Platform Source Code
 
-* [Prerequisites](#before-you-begin)
-* [Step 1: Implementation](#step-1-implement-the-native-service)
-* [Step 2: Configuration](#step-2-configure-the-native-service)
-* [Step 3: Build](#step-3-build-the-native-service)
-* [Step 4: Verification](#step-4-run-and-verify-the-native-service)
-* [Step 5: Deployment](#step-5-deploy-the-native-service)
+Since the built-in native service is built using the [webOS OSE source code](https://github.com/webosose/build-webos), you need to download and set up the source code.
 
-## Before you begin
-
-- Build and flash the webOS OSE image. For detailed information, see [Building webOS OSE]({{< relref "building-webos-ose" >}}) and [Flashing webOS OSE]({{< relref "flashing-webos-ose" >}}).
-- Download the sample repository, and move into `samples/native-services/built-in` directory.
+1. Download the source code.
 
     ``` bash
-    $ git clone https://github.com/webosose/samples
-    $ cd samples/native-services/built-in
+    git clone https://github.com/webosose/build-webos.git
     ```
 
-## Step 1: Implement the Native Service
+2. Move in the downloaded directory.
 
-### Source Code
+    ``` bash
+    cd build-webos
+    ```
 
-First, define the functionality of the native service on the source code.
+3. Install the prerequisites.
+
+    ``` bash
+    sudo scripts/prerequisites.sh
+    ```
+
+4. Donwload required components.
+
+    ``` bash
+    # ./mcf -p <num of CPUs> -b <num of CPUs> <device type>
+    ./mcf -p 2 -b 2 raspberrypi4-64
+    ```
+
+    {{< note >}}
+    `<num of CPUs>` determines how many CPU cores you will use in the build process. For more details, refer to [Appendix A. How to Find the Optimum Parallelism Values]({{< relref "building-webos-ose#appendix-a-how-to-find-the-optimum-parallelism-" >}}).
+    {{< /note >}}
+
+    After you execute the `mcf` command, various webOS-related components are downloaded in the `build-webos` directory. Then, you are ready to start.
+
+## Step 01. Configuring a Service
+
+Copy the following files to the source code directory (default: `build-webos`):
+
+- `samples/native-services/built-in/build-config/com.example.service.native/` (copy the whole directory)
+- `samples/native-services/built-in/build-config/com.example.service.native.bb`
+- `samples/native-services/built-in/build-config/webos-local.conf`
+
+### com.example.service.native/ & com.example.service.native.bb
+
+1. Create a new directory.
+
+    ``` bash
+    mkdir build-webos/meta-webosose/meta-webos/recipes-webos/com.example.service.native/
+    ```
+
+2. Copy the file.
+
+    - **From**:
+        - `samples/native-services/built-in/build-config/com.example.service.native/`
+        - `samples/native-services/built-in/build-config/com.example.service.native.bb`
+    - **To**: `build-webos/meta-webosose/meta-webos/recipes-webos/com.example.service.native/`
+
+After moving the files and folders, the directory hierarchy will be as follows:
+
+```
+build-webos/meta-webosose/meta-webos/recipes-webos/com.example.service.native/
+├── com.example.service.native/
+|   └── com.example.service.native.service
+└── com.example.service.native.bb
+```
+
+### webos-local.conf
+
+1. Copy the file.
+
+    - **From**: `samples/native-services/built-in/build-config/webos-local.conf`
+    - **To**: `build-webos/webos-local.conf`
+
+2. Edit the copied `webos-local.conf`.
+
+    ```plain
+    INHERIT += "externalsrc"
+    EXTERNALSRC:pn-com.example.service.native = "<PATH TO samples/native-services/built-in/com.example.service.native>/"
+    EXTERNALSRC_BUILD:pn-com.example.service.native = "<PATH TO samples/native-services/built-in/com.example.service.native>/build/"
+    PR:append:pn-com.example.service.native =".local0"
+    ``` 
+
+    1. Change `<PATH TO samples/native-services/built-in/com.example.service.native>` with your own path.
+    2. We recommend adding a trailing slash (/) at the end of all directory paths, as in Lines 2 and 3.
+
+## Step 02. Building the Service
+
+There are two options to build a native service: **Service alone** or **with the platform**.
+
+**Choose your build option** depending on your target device.
+
+| Option | Description |
+| ------ | ----------- |
+| Service Alone | This option generates an `.ipk` package by building an app using the platform source code, and then installs the generated package on the target device. <br /><br />This option is **only available for Raspberry Pi 4**. For other type of devices, use the **with the platform** option. |
+| With the Platform | This option embeds the app into the platform source code and build it at once. |
+
+### Service Alone
+
+1. (Optional) Remove the existing `build` directory. (If you've ever built a built-in native service.)
+
+    ``` bash
+    rm -rf <PATH TO samples/native-services/built-in/com.example.service.native>/build
+    ```
+
+2. Move to the root directory (`build-webos`), and build the native app.
+
+    ``` bash
+    build-webos$ source oe-init-build-env
+    build-webos$ bitbake com.example.service.native
+    ```
+
+    If the build succeeds, an `.ipk` file will be generated under the samples directory:
+
+    ```
+    samples/native-services/built-in/com.example.service.native/oe-workdir/deploy-ipks/raspberrypi4_64
+    └── com.example.service.native_1.0.0-r0.local0_raspberrypi4_64.ipk
+    ```
+
+    Now it's time to install the generated `.ipk` on your target device. Go to [Step 03. Installing the App](#step-03-installing-the-app).
+
+### With Platform
+
+{{< note >}}
+In this section, there are a lot of contents about modifying **recipe** files. For more about the recipe files, refer to the [Yocto Project Reference Manual](https://docs.yoctoproject.org/).
+{{< /note >}}
+
+1. Add the service ID to the build recipe file.
+
+    **File Path**: `build-webos/meta-webosose/meta-webos/recipes-core/packagegroups/packagegroup-webos-extended.bb`
+
+    ``` bb
+    ...
+    RDEPENDS:${PN} += " \
+        activitymanager \
+        ...
+        com.example.service.native \       # Add the service ID
+    "
+        ...
+    ```
+
+2. Download the [webos-initscripts](https://github.com/webosose/webos-initscripts) component. You can download it anywhere you want.
+
+    ``` bash
+    git clone https://github.com/webosose/webos-initscripts.git
+    cd webos-initscripts
+    ```
+
+3. Make a symbolic link of the service. This will run the service automatically after boot.
+
+    ``` bash
+    cd common/lib/systemd/system/webos-bd.target.wants/
+    ln -s ../com.example.service.native.service com.example.service.native.service
+    ls -al
+    total 8
+    ...
+    lrwxrwxrwx ... com.example.service.native.service -> ../com.example.service.native.service
+    ...
+    ```
+
+4. Go to the `webos-local.conf` file.
+
+    ```
+    vi build-webos/webos-local.conf
+    ```
+
+5. Add the path of the `webos-initscripts` directory. 
+
+    Change `<PATH TO webos-initscripts>` with your own path.
+
+    ```plain
+    INHERIT += "externalsrc"
+    EXTERNALSRC:pn-com.example.service.native = "<PATH TO samples/native-services/built-in/com.example.service.native>/"
+    EXTERNALSRC_BUILD:pn-com.example.service.native = "<PATH TO samples/native-services/built-in/com.example.service.native>/build/"
+    PR:append:pn-com.example.service.native =".local0"
+    EXTERNALSRC:pn-webos-initscripts = "<PATH TO webos-initscripts>"
+    EXTERNALSRC_BUILD:pn-webos-initscripts = "<PATH TO webos-initscripts>/build"
+    PR:append:pn-webos-initscripts =".local0"
+    ``` 
+
+5. Move to the root directory (`build-webos`), build the `webos-initscripts`.
+
+    ``` bash
+    build-webos$ source oe-init-build-env
+    build-webos$ bitbake webos-initscripts
+    ```
+
+6. Build the webOS OSE platform.
+
+    ``` bash
+    build-webos$ bitbake webos-image
+    ```
+
+    Once the build is done, a webOS image will be generated as follows: 
+    
+    - `build-webos/BUILD/deploy/images/raspberrypi4-64/webos-image-raspberrypi4-64.rootfs.wic`
+
+7. Flash the generated image. See [Flashing webOS OSE]({{< relref "flashing-webos-ose" >}}).
+
+{{< note >}}
+After you finish this step, go to the [Step 04. Testing the Service](#step-04-testing-the-service).
+
+You've already installed the app on the webOS OSE platform at build time, so you don't need to go to the [Step 03. Installing the App](#step-03-installing-the-app).
+{{< /note >}}
+
+## Step 03. Installing the Service
+
+This step describes how to install the `.ipk` file you've built in [Service Alone](#service-alone).
+
+1. Copy the `.ipk` file to the target device.
+
+    ``` bash
+    scp <PATH TO IPK FILE> root@<TARGET DEVICE IP ADDRESS>:/media/internal/downloads/
+    ```
+
+2. Connect to the target device.
+
+    ``` bash
+    ssh root@<TARGET DEVICE IP ADDRESS>
+    ```
+
+3. Move into the `/media/internal/downloads/` directory and install the `.ipk` file.
+
+    ``` bash
+    cd /media/internal/downloads/
+    opkg install com.example.service.native_1.0.0-r0.local0_raspberrypi4_64.ipk
+
+    Installing com.example.service.native (1.0.0) on root.
+    Configuring com.example.service.native.
+    No image conversions needed for com.example.service.native
+    ```
+
+4. Reboot the device. 
+
+    ``` bash
+    reboot -f
+    ```
+
+    After rebooting the device, you can see the app icon in the Launchpad.
+
+    {{< figure src="/images/docs/tutorials/web-apps/installed-built-in-web-app.jpg" >}}
+
+## Step 04. Testing the Service
+
+You can check whether the service is running or not.
+
+1. Run the service.
+
+    ``` bash
+    systemctl start com.example.service.native
+    ```
+
+2. Check the service status.
+
+    ``` bash
+    systemctl status
+
+        ...
+
+        |-com.example.service.native.service
+        | `- 7053 /usr/sbin/com.example.service.native
+
+        ...
+    ```
+
+3. Call a method.
+
+    ``` bash
+    luna-send -n 1 -f luna://com.example.service.native/hello '{}'
+    # Return
+    {
+        "returnValue": true,
+        "answer": "Hello, Native Service!!"
+    }
+    ```
+
+## Appendix. Code Explanation
+
+This section briefly explains the sample codes used in this tutorial.
+
+### com.example.service.native.service
+
+{{< code "com.example.service.native.service" >}}
+``` plain {linenos=table}
+[Unit]
+Description=meta-webos - "%n"
+Requires=ls-hubd.service
+After=ls-hubd.service
+
+[Service]
+Type=simple
+OOMScoreAdjust=-500
+EnvironmentFile=-/var/systemd/system/env/com.example.service.native.env
+Environment=CHARSET=UTF-8
+ExecStart=/usr/sbin/com.example.service.native
+Restart=on-failure
+```
+{{< /code >}}
+
+A brief explanation of the above file:
+
+- Line (2): Updates Description. 
+    - The `Description` value determines the meta layer where the `.service` file is saved.
+    - Using this value, developers can find which recipe installed this service. (Installed path: `/lib/systemd/system/`)
+- Line (3): Describes the dependency of service execution. If the dependent unit is normal, the unit is started. The example allows the `ls-hubd.service` unit to run and then run the service.
+- Line (11): Sets the path to the executable file.
+
+{{< note >}}
+For more details, see [systemd | freedesktop.org](http://www.freedesktop.org/wiki/Software/systemd/).
+{{< /note >}}
+
+### com.example.service.native.bb
+
+{{< code "com.example.service.native.bb" >}}
+``` bb {linenos=table}
+# Copyright (c) 2020-2024 LG Electronics, Inc.
+
+SUMMARY = "Native service sample"
+AUTHOR = "Author's name <Author's e-mail>"
+LICENSE = "Apache-2.0"
+LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/Apache-2.0;md5=89aea4e17d99a7cacdbeed46a0096b10"
+
+DEPENDS= "glib-2.0 luna-service2 pmloglib libpbnjson"
+
+WEBOS_VERSION = "0.0.1"
+PR = "r0"
+
+inherit webos_component
+inherit webos_submissions
+inherit webos_daemon
+inherit webos_cmake
+inherit webos_system_bus
+
+# systemd configuration move from component repository to meta layer
+FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:"
+inherit webos_systemd
+WEBOS_SYSTEMD_SERVICE = "com.example.service.native.service"
+
+```
+{{< /code >}}
+
+A brief explanation of the above file:
+
+- Line (1~6): Basic descriptions of the component.
+- Line (8): Adds GLib, LS2, PmLog, and pbnjson as dependencies.
+- Line (10): The version of the component. Every webOS component must contain this.
+- Line (11): Revision version of the recipe. Each recipe requires a counter to track its modification history. Make sure that you increment the version when you edit the recipe, unless you only change the value of the `WEBOS_VERSION` field or comments.
+- Line (13~17): Inherits from other classes.
+    - Line (13): Inherits common functions of webOS. For all components of webOS, this entry is required.
+    - Line (14): Inherits `webos_submissions` to check the version information set correctly. This field is required if you develop your component on a local repository.
+    - Line (15): Inherits `webos_daemon` to install a daemon.
+    - Line (16): Instructs OpenEmbedded that the component uses CMake for configuration, which is the preferred choice for webOS components.
+    - Line (17): Inherits `webos_system_bus` to register component as a service and install LS2 configuration files.
+- Line (19~22): Specifies the systemd configuration(`.service`) file to use `webos_systemd.bbclass`.
+    - Line (21): Inherits `webos_systemd`.
+    - Line (22): Sets the path of the `.service` file: `/lib/systemd/system`.
+
+### webos-local.conf
+
+{{< code "webos-local.conf" >}}
+``` plain {linenos=table}
+INHERIT += "externalsrc"
+EXTERNALSRC:pn-<SERVICE ID> = "<PATH TO THE SERVICE DIRECTORY>/"
+EXTERNALSRC_BUILD:pn-<SERVICE ID> = "<PATH TO THE SERVICE DIRECTORY>/build/"
+PR:append:pn-<SERVICE ID> =".local0"
+```
+{{< /code >}}
+
+A brief explanation of the above file:
+
+- Line (1): Inherits the `externalsrc.bbclass` file.
+- Line (2): Specifies the path to the service directory.
+    - `<SERVICE ID>`: The service ID specified in the `CMakeLists.txt` file.
+    - `<PATH TO THE SERVICE DIRECTORY>`: The root directory of the service where the `CMakeLists.txt` file is located. You must use the absolute path.
+- Line (3): Specifies the build directory. The build directory is located under the service directory.
+- Line (4): The revision for local source builds. This line is optional.
+
+### file/sysbus/*
+
+These files are related to Access Control Group (ACG). See [Security Guide]({{< relref "security-guide" >}}).
+
+### CMakeLists.txt
+
+[CMake](https://cmake.org/) is a tool for supporting cross-platform build. Developers configure prerequisites and build steps in `CMakeLists.txt`, and then CMake reads this file, creates the build system, and builds the project.
+
+{{< code "CMakeLists.txt" >}}
+``` cmake {linenos=table}
+cmake_minimum_required(VERSION 2.8.7)
+project(com.example.service.native CXX)
+set(CMAKE_BUILD_TYPE Debug)
+
+include(webOS/webOS)
+webos_modules_init(1 6 3)
+webos_component(0 0 1)
+
+include(FindPkgConfig)
+
+pkg_check_modules(GLIB2 REQUIRED glib-2.0)
+include_directories(${GLIB2_INCLUDE_DIRS})
+webos_add_compiler_flags(ALL ${GLIB2_CFLAGS_OTHER})
+
+pkg_check_modules(LUNASERVICE2 REQUIRED luna-service2)
+include_directories(${LUNASERVICE2_INCLUDE_DIRS})
+webos_add_compiler_flags(ALL ${LUNASERVICE2_CFLAGS_OTHER})
+
+pkg_check_modules(PMLOG REQUIRED PmLogLib)
+include_directories(${PMLOG_INCLUDE_DIRS})
+webos_add_compiler_flags(ALL ${PMLOG_CFLAGS_OTHER})
+
+pkg_check_modules(PBNJSON_CPP REQUIRED pbnjson_cpp)
+include_directories(${PBNJSON_CPP_INCLUDE_DIRS})
+webos_add_compiler_flags(ALL ${PBNJSON_CPP_CFLAGS_OTHER})
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(SRCS main.cpp)
+
+add_executable(${PROJECT_NAME} ${SRCS})
+
+SET (EXT_LIBS
+    ${GLIB2_LDFLAGS}
+    ${LUNASERVICE2_LDFLAGS}
+    ${PMLOG_LDFLAGS}
+    ${PBNJSON_CPP_LDFLAGS}
+)
+
+target_link_libraries(${PROJECT_NAME} ${EXT_LIBS})
+
+install(TARGETS ${PROJECT_NAME} DESTINATION ${WEBOS_INSTALL_SBINDIR})
+
+webos_build_system_bus_files()
+
+```
+{{< /code >}}
+
+A brief explanation of the above file:
+
+- Line (1): Sets the minimum required version of CMake for a project.
+- Line (2): Specifies the project name and the file extension type. In this tutorial, we use “com.example.service.native" as the project name for indicating various filenames and pathnames. The file extension type allows CMake to skip unnecessary compiler checks.
+- Line (5): Includes webOS modules for the build.
+- Line (6): Specifies the “cmake-modules-webos” version.
+- Line (7): Specifies webos_component with the component version to use webOS variables for the standard system paths. It commonly follows three digit versioning scheme.
+- Line (9~39): Adds GLib, LS2, PmLogLib, and pbnjson dependencies, and add options to use C++11.
+- Line (41): Installs the executable in `/usr/sbin`.
+- Line (43): Installs the LS2 configuration files (`/files/sysbus`) to the target.
+
+{{< note >}}
+See also [CMake Documentation](https://cmake.org/documentation/).
+{{< /note >}}
+
+### main.cpp
+
+This file defines the methods of the service.
 
 {{< code "main.cpp" >}}
 ``` cpp {linenos=table}
@@ -207,33 +660,34 @@ int main(int argc, char* argv[])
 
 A brief explanation of the above file:
 
-- Line(3~5) : Include header files to use LS2, PmLog, and pbnjson.
-- Line(7~15) : A function that calls `PmLogGetContext()` in PmLog library to print logs. For more details, see [Using PmLogLib in C/C++]({{< relref "using-pmloglib-in-c-cpp" >}}).
-- Line(17~32) : Create pbnjson utility functions, which convert String to Json and Json to String based on pbnjson library. pbnjson is a JSON engine, implemented as a pair of libraries with APIs for easier C and C++ abstraction.
-- Line(34~56) : Implement the `onHello()` callback function that is invoked when `com.example.service.native/hello` is called. The third argument of `LSMessageReply()` should be in JSON format.
-- Line(58~74) : Implement the `cbGetTime()` callback function for systemservice's `getTime` method call. When the UTC time is received in response, this function prints the time on the log.
-- Line(76~78) : Register the `hello` method and the `onHello()` callback function in the LSMethod array.
-- Line(84~85) : Declare and initialize LSError.
-- Line(87~88) : Declare GMainLoop and LSHandle variables.
-- Line(90~96) : Register the `com.example.service.native` service using `LSRegister()`.
-- Line(98~104) : Register the `hello` method and the `onHello()` callback function in `LSHandle (m_handle)`.
-- Line(106~112) : Attach the `com.example.service.native` service to GMainLoop.
-- Line(114~124) : Call systemservice's `getTime` method using `LSCall()`.
-- Line(126) : Run an iteration loop.
-- Line(128~134) : After the iteration loop is stopped, unregister the service.
-- Line(136~137) : Release GMainLoop.
+- Line (3~5): Includes header files to use LS2, PmLog, and pbnjson.
+- Line (7~15): A function that calls `PmLogGetContext()` in PmLog library to print logs. For more details, see [Using PmLogLib in C/C++]({{< relref "using-pmloglib-in-c-cpp">}}).
+- Line (17~32): Creates pbnjson utility functions, which convert string to JSON and JSON to string based on pbnjson library. pbnjson is a JSON engine, implemented as a pair of libraries with APIs for easier C and C++ abstraction.
+- Line (34~56): Implements the `onHello()` callback function that is invoked when `com.example.service.native/hello` is called. The third argument of `LSMessageReply()` should be in JSON format.
+- Line (58~74): Implements the `cbGetTime()` callback function for systemservice’s `getTime` method call. When the UTC time is received in response, this function prints the time on the log.
+- Line (76~78): Registers the hello method and the `onHello()` callback function in the `LSMethod` array.
+- Line (80~140): Implements the `main` function.
+    - Line (84~85): Declares and initialize `LSError`.
+    - Line (87~88): Declares `GMainLoop` and `LSHandle` variables.
+    - Line (90~96): Registers the `com.example.service.native` service using `LSRegister()`.
+    - Line (98~104): Registers the hello method and the `onHello()` callback function in `LSHandle (m_handle)`.
+    - Line (106~112): Attaches the `com.example.service.native` service to `GMainLoop`.
+    - Line (114~124): Calls systemservice’s `getTime` method using `LSCall()`.
+    - Line (126): Runs an iteration loop.
+    - Line (128~134): After the iteration loop is stopped, unregisters the service.
+    - Line (136~137): Releases `GMainLoop`.
 
 ### README.md
 
-This file provides general information of the native service.
+This file provides overall information about the service.
 
 {{< caution >}}
-* If the `README.md` file is missing, a build error occurs.
-* Make sure the 'Summary' section is a single line. Even **any whitespace** at the line above the 'Description' section is considered a part of the summary and can cause the build to fail.
+- If the README.md file is missing, a build error occurs.
+- Make sure the ‘Summary’ section is a single line. Even any whitespace at the line above the ‘Description’ section is considered a part of the summary and can cause the build to fail.
 {{< /caution >}}
 
-{{< code "Sample README.md" >}}
-``` plaintext
+{{< code "README.md" >}}
+``` md
 Summary
 -------
 native service sample
@@ -281,243 +735,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 SPDX-License-Identifier: Apache-2.0
+
+
 ```
 {{< /code >}}
 
-## Step 2: Configure the Native Service
-
-This section describes how to prepare the configuration files required to build and test the native service.
-
-### LS2 Configuration Files
-
-To register and execute a service through LS2, it is necessary to create a Service Configuration file, Role file, Permission file, and Groups file. You must create a `files/sysbus` directory in your project so that the configuration files are installed in the right place on the target.
-
-{{< note >}}
-This section briefly describes about configuration files. For more details, see [Security Guide]({{< relref "security-guide" >}}).
-{{< /note >}}
-
-#### Service Configuration File
-
-This file contains description of the service type and launch command.
-
-{{< code "com.example.service.native.service.in" >}}
-``` bash {linenos=table}
-[D-BUS Service]
-Name=com.example.service.native
-Exec=@WEBOS_INSTALL_SBINDIR@/com.example.service.native
-Type=static
-```
-{{< /code >}}
-
-A brief explanation of the above file:
-
-- Line(1) : Write "[D-BUS Service]" on the first line.
-- Line(2) : Set `com.example.service.native` to service name.
-- Line(3) : Write the full path of the executable file. `@WEBOS_INSTALL_SBINDIR@` stands for '/usr/sbin' directory.
-- Line(4) : Type can be set to 'static' or 'dynamic'. In this example, it is set as a static service.
-
-#### Role File
-
-This file contains allowed service names for each component and individual security settings for each service name.
-
-{{< code "com.example.service.native.role.json.in">}}
-``` json {linenos=table}
-{
-    "exeName":"@WEBOS_INSTALL_SBINDIR@/com.example.service.native",
-    "type": "regular",
-    "trustLevel": "oem",
-    "allowedNames": [
-        "com.example.service.native"
-    ],
-    "permissions": [
-        {
-            "service":"com.example.service.native",
-            "outbound":[
-                "*"
-            ]
-        }
-    ]
-}
-```
-{{< /code >}}
-
-A brief explanation of the above file:
-
-- Line(2) : `exeName` - Specify the full path to the binary for a native service. Must be of the form: "/path/to/binary"
-- Line(3) : `type` - Indicate whether the app is privileged (can change its role) or regular. Possible values are privileged or regular.
-- Line(4) : Set the [trust level]({{< relref "security-guide#trust-levels" >}}) of the service.
-- Line(5~7) : `allowedNames` - Names that this service is allowed to register. It can be an array of any valid service name strings, empty array [] for none, and empty string "" for an unnamed service.
-- Line(8~15) : The permissions for the service.
-    - `outbound` - Array of services that this service is allowed to send requests to. It can include strings of any valid service names. Use "\*" for all, empty array [] for none, and empty string "" for unnamed services. It's possible to use a wildcard (*) at the end of a string.
-
-#### Client Permission File
-
-This file defines what groups are required for this component to function properly.
-
-{{< code "com.example.service.native.perm.json.in" >}}
-``` json {linenos=table}
-{
-    "com.example.service.native": [
-        "time.query"
-    ]
-}
-```
-{{< /code >}}
-
-A brief explanation of the above file:
-
-- Line(3) : Since `com.example.service.native` calls systemservice's `getTime` method, add the method's group name "time.query" to the client permission file.
-
-#### API Permission File
-
-This file defines ACG values of the service and methods those ACG values contain.
-
-{{< code "com.example.service.native.api.json.in" >}}
-``` json {linenos=table}
-{
-    "examplenativeservice.acgvalue": [
-        "com.example.service.native/hello"
-    ]
-}
-```
-{{< /code >}}
-
-A brief explanation of the above file:
-
-- Line(3) : Set an ACG value and specify the methods that belong to the ACG value. In this example, the ACG value is "examplenativeservice.acgvalue", and the `com.example.service.native/hello` method is added to this value.
-
-#### Groups File
-
-This file defines the trust levels of each ACG value.
-
-{{< code "com.example.service.native.groups.json.in " >}}
-``` json {linenos=table}
-{
-    "allowedNames": [ "com.example.service.js" ],
-    "examplenativeservice.acgvalue": [ "oem" ]
-}
-```
-{{< /code >}}
-
-A brief explanation of the above file:
-
-- Line(3) : Set the trust level for `examplenativeservice.acgvalue` as `oem`. So the APIs in `examplenativeservice.acgvalue` have the `oem` trust level.
-
-### Systemd Configuration File
-
-This file is required to run the services provided by systemd.
-
-This file will be installed to the target as **`com.example.service.native`**.
-
-{{< note >}}
-Normally, this config file is in `webos-initscripts`. However, for ease-of-use we have defined it in the local source directory.
-{{< /note >}}
-
-{{< code "com.example.service.native.service.in" >}}
-``` bash {linenos=table}
-[Unit]
-Description=webos - "%n"
-Requires=ls-hubd.service
-After=ls-hubd.service
-
-[Service]
-Type=simple
-OOMScoreAdjust=-500
-EnvironmentFile=-/var/systemd/system/env/com.example.service.native.env
-Environment=CHARSET=UTF-8
-ExecStart=/usr/sbin/com.example.service.native
-Restart=on-failure
-```
-{{< /code >}}
-
-A brief explanation of the above file:
-
-- Line(3) : Describe the dependency of service execution. If the dependent unit is normal, the unit is started. The example allows the ls-hubd.service unit to run and then run the service.
-- Line(11) : Set the path to the executable file.
-
-For more details, see [systemd official site](http://www.freedesktop.org/wiki/Software/systemd/).
-
-### CMakeLists.txt
-
-This file is required to build the source code using CMake.
-
-{{< code "CMakeLists.txt" >}}
-``` cmake {linenos=table}
-cmake_minimum_required(VERSION 2.8.7)
-project(com.example.service.native CXX)
-set(CMAKE_BUILD_TYPE Debug)
-
-include(webOS/webOS)
-webos_modules_init(1 6 3)
-webos_component(0 0 1)
-
-include(FindPkgConfig)
-
-pkg_check_modules(GLIB2 REQUIRED glib-2.0)
-include_directories(${GLIB2_INCLUDE_DIRS})
-webos_add_compiler_flags(ALL ${GLIB2_CFLAGS_OTHER})
-
-pkg_check_modules(LUNASERVICE2 REQUIRED luna-service2)
-include_directories(${LUNASERVICE2_INCLUDE_DIRS})
-webos_add_compiler_flags(ALL ${LUNASERVICE2_CFLAGS_OTHER})
-
-pkg_check_modules(PMLOG REQUIRED PmLogLib)
-include_directories(${PMLOG_INCLUDE_DIRS})
-webos_add_compiler_flags(ALL ${PMLOG_CFLAGS_OTHER})
-
-pkg_check_modules(PBNJSON_CPP REQUIRED pbnjson_cpp)
-include_directories(${PBNJSON_CPP_INCLUDE_DIRS})
-webos_add_compiler_flags(ALL ${PBNJSON_CPP_CFLAGS_OTHER})
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-set(SRCS main.cpp)
-
-add_executable(${PROJECT_NAME} ${SRCS})
-
-SET (EXT_LIBS
-    ${GLIB2_LDFLAGS}
-    ${LUNASERVICE2_LDFLAGS}
-    ${PMLOG_LDFLAGS}
-    ${PBNJSON_CPP_LDFLAGS}
-)
-
-target_link_libraries(${PROJECT_NAME} ${EXT_LIBS})
-
-install(TARGETS ${PROJECT_NAME} DESTINATION ${WEBOS_INSTALL_SBINDIR})
-
-webos_build_system_bus_files()
-webos_build_configured_file(files/systemd/com.example.service.native.service SYSCONFDIR systemd/system)
-```
-{{< /code >}}
-
-A brief explanation of the above file:
-
-- Line(2) : Specify the project name and the file extension type. In this tutorial, we use "com.example.service.native" as the project name for indicating various filenames and pathnames. The file extension type allows CMake to skip unnecessary compiler checks.
-- Line(5) : Include webOS OSE modules for the build.
-- Line(6) : Specify the "**cmake-modules-webos**" version.
-- Line(7) : Specify `webos_component` with the component version to use webOS variables for the standard system paths. It commonly follows three digit versioning scheme.
-- Line(9~39) : Add GLib, LS2, PmLogLib, and pbnjson dependencies, and add options to use C++11.
-- Line(41) : Install the executable in `/usr/sbin`.
-- Line(43) : Install the LS2 configuration files (/`files/sysbus`) to the target.
-- Line(44) : Install the systemd configuration file on the target (`etc/systemd/system`).
-
-## Step 3: Build the Native Service
-
-After implementing and configuring the Native service, you must build the service.
-
-### Add the Recipe File
-
-webOS OSE uses OpenEmbedded of Yocto Project to build its components. OpenEmbedded needs a recipe file that configures the build environment. For more details about the recipe, see [Yocto Project Reference Manual](http://www.yoctoproject.org/docs/current/ref-manual/ref-manual.html).
-
-You must move the recipe file into webOS OSE project directory.
-
-- **Recipe file:** `samples/native-services/built-in/build-config/com.example.service.native.bb`
-- **Destination directory:** `build-webos/meta-webosose/meta-webos/recipes-webos/<native service name>`
-
-where `<native service name>` is the name of the native service. For the sample native service, `<native service name>` must be replaced by 'com.example.service.native'.
+### com.example.service.native.bb
 
 {{< code "com.example.service.native.bb" >}}
-``` bash {linenos=table}
+``` bb {linenos=table}
+# Copyright (c) 2020-2024 LG Electronics, Inc.
+
 SUMMARY = "Native service sample"
 AUTHOR = "Author's name <Author's e-mail>"
 LICENSE = "Apache-2.0"
@@ -533,307 +761,24 @@ inherit webos_submissions
 inherit webos_daemon
 inherit webos_cmake
 inherit webos_system_bus
+
+# systemd configuration move from component repository to meta layer
+FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:"
+inherit webos_systemd
+WEBOS_SYSTEMD_SERVICE = "com.example.service.native.service"
+
 ```
 {{< /code >}}
 
 A brief explanation of the above file:
 
-- Lines(1~4) : Basic descriptions of the component.
-- Line(6) : Add GLib, LS2, PmLog, and pbnjson as dependencies.
-- Line(8) : Version of the component. For the webOS OSE component, this field is mandatory.
-- Line(9) : Revision version of the recipe. Each recipe requires a counter to track its modification history. Make sure that you increment the version when you edit the recipe, unless you only change the value of the `WEBOS_VERSION` field or comments.
-- Line(11) : Inherit common functions of webOS OSE. For all components of webOS OSE, this entry is required.
-- Line(12) : Instruct OpenEmbedded to use the `WEBOS_VERSION` value as the component version number. If you develop your component on a local repository, this entry is required.
-- Line(13) : Every component that installs a daemon inherits `webos_daemon`.
-- Line(14) : Instruct OpenEmbedded that the component uses CMake for configuration, which is the preferred choice for webOS components.
-- Line(15) : To register component as a service and install LS2 configuration files, inherit `webos_system_bus`.
-
-### Configure the Local Source Directory
-
-To build a component that is located on the local system, you must specify the directory information.
-
-You must move the configuration file into webOS OSE project directory.
-
-- **Configuration file:** `samples/native-services/built-in/build-config/webos-local.conf`
-- **Destination directory:** `build-webos`
-
-For the sample native service (`com.example.service.native`), you must provide the local path where the source exists.
-
-{{< code "webos-local.conf" >}}
-``` bash {linenos=table}
-INHERIT += "externalsrc"
-EXTERNALSRC:pn-com.example.service.native = "/home/username/project/com.example.service.native/"
-EXTERNALSRC_BUILD:pn-com.example.service.native = "/home/username/project/com.example.service.native/build/"
-PR:append:pn-com.example.service.native =".local0"
-```
-{{< /code >}}
-
-A brief explanation of the above file:
-
-- Line(1) : Inherit "externalsrc" bbclass file.
-- Line(2) : The local source directory. The syntax of the property is `EXTERNALSRC:pn-<component>`. For the value, input `"<absolute path of the project directory>"`
-- Line(3) : The local build directory. The syntax of the property is `EXTERNALSRC_BUILD:pn-<component>`. For the value, input `"<absolute path of the project directory>/build/"`
-- Line(4) : The appended revision version (PR) for building local source files. The syntax of the property is `PR:append:pn-<component>`. This property is optional.
-
-{{< note >}}
-We recommend that you add a trailing slash (/) at the end of all local directory paths, as in Line(2) and Line(3).
-{{< /note >}}
-
-### Build the Service
-
-To build the component on the OpenEmbedded environment, enter the following commands on the shell.
-
-``` bash
-build-webos$ source oe-init-build-env
-build-webos$ bitbake com.example.service.native
-```
-
-## Step 4: Run and Verify the Native Service
-
-After building the service, you must verify its functionality.
-
-1.  **Copy the IPK to the target.**
-
-    When the build is successful, oe-related directories are created under the project root directory. These directories are linked to the directory where the build output is generated from the actual **`build-webos`** sub-directory.
-
-    ``` bash
-    com.example.service.native
-    ├── CMakeLists.txt
-    ├── README.md
-    ├── files
-    │   ├── sysbus
-    │   │   ├── com.example.service.native.api.json.in
-    │   │   ├── com.example.service.native.groups.json.in
-    │   │   ├── com.example.service.native.perm.json.in
-    │   │   ├── com.example.service.native.role.json.in
-    │   │   └── com.example.service.native.service.in
-    │   └── systemd
-    │       └── com.example.service.native.service.in
-    ├── main.cpp
-    ├── oe-logs -> /home/username/build/build-webos/BUILD/work/raspberrypi4_64-webos-linux/com.example.service.native/0.0.1-r0.local0/temp
-    ├── oe-workdir -> /home/username/build/build-webos/BUILD/work/raspberrypi4_64-webos-linux/com.example.service.native/0.0.1-r0.local0
-    ```
-
-    If you go to `oe-workdir/deploy-ipks/raspberrypi4_64`, you can see `com.example.service.native_0.0.1-r0.local0_raspberrypi4_64.ipk` file.
-
-    ``` bash
-    com.example.service.native/oe-workdir/deploy-ipks/raspberrypi4_64
-    └── com.example.service.native_0.0.1-r0.local0_raspberrypi4_64.ipk
-    ```
-
-    Copy the IPK file to the target device using the `scp` command.
-
-    ``` bash
-    com.example.service.native/oe-workdir/deploy-ipks/raspberrypi4_64$ scp com.example.service.native_0.0.1-r0.local0_raspberrypi4_64.ipk root@<target IP address>:/media/internal/downloads
-    ```
-
-2.  **Install the service on the target.**
-
-    Connect to the target using the `ssh` command and install `com.example.service.native_0.0.1-r0.local0_raspberrypi4_64.ipk`.
-
-    ``` bash
-    $ ssh root@<target IP address>
-    root@raspberrypi4-64:/sysroot/home/root# cd /media/internal/downloads/
-    root@raspberrypi4-64:/media/internal/downloads# opkg install com.example.service.native_0.0.1-r0.local0_raspberrypi4_64.ipk
-
-    Installing com.example.service.native (0.0.1) on root.
-    Configuring com.example.service.native.
-    ```
-
-3.  **Discover the LS2 configuration files.**
-
-    To make LS2 daemon scan the LS2 configuration files of the service, use the `ls-control` command as follows.
-
-    ``` bash
-    root@raspberrypi4-64:/media/internal/downloads# ls-control scan-services
-
-    telling hub to reload setting and rescan all directories
-    ```
-
-4.  **Run the service.**
-
-    You can run the **`com.example.service.native`** using the `systemctl` command.
-
-    ``` bash
-    root@raspberrypi4-64:/# systemctl start com.example.service.native
-    ```
-
-5.  **Verify the execution of the service.**
-
-    - Using `systemctl`
-
-        You can check the PID and attribute of the executed process using the command `systemctl status`.
-
-        ``` bash
-        [[0;1;32m●[[0m com.example.service.native.service - webos - "com.example.service.native.service"
-           Loaded: loaded (/etc/systemd/system/com.example.service.native.service; static; vendor preset: enabled)
-           Active: [[0;1;32mactive (running)[[0m since Sun 2019-05-26 19:19:38 PDT; 2min 35s ago
-        Main PID: 3264 (com.example.ser)
-           CGroup: /system.slice/com.example.service.native.service
-                   └─3264 /usr/sbin/com.example.service.native
-        ```
-
-    - Using the log file
-
-        You can use the `journalctl` command on the target for debugging the native service. For details on how to use the command, see [Viewing Logs]({{< relref "viewing-logs-journald#using-journalctl-to-view-logs" >}}).
-
-        ``` bash
-        root@raspberrypi4-64:/# journalctl -f | grep NativeService
-
-        Nov 22 15:56:50 raspberrypi4-64 com.example.service.native[1767]: [] [pmlog] NativeService SERVICE_MAIN {} start com.example.service.native
-        Nov 22 15:56:50 raspberrypi4-64 com.example.service.native[1767]: [] [pmlog] NativeService GETTIME_CALLBACK {"payload":{"source":"system","returnValue":true,"offset":{"source":"system","value":0},"utc":1637625410,"systemTimeSource":"ntp","timestamp":{"source":"monotonic","sec":10844,"nsec":109477350}}}
-        Nov 22 15:56:50 raspberrypi4-64 com.example.service.native[1767]: [] [pmlog] NativeService GETTIME_CALLBACK {"UTC":1637625410}
-        ```
-
-6.  **Verify the Output.**
-
-    Verify the output of the `hello` Method. You can call a method by using the `luna-send` command:
-
-    ``` bash
-    root@raspberrypi4-64:/# luna-send -n 1 -f luna://com.example.service.native/hello '{}'
-    {
-        "answer": "Hello, Native Service!!",
-        "returnValue": true
-    }
-    ```
-
-    For more details, see [Introduction to LS2 API]({{< relref "introduction-to-ls2-api" >}}).
-
-    {{< note >}}
-    If `com.example.service.native` is not registered successfully, you will see a return message as below.
-
-    ``` bash
-    root@raspberrypi4-64:/# luna-send -n 1 -f luna://com.example.service.native/hello '{}'
-    {
-        "errorCode": -1,
-        "returnValue": false,
-        "errorText": "Service does not exist: com.example.service.native."
-    }
-    ```
-    {{< /note >}}
-
-7.  **Specify the Order of Execution on the Target**
-
-    To verify that the service can run automatically after rebooting, add the service to the systemd's start execution list. This ensures that the service runs automatically without the `systemctl start` command.
-
-    - **Update the file:** `webos-bd.target`
-    - **Directory:** `/etc/systemd/system` (on the target device)
-
-    <!-- end list -->
-
-    ``` bash
-    [Unit]
-    Description="%n"
-    Wants=nyx-utils.service \
-          second-screen-gateway.service \
-          com.example.service.native.service
-    ```
-
-## Step 5: Deploy the Native Service
-
-Now you are ready to package the native service in the webOS image.
-
-### Add the Service to Build Recipe
-
-Add the service to the package recipe file.
-
-- **Update the file:** `packagegroup-webos-extended.bb`
-
-- **Directory:** `build-webos/meta-webosose/meta-webos/recipes-core/packagegroups`
-
-- **Updates to be made:** Add the service name to **`RDEPENDS:${PN} =`**
-
-``` bash
-...
-RDEPENDS:${PN} = " \
-    activitymanager \
-    audiod \
-    ...
-    com.example.service.native \
-    ${VIRTUAL-RUNTIME_appinstalld} \
-    ...
-```
-
-For more details, see [Yocto Project Reference Manual](https://www.yoctoproject.org/docs/current/ref-manual/ref-manual.html).
-
-### Modify Systemd Execution List on webos-initscripts
-
-Modify the **`webos-initscripts`** component which is responsible for systemd configuration in webOS. Through this process, you can learn how to modify a built-in component in webOS.
-
-1.  Download the `webos-initscripts` component source from [GitHub repository](https://github.com/webosose/webos-initscripts.git) to your local system.
-
-    In this document, we download the `webos-initscripts` component to `~/project/webOS/webos-initscripts`.
-
-    ``` bash
-    ~/project/webOS$ git clone https://github.com/webosose/webos-initscripts.git
-    ```
-
-2.  Specify the order of execution of the newly created native service.
-
-    In this example, adding the service to the last line ensures that it is executed last.
-
-    - **Update the file:** `webos-bd.target`
-
-    - **Directory:** `~/project/webOS/webos-initscripts/files/systemd/targets`
-
-    - **Updates:** Add the service name (`com.example.service.native.service`) to the last line.
-
-    ``` bash
-    [Unit]
-    Description="%n"
-    Wants=nyx-utils.service \
-                second-screen-gateway.service \
-                com.example.service.native.service
-    ```
-
-3.  Specify the path of the `webos-initscripts` local source directory in the build.
-
-    - **Update the file:** `webos-local.conf`
-
-    - **Directory:** `build-webos`
-
-    ``` bash
-    INHERIT += "externalsrc"
-    EXTERNALSRC:pn-com.example.service.native = "/home/username/project/webOS/com.example.service.native/"
-    EXTERNALSRC_BUILD:pn-com.example.service.native = "/home/username/project/webOS/com.example.service.native/build/"
-    PR:append:pn-com.example.service.native =".local0"
-    EXTERNALSRC:pn-webos-initscripts = "/home/username/project/webOS/webos-initscripts/"
-    EXTERNALSRC_BUILD:pn-webos-initscripts = "/home/username/project/webOS/webos-initscripts/build"
-    PR:append:pn-webos-initscripts =".local0"
-    ```
-
-4.  Build webos-initscripts on build-webos.
-
-    We can check webos-initscripts on local directory if built successfully.
-
-    ``` bash
-    build-webos$ source oe-init-build-env
-    build-webos$ bitbake webos-initscripts
-    ```
-
-### Build the webOS OSE Image and Flash to the Target
-
-1.  Build the webos-image.
-
-    ``` bash
-    build-webos$ source oe-init-build-env
-    build-webos$ bitbake webos-image
-    ```
-
-2.  Flash the generated webos-image to SD card.
-
-    ``` bash
-    build-webos/BUILD/deploy/images/raspberrypi4-64$ sudo dd bs=4M if=webos-image-raspberrypi4-64.rootfs.wic of=/dev/sdc
-    ```
-
-    For more details, see the [Flashing webOS OSE]({{< relref "flashing-webos-ose#linux" >}}) page.
-
-3.  After booting, connect to the target with SSH.
-
-    If you check the service list with `ls-monitor`, you can see `com.example.service.native` is executed as static type.
-
-    ``` bash
-    $ ssh root@<target IP address>
-    root@raspberrypi4-64:/sysroot/home/root# ls-monitor -l | grep example
-    542           com.example.service.native        /usr/sbin/com.example.service.native    static                  4dTPKKQI
-    ```
+- Line (1~6): Describes basic information of this sample service.
+- Line (8): Adds GLib, LS2, PmLog, and pbnjson as dependencies.
+- Line (10): Describes the version of the component. For the webOS OSE component, this field is mandatory.
+- Line (11): Describes the revision version of the recipe. Each recipe requires a counter to track its modification history. Make sure that you increment the version when you edit the recipe, unless you only change the value of the `WEBOS_VERSION` field or comments.
+- Line (13): Inherits common functions of webOS. For all components of webOS OSE, this field is required.
+- Line (14): Instructs OpenEmbedded to use the `WEBOS_VERSION` value as the component version number. If you develop your component on a local repository, this entry is required.
+- Line (15): Inherits `webos_daemon` to install a demon.
+- Line (16): Instructs OpenEmbedded that the component uses CMake for configuration, which is the preferred choice for webOS components.
+- Line (17): Inherits `webos_system_bus` to register component as a service and install LS2 configuration files.
+- Line (20~22): Performs systemd-related configuration for the webOS platform.

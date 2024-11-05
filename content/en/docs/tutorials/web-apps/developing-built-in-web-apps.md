@@ -1,7 +1,7 @@
 ---
 title: Built-in Web Apps
 display_title: Developing Built-in Web Apps
-date: 2024-09-10
+date: 2024-10-02
 weight: 20
 toc: true
 ---
@@ -9,127 +9,367 @@ toc: true
 A **built-in web app** is a web app that is installed with the webOS OSE platform at build time.
 
 {{< note "Downloadable vs. Built-In" >}}
-In webOS OSE, apps and services are divided into two categories: downloadable and built-in.
+In webOS OSE, apps and services can be classified into two types based on how they are installed on the target device.
 
-- **Downloadable** apps/services are installed by appinstalld service. This service automatically generates several configurations for the apps/services. (such as trust level)
-- **Built-in** apps/services are built and installed by developers. Developers can **customize** configurations to suit their needs.
+- **Downloadable** apps/services are installed by the appinstalld service. The appinstalld service creates webOS configurations based on files created by developers. (such as trust level) Developers can modify only certain parts of the app/service settings.
+- **Built-in** apps/services are built and installed by developers. Developers can **customize** app/service's configurations to suit their needs.
 {{< /note >}}
 
 This tutorial shows a step-by-step guide for creating a built-in web app from scratch.
 
 ## Prerequisites
 
-Before you begin, prepare the followings:
+Before you begin, prepare the following:
 
-- [webOS OSE platform source code](https://github.com/webosose/build-webos)
 - [Samples repository](https://github.com/webosose/samples)
+- [webOS OSE platform source code](https://github.com/webosose/build-webos)
 
 {{< note >}}
 If you already prepared the above things, you can skip this section.
 {{< /note >}}
 
+### Samples Repository
+
+The samples repository provides basic sample codes for webOS OSE apps and services.
+
+Download the samples repository.
+
+``` bash
+git clone https://github.com/webosose/samples.git
+```
+
+The directory structure of the sample web app will be as follows:
+
+```
+samples/web-apps/
+├── build-config/
+|     ├── com.example.app.web.bb
+|     └── webos-local.conf
+└── com.example.app.web/
+    ├── appinfo.json
+    ├── CMakeLists.txt
+    ├── icon.png
+    ├── index.html
+    └── README.md
+```
+
 ### Platform Source Code
 
-Since the built-in web app is installed at build time, you need the webOS OSE platform source code.
+Since the built-in web app is built using the [webOS OSE source code](https://github.com/webosose/build-webos), you need to download and set up the source code.
 
-Download the platform source code.
-
-``` bash
-git clone https://github.com/webosose/build-webos.git
-```
-
-
-A built-in web app is a web app that is packaged with webOS OSE platform at a build time. Built-in web apps have the following features:
-
-- Can be built into the webOS OSE image to be packaged together with the platform image.
-- Can provide enhanced functionalities with external libraries by building them all together with the app.
-
-In this tutorial, you will explore source codes and required configurations to create a sample built-in web app. We will start with sample codes ([GitHub repository](https://github.com/webosose/samples)) for convenience. After all the steps are done, the sample app will show the message: "Hello, Web Application!!".
-
-{{< note >}}
-The content of this page is based on webOS OSE 2.0 or later. If you are developing on webOS OSE 1.x, you might notice differences in the project directory structure, log messages, etc. Notes indicating such differences are provided where necessary.
-{{< /note >}}
-
-The directory structure of the sample app is as follows:
-
-``` bash
-samples
-├── ...
-├── web-apps/
-│   ├── build-config/
-│   │   ├── com.example.app.web.bb
-│   │   └── webos-local.conf
-│   └── com.example.app.web/
-│       ├── appinfo.json
-│       ├── CMakeLists.txt
-│       ├── icon.png
-│       ├── index.html
-│       └── README.md
-├── ...
-```
-
-## Before You Begin
-
-- Prepare a webOS OSE target device. For detailed information, see [Building webOS OSE]({{< relref "building-webos-ose" >}}) and [Flashing webOS OSE]({{< relref "flashing-webos-ose" >}}).
-
-- Download the sample codes, and move into `samples/web-apps` directory.
+1. Download the source code.
 
     ``` bash
-    $ git clone https://github.com/webosose/samples
-    $ cd samples/web-apps
+    git clone https://github.com/webosose/build-webos.git
     ```
 
-## Step 1: Implement the Web App
+2. Move in the downloaded directory.
 
-This section describes how to implement `index.html` and `README.md` files for the web app.
+    ``` bash
+    cd build-webos
+    ```
+
+3. Install the prerequisites.
+
+    ``` bash
+    sudo scripts/prerequisites.sh
+    ```
+
+4. Donwload required components.
+
+    ``` bash
+    # ./mcf -p <num of CPUs> -b <num of CPUs> <device type>
+    ./mcf -p 2 -b 2 raspberrypi4-64
+    ```
+
+    {{< note >}}
+    `<num of CPUs>` determines how many CPU cores you will use in the build process. For more details, refer to [Appendix A. How to Find the Optimum Parallelism Values]({{< relref "building-webos-ose#appendix-a-how-to-find-the-optimum-parallelism-" >}}).
+    {{< /note >}}
+
+    After you execute the `mcf` command, various webOS-related components are downloaded in the `build-webos` directory. Then, you are ready to start.
+
+## Step 01. Configuring an App
+
+Copy the following files to the source code directory (default: `build-webos`):
+
+- `samples/web-apps/build-config/com.example.app.web.bb`
+- `samples/web-apps/build-config/webos-local.conf`
+
+### com.example.app.web.bb
+
+1. Create a new directory.
+
+    ``` bash
+    mkdir build-webos/meta-webosose/meta-webos/recipes-webos/com.example.app.web/
+    ```
+
+2. Copy the file.
+
+    - **From**: `samples/web-apps/build-config/com.example.app.web.bb`
+    - **To**: `build-webos/meta-webosose/meta-webos/recipes-webos/com.example.app.web/com.example.app.web.bb`
+
+### webos-local.conf
+
+1. Copy the file.
+
+    - **From**: `samples/web-apps/build-config/webos-local.conf`
+    - **To**: `build-webos/webos-local.conf`
+
+2. Edit the copied `webos-local.conf`.
+
+    ```plain {linenos=table}
+    INHERIT += "externalsrc"
+    EXTERNALSRC:pn-com.example.app.web = "<PATH TO samples/web-apps/com.example.app.web>/"
+    EXTERNALSRC_BUILD:pn-com.example.app.web = "<PATH TO samples/web-apps/com.example.app.web>/build/"
+    PR:append:pn-com.example.app.web =".local0"
+    ``` 
+
+    1. Change `<PATH TO samples/web-apps/com.example.app.web>` with your own path.
+    2. We recommend adding a trailing slash (/) at the end of all directory paths, as in Lines 2 and 3.
+
+## Step 02. Building the App
+
+There are two options to build a web app: **App alone** or **with the platform**.
+
+**Choose your build option** depending on your target device.
+
+| Option | Description |
+| ------ | ----------- |
+| App Alone | This option generates an `.ipk` package by building an app using the platform source code, and then installs the generated package on the target device. <br /><br />This option is **only available for Raspberry Pi 4**. For other type of devices, use the **with the platform** option. |
+| With the Platform | This option embeds the app into the platform source code and build it at once. |
+
+### App Alone
+
+1. (Optional) Remove the existing `build` directory. (If you've ever built a built-in web app.)
+
+    ``` bash
+    rm -rf <PATH TO samples/web-apps/com.example.app.web>/build
+    ```
+
+2. Move to the root directory (`build-webos`), and build the web app.
+
+    ``` bash
+    build-webos$ source oe-init-build-env
+    build-webos$ bitbake com.example.app.web
+    ```
+
+    If the build succeeds, an `.ipk` file will be generated under the samples directory:
+
+    ```
+    samples/web-apps/com.example.app.web/oe-workdir/deploy-ipks/all/
+    └── com.example.app.web_1.0.0-r0.local0_raspberrypi4_64.ipk
+    ```
+
+    Now it's time to install the generated `.ipk` on your target device. Go to [Step 03. Installing the App](#step-03-installing-the-app).
+
+### With Platform
 
 {{< note >}}
-If you want to use the sample codes and webOS OSE 2.0 or later, you can skip this step.
+In this section, there are a lot of contents about modifying **recipe** files. For more about the recipe files, refer to the [Yocto Project Reference Manual](https://docs.yoctoproject.org/).
+{{< /note >}}
+
+1. Add the app ID to the build recipe file.
+
+    **File Path**: `build-webos/meta-webosose/meta-webos/recipes-core/packagegroups/packagegroup-webos-extended.bb`
+
+    ``` bb
+    ...
+    RDEPENDS:${PN} += " \
+        activitymanager \
+        ...
+        com.example.app.web \       # Add the app ID
+    "
+        ...
+    ```
+
+2. Move to the root directory (`build-webos`), and build the webOS OSE platform.
+
+    ``` bash
+    build-webos$ source oe-init-build-env
+    build-webos$ bitbake webos-image
+    ```
+
+    Once the build is done, a webOS image will be generated as follows: 
+    
+    - `build-webos/BUILD/deploy/images/raspberrypi4-64/webos-image-raspberrypi4-64.rootfs.wic`
+
+3. Flash the generated image. See [Flashing webOS OSE]({{< relref "flashing-webos-ose" >}}).
+
+{{< note >}}
+You don't need to go to the [Step 03. Installing the App](#step-03-installing-the-app). You've already installed the app on the webOS OSE platform.
+{{< /note >}}
+
+## Step 03. Installing the App
+
+This step describes how to install the `.ipk` file you've built in [App Alone](#app-alone).
+
+1. Copy the `.ipk` file to the target device.
+
+    ``` bash
+    scp <PATH TO IPK FILE> root@<TARGET DEVICE IP ADDRESS>:/media/internal/downloads/
+    ```
+
+2. Connect to the target device.
+
+    ``` bash
+    ssh root@<TARGET DEVICE IP ADDRESS>
+    ```
+
+3. Move into the `/media/internal/downloads/` directory and install the `.ipk` file.
+
+    ``` bash
+    root@raspberrypi4-64:~# cd /media/internal/downloads/
+    root@raspberrypi4-64:/media/internal/downloads# opkg install com.example.app.web_1.0.0-r0.local0_raspberrypi4_64.ipk
+
+    Installing com.example.app.web (1.0.0) on root.
+    Configuring com.example.app.web.
+    No image conversions needed for com.example.app.web
+    ```
+
+4. Reboot the device. 
+
+    ``` bash
+    reboot -f
+    ```
+
+    After rebooting the device, you can see the app icon in the Launchpad.
+
+    {{< figure src="/images/docs/tutorials/web-apps/installed-built-in-web-app.jpg" >}}
+
+## Appendix. Code Explanation
+
+This section briefly explains the sample codes used in this tutorial.
+
+### com.example.app.web.bb
+
+{{< code "com.example.app.web.bb" >}}
+``` bb {linenos=table}
+SECTION = "webos/apps"
+LICENSE = "Apache-2.0"
+LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/Apache-2.0;md5=89aea4e17d99a7cacdbeed46a0096b10"
+ 
+WEBOS_VERSION = "1.0.0"
+PR = "r0"
+ 
+inherit webos_component
+inherit webos_submissions
+inherit webos_cmake
+inherit webos_app
+inherit webos_arch_indep
+ 
+FILES:${PN} += "${webos_applicationsdir}"
+```
+{{< /code >}}
+
+A brief explanation of the above file:
+
+- Line (1): The section where packages should be categorized.
+- Line (2~3): License information for the app.
+- Line (5): The version of the component. Every webOS component must contain this.
+- Line (6): The revision of the recipe. Unless you're changing the `WEBOS_VERSION` or just adding a comment, you should increment this value each time you modify the recipe.
+- Line (8~12): Inherits from other classes.
+    - Line (8): Common webOS functions. Every webOS component must contain this.
+    - Line (9): Inherits `webos_submissions` to check the version information set correctly. This field is required if you develop your component on a local repository.
+    - Line (10): Uses CMake for component's configuration.
+    - Line (11): For apps, this field is required.
+    - Line (12): Inherits this class if the component is independent of CPU architecture (such as a web app). Make sure that the project field in the CMake is set as NONE (e.g., `project(com.example.app.web NONE)`). If not, CMake will try to find the C and C++ compilers. This might cause build failure because your component will be built before the toolchain.
+- Line (14): Defines files included in the package. `${webos_applicationsdir}` indicates `/usr/palm/applications`. `${PN}` is the package name (`com.example.app.web`).
+
+### webos-local.conf
+
+``` plain {linenos=table}
+INHERIT += "externalsrc"
+EXTERNALSRC:pn-<APP ID> = "<PATH TO THE APP DIRECTORY>/"
+EXTERNALSRC_BUILD:pn-<APP ID> = "<PATH TO THE APP DIRECTORY>/build/"
+PR:append:pn-<APP ID> =".local0"
+```
+
+A brief explanation of the above file:
+
+- Line (1): Inherits the `externalsrc.bbclass` file.
+- Line (2): Specifies the path to the app directory.
+    - `<APP ID>`: The app ID specified in the `appinfo.json` file.
+    - `<PATH TO THE APP DIRECTORY>`: The root directory of the app where the `appinfo.json` file is located. You must use the absolute path.
+- Line (3): Specifies the build directory. The build directory is located under the app directory.
+- Line (4): The revision for local source builds. This line is optional.
+
+### appinfo.json
+
+`appinfo.json` stores the app’s metadata.
+
+``` json
+{
+    "id": "com.example.app.web",            # ID of the app. This ID will be used as a unique identifier for the app.
+    "version": "0.0.1",
+    "vendor": "My Company",
+    "type": "web",                          # Type of the app
+    "main": "index.html",                   # The HTML file that contains the contents of your app
+    "title": "Web app sample",              # This string will be displayed on the app bar
+    "icon": "icon.png",                     # A path to an image for your app icon
+    "requiredPermissions" : ["time.query"]  # ACG values for the app
+}
+```
+
+{{< note >}}
+See also [appinfo.json]({{< relref "appinfo-json" >}}).
+{{< /note >}}
+
+### CMakeLists.txt
+
+[CMake](https://cmake.org/) is a tool for supporting cross-platform build. Developers configure prerequisites and build steps in `CMakeLists.txt`, and then CMake reads this file, creates the build system, and builds the project.
+
+{{< code "CMakeLists.txt" >}}
+``` cmake {linenos=table}
+cmake_minimum_required(VERSION 2.8.7)
+project(com.example.app.web NONE)
+include(webOS/webOS)
+webos_modules_init(1 0 0 QUALIFIER RC4)
+ 
+set(INSTALL_DIR ${WEBOS_INSTALL_WEBOS_APPLICATIONSDIR}/${CMAKE_PROJECT_NAME})
+#install necessary files to destination directory
+install(DIRECTORY . DESTINATION ${INSTALL_DIR}
+        PATTERN "*~" EXCLUDE
+        PATTERN "CMake*" EXCLUDE
+        PATTERN "build*" EXCLUDE
+        PATTERN "README.md" EXCLUDE
+        PATTERN "oe-*" EXCLUDE
+        PATTERN "*.lock" EXCLUDE)
+```
+{{< /code >}}
+
+A brief explanation of the above file:
+
+- Line (1): Sets the minimum required version of CMake for a project.
+- Line (2): Sets a name for the project. The second value (`NONE`) disables all checks for any programming language.
+- Line (3): Includes webOS modules for the build.
+- Line (4): Specifies the “**cmake-modules-webos**” version.
+- Line (6): Sets a path to install the app. `WEBOS_INSTALL_WEBOS_APPLICATIONSDIR` is set to `/usr/palm/applications/` by default.
+- Line (8~14): Installs required files to `INSTALL_DIR` on the target device. Excludes the files that do not need to be installed on the target device.
+
+{{< note >}}
+See also [CMake Documentation](https://cmake.org/documentation/).
 {{< /note >}}
 
 ### index.html
 
-The following two sections present code examples by platform version.
+This file defines your web app's behavior.
 
-* [webOS OSE 2.0 or Later](#webos-ose-2-0-or-later)
-* [webOS OSE 1.x](#webos-ose-1-x)
-
-#### webOS OSE 2.0 or Later
-
-For the sample web app (`com.example.app.web`), `index.html` file exists in the `com.example.app.web` directory.
-
-`index.html` prints a hello message on the monitor and also prints the current time on the log. To call [LS2 API]({{< relref "ls2-api-index" >}}), webOS OSE 2.0 or later uses [WebOSServiceBridge]({{< relref "webosservicebridge-api-reference" >}}), a JavaScript API for web apps to access Luna Bus.
-
-{{< code "index.html - webOS OSE 2.0 or Later">}}
+{{< code "index.html" >}}
 ``` html {linenos=table}
 <!DOCTYPE html>
 <html>
 <head>
 <title>Example Web App</title>
 <style type="text/css">
-    body {
-        width: 100%;
-        height: 100%;
-        background-color:#202020;
-    }
-    div {
-        position:absolute;
-        height:100%;
-        width:100%;
-        display: table;
-    }
-    h1 {
-        display: table-cell;
-        vertical-align: middle;
-        text-align:center;
-        color:#FFFFFF;
-    }
+ 
+   ...
+ 
 </style>
 <script type="text/javascript">
     var bridge = new WebOSServiceBridge();
     var url = 'luna://com.webos.service.systemservice/clock/getTime';
     var params = '{}';
-
+ 
     function callback(msg){
         var arg = JSON.parse(msg);
         if (arg.returnValue) {
@@ -139,7 +379,7 @@ For the sample web app (`com.example.app.web`), `index.html` file exists in the 
             webOSSystem.PmLogString(3, "GETTIME_FAILED", '{"APP_NAME": "example web app"}', "errorText : " + arg.errorText);
         }
     }
-
+ 
     bridge.url = url;
     bridge.onservicecallback = callback;
     bridge.call(url, params);
@@ -151,86 +391,28 @@ For the sample web app (`com.example.app.web`), `index.html` file exists in the 
     </div>
 </body>
 </html>
-
 ```
 {{< /code >}}
 
 A brief explanation of the above file:
 
-  - Line(25) : Create a WebOSServiceBridge object.
-  - Line(26~27) : Set the URL of the method to call and the parameters in JSON string format.
-      - `url`: URL of the LS2 API method
-      - `params`: parameter for the method to invoke
-  - Line(29~37) : Define a callback function that can handle the response. If the response is successful, "UTC" value is printed on the logging file. For details on logging, refer to [Using PmLogLib in JavaScript]({{< relref "using-pmloglib-in-javascript" >}}).
-  - Line(39~41) : Set the callback to the WebOSServiceBridge object, and invoke the method with Luna call.
-
-#### webOS OSE 1.x
-
-The sample `index.html` file is not provided for webOS OSE 1.x version. So you must replace the `index.html` file with your own file.
-
-The following shows sample codes that do the same jobs as the previous `index.html` file. To call [LS2 API]({{< relref "ls2-api-index" >}}), webOS OSE 1.x uses the webOS library.
-
-{{< note "Prerequisite for webOS OSE 1.x only (when calling LS2 API in the web app)" >}}
-Download the webOS library file from [webOSjs-0.1.0.zip](https://webosose.s3.ap-northeast-2.amazonaws.com/tools/webOSjs-0.1.0.zip) and decompress it to the project root directory.
-{{< /note >}}
-
-{{< code "index.html - webOS OSE 1.x" >}}
-``` html {linenos=table}
-<!DOCTYPE html>
-<html>
-<head>
-<style type="text/css">
-
- /* same as webOS OSE 2.0 or later */
-
-</style>
-<script src="webOSjs-0.1.0/webOS.js" charset="utf-8"></script>
-<script type="text/javascript">
-//sample code for calling LS2 API
-var lunaReq= webOS.service.request("luna://com.webos.service.systemservice",
-{
-    method:"clock/getTime",
-    parameters:{},
-    onSuccess: function (args) {
-        webOS.info("GETTIME_SUCCESS", {"APP_NAME": "example web app"}, "UTC : " + args.utc);
-    },
-    onFailure: function (args) {
-        webOS.error("GETTIME_FAILED", {"APP_NAME": "example web app"}, "errorText : " + args.errorText);
-    }
-});
-</script>
-</head>
-<body>
-    <div>
-        <h1>Hello, Web Application!!</h1>
-    </div>
-</body>
-</html>
-
-```
-{{< /code >}}
-
-A brief explanation of the above file:
-
-- Line(9) : Include the webOS library.
-- Line(12~22) : Call `com.webos.service.systemservice/clock/getTime` method. If the response is successful, "UTC" value is printed on the logging file. To print log messages when using the webOS library, you can use the following methods provided by the webOS library (in descending order of importance):
-    - `webOS.critical(String msgid, Object keyvalue_pairs, String msg)`
-    - `webOS.error(String msgid, Object keyvalue_pairs, String msg)`
-    - `webOS.warning(String msgid, Object keyvalue_pairs, String msg)`
-    - `webOS.info(String msgid, Object keyvalue_pairs, String msg)`
-    - `webOS.debug(String msg)`
+- Line (11): Creates a WebOSServiceBridge object. This object has methods and properties to use LS2 APIs. For more details, see [WebOSServiceBridge API Reference]({{< relref "webosservicebridge-api-reference" >}}).
+- Line (12): Stores an LS2 method URL. For the full list of LS2 APIs, see [LS2 API List]({{< relref "ls2-api-index#ls2-api-list" >}}).
+- Line (15~23): The callback function for the LS2 API call. In this tutorial, the callback function prints the return value of the API call (current time) using PmLogLib. See [Using PmLogLib in JavaScript]({{< relref "using-pmloglib-in-javascript" >}}).
+- Line (26): Sets the callback function for the LS2 API call.
+- Line (27):  Calls the LS2 API specified in the url and params variables.
 
 ### README.md
 
-This file provides general information of the web app.
+This file provides overall information about the app.
 
 {{< caution >}}
-* If the `README.md` file is missing, a build error occurs.
-* Make sure the 'Summary' section is a single line. Even **any whitespace** at the line above the 'Description' section is considered a part of the summary and can cause the build to fail.
+- If the README.md file is missing, a build error occurs.
+- Make sure the ‘Summary’ section is a single line. Even any whitespace at the line above the ‘Description’ section is considered a part of the summary and can cause the build to fail.
 {{< /caution >}}
 
-{{< code "Sample README.md">}}
-``` plaintext
+
+``` markdown
 Summary
 -------
 web app sample
@@ -281,337 +463,3 @@ limitations under the License.
 SPDX-License-Identifier: Apache-2.0
 
 ```
-{{< /code >}}
-
-## Step 2: Configure the Web App
-
-This section describes how to prepare the configuration files required to build and test the built-in web app.
-
-{{< note >}}
-If you want to use the sample codes and webOS OSE 2.0 or later, you can skip this step.
-{{< /note >}}
-
-### appinfo.json
-
-Apps are required to have metadata before they can be packaged. This metadata is stored in a file called `appinfo.json`, which is used by the webOS device to identify the app, its icon, and other information that is needed to launch the app.
-
-{{< code "appinfo.json" >}}
-``` json {linenos=table}
-{
-    "id": "com.example.app.web",
-    "version": "0.0.1",
-    "vendor": "My Company",
-    "type": "web",
-    "main": "index.html",
-    "title": "Web app sample",
-    "icon": "icon.png",
-    "requiredPermissions" : ["time.query"]
-}
-
-```
-{{< /code >}}
-
-A brief explanation of the above file:
-
-- Line(2) : The ID for the sample app.
-- Line(5) : The type of the sample app.
-- Line(7) : The title to be shown on the Launchpad, which is a dock UI of webOS OSE.
-- Line(8) : The icon file to be shown on the App Bar and the Launchpad. Make sure the icon file is located in the project root directory. You can use your own icon file (size: 80 px * 80 px) or [icon.png](/images/docs/tutorials/icon.png).
-- Line(9) : The [Access Control Group (ACG)]({{< relref "security-guide" >}}) name associated with the LS2 API methods used in the app. For example, this sample app uses the `clock/getTime` method of the [com.webos.service.systemservice]({{< relref "com-webos-service-systemservice" >}}) API, whose ACG is "time.query". To identify the ACG names associated with a method, see the "ACG" field of the method in its API reference. You can also use the [`ls-monitor`]({{< relref "ls-monitor" >}}) command with the `-i` option to identify the ACGs of the method.
-
-For more details, see [appinfo.json]({{< relref "appinfo-json" >}}).
-
-### CMakeLists.txt
-
-This file is required to generate the standard build files.
-
-{{< code "CMakeLists.txt" >}}
-``` cmake {linenos=table}
-cmake_minimum_required(VERSION 2.8.7)
-project(com.example.app.web NONE)
-include(webOS/webOS)
-webos_modules_init(1 0 0 QUALIFIER RC4)
-
-set(INSTALL_DIR ${WEBOS_INSTALL_WEBOS_APPLICATIONSDIR}/${CMAKE_PROJECT_NAME})
-#install necessary files to destination directory
-install(DIRECTORY . DESTINATION ${INSTALL_DIR}
-        PATTERN "*~" EXCLUDE
-        PATTERN "CMake*" EXCLUDE
-        PATTERN "build*" EXCLUDE
-        PATTERN "README.md" EXCLUDE
-        PATTERN "oe-*" EXCLUDE
-        PATTERN "*.lock" EXCLUDE)
-
-```
-{{< /code >}}
-
-A brief explanation of the above file:
-
-- Line(2) : Specify the project name and the file extension type. In this tutorial, we use "com.example.app.web" as the project name. The file extension type "NONE" allows CMake to skip unnecessary compiler checks.
-- Line(3) : Include webOS OSE modules for the build.
-- Line(4) : Specify the "**cmake-modules-webos**" version.
-- Line(6) : Set a directory path to install the app. `WEBOS_INSTALL_WEBOS_APPLICATIONSDIR` is set to `/usr/palm/applications/` by default.
-- Line(8~14) : Install the required files to `INSTALL_DIR` on the target. Exclude the files that do not need to be installed to the target device.
-
-## Step 3: Build the Web App
-
-After implementing and configuring the web app, you must build the app.
-
-### Add the Recipe File
-
-webOS OSE uses OpenEmbedded of Yocto Project to build its components. OpenEmbedded needs a **recipe** file that configures the build environment. For more details about the recipe, see [Yocto Project Reference Manual](https://www.yoctoproject.org/docs/current/ref-manual/ref-manual.html).
-
-You must move the recipe file (`com.example.app.web.bb`) into the webOS project directory (`build-webos`). 
-
-{{< note >}}
-`build-webos` is the directory that is used in [Building webOS OSE]({{< relref "building-webos-ose" >}}).
-{{< /note >}}
-
-- **From:** `samples/web-apps/build-config/com.example.app.web.bb`
-- **To:** `build-webos/meta-webosose/meta-webos/recipes-webos/com.example.app.web/com.example.app.web.bb`
-
-`com.example.app.web` is the ID of the web app that is defined in [appinfo.json](#appinfo-json).
-
-{{< code "com.example.app.web.bb" >}}
-``` bash {linenos=table}
-SECTION = "webos/apps"
-LICENSE = "Apache-2.0"
-LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/Apache-2.0;md5=89aea4e17d99a7cacdbeed46a0096b10"
-
-WEBOS_VERSION = "1.0.0"
-PR = "r0"
-
-inherit webos_component
-inherit webos_submissions
-inherit webos_cmake
-inherit webos_app
-inherit webos_arch_indep
-
-FILES:${PN} += "${webos_applicationsdir}"
-```
-{{< /code >}}
-
-A brief explanation of the above file:
-
-- Line(1~3) : Basic descriptions of the component.
-- Line(5) : Version of the component. For the webOS OSE component, this field is mandatory.
-- Line(6) : Revision version of the recipe. Each recipe requires a counter to track its modification history. Make sure that you increment the version when you edit the recipe, unless you only change the value of the `WEBOS_VERSION` field or comments.
-- Line(8) : Inherit common functions of webOS OSE. For all components of webOS OSE, this entry is required.
-- Line(9) : Instruct OpenEmbedded to use the `WEBOS_VERSION` value as the component version number. If you develop your component on a local repository, this entry is required.
-- Line(10) : Instruct OpenEmbedded that the component uses CMake for configuration, which is the preferred choice for webOS components.
-- Line(11) : Inherit `webos_app`, because the component is an app.
-- Line(12) : Inherit `webos_arch_indep`, because the web app is CPU architecture independent. When inheriting from `webos_arch_indep`, ensure that your project command in the CMake script specifies `NONE` as the language, i.e. `project(<component> NONE)`. Otherwise, CMake will attempt to find the C and C++ compilers. Your component may well be built before the toolchain, resulting in a failure to build.
-- Line(14) : `${webos_applicationsdir}` indicates `/usr/palm/applications`. `${PN}` is a package name, which is set to **com.example.app.web**.
-
-### Configure the Local Source Directory
-
-To build a component that is located on the local system, you must specify the directory information.
-
-You must move the configuration file (`webos-local.conf`) into the webOS OSE project directory.
-
-- **From:** `samples/web-apps/build-config/webos-local.conf`
-- **To:** `build-webos/webos-local.conf`
-
-For the sample web app (`com.example.app.web`), you must provide the local path where the source exists. See the explanation of `webos-local.conf`.
-
-{{< code "webos-local.conf" >}}
-``` bash {linenos=table}
-INHERIT += "externalsrc"
-EXTERNALSRC:pn-com.example.app.web = "/home/username/project/com.example.app.web/"
-EXTERNALSRC_BUILD:pn-com.example.app.web = "/home/username/project/com.example.app.web/build/"
-PR:append:pn-com.example.app.web =".local0"
-```
-{{< /code >}}
-
-A brief explanation of the above file:
-
-- Line(1) : Inherit the `externalsrc.bbclass` file.
-- Line(2) : The path to the local source directory. **You must replace this value with your own value as follows:**
-  - For the property name, enter `EXTERNALSRC:pn-<web app ID>`. 
-  - For the value, enter an absolute path to your web app directory. If you use the sample codes, enter an absolute path to `/samples/web-apps/com.example.app.web/`. 
-- Line(3) : The path to the local build directory. **You must replace this value with your own value as follows:**
-  - For the property name, enter `EXTERNALSRC_BUILD:pn-<component>`. 
-  - For the value, enter `<local source directory>/build/`. 
-- Line(4) : The appended revision version (PR) for building local source files. The syntax of the property is `PR:append:pn-<component>`. This property is optional.
-
-{{< note >}}
-We recommend that you add a trailing slash (/) at the end of all local directory paths, as in Line(2) and Line(3).
-{{< /note >}}
-
-### Build the App
-
-To build the component on the OpenEmbedded environment, enter the following commands on the shell.
-
-``` bash
-build-webos$ source oe-init-build-env
-build-webos$ bitbake com.example.app.web
-```
-
-## Step 4: Run and Verify the Web App
-
-After building the app, you must verify its functionalities.
-
-When the build is successful, OpenEmbedded-related directories (`oe-*`) are created under the project root directory. These directories are linked to the actual `build-webos` sub-directories where the build output is generated.
-
-``` bash
-com.example.app.web
-├── CMakeLists.txt
-├── README.md
-├── appinfo.json
-├── build
-├── icon.png
-├── index.html
-├── oe-logs -> /home/username/build/build-webos/BUILD/work/all-webos-linux/com.example.app.web/1.0.0-r0.local0/temp
-└── oe-workdir -> /home/username/build/build-webos/BUILD/work/all-webos-linux/com.example.app.web/1.0.0-r0.local0
-```
-
-### Copy the IPK File to the Target Device
-
-Go to `oe-workdir/deploy-ipks/all`, then you can find the `com.example.app.web_1.0.0-r0.local0_all.ipk` file.
-
-``` bash
-com.example.app.web/oe-workdir/deploy-ipks/all
-└── com.example.app.web_1.0.0-r0.local0_all.ipk
-```
-
-Copy the IPK file to the target device using the `scp` command.
-
-``` bash
-com.example.app.web/oe-workdir/deploy-ipks/all$ scp com.example.app.web_1.0.0-r0.local0_all.ipk root@<target device IP address>:/media/internal/downloads/
-```
-
-### Install the App on the Target Device
-
-Connect to the target using the `ssh` command and install `com.example.app.web_1.0.0-r0.local0_all.ipk`.
-
-``` bash
-$ ssh root@<target device IP address>
-root@raspberrypi4-64:/sysroot/home/root# cd /media/internal/downloads/
-root@raspberrypi4-64:/media/internal/downloads# opkg install com.example.app.web_1.0.0-r0.local0_all.ipk
-
-Installing com.example.app.web (1.0.0) on root.
-Configuring com.example.app.web.
-No image conversions needed for com.example.app.web
-```
-
-### Discover the LS2 Configuration Files
-
-To make the LS2 daemon scan the LS2 configuration files of the app, use the `ls-control` command as follows:
-
-``` bash
-root@raspberrypi4-64:/media/internal/downloads# ls-control scan-services
-
-telling hub to reload setting and rescan all directories
-```
-
-{{< note >}}
-For built-in web apps, LS2 configuration files are generated during the build process. To run the app properly, you must make the system scan the newly generated configuration files.
-{{< /note >}}
-
-### Scan the App
-
-To make System and Application Manager (SAM) scan the app, restart SAM using the `systemctl` command. This step is required so that the app can be added to the app list, which in turn makes the app appear on the Launchpad.
-
-``` bash
-root@raspberrypi4-64:/# systemctl restart sam
-```
-
-{{< note >}}
-Rebooting the target after installing the app will have the same effect as running the `ls-control` and `systemctl` commands. However, using the commands allows you to continue testing without rebooting.
-{{< /note >}}
-
-### Run the Web App
-
-To display the App Bar, drag the mouse cursor upward from the bottom of the screen (or swipe up from the bottom of the screen if you're using a touch display). 
-
-{{< figure src="/images/docs/tutorials/web-apps/app-bar.jpg" alt="App Bar" width="80%" height="80%" >}}
-
-{{< note >}}
-- On webOS OSE 1.x, press the Windows key on your keyboard to display the Home Launcher.
-- From webOS OSE 2.19.0, the app icon is displayed on the Launchpad instead of the Home Launcher.
-{{< /note >}}
-
-To display the Launchpad, click the Launchpad icon. The Launchpad shows the list of installed apps.
-
-{{< figure src="/images/docs/tutorials/web-apps/installed-built-in-web-app.jpg" alt="Built-in web app in the Launchpad " width="80%" height="80%" >}}
-
-Click the app icon to run the app. The message, "Hello, Web Application!!", will be displayed as follows:
-
-{{< figure src="/images/docs/tutorials/web-apps/web-app-screen.png" alt="Web app screen" width="80%" height="80%" >}}
-
-### Verify the Execution of the Web App
-
-- Using SAM
-
-    You can check whether the app is running by SAM. For more information about SAM methods, see [com.webos.service.applicationmanager]({{< relref "com-webos-service-applicationmanager" >}}).
-
-    ``` bash
-    root@raspberrypi4-64:/# luna-send -i -f luna://com.webos.service.applicationmanager/running '{"subscribe":true}'
-    {
-        "subscribed": true,
-        "running": [
-            {
-                "webprocessid": "1530",
-                "instanceId": "7979072b-9c5b-402f-b859-da7169ce8d980",
-                "displayId": 0,
-                "defaultWindowType": "card",
-                "appType": "web",
-                "id": "com.example.app.web",
-                "processid": "378",
-                "launchPointId": "com.example.app.web_default"
-            }
-        ],
-        "returnValue": true
-    }
-    ```
-
-- Using a log file
-
-    You can use the `journalctl` command on the target device to debug the app. For details on how to use the command, see [Viewing Logs]({{< relref "viewing-logs-journald#using-journalctl-to-view-logs" >}}).
-
-    ``` bash
-    root@raspberrypi4-64:/# journalctl | grep UTC
-
-    Nov 21 20:07:14 raspberrypi4-64 WebAppMgr[915]: [] [pmlog] com.example.app.web GETTIME_SUCCESS {"APP_NAME": "example web app"} UTC : 1637554034
-    ```
-
-## Step 5: Build the webOS OSE Platform with the Web App
-
-You are now ready to build the webOS OSE image including the built-in web app and flash it to the target device.
-
-1. Add the web app to the build recipe file (`packagegroup-webos-extended.bb`).
-
-    - **File path:** `build-webos/meta-webosose/meta-webos/recipes-core/packagegroups/packagegroup-webos-extended.bb`
-    - **Updates to be made:** Add the web app name to **`RDEPENDS:${PN} =`**
-
-    ``` bash {hl_lines=[6]}
-    ...
-    RDEPENDS:${PN} = " \
-        activitymanager \
-        audiod \
-        ...
-        com.example.app.web \
-        ${VIRTUAL-RUNTIME_appinstalld} \
-        ...
-    ```
-
-    For more details, see [Yocto Project Reference Manual](https://www.yoctoproject.org/docs/current/ref-manual/ref-manual.html).
-
-2. Move to the `build-webos` directory, and then build the webOS OSE image using the following commands.
-
-    ``` bash
-    build-webos$ source oe-init-build-env
-    build-webos$ bitbake webos-image
-    ```
-
-3. Flash the generated webOS image to the MicroSD card.
-
-    **Path to image:** `build-webos/BUILD/deploy/images/raspberrypi4-64/webos-image-raspberrypi4-64.rootfs.wic`
-
-    ``` bash
-    build-webos/BUILD/deploy/images/raspberrypi4-64$ sudo dd bs=4M if=webos-image-raspberrypi4-64.rootfs.wic of=/dev/sdc
-    ```
-
-    For more details, see the [Flashing webOS OSE]({{< relref "flashing-webos-ose#linux" >}}) page.
-
-After rebooting the target device, the web app becomes available on the Launchpad.

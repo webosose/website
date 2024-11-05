@@ -1,7 +1,7 @@
 ---
 title: Downloadable Native Services
 display_title: Developing Downloadable Native Services
-date: 2024-09-10
+date: 2024-10-02
 weight: 10
 toc: true
 ---
@@ -9,17 +9,17 @@ toc: true
 A **downloadable native service** is a 3rd party native service that can be installed on the webOS target device.
 
 {{< note "Downloadable vs. Built-In" >}}
-In webOS OSE, apps and services are divided into two categories: downloadable and built-in.
+In webOS OSE, apps and services can be classified into two types based on how they are installed on the target device.
 
-- **Downloadable** apps/services are installed by appinstalld service. This service automatically generates several configurations for the apps/services. (such as trust level)
-- **Built-in** apps/services are built and installed by developers. Developers can **customize** configurations to suit their needs.
+- **Downloadable** apps/services are installed by the appinstalld service. The appinstalld service creates webOS configurations based on files created by developers. (such as trust level) Developers can modify only certain parts of the app/service settings.
+- **Built-in** apps/services are built and installed by developers. Developers can **customize** app/service's configurations to suit their needs.
 {{< /note >}}
 
 This tutorial shows a step-by-step guide for creating a downloadable native service from scratch.
 
 ## Prerequisites
 
-Before you begin, prepare the followings:
+Before you begin, prepare the following:
 
 - [Samples repository](https://github.com/webosose/samples)
 - [Command-Line Interface (CLI)](https://github.com/webos-tools/cli)
@@ -48,13 +48,11 @@ samples/native-services/downloadable/
 │   ├── icon.png
 │   ├── index.html
 │   └── script.js
-│
 ├── com.sample.echo.service/
 │   ├── src/
 │   │    └── main.c
 │   ├── CMakeLists.txt
 │   └── services.json
-│
 └── README.md
 ```
 
@@ -221,6 +219,7 @@ This section explains the sample source codes in this tutorial.
 
 ### main.c
 
+{{< code "main.c" >}}
 ``` c {linenos=table}
 ...
 #include <luna-service2/lunaservice.h>
@@ -244,6 +243,7 @@ LSRegisterCategory(handle,"/",sampleMethods, NULL, NULL, &lserror);
 LSGmainAttach(handle, gmainLoop, &lserror);
 ...
 ```
+{{< /code >}}
 
 A brief explanation of the above file:
 
@@ -280,8 +280,9 @@ See also [services.json]({{< relref "services-json" >}}).
 
 ### CMakeLists.txt
 
-`CMakeLists.txt` file is used by CMake to generate the Makefile to build the project. This file specifies the source, header, and UI files included in the project.
+[CMake](https://cmake.org/) is a tool for supporting cross-platform build. Developers configure prerequisites and build steps in `CMakeLists.txt`, and then CMake reads this file, creates the build system, and builds the project.
 
+{{< code "CMakeLists.txt" >}}
 ``` cmake {linenos=table}
 cmake_minimum_required(VERSION 2.8.7)
 project(nativeService C)
@@ -340,6 +341,7 @@ target_link_libraries (${BIN_NAME}
  
 file(COPY ${CMAKE_SOURCE_DIR}/services.json DESTINATION "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
 ```
+{{< /code >}}
 
 A brief explanation of the above file:
 

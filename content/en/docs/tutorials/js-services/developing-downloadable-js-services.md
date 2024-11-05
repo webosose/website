@@ -1,7 +1,7 @@
 ---
 title: Downloadable JS Services
 display_title: Developing Downloadable JS Services
-date: 2024-09-10
+date: 2024-10-02
 weight: 10
 toc: true
 ---
@@ -9,10 +9,10 @@ toc: true
 A **downloadable JavaScript (JS) service** is a 3rd party JS service that can be installed on the webOS target device.
 
 {{< note "Downloadable vs. Built-In" >}}
-In webOS OSE, apps and services are divided into two categories: downloadable and built-in.
+In webOS OSE, apps and services can be classified into two types based on how they are installed on the target device.
 
-- **Downloadable** apps/services are installed by appinstalld service. This service automatically generates several configurations for the apps/services. (such as trust level)
-- **Built-in** apps/services are built and installed by developers. Developers can **customize** configurations to suit their needs.
+- **Downloadable** apps/services are installed by the appinstalld service. The appinstalld service creates webOS configurations based on files created by developers. (such as trust level) Developers can modify only certain parts of the app/service settings.
+- **Built-in** apps/services are built and installed by developers. Developers can **customize** app/service's configurations to suit their needs.
 {{< /note >}}
 
 This tutorial shows a step-by-step guide for creating a downloadable JS service from scratch.
@@ -105,10 +105,10 @@ If the command succeeds, the following directory will be generated under the cur
 
 ```
 sampleService/
-|---- helloclient.js
-|---- helloworld_webos_service.js
-|---- package.json
-|---- services.json
+├── helloclient.js
+├── helloworld_webos_service.js
+├── package.json
+└── services.json
 ```
 
 Descriptions for each file are as follows:
@@ -237,6 +237,7 @@ This section explains the sample source codes in this tutorial.
 
 `helloworld_webos_service.js` shows a typical way to call a service on webOS.
 
+{{< code "helloclient.js">}}
 ``` js {linenos=table}
 const Service = require('webos-service');
  
@@ -262,6 +263,7 @@ service.call("luna://@SERVICE-NAME@/hello", {}, function(message) {
     });
 });
 ```
+{{< /code >}}
 
 A brief explanation of the above file:
 

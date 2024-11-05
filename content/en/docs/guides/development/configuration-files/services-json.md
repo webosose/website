@@ -1,6 +1,6 @@
 ---
 title: services.json
-date: 2020-03-05
+date: 2024-09-12
 weight: 30
 toc: true
 ---
@@ -63,13 +63,13 @@ Typically, the value will be the name of the first service in <code>services</co
 <td><p>engine</p></td>
 <td><p>Optional</p></td>
 <td><p>string</p></td>
-<td><p>Service type. This property is required when you develop an external native service.</p></td>
+<td><p>Service type. This property is required when you develop a downloadable native service.</p></td>
 </tr>
 <tr class="even">
 <td><p>executable</p></td>
 <td><p>Optional</p></td>
 <td><p>string</p></td>
-<td><p>Name of an executable file. This property is required when you develop an external native service.</p></td>
+<td><p>Name of an executable file. This property is required when you develop a downloadable native service.</p></td>
 </tr>
 <tr class="odd">
 <td><p>services</p></td>
