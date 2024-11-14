@@ -73,6 +73,11 @@ This version corresponds to the [GitHub releases](https://github.com/webosose/bu
 - Qt
   - Upgrade Qt from v6.7.2.
 
+#### JS Service
+
+- Node.js
+  - Node.js has been upgraded to v20.12.2.
+
 #### Web Engine
 
 - Replace the App Shell-based Enact browser with a Browser Shell-based browser.
