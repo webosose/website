@@ -73,6 +73,10 @@ This version corresponds to the [GitHub releases](https://github.com/webosose/bu
 - Qt
   - Upgrade Qt from v6.7.2.
 
+#### Media
+
+- Change PCM operation to non-atomic to prevent scheduling bug.
+
 #### JS Service
 
 - Node.js
@@ -82,15 +86,9 @@ This version corresponds to the [GitHub releases](https://github.com/webosose/bu
 
 - Replace the App Shell-based Enact browser with a Browser Shell-based browser.
 
-#### performance
+#### Performance
 
 - Introduce polkit.
-
-### BSP
-
-#### Media
-
-- Change PCM operation to non-atomic to prevent scheduling bug.
 
 ### Build System & SCM
 
