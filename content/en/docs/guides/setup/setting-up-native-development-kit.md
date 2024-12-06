@@ -1,6 +1,6 @@
 ---
 title: Native Development Kit Setup
-date: 2024-09-10
+date: 2024-11-29
 weight: 90
 toc: true
 ---
@@ -30,7 +30,7 @@ $ bitbake -c populate_sdk webos-image
 | Parameter | Description |
 |-----------|-------------|
 | `<BRANCH_OF_THE_LATEST_WEBOS_OSE_VERSION>` | This parameter varies depending on the current the webOS OSE version. Use the latest version. See also [Cloning the Repository]({{< relref "building-webos-ose#cloning-the-repository" >}}). |
-| `<NUM_OF_CPUS>` | Number of CPU cores to allocate to the building process. For the specific value, refer to [Appendix A. How to Find the Optimum Parallelism Values]({{< relref "building-webos-ose#appendix-a-how-to-find-the-optimum-parallelism-values" >}}). |
+| `<NUM_OF_CPUS>` | Number of CPU cores to allocate to the building process. For the specific value, refer to [Appendix A. Setting Values for mcf]({{< relref "building-webos-ose#appendix-a-setting-values-for-mcf" >}}). |
 
 {{< note >}}
 OpenEmbedded commands (e.g., `bitbake`) are used to build the NDK installer. For more details about the commands and OpenEmbedded, see [Yocto Project SDK Manual](https://www.yoctoproject.org/docs/2.6/sdk-manual/sdk-manual.html#sdk-building-an-sdk-installer).

@@ -1,7 +1,7 @@
 ---
 title: Built-in Native Apps
 display_title: Developing Built-in Native Apps
-date: 2024-10-02
+date: 2024-11-29
 weight: 20
 toc: true
 ---
@@ -86,7 +86,7 @@ Since the built-in native app is built using the [webOS OSE source code](https:/
     ```
 
     {{< note >}}
-    `<num of CPUs>` determines how many CPU cores you will use in the build process. For more details, refer to [Appendix A. How to Find the Optimum Parallelism Values]({{< relref "building-webos-ose#appendix-a-how-to-find-the-optimum-parallelism-" >}}).
+    `<num of CPUs>` determines how many CPU cores you will use in the build process. For more details, refer to [Appendix A. Setting Values for mcf]({{< relref "building-webos-ose#appendix-a-setting-values-for-mcf" >}}).
     {{< /note >}}
 
     After you execute the `mcf` command, various webOS-related components are downloaded in the `build-webos` directory. Then, you are ready to start.

@@ -1,7 +1,7 @@
 ---
 title: Building webOS OSE
 display_title: Building webOS Open Source Edition
-date: 2024-10-14
+date: 2024-12-02
 weight: 20
 toc: true
 ---
@@ -14,7 +14,7 @@ This page describes how to build a webOS Open Source Edition (OSE) image from so
 - Basic knowledge about how to use [Git](https://git-scm.com/) is required.
 
 {{< note >}}
-If you cannot afford to build the image on your own, try with [pre-built images](https://github.com/webosose/build-webos/releases).
+Building webOS OSE image requires **Ubuntu** and **significant computing resources** (See [Appendix B. Build Time Test](#appendix-b-build-time-test)). If building the image locally is not feasible, consider using [pre-built images](https://github.com/webosose/build-webos/releases).
 {{< /note >}}
 
 ## Quick Summary
@@ -25,16 +25,19 @@ Here is a quick summary for users already familiar with building webOS OSE. If y
 # Download source codes
 $ git clone https://github.com/webosose/build-webos.git
 $ cd build-webos
-$ git checkout <branch of the latest commit>
 
 # Install and configure the build
 $ sudo scripts/prerequisites.sh
-$ ./mcf -p <num of CPUs> -b <num of CPUs> <device type>
+$ ./mcf -p <half the num of CPUs> -b <half the num of CPUs> <image type>
 
 # Start to build
 $ source oe-init-build-env
 $ bitbake webos-image
 ```
+
+{{< note >}}
+If you have any problem during the build process, please check the [Troubleshooting Guide](#troubleshooting-guide) section.
+{{< /note >}}
 
 ## Cloning the Repository
 
@@ -45,23 +48,23 @@ $ git clone https://github.com/webosose/build-webos.git
 $ cd build-webos
 ```
 
-Since webOS OSE 2.19.1, we introduced a new branch policy. This new policy allows the platform to implement important changes quickly. All you need to do is to **checkout to the branch of the latest commit**.
+### (Optional) How to Handle Patch Versions
 
-For example, if the latest commit of [build-webos repository](https://github.com/webosose/build-webos) is in the `2.20` branch, check out to the `2.20` branch:
+Since webOS OSE consists of many open-source projects, changes in those projects can sometimes cause unexpected build-time errors. To address this issue, we introduced a new branch policy starting with the [webOS OSE 2.19.1 release]({{< relref "2022-12-29-webos-ose-2-19-1-release" >}}). This new policy enables the platform to quickly adapt to critical changes.
 
-```bash
-$ git checkout 2.20
+All you need to do is to **check the patch number of the latest version**.
+
+- If the patch number is not zero, switch to the designated branch before starting the build. 
+- Otherwise, use the `master` branch.
+
+``` bash
+# If the patch number of the latest version is not 0, checkout to the latest branch
+# else, use the master branch
+# Example) If the latest version is 2.19.1 (non-zero patch number)
+$ git checkout 2.19.1
 ```
 
-But if the latest commit is in the `master` branch, a branch of the latest version doesn't exist, use the `master` branch.
-
-```bash
-$ git checkout master
-```
-
-{{< note >}}
-For more details on the new branch policy, refer to [webOS OSE 2.19.1 Release]({{< relref "2022-12-29-webos-ose-2-19-1-release" >}}).
-{{< /note >}}
+{{< figure src="/images/blog/news/webos-ose-versioning-rule.jpg" width="60%" caption="Versioning rule of webOS OSE" >}}
 
 ## Installing the Required Tools and Libraries
 
@@ -77,17 +80,17 @@ $ sudo scripts/prerequisites.sh
 
 Using the `mcf` command, you can set up the followings:
 
-- A type of the webOS OSE image
-- How many resources to allocate to the build process
+- The **Type** of webOS OSE image to build
+- The **number of logical CPU cores** to allocate to the build process
 
 ```bash
-$ ./mcf -p <num of CPUs> -b <num of CPUs> <device type>
+$ ./mcf -p <num of CPUs> -b <num of CPUs> <image type>
 ```
 
 | Property | Description |
 |----------|-------------|
-| `<num of CPUs>` | This number determines how CPU cores to allocate for the building process. See [Appendix. How to Find the Optimum Parallelism Values](#appendix-a-how-to-find-the-optimum-parallelism-values).|
-| `<device type>` | A type of the webOS OSE image. Available values are as follows: <ul><li><code>raspberrypi4</code>: 32-bit image for webOS OSE 2.0 or higher</li><li><code>raspberrypi4-64</code>: 64-bit image for webOS OSE 2.0 or higher</li><li><code>raspberrypi3</code>: 32-bit image for webOS OSE 1.x version</li><li><code>raspberrypi3-64</code>: 64-bit image for webOS OSE 1.x version</li><li><code>qemux86</code>: 32-bit image for webOS OSE emulator</li><li><code>qemux86-64</code>: 64-bit image for webOS OSE emulator (For webOS OSE 2.14.0 or higher)</li></ul> {{< caution >}}
+| `<num of CPUs>` | This number determines how many CPU cores are allocated for the building process. We recommend using **50 to 70%** of the total logical CPU cores. See [Appendix A. Setting Values for mcf](#appendix-a-setting-values-for-mcf).|
+| `<image type>` | A type of the webOS OSE image. Available values are as follows: <ul><li><code>raspberrypi4</code>: 32-bit image for webOS OSE 2.0.0 or higher</li><li><code>raspberrypi4-64</code>: 64-bit image for webOS OSE 2.0.0 or higher</li><li><code>raspberrypi3</code>: 32-bit image for webOS OSE 1.x version</li><li><code>raspberrypi3-64</code>: 64-bit image for webOS OSE 1.x version</li><li><code>qemux86</code>: 32-bit image for webOS OSE emulator</li><li><code>qemux86-64</code>: 64-bit image for webOS OSE emulator (For webOS OSE 2.14.0 or higher)</li></ul> {{< caution >}}
 Previous versions of webOS OSE might occur errors during build time. We only guarantee the build of the latest version.
 {{< /caution >}} |
 
@@ -101,7 +104,7 @@ webOS OSE provides two types of images:
 ### Building webos-image
 
 {{< note "IMPORTANT NOTICE" >}}
-This process takes a very long time, especially on laptop computers. Make sure you have enough time and system resources to build. Regarding the build time, refer to [our test results](#appendix-b-build-time-test).
+This process takes a very long time, especially on laptop computers. Make sure you have enough time and system resources to build. Regarding the build time, refer to [Appendix B. Build Time Test](#appendix-b-build-time-test).
 {{< /note >}}
 
 To kick off a full build of webOS OSE, enter the following:
@@ -116,19 +119,6 @@ Alternatively, you can enter:
 ```bash
 $ make webos-image
 ```
-
-{{< caution >}}
-If you try to build two (or more) different webOS OSE images on the same shell, this might cause a build error. To avoid such an error, do one of the following:
-
-* Open a new shell and proceed from the [Building webos-image]({{< relref "building-webos-ose/#building-webos-image" >}}).
-* Enter the following commands and proceed from the [Building webos-image]({{< relref "building-webos-ose/#building-webos-image" >}}).
-
-    ``` bash
-    $ unset DISTRO
-    $ unset MACHINE
-    $ unset MACHINES
-    ```
-{{< /note >}}
 
 ### Building webos-image-devel
 
@@ -200,50 +190,63 @@ $ source oe-init-build-env
 $ bitbake -c cleansstate <component-name>
 ```
 
+## Troubleshooting Guide
+
+### Fetching Error During Build Process
+
+webOS OSE fetches (downloads) many external modules during the build process. And these fetch jobs might fail occasionally.
+
+In such case, **try cloning the failed module manually**. If the cloning succeeds, rerun the `bitbake` command to continue the build.
+
+``` bash
+# Try cloning the failed module
+$ git clone <fetch error module>
+# If the cloning succeeds, rerun the build process
+$ bitbake webos-image
+```
+
+### Building Multiple Images On The Same Shell
+
+If you try to build two (or more) different webOS OSE images on the same shell, this might cause a build error. To avoid such an error, do one of the following:
+
+* Open a new shell and proceed from the [Building webos-image]({{< relref "building-webos-ose/#building-webos-image" >}}).
+* Enter the following commands and proceed from the [Building webos-image]({{< relref "building-webos-ose/#building-webos-image" >}}).
+
+    ``` bash
+    $ unset DISTRO
+    $ unset MACHINE
+    $ unset MACHINES
+    ```
+
 ## Next Steps
 
 - If you built the image for Raspberry Pi 4 or Raspberry Pi 3, it's time to flash the image to the target device. See [Flashing webOS OSE]({{< relref "flashing-webos-ose" >}}).
 - If you built the image for the emulator, refer to the [Emulator User Guide]({{< relref "emulator-user-guide" >}}) to set up and use the emulator.
 
-## Appendix A. How to Find the Optimum Parallelism Values
+## Appendix A. Setting Values for mcf
 
-To set the make and BitBake parallelism values, use `-p` and `-b` options to the `mcf` script. The `-p` and `-b` options correspond to `PARALLEL_MAKE` and `BB_NUMBER_THREADS` variables described in [Yocto Project Development Tasks Manual](https://docs.yoctoproject.org/dev-manual/common-tasks.html#speeding-up-a-build).
+`-p` and `-b` options in `mcf` script are BitBake parallelism values, and those determine how many CPU cores are allocated for the building process.
 
-The recommended value for `-p` and `-b` options is **a half of the number of physical CPU cores**. To get the number of physical CPU cores on your build system, use the following commands.
+Too many allocation for the parallelism values might cause build-time error. The recommended value is **50 to 70% of the toal logical CPU cores**. To get the number of your computer, enter the following command:
 
-1. Get the number of physical CPUs.
-
-    ```bash
-    $ cat /proc/cpuinfo | grep "physical id" | sort | uniq | wc -l
-    1
-    ```
-
-2. Get the number of cores per physical CPU.
-
-    ```bash
-    $ cat /proc/cpuinfo | grep "cpu cores" | uniq
-    cpu cores    : 4
-    ```
-
-3. Multiply the above two values.
-
-	1 * 4 = 4 (The number of physical CPU cores)
-
-With the above example, the recommended value for `-p` and `-b` options becomes 4 / 2 = 2.
-
-{{< note >}}
-We recommend you use the value under two-thirds of the number of CPU cores.
-{{< /note >}}
+``` bash
+# Get the number of logical CPU cores
+$ cat /proc/cpuinfo | grep '^processor' | wc -l
+```
 
 {{< caution >}}
 Omitting `-p` and `-b` options are equivalent to using `-p 0 -b 0`, which forces the build to use all CPU cores. This might cause unexpected behaviors or a build failure.
 {{< /caution >}}
 
+{{< note >}}
+See `PARALLEL_MAKE` and `BB_NUMBER_THREADS` variables in [Yocto Project Development Tasks Manual](https://docs.yoctoproject.org/dev-manual/common-tasks.html#speeding-up-a-build).
+{{< /note >}}
+
 ## Appendix B. Build Time Test
 
 This section describes the actual build time of webOS OSE using our build machine.
 
-### Build Machine Specification
+Specifications of the test machine are as follows:
 
 - CPU: Intel Xeon 6226R 2.9 GHz 2933 MHz 16C 150W
 - RAM: 32 GB (16 GB x 2) DDR4 2933 DIMM ECC Registered 1CPI
@@ -251,7 +254,7 @@ This section describes the actual build time of webOS OSE using our build machin
 - Storage: HP Z Turbo Drive M.2 2 TB TLC
 - `<num of CPUs>` for `mcf` : 4
 
-### Test Results
+Test Results are as follows:
 
 | Device Type | Image Type | Time |
 |-------------|------------|------|
