@@ -4,34 +4,22 @@ date: 2024-12-03
 slug: stand-by-app-webos
 posttype: solution
 toc: true
-thumbnail: jpg 파일 추후 추가
+thumbnail: th-stand-by-app.png
 ---
 
 **Author: Minjung Bae, Seungbeom Baek, Suhyeon Yun, Jongun Jeong**
 
 
-
-## Table of Contents
-  - [Outline](#Introduction-to-the-Project) 
-
-  - [Project Content](#Project-Content)
-
-  - [Usage Technology Stack](#Usage-Technology-Stack)
-
-  - [Getting Started](#Getting-Started)
-
-  - [License](#License)
-
-<br/><br>
 # Introduction to the Project
 ### **A Lifestyle Custom Standby App**
 
 This project is an app/widget development project based on the webOS so that users can obtain meaningful information even in a standby state.
+
 <p align="center" style="display: flex; justify-content: space-between;">
     <img src="https://github.com/user-attachments/assets/beb0422d-845f-4a01-8cb0-6fa83408f2f5" 
-         style="width: 50%;">
+         style="width: 49%;">
     <img src="https://github.com/user-attachments/assets/8fd56178-2bbd-44e9-9dd3-d40a1148b5bb" 
-         style="width: 50%;">
+         style="width: 49%;">
 </p>
 
 <br/><br>
@@ -60,23 +48,41 @@ By implementing a function to provide various information while minimizing batte
 
 This is the initial screen that appears when the application starts. The configured widgets are displayed here.
 
+<img src="https://github.com/KNU-LG/frontend/raw/main/src/assets/docsImage/image-1.png">
+
+You can also add a wallpaper through the widget setting mode.(only web browser)
+
+<img src="https://github.com/KNU-LG/frontend/raw/main/src/assets/docsImage/image-11.png">
+
 ### Settings Screen
 
 This screen allows users to access various features.
 
+<img src="https://github.com/KNU-LG/frontend/raw/main/src/assets/docsImage/image-9.png">
+
 ### Login and Signup
 
 `react-hook-form` is used for validation, and `useForm` is utilized to manage login and signup states.<br/>
+
 **On login or signup** -> The input values are sent to the server, and a token is received in response.
+
+<img src="https://github.com/KNU-LG/frontend/raw/main/src/assets/docsImage/image-3.png">
+<img src="https://github.com/KNU-LG/frontend/raw/main/src/assets/docsImage/image-4.png">
 
 ### Widget Mode and Image Slide Mode
 
 - **Widget Mode** displays the widgets. Additionally, you must log in first to add widgets <br/>
-- **Image Slide Mode** displays an image slideshow.
+<img src="https://github.com/KNU-LG/frontend/raw/main/src/assets/docsImage/image-12.png">
+<img src="https://github.com/KNU-LG/frontend/raw/main/src/assets/docsImage/image-13.png">
+
+- **Image Slide Mode** displays an image slideshow. (will be updated)
+<img src="https://github.com/KNU-LG/frontend/raw/main/src/assets/docsImage/image-5.png">
 
 ### Widget Configuration Screen
 
 Users can modify or delete widget positions on this screen. At this point, `react-use-gesture` is used to update the widget's position. After pressing the edit button, users can rearrange widget positions. Once editing is complete, pressing the save button updates the widget position array in local storage and also sends the changes to the server via an API.<br/>
+
+<img src="https://github.com/KNU-LG/frontend/raw/main/src/assets/docsImage/image-6.png">
 
 ### Widget Addition Screen
 
@@ -95,29 +101,49 @@ Clicking on a widget opens a modal where users can add schedules in the calendar
 
 **When deleting a schedule** -> The schedule is deleted via an API, and the cached data is also updated.
 
+<img src="https://github.com/KNU-LG/frontend/raw/main/src/assets/docsImage/image-7.png">
+
 ### Dimming Feature
 
 This is managed through a dimming provider. Using `window.addEventListener`, it detects `mousemove`, `keydown`, `touchstart`, and `click` events. If no such events are detected for 10 seconds, an additional layer is applied to darken the screen.
+
+<img src="https://github.com/KNU-LG/frontend/raw/main/src/assets/docsImage/image-8.png">
 
 ### Dark / Light Mode
 
 The `Context API` is used to globally manage and toggle between dark and light modes. Each mode's CSS values are globally managed to affect the UI.
 
+- Light Mode
+<img src="https://github.com/KNU-LG/frontend/raw/main/src/assets/docsImage/image-9.png">
+
+- Dark Mode
+<img src="https://github.com/KNU-LG/frontend/raw/main/src/assets/docsImage/image-10.png">
+
 <br/><br>
 
 # Usage Technology Stack
 
-> System Structure Chart
+It is a diagram of the overall structure of our system.
+<p align = "center">
+<img src="https://github.com/user-attachments/assets/70527389-9cd5-4702-acfe-c59b067d1868">
+</p>
+<p align = "center"> System Architecture
+</p>
 
-<img src="https://github.com/user-attachments/assets/70ae41d0-5da0-42ba-b49e-a24afee254a1">
-
-> Database ERD
-
+The overall structure of the database of our project is as follows.
+<p align = "center">
 <img src="https://github.com/user-attachments/assets/23917fea-4019-422c-b44a-a8cbcd71cdfd">
+</p>
+<p align = "center"> Database ERD
+</p>
 
-> Api documents
-
+The list of api statements is as follows.
+<p align = "center">
 <img width="1458" alt="api-doc" src="https://github.com/user-attachments/assets/44feaa43-d32d-4f57-81fd-308eabce4b7f">
+</p>
+<p align = "center"> Api documents
+</p>
+
 
 ### ✔️Frond-end
 <div>
@@ -145,11 +171,42 @@ The `Context API` is used to globally manage and toggle between dark and light m
 <br/><br>
 
 # Getting Started
-## Server Setup
+
+## Hardware Requirements
+To implement this project, a client device and a host pc are required.
+
+### Client Device
+We need a Raspberry Pi 4 with webOS OSE.
+
+<dl>
+<dt>Raspberry Pi 4 Model B 8GB<dt>
+<dt>MicroSD Card with webOS OSE Image</dt>
+<ul><li>You can get the pre-built image in <a href="https://github.com/webosose/build-webos/releases/tag/v2.24.0">this GitHub address.</a></li><li>You need to flash this image on a micro sd card.</a>.</li></ul></dd>
+<dt>Monitor</dt>
+<dd>The model we used is a 7-inch Raspberry Pi 1024x600 HDMI touchscreen LCD.</dd>
+
+### Host PC
+This is the host pc specification we used.
+- CPU: intel i5-8400
+- RAM: 8GB
+- OS: Arch Linux
+- Storage: 512GB SSD
+
+## How to run
+
+First of all, I will explain the process from the back-end perspective.
+
+### Clone the repository.
+
+   ```sh
+   git clone https://github.com/KNU-LG/backend.git
+   ```
+    
+### Server Setup
 
 The project uses **Yarn 4.5.0** as its package manager, managed as a `.cjs` file in `.yarn/releases`. It requires Node.js version **18 or higher**, and has been tested with version **22.5.1**.
 
-### Environment Variables
+<dt>Environment Variables</dt>
 
 Before running the project, you need to create an `.env` file in the project root. An example `.env` file is provided as `example.env`. Below are the descriptions of the environment variables:
 
@@ -164,22 +221,20 @@ Before running the project, you need to create an `.env` file in the project roo
 
 The `find_password` API works by sending emails. The following instructions explain how to configure a Gmail account:
 
-
-
-
-1. Log in to your Gmail account, click the gear icon at the top right, and select "See all settings."
 <img width="351" alt="gmail-1" src="https://github.com/user-attachments/assets/6bdbcd6e-c4d3-48d3-a6b0-a44541f76a7a">
 
+1. Log in to your Gmail account, click the gear icon at the top right, and select "See all settings."
 
-
+<img width="504" alt="gmail-2" src="https://github.com/user-attachments/assets/2a80528c-a1a7-4c0e-b5f0-dbe2fcd8f9da">
 
 2. Navigate to the **Forwarding and POP/IMAP** tab, enable IMAP access, and save the changes.
 
 Set your Gmail address as the value for the `MAIL_USER` environment variable.
-<img width="504" alt="gmail-2" src="https://github.com/user-attachments/assets/2a80528c-a1a7-4c0e-b5f0-dbe2fcd8f9da">
+
+<img width="902" alt="gmail-3" src="https://github.com/user-attachments/assets/8f0e5f37-2083-4b3d-a708-1de94d470d3f">
 
 3. Go to your Google Account settings and search for **App Passwords**. Generate an app password for Gmail. Copy the 16-character password and set it as the value for the `MAIL_PASSWORD` environment variable.
-<img width="902" alt="gmail-3" src="https://github.com/user-attachments/assets/8f0e5f37-2083-4b3d-a708-1de94d470d3f">
+
 ### Database Configuration
 
 Ensure that the database is accessible using the `DATABASE_URL` environment variable. It is recommended to use Docker and Docker Compose for setting up PostgreSQL. Below is an example `docker-compose.yml` file for configuring the database:
@@ -232,7 +287,10 @@ $ yarn run start:dev
 $ yarn run start:prod
 ```
 
-### Emulator
+## How to package
+Next, I will explain the process from a front-end perspective.
+
+Emulator
 
 > npm install -g @webos-tools/cli
 
@@ -252,7 +310,19 @@ Install the app onto the webOS emulator using the above command. After installat
 
 ### Raspberry Pi
 
-_(Instructions to be added)_
+* ensure that you already has some ipk file from repository build command.
+
+> ares-setup-devices
+
+before command it, Check your device connected at same network. (I recommand just you can use mobile hospot)
+
+<img width="642" alt="image" src="https://github.com/user-attachments/assets/812a4d48-75fb-431e-8b04-61f8c77c43b7">
+
+manually add your device information.
+
+> ares-install app.ipk -d TARGET_DEVICE
+
+TARGET_DEVICE is input value of Device Name at previous command.
 
 <br/><br>
 
