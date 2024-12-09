@@ -125,7 +125,7 @@ The `Context API` is used to globally manage and toggle between dark and light m
 
 It is a diagram of the overall structure of our system.
 <p align = "center">
-<img src="https://github.com/user-attachments/assets/70527389-9cd5-4702-acfe-c59b067d1868">
+<img src="https://github.com/user-attachments/assets/1f235018-cf24-4776-b9c2-ebf476f5af99">
 </p>
 <p align = "center"> System Architecture
 </p>
