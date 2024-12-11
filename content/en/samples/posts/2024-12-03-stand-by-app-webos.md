@@ -9,8 +9,8 @@ thumbnail: th-stand-by-app.png
 
 **Author: Minjung Bae, Seungbeom Baek, Suhyeon Yun, Jongun Jeong**
 
-
 # Introduction to the Project
+
 ### **A Lifestyle Custom Standby App**
 
 This project is an app/widget development project based on the webOS so that users can obtain meaningful information even in a standby state.
@@ -24,8 +24,6 @@ This project is an app/widget development project based on the webOS so that use
 
 <br/><br>
 
-
-
 # Project Content
 
 ### **Background**
@@ -34,13 +32,14 @@ When the display is in a standby state, it is necessary to develop an app that a
 By implementing a function to provide various information while minimizing battery usage, it aims to develop an app that can obtain information in real time or continuously even while waiting
 
 ① **Standby Screen App/Widget Development**
--  Objective: Develop a standby app/widget that continuously provides information tailored to the needs of the user, using minimal battery even when the device is in the standby state.
+
+- Objective: Develop a standby app/widget that continuously provides information tailored to the needs of the user, using minimal battery even when the device is in the standby state.
 - Features: It provides widget functions such as slide show (image), weather (temperature, precipitation, fine dust, etc.), schedule list (calender, to-do list), and media player. It minimizes battery consumption through dimming function, which automatically reduces screen brightness after 20 seconds even in standby state.
 
 ② **Implementing Web App Features**
+
 - User login service: It loads the standby settings for each user through the login function and provides a screen tailored to the settings of the logged-in user. In addition, through the user dashboard, functions to be displayed on the standby screen can be selected and stored, and a real-time preview screen is provided. At this time, widgets and functions can be set directly on the app screen through the UI controller.
 - Standby Screen Customization: Various widgets are customized to suit user needs and displayed on the standby screen. Additional functions are also developed and displayed on the screen. (e.g., slide show, weather information, schedule list, media play, medication notification, etc.)
-
 
 ### **Implemented Features and Technologies**
 
@@ -72,11 +71,11 @@ This screen allows users to access various features.
 ### Widget Mode and Image Slide Mode
 
 - **Widget Mode** displays the widgets. Additionally, you must log in first to add widgets <br/>
-<img src="https://github.com/KNU-LG/frontend/raw/main/src/assets/docsImage/image-12.png">
-<img src="https://github.com/KNU-LG/frontend/raw/main/src/assets/docsImage/image-13.png">
+  <img src="https://github.com/KNU-LG/frontend/raw/main/src/assets/docsImage/image-12.png">
+  <img src="https://github.com/KNU-LG/frontend/raw/main/src/assets/docsImage/image-13.png">
 
 - **Image Slide Mode** displays an image slideshow. (will be updated)
-<img src="https://github.com/KNU-LG/frontend/raw/main/src/assets/docsImage/image-5.png">
+  <img src="https://github.com/KNU-LG/frontend/raw/main/src/assets/docsImage/image-5.png">
 
 ### Widget Configuration Screen
 
@@ -87,7 +86,6 @@ Users can modify or delete widget positions on this screen. At this point, `reac
 ### Widget Addition Screen
 
 Users can add their desired widgets on this screen. Widgets are categorized by type and size (L, M, S). Upon selecting a widget to add, users are directed to the widget editing page. During this process, the widget position and type arrays are updated in the user's local device and Server.<br/>
-
 
 ### Calendar Widget
 
@@ -114,16 +112,17 @@ This is managed through a dimming provider. Using `window.addEventListener`, it 
 The `Context API` is used to globally manage and toggle between dark and light modes. Each mode's CSS values are globally managed to affect the UI.
 
 - Light Mode
-<img src="https://github.com/KNU-LG/frontend/raw/main/src/assets/docsImage/image-9.png">
+  <img src="https://github.com/KNU-LG/frontend/raw/main/src/assets/docsImage/image-9.png">
 
 - Dark Mode
-<img src="https://github.com/KNU-LG/frontend/raw/main/src/assets/docsImage/image-10.png">
+  <img src="https://github.com/KNU-LG/frontend/raw/main/src/assets/docsImage/image-10.png">
 
 <br/><br>
 
 # Usage Technology Stack
 
 It is a diagram of the overall structure of our system.
+
 <p align = "center">
 <img src="https://github.com/user-attachments/assets/1f235018-cf24-4776-b9c2-ebf476f5af99">
 </p>
@@ -131,6 +130,7 @@ It is a diagram of the overall structure of our system.
 </p>
 
 The overall structure of the database of our project is as follows.
+
 <p align = "center">
 <img src="https://github.com/user-attachments/assets/23917fea-4019-422c-b44a-a8cbcd71cdfd">
 </p>
@@ -138,14 +138,15 @@ The overall structure of the database of our project is as follows.
 </p>
 
 The list of api statements is as follows.
+
 <p align = "center">
 <img width="1458" alt="api-doc" src="https://github.com/user-attachments/assets/44feaa43-d32d-4f57-81fd-308eabce4b7f">
 </p>
 <p align = "center"> Api documents
 </p>
 
-
 ### ✔️Frond-end
+
 <div>
 <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=black">
 <img src="https://img.shields.io/badge/Typescript-3178C6?style=for-the-badge&logo=Typescript&logoColor=white">
@@ -154,9 +155,10 @@ The list of api statements is as follows.
 <img src="https://img.shields.io/badge/React%20Hook%20Form-%23EC5990.svg?style=for-the-badge&logo=reacthookform&logoColor=white">
 <img src="https://img.shields.io/badge/✋ react use gesture-%23CC342D.svg?style=for-the-badge&logo=&logoColor=white">
 <img src="https://img.shields.io/badge/webOS-a50034.svg?style=for-the-badge&logo=lg&logoColor=white">
-<div/>
+</div>
 
 ### ✔️Back-end
+
 <div>
 <img src="https://img.shields.io/badge/Node%20js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white"/>
 <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white"/>
@@ -173,9 +175,11 @@ The list of api statements is as follows.
 # Getting Started
 
 ## Hardware Requirements
+
 To implement this project, a client device and a host pc are required.
 
 ### Client Device
+
 We need a Raspberry Pi 4 with webOS OSE.
 
 <dl>
@@ -186,7 +190,9 @@ We need a Raspberry Pi 4 with webOS OSE.
 <dd>The model we used is a 7-inch Raspberry Pi 1024x600 HDMI touchscreen LCD.</dd>
 
 ### Host PC
+
 This is the host pc specification we used.
+
 - CPU: intel i5-8400
 - RAM: 8GB
 - OS: Arch Linux
@@ -198,10 +204,10 @@ First of all, I will explain the process from the back-end perspective.
 
 ### Clone the repository.
 
-   ```sh
-   git clone https://github.com/KNU-LG/backend.git
-   ```
-    
+```sh
+git clone https://github.com/KNU-LG/backend.git
+```
+
 ### Server Setup
 
 The project uses **Yarn 4.5.0** as its package manager, managed as a `.cjs` file in `.yarn/releases`. It requires Node.js version **18 or higher**, and has been tested with version **22.5.1**.
@@ -246,7 +252,7 @@ services:
     container_name: postgres
     restart: always
     ports:
-      - '40001:5432'
+      - "40001:5432"
     environment:
       - POSTGRES_PASSWORD=password
     volumes:
@@ -288,43 +294,83 @@ $ yarn run start:prod
 ```
 
 ## How to package
+
 Next, I will explain the process from a front-end perspective.
 
-Emulator
+### Clone the repositroy
 
-> npm install -g @webos-tools/cli
+```sh
+git clone https://github.com/KNU-LG/frontend.git
+```
 
-Install the CLI tool using the above command.
+### Emulator
 
-> npm build
+```bash
+#Install the CLI tool.
+npm install -g @webos-tools/cli
+```
 
-Build the React app using the above command.
+```bash
+#Build the React app in Clone repository.
+npm build
+```
 
-> ares-package -n build
+> When you build a React app, you can see the following file structure:
+> <img src="https://velog.velcdn.com/images/seung365/post/62a457c4-3425-4921-9ddc-a802fa417088/image.png">
 
-Package the built app into an IPK file using the webOS CLI tool.
+```bash
+You should put appinfo.json and icon.png in build file.
+This is example of appinfo.json
 
-> ares-install your-app-name.ipk
+{
+  "id": "test",
+  "version": "1.0.0",
+  "vendor": "My Company",
+  "type": "web",
+  "main": "index.html",
+  "title": "testapp",
+  "icon": "icon.png",
+  "requiredPermissions": [
+  "time.query",
+  "activity.operation"]
+}
+```
 
-Install the app onto the webOS emulator using the above command. After installation, run the app through the emulator.
+```bash
+#Package the built app into an IPK file using the webOS CLI tool.
+ares-package -n build
+```
+
+```bash
+#Install the app onto the webOS emulator using the above command. After installation, run the app through the emulator.
+ares-install your-app-name.ipk
+```
 
 ### Raspberry Pi
 
-* ensure that you already has some ipk file from repository build command.
+```bash
+- ensure that you already has some ipk file from repository build command.
 
-> ares-setup-devices
+ares-setup-devices
 
 before command it, Check your device connected at same network. (I recommand just you can use mobile hospot)
+```
 
 <img width="642" alt="image" src="https://github.com/user-attachments/assets/812a4d48-75fb-431e-8b04-61f8c77c43b7">
 
+```bash
 manually add your device information.
 
-> ares-install app.ipk -d TARGET_DEVICE
+ares-install app.ipk -d TARGET_DEVICE
 
 TARGET_DEVICE is input value of Device Name at previous command.
+```
 
-<br/><br>
+# Contact
+
+- [Organization](https://github.com/KNU-LG)
+- [Frontend Repository](https://github.com/KNU-LG/frontend)
+- [Backend Repository](https://github.com/KNU-LG/backend)
 
 # License
 
