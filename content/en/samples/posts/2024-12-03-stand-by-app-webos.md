@@ -307,6 +307,18 @@ npm install -g @webos-tools/cli
 ```
 
 ```bash
+#Check your advice before Register the react app.
+ares-setup-device-l
+
+name     deviceinfo               connection Profile
+-------- ------------------------ ---------- -------
+emulator developer@127.0.0.1:6622 ssh        tv
+
+```
+
+> If the emulator is not installed, please refer to this [link](https://webostv.developer.lge.com/develop/tools/cli-dev-guide#ares-setup-device)
+
+```bash
 #Build the React app in Clone repository.
 npm build
 ```
