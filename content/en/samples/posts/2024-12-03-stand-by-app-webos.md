@@ -22,7 +22,7 @@ This project is an app/widget development project based on the webOS so that use
          style="width: 49%;">
 </p>
 
-<br/><br>
+<br/>
 
 # Project Content
 
@@ -117,7 +117,7 @@ The `Context API` is used to globally manage and toggle between dark and light m
 - Dark Mode
   <img src="https://github.com/KNU-LG/frontend/raw/main/src/assets/docsImage/image-10.png">
 
-<br/><br>
+<br/>
 
 # Usage Technology Stack
 
@@ -147,7 +147,6 @@ The list of api statements is as follows.
 
 ### ✔️Frond-end
 
-<div>
 <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=black">
 <img src="https://img.shields.io/badge/Typescript-3178C6?style=for-the-badge&logo=Typescript&logoColor=white">
 <img src="https://img.shields.io/badge/Emotion-black?style=for-the-badge&labelColor=white">
@@ -155,11 +154,9 @@ The list of api statements is as follows.
 <img src="https://img.shields.io/badge/React%20Hook%20Form-%23EC5990.svg?style=for-the-badge&logo=reacthookform&logoColor=white">
 <img src="https://img.shields.io/badge/✋ react use gesture-%23CC342D.svg?style=for-the-badge&logo=&logoColor=white">
 <img src="https://img.shields.io/badge/webOS-a50034.svg?style=for-the-badge&logo=lg&logoColor=white">
-</div>
 
 ### ✔️Back-end
 
-<div>
 <img src="https://img.shields.io/badge/Node%20js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white"/>
 <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white"/>
 <img src="https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white"/>
@@ -168,7 +165,6 @@ The list of api statements is as follows.
 <img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=Postman&logoColor=white"/>
 <img src="https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white"/>
 <img src="https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white"/>
-</div>
 
 <br/><br>
 
@@ -212,7 +208,7 @@ git clone https://github.com/KNU-LG/backend.git
 
 The project uses **Yarn 4.5.0** as its package manager, managed as a `.cjs` file in `.yarn/releases`. It requires Node.js version **18 or higher**, and has been tested with version **22.5.1**.
 
-<dt>Environment Variables</dt>
+### Environment Variables
 
 Before running the project, you need to create an `.env` file in the project root. An example `.env` file is provided as `example.env`. Below are the descriptions of the environment variables:
 
