@@ -307,7 +307,7 @@ npm install -g @webos-tools/cli
 ```
 
 ```bash
-#Check your advice before Register the react app.
+#Check your advice before Build the React app.
 ares-setup-device-l
 
 name     deviceinfo               connection Profile
