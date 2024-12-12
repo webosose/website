@@ -208,17 +208,6 @@ git clone https://github.com/KNU-LG/backend.git
 
 The project uses **Yarn 4.5.0** as its package manager, managed as a `.cjs` file in `.yarn/releases`. It requires Node.js version **18 or higher**, and has been tested with version **22.5.1**.
 
-### Environment Variables
-
-Before running the project, you need to create an `.env` file in the project root. An example `.env` file is provided as `example.env`. Below are the descriptions of the environment variables:
-
-- **PORT**: Port number on which the server will run. Ensure proper port forwarding in your firewall or router.
-- **DATABASE_URL**: URL for accessing the PostgreSQL database.
-- **PASSWORD_ROUND**: Integer value used for password hashing. A value between 1 and 100 is recommended.
-- **JWT_SECRET**: String used for generating JWT tokens. Use a secure and non-obvious value.
-- **MAIL_USER**: The email address used for sending emails in the password recovery API. Configuration details are provided below.
-- **MAIL_PASSWORD**: The password associated with the email account specified in `MAIL_USER`.
-
 ### Email Configuration
 
 The `find_password` API works by sending emails. The following instructions explain how to configure a Gmail account:
@@ -265,6 +254,17 @@ services:
 For more details on the PostgreSQL Docker image, visit the [official documentation](https://hub.docker.com/_/postgres).
 
 If you prefer not to use Docker, you can set up PostgreSQL locally, but the `DATABASE_URL` environment variable must still ensure proper connectivity.
+
+### Environment Variables
+
+Before running the project, you need to create an `.env` file in the project root. An example `.env` file is provided as `example.env`. Below are the descriptions of the environment variables:
+
+- **PORT**: Port number on which the server will run. Ensure proper port forwarding in your firewall or router.
+- **DATABASE_URL**: URL for accessing the PostgreSQL database.
+- **PASSWORD_ROUND**: Integer value used for password hashing. A value between 1 and 100 is recommended.
+- **JWT_SECRET**: String used for generating JWT tokens. Use a secure and non-obvious value.
+- **MAIL_USER**: The email address used for sending emails in the password recovery API. Configuration details are provided below.
+- **MAIL_PASSWORD**: The password associated with the email account specified in `MAIL_USER`.
 
 ### Install Project Dependencies
 
