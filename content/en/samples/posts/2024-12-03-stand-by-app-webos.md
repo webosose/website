@@ -123,27 +123,15 @@ The `Context API` is used to globally manage and toggle between dark and light m
 
 It is a diagram of the overall structure of our system.
 
-<p align = "center">
-<img src="https://github.com/user-attachments/assets/1f235018-cf24-4776-b9c2-ebf476f5af99">
-</p>
-<p align = "center"> System Architecture
-</p>
+{{< figure src="https://github.com/user-attachments/assets/1f235018-cf24-4776-b9c2-ebf476f5af99" caption="System Architecture" alt="System Architecture" >}}
 
 The overall structure of the database of our project is as follows.
 
-<p align = "center">
-<img src="https://github.com/user-attachments/assets/23917fea-4019-422c-b44a-a8cbcd71cdfd">
-</p>
-<p align = "center"> Database ERD
-</p>
+{{< figure src="https://github.com/user-attachments/assets/23917fea-4019-422c-b44a-a8cbcd71cdfd" caption="Database ERD" alt="Database ERD" >}}
 
 The list of api statements is as follows.
 
-<p align = "center">
-<img width="1458" alt="api-doc" src="https://github.com/user-attachments/assets/44feaa43-d32d-4f57-81fd-308eabce4b7f">
-</p>
-<p align = "center"> Api documents
-</p>
+{{< figure src="https://github.com/user-attachments/assets/1f235018-cf24-4776-b9c2-ebf476f5af99" caption="System Architecture" alt="System Architecture" >}}
 
 ### ✔️Frond-end
 
