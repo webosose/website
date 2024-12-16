@@ -215,8 +215,19 @@ Before running the project, you need to create an `.env` file in the project roo
 - **DATABASE_URL**: URL for accessing the PostgreSQL database.
 - **PASSWORD_ROUND**: Integer value used for password hashing. A value between 1 and 100 is recommended.
 - **JWT_SECRET**: String used for generating JWT tokens. Use a secure and non-obvious value.
-- **MAIL_USER**: The email address used for sending emails in the password recovery API. Configuration details are provided below.
+- **MAIL_USER**: The email address used for sending emails in the password recovery API.
 - **MAIL_PASSWORD**: The password associated with the email account specified in `MAIL_USER`.
+
+Example:
+```
+PORT=1234
+DATABASE_URL=postgresql://username:password@localhost:5432/dbname
+PASSWORD_ROUND=10
+JWT_SECRET=your-secret-key-here
+MAIL_USER=your-email@example.com
+MAIL_PASSWORD=your-email-password
+```
+
 
 ### Email Configuration
 
