@@ -176,14 +176,16 @@ To implement this project, a client device and a host pc are required.
 
 ### Client Device
 
-We need a Raspberry Pi 4 with webOS OSE.
+**Raspberry Pi 4 Model B 8GB**
 
-<dl>
-<dt>Raspberry Pi 4 Model B 8GB<dt>
-<dt>MicroSD Card with webOS OSE Image</dt>
-<ul><li>You can get the pre-built image in <a href="https://github.com/webosose/build-webos/releases/tag/v2.24.0">this GitHub address.</a></li><li>You need to flash this image on a micro sd card.</a>.</li></ul></dd>
-<dt>Monitor</dt>
-<dd>The model we used is a 7-inch Raspberry Pi 1024x600 HDMI touchscreen LCD.</dd>
+**MicroSD Card with webOS OSE Image**
+
+- You can get the pre-built image in [this GitHub address](https://github.com/webosose/build-webos/releases/tag/v2.24.0).
+- You need to flash this image on a micro sd card.
+
+**Monitor**
+
+- The model we used is a 7-inch Raspberry Pi 1024x600 HDMI touchscreen LCD.
 
 ### Host PC
 
@@ -207,6 +209,17 @@ git clone https://github.com/KNU-LG/backend.git
 ### Server Setup
 
 The project uses **Yarn 4.5.0** as its package manager, managed as a `.cjs` file in `.yarn/releases`. It requires Node.js version **18 or higher**, and has been tested with version **22.5.1**.
+
+### Environment Variables
+
+Before running the project, you need to create an `.env` file in the project root. An example `.env` file is provided as `example.env`. Below are the descriptions of the environment variables:
+
+- **PORT**: Port number on which the server will run. Ensure proper port forwarding in your firewall or router.
+- **DATABASE_URL**: URL for accessing the PostgreSQL database.
+- **PASSWORD_ROUND**: Integer value used for password hashing. A value between 1 and 100 is recommended.
+- **JWT_SECRET**: String used for generating JWT tokens. Use a secure and non-obvious value.
+- **MAIL_USER**: The email address used for sending emails in the password recovery API. Configuration details are provided below.
+- **MAIL_PASSWORD**: The password associated with the email account specified in `MAIL_USER`.
 
 ### Email Configuration
 
@@ -254,17 +267,6 @@ services:
 For more details on the PostgreSQL Docker image, visit the [official documentation](https://hub.docker.com/_/postgres).
 
 If you prefer not to use Docker, you can set up PostgreSQL locally, but the `DATABASE_URL` environment variable must still ensure proper connectivity.
-
-### Environment Variables
-
-Before running the project, you need to create an `.env` file in the project root. An example `.env` file is provided as `example.env`. Below are the descriptions of the environment variables:
-
-- **PORT**: Port number on which the server will run. Ensure proper port forwarding in your firewall or router.
-- **DATABASE_URL**: URL for accessing the PostgreSQL database.
-- **PASSWORD_ROUND**: Integer value used for password hashing. A value between 1 and 100 is recommended.
-- **JWT_SECRET**: String used for generating JWT tokens. Use a secure and non-obvious value.
-- **MAIL_USER**: The email address used for sending emails in the password recovery API. Configuration details are provided below.
-- **MAIL_PASSWORD**: The password associated with the email account specified in `MAIL_USER`.
 
 ### Install Project Dependencies
 
