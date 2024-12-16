@@ -177,12 +177,21 @@ To implement this project, a client device and a host pc are required.
 
 ### Host PC
 
-This is the host pc specification we used.
+This is the **host pc specification** we used.
 
+Hardware Specification
 - CPU: intel i5-8400
 - RAM: 8GB
-- OS: Arch Linux
 - Storage: 512GB SSD
+
+Software Specification
+- OS: Arch Linux
+- Node.js
+- Yarn 
+- Git
+- PostgreSQL
+- webOS OSE Image (for raspberry pie)
+- webOS CLI tool (@webos-tools/cli)
 
 ## How to run
 
