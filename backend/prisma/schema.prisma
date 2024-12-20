@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  user_id      Int       @id @default(autoincrement())
+  username     String    @unique
+  password_hash String
+  created_at   DateTime  @default(now())
+  dashboardSettings DashboardSetting[]
+  widgets       Widget[]
+  media         Media[]
+}
+
+model DashboardSetting {
+  setting_id Int      @id @default(autoincrement())
+  user       User     @relation(fields: [user_id], references: [user_id])
+  user_id    Int
+  layout     Json
+  updated_at DateTime @updatedAt
+}
+
+model Widget {
+  widget_id  Int      @id @default(autoincrement())
+  user       User     @relation(fields: [user_id], references: [user_id])
+  user_id    Int
+  widget_type String
+  config      Json
+  widgetData  WidgetData[]
+}
+
+model WidgetData {
+  data_id    Int      @id @default(autoincrement())
+  widget     Widget   @relation(fields: [widget_id], references: [widget_id])
+  widget_id  Int
+  data_type  String
+  content    String?
+  updated_at DateTime @updatedAt
+}
+
+model Media {
+  media_id   Int      @id @default(autoincrement())
+  user       User     @relation(fields: [user_id], references: [user_id])
+  user_id    Int
+  media_type String
+  file_path  String
+  created_at DateTime @default(now())
+}

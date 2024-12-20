@@ -1,0 +1,18 @@
+type UserLocaleOptions = {
+    useFallbackLocale?: boolean;
+    fallbackLocale?: string;
+};
+declare function getUserLocalesInternal({ useFallbackLocale, fallbackLocale, }?: UserLocaleOptions): string[];
+export declare const getUserLocales: typeof getUserLocalesInternal;
+declare function getUserLocaleInternal(options?: undefined): string;
+declare function getUserLocaleInternal(options?: Record<string, never>): string;
+declare function getUserLocaleInternal(options?: {
+    useFallbackLocale: false;
+    fallbackLocale?: string;
+}): string | null;
+declare function getUserLocaleInternal(options?: {
+    useFallbackLocale?: true;
+    fallbackLocale?: string;
+}): string;
+export declare const getUserLocale: typeof getUserLocaleInternal;
+export default getUserLocale;
