@@ -6,14 +6,14 @@ This project develops a **Personalized IdleView application** for webOS, designe
 
 ### Key Features
 
-- **Customizable Dashboards and Widgets**
+- **Customizable Dashboards and Widgets**  
   Users can configure dashboards with widgets for weather updates, schedules, and media playback.
 
-- **Seamless Integration**
+- **Seamless Integration**  
   A user-friendly interface and backend systems powered by Node.js, MySQL, and REST APIs support personalization and data management.
 
-- **Real-Time Information Updates**
-  The system dynamically displays weather using secure HTTPS communications.
+- **Real-Time Information Updates**  
+  The system securely retrieves and displays real-time weather updates via HTTPS communication.
 
 ---
 
@@ -28,7 +28,7 @@ You need a Raspberry Pi 4 with webOS OSE as the target device.
 | Hardware                        | Description                                                                                              |
 |---------------------------------|----------------------------------------------------------------------------------------------------------|
 | **Raspberry Pi 4 Model B (8GB)** | The core computing unit for the application.                                                             |
-| **MicroSD Card with webOS OSE Image** | A MicroSD for flashing webOS OSE. <br> - webOS OSE 2.24.0 is used in this project. You can get the pre-built image in [webOS OSE GitHub](https://github.com/webosose/build-webos/releases/tag/v2.26.0). <br> - To install a webOS OSE image on a MicroSD card, use the following guide: [Flashing webOS OSE](https://www.webosose.org/docs/guides/setup/flashing-webos-ose/). |
+| **MicroSD Card with webOS OSE Image** | A MicroSD for flashing webOS OSE. <br> - webOS OSE 2.24.0 is used in this project. You can get the pre-built image in [webOS OSE GitHub](https://github.com/webosose/build-webos/releases/tag/v2.24.0). <br> - To install a webOS OSE image on a MicroSD card, use the following guide: [Flashing webOS OSE](https://www.webosose.org/docs/guides/setup/flashing-webos-ose/). |
 | **Touchscreen or Monitor**      | The display device that interacts with the application. We recommend using a touchscreen for a more interactive experience. |
 
 ### Host PC
@@ -71,9 +71,10 @@ Our team developed this project using a Windows environment. However, the projec
 3. **Create `.env` file:**
    Create an `.env` file in the backend directory and configure the environment variables. Example `.env` file content:
    ```plaintext
-   DATABASE_URL="mysql://<DB_USERNAME>:<DB_PASSWORD>@<DB_HOST>:3306/<DB_NAME>"
+   DATABASE_URL="mysql://root:password@localhost:3306/idleview"
    JWT_SECRET=awjdlksejnlsdjgslgang/4ksjfskdvn= # Replace with any random secure string
    WEATHER_API_KEY=4c4c552d80ea31da2d4e01e48bc04a61 # Obtain your API key from a weather API provider
+   ```
 
 4. **Run database migrations:**
    ```sh
@@ -225,3 +226,109 @@ Before starting the deployment process, ensure the following:
 3. **Run the app from the webOS launcher.**
 
 ## Code Implementation
+
+The Idle View application leverages a modular architecture to manage services, widgets, and backend communication. Below is a detailed description of key code components and their functionality.
+
+---
+
+### **Backend Code: Server Implementation**
+
+The backend server is built using Node.js and Express, facilitating secure and efficient communication between the frontend and external APIs. Below are the key endpoints:
+
+1. **`GET /widget/weather`**  
+   Fetches weather data using the OpenWeather API.  
+   Example request:
+   ```http
+   GET /widget/weather?location=Seoul
+   Authorization: Bearer <TOKEN>
+   ```
+   Implementation:
+   ```typescript
+   app.get("/widget/weather", authenticateToken, async (req, res) => {
+     try {
+       const { location } = req.query;
+       const weatherApiUrl = "https://api.openweathermap.org/data/2.5/weather";
+       const response = await axios.get(weatherApiUrl, {
+         params: { q: location, appid: process.env.WEATHER_API_KEY, units: "metric" },
+       });
+       res.json(response.data);
+     } catch (error) {
+       res.status(500).json({ error: error.message });
+     }
+   });
+   ```
+
+2. **`POST /login`**  
+   Authenticates users and returns a JWT token.  
+   Implementation:
+   ```typescript
+   app.post("/login", async (req, res) => {
+     const { username, password } = req.body;
+     // Authentication logic
+     const token = generateJwtToken(userDetails);
+     res.json({ token });
+   });
+   ```
+
+---
+
+### **Frontend Code: Service and Component Integration**
+
+1. **Service Registration (`service.js`)**  
+   Handles backend communication via webOS Luna services.  
+   Example:
+   ```javascript
+   const service = new Service(pkgInfo.name);
+   service.register("fetchWeatherData", async (message) => {
+     const { location } = message.payload;
+     const response = await get(`${BASE_URL}/widget/weather`, {
+       params: { location },
+       headers: { Authorization: `Bearer ${token}` },
+     });
+     message.respond({ returnValue: true, data: response.data });
+   });
+   ```
+
+2. **Frontend/src/components/ServiceFunction/serviceFunction.js**  
+   Provides functions for interacting with webOS services from the frontend.  
+   - **`fetchWeatherData(location)`**: Fetches weather data by calling the `fetchWeatherData` service.  
+     Example:
+     ```javascript
+     export function fetchWeatherData(location) {
+       return new Promise((resolve, reject) => {
+         const serviceURI = "luna://com.idleview.app.service/fetchWeatherData";
+         const params = JSON.stringify({ location });
+         bridge.onservicecallback = (response) => {
+           const parsedResponse = JSON.parse(response);
+           if (parsedResponse.returnValue) {
+             resolve(parsedResponse.data);
+           } else {
+             reject(parsedResponse.errorText);
+           }
+         };
+         bridge.call(serviceURI, params);
+       });
+     }
+     ```
+   - **`setToken(token)`**: Stores an authentication token using the `setToken` service.  
+     Example:
+     ```javascript
+     export function setToken(token) {
+       return new Promise((resolve, reject) => {
+         const serviceURI = "luna://com.idleview.app.service/setToken";
+         const params = JSON.stringify({ token });
+         bridge.onservicecallback = (response) => {
+           const parsedResponse = JSON.parse(response);
+           if (parsedResponse.returnValue) {
+             resolve(parsedResponse.token);
+           } else {
+             reject(parsedResponse.errorText);
+           }
+         };
+         bridge.call(serviceURI, params);
+       });
+     }
+     ```
+
+3. **Frontend/src/components/Service
+

@@ -1,28 +1,3 @@
-/*export function fetchWeatherData(location) {
-  return new Promise((resolve, reject) => {
-    if (!location) {
-      reject("Location parameter is required.");
-      return;
-    }
-
-    const serviceURI = "luna://com.domain.app/fetchWeatherData";
-    const params = JSON.stringify({ location });
-
-    const bridge = new webOSServiceBridge();
-    bridge.onservicecallback = (response) => {
-      const parsedResponse = JSON.parse(response);
-
-      if (parsedResponse.returnValue) {
-        resolve(parsedResponse.data);
-      } else {
-        reject(parsedResponse.errorText || "Unknown error occurred.");
-      }
-    };
-
-    bridge.call(serviceURI, params);
-  });
-}*/
-
 const bridge = new WebOSServiceBridge();
 
 export function fetchWeatherData(location,token) {
