@@ -94,48 +94,6 @@ app.post('/login', async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
-// API: dashboard settings
-app.get('/dashboard/settings', authenticateToken, async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const settings = await prisma.dashboardSetting.findFirst({
-      where: { user_id: (req as any).user.userId },
-    });
-    res.json(settings);
-  } catch (error) {
-    next(error);
-  }
-});
-
-// API: add widget
-app.post('/widget/add', authenticateToken, async (req: Request, res: Response, next: NextFunction) => {
-  const { widget_type, config } = req.body;
-  try {
-    await prisma.widget.create({
-      data: {
-        user_id: (req as any).user.userId,
-        widget_type,
-        config,
-      },
-    });
-    res.json({ success: true });
-  } catch (error) {
-    next(error);
-  }
-});
-
-// API: remove widget
-app.delete('/widget/remove', authenticateToken, async (req: Request, res: Response, next: NextFunction) => {
-  const { widget_id } = req.body;
-  try {
-    await prisma.widget.delete({
-      where: { widget_id },
-    });
-    res.json({ success: true });
-  } catch (error) {
-    next(error);
-  }
-});
-
 app.get(
   "/widget/weather",
     authenticateToken,
