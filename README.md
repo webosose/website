@@ -52,6 +52,12 @@ Our team developed this project using a Windows environment. However, the projec
 
 ## Project Setup
 
+1. **Clone the repository.**
+   ```sh
+   git clone <repository_url>
+   cd backend
+   ```
+
 ### Backend Setup
 
 1. **Navigate to the backend directory:**
@@ -63,10 +69,11 @@ Our team developed this project using a Windows environment. However, the projec
    npm install
    ```
 3. **Create `.env` file:**
-   Create an `.env` file in the backend directory and configure the database connection and server port. Example `.env` file content:
+   Create an `.env` file in the backend directory and configure the database connection, JWT secret, and weather API key. Example `.env` file content:
    ```plaintext
-   DATABASE_URL="mysql://<DB_USERNAME>:<DB_PASSWORD>@<DB_HOST>:3306/<DB_NAME>"
-   PORT=4000
+   DATABASE_URL="mysql://kim:1234@localhost:3306/idleview_db"
+   JWT_SECRET=awjdlksejnlsdjgslgang/4ksjfskdvn=
+   WEATHER_API_KEY=4c4c552d80ea31da2d4e01e48bc04a61
    ```
 4. **Run database migrations:**
    ```sh
@@ -96,19 +103,25 @@ Our team developed this project using a Windows environment. However, the projec
    cd frontend
    ```
 
-#### Configuring Server Addresses in `src/constants.js`
+#### Configuring Server Addresses with Vite
 
-To ensure proper communication between the client and servers, modify the server addresses in the `src/constants.js` file:
+To ensure proper communication between the client and servers, configure the proxy settings in the `vite.config.ts` file.
 
-1. Open `src/constants.js` in the React project directory.
-2. Update the server addresses and port numbers:
-   ```javascript
-   // src/constants.js
-   export const apiBaseUrl = 'http://{IP address of your backend server}:4000';
-   ```
-   When running locally, replace `{IP address}` with `localhost`:
-   ```javascript
-   export const apiBaseUrl = 'http://localhost:4000';
+1. Open the `vite.config.ts` file in the React project directory.
+2. Add or modify the `server.proxy` section to point to your backend server:
+   ```typescript
+   import { defineConfig } from 'vite';
+   import react from '@vitejs/plugin-react';
+
+   export default defineConfig({
+     plugins: [react()],
+     server: {
+       proxy: {
+         '/api': 'http://localhost:4000', // Replace with your backend server address if different
+       },
+     },
+     base: './',
+   });
    ```
 
 #### Local Development
@@ -129,7 +142,7 @@ Before starting the deployment process, ensure the following:
 
 - **webOS OSE CLI:** Install the CLI for deploying and managing webOS applications:
   ```sh
-  sudo npm install -g @webosose/ares-cli
+  npm install -g @webosose/ares-cli
   ```
 - **Set up the webOS device:** Use the following command to register your Raspberry Pi:
   ```sh
@@ -160,3 +173,55 @@ Before starting the deployment process, ensure the following:
 1. Access the webOS application launcher on your Raspberry Pi.
 2. Launch the Idle View app.
 3. Verify real-time communication with the backend server.
+
+---
+
+### Additional Notes for Packaging and Installing Apps
+
+#### Creating a Dummy App for Deployment
+
+1. **Generate a dummy app using `ares-generate`:**
+   ```sh
+   ares-generate -t webapp <YOUR APP NAME>
+   ```
+   Example:
+   ```sh
+   ares-generate -t webapp sampleApp
+   ```
+2. **Update `appinfo.json` in the dummy app directory:**
+   Add the following fields to enable additional permissions:
+   ```json
+   {
+     "allowVideoCapture": true,
+     "allowAudioCapture": true,
+     "enableWebOSVDA": true
+   }
+   ```
+3. **Build the frontend project:**
+   ```sh
+   npm run build
+   ```
+4. **Copy the build files to the dummy app directory.**
+
+#### Packaging and Installing the App
+
+1. **Package the app into an `.ipk` file:**
+   ```sh
+   ares-package <PATH TO YOUR APP>
+   ```
+   Example:
+   ```sh
+   ares-package ./sampleApp
+   ```
+2. **Install the `.ipk` file on the target device:**
+   ```sh
+   ares-install -d <TARGET DEVICE> <IPK FILE>
+   ```
+   Example:
+   ```sh
+   ares-install -d raspberrypi com.domain.app_1.0.0_all.ipk
+   ```
+
+3. **Run the app from the webOS launcher.**
+
+## Code Implementation
