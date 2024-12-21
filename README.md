@@ -69,12 +69,12 @@ Our team developed this project using a Windows environment. However, the projec
    npm install
    ```
 3. **Create `.env` file:**
-   Create an `.env` file in the backend directory and configure the database connection, JWT secret, and weather API key. Example `.env` file content:
+   Create an `.env` file in the backend directory and configure the environment variables. Example `.env` file content:
    ```plaintext
-   DATABASE_URL="mysql://kim:1234@localhost:3306/idleview_db"
-   JWT_SECRET=awjdlksejnlsdjgslgang/4ksjfskdvn=
-   WEATHER_API_KEY=4c4c552d80ea31da2d4e01e48bc04a61
-   ```
+   DATABASE_URL="mysql://<DB_USERNAME>:<DB_PASSWORD>@<DB_HOST>:3306/<DB_NAME>"
+   JWT_SECRET=awjdlksejnlsdjgslgang/4ksjfskdvn= # Replace with any random secure string
+   WEATHER_API_KEY=4c4c552d80ea31da2d4e01e48bc04a61 # Obtain your API key from a weather API provider
+
 4. **Run database migrations:**
    ```sh
    npx prisma migrate dev
