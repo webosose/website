@@ -1,19 +1,53 @@
+
 # Idle View App for webOS Devices
+
+## Table of Contents
+
+1. [Overview of Project](#overview-of-project)
+2. [Key Features](#key-features)
+3. [Hardware Requirements](#hardware-requirements)
+4. [Software Requirements](#software-requirements)
+5. [Project Setup](#project-setup)
+   - [Backend Setup](#backend-setup)
+   - [Frontend Setup](#frontend-setup)
+6. [Deployment to webOS](#deployment-to-webos)
+7. [Additional Notes for Packaging and Installing Apps](#additional-notes-for-packaging-and-installing-apps)
+8. [Code Implementation](#code-implementation)
+9. [Contact](#contact)
 
 ## Overview of Project
 
-This project develops a **Personalized IdleView application** for webOS, designed to provide users with tailored information during idle screen states. By leveraging minimal power, the application enhances energy efficiency and ensures consistent delivery of real-time, customizable content.
+**The Personalized IdleView Application** for webOS aims to revolutionize idle screen functionality by delivering meaningful, real-time information tailored to each user. Designed with energy efficiency as main principle, this app minimizes power consumption while ensuring consistent delivery of real-time, customizable content.
+
+![alt text](https://github.com/ttkgns/Idle-View-team7/blob/main/dashboard_heritage_red.png?raw=true)
+
+| ![Image 1](https://github.com/ttkgns/Idle-View-team7/blob/main/brightness_control_settings.png?raw=true) | ![Image 2](https://github.com/ttkgns/Idle-View-team7/blob/main/background_change_widget.png?raw=true) |
+|---------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|                                                                               
+
 
 ### Key Features
 
 - **Customizable Dashboards and Widgets**  
-  Users can configure dashboards with widgets for weather updates, schedules, and media playback.
+  Users can personalize their IdleView screen with widgets for weather updates, calendar schedules, media playback, and more.
 
 - **Seamless Integration**  
   A user-friendly interface and backend systems powered by Node.js, MySQL, and REST APIs support personalization and data management.
 
 - **Real-Time Information Updates**  
   The system securely retrieves and displays real-time weather updates via HTTPS communication.
+
+| ![Image 1](https://github.com/ttkgns/Idle-View-team7/blob/main/media_widget.png?raw=true) | ![Image 2](https://github.com/ttkgns/Idle-View-team7/blob/main/weather_widget%20(2).png?raw=true) |
+|---------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------| 
+
+## Tech Stack
+
+| **Category**            | **Technology**                                                                                                                                      |
+|--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Frontend**   | ![Node.js](https://img.shields.io/badge/-Node.js-339933?logo=node.js&logoColor=white) ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white) ![Vite](https://img.shields.io/badge/-Vite-646CFF?logo=vite&logoColor=white) ![React](https://img.shields.io/badge/-React-61DAFB?logo=react&logoColor=white) |
+| **Libraries**  | ![React-Router-Dom](https://img.shields.io/badge/-React--Router--Dom-CA4245?logo=react&logoColor=white) ![Styled-Components](https://img.shields.io/badge/-Styled--Components-DB7093?logo=styled-components&logoColor=white) ![Axios](https://img.shields.io/badge/-Axios-5A29E4?logo=axios&logoColor=white) |
+| **Backend**    | ![Node.js](https://img.shields.io/badge/-Node.js-339933?logo=node.js&logoColor=white) ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white) ![Express](https://img.shields.io/badge/-Express-000000?logo=express&logoColor=white)                                     |
+| **Libraries**  | ![Prisma](https://img.shields.io/badge/-Prisma-2D3748?logo=prisma&logoColor=white)                                                                                      |
+| **Database**   | ![MySQL](https://img.shields.io/badge/-MySQL-4479A1?logo=mysql&logoColor=white)                                                                                                |
 
 ---
 
@@ -90,7 +124,7 @@ Our team developed this project using a Windows environment. However, the projec
    ```
    The server should start on the specified port (default: 4000).
 
-### React Application Setup
+### Frontend Setup
 
 #### Setting Up Node.js on Your Local PC
 
@@ -99,7 +133,7 @@ Our team developed this project using a Windows environment. However, the projec
    node -v
    ```
    This will display the installed version of Node.js.
-2. **Navigate to the React project’s root directory:**
+2. **Navigate to the project’s root directory:**
    ```sh
    cd frontend
    ```
@@ -137,7 +171,7 @@ To ensure proper communication between the client and servers, configure the pro
    ```
    The application will be accessible at `http://localhost:5173`.
 
-### Deployment to webOS
+## Deployment to webOS
 
 Before starting the deployment process, ensure the following:
 
@@ -156,7 +190,7 @@ Before starting the deployment process, ensure the following:
    ```sh
    chmod +x deploy.sh
    ```
-2. **Deploy the React application:**
+2. **Deploy the application:**
    ```sh
    ./deploy.sh {DEVICE_NAME} {APP_ID} {APP_VERSION} {VENDOR_NAME} {APP_TITLE}
    ```
@@ -165,7 +199,7 @@ Before starting the deployment process, ensure the following:
    ./deploy.sh raspberrypi com.example.idleview 1.0.0 "MyCompany" "Idle View App"
    ```
    The script automates the following:
-   - Builds the React project.
+   - Builds the project.
    - Packages the application into an `.ipk` file.
    - Installs the application on the webOS device.
 
@@ -177,7 +211,7 @@ Before starting the deployment process, ensure the following:
 
 ---
 
-### Additional Notes for Packaging and Installing Apps
+## Additional Notes for Packaging and Installing Apps
 
 #### Creating a Dummy App for Deployment
 
@@ -204,16 +238,19 @@ Before starting the deployment process, ensure the following:
    ```
 4. **Copy the build files to the dummy app directory.**
 
+Follow the official [WebOS Guide](https://www.webosose.org/docs/tutorials/web-apps/developing-downloadable-web-apps/#step-01-creating-a-dummy-app) for detailed steps.
+
 #### Packaging and Installing the App
 
-1. **Package the app into an `.ipk` file:**
+1. **Package the app into an `.ipk` file with a JS Service:**
    ```sh
-   ares-package <PATH TO YOUR APP>
+   ares-package <PATH TO YOUR APP> <PATH TO YOUR SERVICE>
    ```
    Example:
    ```sh
-   ares-package ./sampleApp
+   ares-package ./sampleApp ./sampleService
    ```
+   If the command succeeds, an `.ipk` file will be generated under the current directory.
 2. **Install the `.ipk` file on the target device:**
    ```sh
    ares-install -d <TARGET DEVICE> <IPK FILE>
@@ -224,6 +261,11 @@ Before starting the deployment process, ensure the following:
    ```
 
 3. **Run the app from the webOS launcher.**
+   ```sh
+   ares-launch -d raspberrypi com.domain.app
+   ```
+
+Follow the official [WebOS  JS Services Guide](https://www.webosose.org/docs/tutorials/js-services/developing-downloadable-js-services/#step-02-packaging-the-service) for detailed steps.
 
 ## Code Implementation
 
@@ -330,5 +372,7 @@ The backend server is built using Node.js and Express, facilitating secure and e
      }
      ```
 
-3. **Frontend/src/components/Service
-
+## Contact
+- **[게니시툿쿠 (ttkgns)](https://github.com/ttkgns)** : [genistutku@gmail.com](mailto:genistutku@gmail.com)  
+- **[이강인 (gangin0221)](https://github.com/gangin0221)**
+- **[김승진 (seangolden11)](https://github.com/seangolden11)** 
