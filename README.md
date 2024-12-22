@@ -19,10 +19,13 @@
 
 **The Personalized IdleView Application** for webOS aims to revolutionize idle screen functionality by delivering meaningful, real-time information tailored to each user. Designed with energy efficiency as main principle, this app minimizes power consumption while ensuring consistent delivery of real-time, customizable content.
 
-![alt text](https://github.com/ttkgns/Idle-View-team7/blob/main/dashboard_heritage_red.png?raw=true)
+<p align="center"> <img src="https://github.com/ttkgns/Idle-View-team7/blob/main/dashboard_heritage_red.png?raw=true" alt="alt text" /> </p>
 
-| ![Image 1](https://github.com/ttkgns/Idle-View-team7/blob/main/brightness_control_settings.png?raw=true) | ![Image 2](https://github.com/ttkgns/Idle-View-team7/blob/main/background_change_widget.png?raw=true) |
-|---------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|                                                                               
+<p align="center">
+  <img src="https://github.com/ttkgns/Idle-View-team7/blob/main/brightness_control_settings.png?raw=true" alt="Image 1" width="49%" />
+  <img src="https://github.com/ttkgns/Idle-View-team7/blob/main/background_change_widget.png?raw=true" alt="Image 2" width="49%" />
+</p>
+                                                                            
 
 
 ### Key Features
@@ -36,8 +39,11 @@
 - **Real-Time Information Updates**  
   The system securely retrieves and displays real-time weather updates via HTTPS communication.
 
-| ![Image 1](https://github.com/ttkgns/Idle-View-team7/blob/main/media_widget.png?raw=true) | ![Image 2](https://github.com/ttkgns/Idle-View-team7/blob/main/weather_widget%20(2).png?raw=true) |
-|---------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------| 
+<p align="center">
+  <img src="https://github.com/ttkgns/Idle-View-team7/blob/main/media_widget.png?raw=true" alt="Image 1" width="49%" />
+  <img src="https://github.com/ttkgns/Idle-View-team7/blob/main/weather_widget%20(2).png?raw=true" alt="Image 2" width="49%" />
+</p>
+
 
 
 ## Tech Stack
