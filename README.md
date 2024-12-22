@@ -21,8 +21,7 @@
 
 ![alt text](https://github.com/ttkgns/Idle-View-team7/blob/main/dashboard_heritage_red.png?raw=true)
 
-| ![Image 1](https://github.com/ttkgns/Idle-View-team7/blob/main/brightness_control_settings.png?raw=true) | ![Image 2](https://github.com/ttkgns/Idle-View-team7/blob/main/background_change_widget.png?raw=true) |
-|---------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|                                                                               
+| ![Image 1](https://github.com/ttkgns/Idle-View-team7/blob/main/brightness_control_settings.png?raw=true) | ![Image 2](https://github.com/ttkgns/Idle-View-team7/blob/main/background_change_widget.png?raw=true) |                                                                               
 
 
 ### Key Features
@@ -36,8 +35,7 @@
 - **Real-Time Information Updates**  
   The system securely retrieves and displays real-time weather updates via HTTPS communication.
 
-| ![Image 1](https://github.com/ttkgns/Idle-View-team7/blob/main/media_widget.png?raw=true) | ![Image 2](https://github.com/ttkgns/Idle-View-team7/blob/main/weather_widget%20(2).png?raw=true) |
-|---------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------| 
+| ![Image 1](https://github.com/ttkgns/Idle-View-team7/blob/main/media_widget.png?raw=true) | ![Image 2](https://github.com/ttkgns/Idle-View-team7/blob/main/weather_widget%20(2).png?raw=true) | 
 
 ## Tech Stack
 
