@@ -21,7 +21,8 @@
 
 ![alt text](https://github.com/ttkgns/Idle-View-team7/blob/main/dashboard_heritage_red.png?raw=true)
 
-| ![Image 1](https://github.com/ttkgns/Idle-View-team7/blob/main/brightness_control_settings.png?raw=true) | ![Image 2](https://github.com/ttkgns/Idle-View-team7/blob/main/background_change_widget.png?raw=true) |                                                                               
+| ![Image 1](https://github.com/ttkgns/Idle-View-team7/blob/main/brightness_control_settings.png?raw=true) | ![Image 2](https://github.com/ttkgns/Idle-View-team7/blob/main/background_change_widget.png?raw=true) |
+|---------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|                                                                               
 
 
 ### Key Features
@@ -35,7 +36,8 @@
 - **Real-Time Information Updates**  
   The system securely retrieves and displays real-time weather updates via HTTPS communication.
 
-| ![Image 1](https://github.com/ttkgns/Idle-View-team7/blob/main/media_widget.png?raw=true) | ![Image 2](https://github.com/ttkgns/Idle-View-team7/blob/main/weather_widget%20(2).png?raw=true) | 
+| ![Image 1](https://github.com/ttkgns/Idle-View-team7/blob/main/media_widget.png?raw=true) | ![Image 2](https://github.com/ttkgns/Idle-View-team7/blob/main/weather_widget%20(2).png?raw=true) |
+|---------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------| 
 
 ## Tech Stack
 
@@ -372,5 +374,5 @@ The backend server is built using Node.js and Express, facilitating secure and e
 
 ## Contact
 - **[게니시툿쿠 (ttkgns)](https://github.com/ttkgns)** : [genistutku@gmail.com](mailto:genistutku@gmail.com)  
-- **[이강인 (gangin0221)](https://github.com/gangin0221)**
+- **[이강인 (gangin0221)](https://github.com/gangin0221)** : [genistutku@gmail.com](mailto:genistutku@gmail.com)  
 - **[김승진 (seangolden11)](https://github.com/seangolden11)** 
