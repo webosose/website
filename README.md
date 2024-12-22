@@ -406,5 +406,5 @@ The backend server is built using Node.js and Express, facilitating secure and e
 
 ## Contact
 - **[게니시툿쿠 (ttkgns)](https://github.com/ttkgns)** : [genistutku@gmail.com](mailto:genistutku@gmail.com)  
-- **[이강인 (gangin0221)](https://github.com/gangin0221)** : [genistutku@gmail.com](mailto:genistutku@gmail.com)  
+- **[이강인 (gangin0221)](https://github.com/gangin0221)** : [gangin0221@gmail.com](mailto:gangin0221@gmail.com)  
 - **[김승진 (seangolden11)](https://github.com/seangolden11)** : [seangolden11111@gmail.com](mailto:seangolden11111@gmail.com)
