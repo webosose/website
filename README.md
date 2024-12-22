@@ -39,15 +39,41 @@
 | ![Image 1](https://github.com/ttkgns/Idle-View-team7/blob/main/media_widget.png?raw=true) | ![Image 2](https://github.com/ttkgns/Idle-View-team7/blob/main/weather_widget%20(2).png?raw=true) |
 |---------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------| 
 
+
 ## Tech Stack
 
-| **Category**            | **Technology**                                                                                                                                      |
-|--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Frontend**   | ![Node.js](https://img.shields.io/badge/-Node.js-339933?logo=node.js&logoColor=white) ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white) ![Vite](https://img.shields.io/badge/-Vite-646CFF?logo=vite&logoColor=white) ![React](https://img.shields.io/badge/-React-61DAFB?logo=react&logoColor=white) |
-| **Libraries**  | ![React-Router-Dom](https://img.shields.io/badge/-React--Router--Dom-CA4245?logo=react&logoColor=white) ![Styled-Components](https://img.shields.io/badge/-Styled--Components-DB7093?logo=styled-components&logoColor=white) ![Axios](https://img.shields.io/badge/-Axios-5A29E4?logo=axios&logoColor=white) |
-| **Backend**    | ![Node.js](https://img.shields.io/badge/-Node.js-339933?logo=node.js&logoColor=white) ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white) ![Express](https://img.shields.io/badge/-Express-000000?logo=express&logoColor=white)                                     |
-| **Libraries**  | ![Prisma](https://img.shields.io/badge/-Prisma-2D3748?logo=prisma&logoColor=white)                                                                                      |
-| **Database**   | ![MySQL](https://img.shields.io/badge/-MySQL-4479A1?logo=mysql&logoColor=white)                                                                                                |
+### Frontend
+| Technology               | Description                                                                                           |
+|--------------------------|-------------------------------------------------------------------------------------------------------|
+| ![Node.js](https://img.shields.io/badge/-Node.js-339933?logo=node.js&logoColor=white) | Runtime environment for executing JavaScript outside the browser.                         |
+| ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white) | A strongly typed programming language that builds on JavaScript.                          |
+| ![Vite](https://img.shields.io/badge/-Vite-646CFF?logo=vite&logoColor=white)          | Fast build tool for modern web development.                                               |
+| ![React](https://img.shields.io/badge/-React-61DAFB?logo=react&logoColor=white)       | JavaScript library for building user interfaces.                                          |
+
+### Frontend Libraries
+| Library                  | Description                                                                                           |
+|--------------------------|-------------------------------------------------------------------------------------------------------|
+| ![React-Router-Dom](https://img.shields.io/badge/-React--Router--Dom-CA4245?logo=react&logoColor=white) | Library for routing and navigation in React apps.                                         |
+| ![Styled-Components](https://img.shields.io/badge/-Styled--Components-DB7093?logo=styled-components&logoColor=white) | Library for writing CSS in JavaScript.                                                   |
+| ![Axios](https://img.shields.io/badge/-Axios-5A29E4?logo=axios&logoColor=white)       | Library for making HTTP requests.                                                        |
+
+### Backend
+| Technology               | Description                                                                                           |
+|--------------------------|-------------------------------------------------------------------------------------------------------|
+| ![Node.js](https://img.shields.io/badge/-Node.js-339933?logo=node.js&logoColor=white) | Runtime environment for backend development.                                              |
+| ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white) | Enhances JavaScript for type-safe backend development.                                    |
+| ![Express](https://img.shields.io/badge/-Express-000000?logo=express&logoColor=white) | Fast and lightweight web application framework for Node.js.                              |
+
+### Backend Libraries
+| Library                  | Description                                                                                           |
+|--------------------------|-------------------------------------------------------------------------------------------------------|
+| ![Prisma](https://img.shields.io/badge/-Prisma-2D3748?logo=prisma&logoColor=white) | Modern ORM for Node.js and TypeScript to manage database access.                         |
+
+### Database
+| Technology               | Description                                                                                           |
+|--------------------------|-------------------------------------------------------------------------------------------------------|
+| ![MySQL](https://img.shields.io/badge/-MySQL-4479A1?logo=mysql&logoColor=white)     | Relational database management system for structured data storage.                      |
+
 
 ---
 
@@ -375,4 +401,4 @@ The backend server is built using Node.js and Express, facilitating secure and e
 ## Contact
 - **[게니시툿쿠 (ttkgns)](https://github.com/ttkgns)** : [genistutku@gmail.com](mailto:genistutku@gmail.com)  
 - **[이강인 (gangin0221)](https://github.com/gangin0221)** : [genistutku@gmail.com](mailto:genistutku@gmail.com)  
-- **[김승진 (seangolden11)](https://github.com/seangolden11)** 
+- **[김승진 (seangolden11)](https://github.com/seangolden11)** : [seangolden11111@gmail.com](mailto:seangolden11111@gmail.com)
