@@ -1,3 +1,11 @@
+---
+title: Idle View App for webOS Devices
+date: 2024-12-26
+slug: idle-view-app
+posttype: app
+toc: true
+thumbnail: th-idle-view-app.png
+---
 
 # Idle View App for webOS Devices
 
