@@ -7,7 +7,7 @@ toc: true
 thumbnail: th-idle-view-app.png
 ---
 
-# Idle View App for webOS Devices
+**Author: Kangin Lee, Seungjin Kim, Tutku Genis**
 
 ## Table of Contents
 
