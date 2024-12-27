@@ -1,60 +1,40 @@
----
-title: Idle View App for webOS Devices
-date: 2024-12-26
-slug: idle-view-app
-posttype: app
-toc: true
-thumbnail: th-idle-view-app.png
----
 
-**Author: Kangin Lee, Seungjin Kim, Tutku Genis**
 
-## Table of Contents
+# Idle View App for webOS Devices
 
-1. [Overview of Project](#overview-of-project)
-2. [Key Features](#key-features)
-3. [Hardware Requirements](#hardware-requirements)
-4. [Software Requirements](#software-requirements)
-5. [Project Setup](#project-setup)
-   - [Backend Setup](#backend-setup)
-   - [Frontend Setup](#frontend-setup)
-6. [Deployment to webOS](#deployment-to-webos)
-7. [Additional Notes for Packaging and Installing Apps](#additional-notes-for-packaging-and-installing-apps)
-8. [Code Implementation](#code-implementation)
-9. [Contact](#contact)
 
 ## Overview of Project
 
 **The Personalized IdleView Application** for webOS aims to revolutionize idle screen functionality by delivering meaningful, real-time information tailored to each user. Designed with energy efficiency as main principle, this app minimizes power consumption while ensuring consistent delivery of real-time, customizable content.
 
-<p align="center"> <img src="https://github.com/ttkgns/Idle-View-team7/blob/main/dashboard_heritage_red.png?raw=true" alt="alt text" /> </p>
+<p align="center"> <img src="https://github.com/gangin0221/website/blob/main/dashboard_heritage_red.png?raw=true" alt="alt text" /> </p>
 
 <p align="center">
-  <img src="https://github.com/ttkgns/Idle-View-team7/blob/main/brightness_control_settings.png?raw=true" alt="Image 1" width="49%" />
-  <img src="https://github.com/ttkgns/Idle-View-team7/blob/main/background_change_widget.png?raw=true" alt="Image 2" width="49%" />
+  <img src="https://github.com/gangin0221/website/blob/main/brightness_control_settings.png?raw=true" alt="Image 1" width="49%" />
+  <img src="https://github.com/gangin0221/website/blob/main/background_change_widget.png?raw=true" alt="Image 2" width="49%" />
 </p>
                                                                             
 
 
 ### Key Features
+This section highlights the core functionalities of the IdleView project.
 
 - **Customizable Dashboards and Widgets**  
   Users can personalize their IdleView screen with widgets for weather updates, calendar schedules, media playback, and more.
+  <p align="center"> <img src="https://github.com/gangin0221/website/blob/main/dashboard_heritage_red.png?raw=true" alt="Customizable Dashboard" width="100%" /> </p> <p align="center"> <small>*Example of a customizable dashboard with various widgets.* </p>
 
 - **Seamless Integration**  
   A user-friendly interface and backend systems powered by Node.js, MySQL, and REST APIs support personalization and data management.
+  <p align="center"> <img src="https://github.com/gangin0221/website/blob/main/Integration%20Diagram.png?raw=true" alt="Integration Diagram" width="100%" /> </p> <p align="center"> <small>*Diagram showcasing the seamless integration between the frontend, backend, and database systems.* </p>
 
 - **Real-Time Information Updates**  
   The system securely retrieves and displays real-time weather updates via HTTPS communication.
-
-<p align="center">
-  <img src="https://github.com/ttkgns/Idle-View-team7/blob/main/media_widget.png?raw=true" alt="Image 1" width="49%" />
-  <img src="https://github.com/ttkgns/Idle-View-team7/blob/main/weather_widget%20(2).png?raw=true" alt="Image 2" width="49%" />
-</p>
+  <p align="center"> <img src="https://github.com/gangin0221/website/blob/main/weather_widget.png?raw=true" alt="Weather Updates" width="100%" /> </p> <p align="center"> <small>*Real-time weather widget displaying current conditions.* </p>
 
 
 
 ## Tech Stack
+This section outlines the core technologies and libraries used in the project, categorized into frontend, backend, and database.
 
 ### Frontend
 | Technology               | Description                                                                                           |
@@ -107,7 +87,7 @@ You need a Raspberry Pi 4 with webOS OSE as the target device.
 
 ### Host PC
 
-Our team developed this project using a Windows environment. However, the project can be set up and executed on other operating systems such as Linux or macOS. The following are the general specifications and software requirements for the host PC:
+This project is developed using a Windows environment. However, the project can be set up and executed on other operating systems such as Linux or macOS. The following are the general specifications and software requirements for the host PC:
 
 - **Operating System**: Windows, Linux, or macOS (tested on Windows 10)
 - **CPU**: No specific requirements (standard modern CPUs are sufficient)
@@ -117,20 +97,57 @@ Our team developed this project using a Windows environment. However, the projec
 ---
 
 ## Software Requirements
+This section outlines the essential software required for the project.
 
 - **Node.js**: Required for running the backend server and webOS OSE CLI.
 - **MySQL**: Database management system used in the project.
 - **Prisma ORM**: Used for data modeling and database interactions.
 
----
+## Version Dependencies in the Project
+This section outlines the essential version dependencies required for the project.
+### Frontend Dependencies
+| Dependency Name       | Current Version | Required/Peer Version(s)     | Notes                          |
+|------------------------|-----------------|------------------------------|--------------------------------|
+| `react`               | ^18.3.1         | Compatible with React ^18.x  | Core library for UI rendering.|
+| `react-dom`           | ^18.3.1         | Matches React version ^18.x  | Required for React rendering. |
+| `vite`                | ^5.4.9          | Node.js >=16.0               | Bundler; needs Node.js v16+.  |
+| `tailwindcss`         | ^3.4.14         | Works with PostCSS ^8.4      | Styling framework.            |
+| `vite-plugin-svgr`    | ^4.3.0          | Compatible with Vite ^5.x    | For SVG imports as components.|
+
+### Backend Dependencies
+| Dependency Name       | Current Version | Required/Peer Version(s)        | Notes                          |
+|------------------------|-----------------|---------------------------------|--------------------------------|
+| `prisma`              | ^5.21.1         | Node.js >=16.x, `@prisma/client` must match | ORM for database.             |
+| `express`             | ^4.21.1         | Works with Node.js >=12.x      | Backend framework.            |
+| `jsonwebtoken`        | ^9.0.2          | Requires `bcryptjs` for hashing| For authentication.           |
+| `mysql2`              | ^3.11.3         | Works with MySQL >=8.x         | Database connector.           |
+
 
 ## Project Setup
+This section provides a step-by-step guide to setting up the IdleView project, covering both backend and frontend configurations.
 
+### General Setup
 1. **Clone the repository.**
    ```sh
-   git clone <repository_url>
-   cd backend
+   git clone https://github.com/seangolden11/Idle-View-team7.git
+   cd Idle-View-team7
    ```
+
+#### Repository Structure
+
+The repository is organized into several directories, each serving a specific purpose:
+
+- **backend**: Contains the server-side code and related resources for the project.
+- **frontend**: Houses the client-side code, including the user interface components and associated assets.
+- **회의록**: (Korean for "meeting records") Contains records of team meetings and discussions.
+- **Project Related Files**: Include miscellaneous files or documents relevant to the project.
+
+Additionally, there are files in the root directory:
+- **.gitattributes**: Defines attributes for pathnames to customize repository behaviors, such as end-of-line handling.
+- **.gitignore**: Specifies files and directories to be ignored by Git, preventing them from being tracked.
+- **README.md**: Provides an overview of the project, including setup instructions and usage guidelines.
+
+---
 
 ### Backend Setup
 
