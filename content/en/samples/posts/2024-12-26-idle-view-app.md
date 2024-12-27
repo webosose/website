@@ -16,11 +16,10 @@ thumbnail: th-idle-view-app.png
 
 **The Personalized IdleView Application** for webOS aims to revolutionize idle screen functionality by delivering meaningful, real-time information tailored to each user. Designed with energy efficiency as main principle, this app minimizes power consumption while ensuring consistent delivery of real-time, customizable content.
 
-<p align="center"> <img src="https://github.com/gangin0221/website/blob/main/dashboard_heritage_red.png?raw=true" alt="alt text" /> </p>
-
 <p align="center">
-  <img src="https://github.com/gangin0221/website/blob/main/brightness_control_settings.png?raw=true" alt="Image 1" width="49%" />
-  <img src="https://github.com/gangin0221/website/blob/main/background_change_widget.png?raw=true" alt="Image 2" width="49%" />
+  <img src="https://github.com/gangin0221/website/blob/main/media_widget.png?raw=true" alt="Image 1" width="33%" />
+  <img src="https://github.com/gangin0221/website/blob/main/brightness_control_settings.png?raw=true" alt="Image 2" width="33%" />
+  <img src="https://github.com/gangin0221/website/blob/main/background_change_widget.png?raw=true" alt="Image 3" width="33%" />
 </p>
                                                                             
 
