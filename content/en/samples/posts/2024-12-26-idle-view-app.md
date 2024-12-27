@@ -30,15 +30,15 @@ This section highlights the core functionalities of the IdleView project.
 
 - **Customizable Dashboards and Widgets**  
   Users can personalize their IdleView screen with widgets for weather updates, calendar schedules, media playback, and more.
-  <p align="center"> <img src="https://github.com/gangin0221/website/blob/main/dashboard_heritage_red.png?raw=true" alt="Customizable Dashboard" width="100%" /> </p> <p align="center"> <small>*Example of a customizable dashboard with various widgets.* </p>
+  <p align="center"> <img src="https://github.com/gangin0221/website/blob/main/dashboard_heritage_red.png?raw=true" alt="Customizable Dashboard" width="100%" /> </p> <p align="center"> <small>*Example of a customizable dashboard with various widgets.*</small> </p>
 
 - **Seamless Integration**  
   A user-friendly interface and backend systems powered by Node.js, MySQL, and REST APIs support personalization and data management.
-  <p align="center"> <img src="https://github.com/gangin0221/website/blob/main/Integration%20Diagram.png?raw=true" alt="Integration Diagram" width="100%" /> </p> <p align="center"> <small>*Diagram showcasing the seamless integration between the frontend, backend, and database systems.* </p>
+  <p align="center"> <img src="https://github.com/gangin0221/website/blob/main/Integration%20Diagram.png?raw=true" alt="Integration Diagram" width="100%" /> </p> <p align="center"> <small>*Diagram showcasing the seamless integration between the frontend, backend, and database systems.*</small> </p>
 
 - **Real-Time Information Updates**  
   The system securely retrieves and displays real-time weather updates via HTTPS communication.
-  <p align="center"> <img src="https://github.com/gangin0221/website/blob/main/weather_widget.png?raw=true" alt="Weather Updates" width="100%" /> </p> <p align="center"> <small>*Real-time weather widget displaying current conditions.* </p>
+  <p align="center"> <img src="https://github.com/gangin0221/website/blob/main/weather_widget.png?raw=true" alt="Weather Updates" width="100%" /> </p> <p align="center"> <small>*Real-time weather widget displaying current conditions.* </small></p>
 
 
 
@@ -96,7 +96,7 @@ You need a Raspberry Pi 4 with webOS OSE as the target device.
 
 ### Host PC
 
-This project is developed using a Windows environment. However, the project can be set up and executed on other operating systems such as Linux or macOS. The following are the general specifications and software requirements for the host PC:
+This project is developed using a Windows environment and it can be easily set up and executed on other operating systems such as Linux or macOS. Below are the general specifications and software requirements for the host PC:
 
 - **Operating System**: Windows, Linux, or macOS (tested on Windows 10)
 - **CPU**: No specific requirements (standard modern CPUs are sufficient)
@@ -148,8 +148,6 @@ The repository is organized into several directories, each serving a specific pu
 
 - **backend**: Contains the server-side code and related resources for the project.
 - **frontend**: Houses the client-side code, including the user interface components and associated assets.
-- **회의록**: (Korean for "meeting records") Contains records of team meetings and discussions.
-- **Project Related Files**: Include miscellaneous files or documents relevant to the project.
 
 Additionally, there are files in the root directory:
 - **.gitattributes**: Defines attributes for pathnames to customize repository behaviors, such as end-of-line handling.
@@ -175,6 +173,23 @@ Additionally, there are files in the root directory:
    JWT_SECRET=awjdlksejnlsdjgslgang/4ksjfskdvn= # Replace with any random secure string
    WEATHER_API_KEY=4c4c552d80ea31da2d4e01e48bc04a61 # Obtain your API key from a weather API provider
    ```
+#### Configuration Values Explanation
+
+- **`DATABASE_URL`**
+  - **Purpose**: Connects to the database.
+  - **Example**: `mysql://root:password@localhost:3306/idleview`
+  - **What to Set**: Update with your database type, username, password, host, port, and database name.
+
+- **`JWT_SECRET`**
+  - **Purpose**: A secret key for securing authentication tokens (JWTs).
+  - **Example**: `awjdlksejnlsdjgslgang/4ksjfskdvn=`
+  - **What to Set**: Replace with a random, secure string unique to your environment.
+
+- **`WEATHER_API_KEY`**
+  - **Purpose**: Accesses weather data from a weather API provider.
+  - **Example**: `4c4c552d80ea31da2d4e01e48bc04a61`
+  - **What to Set**: Get your API key from a weather service and use it here. You can find more information on how to obtain the key from [OpenWeatherMap's API documentation](https://openweathermap.org/current#name).
+
 
 4. **Run database migrations:**
    ```sh
