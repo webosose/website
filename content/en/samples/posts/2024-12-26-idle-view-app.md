@@ -111,9 +111,9 @@ This section outlines the essential software required for the project.
 - **MySQL**: Database management system used in the project.
 - **Prisma ORM**: Used for data modeling and database interactions.
 
-## Version Dependencies in the Project
+### Version Dependencies in the Project
 This section outlines the essential version dependencies required for the project.
-### Frontend Dependencies
+#### Frontend Dependencies
 | Dependency Name       | Current Version | Required/Peer Version(s)     | Notes                          |
 |------------------------|-----------------|------------------------------|--------------------------------|
 | `react`               | ^18.3.1         | Compatible with React ^18.x  | Core library for UI rendering.|
@@ -122,7 +122,7 @@ This section outlines the essential version dependencies required for the projec
 | `tailwindcss`         | ^3.4.14         | Works with PostCSS ^8.4      | Styling framework.            |
 | `vite-plugin-svgr`    | ^4.3.0          | Compatible with Vite ^5.x    | For SVG imports as components.|
 
-### Backend Dependencies
+#### Backend Dependencies
 | Dependency Name       | Current Version | Required/Peer Version(s)        | Notes                          |
 |------------------------|-----------------|---------------------------------|--------------------------------|
 | `prisma`              | ^5.21.1         | Node.js >=16.x, `@prisma/client` must match | ORM for database.             |
