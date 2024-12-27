@@ -117,17 +117,13 @@ This section outlines the essential version dependencies required for the projec
 | Dependency Name       | Current Version | Required/Peer Version(s)     | Notes                          |
 |------------------------|-----------------|------------------------------|--------------------------------|
 | `react`               | ^18.3.1         | Compatible with React ^18.x  | Core library for UI rendering.|
-| `react-dom`           | ^18.3.1         | Matches React version ^18.x  | Required for React rendering. |
 | `vite`                | ^5.4.9          | Node.js >=16.0               | Bundler; needs Node.js v16+.  |
-| `tailwindcss`         | ^3.4.14         | Works with PostCSS ^8.4      | Styling framework.            |
-| `vite-plugin-svgr`    | ^4.3.0          | Compatible with Vite ^5.x    | For SVG imports as components.|
 
 #### Backend Dependencies
 | Dependency Name       | Current Version | Required/Peer Version(s)        | Notes                          |
 |------------------------|-----------------|---------------------------------|--------------------------------|
 | `prisma`              | ^5.21.1         | Node.js >=16.x, `@prisma/client` must match | ORM for database.             |
 | `express`             | ^4.21.1         | Works with Node.js >=12.x      | Backend framework.            |
-| `jsonwebtoken`        | ^9.0.2          | Requires `bcryptjs` for hashing| For authentication.           |
 | `mysql2`              | ^3.11.3         | Works with MySQL >=8.x         | Database connector.           |
 
 
