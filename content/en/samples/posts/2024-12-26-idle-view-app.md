@@ -1,4 +1,13 @@
+---
+title: Idle View App for webOS Devices
+date: 2024-12-26
+slug: idle-view-app
+posttype: app
+toc: true
+thumbnail: th-idle-view-app.png
+---
 
+**Author: Kangin Lee, Seungjin Kim, Tutku Genis**
 
 # Idle View App for webOS Devices
 
