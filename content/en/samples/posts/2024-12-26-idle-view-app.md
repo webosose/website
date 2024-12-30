@@ -168,6 +168,8 @@ Additionally, there are files in the root directory:
    JWT_SECRET=awjdlksejnlsdjgslgang/4ksjfskdvn= # Replace with any random secure string
    WEATHER_API_KEY=4c4c552d80ea31da2d4e01e48bc04a61 # Obtain your API key from a weather API provider
    ```
+      > **Note**: If you haven't set up MySQL yet, follow the [MySQL Installation and Configuration Guide](https://github.com/gangin0221/website/blob/main/MySQL%20Installation%20and%20Configuration%20Guide.md) to install and configure it properly.
+   
 #### Configuration Values Explanation
 
 - **`DATABASE_URL`**
