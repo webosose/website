@@ -1,7 +1,7 @@
 ---
 title: Downloadable Native Apps
 display_title: Developing Downloadable Native Apps
-date: 2024-10-02
+date: 2024-12-23
 weight: 10
 toc: true
 ---
@@ -132,12 +132,10 @@ Follow the guides in [Native Development Kit Setup]({{< relref "setting-up-nativ
     $ make
     ```
 
-    If the commands succeed, a `pkg_<YOUR_ARCHITECTURE>` directory will be generated in your app directory. `<YOUR_ARCHITECTURE>` depends on your build machine’s architecture.
-    
-    In the following example, the `pkg_aarch64` directory is generated.
+    If the commands succeed, a `output` directory will be generated.
 
     ```
-    pkg_aarch64/
+    BUILD/output/
     ├── appinfo.json
     ├── icon.png
     └── wayland_egl
@@ -151,8 +149,8 @@ Enter the following command:
 
 ``` bash
 # Command format
-# ares-package <APP DIRECTORY>
-ares-package pkg_aarch64
+# ares-package <OUTPUT DIRECTORY>
+ares-package output
 ```
 
 If the command succeeds, an `.ipk` file will be generated under the current directory.
@@ -275,7 +273,7 @@ set(SRC_LIST
         ${CMAKE_SOURCE_DIR}/src/wayland_egl.c
 )
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/pkg_$ENV{OECORE_TARGET_ARCH}/")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/output")
 add_executable(${BIN_NAME} ${SRC_LIST})
 set_target_properties(${BIN_NAME} PROPERTIES LINKER_LANGUAGE C)
 

@@ -1,7 +1,7 @@
 ---
 title: Downloadable Native Services
 display_title: Developing Downloadable Native Services
-date: 2024-10-02
+date: 2024-12-23
 weight: 10
 toc: true
 ---
@@ -140,12 +140,10 @@ Follow the guides in [Native Development Kit Setup]({{< relref "setting-up-nativ
     $ make
     ```
 
-    If the commands succeed, a `pkg_<YOUR_ARCHITECTURE>` directory will be generated in your app directory. `<YOUR_ARCHITECTURE>` depends on your build machine’s architecture.
-    
-    In the following example, the `pkg_aarch64` directory is generated.
+    If the commands succeed, a `output` directory will be generated.
 
     ```
-    pkg_aarch64/
+    BUILD/output/
     ├── echo_service
     └── services.json
     ```
@@ -159,7 +157,7 @@ Enter the following command:
 ``` bash
 # Command format
 # ares-package <APP DIRECTORY> <SERVICE DIRECTORY>
-ares-package ./com.sample.echo ./com.sample.echo.service/pkg_aarch64
+ares-package ./com.sample.echo ./com.sample.echo.service/BUILD/output
 ```
 
 If the command succeeds, an `.ipk` file will be generated under the current directory.
@@ -287,9 +285,6 @@ See also [services.json]({{< relref "services-json" >}}).
 cmake_minimum_required(VERSION 2.8.7)
 project(nativeService C)
  
-# set link directory
-#link_directories(${CMAKE_SOURCE_DIR}/pkg_$ENV{ARCH}/lib)
- 
 # ---
 # add include files
 include_directories(${CMAKE_SOURCE_DIR})
@@ -324,11 +319,9 @@ set(SRC_LIST
     ${CMAKE_SOURCE_DIR}/src/main.c
 )
  
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/pkg_$ENV{OECORE_TARGET_ARCH}/")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/output)
 add_executable(${BIN_NAME} ${SRC_LIST})
  
-# ignore shared library
-set(CMAKE_EXE_LINKER_FLAGS "-Wl,--allow-shlib-undefined")
 set_target_properties(${BIN_NAME} PROPERTIES LINKER_LANGUAGE C)
  
 target_link_libraries (${BIN_NAME}
