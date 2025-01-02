@@ -1,11 +1,15 @@
 ---
-title: Release Notes
+title: (Deprecated) Release Notes
 display_title: Command-Line Interface Release Notes
-date: 2024-10-30
+date: 2025-01-02
 weight: 20
 toc: true
 two_depth_toc: true
 ---
+
+{{< caution "Deprecation Notice" >}}
+Since v3.2.0, release notes are available on the [GitHub Release Notes page](https://github.com/webos-tools/cli/releases). The current page will no longer be updated.
+{{< /caution >}}
 
 This page provides the summary of each Command-Line Interface (CLI) release for webOS Open Source Edition (OSE).
 

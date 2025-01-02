@@ -1,7 +1,7 @@
 ---
 title: Downloadable Native Apps
 display_title: Developing Downloadable Native Apps
-date: 2024-12-23
+date: 2025-01-02
 weight: 10
 toc: true
 ---
@@ -132,7 +132,7 @@ Follow the guides in [Native Development Kit Setup]({{< relref "setting-up-nativ
     $ make
     ```
 
-    If the commands succeed, a `output` directory will be generated.
+    If the commands succeed, an `output` directory will be generated.
 
     ```
     BUILD/output/
