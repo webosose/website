@@ -249,72 +249,30 @@ To ensure proper communication between the client and servers, configure the pro
    ```
    The application will be accessible at `http://localhost:5173`.
 
-## Deployment to webOS
 
-Before starting the deployment process, ensure the following:
-
-- **webOS OSE CLI:** Install the CLI for deploying and managing webOS applications:
-  ```sh
-  npm install -g @webosose/ares-cli
-  ```
-- **Set up the webOS device:** Use the following command to register your Raspberry Pi:
-  ```sh
-  ares-setup-device
-  ```
-
-#### Deployment Script: `deploy.sh`
-
-1. **Ensure the script is executable:**
-   ```sh
-   chmod +x deploy.sh
-   ```
-2. **Deploy the application:**
-   ```sh
-   ./deploy.sh {DEVICE_NAME} {APP_ID} {APP_VERSION} {VENDOR_NAME} {APP_TITLE}
-   ```
-   Example:
-   ```sh
-   ./deploy.sh raspberrypi com.example.idleview 1.0.0 "MyCompany" "Idle View App"
-   ```
-   The script automates the following:
-   - Builds the project.
-   - Packages the application into an `.ipk` file.
-   - Installs the application on the webOS device.
-
-#### Running the Application on webOS
-
-1. Access the webOS application launcher on your Raspberry Pi.
-2. Launch the Idle View app.
-3. Verify real-time communication with the backend server.
 
 ---
 
-## Additional Notes for Packaging and Installing Apps
+## Installation
 
-#### Creating a Dummy App for Deployment
+#### Creating a App
 
-1. **Generate a dummy app using `ares-generate`:**
+1. **Copy `appinfo.json` and `icon.png` in the dist directory:**
+   Copy files (appinfo.json, icon.png) in dist directory:
+   
+
+2. **go to frontend directory :**
    ```sh
-   ares-generate -t webapp <YOUR APP NAME>
-   ```
-   Example:
-   ```sh
-   ares-generate -t webapp sampleApp
-   ```
-2. **Update `appinfo.json` in the dummy app directory:**
-   Add the following fields to enable additional permissions:
-   ```json
-   {
-     "allowVideoCapture": true,
-     "allowAudioCapture": true,
-     "enableWebOSVDA": true
-   }
+   cd ./frontend
    ```
 3. **Build the frontend project:**
    ```sh
    npm run build
    ```
-4. **Copy the build files to the dummy app directory.**
+
+4. **Paste `appinfo.json` and `icon.png` in the dist directory:**
+   Paste files (appinfo.json, icon.png) into dist directory:
+   
 
 Follow the official [WebOS Guide](https://www.webosose.org/docs/tutorials/web-apps/developing-downloadable-web-apps/#step-01-creating-a-dummy-app) for detailed steps.
 
