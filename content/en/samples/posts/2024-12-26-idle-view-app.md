@@ -257,6 +257,8 @@ To ensure proper communication between the client and servers, configure the pro
 
 #### Creating a App
 
+if you build the frontend project in step 3 `appinfo.json` and `icon.png` file in dist directory will be gone. so you must copy before you build the fronent project
+
 1. **Copy `appinfo.json` and `icon.png` in the dist directory:**
    Copy files (appinfo.json, icon.png) in dist directory:
    
