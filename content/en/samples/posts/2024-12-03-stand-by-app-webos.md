@@ -188,12 +188,10 @@ Hardware Specification
 Software Specification
 
 - OS: Arch Linux
-- Node.js
-- Yarn
+- Node.js version 18 or higher
+- Yarn 4.5.0
 - Git
 - PostgreSQL
-- webOS OSE Image (for raspberry pie)
-- webOS CLI tool (@webos-tools/cli)
 
 ## How to run
 
@@ -209,7 +207,7 @@ git clone https://github.com/KNU-LG/backend.git
 
 The project uses **Yarn 4.5.0** as its package manager, managed as a `.cjs` file in `.yarn/releases`. It requires Node.js version **18 or higher**, and has been tested with version **22.5.1**.
 
-### Environment Variables
+### Environment VariablesF
 
 Before running the project, you need to create an `.env` file in the project root. An example `.env` file is provided as `example.env`. Below are the descriptions of the environment variables:
 
