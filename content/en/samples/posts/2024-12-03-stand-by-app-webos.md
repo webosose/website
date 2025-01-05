@@ -131,7 +131,7 @@ The overall structure of the database of our project is as follows.
 
 The list of api statements is as follows.
 
-{{< figure src="https://github.com/user-attachments/assets/1f235018-cf24-4776-b9c2-ebf476f5af99" caption="System Architecture" alt="System Architecture" >}}
+{{< figure src="https://github.com/user-attachments/assets/44feaa43-d32d-4f57-81fd-308eabce4b7f" caption="API documents" alt="API documents" >}}
 
 ### ✔️Frond-end
 
@@ -160,7 +160,7 @@ The list of api statements is as follows.
 
 ## Hardware Requirements
 
-To implement this project, a client device and a host pc are required.
+To implement this project, a client device and a server pc are required.
 
 ### Client Device
 
@@ -175,9 +175,9 @@ To implement this project, a client device and a host pc are required.
 
 - The model we used is a 7-inch Raspberry Pi 1024x600 HDMI touchscreen LCD.
 
-### Host PC
+### Server PC
 
-This is the **host pc specification** we used.
+This is the **server pc specification** we used.
 
 Hardware Specification
 
