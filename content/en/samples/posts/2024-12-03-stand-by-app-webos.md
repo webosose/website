@@ -180,14 +180,16 @@ To implement this project, a client device and a host pc are required.
 This is the **host pc specification** we used.
 
 Hardware Specification
+
 - CPU: intel i5-8400
 - RAM: 8GB
 - Storage: 512GB SSD
 
 Software Specification
+
 - OS: Arch Linux
 - Node.js
-- Yarn 
+- Yarn
 - Git
 - PostgreSQL
 - webOS OSE Image (for raspberry pie)
@@ -219,6 +221,7 @@ Before running the project, you need to create an `.env` file in the project roo
 - **MAIL_PASSWORD**: The password associated with the email account specified in `MAIL_USER`.
 
 Example:
+
 ```
 PORT=1234
 DATABASE_URL=postgresql://username:password@localhost:5432/dbname
@@ -227,7 +230,6 @@ JWT_SECRET=your-secret-key-here
 MAIL_USER=your-email@example.com
 MAIL_PASSWORD=your-email-password
 ```
-
 
 ### Email Configuration
 
@@ -299,47 +301,28 @@ $ yarn run start:dev
 $ yarn run start:prod
 ```
 
-## How to package
-
-Next, I will explain the process from a front-end perspective.
+## How to run frontend application
 
 ### Clone the repositroy
 
-```sh
 git clone https://github.com/KNU-LG/frontend.git
-```
 
-### Emulator
+### Install node_modules
 
-```bash
-#Install the CLI tool.
-npm install -g @webos-tools/cli
-```
+npm install
 
-```bash
-#Check your advice before Build the React app.
-ares-setup-device-l
+### Build the React app in Clone repository.
 
-name     deviceinfo               connection Profile
--------- ------------------------ ---------- -------
-emulator developer@127.0.0.1:6622 ssh        tv
+npm run build
 
-```
+When you build a React app, you can see the following file structure:
 
-> If the emulator is not installed, please refer to this [link](https://webostv.developer.lge.com/develop/tools/cli-dev-guide#ares-setup-device)
+<img src="https://velog.velcdn.com/images/seung365/post/62a457c4-3425-4921-9ddc-a802fa417088/image.png">
 
-```bash
-#Build the React app in Clone repository.
-npm build
-```
-
-> When you build a React app, you can see the following file structure:
-> <img src="https://velog.velcdn.com/images/seung365/post/62a457c4-3425-4921-9ddc-a802fa417088/image.png">
-
-```bash
 You should put appinfo.json and icon.png in build file.
 This is example of appinfo.json
 
+```bash
 {
   "id": "test",
   "version": "1.0.0",
