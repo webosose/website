@@ -256,21 +256,21 @@ To ensure proper communication between the client and servers, configure the pro
 ## Installation
 
 #### Creating a App
-
-if you build the frontend project in step 3 `appinfo.json` and `icon.png` file in dist directory will be gone. so you must copy before you build the fronent project
-
-1. **Copy `appinfo.json` and `icon.png` in the dist directory:**
-   Copy files (appinfo.json, icon.png) in dist directory:
    
 
-2. **go to frontend directory :**
+1. **go to frontend directory :**
    ```sh
    cd ./frontend
    ```
-3. **Build the frontend project:**
+2. **Build the frontend project:**
    ```sh
    npm run build
    ```
+
+   now dist directory will appear in frontend directory
+
+3. **Copy `appinfo.json` and `icon.png` in the metafile directory:**
+   Copy files (appinfo.json, icon.png) in metafile directory:
 
 4. **Paste `appinfo.json` and `icon.png` in the dist directory:**
    Paste files (appinfo.json, icon.png) into dist directory:
