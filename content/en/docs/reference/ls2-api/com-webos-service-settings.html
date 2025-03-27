@@ -1,7 +1,7 @@
 ---
 title: com.webos.service.settings
-date: 2024-10-30
-api_level: 30
+date: 2025-02-20
+api_level: 32
 weight: 290
 toc: true
 ---
@@ -14,183 +14,8 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
   <p>Settings Service manages different values according to dimension, such as country and external input, under the same setting. When the dimension has changed, it sends a necessary subscription message.</p>
 </div>
 <h2 id="overview-of-the-api">Overview of the API</h2>
-<div class="table-container">
-  <table class="table is-bordered is-fullwidth">
-    <tbody>
-      <tr>
-        <th><strong>Method</strong></th>
-        <th><strong>Description</strong></th>
-        <th><strong>Subscription</strong></th>
-      </tr>
-      <tr>
-        <td>
-          <p>batch</p>
-        </td>
-        <td>
-          <p>It is used when processing multiple methods as one Luna call.</p>
-        </td>
-        <td>
-          <p>Support</p>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <p>deleteSystemSettings</p>
-        </td>
-        <td>
-          <p>Delete settings.</p>
-        </td>
-        <td>
-          <p>-</p>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <p>getCurrentSettings</p>
-        </td>
-        <td>
-          <p>Return foreground app related settings.</p>
-        </td>
-        <td>
-          <p>Support</p>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <p>getSystemSettingDesc</p>
-        </td>
-        <td>
-          <p>Return settings info (Description).</p>
-        </td>
-        <td>
-          <p>Support</p>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <p>getSystemSettings</p>
-        </td>
-        <td>
-          <p>Return settings value.</p>
-        </td>
-        <td>
-          <p>Support</p>
-        </td>
-      </tr>
-      <tr>
-        <td>getSystemSettingFactoryValue</td>
-        <td>
-          <p>Return default value.</p>
-        </td>
-        <td>-</td>
-      </tr>
-      <tr>
-        <td>
-          <p>getSystemSettingValues</p>
-        </td>
-        <td>
-          <p>Return the info of valid range of the possible setting value.</p>
-        </td>
-        <td>
-          <p>Support</p>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <p>resetSystemSettings</p>
-        </td>
-        <td>
-          <p>Initialize setting value and switch to default value.</p>
-        </td>
-        <td>
-          <p>-</p>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <p>resetSystemSettingDesc</p>
-        </td>
-        <td>
-          <p>Change settings info (Description) to default value.</p>
-        </td>
-        <td>
-          <p>-</p>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <p>setSystemSettingDesc</p>
-        </td>
-        <td>
-          <p>Modify settings info (Description).</p>
-        </td>
-        <td>
-          <p>-</p>
-        </td>
-      </tr>
-      <tr>
-        <td>setSystemSettingFactoryDesc</td>
-        <td>
-          <p>Modify default value of the settings info (Description).</p>
-        </td>
-        <td>&nbsp;</td>
-      </tr>
-      <tr>
-        <td>
-          <p>setSystemSettingFactoryValue</p>
-        </td>
-        <td>
-          <p>Change default value.</p>
-        </td>
-        <td>
-          <p>-</p>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <p>setSystemSettings</p>
-        </td>
-        <td>
-          <p>Change settings.</p>
-        </td>
-        <td>
-          <p>-</p>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <p>setSystemSettingValues</p>
-        </td>
-        <td>
-          <p>Modify the info of the valid range of the possible setting value.</p>
-        </td>
-        <td>
-          <p>-</p>
-        </td>
-      </tr>
-      <tr>
-        <td>update</td>
-        <td>update customized settings forcefully</td>
-        <td>-</td>
-      </tr>
-      <tr>
-        <td>internal/instrument</td>
-        <td>
-          <p>Generate log for debug and change current app.</p>
-        </td>
-        <td>&nbsp;</td>
-      </tr>
-      <tr>
-        <td>internal/getCurrentSubscriptions</td>
-        <td>
-          <p>Return the information of currently subscribed service.</p>
-        </td>
-        <td>
-          <p>&nbsp;</p>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<div>
+  <p>NA</p>
 </div>
 <h2 id="methods">Methods</h2>
 <div>
@@ -250,11 +75,12 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Boolean</td>
             <td>
               <p>Indicates whether to subscribe for related events.</p>
+              <p>Note: Should be set to true if any of the batchOperation`s params have a &#39;subscribe&#39; option&nbsp;set to true</p>
+              <p>Possible values are:</p>
               <ul>
-                <li><strong>true</strong>: Subscribe</li>
-                <li><strong>false</strong>: Do not subscribe (default)</li>
+                <li>true: Subscribed.</li>
+                <li>false (Default): Not subscribed.</li>
               </ul>
-              <p>Should be set to true if any of the batchOperation`s params have a &#39;subscribe&#39; option&nbsp;set to true</p>
             </td>
           </tr>
         </tbody>
@@ -301,9 +127,10 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Boolean</td>
             <td>
               <p>Indicates whether the execution succeeded.</p>
+              <p>Possible values are:</p>
               <ul>
-                <li><strong>true</strong>: Success</li>
-                <li><strong>false</strong>: Failure</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. Check the method&#39;s &#39;Error Codes&#39; section for failure details (errorCode and/or errorText).</li>
               </ul>
             </td>
           </tr>
@@ -578,18 +405,11 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Boolean</td>
             <td>
               <p>Indicates whether the execution succeeded.</p>
+              <p>Possible values are:</p>
               <ul>
-                <li><strong>true</strong>: Success</li>
-                <li><strong>false</strong>: Failure</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. Check the method&#39;s &#39;Error Codes&#39; section for failure details (errorCode and/or errorText).</li>
               </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the&nbsp;&quot;Error Codes&quot;&nbsp;section of this method for details.</p>
             </td>
           </tr>
         </tbody>
@@ -625,28 +445,19 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       <p style="color:white;margin:5px;"><b>Example code</b></p>
     </div>
     <div class="code-bg-grey">
-      <p># luna-send -n 1 luna://com.webos.service.settings/deleteSystemSettings &#39;{<br />
+      <p># luna-send -n 1 -f luna://com.webos.service.settings/deleteSystemSettings &#39;{<br />
         &nbsp; &nbsp; &nbsp; &quot;category&quot;: &quot;option&quot;,<br />
         &nbsp; &nbsp; &nbsp; &quot;keys&quot;: [<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&quot;zipcode&quot;<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;]<br />
-        }&#39; -f
+        }&#39;
       </p>
       <p>Response:</p>
       <p>{<br />
         &nbsp; &nbsp;&quot;method&quot;: &quot;deleteSystemSettings&quot;,<br />
-        &nbsp; &nbsp;&quot;returnValue&quot;: true
+        &nbsp; &nbsp;&quot;returnValue&quot;: true<br />
+        }
       </p>
-      <p>}</p>
-      <p>&nbsp;</p>
-      <p>Example of the failed case:</p>
-      <p># luna-send -n 1 luna://com.webos.service.settings/deleteSystemSettings &#39;{ &quot;category&quot;: &quot;option&quot;, &quot;keys&quot;: [ ]}&#39; -f</p>
-      <p>{</p>
-      <p>&nbsp;&nbsp;&nbsp; &quot;returnValue&quot;: false,</p>
-      <p>&nbsp;&nbsp;&nbsp; &quot;errorText&quot;: &quot;invalid key array&quot;,</p>
-      <p>&nbsp;&nbsp;&nbsp; &quot;method&quot;: &quot;deleteSystemSettings&quot;</p>
-      <p>}</p>
-      <p>&nbsp;</p>
     </div>
   </div>
   <h3 id="getcurrentsettings">getCurrentSettings</h3>
@@ -720,10 +531,11 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates whether to subscribe for related events.</p>
+              <p>Indicates whether to subscribe for related events</p>
+              <p>Possible values are:</p>
               <ul>
-                <li><strong>true</strong>: Subscribe</li>
-                <li><strong>false</strong>: Do not subscribe (false)</li>
+                <li>true: Subscribed.</li>
+                <li>false (Default): Not subscribed.</li>
               </ul>
             </td>
           </tr>
@@ -794,6 +606,11 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Boolean</td>
             <td>
               <p>Indicates the current subscription status.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>true: Subscribed.</li>
+                <li>false: Not subscribed.</li>
+              </ul>
             </td>
           </tr>
           <tr>
@@ -801,19 +618,12 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates whether the execution succeeded.</p>
+              <p>Indicates whether the execution succeeded</p>
+              <p>Possible values are:</p>
               <ul>
-                <li><strong>true</strong>: Success</li>
-                <li><strong>false</strong>: Failure</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. Check the method&#39;s &#39;Error Codes&#39; section for failure details (errorCode and/or errorText).</li>
               </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Describes the error. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.&nbsp;See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;for more details.</p>
             </td>
           </tr>
         </tbody>
@@ -883,14 +693,6 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Boolean</td>
             <td>
               <p>Indicates whether the execution succeeded.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Describes the error. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.&nbsp;See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;for more details.</p>
             </td>
           </tr>
         </tbody>
@@ -964,13 +766,9 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <h4>Description</h4>
     <p>Retrieves detailed information on the settings.</p>
+    <p><strong>Exception:</strong></p>
     <ul>
-      <li>
-        Exception
-        <ul>
-          <li>The request for nonexistent keys will be processed as an error.</li>
-        </ul>
-      </li>
+      <li>The request for nonexistent keys is processed as an error.</li>
     </ul>
     <h4>Parameters</h4>
     <div class="table-container">
@@ -1001,9 +799,10 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <tr>
             <td>keys</td>
             <td>Optional</td>
-            <td>array</td>
+            <td>String array</td>
             <td>
-              <p>Keys for retrieving setting values. One of the keys and key should be specified.</p>
+              <p>Keys for retrieving setting values.</p>
+              <p><strong>Note: </strong>Either one of&nbsp;<strong>keys </strong>and <strong>key </strong>must be provided.</p>
             </td>
           </tr>
           <tr>
@@ -1011,7 +810,8 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>A key for retrieving setting value. One of keys and key should be specified.</p>
+              <p>Key for retrieving setting value.</p>
+              <p><strong>Note:&nbsp;</strong>Either one of&nbsp;<strong>keys&nbsp;</strong>and&nbsp;<strong>key&nbsp;</strong>must be provided.</p>
             </td>
           </tr>
           <tr>
@@ -1019,7 +819,8 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>App ID. If target key is app specific setting, app ID&nbsp;should be specified.</p>
+              <p>ID of the app.</p>
+              <p><strong>Note: </strong>If target key is app specific setting, app ID&nbsp;must be provided.</p>
             </td>
           </tr>
           <tr>
@@ -1027,11 +828,12 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>Boolean</td>
             <td>
-              <p>If app ID isn&#39;t specified,&nbsp;use current foreground app ID. If app ID is explicitly given, this parameter is ignored.</p>
+              <p>If app ID is not specified,&nbsp;use the current foreground app ID.</p>
+              <p><strong>Note: </strong>If app ID is provided, this parameter is ignored.</p>
+              <p>Possible values are:</p>
               <ul>
-                <li>true: Use current foreground app ID</li>
-                <li>false: Don&#39;t use app ID</li>
-                <li>default value: false</li>
+                <li>true: Use current foreground app ID.</li>
+                <li>false (Default): Do not use current foreground app ID.</li>
               </ul>
             </td>
           </tr>
@@ -1040,10 +842,11 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates whether to subscribe for related events.</p>
+              <p>Indicates whether to subscribe for related events</p>
+              <p>Possible values are:</p>
               <ul>
-                <li><strong>true</strong>: Subscribe</li>
-                <li><strong>false</strong>: Do not subscribe (false)</li>
+                <li>true: Subscribed.</li>
+                <li>false (Default): Not subscribed.</li>
               </ul>
             </td>
           </tr>
@@ -1069,89 +872,40 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </th>
           </tr>
           <tr>
-            <td>category</td>
-            <td>Required</td>
-            <td>String</td>
-            <td>
-              <p>Category of settings.&nbsp;It is same with the value specified&nbsp;in&nbsp;<strong>category</strong>&nbsp;input parameter.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>dbtype</td>
-            <td>Required</td>
-            <td>String</td>
-            <td>
-              <p>Database type. One of the following values will be returned.</p>
-              <ul>
-                <li>&quot;G&quot; : Global type</li>
-                <li>&quot;S&quot; : PerApp type</li>
-                <li>&quot;M&quot; :&nbsp;Mixed type</li>
-                <li>&quot;E&quot; :&nbsp;ExceptionApp type</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>dimension</td>
-            <td>Required</td>
-            <td>Object: <a href="#object-dimension">dimension</a></td>
-            <td>
-              <p>In case there is a dimension property in settings category, it returns the corresponding value.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>key</td>
-            <td>Required</td>
-            <td>String</td>
-            <td>
-              <p>Requested key</p>
-            </td>
-          </tr>
-          <tr>
-            <td>valueCheck</td>
+            <td>subscribed</td>
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates whether&nbsp;the validation check for the settings values is performed.</p>
-              <ul>
-                <li>true: The validation check is performed</li>
-                <li>false: The validation check is not performed</li>
-              </ul>
+              <p>Indicates the current subscription status (check &#39;subscribe&#39; parameter).</p>
             </td>
           </tr>
           <tr>
-            <td>volatile</td>
+            <td>returnValue</td>
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates whether to initialize with the factory default value when resetting the system (device is rebooted).</p>
+              <p>Indicates status of method execution.</p>
+              <p>Possible values are:</p>
               <ul>
-                <li>true: Initialized with the factory default value</li>
-                <li>false: Not initialized with the factory default value</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. Check the method&#39;s &#39;Error Codes&#39; section for failure details (errorCode and/or errorText).</li>
               </ul>
             </td>
           </tr>
           <tr>
-            <td>ui</td>
-            <td>Required</td>
-            <td>Object: <a href="#object-ui">ui</a></td>
-            <td>
-              <p>Object for&nbsp;UI information containing&nbsp;active and&nbsp;visible flags as property.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>vtype</td>
+            <td>method</td>
             <td>Required</td>
             <td>String</td>
             <td>
-              <p>Type of <strong>values</strong> object. One of the following value will be returned:&nbsp;array, arrayExt, range, callback, file</p>
+              <p>Method name. It&nbsp;is used to clarify&nbsp;which method is called from the many responses&nbsp;returned from batch.</p>
             </td>
           </tr>
           <tr>
-            <td>values</td>
-            <td>Required</td>
-            <td>Object: <a href="#object-values">values</a></td>
+            <td>results</td>
+            <td>Optional</td>
+            <td>Object array: <a href="#object-result">result</a></td>
             <td>
-              <p>The valid range of the setting value. The properties of the <strong>values</strong> are determined according&nbsp;to <strong>vtype</strong>.</p>
+              <p>For each key parameter returns a result object</p>
             </td>
           </tr>
           <tr>
@@ -1160,34 +914,6 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>String</td>
             <td>
               <p>If the result setting is app specific value, app&nbsp;ID will be returned.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>returnValue</td>
-            <td>Required</td>
-            <td>Boolean</td>
-            <td>
-              <p>Indicates whether the execution succeeded.</p>
-              <ul>
-                <li><strong>true</strong>: Success</li>
-                <li><strong>false</strong>: Failure</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Describes the error. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.&nbsp;See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;for more details.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>subscribed</td>
-            <td>Optional</td>
-            <td>Boolean</td>
-            <td>
-              <p>Indicates the current subscription status.</p>
             </td>
           </tr>
         </tbody>
@@ -1212,65 +938,48 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </th>
           </tr>
           <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates whether the execution succeeded.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>true: Successful.</li>
+                <li>false: Not successful. For details, see the &#39;Error Codes&#39; table.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>method</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Method name. It&nbsp;is used to clarify&nbsp;which method is called from the many responses&nbsp;returned from batch.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>app_id</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>If the result setting is app specific value, app&nbsp;ID will be returned.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>values</td>
+            <td>Required</td>
+            <td>Object: <a href="#object-values">values</a></td>
+            <td>
+              <p>The valid range of the setting value. The properties of the&nbsp;<strong>values</strong>&nbsp;are determined according&nbsp;to&nbsp;<strong>vtype</strong>.</p>
+            </td>
+          </tr>
+          <tr>
             <td>category</td>
             <td>Required</td>
             <td>String</td>
             <td>
-              <p>Category of settings.&nbsp;It is same with the value specified&nbsp;in&nbsp;<strong>category</strong>&nbsp;input parameter.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>dbtype</td>
-            <td>Required</td>
-            <td>String</td>
-            <td>
-              <p>Database type. One of the following values will be returned.</p>
-              <ul>
-                <li>&quot;G&quot; : Global type</li>
-                <li>&quot;S&quot; : PerApp type</li>
-                <li>&quot;M&quot; :&nbsp;Mixed type</li>
-                <li>&quot;E&quot; :&nbsp;ExceptionApp type</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>dimension</td>
-            <td>Required</td>
-            <td>Object: <a href="#object-dimension">dimension</a></td>
-            <td>
-              <p>In case there is a dimension property in settings category, it returns the corresponding value.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>key</td>
-            <td>Required</td>
-            <td>String</td>
-            <td>
-              <p>Requested key</p>
-            </td>
-          </tr>
-          <tr>
-            <td>valueCheck</td>
-            <td>Required</td>
-            <td>Boolean</td>
-            <td>
-              <p>Indicates whether&nbsp;the validation check for the settings values is performed.</p>
-              <ul>
-                <li>true: The validation check is performed</li>
-                <li>false: The validation check is not performed</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>volatile</td>
-            <td>Required</td>
-            <td>Boolean</td>
-            <td>
-              <p>Indicates whether to initialize with the factory default value when resetting the system (device is rebooted).</p>
-              <ul>
-                <li>true: Initialized with the factory default value</li>
-                <li>false: Not initialized with the factory default value</li>
-              </ul>
+              <p>Category of settings</p>
             </td>
           </tr>
           <tr>
@@ -1286,31 +995,80 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>String</td>
             <td>
-              <p>Type of&nbsp;<strong>values</strong>&nbsp;object. One of the following value will be returned:&nbsp;array, arrayExt, range, callback, file</p>
+              <p>Type of values object.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>array</li>
+                <li>arrayExt</li>
+                <li>range</li>
+                <li>callback</li>
+                <li>file</li>
+              </ul>
             </td>
           </tr>
           <tr>
-            <td>values</td>
-            <td>Required</td>
-            <td>Object: <a href="#object-values">values</a></td>
-            <td>
-              <p>The valid range of the setting value. The properties of the&nbsp;<strong>values</strong>&nbsp;are determined according&nbsp;to&nbsp;<strong>vtype</strong>.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Describes the error. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.&nbsp;See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;for more details.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>returnValue</td>
+            <td>volatile</td>
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates whether the execution succeeded.</p>
+              <p>Indicates whether to initialize with the factory default value when resetting the system (device is rebooted).​</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>true:&nbsp;Initialized with the factory default value.</li>
+                <li>false:&nbsp;Not initialized with the factory default value.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>key</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Dimension value from the dimension property in settings category (is available).</p>
+            </td>
+          </tr>
+          <tr>
+            <td>dimension</td>
+            <td>Required</td>
+            <td>String array</td>
+            <td>
+              <p>Dimension value from the dimension property in settings category (is available).</p>
+            </td>
+          </tr>
+          <tr>
+            <td>caller</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the identifier of the service requesting to query or modify the system settings.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>dbtype</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Database type.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>G:&nbsp;Global type</li>
+                <li>S:&nbsp;PerApp type</li>
+                <li>M:&nbsp;Mixed type</li>
+                <li>E:&nbsp;ExceptionApp type</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>valueCheck</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates whether&nbsp;the validation check for the settings values is performed.​</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>true:&nbsp;Validation check is performed.</li>
+                <li>false:&nbsp;Validation check is not performed.</li>
+              </ul>
             </td>
           </tr>
         </tbody>
@@ -1343,52 +1101,46 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5px;"><b>Example code</b></p>
+      <p style="color:white;margin:5px;"><b>Example scenario</b></p>
     </div>
     <div class="code-bg-grey">
-      <p>Run luna-send command:</p>
-      <p># luna-send -n 1 luna://com.webos.service.settings/getSystemSettingDesc &#39;{&quot;category&quot;:&quot;picture&quot;, &quot;keys&quot;:[&quot;brightness&quot;]}&#39; -f</p>
-      <p>&nbsp;</p>
-      <p>Example response for a successful call:</p>
-      <p>{</p>
-      <p style="margin-left:40px">&quot;method&quot;: &quot;getSystemSettingDesc&quot;,</p>
-      <p style="margin-left:40px">&quot;returnValue&quot;: true,</p>
-      <p style="margin-left:40px">&quot;results&quot;: [</p>
-      <p style="margin-left:80px">{</p>
-      <p style="margin-left:120px">&quot;vtype&quot;: &quot;Range&quot;,</p>
-      <p style="margin-left:120px">&quot;dbtype&quot;: &quot;G&quot;,</p>
-      <p style="margin-left:120px">&quot;ui&quot;: {</p>
-      <p style="margin-left:160px">&quot;active&quot;: true,</p>
-      <p style="margin-left:160px">&quot;displayName&quot;: &quot;brightness&quot;,</p>
-      <p style="margin-left:160px">&quot;visible&quot;: true,</p>
-      <p style="margin-left:160px">&quot;widget&quot;: &quot;None&quot;</p>
-      <p style="margin-left:120px">},</p>
-      <p style="margin-left:120px">&quot;values&quot;: {</p>
-      <p style="margin-left:160px">&quot;range&quot;: {</p>
-      <p style="margin-left:200px">&quot;interval&quot;: 1,</p>
-      <p style="margin-left:200px">&quot;max&quot;: 100,</p>
-      <p style="margin-left:200px">&quot;min&quot;: 0</p>
-      <p style="margin-left:160px">}</p>
-      <p style="margin-left:120px">},</p>
-      <p style="margin-left:120px">&quot;volatile&quot;: false,</p>
-      <p style="margin-left:120px">&quot;valueCheck&quot;: true,</p>
-      <p style="margin-left:120px">&quot;category&quot;: &quot;picture&quot;,</p>
-      <p style="margin-left:120px">&quot;dimension&quot;: [</p>
-      <p style="margin-left:160px">&quot;input&quot;,</p>
-      <p style="margin-left:160px">&quot;pictureMode&quot;,</p>
-      <p style="margin-left:160px">&quot;_3dStatus&quot;</p>
-      <p style="margin-left:120px">],</p>
-      <p style="margin-left:120px">&quot;key&quot;: &quot;brightness&quot;</p>
-      <p style="margin-left:80px">}</p>
-      <p style="margin-left:40px">]</p>
-      <p>}</p>
-      <p>&nbsp;</p>
-      <p>Example response for a failed call:</p>
-      <p>{</p>
-      <p style="margin-left:40px">&quot;error&quot;: &quot;no result in DB&quot;,</p>
-      <p style="margin-left:40px">&quot;method&quot;: &quot;getSystemSettingDesc&quot;,</p>
-      <p style="margin-left:40px">&quot;returnValue&quot;: false</p>
-      <p>}</p>
+      <p># luna-send -n 1 -f luna://com.webos.service.settings/getSystemSettingDesc &#39;{&quot;category&quot;:&quot;picture&quot;, &quot;keys&quot;:[&quot;brightness&quot;]}&#39;</p>
+      <p>Response: For successful call</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;subscribed&quot;: false,<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp; &nbsp; &quot;results&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;valueTypeCheck&quot;: false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;category&quot;: &quot;picture&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;values&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;range&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;max&quot;: 100,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;min&quot;: 0,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;interval&quot;: 1<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;valueCheck&quot;: true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;ui&quot;: {<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;displayName&quot;: &quot;brightness&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;visible&quot;: true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;active&quot;: true,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;widget&quot;: &quot;None&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;vtype&quot;: &quot;Range&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;volatile&quot;: false,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;dbtype&quot;: &quot;G&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;key&quot;: &quot;brightness&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;dimension&quot;: [<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;input&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;pictureMode&quot;,<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;_3dStatus&quot;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+        &nbsp; &nbsp; ],<br />
+        &nbsp; &nbsp; &quot;method&quot;: &quot;getSystemSettingDesc&quot;<br />
+        }
+      </p>
     </div>
   </div>
   <h3 id="getsystemsettingfactoryvalue">getSystemSettingFactoryValue</h3>
@@ -1455,7 +1207,8 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>String array</td>
             <td>
-              <p>Keys to be retrieved. One of&nbsp;<strong>keys</strong>&nbsp;and&nbsp;<strong>key</strong>&nbsp;should be specified.</p>
+              <p>Keys to be retrieved.</p>
+              <p><strong>Note: </strong>Either one of <strong>keys</strong>&nbsp;and&nbsp;<strong>key</strong>&nbsp;must be provided.</p>
             </td>
           </tr>
           <tr>
@@ -1463,7 +1216,8 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>A key&nbsp;to be retrieved. In case there is one key to be retrieved, directly input the strings.&nbsp;One of&nbsp;<strong>keys</strong>&nbsp;and&nbsp;<strong>key</strong>&nbsp;should be specified.</p>
+              <p>A key&nbsp;to be retrieved. In case there is one key to be retrieved, directly input the strings.&nbsp;</p>
+              <p><strong>Note: </strong>Either one of <strong>keys</strong>&nbsp;and&nbsp;<strong>key</strong>&nbsp;must be provided.</p>
             </td>
           </tr>
           <tr>
@@ -1501,18 +1255,11 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Boolean</td>
             <td>
               <p>Indicates whether the execution succeeded.</p>
+              <p>Possible values are:</p>
               <ul>
-                <li><strong>true</strong>: Success</li>
-                <li><strong>false</strong>: Failure</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. Check the method&#39;s &#39;Error Codes&#39; section for failure details (errorCode and/or errorText).</li>
               </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Describes the error. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.&nbsp;See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;for more details.</p>
             </td>
           </tr>
           <tr>
@@ -3699,7 +3446,16 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>String</td>
             <td>
-              <p>Type of <strong>values</strong> object. One of the following value will be returned: Array, ArrayExt, Range, Callback, File, Date</p>
+              <p>Type of <strong>values</strong> object.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>Array</li>
+                <li>ArrayExt</li>
+                <li>Range</li>
+                <li>Callback</li>
+                <li>File</li>
+                <li>Date</li>
+              </ul>
             </td>
           </tr>
           <tr>
@@ -3707,7 +3463,14 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>String</td>
             <td>
-              <p>Method of settings. One of the following values can be set:&nbsp;set,&nbsp;add,&nbsp;remove,&nbsp;update.</p>
+              <p>Method of settings.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>set</li>
+                <li>add</li>
+                <li>remove</li>
+                <li>update</li>
+              </ul>
             </td>
           </tr>
         </tbody>
@@ -3733,7 +3496,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>method</td>
-            <td>Optional</td>
+            <td>Required</td>
             <td>String</td>
             <td>
               <p>Method name that is used for clarify which method is called in subscription messages.</p>
@@ -3745,18 +3508,11 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Boolean</td>
             <td>
               <p>Indicates whether the execution succeeded.</p>
+              <p>Possible values are:</p>
               <ul>
-                <li><strong>true</strong>: Success</li>
-                <li><strong>false</strong>: Failure</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. Check the method&#39;s &#39;Error Codes&#39; section for failure details (errorCode and/or errorText).</li>
               </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Describes the error. The&nbsp;method will return&nbsp;<strong>errorText</strong>&nbsp;only if it fails.&nbsp;See the&nbsp;<strong>Error Codes Reference</strong>&nbsp;for more details.</p>
             </td>
           </tr>
         </tbody>
@@ -3920,10 +3676,11 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates whether to receive the subscription message.</p>
+              <p>Indicates whether to receive the subscription message.​</p>
+              <p>Possible values are:</p>
               <ul>
-                <li>true:&nbsp;The subscribe message will be sent to self</li>
-                <li>false: The subscribe message will not be sent to self</li>
+                <li>true: Subscribe message will be sent to self.</li>
+                <li>false: Subscribe message will not be sent to self.</li>
               </ul>
             </td>
           </tr>
@@ -3932,11 +3689,11 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates whether to return the settings of the current foreground app</p>
+              <p>Indicates whether to return the settings of the current foreground app.</p>
+              <p>Possible values are:</p>
               <ul>
-                <li>true:&nbsp;the settings of the current foreground app gets returned</li>
-                <li>false: use app ID specified in the perameter app_id</li>
-                <li>default value: false</li>
+                <li>true: Settings of the current foreground app gets returned</li>
+                <li>false (Default): Use app ID specified in the parameter app_id.</li>
               </ul>
             </td>
           </tr>
@@ -3946,10 +3703,10 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Boolean</td>
             <td>
               <p>Indicates whether to set the settings of all dimensions.</p>
+              <p>Possible values are:</p>
               <ul>
-                <li>true: Set&nbsp;the settings for all dimensions</li>
-                <li>false: Set the settings for the dimension specified in the parameter dimension</li>
-                <li>default value: false</li>
+                <li>true: Set&nbsp;the settings for all dimensions.</li>
+                <li>false (Default): Set the settings for the dimension specified in the parameter dimension.</li>
               </ul>
             </td>
           </tr>
@@ -3959,9 +3716,10 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Boolean</td>
             <td>
               <p>Indicates whether to receive the subscription message.</p>
+              <p>Possible values are:</p>
               <ul>
-                <li>true:&nbsp;The subscribe message will be sent</li>
-                <li>false: The subscribe message will not be sent</li>
+                <li>true: Subscribe message will be sent.</li>
+                <li>false: Subscribe message will not be sent.</li>
               </ul>
             </td>
           </tr>
@@ -3970,11 +3728,11 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates whether to store the subscription message in DB</p>
+              <p>Indicates whether to store the subscription message in DB.</p>
+              <p>Possible values are:</p>
               <ul>
-                <li>true: Store in DB</li>
-                <li>false: Do not tore in DB.&nbsp;Only subscription&nbsp;message will be sent.</li>
-                <li>default value: true</li>
+                <li>true (Default): Store in DB.</li>
+                <li>false: Do not store in DB.&nbsp;Only subscription&nbsp;message will be sent.</li>
               </ul>
             </td>
           </tr>
@@ -4013,18 +3771,11 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Boolean</td>
             <td>
               <p>Indicates whether the execution succeeded.</p>
+              <p>Possible values are:</p>
               <ul>
-                <li><strong>true</strong>: Success</li>
-                <li><strong>false</strong>: Failure</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. Check the method&#39;s &#39;Error Codes&#39; section for failure details (errorCode and/or errorText).</li>
               </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the&nbsp;<strong>&quot;Error Codes&quot;</strong>&nbsp;section of this method for details.</p>
             </td>
           </tr>
         </tbody>
@@ -4205,8 +3956,29 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>You can use the following values:</p>
-              <p>av1, av2, pictest, comp1, comp2, comp3,&nbsp; rgb, hdmi1, hdmi2, hdmi3, hdmi4,&nbsp; hdmi1_pc, hdmi2_pc, hdmi3_pc, hdmi4_pc, movie, photo, default, scart</p>
+              <p>Indicates the input value.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>av1</li>
+                <li>av2</li>
+                <li>pictest</li>
+                <li>comp1</li>
+                <li>comp2</li>
+                <li>comp3</li>
+                <li>rgb</li>
+                <li>hdmi1</li>
+                <li>hdmi2</li>
+                <li>hdmi3</li>
+                <li>hdmi4</li>
+                <li>hdmi1_pc</li>
+                <li>hdmi2_pc</li>
+                <li>hdmi3_pc</li>
+                <li>hdmi4_pc</li>
+                <li>movie</li>
+                <li>photo</li>
+                <li>default</li>
+                <li>scart</li>
+              </ul>
             </td>
           </tr>
           <tr>
@@ -4214,8 +3986,12 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>You can use the following values:</p>
-              <p>2dto3d, 3d</p>
+              <p>Indicates the 3D pattern.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>2dto3d</li>
+                <li>3d</li>
+              </ul>
             </td>
           </tr>
           <tr>
@@ -4223,8 +3999,12 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>You can use the following values:</p>
-              <p>2d, 3d</p>
+              <p>Indicates the 3D status.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>2d</li>
+                <li>3d</li>
+              </ul>
             </td>
           </tr>
           <tr>
@@ -4232,8 +4012,18 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>You can use the following values:</p>
-              <p>vivid, normal, eco, cinema, game, sports, expert1, expert2</p>
+              <p>Indicates the picture mode.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>vivid</li>
+                <li>normal</li>
+                <li>eco</li>
+                <li>cinema</li>
+                <li>game</li>
+                <li>sports</li>
+                <li>expert1</li>
+                <li>expert2</li>
+              </ul>
             </td>
           </tr>
           <tr>
@@ -4241,8 +4031,16 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>You can use the following values:</p>
-              <p>standard, sports, cinema, extreme, manual, auto</p>
+              <p>Indicates the 3D mode.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>standard</li>
+                <li>sports</li>
+                <li>cinema</li>
+                <li>extreme</li>
+                <li>manual</li>
+                <li>auto</li>
+              </ul>
             </td>
           </tr>
         </tbody>
@@ -4305,6 +4103,127 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       </table>
     </div>
   </div>
+  <h3 id="object-result">result</h3>
+  <div>
+    <p>Provides result info.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>category</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Category of settings</p>
+            </td>
+          </tr>
+          <tr>
+            <td>dbtype</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Database type.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>G: Global type</li>
+                <li>S: PerApp type</li>
+                <li>M: Mixed type</li>
+                <li>E: ExceptionApp type</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>dimension</td>
+            <td>Required</td>
+            <td>String array</td>
+            <td>
+              <p>Dimension value from the dimension property in settings category (is available).</p>
+            </td>
+          </tr>
+          <tr>
+            <td>key</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Requested key.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>valueCheck</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates whether&nbsp;the validation check for the settings values is performed.​</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>true: Validation check is performed.</li>
+                <li>false: Validation check is not performed.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>volatile</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates whether to initialize with the factory default value when resetting the system (device is rebooted).​</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>true: Initialized with the factory default value.</li>
+                <li>false: Not initialized with the factory default value.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>ui</td>
+            <td>Required</td>
+            <td>Object: <a href="#object-ui">ui</a></td>
+            <td>
+              <p>Object for&nbsp;UI information containing&nbsp;active and&nbsp;visible flags as property.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>vtype</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Type of values object.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>array</li>
+                <li>arrayExt</li>
+                <li>range</li>
+                <li>callback</li>
+                <li>file</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>values</td>
+            <td>Required</td>
+            <td>Object: <a href="#object-values">values</a></td>
+            <td>
+              <p>The valid range of the setting value. The properties of the&nbsp;<strong>values</strong>&nbsp;are determined according&nbsp;to&nbsp;<strong>vtype</strong>.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
   <h3 id="object-settings">settings</h3>
   <div>
     <p>It is the Object that has the setting property. No specific format to follow.</p>
@@ -4359,7 +4278,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
   </div>
   <h3 id="object-ui">ui</h3>
   <div>
-    <p>It is the object to be referred to when creating user UI like Settings App.</p>
+    <p>UI settings when creating user UI like Settings app.</p>
     <div class="table-container">
       <table class="table is-bordered is-fullwidth">
         <tbody>
@@ -4382,7 +4301,12 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>If it&#39;s True, users can make a change.</p>
+              <p>Indicates whether users can make a change.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>true: Users can make a change.</li>
+                <li>false: Users cannot make a change.</li>
+              </ul>
             </td>
           </tr>
           <tr>
@@ -4390,7 +4314,12 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>If it&#39;s true, the menu that users can select is displayed.</p>
+              <p>Indicates the menu visibility status.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>true: Menu that users can select is displayed.</li>
+                <li>false: Menu that users can select is  not displayed.</li>
+              </ul>
             </td>
           </tr>
           <tr>
@@ -4398,7 +4327,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>String</td>
             <td>
-              <p>The name of Settings menu that is displayed to users.</p>
+              <p>Name of Settings menu that is displayed to users.</p>
             </td>
           </tr>
           <tr>

@@ -1,7 +1,7 @@
 ---
 title: com.webos.service.systemservice
-date: 2024-10-30
-api_level: 30
+date: 2025-02-20
+api_level: 32
 weight: 310
 toc: true
 ---
@@ -214,15 +214,15 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     <p>The dump files are saved into the directory specified by the <strong>temp_dir</strong> parameter or <strong>&#39;${localstatedir}/preferences&#39;</strong>.</p>
     <p>The list of the platform-specific settings that are saved in the dump file is specified in the <strong>sysservice-backupkeys.json</strong> file. Below is an example of this file:</p>
     <div class="code-bg-grey">
-      <p>[<br />
-        &nbsp;&nbsp; &nbsp;&quot;useNetworkTime&quot;,<br />
-        &nbsp;&nbsp; &nbsp;&quot;useNetworkTimeZone&quot;,<br />
-        &nbsp;&nbsp; &nbsp;&quot;timeZone&quot;,<br />
-        &nbsp;&nbsp; &nbsp;&quot;timeChangeLaunch&quot;,<br />
-        &nbsp;&nbsp; &nbsp;&quot;showcontactmatch&quot;,<br />
-        &nbsp; &nbsp; &quot;x_webos_virtualkeyboard_prefs&quot;<br />
-        ]
-      </p>
+    <p>[<br />
+      &nbsp;&nbsp; &nbsp;&quot;useNetworkTime&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&quot;useNetworkTimeZone&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&quot;timeZone&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&quot;timeChangeLaunch&quot;,<br />
+      &nbsp;&nbsp; &nbsp;&quot;showcontactmatch&quot;,<br />
+      &nbsp; &nbsp; &quot;x_webos_virtualkeyboard_prefs&quot;<br />
+      ]
+    </p>
     </div>
     <p>If any of the method parameters is not specified or specified incorrectly, the method will use the default values.</p>
     <p>This method is internal, only system applications can use it. It is not available to third-party applications.</p>
@@ -1870,7 +1870,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <div class="code-bg-grey">
       <p># luna-send -n 1 -f luna://com.webos.service.systemservice/ringtone/addRingtone &#39;{&quot;filePath&quot;: &quot;/usr/palm/sounds/ringtone.mp3&quot; }&#39;</p>
-      <p>Response:</p>
+      <p>Response: For successful call</p>
       <p>{<br />
         &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
         }
@@ -1999,7 +1999,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     <div class="code-bg-grey">
       <p>// The ringtone file must be present in&nbsp;&quot;/media/internal/ringtones/&quot;</p>
       <p># luna-send -n 1 -f luna://com.webos.service.systemservice/ringtone/deleteRingtone &#39;{&quot;filePath&quot;: &quot;/media/internal/ringtones/ringtone.mp3&quot; }&#39;</p>
-      <p>Response:</p>
+      <p>Response: For successful call</p>
       <p>{<br />
         &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
         }
@@ -2655,8 +2655,8 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>String</td>
             <td>
-              <p>The requested locale code. For example: &quot;en&quot; - English, &quot;de&quot; - German, &quot;ko&quot; - Korean.</p>
-              <p>If the wrong locale code is specified, the method will return the default time zone locale data.</p>
+              <p>Requested locale code. For example: &quot;en&quot; - English, &quot;de&quot; - German, &quot;ko&quot; - Korean.</p>
+              <p><strong>Note: </strong>If an invalid locale code is specified, the method returns default time zone locale data.</p>
             </td>
           </tr>
         </tbody>
@@ -2682,10 +2682,10 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>timeZone</td>
-            <td>Optional</td>
-            <td>String</td>
+            <td>Required</td>
+            <td>Object: <a href="#object-timezone">TimeZone</a></td>
             <td>
-              <p>The timezone matching the given parameters.</p>
+              <p>Timezone matching the given parameters.</p>
             </td>
           </tr>
           <tr>
@@ -2693,19 +2693,12 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <p>Indicates the status of operation.</p>
+              <p>Possible values are:</p>
               <ul>
-                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the &quot;errorText&quot; field&nbsp;for details</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. For details, see the &#39;Error Codes&#39; table.</li>
               </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
             </td>
           </tr>
         </tbody>
@@ -2738,7 +2731,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5px;"><b>Example code</b></p>
+      <p style="color:white;margin:5px;"><b>Example</b></p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -n 1 -f luna://com.webos.service.systemservice/time/getCurrentTimeZoneByLocale &#39;{&quot;locale&quot;:&quot;ko&quot;}&#39;</p>
@@ -5047,7 +5040,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
   <h3 id="wallpaper-convert">wallpaper/convert</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>systemsettings.management</b></span></div>
-    <div style="text-align: right;display: inline-block;float:right;"><span style="background: #FF4444;padding: 5px; width: 100px; text-align: center;color:#FBFBFB;margin-right: 5px;">Retired</span></div>
+    <div style="float:right;"><span style="background: #FF4444;padding: 5px; width: 100px; text-align: center;color:#FBFBFB;margin-right: 5px;">Retired</span></div>
     <div>
       <ul>
         <li>Added: <strong><code>API level 11</code></strong></li>
@@ -5291,7 +5284,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
   <h3 id="wallpaper-deletewallpaper">wallpaper/deleteWallpaper</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>systemsettings.management</b></span></div>
-    <div style="text-align: right;display: inline-block;float:right;"><span style="background: #FF4444;padding: 5px; width: 100px; text-align: center;color:#FBFBFB;margin-right: 5px;">Retired</span></div>
+    <div style="float:right;"><span style="background: #FF4444;padding: 5px; width: 100px; text-align: center;color:#FBFBFB;margin-right: 5px;">Retired</span></div>
     <div>
       <ul>
         <li>Added: <strong><code>API level 11</code></strong></li>
@@ -5460,7 +5453,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
   <h3 id="wallpaper-importwallpaper">wallpaper/importWallpaper</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>systemsettings.management</b></span></div>
-    <div style="text-align: right;display: inline-block;float:right;"><span style="background: #FF4444;padding: 5px; width: 100px; text-align: center;color:#FBFBFB;margin-right: 5px;">Retired</span></div>
+    <div style="float:right;"><span style="background: #FF4444;padding: 5px; width: 100px; text-align: center;color:#FBFBFB;margin-right: 5px;">Retired</span></div>
     <div>
       <ul>
         <li>Added: <strong><code>API level 11</code></strong></li>
@@ -5742,7 +5735,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
   <h3 id="wallpaper-info">wallpaper/info</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>systemsettings.management</b></span></div>
-    <div style="text-align: right;display: inline-block;float:right;"><span style="background: #FF4444;padding: 5px; width: 100px; text-align: center;color:#FBFBFB;margin-right: 5px;">Retired</span></div>
+    <div style="float:right;"><span style="background: #FF4444;padding: 5px; width: 100px; text-align: center;color:#FBFBFB;margin-right: 5px;">Retired</span></div>
     <div>
       <ul>
         <li>Added: <strong><code>API level 11</code></strong></li>
@@ -5905,7 +5898,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
   <h3 id="wallpaper-refresh">wallpaper/refresh</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>systemsettings.management</b></span></div>
-    <div style="text-align: right;display: inline-block;float:right;"><span style="background: #FF4444;padding: 5px; width: 100px; text-align: center;color:#FBFBFB;margin-right: 5px;">Retired</span></div>
+    <div style="float:right;"><span style="background: #FF4444;padding: 5px; width: 100px; text-align: center;color:#FBFBFB;margin-right: 5px;">Retired</span></div>
     <div>
       <ul>
         <li>Added: <strong><code>API level 11</code></strong></li>
@@ -6260,6 +6253,99 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       </table>
     </div>
   </div>
+  <h3 id="object-timezone">TimeZone</h3>
+  <div>
+    <p>Provide a detailed information about an area which observed a uniform standard time.</p>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th>
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>Country</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Country information.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>Description</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Timezone description.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>offsetFromUTC</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>Difference in hours and minutes between a particular time zone and UTC.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>supportDST</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>Information about the support for Daylight Saving Time.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>CountryCode</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Information about the country code.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>City</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Information about the city.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>ZoneID</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Unique identifier string that specifies a particular time zone.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>preferred</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Flag to show if it is the suggested time zone.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>true: Preferred</li>
+                <li>false: Not preferred</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
   <h3 id="object-timezoneeasrule">TimeZoneEasRule</h3>
   <div>
     <p>Provides details of structure for creating a timezone rule.</p>
@@ -6274,8 +6360,8 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         &nbsp;&nbsp;&nbsp;&nbsp;&quot;dayOfWeek&quot;: 0,<br />
         &nbsp;&nbsp;&nbsp;&nbsp;&quot;week&quot;: 3,<br />
         &nbsp;&nbsp;&nbsp;&nbsp;&quot;hour&quot;: 2<br />
-        }
-      </p>
+      }
+    </p>
     </div>
     <div class="table-container">
       <table class="table is-bordered is-fullwidth">

@@ -1,7 +1,7 @@
 ---
 title: com.webos.media
-date: 2024-10-30
-api_level: 30
+date: 2025-02-20
+api_level: 32
 weight: 30
 toc: true
 ---
@@ -2098,7 +2098,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
   <h3 id="registermedia">registerMedia</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>media.operation</b></span></div>
-    <div style="text-align: right;display: inline-block;float:right;"><span style="background: #FF4444;padding: 5px; width: 100px; text-align: center;color:#FBFBFB;margin-right: 5px;">Retired</span></div>
+    <div style="float:right;"><span style="background: #FF4444;padding: 5px; width: 100px; text-align: center;color:#FBFBFB;margin-right: 5px;">Retired</span></div>
     <div>
       <ul>
         <li>Added: <strong><code>API level 11</code></strong></li>
@@ -2268,6 +2268,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>String</td>
             <td>
               <p>Application ID</p>
+              <p><strong>Note : </strong>appId is required parameter for signage.</p>
             </td>
           </tr>
         </tbody>
@@ -3014,6 +3015,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
                 <li><strong>true</strong>:&nbsp;Include audio data along with video</li>
                 <li><strong>false: </strong>Does not include audio data along with video</li>
               </ul>
+              <p><strong>Note:&nbsp;</strong>For Signage, record with audio is not supported.</p>
             </td>
           </tr>
           <tr>
@@ -4522,8 +4524,8 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p dir="auto">Codec information.</p>
-              <p dir="auto">Default: <strong>AAC</strong></p>
+              <p>Codec information.</p>
+              <p>Default: <strong>AAC</strong></p>
             </td>
           </tr>
           <tr>
@@ -4531,8 +4533,8 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>Number</td>
             <td>
-              <p dir="auto">Sample rate value of content.</p>
-              <p dir="auto">Default: <strong>44100</strong></p>
+              <p>Sample rate value of content.</p>
+              <p>Default: <strong>44100</strong></p>
             </td>
           </tr>
           <tr>
@@ -4540,8 +4542,8 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>Number</td>
             <td>
-              <p dir="auto">Channel count value of content.</p>
-              <p dir="auto">Default: <strong>2</strong></p>
+              <p>Channel count value of content.</p>
+              <p>Default: <strong>2</strong></p>
             </td>
           </tr>
           <tr>
@@ -4718,9 +4720,9 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>String</td>
             <td>
-              <p dir="auto">Unique ID of the media record pipeline.</p>
-              <p dir="auto"><strong>Note:</strong></p>
-              <ul dir="ltr">
+              <p>Unique ID of the media record pipeline.</p>
+              <p><strong>Note:</strong></p>
+              <ul>
                 <li>ID&nbsp;can be obtained using the com.webos.media/load() API.</li>
               </ul>
             </td>
@@ -4730,8 +4732,8 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p dir="auto">Codec information.</p>
-              <p dir="auto">Default: <strong>JPEG</strong></p>
+              <p>Codec information.</p>
+              <p>Default: <strong>JPEG</strong></p>
             </td>
           </tr>
           <tr>
@@ -4865,6 +4867,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>String</td>
             <td>
               <p>Indicates the application id.</p>
+              <p><strong>Note</strong> : Optional&nbsp; parameter for Signage</p>
             </td>
           </tr>
           <tr>
@@ -4875,6 +4878,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Indicates the windowId&nbsp;attached to the video sink.&nbsp;</p>
               <p>The value should be specified&nbsp;in the format: &quot;_Window_Id_X&quot; (X is number).</p>
               <p><strong>Note: </strong>The&nbsp;value should be given by the surface manager before the <strong>load</strong>&nbsp;API is called.</p>
+              <p><strong>Note:&nbsp;</strong>Optional Parameter for Signage.</p>
             </td>
           </tr>
           <tr>
@@ -4950,50 +4954,12 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </td>
           </tr>
           <tr>
-            <td>memType</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the type of access with camera device.</p>
-              <p>Possible values are:</p>
-              <ul>
-                <li>device</li>
-                <li>shmem</li>
-                <li>posixshm</li>
-              </ul>
-              <p><strong>Note:</strong> This is required when the <strong>load</strong> API&nbsp;is used for the camera.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>memSrc</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the source of the camera data.</p>
-              <p>Possible value: Device node like&nbsp; &quot;/dev/video0&quot; /&nbsp; shared memory key &quot;7010&quot; ( which is returned by camera service ).</p>
-              <p><strong>Note:</strong> This is required when the&nbsp;<strong>load </strong>API&nbsp;is used for the camera.</p>
-            </td>
-          </tr>
-          <tr>
             <td>handle</td>
             <td>Optional</td>
             <td>Number</td>
             <td>
-              <p>Indicates the handle for the device obtained using&nbsp;the&nbsp;open() API of camera service. This parameter is&nbsp;required only when&nbsp;&quot;memType&quot; is &quot;posixshm&quot; for camera functionality.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>iomode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>Represents the memory mode value which are defined using an enum like mmap,&nbsp;user pointer &amp; dma buffer, when&nbsp;&quot;memType&quot; is&nbsp;&quot;device&quot;&nbsp;for camera functionality.</p>
-              <p>Possible values are:</p>
-              <ul>
-                <li>0 - mmap (default mode)</li>
-                <li>1 - user pointer (not supported)</li>
-                <li>2 - dma buffer</li>
-              </ul>
+              <p>Indicates the handle for the device obtained using&nbsp;the&nbsp;open() API of camera service.</p>
+              <p>Required if the &#39;uri&#39; is &#39;camera://com.webos.service.camera2/7010&#39;.</p>
             </td>
           </tr>
           <tr>
@@ -5037,17 +5003,17 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p dir="auto">Indicates the location and file name&nbsp;where the recored files and&nbsp;snapshot images are to be saved.</p>
-              <p dir="auto">For location, You can specify the path parameter for recording with &quot;com.webo.service.mediarecorder/setOutputFile&quot; and for taking a snapshot with &quot;com.webos.service.mediarecorder/takeSnapshot&quot;.</p>
-              <p dir="auto">By default, recorded files and&nbsp;snapshot images&nbsp;are saved in the /media/internal/ folder.</p>
+              <p>Indicates the location and file name&nbsp;where the recored files and&nbsp;snapshot images are to be saved.</p>
+              <p>For location, You can specify the path parameter for recording with &quot;com.webo.service.mediarecorder/setOutputFile&quot; and for taking a snapshot with &quot;com.webos.service.mediarecorder/takeSnapshot&quot;.</p>
+              <p>By default, recorded files and&nbsp;snapshot images&nbsp;are saved in the /media/internal/ folder.</p>
               <p>Possible values are:</p>
               <ul>
                 <li>/media/internal/</li>
                 <li>/tmp/</li>
               </ul>
-              <p dir="auto">The default file name is of the format RecordDDMMYYYY-HHMMSS, where DDMMYYYY-HHMMSS is current date and time.</p>
-              <p dir="auto">Example: /media/internal/Record03122023-17171504.mp4,&nbsp;/media/internal/Capture03122023-17173792.jpeg</p>
-              <p dir="auto"><strong>Note:&nbsp;</strong>Applications are&nbsp;advised not to use this parameter.</p>
+              <p>The default file name is of the format RecordDDMMYYYY-HHMMSS, where DDMMYYYY-HHMMSS is current date and time.</p>
+              <p>Example: /media/internal/Record03122023-17171504.mp4,&nbsp;/media/internal/Capture03122023-17173792.jpeg</p>
+              <p><strong>Note:&nbsp;</strong>Applications are&nbsp;advised not to use this parameter.</p>
             </td>
           </tr>
         </tbody>
@@ -5467,8 +5433,8 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>String</td>
             <td>
-              <p dir="auto">Unique ID of the media record pipeline.</p>
-              <p dir="auto"><strong>Note:</strong></p>
+              <p>Unique ID of the media record pipeline.</p>
+              <p><strong>Note:</strong></p>
               <ul>
                 <li>ID&nbsp;can be obtained using the com.webos.media/load() API.</li>
               </ul>
@@ -5497,8 +5463,8 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p dir="auto">Codec information.</p>
-              <p dir="auto">Default: <strong>H264</strong></p>
+              <p>Codec information.</p>
+              <p>Default: <strong>H264</strong></p>
             </td>
           </tr>
           <tr>
@@ -5589,9 +5555,9 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
 </div>
 <h2 id="signals-events">Signals/Events</h2>
 <div>
-  <h3 id="signal-event-acquirecomplete-nbsp-">acquireComplete&nbsp;</h3>
+  <h3 id="sig-evt-acquirecomplete-nbsp-">acquireComplete&nbsp;</h3>
   <div>
-    <p style="text-align:justify"><span style="color:#000000">The&nbsp;<strong>acquireCompete</strong>&nbsp;event is invoked when the acquire request is performed and the result comes out.</span></p>
+    <p style="text-align:justify"><span style="color:#000000">This event is invoked when the acquire request is performed and the result comes out.</span></p>
     <h4>Call Returns</h4>
     <div class="table-container">
       <table class="table is-bordered is-fullwidth">
@@ -5642,7 +5608,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       </table>
     </div>
   </div>
-  <h3 id="signal-event-audioinfo">audioInfo</h3>
+  <h3 id="sig-evt-audioinfo">audioInfo</h3>
   <div>
     <p><span style="color:rgb(102, 102, 102)">The</span>&nbsp;<strong>audioInfo</strong>&nbsp;<span style="color:rgb(102, 102, 102)">event provides information related to audio.</span></p>
     <h4>Call Returns</h4>
@@ -5675,7 +5641,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       </table>
     </div>
   </div>
-  <h3 id="signal-event-bufferrange">bufferRange</h3>
+  <h3 id="sig-evt-bufferrange">bufferRange</h3>
   <div>
     <p>Indicates the buffering range of the particular media content. It is raised multiple times when specific media is loaded.</p>
     <h4>Call Returns</h4>
@@ -5732,7 +5698,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       </table>
     </div>
   </div>
-  <h3 id="signal-event-bufferingend">bufferingEnd</h3>
+  <h3 id="sig-evt-bufferingend">bufferingEnd</h3>
   <div>
     <p>Indicates the pipeline is resuming playback after filling buffers.</p>
     <h4>Call Returns</h4>
@@ -5765,7 +5731,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       </table>
     </div>
   </div>
-  <h3 id="signal-event-bufferingstart">bufferingStart</h3>
+  <h3 id="sig-evt-bufferingstart">bufferingStart</h3>
   <div>
     <p>Indicates the pipeline is temporarily pausing playback internally in order to buffer more data.</p>
     <h4>Call Returns</h4>
@@ -5798,7 +5764,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       </table>
     </div>
   </div>
-  <h3 id="signal-event-currenttime">currentTime</h3>
+  <h3 id="sig-evt-currenttime">currentTime</h3>
   <div>
     <p>The&nbsp;<strong>currentTime</strong>&nbsp;event is raised multiple times when a specific media is playing. It indicates the progress of the media being played and provides the current time at which the media is being played.</p>
     <h4>Call Returns</h4>
@@ -5839,7 +5805,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       </table>
     </div>
   </div>
-  <h3 id="signal-event-detached">detached</h3>
+  <h3 id="sig-evt-detached">detached</h3>
   <div>
     <p><span style="color:rgb(102, 102, 102)">The&nbsp;</span><strong>detached<span style="color:#FF0000">&nbsp;</span></strong>event is raised when a specific media has been detached from the client by another client attaching to the corresponding pipeline.&nbsp;The <strong>detached </strong>event is related to the <strong>attach </strong>command. <strong>Attach </strong>allows to transfer the control of a pipeline to be handed over to a different client. When that happens the original client gets notified that it got detached from the pipeline and is hence no longer able to control the pipeline. This feature is related to fast boot scenarios where we have a mini-app controlling media upon initial launch and the control is handed over to the real/full application once the system has started in full.&nbsp;</p>
     <h4>Call Returns</h4>
@@ -5872,7 +5838,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       </table>
     </div>
   </div>
-  <h3 id="signal-event-endofstream">endOfStream</h3>
+  <h3 id="sig-evt-endofstream">endOfStream</h3>
   <div>
     <p>The&nbsp;<strong>endOfStream</strong>&nbsp;event is raised when a specific media has received all of its data.</p>
     <h4>Call Returns</h4>
@@ -5905,7 +5871,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       </table>
     </div>
   </div>
-  <h3 id="signal-event-error">error</h3>
+  <h3 id="sig-evt-error">error</h3>
   <div>
     <p><span style="color:#000000">The&nbsp;<strong>error</strong>&nbsp;event reports errors thrown by pipelines.&nbsp;</span></p>
     <h4>Call Returns</h4>
@@ -5954,7 +5920,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       </table>
     </div>
   </div>
-  <h3 id="signal-event-loadcompleted">loadCompleted</h3>
+  <h3 id="sig-evt-loadcompleted">loadCompleted</h3>
   <div>
     <p>The&nbsp;loadCompleted<strong>&nbsp;</strong>event is raised when a specific media pipeline has been successfully loaded.</p>
     <h4>Call Returns</h4>
@@ -5987,7 +5953,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       </table>
     </div>
   </div>
-  <h3 id="signal-event-paused">paused</h3>
+  <h3 id="sig-evt-paused">paused</h3>
   <div>
     <p>The&nbsp;<strong>paused&nbsp;</strong>event is raised when a specific media has been successfully paused.</p>
     <h4>Call Returns</h4>
@@ -6020,7 +5986,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       </table>
     </div>
   </div>
-  <h3 id="signal-event-playing">playing</h3>
+  <h3 id="sig-evt-playing">playing</h3>
   <div>
     <p><span style="color:#000000">The&nbsp;<strong>playing</strong>&nbsp;event </span>is raised<span style="color:#000000">&nbsp;once, in response to the play method, when a specified media pipeline has transitioned into the playing state.&nbsp;</span></p>
     <h4>Call Returns</h4>
@@ -6053,7 +6019,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       </table>
     </div>
   </div>
-  <h3 id="signal-event-policyaction">policyAction</h3>
+  <h3 id="sig-evt-policyaction">policyAction</h3>
   <div>
     <p style="text-align:justify">The&nbsp;<strong>policyAction</strong>&nbsp;event is invoked when the resources are short of quantity to&nbsp;playing new media content and request pipeline to release regarding resource.</p>
     <h4>Call Returns</h4>
@@ -6120,7 +6086,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       </table>
     </div>
   </div>
-  <h3 id="signal-event-seekdone">seekDone</h3>
+  <h3 id="sig-evt-seekdone">seekDone</h3>
   <div>
     <p>The&nbsp;<strong>seekDone</strong>&nbsp;event is raised when a seek operation for a media has been successfully completed.</p>
     <h4>Call Returns</h4>
@@ -6153,7 +6119,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       </table>
     </div>
   </div>
-  <h3 id="signal-event-sourceinfo">sourceInfo</h3>
+  <h3 id="sig-evt-sourceinfo">sourceInfo</h3>
   <div>
     <p>The&nbsp;<strong>sourceInfo</strong>&nbsp;event provides information about&nbsp;the media that has just been loaded.</p>
     <h4>Call Returns</h4>
@@ -6186,7 +6152,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       </table>
     </div>
   </div>
-  <h3 id="signal-event-unloadcompleted">unloadCompleted</h3>
+  <h3 id="sig-evt-unloadcompleted">unloadCompleted</h3>
   <div>
     <p>The&nbsp;unloadCompleted<strong>&nbsp;</strong>event is raised when a specific media pipeline has been successfully unloaded.</p>
     <h4>Call Returns</h4>
@@ -6219,7 +6185,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       </table>
     </div>
   </div>
-  <h3 id="signal-event-videoinfo">videoInfo</h3>
+  <h3 id="sig-evt-videoinfo">videoInfo</h3>
   <div>
     <p><span style="color:rgb(102, 102, 102)">The&nbsp;</span><strong>videoInfo</strong>&nbsp;<span style="color:rgb(102, 102, 102)">event provides information related to video.</span></p>
     <h4>Call Returns</h4>

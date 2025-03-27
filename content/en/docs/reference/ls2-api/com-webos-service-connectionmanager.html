@@ -1,7 +1,7 @@
 ---
 title: com.webos.service.connectionmanager
-date: 2024-10-30
-api_level: 30
+date: 2025-02-20
+api_level: 32
 weight: 150
 toc: true
 ---
@@ -277,11 +277,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates if&nbsp;subscribed to get notified&nbsp;on changes to the status of the&nbsp;network connection.&nbsp;Possible values are:</p>
-              <ul>
-                <li><strong>true </strong>- Subscribed for changes</li>
-                <li><strong>false </strong>- Not subscribed</li>
-              </ul>
+              <p>Indicates if&nbsp;subscribed to get notified&nbsp;on changes to the status of the&nbsp;network connection (check &#39;subscribe&#39; parameter).</p>
             </td>
           </tr>
           <tr>
@@ -289,10 +285,11 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <p>Indicates the status of operation.</p>
+              <p>Possible values are:</p>
               <ul>
-                <li><strong>true </strong>- Indicates that the operation was successful.</li>
-                <li><strong>false </strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. For details, see the &#39;Error Codes&#39; table.</li>
               </ul>
             </td>
           </tr>
@@ -358,11 +355,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates if&nbsp;subscribed to get notified&nbsp;on changes to the status of the&nbsp;network connection.&nbsp;Possible values are:</p>
-              <ul>
-                <li><strong>true&nbsp;</strong>- Subscribed for changes</li>
-                <li><strong>false&nbsp;</strong>- Not subscribed</li>
-              </ul>
+              <p>Indicates if&nbsp;subscribed to get notified&nbsp;on changes to the status of the&nbsp;network connection (check &#39;subscribe&#39; parameter).</p>
             </td>
           </tr>
         </tbody>
@@ -397,12 +390,19 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Error&nbsp;because&nbsp;<strong>webos-connman-adapter</strong> was unable to communicate with the <strong>connman</strong>&nbsp;daemon.</p>
             </td>
           </tr>
+          <tr>
+            <td>9</td>
+            <td>Could not validate json message against schema</td>
+            <td>
+              <p>This message implies that there was an&nbsp;error because&nbsp;parameters passed to a method were not following the schema format.</p>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5px;"><b>Example code</b></p>
+      <p style="color:white;margin:5px;"><b>Example</b></p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -n 1 -f luna://com.webos.service.connectionmanager/getStatus &#39;{}&#39;</p>
@@ -517,10 +517,11 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <p>Indicates the status of operation.&nbsp;</p>
+              <p>Possible values are:</p>
               <ul>
-                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
-                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. For details, see the &#39;Error Codes&#39; table.</li>
               </ul>
             </td>
           </tr>
@@ -529,11 +530,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates if&nbsp;subscribed to get notified.</p>
-              <ul>
-                <li><strong>true&nbsp;</strong>- Subscribed for changes</li>
-                <li><strong>false&nbsp;</strong>- Not subscribed</li>
-              </ul>
+              <p>Indicates if&nbsp;subscribed to get notified (check &#39;subscribe&#39; parameter).</p>
             </td>
           </tr>
         </tbody>
@@ -614,12 +611,19 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>This message implies that there was an internal error&nbsp;when parsing the JSON object being prepared as a response (extremely unlikely).</p>
             </td>
           </tr>
+          <tr>
+            <td>9</td>
+            <td>Could not validate json message against schema</td>
+            <td>
+              <p>One or more of the parameters do not have the correct data type.</p>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5px;"><b>Example code</b></p>
+      <p style="color:white;margin:5px;"><b>Example</b></p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -n 1 -f luna://com.webos.service.connectionmanager/getinfo &#39;{}&#39;</p>
@@ -640,7 +644,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
   <h3 id="getstatus">getstatus</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>networkconnection.query</b></span></div>
-    <div style="text-align: right;display: inline-block;float:right;"><span style="background: #FFC966;padding: 5px; width: 100px; text-align: center;color:#333333;margin-right: 5px;">Deprecated</span></div>
+    <div style="float:right;"><span style="background: #FFC966;padding: 5px; width: 100px; text-align: center;color:#333333;margin-right: 5px;">Deprecated</span></div>
     <div>
       <ul>
         <li>Added: <strong><code>API level 23</code></strong></li>
@@ -726,8 +730,8 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Indicates the status of the operation.</p>
               <p>Possible values are:</p>
               <ul>
-                <li><strong>true: </strong>Indicates that the operation was successful.</li>
-                <li><strong>false: </strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. For details, see the &#39;Error Codes&#39; table.</li>
               </ul>
             </td>
           </tr>
@@ -736,12 +740,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates if subscribed to get the notifications.</p>
-              <p>Possible values are:</p>
-              <ul>
-                <li><strong>true</strong>: Subscribed for notifications.</li>
-                <li><strong>false</strong>: Not subscribed</li>
-              </ul>
+              <p>Indicates if subscribed to get the notifications (check &#39;subscribe&#39; parameter).</p>
             </td>
           </tr>
           <tr>
@@ -766,6 +765,14 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Object: <a href="#object-datastats">dataStats</a></td>
             <td>
               <p>Indicates the data activity for Wi-Fi interface.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>wan</td>
+            <td>Optional</td>
+            <td>Object: <a href="#object-datastats">dataStats</a></td>
+            <td>
+              <p>Indicates the data activity for Wan interface.</p>
             </td>
           </tr>
         </tbody>
@@ -839,6 +846,14 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Indicates the data activity for the Wi-Fi interface.</p>
             </td>
           </tr>
+          <tr>
+            <td>wan</td>
+            <td>Optional</td>
+            <td>Object: <a href="#object-datastats">dataStats</a></td>
+            <td>
+              <p>Indicates the data activity for Wan interface.</p>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -865,6 +880,13 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </td>
           </tr>
           <tr>
+            <td>9</td>
+            <td>Could not validate json message against schema</td>
+            <td>
+              <p>One or more of the parameters do not have the correct data type.</p>
+            </td>
+          </tr>
+          <tr>
             <td>129</td>
             <td>Subscription is mandatory</td>
             <td>
@@ -883,13 +905,10 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5px;"><b>Example code</b></p>
+      <p style="color:white;margin:5px;"><b>Example</b></p>
     </div>
     <div class="code-bg-grey">
-      <p># luna-send -i -f luna://com.webos.service.connectionmanager/monitorActivity &#39;{<br />
-        &nbsp;&nbsp; &quot;subscribe&quot;:true<br />
-        }&#39;
-      </p>
+      <p># luna-send -i -f luna://com.webos.service.connectionmanager/monitorActivity &#39;{&quot;subscribe&quot;:true}&#39;</p>
       <p>Response:</p>
       <p>{<br />
         &nbsp;&nbsp; &quot;wired&quot;:{<br />
@@ -1383,10 +1402,24 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </th>
           </tr>
           <tr>
+            <td>3</td>
+            <td>Invalid parameters</td>
+            <td>
+              <p>This message implies that there was an&nbsp;error because of invalid parameters.</p>
+            </td>
+          </tr>
+          <tr>
             <td>4</td>
             <td>Connman service unavailable</td>
             <td>
               <p>This message implies that there was an&nbsp;error&nbsp;because&nbsp;<strong>webos-connman-adapter</strong>&nbsp;was not able to communicate with the&nbsp;<strong>connman</strong>&nbsp;daemon.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td>Could not validate json message against schema</td>
+            <td>
+              <p>This message implies that there was an error because parameters passed to a method were not following the schema format.</p>
             </td>
           </tr>
           <tr>
@@ -1413,7 +1446,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5px;"><b>Example code</b></p>
+      <p style="color:white;margin:5px;"><b>Example</b></p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -n 1 -f luna://com.webos.service.connectionmanager/setTechnologyState &#39;{&quot;enabled&quot;:[&quot;wifi&quot;]}&#39;</p>
@@ -1550,6 +1583,13 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </td>
           </tr>
           <tr>
+            <td>9</td>
+            <td>Could not validate json message against schema</td>
+            <td>
+              <p>This message implies that there was an&nbsp;error because&nbsp;parameters passed to a method were not following the schema format.</p>
+            </td>
+          </tr>
+          <tr>
             <td>136</td>
             <td>No connected network</td>
             <td>
@@ -1568,7 +1608,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5px;"><b>Example code</b></p>
+      <p style="color:white;margin:5px;"><b>Example</b></p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -n 1 -f luna://com.webos.service.connectionmanager/setdns &#39;{&quot;dns&quot;:[&quot;192.45.67.128&quot;]}&#39;</p>
@@ -1613,11 +1653,14 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>String</td>
             <td>
-              <p style="text-align:left">Specifies the way the IPv4 parameter should be changed.</p>
-              <p style="text-align:left">Possible values are:&nbsp;</p>
+              <p style="text-align:left">Specifies the way the IPv4 parameter should be changed.<br />
+                <br />
+                <strong>Note:&nbsp;</strong>If method is set as &quot;manual&quot;, Any other optional parameter&nbsp;is mandatory.
+              </p>
+              <p>Possible values are:</p>
               <ul>
-                <li style="text-align:left">dhcp&nbsp;</li>
-                <li style="text-align:left">manual</li>
+                <li>dhcp&nbsp;</li>
+                <li>manual</li>
               </ul>
             </td>
           </tr>
@@ -1721,6 +1764,13 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </td>
           </tr>
           <tr>
+            <td>2</td>
+            <td>Malformed json</td>
+            <td>
+              <p>Unable to parse the json schema</p>
+            </td>
+          </tr>
+          <tr>
             <td>3</td>
             <td>Invalid parameters</td>
             <td>
@@ -1732,6 +1782,13 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Connman service unavailable</td>
             <td>
               <p>This message implies that there was an&nbsp;error&nbsp;because <strong>webos-connman-adapter</strong> was not able to talk to the <strong>connman</strong> daemon.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td>Could not validate json message against schema</td>
+            <td>
+              <p>This message implies that there was an&nbsp;error because&nbsp;parameters passed to a method were not following the schema format.</p>
             </td>
           </tr>
           <tr>
@@ -1961,6 +2018,13 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </td>
           </tr>
           <tr>
+            <td>9</td>
+            <td>Could not validate json message against schema</td>
+            <td>
+              <p>This message implies that there was an&nbsp;error because&nbsp;parameters passed to a method were not following the schema format.</p>
+            </td>
+          </tr>
+          <tr>
             <td>102</td>
             <td>Network not found</td>
             <td>
@@ -2122,6 +2186,13 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </th>
           </tr>
           <tr>
+            <td>2</td>
+            <td>Malformed json</td>
+            <td>
+              <p>Unable to parse the json schema</p>
+            </td>
+          </tr>
+          <tr>
             <td>3</td>
             <td>Invalid parameters</td>
             <td>
@@ -2135,15 +2206,23 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>This message implies that there was an&nbsp;error&nbsp;because&nbsp;<strong>webos-connman-adapter </strong>was not able to talk to the <strong>connman</strong> daemon.</p>
             </td>
           </tr>
+          <tr>
+            <td>9</td>
+            <td>Could not validate json message against schema</td>
+            <td>
+              <p>This message implies that there was an&nbsp;error because&nbsp;parameters passed to a method were not following the schema format.</p>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5px;"><b>Example code</b></p>
+      <p style="color:white;margin:5px;"><b>Example</b></p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -n 1 -f luna://com.webos.service.connectionmanager/setstate &#39;{&quot;wifi&quot;:&quot;enabled&quot;}&#39;</p>
+      <p>Response:</p>
       <p>{<br />
         &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
         }

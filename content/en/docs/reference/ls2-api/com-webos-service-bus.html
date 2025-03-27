@@ -1,7 +1,7 @@
 ---
 title: com.webos.service.bus
-date: 2024-10-30
-api_level: 30
+date: 2025-02-20
+api_level: 32
 weight: 117
 toc: true
 ---
@@ -103,12 +103,19 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates status of method execution.</p>
-              <p>Possible values are:</p>
+              <p>Indicates the status of operation. Possible values are:</p>
               <ul>
-                <li>true: Successful.</li>
-                <li>false: Not successful. Check the method&#39;s &#39;Error Codes&#39; section for failure details (errorCode and/or errorText).</li>
+                <li><strong>true</strong>: Indicates that the operation was successful.</li>
+                <li><strong>false</strong>: Indicates that the operation failed.</li>
               </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure in operation.</p>
             </td>
           </tr>
         </tbody>
@@ -210,12 +217,19 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates status of method execution.</p>
-              <p>Possible values are:</p>
+              <p>Indicates the status of operation. Possible values are:</p>
               <ul>
-                <li>true: Successful.</li>
-                <li>false: Not successful. Check the method&#39;s &#39;Error Codes&#39; section for failure details (errorCode and/or errorText).</li>
+                <li><strong>true</strong>: Indicates that the operation was successful.</li>
+                <li><strong>false</strong>: Indicates that the operation failed.</li>
               </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure in operation</p>
             </td>
           </tr>
         </tbody>
@@ -348,12 +362,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates status of method execution.</p>
-              <p>Possible values are:</p>
-              <ul>
-                <li>true: Successful.</li>
-                <li>false: Not successful. Check the method&#39;s &#39;Error Codes&#39; section for failure details (errorCode and/or errorText).</li>
-              </ul>
+              <p>True in case of&nbsp;success, false if input list contains invalid names.</p>
             </td>
           </tr>
           <tr>
@@ -504,11 +513,11 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates status of method execution.</p>
+              <p>Indicates the status of operation.</p>
               <p>Possible values are:</p>
               <ul>
                 <li>true: Successful.</li>
-                <li>false: Not successful. Check the method&#39;s &#39;Error Codes&#39; section for failure details (errorCode and/or errorText).</li>
+                <li>false: Not successful. For details, see the &#39;Error Codes&#39; table.</li>
               </ul>
             </td>
           </tr>
@@ -520,8 +529,8 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Indicates if call is allowed.</p>
               <p>Possible values are:</p>
               <ul>
-                <li>true: Method call is allowed.</li>
-                <li>false: Method call is not allowed.</li>
+                <li>true: Call is allowed.</li>
+                <li>false: Call is not allowed.</li>
               </ul>
             </td>
           </tr>
@@ -555,13 +564,11 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5px;"><b>Example scenario</b></p>
+      <p style="color:white;margin:5px;"><b>Example</b></p>
     </div>
     <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.bus/isCallAllowed &#39;{&quot;requester&quot;: &quot;com.webos.customer&quot;, &quot;uri&quot;: &quot;luna://com.webos.product/method&quot;}&#39;<br />
-        <br />
-        Response:
-      </p>
+      <p># luna-send -n 1 -f luna://com.webos.service.bus/isCallAllowed &#39;{&quot;requester&quot;: &quot;com.webos.customer&quot;, &quot;uri&quot;: &quot;luna://com.webos.product/method&quot;}&#39;</p>
+      <p>Response:</p>
       <p>{<br />
         &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
         &nbsp; &nbsp;&nbsp;&quot;allowed&quot;: true<br />
@@ -638,12 +645,27 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates status of method execution.</p>
-              <p>Possible values are:</p>
+              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
               <ul>
-                <li>true: Successful.</li>
-                <li>false: Not successful. Check the method&#39;s &#39;Error Codes&#39; section for failure details (errorCode and/or errorText).</li>
+                <li><strong>true&nbsp;</strong>- Indicates that the operation was successful.</li>
+                <li><strong>false&nbsp;</strong>- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
               </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorCode</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The error code for the failed operation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
             </td>
           </tr>
           <tr>
@@ -825,12 +847,19 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates status of method execution.</p>
-              <p>Possible values are:</p>
+              <p>Indicates the status of operation. Possible values are:</p>
               <ul>
-                <li>true: Successful.</li>
-                <li>false: Not successful. Check the method&#39;s &#39;Error Codes&#39; section for failure details (errorCode and/or errorText).</li>
+                <li><strong>true</strong>: Indicates that the operation was successful.</li>
+                <li><strong>false</strong>: Indicates that the operation failed.</li>
               </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure in operation</p>
             </td>
           </tr>
         </tbody>
@@ -932,12 +961,19 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates status of method execution.</p>
-              <p>Possible values are:</p>
+              <p>Indicates the status of operation. Possible values are:</p>
               <ul>
-                <li>true: Successful.</li>
-                <li>false: Not successful. Check the method&#39;s &#39;Error Codes&#39; section for failure details (errorCode and/or errorText).</li>
+                <li><strong>true</strong>: Indicates that the operation was successful.</li>
+                <li><strong>false</strong>: Indicates that the operation failed.</li>
               </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>errorText</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the reason for the failure in operation</p>
             </td>
           </tr>
         </tbody>
@@ -1002,7 +1038,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
   </div>
   <h3 id="signal-addmatch">signal/addmatch</h3>
   <div>
-    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>servicebus.communication</b></span></div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>None</b></span></div>
     <div>
       <ul>
         <li>Added: <strong><code>API level 26</code></strong></li>
@@ -1080,11 +1116,11 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates status of method execution.</p>
+              <p>Indicates method execution status.</p>
               <p>Possible values are:</p>
               <ul>
                 <li>true: Successful.</li>
-                <li>false: Not successful. Check the method&#39;s &#39;Error Codes&#39; section for failure details (errorCode and/or errorText).</li>
+                <li>false: Not successful. For details, see the &#39;Error Codes&#39; table.</li>
               </ul>
             </td>
           </tr>
@@ -1093,7 +1129,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5px;"><b>Example scenario</b></p>
+      <p style="color:white;margin:5px;"><b>Example</b></p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -i luna://com.webos.service.bus/signal/addmatch &#39;{&quot;category&quot;: &quot;/com/palm/power&quot;}&#39;</p>
@@ -1213,7 +1249,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
   </div>
   <h3 id="signal-registerservicecategory">signal/registerServiceCategory</h3>
   <div>
-    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>servicebus.communication</b></span></div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>None</b></span></div>
     <div>
       <ul>
         <li>Added: <strong><code>API level 26</code></strong></li>
@@ -1283,7 +1319,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </th>
           </tr>
           <tr>
-            <td>categoryname</td>
+            <td>category name</td>
             <td>Optional</td>
             <td>String array</td>
             <td>

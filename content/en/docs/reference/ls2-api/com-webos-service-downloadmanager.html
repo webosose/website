@@ -1,7 +1,7 @@
 ---
 title: com.webos.service.downloadmanager
-date: 2024-10-30
-api_level: 30
+date: 2025-02-20
+api_level: 32
 weight: 190
 toc: true
 ---
@@ -362,6 +362,20 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Missing required key is required but it is missing</td>
             <td>
               <p>Missing required key is required but it is missing</p>
+            </td>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>Not number type is not expected</td>
+            <td>
+              <p>If the ticket value is not numeric&nbsp;type.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>lexical error: invalid char in json text.</td>
+            <td>
+              <p>&quot;ticket&quot; : NULL</p>
             </td>
           </tr>
         </tbody>
@@ -852,27 +866,11 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </th>
           </tr>
           <tr>
-            <td>target</td>
-            <td>Required</td>
-            <td>String</td>
-            <td>
-              <p><span style="line-height:1.6em">Target URL to download.</span></p>
-            </td>
-          </tr>
-          <tr>
-            <td>mime</td>
+            <td>appendTargetFile</td>
             <td>Optional</td>
-            <td>String</td>
+            <td>Boolean</td>
             <td>
-              <p>Mime type of the target. It is not used in curl now, instead &quot;application/x-binary&quot; is set, as described at&nbsp;http://www.webmaster-toolkit.com/mime-types.shtml.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>deviceId</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Used for curl in &quot;Device-Id:&quot;.</p>
+              <p>If <strong>appendTargetFile</strong> is set to <strong>true</strong> and if the target file already exists, download manager appends download data, not creates a new one.</p>
             </td>
           </tr>
           <tr>
@@ -884,45 +882,11 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </td>
           </tr>
           <tr>
-            <td>cookieToken</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>cookieToken.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>cookieHeader</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>cookieHeader.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>targetDir</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Directory where to save the downloaded file.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>targetFilename</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>File name to use when saving the downloaded file.</p>
-              <p>If <strong>targetFilename</strong> is not specified, the file name specified in target is default. If there is the same file name, download manager will internally generate a unique name.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>keepFilenameOnRedirect</td>
+            <td>autoResume</td>
             <td>Optional</td>
             <td>Boolean</td>
             <td>
-              <p>To follow redirects until it downloads the actual file, set <strong>keepFilenameOnRedirect</strong> to <strong>true</strong>.</p>
-              <p>To not follow redirects, set&nbsp;<strong>keepFilenameOnRedirect</strong>&nbsp;to <strong>false</strong>.</p>
+              <p>If <strong>autoResume</strong> is set to <strong>false</strong>, paused task will not be recovered automatically.</p>
             </td>
           </tr>
           <tr>
@@ -936,27 +900,27 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </td>
           </tr>
           <tr>
-            <td>autoResume</td>
-            <td>Optional</td>
-            <td>Boolean</td>
-            <td>
-              <p>If <strong>autoResume</strong> is set to <strong>false</strong>, paused task will not be recovered automatically.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>appendTargetFile</td>
-            <td>Optional</td>
-            <td>Boolean</td>
-            <td>
-              <p>If <strong>appendTargetFile</strong> is set to <strong>true</strong> and if the target file already exists, download manager appends download data, not creates a new one.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>e_rangeLow</td>
+            <td>cookieHeader</td>
             <td>Optional</td>
             <td>String</td>
             <td>
-              <p>Offset in number of bytes that you want the transfer to start from. Used for curl option (refer curl_easy_setopt(), CURLOPT_RESUME_FROM_LARGE).</p>
+              <p>cookieHeader.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>cookieToken</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>cookieToken.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>deviceId</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Used for curl in &quot;Device-Id:&quot;.</p>
             </td>
           </tr>
           <tr>
@@ -965,6 +929,14 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>String</td>
             <td>
               <p>Must be bigger than e_rangeLow.&nbsp;Not used now.&nbsp;</p>
+            </td>
+          </tr>
+          <tr>
+            <td>e_rangeLow</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Offset in number of bytes that you want the transfer to start from. Used for curl option (refer curl_easy_setopt(), CURLOPT_RESUME_FROM_LARGE).</p>
             </td>
           </tr>
           <tr>
@@ -982,12 +954,60 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </td>
           </tr>
           <tr>
+            <td>keepFilenameOnRedirect</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>To follow redirects until it downloads the actual file, set <strong>keepFilenameOnRedirect</strong> to <strong>true</strong>.</p>
+              <p>To not follow redirects, set&nbsp;<strong>keepFilenameOnRedirect</strong>&nbsp;to <strong>false</strong>.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>mime</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Mime type of the target. It is not used in curl now, instead &quot;application/x-binary&quot; is set, as described at&nbsp;http://www.webmaster-toolkit.com/mime-types.shtml.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>param376</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>Description here</td>
+          </tr>
+          <tr>
             <td>subscribe</td>
             <td>Optional</td>
             <td>Boolean</td>
             <td>
               <p>To&nbsp;get informed when download status has been changed,&nbsp;set&nbsp;<strong>subscribe&nbsp;</strong>to&nbsp;<strong>true</strong>.</p>
               <p>Otherwise, set&nbsp;<strong>subscribe</strong>&nbsp;to&nbsp;<strong>false</strong>.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>target</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p><span style="line-height:1.6em">Target URL to download.</span></p>
+            </td>
+          </tr>
+          <tr>
+            <td>targetDir</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Directory where to save the downloaded file.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>targetFilename</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>File name to use when saving the downloaded file.</p>
+              <p>If <strong>targetFilename</strong> is not specified, the file name specified in target is default. If there is the same file name, download manager will internally generate a unique name.</p>
             </td>
           </tr>
         </tbody>

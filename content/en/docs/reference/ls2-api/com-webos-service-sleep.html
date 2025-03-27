@@ -1,7 +1,7 @@
 ---
 title: com.webos.service.sleep
-date: 2024-10-30
-api_level: 30
+date: 2025-02-20
+api_level: 32
 weight: 295
 toc: true
 ---
@@ -335,7 +335,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       <p style="color:white;margin:5px;"><b>Example scenario</b></p>
     </div>
     <div class="code-bg-grey">
-      <p># luna-send -n -f luna://com.webos.service.sleep/com/palm/power/activityStart &#39;{&quot;id&quot;:&quot;Diagnostics activity&quot;, &quot;duration_ms&quot;:100}&#39;</p>
+      <p># luna-send -n 1 -f luna://com.webos.service.sleep/com/palm/power/activityStart &#39;{&quot;id&quot;:&quot;Diagnostics activity&quot;, &quot;duration_ms&quot;:100}&#39;</p>
       <p>Response:</p>
       <p>{<br />
         &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;:true<br />
@@ -809,6 +809,13 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Malformed json</td>
             <td>
               <p>If the json object parsing fails</p>
+            </td>
+          </tr>
+          <tr>
+            <td>-1</td>
+            <td>Client not found</td>
+            <td>
+              <p>If &nbsp;<strong>clientId</strong> is not registered</p>
             </td>
           </tr>
         </tbody>
@@ -1822,7 +1829,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       <p style="color:white;margin:5px;"><b>Example scenario</b></p>
     </div>
     <div class="code-bg-grey">
-      <p># luna-send -n 1 luna://com.webos.service.sleep/shutdown/shutdownApplicationsRegister &#39;{&quot;clientName&quot;:&quot;facebook app&quot;}&#39;</p>
+      <p># luna-send -n 1 -f luna://com.webos.service.sleep/shutdown/shutdownApplicationsRegister &#39;{&quot;clientName&quot;:&quot;facebook app&quot;}&#39;</p>
       <p>Response:</p>
       <p>{&nbsp;<br />
         &nbsp;&nbsp;&quot;returnValue&quot;:true,<br />
@@ -1941,7 +1948,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       <p style="color:white;margin:5px;"><b>Example scenario</b></p>
     </div>
     <div class="code-bg-grey">
-      <p># luna-send -n 1 luna://com.webos.service.sleep/shutdown/shutdownServicesAck &#39;{&quot;clientId&quot;:&quot;5zUn94NP.2&quot;}&#39;</p>
+      <p># luna-send -n 1 -f luna://com.webos.service.sleep/shutdown/shutdownServicesAck &#39;{&quot;clientId&quot;:&quot;5zUn94NP.2&quot;}&#39;</p>
       <p>Response:</p>
       <p>{&nbsp;<br />
         &nbsp;&nbsp;&quot;returnValue&quot;:true<br />
@@ -2681,7 +2688,8 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Boolean</td>
             <td>
               <ul>
-                <li>If the&nbsp;method fails,&nbsp;<strong>returnValue</strong>&nbsp;will contain&nbsp;<strong>false</strong>.&nbsp;</li>
+                <li>If the method succeeds, returnValue will contain true.</li>
+                <li>If the method fails, returnValue will contain false.&nbsp;</li>
               </ul>
             </td>
           </tr>
@@ -2718,6 +2726,16 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <th width="55%">
               <p>Error Description</p>
             </th>
+          </tr>
+          <tr>
+            <td>None</td>
+            <td>alarmQuery parameters are missing.</td>
+            <td>
+              <ul>
+                <li>If the parameter is missing <strong>serviceName</strong> or&nbsp;<strong>key</strong> or both.</li>
+                <li>If parameter is empty.</li>
+              </ul>
+            </td>
           </tr>
           <tr>
             <td>-1</td>
@@ -2759,7 +2777,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
   <h3 id="time-alarmremove">time/alarmRemove</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>sleep.operation</b></span></div>
-    <div style="text-align: right;display: inline-block;float:right;"><span style="background: #FFC966;padding: 5px; width: 100px; text-align: center;color:#333333;margin-right: 5px;">Deprecated</span></div>
+    <div style="float:right;"><span style="background: #FFC966;padding: 5px; width: 100px; text-align: center;color:#333333;margin-right: 5px;">Deprecated</span></div>
     <div>
       <ul>
         <li>Added: <strong><code>API level 29</code></strong></li>
@@ -3248,11 +3266,11 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
 </div>
 <h2 id="signals-events">Signals/Events</h2>
 <div>
-  <h3 id="signal-event-shutdown-shutdownapplications">shutdown/shutdownApplications</h3>
+  <h3 id="sig-evt-shutdown-shutdownapplications">shutdown/shutdownApplications</h3>
   <div>
     <p>This is the signal sent out by the sleepd daemon to the applications&nbsp;when the shutdown process starts. The daemon expects to get a response from all the registered applications if they are ready for the system shutdown.</p>
   </div>
-  <h3 id="signal-event-shutdown-shutdownservices">shutdown/shutdownServices</h3>
+  <h3 id="sig-evt-shutdown-shutdownservices">shutdown/shutdownServices</h3>
   <div>
     <p>This is the signal sent out by the sleepd daemon to the services&nbsp;when the shutdown process starts. The daemon expects to get a response&nbsp;from all the registered services if they are ready for the system shutdown.</p>
   </div>

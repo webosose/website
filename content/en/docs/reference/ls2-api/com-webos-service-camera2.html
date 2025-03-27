@@ -1,7 +1,7 @@
 ---
 title: com.webos.service.camera2
-date: 2024-06-05
-api_level: 29
+date: 2025-02-20
+api_level: 32
 weight: 120
 toc: true
 ---
@@ -35,8 +35,9 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <h4>Description</h4>
     <p>Starts capturing images using the camera. The captured images are stored as separate files at the specified location.</p>
-    <p>The default file name is of the format PictureDDMMYYYY-HHMMSS, where DDMMYYYY-HHMMSS is current date and time. Example: /tmp/Picture11022019-204128.jpeg.</p>
-    <p><strong>Note:&nbsp;</strong>By default, captured images are saved in the /<strong>tmp</strong>/ folder.</p>
+    <p>The default file name is of the format <em>PictureDDMMYYYY-HHMMSS</em>, where <em>DDMMYYYY-HHMMSS</em> is current date and time.</p>
+    <p>Example: Picture11022019-204128.jpeg</p>
+    <p><strong>Note:&nbsp;</strong>This method should be called after startPreview().</p>
     <h4>Parameters</h4>
     <div class="table-container">
       <table class="table is-bordered is-fullwidth">
@@ -69,7 +70,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Number</td>
             <td>
               <p>Indicates the number of images to be captured.</p>
-              <p><strong>Note</strong>:&nbsp;Default = 1, max = 30</p>
+              <p>Values range from 1 to 30. The default value is 1.</p>
             </td>
           </tr>
           <tr>
@@ -78,6 +79,10 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>String</td>
             <td>
               <p>Indicates the location where the captured images are to be saved.</p>
+              <p><strong>Notes:</strong></p>
+              <ul>
+                <li>By default,&nbsp;captured images are&nbsp;saved in the&nbsp;<strong>/tmp/&nbsp;</strong>folder.</li>
+              </ul>
             </td>
           </tr>
         </tbody>
@@ -107,10 +112,10 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Boolean</td>
             <td>
               <p>Indicates the status of the operation.</p>
-              <p>Possible values are: </p>
+              <p>Possible values are:</p>
               <ul>
-                <li><strong>true:</strong> Operation is successful.</li>
-                <li><strong>false:</strong> Operation has failed. Check the 'errorCode' and 'errorText' fields.</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. Check the method&#39;s &#39;Error Codes&#39; section for failure details (errorCode and/or errorText).</li>
               </ul>
             </td>
           </tr>
@@ -120,22 +125,6 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>String array</td>
             <td>
               <p>Indicates&nbsp;the path and file names of the captured images.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>The reason for the failure of the operation. See the 'API Error Codes Reference' section for details.</p>
             </td>
           </tr>
         </tbody>
@@ -157,8 +146,8 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </th>
           </tr>
           <tr>
-            <td>22, 39, 45</td>
-            <td>Depends on error code</td>
+            <td>20, 22, 39, 45, 47</td>
+            <td>-</td>
             <td>
               <p>Check details in the &quot;API Error Codes Reference&quot; table.</p>
             </td>
@@ -177,7 +166,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
         &nbsp; &nbsp; &quot;path&quot;: [<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &quot;/tmp/Picture11022019-204128.jpeg&quot;,<br />
-        &nbsp; &nbsp; &nbsp; &nbsp; &quot;/tmp/Picture11022019-204230.jpeg<br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &quot;/tmp/Picture11022019-204230.jpeg&quot;<br />
         &nbsp; &nbsp; &nbsp;]<br />
         }
       </p>
@@ -219,15 +208,6 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Indicates the handle for the device obtained using the&nbsp;open() API.&nbsp;</p>
             </td>
           </tr>
-          <tr>
-            <td>pid</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>Indicates the client process ID that should be unregistered (or eliminated) from the pool the camera service manages.</p>
-              <p><strong>Note:&nbsp;</strong>When the camera was&nbsp;opened with a valid PID, this parameter is required (mandatory), otherwise the device is not closed and the method returns false.</p>
-            </td>
-          </tr>
         </tbody>
       </table>
     </div>
@@ -257,33 +237,34 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Indicates the status of the operation.</p>
               <p>Possible values are:</p>
               <ul>
-                <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
-                <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. For details, see the &#39;Error Codes&#39; table.</li>
               </ul>
             </td>
           </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
           <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
           </tr>
           <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
+            <td>20, 200</td>
+            <td>-</td>
             <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>pid</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>Indicates the client process ID</p>
+              <p>Check details in the &quot;API Error Codes Reference&quot; table.</p>
             </td>
           </tr>
         </tbody>
@@ -291,37 +272,13 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5px;"><b>Example code</b></p>
+      <p style="color:white;margin:5px;"><b>Example</b></p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -n 1 -f luna://com.webos.service.camera2/close &#39;{&quot;handle&quot;:886}&#39;</p>
       <p>Response:</p>
       <p>{<br />
-        &nbsp; &nbsp;&quot;returnValue&quot;:true<br />
-        }
-      </p>
-    </div>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5px;"><b>Example : App requires shared memory synchronization, with default signal</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.camera2/close &#39;{&quot;handle&quot;:6393, &quot;pid&quot;: 1804}&#39;</p>
-      <p>Response:</p>
-      <p>{<br />
-        &nbsp;&nbsp; &quot;returnValue&quot;: true,<br />
-        &nbsp;&nbsp; &quot;pid&quot;: 1804<br />
-        }
-      </p>
-    </div>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5px;"><b>Example : App requires shared memory synchronization, with a specified signal</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.camera2/close &#39;{&quot;handle&quot;:2516, &quot;pid&quot;: 1430}&#39;</p>
-      <p>Response;</p>
-      <p>{<br />
-        &nbsp;&nbsp; &quot;returnValue&quot;: true,<br />
-        &nbsp;&nbsp; &quot;pid&quot;: 1430<br />
+        &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;:true<br />
         }
       </p>
     </div>
@@ -362,8 +319,8 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Subscribe for notifications on changes.</p>
               <p>Possible values are:</p>
               <ul>
-                <li><strong>true:</strong>&nbsp;Subscribed.</li>
-                <li><strong>false:</strong>&nbsp;(default) Not subscribed.</li>
+                <li>true: Subscribed.</li>
+                <li>false (Default): Not subscribed.</li>
               </ul>
             </td>
           </tr>
@@ -390,7 +347,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>deviceList</td>
-            <td>Optional</td>
+            <td>Required</td>
             <td>Object array: <a href="#object-devicelist">deviceList</a></td>
             <td>
               <p>Indicates the list of cameras connected to the device.&nbsp;</p>
@@ -405,34 +362,18 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Indicates the status of the operation.</p>
               <p>Possible values are:</p>
               <ul>
-                <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
-                <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. For details, see the &#39;Error Codes&#39; table.</li>
               </ul>
             </td>
           </tr>
           <tr>
             <td>subscribed</td>
-            <td>Optional</td>
+            <td>Required</td>
             <td>Boolean</td>
             <td>
               <p>Indicates if subscribed to get notifications.&nbsp;&nbsp;</p>
               <p><strong>Note:&nbsp;</strong>Returns only if the subscribe is true.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
             </td>
           </tr>
         </tbody>
@@ -466,7 +407,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>subscribed</td>
-            <td>Optional</td>
+            <td>Required</td>
             <td>Boolean</td>
             <td>
               <p>Indicates if subscribed to get notifications.</p>
@@ -474,27 +415,11 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>deviceList</td>
-            <td>Optional</td>
+            <td>Required</td>
             <td>Object array: <a href="#object-devicelist">deviceList</a></td>
             <td>
               <p>Indicates the list of cameras connected to the device.&nbsp;</p>
               <p><strong>Note</strong>:&nbsp;The method returns an empty list if no camera is connected.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>API</strong>&nbsp;<strong>Error Codes Reference&quot;</strong>&nbsp;section for details.</p>
             </td>
           </tr>
         </tbody>
@@ -502,7 +427,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5px;"><b>Example code</b></p>
+      <p style="color:white;margin:5px;"><b>Example</b></p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -n 1 -f luna://com.webos.service.camera2/getCameraList &#39;{}&#39;</p>
@@ -533,7 +458,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         &nbsp; &nbsp; ]<br />
         }
       </p>
-      <p>Subscription response: (when camera2 is connected)</p>
+      <p>Subscription Response: when camera2 is connected AND then when camera1&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;nbsp;is disconnected</p>
       <p>{<br />
         &nbsp; &nbsp; &quot;returnValue&quot;:true,<br />
         &nbsp; &nbsp; &quot;subscribed&quot;:true,<br />
@@ -547,7 +472,6 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         &nbsp; &nbsp; ]<br />
         }
       </p>
-      <p>Subscription response: (when camera1&nbsp;is disconnected)</p>
       <p>{<br />
         &nbsp; &nbsp; &quot;returnValue&quot;:true,<br />
         &nbsp; &nbsp; &quot;subscribed&quot;:true,<br />
@@ -596,8 +520,8 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Indicates if subscribed to get notifications.</p>
               <p>Possible values are:</p>
               <ul>
-                <li><strong>true:</strong> Subscribed for notifications</li>
-                <li><strong>false: </strong>Not subscribed</li>
+                <li>true: Subscribed.</li>
+                <li>false: Not subscribed.</li>
               </ul>
             </td>
           </tr>
@@ -630,25 +554,9 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Indicates the status of the operation.</p>
               <p>Possible values are:</p>
               <ul>
-                <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
-                <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the &quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. For details, see the &#39;Error Codes&#39; table.</li>
               </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
             </td>
           </tr>
           <tr>
@@ -713,26 +621,10 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>id</td>
-            <td>Optional</td>
+            <td>Required</td>
             <td>String</td>
             <td>
               <p>ID of the camera.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>API</strong>&nbsp;<strong>Error Codes Reference&quot;</strong>&nbsp;section for details.</p>
             </td>
           </tr>
         </tbody>
@@ -750,7 +642,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;:&nbsp;true<br />
         }
       </p>
-      <p>Subscription response: (If there is an error during camera preview)</p>
+      <p>Subscription Response: If there is an error during camera preview</p>
       <p>{<br />
         &nbsp; &nbsp;&nbsp;&quot;returnValue&quot;:&nbsp;true,<br />
         &nbsp; &nbsp;&nbsp;&quot;id&quot;:&nbsp;&quot;camera1&quot;,<br />
@@ -796,6 +688,19 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Indicates the handle for the device obtained using&nbsp;the&nbsp;open() API.&nbsp;</p>
             </td>
           </tr>
+          <tr>
+            <td>type</td>
+            <td>Required</td>
+            <td>String</td>
+            <td>
+              <p>Indicates the FD type.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>buffer: Indicates the FD of the buffer in camera shared memory.</li>
+                <li>signal: Indicates the FD for the synchronization signal of the Camera Shared Memory.</li>
+              </ul>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -825,25 +730,34 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Indicates the status of the operation.</p>
               <p>Possible values are:</p>
               <ul>
-                <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
-                <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. For details, see the &#39;Error Codes&#39; table.</li>
               </ul>
             </td>
           </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
           <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
           </tr>
           <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
+            <td>20, 47, 200</td>
+            <td>-</td>
             <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
+              <p>Check details in the &quot;API Error Codes Reference&quot; table.</p>
             </td>
           </tr>
         </tbody>
@@ -851,10 +765,10 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5px;"><b>Example scenario</b></p>
+      <p style="color:white;margin:5px;"><b>Example</b></p>
     </div>
     <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.camera2/getFd &#39;{&quot;handle&quot;: 886}&#39;</p>
+      <p># luna-send -n 1 -f luna://com.webos.service.camera2/getFd &#39;{&quot;handle&quot;: 886, &quot;type&quot;: &quot;buffer&quot;}&#39;</p>
       <p>Response:</p>
       <p>{<br />
         &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
@@ -1171,26 +1085,10 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>info</td>
-            <td>Optional</td>
+            <td>Required</td>
             <td>Object: <a href="#object-capture-info">capture_info</a></td>
             <td>
               <p>Returns information about the camera.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
             </td>
           </tr>
           <tr>
@@ -1201,8 +1099,8 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Indicates the status of the operation.</p>
               <p>Possible values are:</p>
               <ul>
-                <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
-                <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. For details, see the &#39;Error Codes&#39; table.</li>
               </ul>
             </td>
           </tr>
@@ -1211,12 +1109,10 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5px;"><b>Example code</b></p>
+      <p style="color:white;margin:5px;"><b>Example</b></p>
     </div>
     <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.camera2/getInfo &#39;{ &quot;id&quot;:&quot;camera1&quot;}&#39;<br />
-        &nbsp;
-      </p>
+      <p># luna-send -n 1 -f luna://com.webos.service.camera2/getInfo &#39;{ &quot;id&quot;:&quot;camera1&quot;}&#39;</p>
       <p>Response:</p>
       <p>{<br />
         &nbsp; &nbsp; &quot;info&quot;:{<br />
@@ -1505,8 +1401,8 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Subscribe for notifications on changes.</p>
               <p>Possible values are:</p>
               <ul>
-                <li><strong>true:</strong>&nbsp;Subscribed.</li>
-                <li><strong>false:</strong>&nbsp;(default)&nbsp;Not subscribed.</li>
+                <li>true: Subscribed.</li>
+                <li>false (Default): Not subscribed.</li>
               </ul>
             </td>
           </tr>
@@ -1547,8 +1443,8 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Indicates the status of the operation.</p>
               <p>Possible values are:</p>
               <ul>
-                <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
-                <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. For details, see the &#39;Error Codes&#39; table.</li>
               </ul>
             </td>
           </tr>
@@ -1559,22 +1455,6 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>
               <p>Indicates if subscribed to get notifications.&nbsp;</p>
               <p><strong>Note:&nbsp;</strong>Returns only if the subscription is true.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
             </td>
           </tr>
         </tbody>
@@ -1604,6 +1484,11 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Boolean</td>
             <td>
               <p>Indicates the status of the operation.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>true: Successful.</li>
+                <li>false: Not successful. For details, see the &#39;Error Codes&#39; table.</li>
+              </ul>
             </td>
           </tr>
           <tr>
@@ -1611,12 +1496,12 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates if subscribed to get notifications.</p>
+              <p>Indicates if subscribed to get notifications (check &#39;subscribe&#39; parameter).</p>
             </td>
           </tr>
           <tr>
             <td>id</td>
-            <td>Optional</td>
+            <td>Required</td>
             <td>String</td>
             <td>
               <p>ID of the camera.</p>
@@ -1624,26 +1509,10 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>params</td>
-            <td>Optional</td>
+            <td>Required</td>
             <td>Object: <a href="#object-camera-properties">camera_properties</a></td>
             <td>
               <p>Indicates the current properties of the camera.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>API</strong>&nbsp;<strong>Error Codes Reference&quot;</strong>&nbsp;section for details.</p>
             </td>
           </tr>
         </tbody>
@@ -1698,7 +1567,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         &nbsp; &nbsp; }<br />
         }
       </p>
-      <p>Subscription response:</p>
+      <p>Subscription Response:</p>
       <p>{<br />
         &nbsp; &nbsp; &quot;subscribed&quot;:true,<br />
         &nbsp; &nbsp; &quot;returnValue&quot;:true,<br />
@@ -1843,10 +1712,11 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Required</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates the status of operation.&nbsp;Possible values are:</p>
+              <p>Indicates the status of operation.</p>
+              <p>Possible values are:</p>
               <ul>
-                <li><strong>true</strong>&nbsp;- Indicates that the operation was successful.</li>
-                <li><strong>false</strong>&nbsp;- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. For details, see the &#39;Error Codes&#39; table.</li>
               </ul>
             </td>
           </tr>
@@ -1856,22 +1726,6 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Object array: <a href="#object-solutions">solutions</a></td>
             <td>
               <p>Provides current status of the supported camera solutions.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>API</strong>&nbsp;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
             </td>
           </tr>
         </tbody>
@@ -2017,42 +1871,15 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>String</td>
             <td>
               <p>Indicates whether the calling app can update the camera settings.</p>
-              <p>Possible values are:</p>
-              <ul>
-                <li><strong>primary:&nbsp;</strong>Calling app can update the camera settings.</li>
-                <li><strong>secondary:&nbsp;</strong>Calling app cannot update&nbsp;the camera settings.</li>
-              </ul>
               <p><strong>Note: </strong></p>
               <ul>
                 <li>If no mode is selected, then the first call to open the camera gets primary access, and others are given secondary access.</li>
                 <li>If there are multiple calls with the mode set as primary, then only the first call gets primary access.</li>
               </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>pid</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>Indicates the process ID of the client process&nbsp;which&nbsp;intends to get notified of a&nbsp;shared memory writing-done event by a signal.</p>
-              <p><strong>Note:&nbsp;</strong>The client process ID should&nbsp;be the one that is actually on the running context.</p>
+              <p>Possible values are:</p>
               <ul>
-                <li>If a client app&nbsp;A calls another process B and process B is the one who&nbsp;is waiting for a&nbsp;writing-done event and reading the shared memory synchronously, then process B must&nbsp;call&nbsp;open. Otherwise, if A calls open with its open process ID, it would kill&nbsp;the app.</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>sig</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>Indicates the ID of the&nbsp;signal by which the camera service reports&nbsp;a&nbsp;shared memory writing-done event and a&nbsp;client app will get notified of it. The number of possible values are 29 from 1 (SIGHUP)&nbsp;to 31&nbsp;(SIGSYS) except for 9&nbsp;(SIGKILL)&nbsp;and19 (SIGSTOP).</p>
-              <p><strong>Note:</strong></p>
-              <ul>
-                <li>Must be provided with &quot;pid&quot;</li>
-                <li>The process ID and the signal ID passed by payload will be registered (or added) to a&nbsp;pool that the camera service manages.</li>
-                <li>If the&nbsp;signal ID is not specified in the payload, the default signal number&nbsp;10 (SYGUSR1) will be applied.&nbsp;</li>
-                <li>If an invalid value&nbsp;is passed, the camera service will reject the request and return false.</li>
+                <li>primary: Calling app can update the camera settings.</li>
+                <li>secondary: &nbsp;Calling app cannot update&nbsp;the camera settings.</li>
               </ul>
             </td>
           </tr>
@@ -2094,49 +1921,42 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Indicates the status of the operation.</p>
               <p>Possible values are:</p>
               <ul>
-                <li><strong>true:</strong>&nbsp;Indicates that the operation was successful.</li>
-                <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. For details, see the &#39;Error Codes&#39; table.</li>
               </ul>
             </td>
           </tr>
           <tr>
             <td>handle</td>
-            <td>Optional</td>
+            <td>Required</td>
             <td>Number</td>
             <td>
               <p>Indicates the unique identifier for each connection instance.</p>
             </td>
           </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
           <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
           </tr>
           <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
+            <td>13, 20, 44, 51</td>
+            <td>-</td>
             <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>pid</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>The process ID.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>sig</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>The Signal ID.</p>
+              <p>Check details in the &quot;API Error Codes Reference&quot; table.</p>
             </td>
           </tr>
         </tbody>
@@ -2147,10 +1967,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       <p style="color:white;margin:5px;"><b>Example : Open command with no mode</b></p>
     </div>
     <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.camera2/open &#39;{<br />
-        &nbsp; &nbsp;&quot;id&quot;:&quot;camera1&quot;<br />
-        }&#39;
-      </p>
+      <p># luna-send -n 1 -f luna://com.webos.service.camera2/open &#39;{&quot;id&quot;:&quot;camera1&quot;}&#39;</p>
       <p>Response:</p>
       <p>{<br />
         &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
@@ -2162,11 +1979,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       <p style="color:white;margin:5px;"><b>Example : Open command with the mode set to primary</b></p>
     </div>
     <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.camera2/open &#39;{<br />
-        &nbsp; &nbsp;&quot;id&quot;:&quot;camera1&quot;,<br />
-        &nbsp; &nbsp;&quot;mode&quot;:&quot;primary&quot;<br />
-        }&#39;
-      </p>
+      <p># luna-send -n 1 -f luna://com.webos.service.camera2/open &#39;{&quot;id&quot;:&quot;camera1&quot;,&quot;mode&quot;:&quot;primary&quot;}&#39;</p>
       <p>Response:</p>
       <p>{<br />
         &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
@@ -2178,127 +1991,13 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       <p style="color:white;margin:5px;"><b>Example : Error case - Open command with mode as primary (when an application has already opened with mode as primary)</b></p>
     </div>
     <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.camera2/open &#39;{<br />
-        &nbsp; &nbsp;&quot;id&quot;:&quot;camera1&quot;,<br />
-        &nbsp; &nbsp;&quot;mode&quot;:&quot;primary&quot;<br />
-        }&#39;
-      </p>
+      <p># luna-send -n 1 -f luna://com.webos.service.camera2/open &#39;{&quot;id&quot;:&quot;camera1&quot;,&quot;mode&quot;:&quot;primary&quot;}&#39;</p>
       <p>Response:</p>
       <p>{<br />
         &nbsp; &nbsp;&quot;errorCode&quot;:44,<br />
         &nbsp; &nbsp;&quot;returnValue&quot;:false,<br />
         &nbsp; &nbsp;&quot;errorText&quot;:&quot;Already another device opened as primary&quot;<br />
         }
-      </p>
-    </div>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5px;"><b>Example : App does not require synchronized shared memory synchronization</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p># luna-send -f -n 1 luna://com.webos.service.camera2/open &#39;{<br />
-        &nbsp; &nbsp;&nbsp;&quot;id&quot;:&quot;camera1&quot;,<br />
-        &nbsp; &nbsp;&nbsp;&quot;appId&quot;: &quot;com.webos.app.browser&quot;<br />
-        }&#39;
-      </p>
-      <p>Response:</p>
-      <p>{<br />
-        &nbsp;&nbsp; &quot;returnValue&quot;: true,<br />
-        &nbsp; &nbsp;&quot;handle&quot;: 4503<br />
-        }
-      </p>
-    </div>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5px;"><b>Example : App does not require synchronized shared memory synchronization - case to open with primary mode</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.camera2/open &#39;{<br />
-        &nbsp; &nbsp; &quot;id&quot;:&quot;camera1&quot;,<br />
-        &nbsp; &nbsp; &quot;appId&quot;: &quot;com.webos.app.browser&quot;,<br />
-        &nbsp; &nbsp; &quot;mode&quot;:&quot;primary&quot;<br />
-        }&#39;
-      </p>
-      <p>Response:</p>
-      <p>{<br />
-        &nbsp; &nbsp;&quot;returnValue&quot;:true,<br />
-        &nbsp; &nbsp;&quot;handle&quot;:886<br />
-        }
-      </p>
-    </div>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5px;"><b>Example : App does not require synchronized shared memory synchronization - case when an application has already opened with mode as primary.</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.camera2/open &#39;{<br />
-        &nbsp; &nbsp; &quot;id&quot;:&quot;camera1&quot;,<br />
-        &nbsp; &nbsp;&nbsp;&quot;appId&quot;: &quot;com.webos.app.browser&quot;,&nbsp;<br />
-        &nbsp; &nbsp;&nbsp;&quot;mode&quot;:&quot;primary&quot;<br />
-        }&#39;
-      </p>
-      <p>Response:</p>
-      <p>{<br />
-        &nbsp; &nbsp;&quot;errorCode&quot;:44,<br />
-        &nbsp; &nbsp;&quot;returnValue&quot;:false,<br />
-        &nbsp; &nbsp;&quot;errorText&quot;:&quot;Already another device opened as primary&quot;<br />
-        }
-      </p>
-    </div>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5px;"><b>Example : App requires shared memory synchronization, with default signal</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.camera2/open &#39;{<br />
-        &nbsp; &nbsp;&nbsp;&quot;id&quot;: &quot;camera1&quot;,<br />
-        &nbsp; &nbsp;&nbsp;&quot;appId&quot;: &quot;com.webos.app.browser&quot;,<br />
-        &nbsp; &nbsp;&nbsp;&quot;pid&quot;: 1804<br />
-        }&#39;
-      </p>
-      <p>Response:</p>
-      <p>{<br />
-        &nbsp;&nbsp; &quot;returnValue&quot;: true,<br />
-        &nbsp; &nbsp;&quot;pid&quot;: 1804,<br />
-        &nbsp;&nbsp; &quot;handle&quot;: 6393,<br />
-        &nbsp;&nbsp; &quot;sig&quot;: 10<br />
-        }
-      </p>
-      <p>&nbsp;</p>
-    </div>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5px;"><b>Example : App requires shared memory synchronization, with a specified signal</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.camera2/open &#39;{<br />
-        &nbsp; &nbsp;&nbsp;&quot;id&quot;: &quot;camera1&quot;,<br />
-        &nbsp; &nbsp;&nbsp;&quot;appId&quot;: &quot;com.webos.app.browser&quot;,<br />
-        &nbsp; &nbsp;&nbsp;&quot;pid&quot;: 1430,<br />
-        &nbsp; &nbsp;&nbsp;&quot;sig&quot;: 2<br />
-        }&#39;
-      </p>
-      <p>Response:</p>
-      <p>{<br />
-        &nbsp;&nbsp; &quot;returnValue&quot;: true,<br />
-        &nbsp; &nbsp;&quot;pid&quot;: 1430,<br />
-        &nbsp; &nbsp;&quot;handle&quot;: 2516,<br />
-        &nbsp;&nbsp; &quot;sig&quot;: 2<br />
-        }
-      </p>
-    </div>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5px;"><b>Example : App passes an invalid signal</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.camera2/open &#39;{<br />
-        &nbsp; &nbsp;&nbsp;&quot;id&quot;: &quot;camera1&quot;,<br />
-        &nbsp; &nbsp;&nbsp;&quot;appId&quot;: &quot;com.webos.app.browser&quot;,<br />
-        &nbsp; &nbsp;&nbsp;&quot;pid&quot;: 1970,<br />
-        &nbsp; &nbsp;&nbsp;&quot;sig&quot;: 19<br />
-        }&#39; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-      </p>
-      <p>Response:</p>
-      <p>{&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
-        &nbsp; &nbsp; &quot;errorCode&quot;: 50, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
-        &nbsp; &nbsp; &quot;returnValue&quot;: false, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
-        &nbsp; &nbsp; &quot;errorText&quot;: &quot;Failed to register pid with specified signal&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br />
-        } &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
       </p>
     </div>
   </div>
@@ -2375,25 +2074,9 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Indicates the status of the operation.</p>
               <p>Possible values are:</p>
               <ul>
-                <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
-                <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. For details, see the &#39;Error Codes&#39; table.</li>
               </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
             </td>
           </tr>
         </tbody>
@@ -2401,7 +2084,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5px;"><b>Example code</b></p>
+      <p style="color:white;margin:5px;"><b>Example</b></p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -n 1 -f luna://com.webos.service.camera2/setFormat &#39;{<br />
@@ -2495,25 +2178,9 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Indicates the status of the operation.</p>
               <p>Possible values are:</p>
               <ul>
-                <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
-                <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. For details, see the &#39;Error Codes&#39; table.</li>
               </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
             </td>
           </tr>
         </tbody>
@@ -2521,7 +2188,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5px;"><b>Example code</b></p>
+      <p style="color:white;margin:5px;"><b>Example</b></p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -n 1 -f luna://com.webos.service.camera2/setProperties &#39;{<br />
@@ -2622,25 +2289,9 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Indicates the status of operation.&nbsp;</p>
               <p>Possible values are:</p>
               <ul>
-                <li><strong>true</strong>&nbsp;- Indicates that the operation was successful.</li>
-                <li><strong>false</strong>&nbsp;- Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. For details, see the &#39;Error Codes&#39; table.</li>
               </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation.&nbsp;See the &quot;<strong>API</strong>&nbsp;<strong>Error Codes Reference&quot;</strong>&nbsp;section of this method for details.</p>
             </td>
           </tr>
         </tbody>
@@ -2791,14 +2442,6 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Indicates the handle for the device obtained using the open() API.</p>
             </td>
           </tr>
-          <tr>
-            <td>params</td>
-            <td>Required</td>
-            <td>Object: <a href="#object-camera-memory-source">camera_memory_source</a></td>
-            <td>
-              <p>Defines the type and source of memory.</p>
-            </td>
-          </tr>
         </tbody>
       </table>
     </div>
@@ -2826,39 +2469,11 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Boolean</td>
             <td>
               <p>Indicates the status of the operation.</p>
-              <p>Possible values are: </p>
+              <p>Possible values are:</p>
               <ul>
-                <li><strong>true:</strong> Operation is successful.</li>
-                <li><strong>false:</strong> Operation has failed. Check the 'errorCode' and 'errorText' fields.</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. For details, see the &#39;Error Codes&#39; table.</li>
               </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>key</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>Indicates the key for memory access.</p>
-              <ul>
-                <li>For SystemV, key can be accessed directly for camera device buffers.</li>
-                <li>For POSIX, shared memory FD has to be shared over getFd() API for accessing the camera device buffers.</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>The reason for the failure of the operation. See the 'API Error Codes Reference' section for details.</p>
             </td>
           </tr>
         </tbody>
@@ -2881,7 +2496,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>20, 32, 200</td>
-            <td>Depends on error code</td>
+            <td>-</td>
             <td>
               <p>Check details in the &quot;API Error Codes Reference&quot; table.</p>
             </td>
@@ -2894,23 +2509,10 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       <p style="color:white;margin:5px;"><b>Example : For SystemV shared memory</b></p>
     </div>
     <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.camera2/startCamera&nbsp;&#39;{&quot;handle&quot;: 5699,&quot;params&quot;: {&quot;type&quot;:&quot;sharedmemory&quot;, &quot;source&quot;:&quot;0&quot;}}&#39;</p>
+      <p># luna-send -n 1 -f luna://com.webos.service.camera2/startCamera&nbsp;&#39;{&quot;handle&quot;: 5699}&#39;</p>
       <p>Response:</p>
       <p>{<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&quot;key&quot;: 7010<br />
-        }
-      </p>
-    </div>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5px;"><b>Example : For POSIX shared memory</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p># luna-send -n 1 -f luna://com.webos.service.camera2/startCamera&nbsp;&#39;{&quot;handle&quot;: 4738,&quot;params&quot;: {&quot;type&quot;:&quot;posixshm&quot;, &quot;source&quot;:&quot;0&quot;}}&#39;</p>
-      <p>Response:</p>
-      <p>{<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&quot;key&quot;: 11<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true<br />
         }
       </p>
     </div>
@@ -2926,8 +2528,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     <h4>Description</h4>
     <p>Starts capturing images using the camera.&nbsp;The captured images are stored as separate files at the location given by the &quot;path&quot; parameter.</p>
     <p>The default file name is of the format <em>PictureDDMMYYYY-HHMMSS, </em>where&nbsp;<em>DDMMYYYY-HHMMSS</em><em><strong> </strong></em>is current date and time.</p>
-    <p>Example: /tmp/Picture11022019-204128.jpeg</p>
-    <p>By default,&nbsp;captured images are&nbsp;saved in the&nbsp;<strong>/tmp/ </strong>folder.</p>
+    <p>Example: Picture11022019-204128.jpeg</p>
     <h4>Parameters</h4>
     <div class="table-container">
       <table class="table is-bordered is-fullwidth">
@@ -2968,6 +2569,10 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>String</td>
             <td>
               <p>Indicates the location where the captured images are to be saved.</p>
+              <p><strong>Note:</strong></p>
+              <ul>
+                <li>By default,&nbsp;captured images are&nbsp;saved in the&nbsp;<strong>/tmp/&nbsp;</strong>folder.</li>
+              </ul>
             </td>
           </tr>
         </tbody>
@@ -2999,25 +2604,9 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Indicates the status of the operation.</p>
               <p>Possible values are:</p>
               <ul>
-                <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
-                <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. For details, see the &#39;Error Codes&#39; table.</li>
               </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
             </td>
           </tr>
         </tbody>
@@ -3040,7 +2629,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
         }&#39;
       </p>
-      <p>Response:</p>
+      <p>Response: For successful call</p>
       <p>{<br />
         &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
         }
@@ -3063,7 +2652,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         &nbsp;&nbsp;&nbsp;&nbsp; &quot;path&quot;:&quot;/tmp/&quot;<br />
         }&#39;
       </p>
-      <p>Response:</p>
+      <p>Response: For successful call</p>
       <p>{<br />
         &nbsp;&nbsp;&nbsp;&quot;returnValue&quot;:true<br />
         }
@@ -3086,7 +2675,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         &nbsp;&nbsp;&nbsp;&nbsp; &quot;path&quot;:&quot;/sys/&quot;<br />
         }&#39;
       </p>
-      <p>Response:</p>
+      <p>Response: For failed call</p>
       <p>{<br />
         &nbsp; &nbsp; &quot;errorCode&quot;: 45,<br />
         &nbsp; &nbsp; &quot;returnValue&quot;: false,<br />
@@ -3138,14 +2727,6 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             </td>
           </tr>
           <tr>
-            <td>params</td>
-            <td>Required</td>
-            <td>Object: <a href="#object-camera-memory-source">camera_memory_source</a></td>
-            <td>
-              <p>Defines the type and source of the memory.</p>
-            </td>
-          </tr>
-          <tr>
             <td>windowId</td>
             <td>Required</td>
             <td>String</td>
@@ -3182,45 +2763,9 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Indicates the status of the operation.</p>
               <p>Possible values are:</p>
               <ul>
-                <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
-                <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. For details, see the &#39;Error Codes&#39; table.</li>
               </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>key</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>Indicates the key for memory access.</p>
-              <ul>
-                <li>For System V, key can be accessed directly for camera device buffers</li>
-                <li>For Posix, shared memory fd has to be shared over getFd API for accessing the camera device buffers</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>mediaId</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the Id of the preview pipeline.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
             </td>
           </tr>
         </tbody>
@@ -3243,7 +2788,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>20, 32, 106, 200</td>
-            <td>Depends on error code</td>
+            <td>-</td>
             <td>
               <p>Check details in the &quot;API Error Codes Reference&quot; table.</p>
             </td>
@@ -3253,7 +2798,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5px;"><b>Example scenario</b></p>
+      <p style="color:white;margin:5px;"><b>Example</b></p>
     </div>
     <div class="code-bg-grey">
       <p>[Precondition]</p>
@@ -3266,41 +2811,12 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       <p>[Preview]</p>
       <p># luna-send -n 1 -f luna://com.webos.service.camera2/startPreview &#39;{<br />
         &nbsp; &nbsp; &quot;handle&quot;: 189,<br />
-        &nbsp; &nbsp; &quot;params&quot;: {&quot;type&quot;:&quot;sharedmemory&quot;, &quot;source&quot;:&quot;0&quot;},<br />
         &nbsp; &nbsp; &quot;windowId&quot;: &quot;_Window_Id_1&quot;<br />
         }&#39;
       </p>
-      <p>Response:<br />
-        {<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
-        &nbsp; &nbsp; &quot;key&quot;: 7010,<br />
-        &nbsp; &nbsp; &quot;mediaId&quot;: &quot;_sAMEt6vNxFRzav&quot;<br />
-        }
-      </p>
-    </div>
-    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5px;"><b>Example scenario</b></p>
-    </div>
-    <div class="code-bg-grey">
-      <p>[Precondition]</p>
-      <p># camera_window_manager_exporter &amp;<br />
-        Response:<br />
-        displayID=0<br />
-        x=0, y=0, exportWidth=1920, exportHeight=1080exporter.initialize success<br />
-        exported window ID is : _Window_Id_1
-      </p>
-      <p>[Preview]</p>
-      <p># luna-send -n 1 -f luna://com.webos.service.camera2/startPreview &#39;{<br />
-        &nbsp; &nbsp; &quot;handle&quot;: 189,<br />
-        &nbsp; &nbsp; &quot;params&quot;: {&quot;type&quot;:&quot;posixshm&quot;, &quot;source&quot;:&quot;0&quot;},<br />
-        &nbsp; &nbsp; &quot;windowId&quot;: &quot;_Window_Id_1&quot;<br />
-        }&#39;
-      </p>
-      <p>Response:<br />
-        {<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
-        &nbsp; &nbsp; &quot;key&quot;: 11,<br />
-        &nbsp; &nbsp; &quot;mediaId&quot;: &quot;_WjJf3TU1uusOef&quot;<br />
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true<br />
         }
       </p>
     </div>
@@ -3369,27 +2885,11 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Boolean</td>
             <td>
               <p>Indicates the status of the operation.</p>
-              <p>Possible values are: </p>
+              <p>Possible values are:</p>
               <ul>
-                <li><strong>true:</strong> Operation is successful.</li>
-                <li><strong>false:</strong> Operation has failed. Check the 'errorCode' and 'errorText' fields.</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. For details, see the &#39;Error Codes&#39; table.</li>
               </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>The reason for the failure of the operation. See the 'API Error Codes Reference' section for details.</p>
             </td>
           </tr>
         </tbody>
@@ -3412,7 +2912,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>13, 20, 32, 200</td>
-            <td>Depends on error code</td>
+            <td>-</td>
             <td>
               <p>Check details in the &quot;API Error Codes Reference&quot; table.</p>
             </td>
@@ -3498,25 +2998,9 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Indicates the status of the operation.</p>
               <p>Possible values are:</p>
               <ul>
-                <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
-                <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. For details, see the &#39;Error Codes&#39; table.</li>
               </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
             </td>
           </tr>
         </tbody>
@@ -3524,7 +3008,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5px;"><b>Example code</b></p>
+      <p style="color:white;margin:5px;"><b>Example</b></p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -n 1 -f luna://com.webos.service.camera2/stopCapture &#39;{&quot;handle&quot;:9383}&#39;</p>
@@ -3601,25 +3085,9 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p>Indicates the status of the operation.</p>
               <p>Possible values are:</p>
               <ul>
-                <li><strong>true:&nbsp;</strong>Indicates that the operation was successful.</li>
-                <li><strong>false:&nbsp;</strong>Indicates that the operation failed. Check the&nbsp;&quot;errorCode&quot; and &quot;errorText&quot; fields for details.</li>
+                <li>true: Successful.</li>
+                <li>false: Not successful. For details, see the &#39;Error Codes&#39; table.</li>
               </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>errorCode</td>
-            <td>Optional</td>
-            <td>Number</td>
-            <td>
-              <p>The error code for the failed operation.</p>
-            </td>
-          </tr>
-          <tr>
-            <td>errorText</td>
-            <td>Optional</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the reason for the failure of the operation. See the &quot;<strong>API Error Codes Reference</strong>&quot; section for details.</p>
             </td>
           </tr>
         </tbody>
@@ -3642,7 +3110,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>13, 20, 32, 200</td>
-            <td>Depends on error code</td>
+            <td>-</td>
             <td>
               <p>Check details in the &quot;API Error Codes Reference&quot; table.</p>
             </td>
@@ -3652,7 +3120,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5px;"><b>Example code</b></p>
+      <p style="color:white;margin:5px;"><b>Example</b></p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -n 1 -f luna://com.webos.service.camera2/stopPreview &#39;{&quot;handle&quot;:9383}&#39;</p>
@@ -3876,47 +3344,6 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
   <h3 id="object-camera-memory-source">camera_memory_source</h3>
   <div>
     <p>Indicates the type of the memory for the preview data to be written.</p>
-    <div class="table-container">
-      <table class="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th width="15%">
-              <p>Name</p>
-            </th>
-            <th width="15%">
-              <p>Required</p>
-            </th>
-            <th width="15%">
-              <p>Type</p>
-            </th>
-            <th>
-              <p>Description</p>
-            </th>
-          </tr>
-          <tr>
-            <td>type</td>
-            <td>Required</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the type of the shared memory.</p>
-              <p>Possible options:&nbsp;</p>
-              <ul>
-                <li><strong>sharedmemory </strong>- For SystemV shared memory.</li>
-                <li><strong>posixshm </strong>- For POSIX shared memory</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>source</td>
-            <td>Required</td>
-            <td>String</td>
-            <td>
-              <p>Indicates the ID&nbsp;of memory source, if the client has created the memory and wants data to be written at that specific address.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
   </div>
   <h3 id="object-camera-properties">camera_properties</h3>
   <div>
@@ -4475,6 +3902,13 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <td>Param missing</td>
           <td>
             <p>One or more parameters are missing in luna command.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>26</td>
+          <td>Unsupported format</td>
+          <td>
+            <p>Unsupported format.</p>
           </td>
         </tr>
         <tr>

@@ -1,7 +1,7 @@
 ---
 title: com.webos.service.mediacontroller
-date: 2024-10-30
-api_level: 31
+date: 2025-02-20
+api_level: 32
 weight: 235
 toc: true
 ---
@@ -1493,7 +1493,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Optional</td>
             <td>Boolean</td>
             <td>
-              <p>Indicates if subscribed to get notifications (check <strong>subscribe&nbsp;</strong>parameter).</p>
+              <p>Indicates if subscribed to get notifications (check the &#39;subscribe&#39; parameter).</p>
             </td>
           </tr>
           <tr>
@@ -1502,11 +1502,6 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Number</td>
             <td>
               <p>Display ID for the required media play status.</p>
-              <p>Possible values are:</p>
-              <ul>
-                <li>0</li>
-                <li>1</li>
-              </ul>
             </td>
           </tr>
           <tr>
@@ -1516,15 +1511,6 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>
               <p>Indicates the status for the required subscription response.</p>
               <p><strong>Note:</strong>&nbsp;If not set, eventType will send all the possible values as the response.&nbsp;</p>
-              <p>Possible values are:</p>
-              <ul>
-                <li>playStatus</li>
-                <li>muteStatus</li>
-                <li>playPosition</li>
-                <li>mediaMetaData</li>
-                <li>coverArt​</li>
-                <li>supportedActions</li>
-              </ul>
             </td>
           </tr>
           <tr>
@@ -1597,6 +1583,22 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p><strong>Note</strong>: Available only if&nbsp;<strong>eventType&nbsp;</strong>is&nbsp;<strong>supportedActions</strong>.</p>
             </td>
           </tr>
+          <tr>
+            <td>appId</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Application Id for media session.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>mediaId</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Media Id for media session.</p>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -1640,11 +1642,6 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>Number</td>
             <td>
               <p>Display ID for the required media play status.</p>
-              <p>Possible values are:</p>
-              <ul>
-                <li>0</li>
-                <li>1</li>
-              </ul>
             </td>
           </tr>
           <tr>
@@ -1654,15 +1651,6 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <td>
               <p>Indicates the status for the required subscription response.</p>
               <p><strong>Note:</strong>&nbsp;If not set, eventType will send all the possible values as the response.&nbsp;</p>
-              <p>Possible values are:</p>
-              <ul>
-                <li>playStatus</li>
-                <li>muteStatus</li>
-                <li>playPosition</li>
-                <li>mediaMetaData</li>
-                <li>coverArt</li>
-                <li>supportedActions</li>
-              </ul>
             </td>
           </tr>
           <tr>
@@ -1735,6 +1723,22 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
               <p><strong>Note</strong>: Available only if&nbsp;<strong>eventType&nbsp;</strong>is&nbsp;<strong>supportedActions</strong>.</p>
             </td>
           </tr>
+          <tr>
+            <td>appId</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Application Id for media session.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>mediaId</td>
+            <td>Optional</td>
+            <td>String</td>
+            <td>
+              <p>Media Id for media session.</p>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -1755,7 +1759,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           </tr>
           <tr>
             <td>2, 10, 11, 12</td>
-            <td>See the API Error Codes Reference section</td>
+            <td>-</td>
             <td>
               <p>See the API Error Codes Reference section</p>
             </td>
@@ -1765,7 +1769,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
     </div>
     <h4>Example</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5px;"><b>Example scenario</b></p>
+      <p style="color:white;margin:5px;"><b>Example</b></p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -n 1 -f luna://com.webos.service.mediacontroller/receiveMediaPlaybackInfo &#39;{<br />
@@ -1777,6 +1781,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       <p>Response:</p>
       <p>{<br />
         &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;appId&quot;: &quot;com.webos.app.test&quot;,<br />
         &nbsp; &nbsp; &quot;displayId&quot;: 0,<br />
         &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
         &nbsp; &nbsp; &quot;supportedActions&quot;: [<br />
@@ -1787,13 +1792,14 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         &nbsp; &nbsp; &nbsp; &nbsp; &quot;scrubTo&quot;,<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &quot;enterPictureInPicture&quot;,<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &quot;exitPictureInPicture&quot;<br />
-        &nbsp; &nbsp; ],<br />
-        &nbsp; &nbsp; &quot;eventType&quot;: &quot;supportedActions&quot;<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;],<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;mediaId&quot;: &quot;xDFNUI&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;eventType&quot;: &quot;supportedActions&quot;<br />
         }
       </p>
     </div>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
-      <p style="color:white;margin:5px;"><b>Example scenario</b></p>
+      <p style="color:white;margin:5px;"><b>Example</b></p>
     </div>
     <div class="code-bg-grey">
       <p># luna-send -n 1 -f luna://com.webos.service.mediacontroller/receiveMediaPlaybackInfo&nbsp;&#39;{<br />
@@ -1803,7 +1809,8 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       </p>
       <p>Response:</p>
       <p>{<br />
-        &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;mediaId&quot;: &quot;xDFNUI&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
         &nbsp; &nbsp; &quot;coverArt&quot;: [<br />
         &nbsp; &nbsp; &nbsp; &nbsp; {<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;sizes&quot;: [<br />
@@ -1828,10 +1835,10 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         &nbsp; &nbsp; &nbsp; &nbsp; &quot;volume&quot;: 100,<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &quot;genre&quot;: &quot;drama&quot;<br />
         &nbsp; &nbsp; },<br />
-        &nbsp; &nbsp; &quot;playStatus&quot;: &quot;PLAYSTATE_PLAYING&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;playStatus&quot;: &quot;PLAYSTATE_PLAYING&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;appId&quot;: &quot;com.webos.app.test&quot;,<br />
         &nbsp; &nbsp; &quot;muteStatus&quot;: &quot;mute&quot;<br />
-        }<br />
-        &nbsp;
+        }
       </p>
     </div>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
@@ -1846,10 +1853,12 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       </p>
       <p>Response:</p>
       <p>{<br />
-        &nbsp; &nbsp; &quot;playStatus&quot;: &quot;PLAYSTATE_PLAYING&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;playStatus&quot;: &quot;PLAYSTATE_PLAYING&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;appId&quot;: &quot;com.webos.app.test&quot;,<br />
         &nbsp; &nbsp; &quot;displayId&quot;: 0,<br />
         &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-        &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;subscribed&quot;: true,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;mediaId&quot;: &quot;xDFNUI&quot;,<br />
         &nbsp; &nbsp; &quot;eventType&quot;: &quot;playStatus&quot;<br />
         }
       </p>
@@ -1866,11 +1875,13 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       </p>
       <p>Response:</p>
       <p>{<br />
-        &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;subscribed&quot;: true,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;appId&quot;: &quot;com.webos.app.test&quot;,<br />
         &nbsp; &nbsp; &quot;displayId&quot;: 0,<br />
         &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-        &nbsp; &nbsp; &quot;muteStatus&quot;: &quot;mute&quot;,<br />
-        &nbsp; &nbsp; &quot;eventType&quot;: &quot;muteStatus&quot;<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;muteStatus&quot;: &quot;mute&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;mediaId&quot;: &quot;xDFNUI&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;eventType&quot;: &quot;muteStatus&quot;<br />
         }
       </p>
     </div>
@@ -1886,10 +1897,12 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       </p>
       <p>Response:</p>
       <p>{<br />
-        &nbsp; &nbsp; &quot;playPosition&quot;: &quot;1.0&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;playPosition&quot;: &quot;1.0&quot;,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;appId&quot;: &quot;com.webos.app.test&quot;,<br />
         &nbsp; &nbsp; &quot;displayId&quot;: 0,<br />
         &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-        &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;subscribed&quot;: true,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;mediaId&quot;: &quot;xDFNUI&quot;,<br />
         &nbsp; &nbsp; &quot;eventType&quot;: &quot;playPosition&quot;<br />
         }
       </p>
@@ -1906,9 +1919,11 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
       </p>
       <p>Response:</p>
       <p>{<br />
-        &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;subscribed&quot;: true,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;appId&quot;: &quot;com.webos.app.test&quot;,<br />
         &nbsp; &nbsp; &quot;displayId&quot;: 0,<br />
-        &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;mediaId&quot;: &quot;xDFNUI&quot;,<br />
         &nbsp; &nbsp; &quot;mediaMetaData&quot;: {<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &quot;artist&quot;: &quot;BigBang&quot;,<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &quot;trackNumber&quot;: 2,<br />
@@ -1945,10 +1960,12 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;src&quot;: &quot;https://storage.googleapis.com/media-session/sintel/artwork-128.png&quot;,<br />
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;type&quot;: &quot;image/png&quot;<br />
         &nbsp; &nbsp; &nbsp; &nbsp; }<br />
-        &nbsp; &nbsp; ],<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;],<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;appId&quot;: &quot;com.webos.app.test&quot;,<br />
         &nbsp; &nbsp; &quot;displayId&quot;: 0,<br />
         &nbsp; &nbsp; &quot;returnValue&quot;: true,<br />
-        &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;subscribed&quot;: true,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;mediaId&quot;: &quot;xDFNUI&quot;,<br />
         &nbsp; &nbsp; &quot;eventType&quot;: &quot;coverArt&quot;<br />
         }
       </p>

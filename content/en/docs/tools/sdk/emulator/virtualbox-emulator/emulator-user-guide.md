@@ -1,7 +1,7 @@
 ---
 title: User Guide
 display_title: VirtualBox Emulator User Guide
-date: 2024-10-14
+date: 2025-02-24
 weight: 10
 toc: true
 ---
@@ -12,7 +12,6 @@ The emulator runs as a virtual machine on VirtualBox and supports host platforms
 
 {{< caution >}}
 * The VirtualBox-based emulator (64-bit) is supported by webOS OSE 2.14.0 or higher.
-* webOS OSE emulator requires VirtualBox version 6.1.x, which can be installed on 64-bit host platforms only.
 * Make sure that Intel® Virtualization Technology (Intel® VT) is enabled in the host PC.
 {{< /caution >}}
 
@@ -30,7 +29,7 @@ Key characteristics of the emulator are as follows:
 
 The emulator requires the following environments.
 
-* VirtualBox v6.1 or higher
+* VirtualBox v7.0 or higher
     * For requirements to install and run VirtualBox, see its [end-user documentation](https://www.virtualbox.org/wiki/End-user_documentation) page.
 * System memory
     * 8 GB or higher
@@ -170,8 +169,9 @@ The screenshots below have been captured from Oracle VM VirtualBox v6.0.14 on Wi
     {{< figure src="/images/docs/tools/emulator/vbox_emulator_img08.png" alt="Configuring the motherboard" class="align-left" >}}
 
     1. In **Boot Order**, clear checkboxes on **Floppy** and **Optical**.
-    2. In **Extended Features**, select **Enable I/O APIC**.
-    3. Click the **Processor** tab.
+    2. In **Pointing Device**, select **USB Tablet**.
+    3. In **Extended Features**, select **Enable I/O APIC**.
+    4. Click the **Processor** tab.
 
 8.  The **Processor** section will be displayed.
 
