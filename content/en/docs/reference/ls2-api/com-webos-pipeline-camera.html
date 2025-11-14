@@ -1,12 +1,14 @@
 ---
 title: com.webos.pipeline.camera
-date: 2025-02-20
+version: 1.0
+last_modified_on: Tue, 16 Sep 2025 07:03:18 GMT
 api_level: 32
-weight: 50
+converted_date: 2025-11-12
+weight: 60
 toc: true
 ---
 {{< note >}}
-This API has been available since [API level]({{< relref "ls2-api-index#api-levels" >}}) 32.
+This API has been supported since [API level](/docs/reference/ls2-api/ls2-api-index/#api-levels) 32.
 {{< /note >}}
 <h2 id="api-summary">API Summary</h2>
 <div>
@@ -18,7 +20,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
 </div>
 <h2 id="methods">Methods</h2>
 <div>
-  <h3 id="start">start</h3>
+  <h3 id="setwindow">setWindow</h3>
   <div>
     <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>None</b></span></div>
     <div>
@@ -26,9 +28,9 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         <li>Added: <strong><code>API level 32</code></strong></li>
       </ul>
     </div>
-    <h4>Description</h4>
-    <p>Starts the preview.</p>
-    <h4>Parameters</h4>
+    <h4 id="setwindow-description">Description</h4>
+    <p>Sets the window&#39;s position and size, display ID, and overlay/mirror options.</p>
+    <h4 id="setwindow-parameters">Parameters</h4>
     <div class="table-container">
       <table class="table is-bordered is-fullwidth">
         <tbody>
@@ -42,7 +44,195 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <th width="15%">
               <p>Type</p>
             </th>
-            <th>
+            <th width="">
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>x</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The horizontal position of the window on the screen.&nbsp;It is measured in pixels from the left edge.</p>
+              <p>The value can range from 0 to 1920. The default value is 0.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>y</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The vertical position of the window on the screen. It is measured in pixels from the top edge.</p>
+              <p>The value can range from 0 to 1080. The default value is 0.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>w</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The width of the window in pixels.</p>
+              <p>The value can range from 0 to 1920. The default value is 1920.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>h</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The height of the window in pixels.</p>
+              <p>The value can range from 0 to 1080. The default value is 1080.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>displayId</td>
+            <td>Optional</td>
+            <td>Number</td>
+            <td>
+              <p>The identifier for the display where the window will appear. This helps to specify which screen to use.</p>
+              <p><a href="https://www.webosose.org/docs/guides/setup/setting-up-dual-displays/">https://www.webosose.org/docs/guides/setup/setting-up-dual-displays/</a></p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>0 (Default): Primary display (HDMI0)</li>
+                <li>1: Secondary display (HDMI1)</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>overlay</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates&nbsp;if the window should be an overlay on top of other content.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>true: Overlay. The window will appear above other windows.</li>
+                <li>false (Default): No overlay</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>mirror</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates&nbsp;if the content should be mirrored horizontally.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>true: Mirror content. The content will be flipped from left to right.</li>
+                <li>false (Default): Do not mirror content.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4 id="setwindow-call-returns">Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th width="">
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates method execution status.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>true: Successful.</li>
+                <li>false: Not successful. For details, see the 'Error Codes' table.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4 id="setwindow-error-codes-reference">Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>1, 6</td>
+            <td>-</td>
+            <td>
+              <p>For details, see the &#39;API Error Codes Reference&#39; table.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4 id="setwindow-examples">Examples</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5px;"><b>Example : </b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f&nbsp;luna://com.webos.pipeline.camera._ZuqSwL30000AlU/setWindow &#39;{<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;x&quot;: 0,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;y&quot;: 0,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;w&quot;: 960,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;h&quot;: 540,<br />
+        &nbsp; &nbsp; &quot;displayId&quot;: 0,<br />
+        &nbsp; &nbsp; &quot;overlay&quot;: false,<br />
+        &nbsp; &nbsp; &quot;mirror&quot;: false<br />
+        }&#39;
+      </p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;returnValue&quot;: true<br />
+        }
+      </p>
+    </div>
+  </div>
+  <h3 id="start">start</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>None</b></span></div>
+    <div>
+      <ul>
+        <li>Added: <strong><code>API level 32</code></strong></li>
+      </ul>
+    </div>
+    <h4 id="start-description">Description</h4>
+    <p>Starts the preview.</p>
+    <h4 id="start-parameters">Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th width="">
               <p>Description</p>
             </th>
           </tr>
@@ -137,7 +327,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         </tbody>
       </table>
     </div>
-    <h4>Call Returns</h4>
+    <h4 id="start-call-returns">Call Returns</h4>
     <div class="table-container">
       <table class="table is-bordered is-fullwidth">
         <tbody>
@@ -151,7 +341,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <th width="15%">
               <p>Type</p>
             </th>
-            <th>
+            <th width="">
               <p>Description</p>
             </th>
           </tr>
@@ -179,7 +369,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         </tbody>
       </table>
     </div>
-    <h4>Error Codes Reference</h4>
+    <h4 id="start-error-codes-reference">Error Codes Reference</h4>
     <div class="table-container">
       <table class="table is-bordered is-fullwidth">
         <tbody>
@@ -204,7 +394,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         </tbody>
       </table>
     </div>
-    <h4>Example</h4>
+    <h4 id="start-examples">Examples</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
       <p style="color:white;margin:5px;"><b>Example : Start</b></p>
     </div>
@@ -240,11 +430,11 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         <li>Added: <strong><code>API level 32</code></strong></li>
       </ul>
     </div>
-    <h4>Description</h4>
+    <h4 id="stop-description">Description</h4>
     <p>Stops the preview.</p>
-    <h4>Parameters</h4>
+    <h4 id="stop-parameters">Parameters</h4>
     <p>None</p>
-    <h4>Call Returns</h4>
+    <h4 id="stop-call-returns">Call Returns</h4>
     <div class="table-container">
       <table class="table is-bordered is-fullwidth">
         <tbody>
@@ -258,7 +448,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
             <th width="15%">
               <p>Type</p>
             </th>
-            <th>
+            <th width="">
               <p>Description</p>
             </th>
           </tr>
@@ -278,7 +468,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         </tbody>
       </table>
     </div>
-    <h4>Error Codes Reference</h4>
+    <h4 id="stop-error-codes-reference">Error Codes Reference</h4>
     <div class="table-container">
       <table class="table is-bordered is-fullwidth">
         <tbody>
@@ -303,7 +493,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         </tbody>
       </table>
     </div>
-    <h4>Example</h4>
+    <h4 id="stop-examples">Examples</h4>
     <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
       <p style="color:white;margin:5px;"><b>Example : Stop</b></p>
     </div>
@@ -314,6 +504,241 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         &nbsp; &quot;returnValue&quot;: true<br />
         }
       </p>
+    </div>
+  </div>
+  <h3 id="subscribepipelineinfo">subscribePipeLineInfo</h3>
+  <div>
+    <div style="text-align: left;display: inline-block;color: rgba(54,54,54,0.6);"><span style="padding: 3px; width: 150px; text-align: center;">ACG: <b>None</b></span></div>
+    <div>
+      <ul>
+        <li>Added: <strong><code>API level 32</code></strong></li>
+      </ul>
+    </div>
+    <h4 id="subscribepipelineinfo-description">Description</h4>
+    <p>Gets notification&nbsp;when there is an error event from pipeline.</p>
+    <h4 id="subscribepipelineinfo-parameters">Parameters</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th width="">
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>subscribe</td>
+            <td>Optional</td>
+            <td>Boolean</td>
+            <td>
+              <p>Subscribe to receive updates from this method.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>true (Default): Subscribed.</li>
+                <li>false: Not subscribed.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4 id="subscribepipelineinfo-call-returns">Call Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th width="">
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>subscribed</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates subscription status (see the 'subscribe' parameter).</p>
+            </td>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates method execution status.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>true: Successful.</li>
+                <li>false: Not successful. For details, see the 'Error Codes' table.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4 id="subscribepipelineinfo-subscription-returns">Subscription Returns</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th width="">
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>returnValue</td>
+            <td>Required</td>
+            <td>Boolean</td>
+            <td>
+              <p>Indicates method execution status.</p>
+              <p>Possible values are:</p>
+              <ul>
+                <li>true: Successful.</li>
+                <li>false: Not successful. For details, see the 'Error Codes' table.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>inputPos</td>
+            <td>Required</td>
+            <td>Object: <a href="#object-inputpos">inputPos</a></td>
+            <td>
+              <p>Indicates the position of user input on the screen.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4 id="subscribepipelineinfo-error-codes-reference">Error Codes Reference</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Error Code</p>
+            </th>
+            <th width="30%">
+              <p>Error Text</p>
+            </th>
+            <th width="55%">
+              <p>Error Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>-</td>
+            <td>
+              <p>For details, see the &#39;API Error Codes Reference&#39; table.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4 id="subscribepipelineinfo-examples">Examples</h4>
+    <div style="border-style:solid;border-width:thin;border-color:black;background-color:black;margin-bottom:-1rem;">
+      <p style="color:white;margin:5px;"><b>Example</b></p>
+    </div>
+    <div class="code-bg-grey">
+      <p># luna-send -n 1 -f&nbsp;luna://com.webos.pipeline.camera._ZuqSwL30000AlU/subscribePipeLineInfo &#39;{&quot;subscribe&quot;:true}&#39;</p>
+      <p>Response:</p>
+      <p>{<br />
+        &nbsp; &nbsp; &quot;subscribed&quot;: true,<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;: true<br />
+        }
+      </p>
+      <p>Subscription Response: If there is a user input in window</p>
+      <p>{&nbsp;&nbsp;&nbsp;&nbsp;<br />
+        &nbsp; &nbsp; &quot;returnValue&quot;:true,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&quot;inputPos&quot;: {<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;handle&quot;: 3245,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;y&quot;: 550,<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;x&quot;: 1068<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;}<br />
+        }
+      </p>
+    </div>
+  </div>
+</div>
+<h2 id="objects">Objects</h2>
+<div>
+  <h3 id="object-inputpos">inputPos</h3>
+  <div>
+    <div>
+      <ul>
+        <li>Added: <strong><code>API level 32</code></strong></li>
+      </ul>
+    </div>
+    <h4 id="object-inputpos-description">Description</h4>
+    <p>Input position details.</p>
+    <h4 id="object-inputpos-properties">Properties</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-fullwidth">
+        <tbody>
+          <tr>
+            <th width="15%">
+              <p>Name</p>
+            </th>
+            <th width="15%">
+              <p>Required</p>
+            </th>
+            <th width="15%">
+              <p>Type</p>
+            </th>
+            <th width="">
+              <p>Description</p>
+            </th>
+          </tr>
+          <tr>
+            <td>handle</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>Handle for the device, obtained using&nbsp;the&nbsp;open() API.&nbsp;</p>
+            </td>
+          </tr>
+          <tr>
+            <td>x</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>Horizontal position of the input.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>y</td>
+            <td>Required</td>
+            <td>Number</td>
+            <td>
+              <p>Vertical position of the input.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
@@ -349,7 +774,7 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
         </tr>
         <tr>
           <td>3</td>
-          <td>Already unloaded</td>
+          <td>	Already unloaded</td>
           <td>
             <p>The player has already been unloaded.</p>
           </td>
@@ -366,6 +791,20 @@ This API has been available since [API level]({{< relref "ls2-api-index#api-leve
           <td>Resource release failed</td>
           <td>
             <p>The attempt to release resources associated with the player was unsuccessful.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>Window not created</td>
+          <td>
+            <p>Window not created</p>
+          </td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>Subscription failed</td>
+          <td>
+            <p>This error indicates that the subscription could not be established.</p>
           </td>
         </tr>
       </tbody>
