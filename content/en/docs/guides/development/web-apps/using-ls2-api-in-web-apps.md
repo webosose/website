@@ -105,7 +105,7 @@ If you create a web app using the "basic" template of the [Command-Line Interfac
 
 To include the library in a web app, follow the steps below:
 
-1.  Download the webOS library file from [webOSjs-0.1.0.zip](https://webosose.s3.ap-northeast-2.amazonaws.com/tools/webOSjs-0.1.0.zip) and decompress it to the project root directory. The following directory will be created:
+1.  Download the webOS library file from [webOSjs-0.1.0.zip](https://rpwebosose.s3.ap-southeast-2.amazonaws.com/tools/webOSjs-0.1.0.zip) and decompress it to the project root directory. The following directory will be created:
 
     ``` bash
     webOSjs-0.1.0
